@@ -8,8 +8,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 
+
 import service.IService;
 import support.Planificacion;
+import support.UCompetencia;
 
 @Component
 @Scope("session")
@@ -18,9 +20,17 @@ public class PlanificacionManagedBean {
 	@Autowired
 	private IService service;
 	private List<Planificacion> planificaciones = new ArrayList<Planificacion>();
+	private List<UCompetencia> competencias = new ArrayList<UCompetencia>();	
 		
 	public List<Planificacion> getPlanificaciones(){
+		System.out.println("getPlanificaciones method called...");
 		planificaciones = service.getPlanificacion();
 		return planificaciones;
+	}
+	
+	public List<UCompetencia> getCompetencias(){
+		System.out.println("getCompetencias method called...");
+		competencias = service.getUcompetenciaSinPlanificar();
+		return competencias;
 	}
 }

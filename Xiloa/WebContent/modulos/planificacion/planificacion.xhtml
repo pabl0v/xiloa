@@ -48,11 +48,11 @@
     <p:dialog id="modalDialog" header="Seleccione la unidad de competencia a planificar:" widgetVar="dlg2" modal="true" width="740" height="480">  
          <h:form>  
              <div id="contenedor_tabla_unidadcomp">
-                <p:dataTable emptyMessage="No hay datos para mostrar" value="#{tableBean.carsSmall}">  
+                <p:dataTable emptyMessage="No hay datos para mostrar" var = "competencia" value="#{planificacionManagedBean.competencias}">  
                         <!--Las columnas de la tabla-->
-                        <p:column headerText="Centro de formacion profesional"><h:outputText value="#{car.model}" /></p:column>  
-                        <p:column headerText="Unidad de Competencia (Modulo)"><h:outputText value="#{car.year}" /></p:column>  
-                        <p:column headerText="Disponibilidad"><h:outputText value="#{car.manufacturer}"/></p:column>  
+                        <p:column headerText="Centro de formacion profesional"><h:outputText value="#{competencia.nombreCentro}" /></p:column>  
+                        <p:column headerText="Unidad de Competencia (Modulo)"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  
+                        <p:column headerText="Disponibilidad"><h:outputText value="#{competencia.disponibilidad}"/></p:column>  
                 </p:dataTable> 
              </div>    
              <p:commandButton value="Cancelar" styleClass="boton_azul"/> 
