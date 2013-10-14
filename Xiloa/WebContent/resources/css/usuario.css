@@ -9,6 +9,17 @@ html {
     font-size: 1em;
     font-size: 13px;
 }
+#barra_login h1{
+	background: url("../../resources/imagenes/inatec_logo.png") no-repeat left;
+	height: 49px;
+	background-size: 21%;
+	/* margin-top: 0; */
+	position: relative;
+	top: -12px;
+	left: -14px;
+	padding-left: 115px;
+	line-height: 43px;
+}
 header {
     height: 25px;
     background: #003366;
@@ -28,6 +39,23 @@ header p{
     background: #f8fdbd;
     height: 15px;
     padding: 12px;
+}
+#barra_buscar p{
+    display: inline-block;
+    position: relative;
+    top: -14px;
+    margin-right: 8px;
+}
+#selector_filtro {
+    position: relative;
+	
+    top: -6px;
+}
+#filtro_buscar {
+    position: relative;
+	
+    top: -14px;
+    margin-left: 6px;
 }
 .contenedor_central {
     width: 47%;
@@ -99,24 +127,26 @@ footer p{
 }
 .opid_boton_grande {
     width: 150px;
-    height: 50px;
-    display: inline-block;
-    float: left;
+    height: 55px;
+    display: inline-block; 
+    float: left; 
 }
 .opid_boton_pequeno {
     width: 45px;
     height: 45px;
 }
 .contenedor_botonesgrandes {
-    width: 614px;
+    width: 100%r;
 	
     margin-top: 10px;
-    height: 50px;
+    /* height: 50px; */
 }
 .contenedor_botonespequenos {
 
 	
-    width: 476px;
+    
+
+    width: 100%;
     height: 50px;
 }
 .boton_verde {
@@ -148,4 +178,17 @@ width: 240px!important;
 display: inline-block;
 font-weight: bold;
 color: black;
+}
+/******************************/
+.user a{
+	background: url("../../resources/imagenes/iconos_tab/user24.png") no-repeat left!important;
+	padding-left: 25px!important;
+}
+.llave a{
+	background: url("../../resources/imagenes/iconos_tab/llave24.png") no-repeat left!important;
+	padding-left: 25px!important;
+}
+.nuevo a{
+	background: url("../../resources/imagenes/iconos_tab/nuevo24.png") no-repeat left!important;
+	padding-left: 25px!important;
 }

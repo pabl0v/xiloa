@@ -14,11 +14,17 @@
     <h:body>
         <div id="contenedor">
         <header id="barra_login">
-            <h1>Sistema de gestion de Certificacion de competencias laborales -- INATEC</h1>
+            <h1>Sistema de gestion de Certificacion de competencias laborales</h1>
             <p>No ha ingresado</p>
         </header>
         <div id="barra_buscar">
             <p>Buscar por</p>
+            <p:selectOneMenu id="selector_filtro" styleClass="selector_status_estilo" value="#{pprBean.city}">  
+	            <f:selectItem itemLabel="Nombre de la competencia a certificar:" itemValue="" />
+	            <f:selectItem itemLabel="Centro donde esta disponible:" itemValue="" />
+	            <f:selectItem itemLabel="Otro:" itemValue="" />  
+	            </p:selectOneMenu>
+            <p:inputText id="filtro_buscar"></p:inputText>
         </div>
         <div class="contenedor_central">
         	<h2>Certificaciones de Competencias Laborales disponibles</h2>
@@ -36,7 +42,7 @@
         <div class="contenedor_central">
           <div id="contenedor_tabs">
             <p:tabView id="tabView">  
-                <p:tab id="tab1" title="Ingresar">  
+                <p:tab id="tab1" titleStyleClass="user" title="Ingresar">  
                     <h:form>
                         <h3>Bienvenido al Sistema de gestion de Certificaciones de Competencias Laborales del INATEC</h3>
                         <p>Escriba su nombre de usuario y contraseña abajo y pulse en "continuar" para acceder al sistema</p>
@@ -68,7 +74,7 @@
                     </div>
                 </p:tab>  
 
-                <p:tab id="tab2" title="Olvido de contraseña">  
+                <p:tab id="tab2" titleStyleClass="llave" title="Olvido de contraseña">  
                     <h:form>
                         <h2>¿Olvido su contraseña?</h2>
                         <p>Si olvido su contraseña, ingrese aqui su nombre de usuario y le enviaremos un correo que le permitira cambiar la contraseña</p>
@@ -79,7 +85,7 @@
                     </h:form>
                 </p:tab>  
 
-                <p:tab id="tab3" title="Registrar nueva cuenta">  
+                <p:tab id="tab3" titleStyleClass="nuevo" title="Registrar nueva cuenta">  
                     <h:form>
                     	<h2>Registrar una nueva cuenta</h2>
                     	<p>Para registrarse, complete la informacion inferior por favor.</p>
