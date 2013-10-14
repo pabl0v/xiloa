@@ -51,17 +51,17 @@
                 </h:form>    
                 <h:form>
                     <div class="seccion_interna">
-                    <p:dataTable emptyMessage="No hay datos para mostrar"  var="involucrados" value="#{tableBean.carsSmall}">  
+                    <p:dataTable emptyMessage="No hay datos para mostrar"  var="competencia" value="#{planificacionManagedBean.selectedCompetencia}">  
                         <p:column headerText="Nombre">  
-                            <h:outputText value="#{car.model}" />  
+                            <h:outputText value="#{competencia.nombreCentro}" />  
                         </p:column>  
 
                         <p:column headerText="Funcion">  
-                            <h:outputText value="#{car.year}" />  
+                            <h:outputText value="#{competencia.nombreCentro}" />  
                         </p:column>  
 
                         <p:column headerText="Correo electronico">  
-                            <h:outputText value="#{car.manufacturer}" />  
+                            <h:outputText value="#{competencia.nombreCentro}" />  
                         </p:column>  
                     </p:dataTable> 
                     </div>
