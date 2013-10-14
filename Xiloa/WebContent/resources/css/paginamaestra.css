@@ -1,0 +1,166 @@
+/*Estilo para la pagina maestra*/
+html {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    height: 100%;
+    background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxIDEiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPgo8bGluZWFyR3JhZGllbnQgaWQ9ImczNjUiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CjxzdG9wIHN0b3AtY29sb3I9IiNGRkZGRkYiIG9mZnNldD0iMCIvPjxzdG9wIHN0b3AtY29sb3I9IiNFOEU4RTgiIG9mZnNldD0iMSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2czNjUpIiAvPgo8L3N2Zz4=);
+}
+#contenedor {
+    min-width: 1024px;
+}
+.ui-widget {
+    font-size: 1.0em!important;
+}
+/*Estilo para el panel superior*/
+#barra_navegacion {
+    background-color: #444444;
+    color: white;
+    box-shadow: inset 0px -7px 10px #292929;
+    height: 75px;
+}
+#barra_navegacion h1{
+    display: inline-block;
+    width: 110px;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 12px;
+    color: #E0E0E0;
+    margin-left: 5px;
+    margin-right: 25px;
+    text-shadow: 1px 1px 4px black;
+}
+#barra_navegacion h1 a{
+    color: red;
+}
+#opciones_usuario {
+    display: inline-block;
+    float: right;
+    height: 75px;
+}
+#usuario {
+    background: url("../../resources/imagenes/usuario.png") no-repeat left;
+    background-size: 40px 45px;
+    border: 1px solid #353434;
+    width: 113px;
+    height: 35px;
+    padding: 4px;
+    line-height: 32px;
+    padding-left: 47px;
+    color: rgb(213, 213, 213);
+    text-shadow: 1px 1px 3px black;
+}
+/*********************/
+/*Barra navegacion en modo mini*/
+#barra_navegacion.mini {
+    background-color: #444444;
+    color: white;
+    box-shadow: inset 0px -7px 10px #292929;
+    height: 75px;
+}
+#barra_navegacion.mini h1{
+    display: inline-block;
+    width: 203px;
+    font-size: 18px;
+    text-align: center;
+    margin-top: 2px;
+    color: #E0E0E0;
+    margin-left: 0px;
+    margin-right: 25px;
+    text-shadow: 1px 1px 4px black;
+}
+#barra_navegacion.mini h1 a{
+    color: red;
+}
+.mini #opciones_usuario {
+    display: inline-block;
+    float: right;
+    height: 25px;
+}
+.mini #usuario {
+    background: url("../../resources/imagenes/usuario.png") no-repeat left;
+    background-size: 23px 25px;
+    border: 1px solid #353434;
+    width: 110px;
+    height: 15px;
+    padding: 4px;
+    line-height: 18px;
+    padding-left: 28px;
+    color: rgb(213, 213, 213);
+    text-shadow: 1px 1px 3px black;
+}
+.mini:hover {
+    cursor: pointer;
+}
+.estilo_breadcrumbs{
+    display: none;
+}
+.estilo_breadcrumbs li{
+    display: inline-block;
+    padding-right: 15px;
+    background: url("../../resources/imagenes/flechita_blanca.png") no-repeat right;
+    background-size: 9px;
+}
+.mini .estilo_breadcrumbs{
+    display: inline-block;
+    position: absolute;
+    top: 0px;
+    background: none;
+    padding-left: 18px;
+    height: 21px;
+    padding-top: 4px;
+    border-left: 1px solid #8A8A8A;
+}
+/*Estilo para botones*/
+.botones_navegacion {
+    display: inline-block;
+    width: 117px;
+    height: 73px;
+    border: 1px solid #353434;
+    text-align: center;
+    margin-left: -5px;
+    color: #969696;
+    font-size: 16px;
+}
+.botones_navegacion:hover {
+    cursor: pointer;
+    color: white;
+    outline: 1px solid #b4b4b4;  
+}
+.botones_navegacion p{
+    text-shadow: 1px 1px 1px black;
+    height: 50px;
+    padding-top: 0;
+    line-height: 100px;
+    background-position-y: 8px;
+}
+.icono_calendario{
+    background: url("../../resources/imagenes/calendario.png") no-repeat center;
+}
+.icono_flechas{
+    background: url("../../resources/imagenes/flechas.png") no-repeat center;
+}
+.icono_gear{
+    background: url("../../resources/imagenes/gear.png") no-repeat center;
+}
+.icono_x{
+    background: url("../../resources/imagenes/x.png") no-repeat center;
+}
+.botones_navegacion.selected {
+    background: #333537;
+    box-shadow: inset 0px 0px 3px black;
+    color: lightGrey;
+}
+/**************************/
+#opciones_usuario .botones_navegacion{
+    width: 81px;
+    height: 28px;
+    position: inherit;
+    font-size: 0px;
+    margin-left: 0px;
+    margin-right: -5px;
+}
+html #opciones_usuario .botones_navegacion p{
+    background-position-y: 4px;
+    height: 26px;
+}
+

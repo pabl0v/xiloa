@@ -1,0 +1,68 @@
+#cabezera {
+    margin-top: 10px;  
+    margin-bottom: 25px; 
+    height: 60px;
+    padding: 0px 5px;
+}
+#cabezera h2{
+    font-size: 30px;   
+    display: inline-block;
+    color: #585858;
+}
+#cabezera input{
+    float: right;
+    margin-top: 20px;
+    margin-right: 25px;
+    font-size: 20px;
+    box-shadow: 0px 0px 5px 0px #555;
+    -webkit-appearance: none;
+    border: none;
+    padding: 5px;
+}
+#contenedor_tabla_unidadcomp{
+    margin: 7px;
+    height: 400px;
+    background: aliceblue;
+    border: 1px solid #888;
+}
+#botones_filtro_contenedor{
+    width: 250px;  
+    display: inline-block;
+    float: right;
+    border: 1px solid #7E7E7E;
+    border-radius: 8px;
+    padding: 5px;
+    text-align: center;
+}
+.botones_filtro {
+    display: inline-block;
+    width: 75px;
+    height: 60px;
+    font-size: 12px;
+    margin-right: 4px;
+}
+.botones_filtro p{
+    height: 63px;
+    line-height: 94px;
+    background-position-y: 5px;
+}
+.boton_azul{
+    background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxIDEiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPgo8bGluZWFyR3JhZGllbnQgaWQ9Imc3MzgiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CjxzdG9wIHN0b3AtY29sb3I9IiM0QjlGRUUiIG9mZnNldD0iMCIvPjxzdG9wIHN0b3AtY29sb3I9IiMyNDc5REEiIG9mZnNldD0iMSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2c3MzgpIiAvPgo8L3N2Zz4=)!important;
+    color: white!important;
+    font-weight: normal!important;
+    text-shadow: none!important;
+    border: 1px solid #216fc8!important;
+    margin: 11px 9px;
+}
+.icono_nuevo {
+    background: url("../../resources/imagenes/nuevo.png") no-repeat center;
+}
+.icono_buscar{
+    background: url("../../resources/imagenes/buscar.png") no-repeat center;
+}
+.icono_exportar{
+    background: url("../../resources/imagenes/pdf.png") no-repeat center;
+}
+.flotante {
+    float: right;
+}

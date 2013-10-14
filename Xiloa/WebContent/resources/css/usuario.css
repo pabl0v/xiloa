@@ -1,0 +1,89 @@
+html {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+#contenedor {
+    min-width: 1024px;
+}
+.ui-widget {
+    font-size: 1em;
+    font-size: 13px;
+}
+header {
+    height: 25px;
+    background: #003366;
+    color: white;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: bold!important;
+}
+header h1{
+    display: inline-block;
+    font-weight: bold!important;
+}
+header p{
+    float:right;
+}
+#barra_buscar {
+    background: #f8fdbd;
+    height: 15px;
+    padding: 12px;
+}
+.contenedor_central {
+    width: 47%;
+    height: 500px;
+    display: inline-block;
+    float: left;
+    margin: 10px;
+}
+.contenedor_central h2{
+    font-size: 18px;
+    font-weight: bold;
+}
+#contenedor_tabla_competencias .ui-corner-top{
+	display: none!important;
+}
+#contenedor_tabla_competencias table {
+	border: none!important;
+}
+#contenedor_tabla_competencias .ui-state-default,#contenedor_tabla_competencias .ui-widget-header {
+	background: none;
+}
+#contenedor_tabla_competencias tbody tr {
+	color: green;
+}
+#contenedor_tabla_competencias .ui-widget {
+	border-top: 3px solid green;
+}
+/***************************************/
+#contenedor_tabs .ui-tabs-nav {
+	background: none;
+}
+#contenedor_tabs .ui-widget-content {
+	border: none;
+}
+/***************************************/
+footer {
+    position:fixed;
+    bottom: 0px;
+    left: 0px;
+    clear: both;
+    width: 100%;
+    height: 40px;
+    background: #003366;
+}
+footer p{
+    color: white;
+    padding: 12px;
+    font-size: 12px!important;
+    font-weight: bold;
+    text-align: center;
+}
+.opid_boton_grande {
+    width: 150px;
+    height: 50px;
+}
+.opid_boton_pequeno {
+    width: 45px;
+    height: 45px;
+}

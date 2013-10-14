@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        
+        <link type="text/css" rel="stylesheet" href="../../resources/css/reset.css"></link>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/usuario.css"></link>
+        <title>SCCL</title>
+    </h:head>
+    <h:body>
+        <div id="contenedor">
+        <header id="barra_login">
+            <h1>Sistema de gestion de Certificacion de competencias laborales -- INATEC</h1>
+            <p>No ha ingresado</p>
+        </header>
+        <div id="barra_buscar">
+            <p>Buscar por</p>
+        </div>
+        <div class="contenedor_central">
+        	<div id="contenedor_tabla_competencias">
+	            <h2>Certificaciones de Competencias Laborales disponibles</h2>
+	            <p>Seleccione en el nombre de la competencia para ver el detalle y solicitar la certificacion</p>
+	            <p:dataTable var="certificaciones" value="#{tableBean.carsSmall}" paginator="true" rows="10"  
+	                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+	                 rowsPerPageTemplate="5,10,15">    
+	                <p:column headerText="Unidad de competencia"><h:outputText value="#{car.model}" /></p:column>  
+	                <p:column headerText="Centro de Formacion"><h:outputText value="#{car.year}" /></p:column>  
+	                <p:column headerText="Inicia recepcion de solicitud"><h:outputText value="#{car.manufacturer}" /></p:column>  
+	            </p:dataTable> 
+            </div>
+        </div>
+        <div class="contenedor_central">
+          <div id="contenedor_tabs">
+            <p:tabView id="tabView">  
+                <p:tab id="tab1" title="Ingresar">  
+                    <h:form>
+                        <h3>Bienvenido al Sistema de gestion de Certificaciones de Competencias Laborales del INATEC</h3>
+                        <p>Escriba su nombre de usuario y contraseña abajo y pulse en "continuar" para acceder al sistema</p>
+                        <p>Si aun no se registra, use la opcion de "Registrar Nueva Cuenta" para hacerlo</p>
+                        <h2>Ingrese con una cuenta registrada</h2>
+                        <p>Nombre de usuario: </p>
+                        <input type="text" />
+                        <p>Contraseña: </p>
+                        <input type="password" />
+                        <input onclick="PF('dlg1').show();" type="button" value="Continuar"/>
+                    </h:form>
+                    <div id="opciones_openid">
+                        <h2>Acceda o registrese con su OpenID</h2>
+                        <button class="opid_boton_grande"><img src="../../resources/imagenes/openid_logos/google.png" id="dagger" /></button>
+                        <button class="opid_boton_grande"><img src="../../resources/imagenes/openid_logos/yahoo.png" id="dagger" /></button>
+                        <button class="opid_boton_grande"><img src="../../resources/imagenes/openid_logos/blogger.png" id="dagger" /></button>
+                        <button class="opid_boton_grande"><img src="../../resources/imagenes/openid_logos/logo_openid.png" id="dagger" /></button>
+                        
+                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/aol.png" id="dagger" /></button>
+                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/face_peque.png" id="dagger" /></button>
+                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/google_peque.png" id="dagger" /></button>
+                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/flirck.png" id="dagger" /></button>
+                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/wordpress_peque.png" id="dagger" /></button>
+                                            
+                    </div>
+                </p:tab>  
+
+                <p:tab id="tab2" title="Olvido de contraseña">  
+                    <h:form>
+                        <h2>¿Olvido su contraseña?</h2>
+                        <p>Si olvido su contraseña, ingrese aqui su nombre de usuario y le enviaremos un correo que le permitira cambiar la contraseña</p>
+                        <p>Nombre de usuario:</p>
+                        <input type="text" />
+                        <input onclick="PF('dlg2').show();" type="button" value="Enviar correo"/>
+                    </h:form>
+                </p:tab>  
+
+                <p:tab id="tab3" title="Registrar nueva cuenta">  
+                    <h:form>
+                     <h:panelGrid id="grid" columns="2" style="margin-bottom:10px">  
+                        <h:outputLabel for="firstname" value="*Nombre de usuario:" />  
+                        <p:inputText id="firstname" value="#{personBean.firstname}" />  
+                        <h:outputLabel for="surname" value="Nombre a mostrar: *" />  
+                        <p:inputText id="surname" value="#{personBean.surname}" required="true" requiredMessage="Surname is required."/>  
+                        <h:outputLabel for="firstname" value="Nombre real:" />  
+                        <p:inputText id="fg" value="#{personBean.firstname}" />  
+                        <h:outputLabel for="firstname" value="*Direccion de correo:" />  
+                        <p:inputText id="fdg4" value="#{personBean.firstname}" />  
+                        <h:outputLabel for="firstname" value="*Confirmacion direccion de correo:" />  
+                        <p:inputText id="fdg3" value="#{personBean.firstname}" /> 
+                        <h:outputLabel for="firstname" value="*Comprobacion de seguridad:" />  
+                        <p:inputText id="fdg2" value="#{personBean.firstname}" />  
+                        <p:commandButton value="Registrar" />
+                    </h:panelGrid>  
+                   </h:form>
+                </p:tab>  
+            </p:tabView>     
+           </div>
+        </div>
+        
+        <p:dialog id="modalDialog1" header="Detalle:" widgetVar="dlg1" modal="true" width="740" height="480">  
+        	<div class="seccion_detalle">
+      			<p>Nombre de la certificacion</p>
+      			<h:outputText value="Auxiliar en contabilidad"></h:outputText>  		
+          	</div>
+          	<div class="seccion_detalle">
+      			<p>Ultimo dia para solicitar evaluacion:</p>
+      			<h:outputText value="2013/01/22"></h:outputText>  		
+          	</div>
+          	<div class="seccion_detalle">
+      			<p>Direccion del Centro evaluador:</p>
+      			<h:outputText value="Centro Juvenil Don Bosco. Villa Don Bosco, MAnagua, Telfono: +50500000000, email: info@donbosco.com.ni"></h:outputText>  		
+          	</div>
+          	<div class="seccion_detalle">
+      			<p>Requisitos para aplicar a la evaluacion:</p>
+      			<ul>
+      				<li>Formato de solicitud</li>
+      				<li>Copia de cedula</li>
+      				<li>2 fotos (Tamaño diploma)</li>
+      				<li>Experiencia de 3 años en panaderia</li>
+      				<li>Leer y escribir</li>
+      				<li>Mayor de 20 años de edad</li>
+      			</ul>  		
+          	</div>
+          	<div class="seccion_detalle">
+      			<p>Arancel:</p>
+      			<h:outputText value="C$ 200.00"></h:outputText>  		
+          	</div>
+          	<p:commandButton value="Cancelar"/> 
+            <p:commandButton value="Aceptar"/>
+    	</p:dialog>  
+        
+        
+        <p:dialog id="modalDialog2" header="Solicitud de registro para obtener la Certificacion: Auxiliar en Contabilidad" widgetVar="dlg2" modal="true" width="740" height="480">
+		  <p>Para registrar su informacion debe estar registrado, si aun no lo ha hecho, pulse <a>aqui</a> para registar su usuarui en el <a>Sistema de Certificaciones Laborales del INATEC</a></p>         
+          <h:form>
+   
+                <p>Primer nombre:</p>  
+                <p:inputText id="firstname" value="#{personBean.firstname}" />  
+                <h:outputLabel for="surname" value="Segundo nombre:" />  
+                <p:inputText id="surname" value="#{personBean.surname}" required="true" requiredMessage="Surname is required."/>  
+                <h:outputLabel for="firstname" value="Primer apellido:" />  
+                <p:inputText id="fg" value="#{personBean.firstname}" />  
+                <h:outputLabel for="firstname" value="Segundo apellido:" />  
+                <p:inputText id="fdg4" value="#{personBean.firstname}" />  
+                <h:outputLabel for="firstname" value="Cedula:" />  
+                <p:inputText id="fdg3" value="#{personBean.firstname}" /> 
+         
+           </h:form>
+           <h:form>
+             <h:panelGrid id="grid" columns="2" style="margin-bottom:10px">  
+                <h:outputLabel for="firstname2" value="Empresa donde labora actualmente:" />  
+                <p:inputText id="firstname2" value="#{personBean.firstname}" />  
+                <h:outputLabel for="surname2" value="Años ejerciendo la actividad:" />  
+                <p:inputText id="surname2" value="#{personBean.surname}" required="true" requiredMessage="Surname is required."/>  
+                <h:outputLabel value="Descripcion de la ocupacion actual:" />  
+				 <p:commandButton value="Cancelar"/> 
+            <p:commandButton value="Aceptar"/>
+             </h:panelGrid>  
+           
+           </h:form>    
+        </p:dialog>
+        
+        <footer>
+            <p>2013 &#174;Derechos reservados por INATEC --  Sistema de gestion de Certificaciones Laborales del INATEC</p>
+        </footer>
+        </div>
+    </h:body>
+</html>

@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+		 <link type="text/css" rel="stylesheet" href="../../resources/css/planificacion.css"></link>
+    </h:head>
+    <h:body>
+     <div id="contenedor">
+    	<div id="header">
+            <ui:insert name="header" >
+                <ui:include src="../../modulos/compartido/paginamaestra.xhtml" />
+	    	</ui:insert>
+	        <script type="text/javascript" src="../../resources/scripts/planificacion.js"></script>
+		</div>
+        
+        <div id="cabezera">
+            <h2>Planificacion Actual</h2>                  
+            <div id="botones_filtro_contenedor">
+                <div class="botones_filtro" onclick="PF('dlg2').show();"><p class="icono_nuevo">Nuevo</p></div>
+                <div class="botones_filtro"><p class="icono_buscar">Busqueda</p></div>
+                <div class="botones_filtro"><p class="icono_exportar">Exportar</p></div>
+            </div>
+            <input type="text" placeholder="Filtro" />
+        </div>
+      
+        <div id="contenedor_tabla_planificacion">
+            <h:form>  
+                <p:dataTable emptyMessage="No hay datos para mostrar" var="planificacion" value="#{planificacionManagedBean.planificaciones}">  
+                        <!--Las columnas de la tabla-->
+                        <p:column headerText="Registrado"><h:outputText value="#{planificacion.registrado}" /></p:column>  
+                        <p:column headerText="Centro de Formacion"><h:outputText value="#{planificacion.nombreCentro}" /></p:column>  
+                        <p:column headerText="Unidad de Competencia"><h:outputText value="#{planificacion.unidadCompetencia}"/></p:column>  
+                        <p:column headerText="Disponible"><h:outputText value="#{planificacion.disponibilidad}" /></p:column>               
+                        <p:column headerText="Solicitudes"><h:outputText value="#{planificacion.solicitudes}" /></p:column>                
+                        <p:column headerText="Coordinador"><h:outputText value="#{planificacion.coordina}" /></p:column>                
+                        <p:column headerText="Evalua"><h:outputText value="#{planificacion.evalua}" /></p:column>                
+                        <p:column headerText="Estatus"><h:outputText value="#{planificacion.estatus}" /></p:column>               
+                        <!-- <p:column headerText="  "><h:outputText value="#{car.color}" /></p:column> -->
+                </p:dataTable>  
+            </h:form>  
+        </div>
+    </div>
+        
+    <p:dialog id="modalDialog" header="Seleccione la unidad de competencia a planificar:" widgetVar="dlg2" modal="true" width="740" height="480">  
+         <h:form>  
+             <div id="contenedor_tabla_unidadcomp">
+                <p:dataTable emptyMessage="No hay datos para mostrar" value="#{tableBean.carsSmall}">  
+                        <!--Las columnas de la tabla-->
+                        <p:column headerText="Centro de formacion profesional"><h:outputText value="#{car.model}" /></p:column>  
+                        <p:column headerText="Unidad de Competencia (Modulo)"><h:outputText value="#{car.year}" /></p:column>  
+                        <p:column headerText="Disponibilidad"><h:outputText value="#{car.manufacturer}"/></p:column>  
+                </p:dataTable> 
+             </div>    
+             <p:commandButton value="Cancelar" styleClass="boton_azul"/> 
+             <p:commandButton value="Aceptar" styleClass="boton_azul flotante" /> 
+         </h:form>   
+    </p:dialog>  
+</h:body>
+</html>

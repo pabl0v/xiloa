@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+	 <!--Se declara un UI composition para despues agregar esto a las demas paginas
+	 y asi no repetir codigo.-->
+	 <h:head>
+	 	
+	 </h:head>
+     <ui:composition>  
+        <title>SCCL</title>
+        <script type="text/javascript" src="../../resources/scripts/paginamaestra.js"></script>
+        <link type="text/css" rel="stylesheet" href="../../resources/css/reset.css"></link>
+        <link type="text/css" rel="stylesheet" href="../../resources/css/paginamaestra.css"></link>             
+        <div id="barra_navegacion">
+            <h1>Sistema de <a>Certificacion</a></h1>
+            <div id="boton_planificacion" class="botones_navegacion"><p class="icono_calendario">Planificacion</p></div>
+            <div id="boton_solicitudes" class="botones_navegacion"><p class="icono_flechas">Solicitudes</p></div>
+            <ul id="breadcrumbs" class="estilo_breadcrumbs">
+                <li>Inicio</li>
+                <li>Planificacion</li>
+                <li>Editando planificacion de unidad</li>
+            </ul>
+            <div id="opciones_usuario">
+                <div id="informacion_usuario">
+                    <p id="usuario">Carmen Tijerino</p>
+                    <div class="botones_navegacion"><p class="icono_gear">Config</p></div>
+                    <div class="botones_navegacion"><p class="icono_x">Exit</p></div>
+                </div>                
+           </div>
+        </div>
+    </ui:composition>
+</html>
+
