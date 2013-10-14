@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
 import service.IService;
+import support.Involucrado;
 import support.Planificacion;
 import support.UCompetencia;
 
@@ -39,5 +41,9 @@ public class PlanificacionManagedBean {
 	public void setSelectedCompetencia(UCompetencia selectedCompetencia) {
 		System.out.println("getSelectedCompetencia method called... "+selectedCompetencia.getNombreCentro());
 		this.selectedCompetencia = selectedCompetencia;
+	}
+	
+	public List<Involucrado> getContactos(){
+		return service.getContactos();
 	}
 }

@@ -2,6 +2,7 @@ package service;
 
 import java.util.List;
 
+import support.Involucrado;
 import support.Planificacion;
 import support.UCompetencia;
 import model.Requisito;
@@ -15,4 +16,5 @@ public interface IService {
 	public void updateUsuario(Usuario usuario);
 	public List<Planificacion> getPlanificacion();
 	public List<UCompetencia> getUcompetenciaSinPlanificar();
+	public List<Involucrado> getContactos();
 }

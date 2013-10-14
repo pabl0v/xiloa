@@ -54,8 +54,6 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Planificacion> getPlanificacion() {
 		List<Planificacion> planificaciones = new ArrayList<Planificacion>();
-		List<Contacto> contactos = new ArrayList<Contacto>();
-		List<Involucrado> involucrados = new ArrayList<Involucrado>();
 		Contacto evalua;
 		Contacto coordina;
 
@@ -66,20 +64,8 @@ public class ServiceImp implements IService {
 			p.setUnidadCompetencia("Unidad "+i+1);
 			p.setDisponibilidad(i+1);
 			p.setEstatus("Convocatoria");
-			contactos = contactoDao.findAll(Contacto.class);
-			for(int j = 0; j<contactos.size(); j++){
-				Involucrado involucrado = new Involucrado();
-				involucrado.setIdContacto(contactos.get(j).getId());
-				involucrado.setNombre(contactos.get(j).getPrimerNombre()+" "+contactos.get(j).getPrimerApellido());
-				involucrado.setIdFuncion(j);
-				if(j==1) involucrado.setFuncion("Supervisor");
-				if(j==2) involucrado.setFuncion("Evaluador");
-				if(j==3) involucrado.setFuncion("Tecnico docente");
-				if(j==4) involucrado.setFuncion("Registro Academico");
-			}
-			p.setInvolucrados(involucrados);
-			evalua = contactos.get(2);
-			coordina = contactos.get(3);
+			evalua = contactoDao.findById(Contacto.class, 2);
+			coordina = contactoDao.findById(Contacto.class, 3);
 			p.setEvalua(evalua.getPrimerNombre()+" "+evalua.getPrimerApellido());
 			p.setCoordina(coordina.getPrimerNombre()+" "+coordina.getPrimerApellido());
 			p.setRegistrado("11-10-2013");
@@ -101,5 +87,24 @@ public class ServiceImp implements IService {
 			competenciaSinPlanificarList.add(c);
 		}		
 		return competenciaSinPlanificarList;
+	}
+
+	@Override
+	public List<Involucrado> getContactos() {
+		List<Contacto> contactos = new ArrayList<Contacto>();
+		List<Involucrado> involucrados = new ArrayList<Involucrado>();
+		contactos = contactoDao.findAll(Contacto.class);
+		for(int i = 0; i<contactos.size(); i++){
+			Involucrado involucrado = new Involucrado();
+			involucrado.setIdContacto(contactos.get(i).getId());
+			involucrado.setNombre(contactos.get(i).getPrimerNombre()+" "+contactos.get(i).getPrimerApellido());
+			involucrado.setIdFuncion(i);
+			if(i==1) involucrado.setFuncion("Supervisor");
+			if(i==2) involucrado.setFuncion("Evaluador");
+			if(i==3) involucrado.setFuncion("Tecnico docente");
+			if(i==4) involucrado.setFuncion("Registro Academico");
+			involucrados.add(involucrado);
+		}
+		return involucrados;
 	}
 }
