@@ -32,7 +32,7 @@ public class Rol {
 	(
 			name = "perfiles_roles",
 			joinColumns = { @JoinColumn(name = "rol_id", referencedColumnName = "rol_id") },
-			inverseJoinColumns = { @JoinColumn(name = "perfil_id", referencedColumnName = "perfil_id", unique = true) }
+			inverseJoinColumns = { @JoinColumn(name = "perfil_id", referencedColumnName = "perfil_id") }
 	)
 	private List<Perfil> perfiles;
 	

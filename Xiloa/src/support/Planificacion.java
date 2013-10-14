@@ -1,17 +1,33 @@
 package support;
 
+import java.util.Date;
+import java.util.List;
+
 public class Planificacion {
 	
+	private int idPlanificacion;
 	private int idCentro;
 	private String nombreCentro;
 	private String unidadCompetencia;
+	private String descripcion;
 	private int disponibilidad;
 	private int solicitudes;
+	private Date divulgacionInicia;
+	private Date inscripcionFinaliza;
+	private Date convocatoriaInicia;
+	private Date evaluacionInicia;
+	private List<Involucrado> involucrados;
 	private String coordina;
 	private String evalua;
 	private String registrado;
 	private String estatus;
 	
+	public int getIdPlanificacion() {
+		return idPlanificacion;
+	}
+	public void setIdPlanificacion(int idPlanificacion) {
+		this.idPlanificacion = idPlanificacion;
+	}
 	public int getIdCentro() {
 		return idCentro;
 	}
@@ -30,6 +46,12 @@ public class Planificacion {
 	public void setUnidadCompetencia(String unidadCompetencia) {
 		this.unidadCompetencia = unidadCompetencia;
 	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
 	public int getDisponibilidad() {
 		return disponibilidad;
 	}
@@ -41,6 +63,36 @@ public class Planificacion {
 	}
 	public void setSolicitudes(int solicitudes) {
 		this.solicitudes = solicitudes;
+	}
+	public Date getDivulgacionInicia() {
+		return divulgacionInicia;
+	}
+	public void setDivulgacionInicia(Date divulgacionInicia) {
+		this.divulgacionInicia = divulgacionInicia;
+	}
+	public Date getInscripcionFinaliza() {
+		return inscripcionFinaliza;
+	}
+	public void setInscripcionFinaliza(Date inscripcionFinaliza) {
+		this.inscripcionFinaliza = inscripcionFinaliza;
+	}
+	public Date getConvocatoriaInicia() {
+		return convocatoriaInicia;
+	}
+	public void setConvocatoriaInicia(Date convocatoriaInicia) {
+		this.convocatoriaInicia = convocatoriaInicia;
+	}
+	public Date getEvaluacionInicia() {
+		return evaluacionInicia;
+	}
+	public void setEvaluacionInicia(Date evaluacionInicia) {
+		this.evaluacionInicia = evaluacionInicia;
+	}
+	public List<Involucrado> getInvolucrados() {
+		return involucrados;
+	}
+	public void setInvolucrados(List<Involucrado> involucrados) {
+		this.involucrados = involucrados;
 	}
 	public String getCoordina() {
 		return coordina;

@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import support.Involucrado;
 import support.Planificacion;
 
 
 import support.UCompetencia;
 import dao.IDao;
+import model.Contacto;
 import model.Requisito;
 import model.Usuario;
 
@@ -24,6 +26,8 @@ public class ServiceImp implements IService {
 	private IDao<Requisito> requisitoDao;
 	@Autowired
 	private IDao<Usuario> usuarioDao;
+	@Autowired
+	private IDao<Contacto> contactoDao;
 	
 	@Override
 	public List<Requisito> getRequisitos(int certificacionId) {
@@ -50,22 +54,34 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Planificacion> getPlanificacion() {
 		List<Planificacion> planificaciones = new ArrayList<Planificacion>();
-		//List<Certificacion> certificaciones = new ArrayList<Certificacion>();
-		
-		//certificaciones = certificacionDao.findByQuery("Select c from certificacion c where c.estatus = '1' and c.ifpId " + ifpId);
-		
-		//for(int i = 0; i<certificaciones.size(); i++){
+		List<Contacto> contactos = new ArrayList<Contacto>();
+		List<Involucrado> involucrados = new ArrayList<Involucrado>();
+		Contacto evalua;
+		Contacto coordina;
+
 		for(int i = 0; i<5; i++){
 			Planificacion p = new Planificacion();
-			//p.setIdCentro(certificaciones.get(i).getIfpId());
 			p.setIdCentro(i+1);
-			//p.setNombreCentro(certificaciones.get(i).getIfpNombre());
 			p.setNombreCentro("Centro "+i+1);
 			p.setUnidadCompetencia("Unidad "+i+1);
-			p.setDisponibilidad(10);
+			p.setDisponibilidad(i+1);
 			p.setEstatus("Convocatoria");
-			p.setEvalua("narauz");
-			p.setCoordina("storres");
+			contactos = contactoDao.findAll(Contacto.class);
+			for(int j = 0; j<contactos.size(); j++){
+				Involucrado involucrado = new Involucrado();
+				involucrado.setIdContacto(contactos.get(j).getId());
+				involucrado.setNombre(contactos.get(j).getPrimerNombre()+" "+contactos.get(j).getPrimerApellido());
+				involucrado.setIdFuncion(j);
+				if(j==1) involucrado.setFuncion("Supervisor");
+				if(j==2) involucrado.setFuncion("Evaluador");
+				if(j==3) involucrado.setFuncion("Tecnico docente");
+				if(j==4) involucrado.setFuncion("Registro Academico");
+			}
+			p.setInvolucrados(involucrados);
+			evalua = contactos.get(2);
+			coordina = contactos.get(3);
+			p.setEvalua(evalua.getPrimerNombre()+" "+evalua.getPrimerApellido());
+			p.setCoordina(coordina.getPrimerNombre()+" "+coordina.getPrimerApellido());
 			p.setRegistrado("11-10-2013");
 			planificaciones.add(p);
 		}

@@ -22,7 +22,7 @@ public class Contacto {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "contacto_id", nullable = false)	
-	private Long id;
+	private int id;
 	
 	@OneToOne
 	@JoinColumn(name="usuario_id")		
@@ -36,16 +36,14 @@ public class Contacto {
 	@Column(name = "primer_nombre", nullable = false)
 	private String primerNombre;
 	
-	@NotNull
-	@Column(name = "segundo_nombre", nullable = false)	
+	@Column(name = "segundo_nombre", nullable = true)	
 	private String segundoNombre;
 
 	@NotNull
 	@Column(name = "primer_apellido", nullable = false)	
 	private String primerApellido;
 
-	@NotNull
-	@Column(name = "segundo_apellido", nullable = false)	
+	@Column(name = "segundo_apellido", nullable = true)	
 	private String segundoApellido;
 
 	@NotNull
@@ -63,7 +61,6 @@ public class Contacto {
 	@Column(name = "telefono1", nullable = false)	
 	private String telefono1;
 	
-	@NotNull
 	@Column(name = "telefono2", nullable = true)	
 	private String telefono2;
 
@@ -96,11 +93,11 @@ public class Contacto {
 	@Column(name = "lugar_nacimiento", nullable = false)	
 	private String lugarNacimiento;
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
