@@ -13,9 +13,9 @@
         
       	<div id="header">
             <ui:insert name="header" >
-                <ui:include src="../../modulos/compartido/paginamaestra.xhtml" />
-	    </ui:insert>
-	</div>
+	             <ui:include src="../../modulos/compartido/paginamaestra.xhtml" />
+		    </ui:insert>
+		</div>
         
         <h2>Unidad de Competencia: Certificacion CISCO</h2>
         <div id="contenedor_secciones">
@@ -47,7 +47,7 @@
             <div class="seccion_edicion">
                 <h3>Involucrados</h3>
                 <h:form styleClass="formulario_inline">
-                    <p:commandButton value="Agregar involucrados"/> 
+                    <p:commandButton value="Agregar involucrados" onclick="PF('dlg2').show();"/> 
                 </h:form>    
                 <h:form>
                     <div class="seccion_interna">
@@ -86,10 +86,7 @@
             <div class="seccion_edicion" style="height: 260px">
                  <h:form>
                     <p>Nombre del centro evaluador</p>
-                      <p:selectOneMenu id="city" styleClass="selector_nombrecentro_estilo" value="#{pprBean.city}">  
-                        <f:selectItem itemLabel="Select City" itemValue="" />  
-                        <f:selectItems value="#{pprBean.cities}" />  
-                      </p:selectOneMenu>  
+                    <p:inputText styleClass="selector_nombrecentro_estilo" value="#{planificacionManagedBean.selectedCompetencia.nombreCentro}" />  
                     <p style="display:block"><br/>Direccion del centro evaluador</p>
                     <p:inputTextarea rows="105" cols="68" completeMethod="#{autoCompleteBean.completeArea}" queryDelay="750" minQueryLength="4" />  
                     <p style="margin-right:5px;"><br/>Costo de aranceles para el candidato:</p>
@@ -105,7 +102,6 @@
 	               </h:form>
                </div>
             </div>
-
                   
             <div id="tab_contenedor">
                 <p:tabView id="tabView">  
@@ -113,9 +109,15 @@
                     <p:tab id="tab1" title="Actividades">  
                         <h:form>     
                         <p:commandButton value="Agregar" onclick="PF('dlg1').show();"/>      
-                            <p:dataTable emptyMessage="No hay datos para mostrar"  var="actividades" value="#{tableBean.carsSmall}">  
+                            <p:dataTable var="actividades" value="#{tableBean.carsSmall}" widgetVar="carsTable" emptyMessage="No cars found with given criteria" filteredValue="#{tableBean.filteredCars}">  
+							    <f:facet name="header">  
+							         <p:outputPanel>  
+							             <h:outputText value="Search all fields:" />  
+							             <p:inputText id="globalFilter" onkeyup="carsTable.filter()" style="width:150px" />  
+							         </p:outputPanel>  
+							    </f:facet>    
                                 <p:column headerText="Nombre de la actividad"><h:outputText value="#{car.model}" /></p:column>  
-                                <p:column headerText="Tipo"><h:outputText value="#{car.year}" /></p:column>  
+                                <p:column headerText="Tipo"><h:outputText rvalue="#{car.year}" /></p:column>  
                                 <p:column headerText="Lugar/Medio"><h:outputText value="#{car.manufacturer}" /></p:column>  
                                 <p:column headerText="Fecha"><h:outputText value="#{car.manufacturer}" /></p:column>  
                                 <p:column headerText="Responsable"><h:outputText value="#{car.manufacturer}" /></p:column>  
@@ -213,5 +215,27 @@
 	    </h:form>   
     </div>
     </p:dialog>     
+    
+     <p:dialog id="modalDialog2" styleClass="estilo_dialogoactividades" header="Agregar involucrados:" widgetVar="dlg2" modal="true" resizable="false" width="550" height="400">
+     	<h:form>
+     		<h3>Añada intregantes de esta lista:</h3>
+     		 <p:dataTable emptyMessage="No hay datos para mostrar"  var="competencia" value="#{planificacionManagedBean.selectedCompetencia}">  
+                        <p:column headerText="Nombre">  
+                            <h:outputText value="#{competencia.nombreCentro}" />  
+                        </p:column>  
+
+                        <p:column headerText="Funcion">  
+                            <h:outputText value="#{competencia.nombreCentro}" />  
+                        </p:column>  
+
+                        <p:column headerText="Correo electronico">  
+                            <h:outputText value="#{competencia.nombreCentro}" /> 
+                             
+                        </p:column>  
+                    </p:dataTable> 
+	        <p:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/> 
+	        <p:commandButton value="Aceptar"/> 
+	    </h:form>   
+     </p:dialog>
 </h:body>
 </html>

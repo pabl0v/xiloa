@@ -20,26 +20,22 @@
         <h2>Unidad de Competencia: Certificacion CISCO</h2>
         <div id="contenedor_secciones">
                       
-            <div class="seccion_edicion">
-                <h3>Planificacion</h3>
-                <div class="seccion_interna">
+            <div class="seccion_edicion" style="height:140px;">
+                <p>Tipo de actividad:</p>
+                <p:selectOneMenu id="city3" value="#{pprBean.city}">  
+                   <f:selectItem itemLabel="Select City" itemValue="" />  
+                   <f:selectItems value="#{pprBean.cities}" />  
+                </p:selectOneMenu>
+                <p>Registrado:</p>
+                <span><p:calendar value="#{calendarBean.date3}" id="popupButtonCal1" showOn="button" /></span>  
+                <div class="seccion_interna" style="height:90px; padding: 10px;">
                     <h:form>
-                        <div class="contenedor_calendario">
-                            <p>Inicia la divulgacion:</p>
-                            <span class="proteccion_calendario"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal1" showOn="button" /></span>  
-                        </div>    
-                        <div class="contenedor_calendario">
-                            <p>Finaliza la inscripcion:</p>
-                            <span class="proteccion_calendario"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal2" showOn="button" /></span>  
-                        </div>
-                        <div class="contenedor_calendario">
-                            <p>Iniciar convocatorias:</p>
-                            <span class="proteccion_calendario"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal3" showOn="button" /></span>  
-                        </div>
-                        <div class="contenedor_calendario">
-                            <p>Inicia evaluaciones:</p>
-                            <span class="proteccion_calendario"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal4" showOn="button" /></span>  
-                        </div>
+                        <p>Fecha en que se ejecutara la actividad:</p>
+                        <span style="width:60px"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal1" showOn="button" /></span>   
+                        <p>Hora:</p>
+                        <p:inputText></p:inputText>  
+                        <p>Lugar:</p>
+                        <p:inputText></p:inputText>   
                     </h:form>
                 </div>
             </div>
@@ -68,17 +64,12 @@
                 </h:form>                
             </div>
 
-            <div class="seccion_edicion">
+            <div class="seccion_edicion" style="position: relative;top: -100px;">
                 <h3>Descripcion de la unidad</h3>
                 <h:form>
                      <div class="seccion_interna">
-                         <p:editor id="editor" value="#{editorBean.value}" height="180"/>                  
+                         <p:editor id="editor" value="#{editorBean.value}" height="160"/>                  
                      </div>    
-                     <p>Estatus</p>
-                     <p:selectOneMenu id="city" value="#{pprBean.city}">  
-                        <f:selectItem itemLabel="Select City" itemValue="" />  
-                        <f:selectItems value="#{pprBean.cities}" />  
-                    </p:selectOneMenu>  
                 </h:form>
             </div>
             
@@ -91,26 +82,24 @@
                       </p:selectOneMenu>  
                     <p>Direccion del centro evaluador</p>
                     <p:inputTextarea rows="10" cols="50" completeMethod="#{autoCompleteBean.completeArea}" queryDelay="750" minQueryLength="4" />  
-                    <p>Costo de aranceles para el candidato:</p>
-                    <p:inputText />  
+	                <p>Estatus:</p>
+	                <p:selectOneMenu id="citydsf" value="#{pprBean.city}">  
+	                   <f:selectItem itemLabel="Select City" itemValue="" />  
+	                   <f:selectItems value="#{pprBean.cities}" />  
+	                </p:selectOneMenu>
                 </h:form>   
             </div>
             
-            <div class="seccion_edicion">
+            <div class="seccion_edicion" style="position: relative;top: -150px;">
                 <h3>Descripcion de la unidad</h3>
                 <h:form>
                      <div class="seccion_interna">
-                         <p:editor id="editor2" value="#{editorBean.value}" height="180"/>                  
+                         <p:editor id="editor2" value="#{editorBean.value}" height="160"/>                  
                      </div>    
-                     <p>Estatus</p>
-                     <p:selectOneMenu id="city2" value="#{pprBean.city}">  
-                        <f:selectItem itemLabel="Select City" itemValue="" />  
-                        <f:selectItems value="#{pprBean.cities}" />  
-                    </p:selectOneMenu>  
                 </h:form>
             </div>
             
-            <div class="contenedor_botones">
+            <div class="seccion_edicion" style="height:30px;">
                <h:form>
                     <p:commandButton value="Cancelar"/> 
                     <p:commandButton value="Aceptar"/> 
@@ -147,7 +136,7 @@
              <p>Fecha de registro:</p>
              <span class="proteccion_calendario"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal2" showOn="button" /></span>  
              <p>Persona que reporta: </p>
-              <p:selectOneMenu id="tipo" value="#{pprBean.city}">  
+              <p:selectOneMenu id="tiposdf" value="#{pprBean.city}">  
                 <f:selectItem itemLabel="Select City" itemValue="" />  
                 <f:selectItems value="#{pprBean.cities}" />  
              </p:selectOneMenu> 

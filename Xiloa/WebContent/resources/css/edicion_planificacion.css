@@ -8,11 +8,9 @@ h2{
 #contenedor {
     background: #e6eef9;
     display: block;
-    height: 100%;
-    
+    height: 100%;  
 }
-#contenedor_secciones {
-	
+#contenedor_secciones {	
     background: none;
     display: inline-block;
     height: 500px;
@@ -25,15 +23,12 @@ h2{
     display: inline-block;
 }
 .contenedor_calendario p{
-    display: inline-block;
- 
+    display: inline-block; 
     padding-bottom: 3px;
     width: 145px;
 }
-
 .contenedor_calendario input{
     width: 90px;
- 
 }
 .proteccion_calendario{  
     width: 136px;
@@ -47,7 +42,6 @@ h2{
     float: left;
     margin: 12px;
 }
-
 .seccion_edicion p{
     display: inline-block;
 }
@@ -61,13 +55,11 @@ h2{
     height: 100px;
     width: 98%;
 }
-
 .seccion_interna{
     background: #f0f7fe;
     border: 1px solid #abc7ed;
     height: 200px;
 }
-
 .formulario_inline{
     display: inline-block;
     font-size: 11px;
@@ -76,40 +68,37 @@ h2{
     margin: 0px;
     padding: 0px;
 }
-
 .contenedor_botones {
     float:right;
     position: relative;
-    top: -33px;
+    top: -53px;
 }
 .selector_status_estilo {
-	
-position: relative;
-top: 9px;
-left: 9px;
-}
+	position: relative;
+	top: 9px;
+	left: 9px;
+	}
 .selector_nombrecentro_estilo {
-
-position: relative;
-top: 9px;
-left: 9px;
+	position: relative;
+	top: 0px;
+	left: 9px;
 }
-
 #tab_contenedor {
 	display: inline-block;
 	width: 100%;
 	height: 171px;
+	/* position: relative; */
+	/* top: -15px; */
+	height: 1px;
 }
 .estilo_dialogoactividades {
-    background: aliceblue;
-	
+    background: #E6EEF9;
 }
 #contenedor_dialogoactividades {
     margin: 3px;
-	
-    border: 1px solid #ccc;
+    /* border: 1px solid #ccc; */
     border-radius: 6px;
-    padding: 11px;
+    padding: 5px;
 }
 #contenedor_dialogoactividades textarea{
     height: 70px;
@@ -121,27 +110,20 @@ left: 9px;
 }
 #contenedor_dialogoactividades h3{
     font-size: 15px;
-	
     font-weight: bold;
     margin-bottom: 7px;
 }
-
 #contenedor_dialogoactividades .dialogoactividades_secciones{
-    width: 215px;
-	
-    
+    width: 215px;  
     display: inline-table;
     height: 50px;
 }
-
 #contenedor_dialogoactividades .dialogoactividades_secciones2{
     width: 310px;
-  
     margin: 5px 0;
 }
 #contenedor_dialogoactividades .dialogoactividades_secciones2 p{
     display: inline-block;
-  
     top: -8px;
     position: relative;
     margin-right: 5px;
@@ -150,9 +132,8 @@ left: 9px;
     height: 145px;
 	margin-top: 8px;
     border: 1px solid #ccc;
-    background: #E1F1F7;
+    background: #FFF9ED;
 }
 #dialogoactividades_botones{
-	display: inline-block;
-	
+	display: inline-block;	
 }

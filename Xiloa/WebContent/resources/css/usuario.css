@@ -1,6 +1,6 @@
 html {
     font-family: Arial, sans-serif;
-    font-size: 14px;
+    font-size: 13px;
 }
 #contenedor {
     min-width: 1024px;
@@ -35,10 +35,20 @@ header p{
     display: inline-block;
     float: left;
     margin: 10px;
+    margin-left: 26px;
+    margin-right: 0;
 }
 .contenedor_central h2{
     font-size: 18px;
     font-weight: bold;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+.contenedor_central h3{
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 8px;
+    margin-bottom: 5px;
 }
 #contenedor_tabla_competencias .ui-corner-top{
 	display: none!important;
@@ -55,9 +65,17 @@ header p{
 #contenedor_tabla_competencias .ui-widget {
 	border-top: 3px solid green;
 }
+#contenedor_tabla_competencias {
+    width: 94%;
+	
+    margin-top: 9px;
+    height: 322px;
+    background: white;
+}
 /***************************************/
 #contenedor_tabs .ui-tabs-nav {
 	background: none;
+	border-bottom: 1px solid rgb(209, 209, 209);
 }
 #contenedor_tabs .ui-widget-content {
 	border: none;
@@ -82,8 +100,52 @@ footer p{
 .opid_boton_grande {
     width: 150px;
     height: 50px;
+    display: inline-block;
+    float: left;
 }
 .opid_boton_pequeno {
     width: 45px;
     height: 45px;
+}
+.contenedor_botonesgrandes {
+    width: 614px;
+	
+    margin-top: 10px;
+    height: 50px;
+}
+.contenedor_botonespequenos {
+
+	
+    width: 476px;
+    height: 50px;
+}
+.boton_verde {
+    /* SVG as background image (IE9/Chrome/Safari/Opera) */ 
+	background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxIDEiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPgo8bGluZWFyR3JhZGllbnQgaWQ9Imc5NDQiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CjxzdG9wIHN0b3AtY29sb3I9IiM3NUM3MTgiIG9mZnNldD0iMCIvPjxzdG9wIHN0b3AtY29sb3I9IiMwNjYxMDYiIG9mZnNldD0iMSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2c5NDQpIiAvPgo8L3N2Zz4=)!important;
+    color: white!important;
+    font-weight: normal!important;
+    text-shadow: none!important;
+    border: 1px solid #FFFFFF!important;
+    /* margin: 11px 9px; */
+    margin-top: 9px;
+  
+}
+
+.ui-tabs-selected {
+    border-bottom: 1px solid rgb(255, 255, 255)!important;
+	
+    position: relative!important;
+    top: 2px!important;
+}
+#opciones_openid{
+	margin-top: 20px;
+}
+.seccion_nuevousuario {
+	margin: 10px;
+}
+.seccion_nuevousuario label{
+width: 240px!important;
+display: inline-block;
+font-weight: bold;
+color: black;
 }

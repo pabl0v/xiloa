@@ -21,9 +21,9 @@
             <p>Buscar por</p>
         </div>
         <div class="contenedor_central">
-        	<div id="contenedor_tabla_competencias">
-	            <h2>Certificaciones de Competencias Laborales disponibles</h2>
-	            <p>Seleccione en el nombre de la competencia para ver el detalle y solicitar la certificacion</p>
+        	<h2>Certificaciones de Competencias Laborales disponibles</h2>
+	        <p>Seleccione en el nombre de la competencia para ver el detalle y solicitar la certificacion</p>
+        	<div id="contenedor_tabla_competencias">    
 	            <p:dataTable var="certificaciones" value="#{tableBean.carsSmall}" paginator="true" rows="10"  
 	                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
 	                 rowsPerPageTemplate="5,10,15">    
@@ -42,25 +42,29 @@
                         <p>Escriba su nombre de usuario y contraseña abajo y pulse en "continuar" para acceder al sistema</p>
                         <p>Si aun no se registra, use la opcion de "Registrar Nueva Cuenta" para hacerlo</p>
                         <h2>Ingrese con una cuenta registrada</h2>
-                        <p>Nombre de usuario: </p>
-                        <input type="text" />
-                        <p>Contraseña: </p>
-                        <input type="password" />
-                        <input onclick="PF('dlg1').show();" type="button" value="Continuar"/>
+                        <p style="display: inline-block; width: 125px;">Nombre de usuario: </p>
+                        <p:inputText />
+                        <br/><br/>
+                        <p style="display: inline-block; width: 125px;">Contraseña: </p>
+                        <p:inputText />
+                        <br/>
+                        <p:commandButton onclick="PF('dlg1').show();" type="button" value="Continuar" styleClass="boton_verde"/>
                     </h:form>
                     <div id="opciones_openid">
                         <h2>Acceda o registrese con su OpenID</h2>
-                        <button class="opid_boton_grande"><img src="../../resources/imagenes/openid_logos/google.png" id="dagger" /></button>
-                        <button class="opid_boton_grande"><img src="../../resources/imagenes/openid_logos/yahoo.png" id="dagger" /></button>
-                        <button class="opid_boton_grande"><img src="../../resources/imagenes/openid_logos/blogger.png" id="dagger" /></button>
-                        <button class="opid_boton_grande"><img src="../../resources/imagenes/openid_logos/logo_openid.png" id="dagger" /></button>
-                        
-                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/aol.png" id="dagger" /></button>
-                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/face_peque.png" id="dagger" /></button>
-                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/google_peque.png" id="dagger" /></button>
-                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/flirck.png" id="dagger" /></button>
-                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/wordpress_peque.png" id="dagger" /></button>
-                                            
+                        <div class="contenedor_botonesgrandes">
+	                        <button class="opid_boton_grande"><img src="../../resources/imagenes/openid_logos/google.png" id="dagger" /></button>
+	                        <button class="opid_boton_grande"><img src="../../resources/imagenes/openid_logos/yahoo.png" id="dagger" /></button>
+	                        <button class="opid_boton_grande"><img src="../../resources/imagenes/openid_logos/blogger.png" id="dagger" /></button>
+	                        <button class="opid_boton_grande"><img src="../../resources/imagenes/openid_logos/logo_openid.png" id="dagger" /></button>
+                        </div>                   
+                        <div class="contenedor_botonespequenos">
+	                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/aol.png" id="dagger" /></button>
+	                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/face_peque.png" id="dagger" /></button>
+	                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/google_peque.png" id="dagger" /></button>
+	                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/flirck.png" id="dagger" /></button>
+	                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/wordpress_peque.png" id="dagger" /></button>
+                        </div>                                        
                     </div>
                 </p:tab>  
 
@@ -68,29 +72,44 @@
                     <h:form>
                         <h2>¿Olvido su contraseña?</h2>
                         <p>Si olvido su contraseña, ingrese aqui su nombre de usuario y le enviaremos un correo que le permitira cambiar la contraseña</p>
-                        <p>Nombre de usuario:</p>
-                        <input type="text" />
-                        <input onclick="PF('dlg2').show();" type="button" value="Enviar correo"/>
+                        <p style="font-weight:bold; display: inline-block; margin-right:10px;">Nombre de usuario:</p>
+                        <p:inputText />
+                        <br/>
+                        <p:commandButton styleClass="boton_verde" value="Enviar correo" />
                     </h:form>
                 </p:tab>  
 
                 <p:tab id="tab3" title="Registrar nueva cuenta">  
                     <h:form>
-                     <h:panelGrid id="grid" columns="2" style="margin-bottom:10px">  
-                        <h:outputLabel for="firstname" value="*Nombre de usuario:" />  
-                        <p:inputText id="firstname" value="#{personBean.firstname}" />  
-                        <h:outputLabel for="surname" value="Nombre a mostrar: *" />  
-                        <p:inputText id="surname" value="#{personBean.surname}" required="true" requiredMessage="Surname is required."/>  
-                        <h:outputLabel for="firstname" value="Nombre real:" />  
-                        <p:inputText id="fg" value="#{personBean.firstname}" />  
-                        <h:outputLabel for="firstname" value="*Direccion de correo:" />  
-                        <p:inputText id="fdg4" value="#{personBean.firstname}" />  
-                        <h:outputLabel for="firstname" value="*Confirmacion direccion de correo:" />  
-                        <p:inputText id="fdg3" value="#{personBean.firstname}" /> 
-                        <h:outputLabel for="firstname" value="*Comprobacion de seguridad:" />  
-                        <p:inputText id="fdg2" value="#{personBean.firstname}" />  
-                        <p:commandButton value="Registrar" />
-                    </h:panelGrid>  
+                    	<h2>Registrar una nueva cuenta</h2>
+                    	<p>Para registrarse, complete la informacion inferior por favor.</p>
+                    	<p>(La informacion obligatoria esta marcada con un asterisco: *)</p>
+                     	<div class="seccion_nuevousuario">
+	                        <h:outputLabel for="primernombre" value="*Nombre de usuario:" />  
+	                        <p:inputText id="primernombre" value="#{personBean.firstname}" />
+                        </div>  
+                        <div class="seccion_nuevousuario">
+	                        <h:outputLabel for="nombremostrar" value="*Nombre a mostrar:" />  
+	                        <p:inputText id="nombremostrar" value="#{personBean.surname}" required="true" requiredMessage="Surname is required."/>
+                        </div>
+                        <div class="seccion_nuevousuario">  
+	                        <h:outputLabel for="nombrereal" value="*Nombre real:" />  
+	                        <p:inputText id="nombrereal" value="#{personBean.firstname}" />
+                        </div>
+                        <p style="margin-left:13px;">El "nombre de pantalla" es el que se muestra a los demas.</p>
+                        <div class="seccion_nuevousuario">  
+	                        <h:outputLabel for="correo" value="*Direccion de correo:" />  
+	                        <p:inputText id="correo" value="#{personBean.firstname}" />
+                        </div>
+                        <div class="seccion_nuevousuario">  
+	                        <h:outputLabel for="confirmcorreo" value="*Confirmacion direccion de correo:" />  
+	                        <p:inputText id="confirmcorreo" value="#{personBean.firstname}" />
+                        </div>
+                        <div class="seccion_nuevousuario"> 
+	                        <h:outputLabel for="captcha" value="*Comprobacion de seguridad:" />  
+	                        <p:inputText id="captcha" value="#{personBean.firstname}" />
+                        </div>  
+                        <p:commandButton styleClass="boton_verde" value="Registrar" />
                    </h:form>
                 </p:tab>  
             </p:tabView>     
@@ -125,8 +144,10 @@
       			<p>Arancel:</p>
       			<h:outputText value="C$ 200.00"></h:outputText>  		
           	</div>
+          	<h:form>
           	<p:commandButton value="Cancelar"/> 
             <p:commandButton value="Aceptar"/>
+            </h:form>
     	</p:dialog>  
         
         
