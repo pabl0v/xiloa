@@ -51,17 +51,17 @@
                 </h:form>    
                 <h:form>
                     <div class="seccion_interna">
-                    <p:dataTable emptyMessage="No hay datos para mostrar"  var="competencia" value="#{planificacionManagedBean.selectedCompetencia}">  
+                   <p:dataTable emptyMessage="No hay datos para mostrar"  var="contacto" value="#{planificacionManagedBean.selectedContactos}">  
                         <p:column headerText="Nombre">  
-                            <h:outputText value="#{competencia.nombreCentro}" />  
+                            <h:outputText value="#{contacto.nombre}" />  
                         </p:column>  
 
                         <p:column headerText="Funcion">  
-                            <h:outputText value="#{competencia.nombreCentro}" />  
+                            <h:outputText value="#{contacto.funcion}" />  
                         </p:column>  
 
                         <p:column headerText="Correo electronico">  
-                            <h:outputText value="#{competencia.nombreCentro}" /> 
+                            <h:outputText value="#{contacto.correo}" /> 
                              
                         </p:column>  
                     </p:dataTable> 
@@ -219,7 +219,7 @@
      <p:dialog id="modalDialog2" styleClass="estilo_dialogoactividades" header="Agregar involucrados:" widgetVar="dlg2" modal="true" resizable="false" width="550" height="400">
      	<h:form>
      		<h3>Añada intregantes de esta lista:</h3>
-     		 <p:dataTable emptyMessage="No hay datos para mostrar"  var="contacto" value="#{planificacionManagedBean.contactos}">  
+     		 <p:dataTable emptyMessage="No hay datos para mostrar"  var="contacto" value="#{planificacionManagedBean.contactos}" rowKey="#{contacto.nombre}" selection="#{planificacionManagedBean.selectedContactos}" selectionMode="multiple">  
                         <p:column headerText="Nombre">  
                             <h:outputText value="#{contacto.nombre}" />  
                         </p:column>  

@@ -22,7 +22,7 @@ public class PlanificacionManagedBean {
 	private List<UCompetencia> competencias = new ArrayList<UCompetencia>();
 	private List<Involucrado> contactos = new ArrayList<Involucrado>();
 	private UCompetencia selectedCompetencia;
-	private Involucrado selectedContacto;
+	private Involucrado[] selectedContactos;
 		
 	public List<Planificacion> getPlanificaciones(){
 		System.out.println("getPlanificaciones method called...");
@@ -50,11 +50,11 @@ public class PlanificacionManagedBean {
 		return contactos;
 	}
 
-	public Involucrado getSelectedContacto() {
-		return selectedContacto;
+	public Involucrado[] getSelectedContactos() {
+		return selectedContactos;
 	}
 
-	public void setSelectedContacto(Involucrado selectedContacto) {
-		this.selectedContacto = selectedContacto;
+	public void setSelectedContactos(Involucrado[] selectedContactos) {
+		this.selectedContactos = selectedContactos;
 	}
 }
