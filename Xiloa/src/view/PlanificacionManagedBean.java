@@ -40,6 +40,7 @@ public class PlanificacionManagedBean {
 	}
 
 	public void setSelectedCompetencia(UCompetencia selectedCompetencia) {
+		System.out.println("getSelectedCompetencia method called... "+selectedCompetencia.getNombreCentro());
 		this.selectedCompetencia = selectedCompetencia;
 	}
 }
