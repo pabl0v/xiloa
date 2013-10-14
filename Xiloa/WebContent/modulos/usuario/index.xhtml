@@ -19,10 +19,10 @@
         </header>
         <div id="barra_buscar">
             <p>Buscar por</p>
-            <p:selectOneMenu id="selector_filtro" styleClass="selector_status_estilo" value="#{pprBean.city}">  
-	            <f:selectItem itemLabel="Nombre de la competencia a certificar:" itemValue="" />
-	            <f:selectItem itemLabel="Centro donde esta disponible:" itemValue="" />
-	            <f:selectItem itemLabel="Otro:" itemValue="" />  
+            <p:selectOneMenu id="selector_filtro" styleClass="selector_status_estilo" value="a">  
+	            <f:selectItem itemLabel="Nombre de la competencia a certificar:" itemValue="a" />
+	            <f:selectItem itemLabel="Centro donde esta disponible:" itemValue="a" />
+	            <f:selectItem itemLabel="Otro:" itemValue="a" />  
 	            </p:selectOneMenu>
             <p:inputText id="filtro_buscar"></p:inputText>
         </div>
@@ -43,18 +43,18 @@
           <div id="contenedor_tabs">
             <p:tabView id="tabView">  
                 <p:tab id="tab1" titleStyleClass="user" title="Ingresar">  
-                    <h:form>
+                    <h:form id="loginForm" prependId="false">
                         <h3>Bienvenido al Sistema de gestion de Certificaciones de Competencias Laborales del INATEC</h3>
                         <p>Escriba su nombre de usuario y contraseña abajo y pulse en "continuar" para acceder al sistema</p>
                         <p>Si aun no se registra, use la opcion de "Registrar Nueva Cuenta" para hacerlo</p>
                         <h2>Ingrese con una cuenta registrada</h2>
                         <p style="display: inline-block; width: 125px;">Nombre de usuario: </p>
-                        <p:inputText />
+                        <p:inputText id="j_username"/>
                         <br/><br/>
                         <p style="display: inline-block; width: 125px;">Contraseña: </p>
-                        <p:inputText />
+                        <p:inputText id="j_password"/>
                         <br/>
-                        <p:commandButton onclick="PF('dlg1').show();" type="button" value="Continuar" styleClass="boton_verde"/>
+                        <p:commandButton type="submit" id="login" value="Continuar" action="#{loginController.doLogin}" styleClass="boton_verde"/>
                     </h:form>
                     <div id="opciones_openid">
                         <h2>Acceda o registrese con su OpenID</h2>
