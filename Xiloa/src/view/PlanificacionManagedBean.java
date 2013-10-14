@@ -20,7 +20,8 @@ public class PlanificacionManagedBean {
 	@Autowired
 	private IService service;
 	private List<Planificacion> planificaciones = new ArrayList<Planificacion>();
-	private List<UCompetencia> competencias = new ArrayList<UCompetencia>();	
+	private List<UCompetencia> competencias = new ArrayList<UCompetencia>();
+	private UCompetencia selectedCompetencia;
 		
 	public List<Planificacion> getPlanificaciones(){
 		System.out.println("getPlanificaciones method called...");
@@ -32,5 +33,13 @@ public class PlanificacionManagedBean {
 		System.out.println("getCompetencias method called...");
 		competencias = service.getUcompetenciaSinPlanificar();
 		return competencias;
+	}
+
+	public UCompetencia getSelectedCompetencia() {
+		return selectedCompetencia;
+	}
+
+	public void setSelectedCompetencia(UCompetencia selectedCompetencia) {
+		this.selectedCompetencia = selectedCompetencia;
 	}
 }
