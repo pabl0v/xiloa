@@ -9,6 +9,7 @@ h2{
     background: #e6eef9;
     display: block;
     height: 100%;
+    
 }
 #contenedor_secciones {
     background: none;
@@ -57,6 +58,7 @@ h2{
 }
 .seccion_edicion textarea{
     height: 100px;
+    width: 98%;
 }
 
 .seccion_interna{
@@ -75,5 +77,81 @@ h2{
 }
 
 .contenedor_botones {
+    float:right;
+    position: relative;
+    top: -33px;
+}
+.selector_status_estilo {
+	
+position: relative;
+top: 9px;
+left: 9px;
+}
+.selector_nombrecentro_estilo {
+
+position: relative;
+top: 9px;
+left: 9px;
+}
+
+#tab_contenedor {
+	display: inline-block;
+	width: 100%;
+	height: 171px;
+}
+.estilo_dialogoactividades {
+    background: aliceblue;
+	
+}
+#contenedor_dialogoactividades {
+    margin: 3px;
+	
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 11px;
+}
+#contenedor_dialogoactividades textarea{
+    height: 70px;
+    width: 96%;
+}
+#contenedor_dialogoactividades textarea{
+    height: 70px;
+    width: 96%;
+}
+#contenedor_dialogoactividades h3{
+    font-size: 15px;
+	
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+#contenedor_dialogoactividades .dialogoactividades_secciones{
+    width: 215px;
+	
     
+    display: inline-table;
+    height: 50px;
+}
+
+#contenedor_dialogoactividades .dialogoactividades_secciones2{
+    width: 310px;
+  
+    margin: 5px 0;
+}
+#contenedor_dialogoactividades .dialogoactividades_secciones2 p{
+    display: inline-block;
+  
+    top: -8px;
+    position: relative;
+    margin-right: 5px;
+}
+#dialogoactividades_involucrados {
+    height: 145px;
+	margin-top: 8px;
+    border: 1px solid #ccc;
+    background: #E1F1F7;
+}
+#dialogoactividades_botones{
+	display: inline-block;
+	
 }

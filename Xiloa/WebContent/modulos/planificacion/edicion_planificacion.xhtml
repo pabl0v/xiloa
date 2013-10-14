@@ -51,7 +51,7 @@
                 </h:form>    
                 <h:form>
                     <div class="seccion_interna">
-                    <p:dataTable var="involucrados" value="#{tableBean.carsSmall}">  
+                    <p:dataTable emptyMessage="No hay datos para mostrar"  var="involucrados" value="#{tableBean.carsSmall}">  
                         <p:column headerText="Nombre">  
                             <h:outputText value="#{car.model}" />  
                         </p:column>  
@@ -68,40 +68,43 @@
                 </h:form>                
             </div>
 
-            <div class="seccion_edicion">
+            <div class="seccion_edicion" style="height: 260px">
                 <h3>Descripcion de la unidad</h3>
                 <h:form>
                      <div class="seccion_interna">
-                         <p:editor id="editor2" value="#{editorBean.value}" height="180"/>                  
+                         <p:editor id="editor2" value="#{editorBean.value}" height="200"/>                  
                      </div>    
                      <p>Estatus</p>
-                     <p:selectOneMenu id="city" value="#{pprBean.city}">  
+                     <p:selectOneMenu id="selector_estatus" styleClass="selector_status_estilo" value="#{pprBean.city}">  
                         <f:selectItem itemLabel="Select City" itemValue="" />  
                         <f:selectItems value="#{pprBean.cities}" />  
                     </p:selectOneMenu>  
                 </h:form>
             </div>
             
-            <div class="seccion_edicion">
+            <div class="seccion_edicion" style="height: 260px">
                  <h:form>
                     <p>Nombre del centro evaluador</p>
-                      <p:selectOneMenu id="city" value="#{pprBean.city}">  
+                      <p:selectOneMenu id="city" styleClass="selector_nombrecentro_estilo" value="#{pprBean.city}">  
                         <f:selectItem itemLabel="Select City" itemValue="" />  
                         <f:selectItems value="#{pprBean.cities}" />  
                       </p:selectOneMenu>  
-                    <p>Direccion del centro evaluador</p>
-                    <p:inputTextarea rows="10" cols="50" completeMethod="#{autoCompleteBean.completeArea}" queryDelay="750" minQueryLength="4" />  
-                    <p>Costo de aranceles para el candidato:</p>
+                    <p style="display:block"><br/>Direccion del centro evaluador</p>
+                    <p:inputTextarea rows="105" cols="68" completeMethod="#{autoCompleteBean.completeArea}" queryDelay="750" minQueryLength="4" />  
+                    <p style="margin-right:5px;"><br/>Costo de aranceles para el candidato:</p>
                     <p:inputText />  
                 </h:form>   
             </div>
-            
-            <div class="contenedor_botones">
-               <h:form>
-                    <p:commandButton value="Cancelar"/> 
-                    <p:commandButton value="Aceptar"/> 
-               </h:form>
+            <div class="seccion_edicion" style="height: 1px"></div>
+            <div class="seccion_edicion" style="height: 1px">
+            	<div class="contenedor_botones">
+	               <h:form>
+	                    <p:commandButton value="Cancelar"/> 
+	                    <p:commandButton value="Aceptar"/> 
+	               </h:form>
+               </div>
             </div>
+
                   
             <div id="tab_contenedor">
                 <p:tabView id="tabView">  
@@ -109,7 +112,7 @@
                     <p:tab id="tab1" title="Actividades">  
                         <h:form>     
                         <p:commandButton value="Agregar" onclick="PF('dlg1').show();"/>      
-                            <p:dataTable var="actividades" value="#{tableBean.carsSmall}">  
+                            <p:dataTable emptyMessage="No hay datos para mostrar"  var="actividades" value="#{tableBean.carsSmall}">  
                                 <p:column headerText="Nombre de la actividad"><h:outputText value="#{car.model}" /></p:column>  
                                 <p:column headerText="Tipo"><h:outputText value="#{car.year}" /></p:column>  
                                 <p:column headerText="Lugar/Medio"><h:outputText value="#{car.manufacturer}" /></p:column>  
@@ -123,7 +126,7 @@
                     <p:tab id="tab2" title="Divulgacion">  
                          <h:form>     
                          <p:commandButton value="Agregar" onclick="PF('dlg1').show();"/>          
-                            <p:dataTable var="divulgacion" value="#{tableBean.carsSmall}">  
+                            <p:dataTable emptyMessage="No hay datos para mostrar"  var="divulgacion" value="#{tableBean.carsSmall}">  
                                 <p:column headerText="Nombre de la actividad"><h:outputText value="#{car.model}" /></p:column>  
                                 <p:column headerText="Tipo"><h:outputText value="#{car.year}" /></p:column>  
                                 <p:column headerText="Lugar/Medio"><h:outputText value="#{car.manufacturer}" /></p:column>  
@@ -137,7 +140,7 @@
                     <p:tab id="tab3" title="Verificacion">  
                         <h:form>  
                         <p:commandButton value="Agregar" onclick="PF('dlg1').show();"/>          
-                            <p:dataTable var="verificacion" value="#{tableBean.carsSmall}">  
+                            <p:dataTable emptyMessage="No hay datos para mostrar"  var="verificacion" value="#{tableBean.carsSmall}">  
                                 <p:column headerText="Nombre de la actividad"><h:outputText value="#{car.model}" /></p:column>  
                                 <p:column headerText="Tipo"><h:outputText value="#{car.year}" /></p:column>  
                                 <p:column headerText="Lugar/Medio"><h:outputText value="#{car.manufacturer}" /></p:column>  
@@ -151,7 +154,7 @@
                     <p:tab id="tab4" title="UC a evaluar">  
                         <h:form>        
                             <p:commandButton value="Agregar" onclick="PF('dlg1').show();"/>      
-                            <p:dataTable var="uc" value="#{tableBean.carsSmall}">  
+                            <p:dataTable emptyMessage="No hay datos para mostrar"  var="uc" value="#{tableBean.carsSmall}">  
                                 <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{car.model}" /></p:column>  
                                 <p:column headerText="Tecnicas e instrumentos de evaluacion"><h:outputText value="#{car.year}" /></p:column>  
                                 <p:column headerText="Calificacion"><h:outputText value="#{car.manufacturer}" /></p:column>  
@@ -166,34 +169,48 @@
         </div>
     </div>
         
-     <p:dialog id="modalDialog" header="Agregar subtarea de verificacion:" widgetVar="dlg1" modal="true" width="740" height="480">  
+     <p:dialog id="modalDialog" styleClass="estilo_dialogoactividades" header="Agregar subtarea de verificacion:" widgetVar="dlg1" modal="true" resizable="false" width="550" height="570">
+     <div id="contenedor_dialogoactividades">  
          <h:form>  
              <h3>Planificacion de actividades</h3>
              <p>Nombre de la actividad</p>
-             <p:inputTextarea rows="10" cols="50" completeMethod="#{autoCompleteBean.completeArea}" queryDelay="750" minQueryLength="4" />  
-             <p>Fecha:</p>
-             <span class="proteccion_calendario"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal1" showOn="button" /></span>  
+             <p:inputTextarea rows="10" cols="50" completeMethod="#{autoCompleteBean.completeArea}" queryDelay="750" minQueryLength="4" />
+             <div class="dialogoactividades_secciones">  
+	             <p>Fecha:</p>
+	             <p:calendar value="#{calendarBean.date3}" id="popupButtonCal1" showOn="button" />
+             </div>
+             <div class="dialogoactividades_secciones">  
              <p>Estatus:</p>
-             <p:selectOneMenu id="estatus" value="#{pprBean.city}">  
-                <f:selectItem itemLabel="Select City" itemValue="" />  
-                <f:selectItems value="#{pprBean.cities}" />  
-             </p:selectOneMenu> 
+	             <p:selectOneMenu id="estatus" value="#{pprBean.city}">  
+	                <f:selectItem itemLabel="Select City" itemValue="" />  
+	                <f:selectItems value="#{pprBean.cities}" />  
+	             </p:selectOneMenu>
+             </div> 
              <p>Lugar/Medio:</p>
-             <p:inputTextarea rows="10" cols="50" completeMethod="#{autoCompleteBean.completeArea}" queryDelay="750" minQueryLength="4" />  
+             <p:inputTextarea rows="10" cols="50" completeMethod="#{autoCompleteBean.completeArea}" queryDelay="750" minQueryLength="4" />
+             <div class="dialogoactividades_secciones2">   
              <p>Tipo de actividad:</p>
-             <p:selectOneMenu id="tipo" value="#{pprBean.city}">  
-                <f:selectItem itemLabel="Select City" itemValue="" />  
-                <f:selectItems value="#{pprBean.cities}" />  
-             </p:selectOneMenu> 
-             <p:commandButton value="Agregar involucrados"/>               
-             <p:dataTable var="involucrados" value="#{tableBean.carsSmall}">  
-                    <p:column headerText="Nombre"><h:outputText value="#{car.model}" /></p:column> 
-                    <p:column headerText="Funcion"><h:outputText value="#{car.year}" /></p:column> 
-                    <p:column headerText="Correo electronico"><h:outputText value="#{car.manufacturer}" /></p:column>  
-             </p:dataTable> 
-             <p:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/> 
-             <p:commandButton value="Aceptar"/> 
-         </h:form>   
+	             <p:selectOneMenu id="tipo" value="#{pprBean.city}">  
+	                <f:selectItem itemLabel="Select City" itemValue="" />  
+	                <f:selectItems value="#{pprBean.cities}" />  
+	             </p:selectOneMenu> 
+             </div>
+             <p:commandButton value="Agregar involucrados"/>
+             <div id="dialogoactividades_involucrados">               
+	             <p:dataTable var="involucrados" value="#{tableBean.carsSmall}">  
+	                    <p:column headerText="Nombre"><h:outputText value="#{car.model}" /></p:column> 
+	                    <p:column headerText="Funcion"><h:outputText value="#{car.year}" /></p:column> 
+	                    <p:column headerText="Correo electronico"><h:outputText value="#{car.manufacturer}" /></p:column>  
+	             </p:dataTable> 
+             </div>
+         </h:form>  
+    </div>
+    <div id="dialogoactividades_botones">
+	    <h:form>
+	        <p:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/> 
+	        <p:commandButton value="Aceptar"/> 
+	    </h:form>   
+    </div>
     </p:dialog>     
 </h:body>
 </html>
