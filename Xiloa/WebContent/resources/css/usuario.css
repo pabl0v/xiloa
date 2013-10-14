@@ -8,6 +8,7 @@ html {
 .ui-widget {
     font-size: 1em;
     font-size: 13px;
+    
 }
 #barra_login h1{
 	background: url("../../resources/imagenes/inatec_logo.png") no-repeat left;
