@@ -99,10 +99,11 @@ public class ServiceImp implements IService {
 			involucrado.setIdContacto(contactos.get(i).getId());
 			involucrado.setNombre(contactos.get(i).getPrimerNombre()+" "+contactos.get(i).getPrimerApellido());
 			involucrado.setIdFuncion(i);
-			if(i==1) involucrado.setFuncion("Supervisor");
-			if(i==2) involucrado.setFuncion("Evaluador");
-			if(i==3) involucrado.setFuncion("Tecnico docente");
-			if(i==4) involucrado.setFuncion("Registro Academico");
+			if(i==0) involucrado.setFuncion("Supervisor");
+			if(i==1) involucrado.setFuncion("Evaluador");
+			if(i==2) involucrado.setFuncion("Tecnico docente");
+			if(i==3) involucrado.setFuncion("Registro Academico");
+			involucrado.setCorreo(contactos.get(i).getCorreo1());
 			involucrados.add(involucrado);
 		}
 		return involucrados;
