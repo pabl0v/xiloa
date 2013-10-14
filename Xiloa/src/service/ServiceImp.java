@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import support.Planificacion;
 
 
+import support.UCompetencia;
 import dao.IDao;
-
 import model.Requisito;
 import model.Usuario;
 
@@ -70,5 +70,20 @@ public class ServiceImp implements IService {
 			planificaciones.add(p);
 		}
 		return planificaciones;
+	}
+
+	@Override
+	public List<UCompetencia> getUcompetenciaSinPlanificar() {
+		List<UCompetencia> competenciaSinPlanificarList = new ArrayList<UCompetencia>();
+		for(int i = 0; i<5; i++){
+			UCompetencia c = new UCompetencia();
+			c.setIdCentro(i+6);
+			c.setNombreCentro("Centro "+i+6);
+			c.setIdUCompetencia(i+6);
+			c.setNombreUCompetencia("Competencia "+i+6);
+			c.setDisponibilidad(10);
+			competenciaSinPlanificarList.add(c);
+		}		
+		return competenciaSinPlanificarList;
 	}
 }

@@ -3,6 +3,7 @@ package service;
 import java.util.List;
 
 import support.Planificacion;
+import support.UCompetencia;
 import model.Requisito;
 import model.Usuario;
 
@@ -13,4 +14,5 @@ public interface IService {
 	public List<Usuario> getUsuarios();
 	public void updateUsuario(Usuario usuario);
 	public List<Planificacion> getPlanificacion();
+	public List<UCompetencia> getUcompetenciaSinPlanificar();
 }
