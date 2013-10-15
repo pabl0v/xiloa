@@ -32,9 +32,9 @@ public class Rol {
 	@JoinTable
 	(
 			name = "perfiles_roles",
-			joinColumns=@JoinColumn(name="rol_id", unique=false),
-			inverseJoinColumns=@JoinColumn(name="perfil_id", unique=false),
-			uniqueConstraints=@UniqueConstraint(columnNames={"rol_id", "perfil_id"})
+			joinColumns = @JoinColumn(name = "rol_id", unique = false),
+			inverseJoinColumns = @JoinColumn(name = "perfil_id", unique = false),
+			uniqueConstraints = @UniqueConstraint(columnNames = {"rol_id", "perfil_id"})
 	)
 	private List<Perfil> perfiles;
 	
