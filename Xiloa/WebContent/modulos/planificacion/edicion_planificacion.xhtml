@@ -49,9 +49,9 @@
                 <h:form styleClass="formulario_inline">
                     <p:commandButton value="Agregar involucrados" onclick="PF('dlg2').show();"/> 
                 </h:form>    
-                <h:form>
-                    <div class="seccion_interna">
-                   <p:dataTable emptyMessage="No hay datos para mostrar"  var="contacto" value="#{planificacionManagedBean.selectedContactos}">  
+                <h:form id="form">
+                   <div class="seccion_interna">
+                   <p:dataTable id="display" emptyMessage="No hay datos para mostrar"  var="contacto" value="#{planificacionManagedBean.selectedContactos}">  
                         <p:column headerText="Nombre">  
                             <h:outputText value="#{contacto.nombre}" />  
                         </p:column>  
@@ -86,7 +86,8 @@
             <div class="seccion_edicion" style="height: 260px">
                  <h:form>
                     <p>Nombre del centro evaluador</p>
-                    <p:inputText styleClass="selector_nombrecentro_estilo" value="#{planificacionManagedBean.selectedCompetencia.nombreCentro}" />  
+                    <p:inputText id="txt" styleClass="selector_nombrecentro_estilo" value="#{planificacionManagedBean.selectedCompetencia.nombreCentro}" /> 
+					 <p:poll interval="3" listener="#{planificacionManagedBean.selectedCompetencia.nombreCentro}" update="txt" /> 
                     <p style="display:block"><br/>Direccion del centro evaluador</p>
                     <p:inputTextarea rows="105" cols="68" completeMethod="#{autoCompleteBean.completeArea}" queryDelay="750" minQueryLength="4" />  
                     <p style="margin-right:5px;"><br/>Costo de aranceles para el candidato:</p>
@@ -95,6 +96,7 @@
             </div>
             <div class="seccion_edicion" style="height: 1px"></div>
             <div class="seccion_edicion" style="height: 1px">
+            
             	<div class="contenedor_botones">
 	               <h:form>
 	                    <p:commandButton value="Cancelar"/> 
@@ -234,7 +236,7 @@
                         </p:column>  
                     </p:dataTable> 
 	        <p:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/> 
-	        <p:commandButton value="Aceptar"/> 
+	        <p:commandButton value="Aceptar" update=":form:display" oncomplete="PF('dlg1').hide();"/> 
 	    </h:form>   
      </p:dialog>
 </h:body>

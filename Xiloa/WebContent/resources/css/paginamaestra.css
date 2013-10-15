@@ -95,10 +95,16 @@ html {
     display: none;
 }
 .estilo_breadcrumbs li{
-    display: inline-block;
-    padding-right: 15px;
-    background: url("../../resources/imagenes/flechita_blanca.png") no-repeat right;
-    background-size: 9px;
+ display: inline-block;
+padding-right: 13px;
+background: url("../../resources/imagenes/flechita_blanca.png") no-repeat right;
+background-size: 9px;
+margin-left: 5px;
+
+}
+.estilo_breadcrumbs li:last-child{
+	background: none;
+	
 }
 .mini .estilo_breadcrumbs{
     display: inline-block;

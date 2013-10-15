@@ -40,6 +40,7 @@
     height: 60px;
     font-size: 12px;
     margin-right: 4px;
+    cursor: pointer;
 }
 .botones_filtro p{
     height: 63px;

@@ -4,17 +4,16 @@ html {
 }
 #contenedor {
     min-width: 1024px;
+    position: relative;
 }
 .ui-widget {
     font-size: 1em;
     font-size: 13px;
-    
 }
 #barra_login h1{
 	background: url("../../resources/imagenes/inatec_logo.png") no-repeat left;
 	height: 49px;
 	background-size: 21%;
-	/* margin-top: 0; */
 	position: relative;
 	top: -12px;
 	left: -14px;
@@ -47,16 +46,21 @@ header p{
     top: -14px;
     margin-right: 8px;
 }
-#selector_filtro {
+#barra_buscar form{
+    display: inline-block;
+}
+#barra_buscar form input{
+    display: inline-block;
+    position: relative;	
+    top: -14px;
+    margin-left: 6px;
+}
+.selector_status_estilo {
     position: relative;
-	
     top: -6px;
 }
 #filtro_buscar {
-    position: relative;
-	
-    top: -14px;
-    margin-left: 6px;
+   
 }
 .contenedor_central {
     width: 47%;
@@ -95,13 +99,15 @@ header p{
 	border-top: 3px solid green;
 }
 #contenedor_tabla_competencias {
-    width: 94%;
-	
+    width: 94%;	
     margin-top: 9px;
     height: 322px;
     background: white;
 }
 /***************************************/
+#contenedor_tabs {
+	position: relative;
+}
 #contenedor_tabs .ui-tabs-nav {
 	background: none;
 	border-bottom: 1px solid rgb(209, 209, 209);
@@ -137,34 +143,23 @@ footer p{
     height: 45px;
 }
 .contenedor_botonesgrandes {
-    width: 100%r;
-	
+    width: 100%r;	
     margin-top: 10px;
-    /* height: 50px; */
 }
 .contenedor_botonespequenos {
-
-	
-    
-
     width: 100%;
     height: 50px;
 }
 .boton_verde {
-    /* SVG as background image (IE9/Chrome/Safari/Opera) */ 
 	background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxIDEiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPgo8bGluZWFyR3JhZGllbnQgaWQ9Imc5NDQiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CjxzdG9wIHN0b3AtY29sb3I9IiM3NUM3MTgiIG9mZnNldD0iMCIvPjxzdG9wIHN0b3AtY29sb3I9IiMwNjYxMDYiIG9mZnNldD0iMSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2c5NDQpIiAvPgo8L3N2Zz4=)!important;
     color: white!important;
     font-weight: normal!important;
     text-shadow: none!important;
     border: 1px solid #FFFFFF!important;
-    /* margin: 11px 9px; */
-    margin-top: 9px;
-  
+    margin-top: 9px; 
 }
-
 .ui-tabs-selected {
-    border-bottom: 1px solid rgb(255, 255, 255)!important;
-	
+    border-bottom: 1px solid rgb(255, 255, 255)!important;	
     position: relative!important;
     top: 2px!important;
 }
@@ -175,10 +170,10 @@ footer p{
 	margin: 10px;
 }
 .seccion_nuevousuario label{
-width: 240px!important;
-display: inline-block;
-font-weight: bold;
-color: black;
+	width: 240px!important;
+	display: inline-block;
+	font-weight: bold;
+	color: black;
 }
 /******************************/
 .user a{
@@ -192,4 +187,14 @@ color: black;
 .nuevo a{
 	background: url("../../resources/imagenes/iconos_tab/nuevo24.png") no-repeat left!important;
 	padding-left: 25px!important;
+}
+/*******************************/
+#loginForm {
+	position: absolute;
+	top: 151px;
+	left: 21px;
+	width: 317px;
+	background: white;
+	z-index: 2;
+	height: 118px;
 }

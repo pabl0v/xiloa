@@ -5,42 +5,74 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        
+    <h:head>       
         <link type="text/css" rel="stylesheet" href="../../resources/css/reset.css"></link>
 		<link type="text/css" rel="stylesheet" href="../../resources/css/usuario.css"></link>
         <title>SCCL</title>
     </h:head>
     <h:body>
         <div id="contenedor">
+        
+        
+       
+        
         <header id="barra_login">
             <h1>Sistema de gestion de Certificacion de competencias laborales</h1>
             <p>No ha ingresado</p>
         </header>
         <div id="barra_buscar">
             <p>Buscar por</p>
-            <p:selectOneMenu id="selector_filtro" styleClass="selector_status_estilo" value="a">  
-	            <f:selectItem itemLabel="Nombre de la competencia a certificar:" itemValue="a" />
-	            <f:selectItem itemLabel="Centro donde esta disponible:" itemValue="a" />
-	            <f:selectItem itemLabel="Otro:" itemValue="a" />  
-	            </p:selectOneMenu>
-            <p:inputText id="filtro_buscar"></p:inputText>
+            <h:form>
+	            <p:selectOneMenu id="selector_filtro" styleClass="selector_status_estilo" value="a">  
+		            <f:selectItem itemLabel="Nombre de la competencia a certificar:" itemValue="a" />
+		            <f:selectItem itemLabel="Centro donde esta disponible:" itemValue="a" />
+		            <f:selectItem itemLabel="Otro:" itemValue="a" />  
+		            </p:selectOneMenu>
+	            <p:inputText id="filtro_buscar"></p:inputText>
+            </h:form>
         </div>
         <div class="contenedor_central">
         	<h2>Certificaciones de Competencias Laborales disponibles</h2>
 	        <p>Seleccione en el nombre de la competencia para ver el detalle y solicitar la certificacion</p>
         	<div id="contenedor_tabla_competencias">    
-	            <p:dataTable var="certificaciones" value="#{tableBean.carsSmall}" paginator="true" rows="10"  
+	            <p:dataTable var="competencia" value="#{planificacionManagedBean.competencias}" paginator="true" rows="10" 
 	                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-	                 rowsPerPageTemplate="5,10,15">    
-	                <p:column headerText="Unidad de competencia"><h:outputText value="#{car.model}" /></p:column>  
-	                <p:column headerText="Centro de Formacion"><h:outputText value="#{car.year}" /></p:column>  
-	                <p:column headerText="Inicia recepcion de solicitud"><h:outputText value="#{car.manufacturer}" /></p:column>  
+	                 rowsPerPageTemplate="5,10,15" rowKey="#{competencia.disponibilidad}" selectionMode="single">
+	                 
+	                <p:ajax event="rowSelect" oncomplete="PF('dlg1').show()" />  
+        	  
+	                  
+	                <p:column headerText="Unidad de competencia"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  
+	                <p:column headerText="Centro de Formacion"><h:outputText value="#{competencia.nombreCentro}" /></p:column>  
+	                <p:column headerText="Inicia recepcion de solicitud"><h:outputText value="#{competencia.disponibilidad}" /></p:column>  
 	            </p:dataTable> 
             </div>
         </div>
         <div class="contenedor_central">
           <div id="contenedor_tabs">
+          
+           <h:form id="loginForm" prependId="false">
+				<!-- Messages must be global here, to show bad credentials -->
+				<h:messages globalOnly="true"/>
+				
+				<!-- Id's must not be changed to support spring security check -->
+				<h:panelGrid columns="3">
+					<h:outputLabel for="j_username" value="Usuario: * " />  
+					<h:inputText id="j_username" required="true" label="username" />  
+			    	<h:message for="j_username" display="text" style="color:red" />	
+			    			    	
+			    	<h:outputLabel for="j_password" value="Password: * " />  
+					<h:inputSecret id="j_password" label="password" required="true" />  
+			    	<h:message for="j_password" display="text" style="color:red"/>
+			    				    	
+				</h:panelGrid>
+			
+			<h:commandButton type="submit" id="login" value="Login" action="#{loginController.doLogin}" />
+		</h:form>
+        
+        <!-- /******************************************/ -->
+          
+          
             <p:tabView id="tabView">  
                 <p:tab id="tab1" titleStyleClass="user" title="Ingresar">  
                     <h:form id="loginForm" prependId="false">
@@ -122,7 +154,7 @@
            </div>
         </div>
         
-        <p:dialog id="modalDialog1" header="Detalle:" widgetVar="dlg1" modal="true" width="740" height="480">  
+        <p:dialog id="modalDialog1" header="Detalle:" widgetVar="dlg1" width="480" height="320">  
         	<div class="seccion_detalle">
       			<p>Nombre de la certificacion</p>
       			<h:outputText value="Auxiliar en contabilidad"></h:outputText>  		
@@ -151,8 +183,8 @@
       			<h:outputText value="C$ 200.00"></h:outputText>  		
           	</div>
           	<h:form>
-          	<p:commandButton value="Cancelar"/> 
-            <p:commandButton value="Aceptar"/>
+	          	<p:commandButton value="Cancelar"/> 
+	            <p:commandButton value="Aceptar"/>
             </h:form>
     	</p:dialog>  
         
@@ -180,10 +212,9 @@
                 <h:outputLabel for="surname2" value="Años ejerciendo la actividad:" />  
                 <p:inputText id="surname2" value="#{personBean.surname}" required="true" requiredMessage="Surname is required."/>  
                 <h:outputLabel value="Descripcion de la ocupacion actual:" />  
-				 <p:commandButton value="Cancelar"/> 
-            <p:commandButton value="Aceptar"/>
-             </h:panelGrid>  
-           
+				<p:commandButton value="Cancelar"/> 
+            	<p:commandButton value="Aceptar"/>
+             </h:panelGrid>       
            </h:form>    
         </p:dialog>
         
