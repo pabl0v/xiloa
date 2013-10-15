@@ -9,7 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
+import javax.persistence.UniqueConstraint;
 
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
@@ -27,12 +28,13 @@ public class Rol {
 	@Column(name = "rol_descripcion", nullable = false)
 	private String descripcion;
 	
-	@OneToMany
+	@ManyToMany
 	@JoinTable
 	(
 			name = "perfiles_roles",
-			joinColumns = { @JoinColumn(name = "rol_id", referencedColumnName = "rol_id") },
-			inverseJoinColumns = { @JoinColumn(name = "perfil_id", referencedColumnName = "perfil_id") }
+			joinColumns=@JoinColumn(name="rol_id", unique=false),
+			inverseJoinColumns=@JoinColumn(name="perfil_id", unique=false),
+			uniqueConstraints=@UniqueConstraint(columnNames={"rol_id", "perfil_id"})
 	)
 	private List<Perfil> perfiles;
 	
