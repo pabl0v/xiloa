@@ -8,14 +8,12 @@
     <h:head>       
         <link type="text/css" rel="stylesheet" href="../../resources/css/reset.css"></link>
 		<link type="text/css" rel="stylesheet" href="../../resources/css/usuario.css"></link>
+		 <script type="text/javascript" src="../../resources/scripts/usuario.js"></script>
         <title>SCCL</title>
     </h:head>
     <h:body>
         <div id="contenedor">
-        
-        
-       
-        
+  
         <header id="barra_login">
             <h1>Sistema de gestion de Certificacion de competencias laborales</h1>
             <p>No ha ingresado</p>
@@ -39,7 +37,7 @@
 	                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
 	                 rowsPerPageTemplate="5,10,15" rowKey="#{competencia.disponibilidad}" selectionMode="single">
 	                 
-	                <p:ajax event="rowSelect" oncomplete="PF('dlg1').show()" />  
+	                <p:ajax event="rowSelect" oncomplete="PF('modal_comp').show()" />  
         	  
 	                  
 	                <p:column headerText="Unidad de competencia"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  
@@ -57,18 +55,18 @@
 				
 				
 				<!-- Id's must not be changed to support spring security check -->
-				<h:panelGrid columns="3">
-					<h:outputLabel for="j_username" value="Usuario: * " />  
+			
+					<h:outputLabel for="j_username" value="Usuario:" />  
 					<h:inputText id="j_username" required="true" label="username" />  
 			    	<h:message for="j_username" display="text" style="color:red" />	
 			    			    	
-			    	<h:outputLabel for="j_password" value="Password: * " />  
+			    	<h:outputLabel for="j_password" value="Contraseña:" />  
 					<h:inputSecret id="j_password" label="password" required="true" />  
 			    	<h:message for="j_password" display="text" style="color:red"/>
 			    				    	
-				</h:panelGrid>
+				
 			
-			<h:commandButton type="submit" id="login" value="Login" action="#{loginController.doLogin}" />
+			<h:commandButton styleClass="boton_verde" type="submit" id="login" value="Continuar" action="#{loginController.doLogin}" />
 		</h:form>
         
         <!-- /******************************************/ -->
@@ -81,13 +79,10 @@
                         <p>Escriba su nombre de usuario y contraseña abajo y pulse en "continuar" para acceder al sistema</p>
                         <p>Si aun no se registra, use la opcion de "Registrar Nueva Cuenta" para hacerlo</p>
                         <h2>Ingrese con una cuenta registrada</h2>
-                        <p style="display: inline-block; width: 125px;">Nombre de usuario: </p>
-                        <p:inputText id="j_username"/>
-                        <br/><br/>
-                        <p style="display: inline-block; width: 125px;">Contraseña: </p>
-                        <p:inputText id="j_password"/>
-                        <br/>
-                        <p:commandButton type="submit" id="login" value="Continuar" action="#{loginController.doLogin}" styleClass="boton_verde"/>
+                        <div id="aqui_formulario">
+                        
+                        </div>
+                        
                     </h:form>
                     <div id="opciones_openid">
                         <h2>Acceda o registrese con su OpenID</h2>
@@ -146,7 +141,7 @@
                         </div>
                         <div class="seccion_nuevousuario"> 
 	                        <h:outputLabel for="captcha" value="*Comprobacion de seguridad:" />  
-	                        <p:inputText id="captcha" value="#{personBean.firstname}" />
+	                        <img src="http://www.opencaptcha.com/img/1546546465465j.jpgx"></img>
                         </div>  
                         <p:commandButton styleClass="boton_verde" value="Registrar" />
                    </h:form>
@@ -155,7 +150,7 @@
            </div>
         </div>
         
-        <p:dialog id="modalDialog1" header="Detalle:" widgetVar="dlg1" width="480" height="320">  
+        <p:dialog id="modal_info_competencias" header="Detalle:" widgetVar="modal_comp" width="550" height="500">  
         	<div class="seccion_detalle">
       			<p>Nombre de la certificacion</p>
       			<h:outputText value="Auxiliar en contabilidad"></h:outputText>  		
@@ -184,38 +179,40 @@
       			<h:outputText value="C$ 200.00"></h:outputText>  		
           	</div>
           	<h:form>
-	          	<p:commandButton value="Cancelar"/> 
-	            <p:commandButton value="Aceptar"/>
+	          	<p:commandButton onclick="PF('modal_comp').hide()" value="Cancelar"/> 
+	            <p:commandButton onclick="PF('modal_solicitud').show()" value="Aplicar"/>
             </h:form>
     	</p:dialog>  
         
         
-        <p:dialog id="modalDialog2" header="Solicitud de registro para obtener la Certificacion: Auxiliar en Contabilidad" widgetVar="dlg2" modal="true" width="740" height="480">
+        <p:dialog id="modal_solicitud_competencia" header="Solicitud de registro para obtener la Certificacion: Auxiliar en Contabilidad" widgetVar="modal_solicitud" modal="true" width="570" height="600">
 		  <p>Para registrar su informacion debe estar registrado, si aun no lo ha hecho, pulse <a>aqui</a> para registar su usuarui en el <a>Sistema de Certificaciones Laborales del INATEC</a></p>         
           <h:form>
-   
-                <p>Primer nombre:</p>  
+   			<div class="seccion_detalle">
+                <h:outputLabel styleClass="estilo_label" for="surname" value="Primer nombre:" /> 
                 <p:inputText id="firstname" value="#{personBean.firstname}" />  
-                <h:outputLabel for="surname" value="Segundo nombre:" />  
+                <h:outputLabel styleClass="estilo_label" for="surname" value="Segundo nombre:" />  
                 <p:inputText id="surname" value="#{personBean.surname}" required="true" requiredMessage="Surname is required."/>  
-                <h:outputLabel for="firstname" value="Primer apellido:" />  
+                <h:outputLabel styleClass="estilo_label" for="firstname" value="Primer apellido:" />  
                 <p:inputText id="fg" value="#{personBean.firstname}" />  
-                <h:outputLabel for="firstname" value="Segundo apellido:" />  
+                <h:outputLabel styleClass="estilo_label" for="firstname" value="Segundo apellido:" />  
                 <p:inputText id="fdg4" value="#{personBean.firstname}" />  
-                <h:outputLabel for="firstname" value="Cedula:" />  
+                <h:outputLabel styleClass="estilo_label" for="firstname" value="Cedula:" />  
                 <p:inputText id="fdg3" value="#{personBean.firstname}" /> 
-         
+         	</div>
            </h:form>
            <h:form>
-             <h:panelGrid id="grid" columns="2" style="margin-bottom:10px">  
-                <h:outputLabel for="firstname2" value="Empresa donde labora actualmente:" />  
+             <div class="seccion_detalle">
+                <h:outputLabel styleClass="estilo_label" for="firstname2" value="Empresa donde labora actualmente:" />  
                 <p:inputText id="firstname2" value="#{personBean.firstname}" />  
-                <h:outputLabel for="surname2" value="Años ejerciendo la actividad:" />  
+                <h:outputLabel styleClass="estilo_label" for="surname2" value="Años ejerciendo la actividad:" />  
                 <p:inputText id="surname2" value="#{personBean.surname}" required="true" requiredMessage="Surname is required."/>  
-                <h:outputLabel value="Descripcion de la ocupacion actual:" />  
-				<p:commandButton value="Cancelar"/> 
-            	<p:commandButton value="Aceptar"/>
-             </h:panelGrid>       
+                <h:outputLabel styleClass="estilo_label" value="Descripcion de la ocupacion actual:" /> 
+                <p:editor id="editor2" value="#{editorBean.value}" height="150"/>    
+				
+             </div>
+             <p:commandButton onclick="PF('modal_solicitud').hide();" value="Cancelar"/> 
+            	<p:commandButton value="Aplicar"/>    
            </h:form>    
         </p:dialog>
         

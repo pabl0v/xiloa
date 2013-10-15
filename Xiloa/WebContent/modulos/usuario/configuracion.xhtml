@@ -6,12 +6,18 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        
-        <link type="text/css" rel="stylesheet" href="../../resources/css/reset.css"></link>
-		<link type="text/css" rel="stylesheet" href="../../resources/css/usuario.css"></link>
-        <title>SCCL</title>
+       <link type="text/css" rel="stylesheet" href="../../resources/css/configuracion.css"></link>
     </h:head>
     <h:body>
-        <h1>PAGINA DE CONFIGURACION</h1>
-    </h:body>
+    <div id="contenedor">      
+      	<div id="header">
+            <ui:insert name="header" >
+                <ui:include src="../../modulos/compartido/paginamaestra.xhtml" />
+	    	</ui:insert>
+		</div>     
+    </div> 
+    
+    
+    
+</h:body>
 </html>

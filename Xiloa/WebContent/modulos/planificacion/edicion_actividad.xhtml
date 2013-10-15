@@ -22,22 +22,26 @@
                       
             <div class="seccion_edicion" style="height:140px;">
                 <p>Tipo de actividad:</p>
+                <h:form style="display:inline-block;">
                 <p:selectOneMenu id="city3" value="#{pprBean.city}">  
                    <f:selectItem itemLabel="Select City" itemValue="" />  
                    <f:selectItems value="#{pprBean.cities}" />  
                 </p:selectOneMenu>
+                
                 <p>Registrado:</p>
-                <span><p:calendar value="#{calendarBean.date3}" id="popupButtonCal1" showOn="button" /></span>  
+                <span><p:calendar value="#{calendarBean.date3}" id="popupButtonCal2" showOn="button" /></span>  
+                </h:form>
                 <div class="seccion_interna" style="height:90px; padding: 10px;">
-                    <h:form>
+             		<h:form>
                         <p>Fecha en que se ejecutara la actividad:</p>
                         <span style="width:60px"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal1" showOn="button" /></span>   
                         <p>Hora:</p>
                         <p:inputText></p:inputText>  
                         <p>Lugar:</p>
                         <p:inputText></p:inputText>   
-                    </h:form>
+            		</h:form>
                 </div>
+                
             </div>
             
             <div class="seccion_edicion">
@@ -46,7 +50,7 @@
                     <p:commandButton value="Agregar involucrados"/> 
                 </h:form>    
                 <h:form>
-                    <div class="seccion_interna">
+                    <div class="seccion_interna" style="height:220px;">
                     <p:dataTable var="involucrados" value="#{tableBean.carsSmall}">  
                         <p:column headerText="Nombre">  
                             <h:outputText value="#{car.model}" />  
@@ -65,7 +69,7 @@
             </div>
 
             <div class="seccion_edicion" style="position: relative;top: -100px;">
-                <h3>Descripcion de la unidad</h3>
+                <h3>Objetivo y alcanze de la actividad</h3>
                 <h:form>
                      <div class="seccion_interna">
                          <p:editor id="editor" value="#{editorBean.value}" height="160"/>                  
@@ -80,8 +84,8 @@
                         <f:selectItem itemLabel="Select City" itemValue="" />  
                         <f:selectItems value="#{pprBean.cities}" />  
                       </p:selectOneMenu>  
-                    <p>Direccion del centro evaluador</p>
-                    <p:inputTextarea rows="10" cols="50" completeMethod="#{autoCompleteBean.completeArea}" queryDelay="750" minQueryLength="4" />  
+                    <p style="display:block;">Direccion del centro evaluador</p>
+                    <p:inputTextarea style="width:100%" completeMethod="#{autoCompleteBean.completeArea}" queryDelay="750" minQueryLength="4" />  
 	                <p>Estatus:</p>
 	                <p:selectOneMenu id="citydsf" value="#{pprBean.city}">  
 	                   <f:selectItem itemLabel="Select City" itemValue="" />  
@@ -91,7 +95,7 @@
             </div>
             
             <div class="seccion_edicion" style="position: relative;top: -150px;">
-                <h3>Descripcion de la unidad</h3>
+                <h3>Materiales y/o documentos a utilizar</h3>
                 <h:form>
                      <div class="seccion_interna">
                          <p:editor id="editor2" value="#{editorBean.value}" height="160"/>                  
@@ -105,9 +109,10 @@
                     <p:commandButton value="Aceptar"/> 
                </h:form>
             </div>
-            
-            
-            <div id="tab_contenedor">
+    
+        </div>
+        
+        <div id="tab_contenedor">
                 <p:tabView id="tabView">  
 
                     <p:tab id="tab1" title="Bitacoras">  
@@ -125,7 +130,7 @@
 
                 </p:tabView>  
             </div>
-        </div>
+        
     </div>
         
      <p:dialog id="modalDialog" header="Certificacion Cisco" widgetVar="dlg1" modal="true" width="740" height="480">  
