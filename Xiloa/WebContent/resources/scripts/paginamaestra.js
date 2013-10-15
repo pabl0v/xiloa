@@ -8,6 +8,7 @@ $(function(){
         else {
           
         }      
+        
     });
     $("#barra_navegacion").click();
     $("#barra_navegacion").mouseleave(function(){
