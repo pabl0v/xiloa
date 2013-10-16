@@ -39,17 +39,21 @@ public class LoginController implements PhaseListener {
 	public String doLogin() throws ServletException, IOException {
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 
-		RequestDispatcher dispatcher = ((ServletRequest) context.getRequest())
-				.getRequestDispatcher("/j_spring_security_check");
-
-		dispatcher.forward((ServletRequest) context.getRequest(),
-				(ServletResponse) context.getResponse());
-
+		RequestDispatcher dispatcher = ((ServletRequest) context.getRequest()).getRequestDispatcher("/j_spring_security_check");
+		dispatcher.forward((ServletRequest) context.getRequest(),(ServletResponse) context.getResponse());
 		FacesContext.getCurrentInstance().responseComplete();
-
 		return null;
 	}
-
+	
+	public String openIdAuth(/*String openIdService*/) throws ServletException, IOException {
+		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+		
+		RequestDispatcher dispatcher = ((ServletRequest) context.getRequest()).getRequestDispatcher("/j_spring_openid_security_check");
+		dispatcher.forward((ServletRequest) context.getRequest(),(ServletResponse)context.getResponse());
+	    FacesContext.getCurrentInstance().responseComplete();
+	    return null;
+	}
+	
 	public void afterPhase(PhaseEvent event) {
 	}
 
