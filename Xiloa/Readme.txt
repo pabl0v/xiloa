@@ -28,4 +28,9 @@ Una vez preparado el ambiente, proceder de la siguiente manera:
 4. Acceder nuevamente a la consola de administracion de Glassfish y probar la conexion (ping) del pool de conexciones recien creado 
 5. Desde Eclipse, ejecutar la aplicacion web en el servidor Glassfish
 6. Una vez iniciada la aplicacion, ejecutar el scrip del archivo ScriptBD.sql en la base de datos PostgreSQL
-7. Autenticarse en la aplicacion con usuario admin y contrasena admin
+7. Autenticarse en la aplicacion con cualquiera de los siguientes usuarios/contrasena: 
+		admin/admin
+		aruiz/aruiz
+		nlopez/nlopez
+		lperez/lperez
+		larauz/larauz

@@ -10,7 +10,7 @@ insert into perfiles_roles(rol_id,perfil_id)
 values(1,1);
 
 insert into usuarios(usuario_id,usuario_alias,usuario_pwd,usuario_estatus,rol_id)
-values(1,'admin','admin',true,1);
+values(1,'admin','d033e22ae348aeb5660fc2140aec35850c4da997',true,1);
 
 --otros usuarios y roles
 
@@ -39,16 +39,16 @@ insert into perfiles_roles(rol_id,perfil_id)
 values(5,1);
 
 insert into usuarios(usuario_id,usuario_alias,usuario_pwd,usuario_estatus,rol_id)
-values(2,'nlopez','nlopez',true,1);
+values(2,'nlopez','6fb201c9a82fff28137a7458a6a1ab30e62f0638',true,1);
 
 insert into usuarios(usuario_id,usuario_alias,usuario_pwd,usuario_estatus,rol_id)
-values(3,'aruiz','aruiz',true,1);
+values(3,'aruiz','d2f019744f8979e21d34ffd0559f4b5f32e49672',true,1);
 
 insert into usuarios(usuario_id,usuario_alias,usuario_pwd,usuario_estatus,rol_id)
-values(4,'lperez','lperez',true,1);
+values(4,'lperez','063a4afbf02e71da217002cac400f7a352fd1f92',true,1);
 
 insert into usuarios(usuario_id,usuario_alias,usuario_pwd,usuario_estatus,rol_id)
-values(5,'larauz','larauz',true,1);
+values(5,'larauz','da5e0771d5309508c615aa312cd116c64e07e303',true,1);
 
 --registrando usuarios con roles varios para prueba
 
