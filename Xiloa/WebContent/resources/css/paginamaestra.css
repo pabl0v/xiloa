@@ -6,7 +6,6 @@ html {
     background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxIDEiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPgo8bGluZWFyR3JhZGllbnQgaWQ9ImczNjUiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CjxzdG9wIHN0b3AtY29sb3I9IiNGRkZGRkYiIG9mZnNldD0iMCIvPjxzdG9wIHN0b3AtY29sb3I9IiNFOEU4RTgiIG9mZnNldD0iMSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2czNjUpIiAvPgo8L3N2Zz4=);
 }
 #contenedor {
-	
     min-width: 1024px;
 }
 .ui-widget {
@@ -96,16 +95,14 @@ html {
     display: none;
 }
 .estilo_breadcrumbs li{
- display: inline-block;
-padding-right: 13px;
-background: url("../../resources/imagenes/flechita_blanca.png") no-repeat right;
-background-size: 9px;
-margin-left: 5px;
-
+	display: inline-block;
+	padding-right: 13px;
+	background: url("../../resources/imagenes/flechita_blanca.png") no-repeat right;
+	background-size: 9px;
+	margin-left: 5px;
 }
 .estilo_breadcrumbs li:last-child{
 	background: none;
-	
 }
 .mini .estilo_breadcrumbs{
     display: inline-block;
@@ -170,4 +167,3 @@ html #opciones_usuario .botones_navegacion p{
     background-position-y: 4px;
     height: 26px;
 }
-

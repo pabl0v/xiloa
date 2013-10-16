@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+       <link type="text/css" rel="stylesheet" href="../../resources/css/registro_solicitud.css"></link>
+       
+    </h:head>
+    <h:body>
+    <div id="contenedor">
+        <div id="header">
+            <ui:insert name="header" >
+                <ui:include src="../../modulos/compartido/paginamaestra.xhtml" />
+	    	</ui:insert>
+		</div>
+    
+       <h:form>
+   			<div class="seccion_detalle">
+                <h:outputLabel styleClass="estilo_label" for="surname" value="Primer nombre:" /> 
+                <p:inputText id="firstname" value="#{personBean.firstname}" />  
+                <h:outputLabel styleClass="estilo_label" for="surname" value="Segundo nombre:" />  
+                <p:inputText id="surname" value="#{personBean.surname}" required="true" requiredMessage="Surname is required."/>  
+                <h:outputLabel styleClass="estilo_label" for="firstname" value="Primer apellido:" />  
+                <p:inputText id="fg" value="#{personBean.firstname}" />  
+                <h:outputLabel styleClass="estilo_label" for="firstname" value="Segundo apellido:" />  
+                <p:inputText id="fdg4" value="#{personBean.firstname}" />  
+                <h:outputLabel styleClass="estilo_label" for="firstname" value="Cedula:" />  
+                <p:inputText id="fdg3" value="#{personBean.firstname}" /> 
+         	</div>
+           </h:form>
+           <h:form>
+             <div class="seccion_detalle">
+                <h:outputLabel styleClass="estilo_label" for="firstname2" value="Empresa donde labora actualmente:" />  
+                <p:inputText id="firstname2" value="#{personBean.firstname}" />  
+                <h:outputLabel styleClass="estilo_label" for="surname2" value="Años ejerciendo la actividad:" />  
+                <p:inputText id="surname2" value="#{personBean.surname}" required="true" requiredMessage="Surname is required."/>  
+                <h:outputLabel styleClass="estilo_label" value="Descripcion de la ocupacion actual:" /> 
+                <p:editor id="editor2" value="#{editorBean.value}" height="150"/>    
+				
+             </div>
+             <p:commandButton onclick="PF('modal_solicitud').hide();" value="Cancelar"/> 
+            	<p:commandButton value="Aplicar"/>    
+           </h:form>  
+	</div>  
+</h:body>
+</html>

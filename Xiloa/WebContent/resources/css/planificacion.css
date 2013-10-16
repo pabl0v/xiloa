@@ -6,8 +6,7 @@
 }
 #cabezera h2{
     font-size: 30px;   
-    display: inline-block;
-    
+    display: inline-block; 
     color: #585858;
 }
 #cabezera input{

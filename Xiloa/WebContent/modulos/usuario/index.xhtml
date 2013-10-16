@@ -12,8 +12,7 @@
         <title>SCCL</title>
     </h:head>
     <h:body>
-        <div id="contenedor">
-  
+        <div id="contenedor"> 
         <header id="barra_login">
             <h1>Sistema de gestion de Certificacion de competencias laborales</h1>
             <p>No ha ingresado</p>
@@ -34,12 +33,10 @@
 	        <p>Seleccione en el nombre de la competencia para ver el detalle y solicitar la certificacion</p>
         	<div id="contenedor_tabla_competencias">    
 	            <p:dataTable var="competencia" value="#{planificacionManagedBean.competencias}" paginator="true" rows="10" 
-	                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-	                 rowsPerPageTemplate="5,10,15" rowKey="#{competencia.disponibilidad}" selectionMode="single">
-	                 
-	                <p:ajax event="rowSelect" oncomplete="PF('modal_comp').show()" />  
-        	  
-	                  
+	                paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+	                rowsPerPageTemplate="5,10,15" rowKey="#{competencia.disponibilidad}" selectionMode="single">
+	     			<!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
+	                <p:ajax event="rowSelect" oncomplete="PF('modal_comp').show()" />                  
 	                <p:column headerText="Unidad de competencia"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  
 	                <p:column headerText="Centro de Formacion"><h:outputText value="#{competencia.nombreCentro}" /></p:column>  
 	                <p:column headerText="Inicia recepcion de solicitud"><h:outputText value="#{competencia.disponibilidad}" /></p:column>  
@@ -48,105 +45,97 @@
         </div>
         <div class="contenedor_central">
           <div id="contenedor_tabs">
-          
-           <h:form id="loginForm" prependId="false">
-				<!-- Messages must be global here, to show bad credentials -->
-				<h:messages globalOnly="true"/>
-				
-				
-				<!-- Id's must not be changed to support spring security check -->
-			
-					<h:outputLabel for="j_username" value="Usuario:" />  
+          	     <!-- Formulario para login principal -->
+                 <h:form id="loginForm" prependId="false">
+				    <h:messages globalOnly="true"/>
+            		<h:outputLabel for="j_username" value="Usuario:" />  
 					<h:inputText id="j_username" required="true" label="username" />  
 			    	<h:message for="j_username" display="text" style="color:red" />	
-			    			    	
-			    	<h:outputLabel for="j_password" value="Contraseña:" />  
+			        <h:outputLabel for="j_password" value="Contraseña:" />  
 					<h:inputSecret id="j_password" label="password" required="true" />  
 			    	<h:message for="j_password" display="text" style="color:red"/>
-			    				    	
-				
-			
-			<h:commandButton styleClass="boton_verde" type="submit" id="login" value="Continuar" action="#{loginController.doLogin}" />
-		</h:form>
-        
-        <!-- /******************************************/ -->
-          
-          
-            <p:tabView id="tabView">  
-                <p:tab id="tab1" titleStyleClass="user" title="Ingresar">  
-                    <h:form id="loginForm" prependId="false">
-                        <h3>Bienvenido al Sistema de gestion de Certificaciones de Competencias Laborales del INATEC</h3>
-                        <p>Escriba su nombre de usuario y contraseña abajo y pulse en "continuar" para acceder al sistema</p>
-                        <p>Si aun no se registra, use la opcion de "Registrar Nueva Cuenta" para hacerlo</p>
-                        <h2>Ingrese con una cuenta registrada</h2>
-                        <div id="aqui_formulario">
-                        
-                        </div>
-                        
-                    </h:form>
-                    <div id="opciones_openid">
-                        <h2>Acceda o registrese con su OpenID</h2>
-                        <div class="contenedor_botonesgrandes">
-	                        <button class="opid_boton_grande"><img src="../../resources/imagenes/openid_logos/google.png" id="dagger" /></button>
-	                        <button class="opid_boton_grande"><img src="../../resources/imagenes/openid_logos/yahoo.png" id="dagger" /></button>
-	                        <button class="opid_boton_grande"><img src="../../resources/imagenes/openid_logos/blogger.png" id="dagger" /></button>
-	                        <button class="opid_boton_grande"><img src="../../resources/imagenes/openid_logos/logo_openid.png" id="dagger" /></button>
-                        </div>                   
-                        <div class="contenedor_botonespequenos">
-	                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/aol.png" id="dagger" /></button>
-	                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/face_peque.png" id="dagger" /></button>
-	                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/google_peque.png" id="dagger" /></button>
-	                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/flirck.png" id="dagger" /></button>
-	                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/wordpress_peque.png" id="dagger" /></button>
-                        </div>                                        
-                    </div>
-                </p:tab>  
-
-                <p:tab id="tab2" titleStyleClass="llave" title="Olvido de contraseña">  
-                    <h:form>
-                        <h2>¿Olvido su contraseña?</h2>
-                        <p>Si olvido su contraseña, ingrese aqui su nombre de usuario y le enviaremos un correo que le permitira cambiar la contraseña</p>
-                        <p style="font-weight:bold; display: inline-block; margin-right:10px;">Nombre de usuario:</p>
-                        <p:inputText />
-                        <br/>
-                        <p:commandButton styleClass="boton_verde" value="Enviar correo" />
-                    </h:form>
-                </p:tab>  
-
-                <p:tab id="tab3" titleStyleClass="nuevo" title="Registrar nueva cuenta">  
-                    <h:form>
-                    	<h2>Registrar una nueva cuenta</h2>
-                    	<p>Para registrarse, complete la informacion inferior por favor.</p>
-                    	<p>(La informacion obligatoria esta marcada con un asterisco: *)</p>
-                     	<div class="seccion_nuevousuario">
-	                        <h:outputLabel for="primernombre" value="*Nombre de usuario:" />  
-	                        <p:inputText id="primernombre" value="#{personBean.firstname}" />
-                        </div>  
-                        <div class="seccion_nuevousuario">
-	                        <h:outputLabel for="nombremostrar" value="*Nombre a mostrar:" />  
-	                        <p:inputText id="nombremostrar" value="#{personBean.surname}" required="true" requiredMessage="Surname is required."/>
-                        </div>
-                        <div class="seccion_nuevousuario">  
-	                        <h:outputLabel for="nombrereal" value="*Nombre real:" />  
-	                        <p:inputText id="nombrereal" value="#{personBean.firstname}" />
-                        </div>
-                        <p style="margin-left:13px;">El "nombre de pantalla" es el que se muestra a los demas.</p>
-                        <div class="seccion_nuevousuario">  
-	                        <h:outputLabel for="correo" value="*Direccion de correo:" />  
-	                        <p:inputText id="correo" value="#{personBean.firstname}" />
-                        </div>
-                        <div class="seccion_nuevousuario">  
-	                        <h:outputLabel for="confirmcorreo" value="*Confirmacion direccion de correo:" />  
-	                        <p:inputText id="confirmcorreo" value="#{personBean.firstname}" />
-                        </div>
-                        <div class="seccion_nuevousuario"> 
-	                        <h:outputLabel for="captcha" value="*Comprobacion de seguridad:" />  
-	                        <img src="http://www.opencaptcha.com/img/1546546465465j.jpgx"></img>
-                        </div>  
-                        <p:commandButton styleClass="boton_verde" value="Registrar" />
-                   </h:form>
-                </p:tab>  
-            </p:tabView>     
+			    	<h:commandButton styleClass="boton_verde" type="submit" id="login" value="Continuar" action="#{loginController.doLogin}" />
+				</h:form>
+                <!-- /******************************************/ -->
+               
+	            <p:tabView id="tabView">  
+	                <p:tab id="tab1" titleStyleClass="user" title="Ingresar">  
+	                    <h:form id="loginForm" prependId="false">
+	                        <h3>Bienvenido al Sistema de gestion de Certificaciones de Competencias Laborales del INATEC</h3>
+	                        <p>Escriba su nombre de usuario y contraseña abajo y pulse en "continuar" para acceder al sistema</p>
+	                        <p>Si aun no se registra, use la opcion de "Registrar Nueva Cuenta" para hacerlo</p>
+	                        <h2>Ingrese con una cuenta registrada</h2>
+	                        <div id="aqui_formulario">
+	                        	
+	                        </div>
+	                        <div id="error">
+	                        	<p>Error de inicio de sesion!</p>
+	                        	<p>Verifique que su usuario y contraseña sean correctos.</p>
+	                        </div>
+	                    </h:form>
+	                    <div id="opciones_openid">
+	                        <h2>Acceda o registrese con su OpenID</h2>
+	                        <div class="contenedor_botonesgrandes">
+		                        <button class="opid_boton_grande"><img src="../../resources/imagenes/openid_logos/google.png" id="dagger" /></button>
+		                        <button class="opid_boton_grande"><img src="../../resources/imagenes/openid_logos/yahoo.png" id="dagger" /></button>
+		                        <button class="opid_boton_grande"><img src="../../resources/imagenes/openid_logos/blogger.png" id="dagger" /></button>
+		                        <button class="opid_boton_grande"><img src="../../resources/imagenes/openid_logos/logo_openid.png" id="dagger" /></button>
+	                        </div>                   
+	                        <div class="contenedor_botonespequenos">
+		                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/aol.png" id="dagger" /></button>
+		                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/face_peque.png" id="dagger" /></button>
+		                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/google_peque.png" id="dagger" /></button>
+		                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/flirck.png" id="dagger" /></button>
+		                        <button class="opid_boton_pequeno"><img src="../../resources/imagenes/openid_logos/wordpress_peque.png" id="dagger" /></button>
+	                        </div>                                        
+	                    </div>
+	                </p:tab>  
+	
+	                <p:tab id="tab2" titleStyleClass="llave" title="Olvido de contraseña">  
+	                    <h:form>
+	                        <h2>¿Olvido su contraseña?</h2>
+	                        <p>Si olvido su contraseña, ingrese aqui su nombre de usuario y le enviaremos un correo que le permitira cambiar la contraseña</p>
+	                        <p style="font-weight:bold; display: inline-block; margin-right:10px;">Nombre de usuario:</p>
+	                        <p:inputText />
+	                        <br/>
+	                        <p:commandButton styleClass="boton_verde" value="Enviar correo" />
+	                    </h:form>
+	                </p:tab>  
+	
+	                <p:tab id="tab3" titleStyleClass="nuevo" title="Registrar nueva cuenta">  
+	                    <h:form>
+	                    	<h2>Registrar una nueva cuenta</h2>
+	                    	<p>Para registrarse, complete la informacion inferior por favor.</p>
+	                    	<p>(La informacion obligatoria esta marcada con un asterisco: *)</p>
+	                     	<div class="seccion_nuevousuario">
+		                        <h:outputLabel for="primernombre" value="*Nombre de usuario:" />  
+		                        <p:inputText id="primernombre" value="#{personBean.firstname}" />
+	                        </div>  
+	                        <div class="seccion_nuevousuario">
+		                        <h:outputLabel for="nombremostrar" value="*Nombre a mostrar:" />  
+		                        <p:inputText id="nombremostrar" value="#{personBean.surname}" required="true" requiredMessage="Surname is required."/>
+	                        </div>
+	                        <div class="seccion_nuevousuario">  
+		                        <h:outputLabel for="nombrereal" value="*Nombre real:" />  
+		                        <p:inputText id="nombrereal" value="#{personBean.firstname}" />
+	                        </div>
+	                        <p style="margin-left:13px;">El "nombre de pantalla" es el que se muestra a los demas.</p>
+	                        <div class="seccion_nuevousuario">  
+		                        <h:outputLabel for="correo" value="*Direccion de correo:" />  
+		                        <p:inputText id="correo" value="#{personBean.firstname}" />
+	                        </div>
+	                        <div class="seccion_nuevousuario">  
+		                        <h:outputLabel for="confirmcorreo" value="*Confirmacion direccion de correo:" />  
+		                        <p:inputText id="confirmcorreo" value="#{personBean.firstname}" />
+	                        </div>
+	                        <div class="seccion_nuevousuario"> 
+		                        <h:outputLabel for="captcha" value="*Comprobacion de seguridad:" />  
+		                        <img src="http://www.opencaptcha.com/img/1546546465465j.jpgx"></img>
+	                        </div>  
+	                        <p:commandButton styleClass="boton_verde" value="Registrar" />
+	                   </h:form>
+	                </p:tab>  
+	            </p:tabView>     
            </div>
         </div>
         

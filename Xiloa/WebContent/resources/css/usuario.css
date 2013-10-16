@@ -59,9 +59,6 @@ header p{
     position: relative;
     top: -6px;
 }
-#filtro_buscar {
-   
-}
 .contenedor_central {
     width: 47%;
     height: 500px;
@@ -184,17 +181,17 @@ footer p{
 	background: url("../../resources/imagenes/iconos_tab/llave24.png") no-repeat left!important;
 	padding-left: 25px!important;
 }
-
 .nuevo a{
 	background: url("../../resources/imagenes/iconos_tab/nuevo24.png") no-repeat left!important;
 	padding-left: 25px!important;
 }
 /******************************/
 #loginForm {
-	width: 316px;
+	width: 279px;
 	background: white;
 	height: 78px;
 	margin-left: -6px;
+	display: inline-block;
 }
 #loginForm label{
 	margin: 8px;
@@ -219,12 +216,10 @@ footer p{
 }
 #modal_info_competencias {
     background: #E6EEF9;
-	
     color: black;
 }
 #modal_info_competencias .seccion_detalle {
     background: #fff;
-	
     margin: 11px 5px;
     padding: 5px;
     border-radius: 5px;
@@ -233,44 +228,48 @@ footer p{
 }
 #modal_info_competencias .seccion_detalle ul li {
     list-style: disc;
-
     margin-left: 21px;
 }
 #modal_info_competencias p {
     color: black;
     padding: 5px 0;
-	
     font-size: 13px;
     font-weight: bold;
-}
-#modal_info_competencias input {
-	
 }
 /***************************/
 #modal_solicitud_competencia .estilo_label{
-	     color: black;
+	color: black;
     padding: 5px 0;
-	
-    font-size: 13px;
+	font-size: 13px;
     font-weight: bold;
-	     width: 275px;
-	     display: inline-block;
-	     padding: 12px;
+	width: 275px;
+	display: inline-block;
+	padding: 12px;
 }
 #modal_solicitud_competencia {
-	    background: #E6EEF9;
-	
-    color: black;
+	background: #E6EEF9;
+	color: black;
 }
 #modal_solicitud_competencia input{
 	width: 200px;
 }
 #modal_solicitud_competencia .seccion_detalle{
-	    background: #fff;
-	
-    margin: 11px 5px;
+	background: #fff;
+	margin: 11px 5px;
     padding: 5px;
     border-radius: 5px;
     border: 1px solid #ddd;
     font-size: 14px;
+}
+#aqui_formulario {
+	display: inline-block;
+}
+#error {
+	width: 154px;
+	height: 77px;
+	background: red;
+	display: none;
+}
+#error p {
+	display: inline-block;
 }
