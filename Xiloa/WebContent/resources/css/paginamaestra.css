@@ -16,7 +16,7 @@ html {
     background-color: #444444;
     color: white;
     box-shadow: inset 0px -7px 10px #292929;
-    height: 75px;
+    height: 25px;
 }
 #barra_navegacion h1{
     display: inline-block;
@@ -55,7 +55,7 @@ html {
     background-color: #444444;
     color: white;
     box-shadow: inset 0px -7px 10px #292929;
-    height: 75px;
+    height: 25px;
 }
 #barra_navegacion.mini h1{
     display: inline-block;
@@ -116,7 +116,7 @@ html {
 }
 /*Estilo para botones*/
 .botones_navegacion {
-    display: inline-block;
+    display: none;
     width: 117px;
     height: 73px;
     border: 1px solid #353434;
