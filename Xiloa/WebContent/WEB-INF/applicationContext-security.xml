@@ -15,11 +15,11 @@
 		
 		<form-login
 			login-page="/login"
-			authentication-failure-url="/login.xhtml?error=1"
+			authentication-failure-url="/modulos/usuario/index.xhtml?error=1"
 			default-target-url="/modulos/planificacion/planificacion.xhtml" />
 		<logout
 			invalidate-session="true"
-			logout-success-url="/modulos/usuario/index"
+			logout-success-url="/login"
 		/>
 		<session-management session-authentication-error-url="/login.xhtml?error=sesionAbierta">
 			<concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />
