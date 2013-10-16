@@ -1,7 +1,11 @@
 $(function(){
 	$("#loginForm").appendTo("#aqui_formulario");
-	
 	var param1var = getQueryVariable("error");
+	
+	if(param1var == '1'){
+		alert("Error de autentificacion");
+	}
+	
 });
 
 
@@ -14,5 +18,5 @@ function getQueryVariable(variable) {
 	      return pair[1];
 	    }
 	  } 
-	  alert('Query Variable ' + variable + ' not found');
+	  //alert('Query Variable ' + variable + ' not found');
 }
