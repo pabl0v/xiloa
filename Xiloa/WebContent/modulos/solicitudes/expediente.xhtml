@@ -15,8 +15,96 @@
                 <ui:include src="../../modulos/compartido/paginamaestra.xhtml" />
 	    	</ui:insert>
 		</div>
-    
-    	<h1>Expediente</h1>
+    	<h2>Expediente: 12-0000-000</h2>
+    	<div id="seccion_datossolicitante" class="seccion_expediente" style="padding:10px;">
+    	  <h:form>
+    		<p>Datos del solicitante/Candidato</p>
+    		<h:outputLabel styleClass="estilo_label" for="firstname2" value="Nombre del candidato:" />  
+            <p:inputText id="firstgme2" value="#{personBean.firstname}" />
+            <h:outputLabel styleClass="estilo_label" for="firstname2" value="Numero de identificacion:" />  
+            <p:inputText id="ffgge2" value="#{personBean.firstname}" />
+            <h:outputLabel styleClass="estilo_label" for="firstname2" value="Solicitud para evaluar:" />  
+            <p:inputText id="dme2" value="#{personBean.firstname}" />
+            <h:outputLabel styleClass="estilo_label" for="firstname2" value="Genero:" />  
+            <p:inputText id="fijhgjfame2" value="#{personBean.firstname}" />
+            <h:outputLabel styleClass="estilo_label" for="firstname2" value="Telefono:" />  
+            <p:inputText id="firstjghme2" value="#{personBean.firstname}" />
+            <h:outputLabel styleClass="estilo_label" for="firstname2" value="Celular:" />  
+            <p:inputText id="firtme2" value="#{personBean.firstname}" />
+            <h:outputLabel styleClass="estilo_label" for="firstname2" value="Correo electronico:" />  
+            <p:inputText id="fihghame2" value="#{personBean.firstname}" />
+            <h:outputLabel styleClass="estilo_label" for="firstname2" value="Direccion actual:" />  
+            <p:inputText id="firstngdfe2" value="#{personBean.firstname}" />
+            <h:outputLabel styleClass="estilo_label" for="firstname2" value="Municipio:" />  
+            <p:inputText id="firssame2" value="#{personBean.firstname}" />
+          </h:form>  
+    	</div>
+    	<div class="seccion_expediente">
+    		<p>Trayectoria profesional y academica:</p>
+    		<div>
+    		  <h:form>
+	    		<h:outputLabel styleClass="estilo_label" for="firstname2" value="Estatus actual:" />  
+	            <p:inputText id="firstname2" value="#{personBean.firstname}" />
+	            <h:outputLabel styleClass="estilo_label" for="firstname2" value="Siguiente Estatus:" />  
+            	<p:inputText id="firstname3" value="#{personBean.firstname}" />
+              </h:form>
+    		</div>	
+    		<div id="contenedor_tab_profesional">
+    			<p:tabView id="tabView1">  
+                    <p:tab id="tab1" title="Experiencia">  
+                         <p:dataTable emptyMessage="No hay datos para mostrar"  var="divulgacion" value="#{tableBean.carsSmall}">  
+                             <p:column headerText="Empresa"><h:outputText value="#{car.model}" /></p:column>  
+                             <p:column headerText="Cargo"><h:outputText value="#{car.year}" /></p:column>  
+                             <p:column headerText="Desde"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                             <p:column headerText="Hasta"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                             <p:column headerText="Direccion"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                             <p:column headerText="Editar"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                        </p:dataTable>    
+                    </p:tab>  
+
+                    <p:tab id="tab2" title="Estudios">  
+                       
+                    </p:tab>  
+
+                    <p:tab id="tab3" title="Calificaciones">  
+                   
+                    </p:tab>  
+                    
+                    <p:tab id="tab4" title="Certificaciones">  
+               
+                    </p:tab>  
+
+                </p:tabView>  
+    		</div>
+    	</div>
+    	<div class="seccion_expediente" style="width:98%">
+    		<div id="contenedor_tab_planes">
+    			<p:tabView id="tabView2">  
+                    <p:tab id="tab1" title="UC a evaluar">  
+                         <p:dataTable emptyMessage="No hay datos"  var="divulgacion" value="#{tableBean.carsSmall}">  
+                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{car.model}" /></p:column>  
+                             <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{car.year}" /></p:column>  
+                             <p:column headerText="Requisito"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                             <p:column headerText="Estado"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                             <p:column headerText="Editar"><h:outputText value="#{car.manufacturer}" /></p:column>              
+                        </p:dataTable>    
+                    </p:tab>  
+
+                    <p:tab id="tab2" title="Portafolio">  
+                       
+                    </p:tab>  
+
+                    <p:tab id="tab3" title="Plan de evaluacion">  
+                   
+                    </p:tab>  
+                    
+                    <p:tab id="tab4" title="Plan de formacion">  
+               
+                    </p:tab>  
+
+                </p:tabView>  
+    		</div>
+    	</div>
     </div> 
 </h:body>
 </html>
