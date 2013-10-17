@@ -50,12 +50,11 @@
           	     	<p:messages id="messages" showDetail="false" autoUpdate="true" closable="true"/>          	     
           	     </h:form>
                  <h:form id="loginForm" prependId="false">
-
-            		<h:outputLabel for="username" value="Usuario:" />  
-					<h:inputText id="username" required="true" requiredMessage="Escriba un nombre de usuario"  label="username" value="#{loginController.username}" />
-			        <h:outputLabel for="password" value="Contraseña:" />  
-					<h:inputSecret id="password" label="password" required="true" requiredMessage="La contraseña es requerida" value="#{loginController.password}" />  
-			    	<h:commandButton styleClass="boton_verde" type="submit" id="login" value="Continuar" action="#{loginController.login}" />
+            	 <h:outputLabel for="username" value="Usuario:" />  
+				 <h:inputText id="username" required="true" requiredMessage="Escriba un nombre de usuario"  label="username" value="#{loginController.username}" />
+			     <h:outputLabel for="password" value="Contraseña:" />  
+				 <h:inputSecret id="password" label="password" required="true" requiredMessage="La contraseña es requerida" value="#{loginController.password}" />  
+			     <h:commandButton styleClass="boton_verde" type="submit" id="login" value="Continuar" action="#{loginController.login}" />
 				</h:form>
                 <!-- /******************************************/ -->
                
@@ -198,14 +197,12 @@
                 <h:outputLabel styleClass="estilo_label" for="surname2" value="Años ejerciendo la actividad:" />  
                 <p:inputText id="surname2" value="#{personBean.surname}" required="true" requiredMessage="Surname is required."/>  
                 <h:outputLabel styleClass="estilo_label" value="Descripcion de la ocupacion actual:" /> 
-                <p:editor id="editor2" value="#{editorBean.value}" height="150"/>    
-				
+                <p:editor id="editor2" value="#{editorBean.value}" height="150"/>    			
              </div>
              <p:commandButton onclick="PF('modal_solicitud').hide();" value="Cancelar"/> 
             	<p:commandButton value="Aplicar"/>    
            </h:form>    
-        </p:dialog>
-        
+        </p:dialog>   
         <footer>
             <p>2013 &#174;Derechos reservados por INATEC --  Sistema de gestion de Certificaciones Laborales del INATEC</p>
         </footer>

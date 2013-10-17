@@ -9,15 +9,13 @@
        <link type="text/css" rel="stylesheet" href="../../resources/css/edicion_actividad.css"></link>
     </h:head>
     <h:body>
-    <div id="contenedor">
-        
+    <div id="contenedor"> 
       	<div id="header">
             <ui:insert name="header" >
                 <ui:include src="../../modulos/compartido/paginamaestra.xhtml" />
 	    	</ui:insert>
 	    	<script type="text/javascript" src="../../resources/scripts/edicion_actividad.js"></script>
-		</div>
-        
+		</div>    
         <h2>Unidad de Competencia: Certificacion CISCO</h2>
         <div id="contenedor_secciones">
                       
@@ -27,8 +25,7 @@
                 <p:selectOneMenu style="position:relative; top:7px;" id="city3" value="#{pprBean.city}">  
                    <f:selectItem itemLabel="Select City" itemValue="" />  
                    <f:selectItems value="#{pprBean.cities}" />  
-                </p:selectOneMenu>
-                
+                </p:selectOneMenu>             
                 <p>Registrado:</p>
                 <span><p:calendar value="#{calendarBean.date3}" id="popupButtonCal2" showOn="button" /></span>  
                 </h:form>
@@ -43,10 +40,8 @@
                         <p style="margin-left:4px;">Lugar:</p>
                         <p:inputText style="margin-left:5px;"></p:inputText>   
             		</h:form>
-                </div>
-                
-            </div>
-            
+                </div>          
+            </div>          
             <div class="seccion_edicion">
                 <h3>Involucrados</h3>
                 <h:form styleClass="formulario_inline">
@@ -55,22 +50,14 @@
                 <h:form>
                     <div class="seccion_interna" style="height:220px;">
                     <p:dataTable var="involucrados" value="#{tableBean.carsSmall}">  
-                        <p:column headerText="Nombre">  
-                            <h:outputText value="#{car.model}" />  
-                        </p:column>  
-
-                        <p:column headerText="Funcion">  
-                            <h:outputText value="#{car.year}" />  
-                        </p:column>  
-
-                        <p:column headerText="Correo electronico">  
-                            <h:outputText value="#{car.manufacturer}" />  
+                        <p:column headerText="Nombre"><h:outputText value="#{car.model}" /></p:column>  
+                        <p:column headerText="Funcion"><h:outputText value="#{car.year}" /></p:column>  
+                        <p:column headerText="Correo electronico"><h:outputText value="#{car.manufacturer}" />  
                         </p:column>  
                     </p:dataTable> 
                     </div>
                 </h:form>                
             </div>
-
             <div class="seccion_edicion" style="position: relative;top: -100px;">
                 <h3>Objetivo y alcanze de la actividad</h3>
                 <h:form>
@@ -78,8 +65,7 @@
                          <p:editor id="editor" value="#{editorBean.value}" height="160"/>                  
                      </div>    
                 </h:form>
-            </div>
-            
+            </div>     
             <div class="seccion_edicion">
                  <h:form>
                     <p>Nombre del centro evaluador:</p>
@@ -112,12 +98,10 @@
                     <p:commandButton value="Aceptar"/> 
                </h:form>
             </div>
-    
         </div>
         
         <div id="tab_contenedor">
                 <p:tabView id="tabView">  
-
                     <p:tab id="tab1" title="Bitacoras">  
                         <h:form>     
                         <p:commandButton value="Agregar" onclick="PF('dlg1').show();"/>      
@@ -130,33 +114,24 @@
                             </p:dataTable> 
                         </h:form>       
                     </p:tab>  
-
                 </p:tabView>  
-            </div>
-        
+            </div>     
     </div>
         
      <p:dialog id="modal_agregar_bitacora" header="Certificacion Cisco" widgetVar="dlg1" modal="true" width="550" height="470">  
          <h:form>  
             <h3>Bitacora</h3>
 	         <p:panelGrid columns="2">  
-
-			  <p>Fecha de registro:</p>
-			  <span class="proteccion_calendario"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal1" showOn="button" /></span>
-			    
+			 <p>Fecha de registro:</p>
+			 <span class="proteccion_calendario"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal1" showOn="button" /></span>   
              <p>Fecha de registro:</p>
-             <span class="proteccion_calendario"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal2" showOn="button" /></span>
-               
+             <span class="proteccion_calendario"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal2" showOn="button" /></span>            
              <p>Persona que reporta: </p>
               <p:selectOneMenu id="tiposdf" value="#{pprBean.city}">  
                 <f:selectItem itemLabel="Select City" itemValue="" />  
                 <f:selectItems value="#{pprBean.cities}" />  
-             </p:selectOneMenu> 
-             
+             </p:selectOneMenu>            
 			</p:panelGrid>
-	         
-         
-          
              <h3>Descripcion del evento</h3>
              <p:editor id="editor" value="#{editorBean.value}" height="220"/>
              <p:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/> 

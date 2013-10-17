@@ -64,15 +64,36 @@
                     </p:tab>  
 
                     <p:tab id="tab2" title="Estudios">  
-                       
+                        <p:dataTable emptyMessage="No hay datos para mostrar"  var="divulgacion" value="#{tableBean.carsSmall}">  
+                             <p:column headerText="Empresa"><h:outputText value="#{car.model}" /></p:column>  
+                             <p:column headerText="Cargo"><h:outputText value="#{car.year}" /></p:column>  
+                             <p:column headerText="Desde"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                             <p:column headerText="Hasta"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                             <p:column headerText="Direccion"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                             <p:column headerText="Editar"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                        </p:dataTable>       
                     </p:tab>  
 
                     <p:tab id="tab3" title="Calificaciones">  
-                   
+                        <p:dataTable emptyMessage="No hay datos para mostrar"  var="divulgacion" value="#{tableBean.carsSmall}">  
+                             <p:column headerText="Empresa"><h:outputText value="#{car.model}" /></p:column>  
+                             <p:column headerText="Cargo"><h:outputText value="#{car.year}" /></p:column>  
+                             <p:column headerText="Desde"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                             <p:column headerText="Hasta"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                             <p:column headerText="Direccion"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                             <p:column headerText="Editar"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                        </p:dataTable>    
                     </p:tab>  
                     
                     <p:tab id="tab4" title="Certificaciones">  
-               
+                        <p:dataTable emptyMessage="No hay datos para mostrar"  var="divulgacion" value="#{tableBean.carsSmall}">  
+                             <p:column headerText="Empresa"><h:outputText value="#{car.model}" /></p:column>  
+                             <p:column headerText="Cargo"><h:outputText value="#{car.year}" /></p:column>  
+                             <p:column headerText="Desde"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                             <p:column headerText="Hasta"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                             <p:column headerText="Direccion"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                             <p:column headerText="Editar"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                        </p:dataTable>    
                     </p:tab>  
 
                 </p:tabView>  
@@ -92,17 +113,34 @@
                     </p:tab>  
 
                     <p:tab id="tab2" title="Portafolio">  
-                       
+                         <p:dataTable emptyMessage="No hay datos"  var="divulgacion" value="#{tableBean.carsSmall}">  
+                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{car.model}" /></p:column>  
+                             <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{car.year}" /></p:column>  
+                             <p:column headerText="Requisito"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                             <p:column headerText="Estado"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                             <p:column headerText="Editar"><h:outputText value="#{car.manufacturer}" /></p:column>              
+                        </p:dataTable>     
                     </p:tab>  
 
                     <p:tab id="tab3" title="Plan de evaluacion">  
-                   
+                         <p:dataTable emptyMessage="No hay datos"  var="divulgacion" value="#{tableBean.carsSmall}">  
+                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{car.model}" /></p:column>  
+                             <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{car.year}" /></p:column>  
+                             <p:column headerText="Requisito"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                             <p:column headerText="Estado"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                             <p:column headerText="Editar"><h:outputText value="#{car.manufacturer}" /></p:column>              
+                        </p:dataTable>  
                     </p:tab>  
                     
                     <p:tab id="tab4" title="Plan de formacion">  
-               
+                         <p:dataTable emptyMessage="No hay datos"  var="divulgacion" value="#{tableBean.carsSmall}">  
+                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{car.model}" /></p:column>  
+                             <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{car.year}" /></p:column>  
+                             <p:column headerText="Requisito"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                             <p:column headerText="Estado"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                             <p:column headerText="Editar"><h:outputText value="#{car.manufacturer}" /></p:column>              
+                        </p:dataTable>  
                     </p:tab>  
-
                 </p:tabView>  
     		</div>
     	</div>

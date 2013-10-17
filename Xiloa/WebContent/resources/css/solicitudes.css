@@ -76,8 +76,7 @@
     float: right;
 }
 #contenedor_filtro{
-	margin: 42px 0px;
-	
+	margin: 42px 0px;	
 }
 #contenedor_filtro p{
 	display: inline-block;
@@ -96,8 +95,7 @@
 	border: 1px solid #ddd;
 	box-shadow: 0 2px 10px 1px #444;
 }
-#contenedor_tabla_solicitudes{
-	
+#contenedor_tabla_solicitudes{	
 	margin-top: 60px;
 }
 #contenedor_exportar p{

@@ -52,18 +52,22 @@
 	            </p:tab>  
 	
 	            <p:tab id="tab2" title="Usuarios">  
-	                       
+	                   <p:dataTable emptyMessage="No hay datos para mostrar"  var="divulgacion" value="#{tableBean.carsSmall}">  
+	                      <p:column headerText="Nombre"><h:outputText value="#{car.model}" /></p:column>  
+	                      <p:column headerText="Valor"><h:outputText value="#{car.year}" /></p:column>  
+	                      <p:column headerText="Descripcion"><h:outputText value="#{car.manufacturer}" /></p:column>                 
+	                   </p:dataTable>         
 	            </p:tab>  
 	
 	            <p:tab id="tab3" title="Perfiles">  
-	                   
-	            </p:tab>  
-	
+	                    <p:dataTable emptyMessage="No hay datos para mostrar"  var="divulgacion" value="#{tableBean.carsSmall}">  
+	                      <p:column headerText="Nombre"><h:outputText value="#{car.model}" /></p:column>  
+	                      <p:column headerText="Valor"><h:outputText value="#{car.year}" /></p:column>  
+	                      <p:column headerText="Descripcion"><h:outputText value="#{car.manufacturer}" /></p:column>                 
+	                   </p:dataTable>    
+	            </p:tab> 
 	       </p:tabView>  
        </div>
-    </div> 
-    
-    
-    
+    </div>     
 </h:body>
 </html>
