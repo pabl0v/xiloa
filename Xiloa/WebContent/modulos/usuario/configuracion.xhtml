@@ -14,7 +14,53 @@
             <ui:insert name="header" >
                 <ui:include src="../../modulos/compartido/paginamaestra.xhtml" />
 	    	</ui:insert>
-		</div>     
+		</div>     	
+		
+		<h2>Configuraciones:</h2>
+		<div id="contenedor_panel_configuracion" class="contenedor_paneles">
+			<h:form>	
+				<p:panelGrid columns="2" >  
+				    <f:facet name="header">  
+				        Configuracion de variables del sistema:
+				    </f:facet>  
+				   
+					<h:outputLabel value="Listas" />  
+					<p>Listas que se presentan a lo largo del sistema y que podrian cambiar sus valores en algun momento.</p>
+					
+					<h:outputLabel value="Municipios" />  
+					<p>Municipios de Nicaragua</p>
+					    
+					<h:outputLabel value="Estados de la planificacion" />  
+					<p>Estados posibles del proceso de planificacion</p>
+					    
+					<h:outputLabel value="Tipos de documentos" />  
+					<p>Tipos de documentos en el portafolio</p>
+					    
+					<h:outputLabel value="Estados de la verificacion" />  
+					<p>Estados de la verificacion</p>	    
+				</p:panelGrid> 
+			</h:form>  
+		</div>
+		<div id="contenedor_panel_mantenedores" class="contenedor_paneles">
+			<p:tabView id="tabView1">  
+	            <p:tab id="tab1" title="Mantenedores">  
+	                   <p:dataTable emptyMessage="No hay datos para mostrar"  var="divulgacion" value="#{tableBean.carsSmall}">  
+	                      <p:column headerText="Nombre"><h:outputText value="#{car.model}" /></p:column>  
+	                      <p:column headerText="Valor"><h:outputText value="#{car.year}" /></p:column>  
+	                      <p:column headerText="Descripcion"><h:outputText value="#{car.manufacturer}" /></p:column>                 
+	                   </p:dataTable>    
+	            </p:tab>  
+	
+	            <p:tab id="tab2" title="Usuarios">  
+	                       
+	            </p:tab>  
+	
+	            <p:tab id="tab3" title="Perfiles">  
+	                   
+	            </p:tab>  
+	
+	       </p:tabView>  
+       </div>
     </div> 
     
     

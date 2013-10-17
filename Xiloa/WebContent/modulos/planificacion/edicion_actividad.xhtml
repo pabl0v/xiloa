@@ -15,6 +15,7 @@
             <ui:insert name="header" >
                 <ui:include src="../../modulos/compartido/paginamaestra.xhtml" />
 	    	</ui:insert>
+	    	<script type="text/javascript" src="../../resources/scripts/edicion_actividad.js"></script>
 		</div>
         
         <h2>Unidad de Competencia: Certificacion CISCO</h2>
@@ -133,21 +134,29 @@
         
     </div>
         
-     <p:dialog id="modalDialog" header="Certificacion Cisco" widgetVar="dlg1" modal="true" width="740" height="480">  
+     <p:dialog id="modal_agregar_bitacora" header="Certificacion Cisco" widgetVar="dlg1" modal="true" width="550" height="470">  
          <h:form>  
-             <h3>Bitacora</h3>
+            <h3>Bitacora</h3>
+	         <p:panelGrid columns="2">  
+
+			  <p>Fecha de registro:</p>
+			  <span class="proteccion_calendario"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal1" showOn="button" /></span>
+			    
              <p>Fecha de registro:</p>
-             <span class="proteccion_calendario"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal1" showOn="button" /></span>  
-             <p>Fecha de registro:</p>
-             <span class="proteccion_calendario"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal2" showOn="button" /></span>  
+             <span class="proteccion_calendario"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal2" showOn="button" /></span>
+               
              <p>Persona que reporta: </p>
               <p:selectOneMenu id="tiposdf" value="#{pprBean.city}">  
                 <f:selectItem itemLabel="Select City" itemValue="" />  
                 <f:selectItems value="#{pprBean.cities}" />  
              </p:selectOneMenu> 
              
-             <p>Descripcion del evento</p>
-             <p:editor id="editor" value="#{editorBean.value}" height="180"/>
+			</p:panelGrid>
+	         
+         
+          
+             <h3>Descripcion del evento</h3>
+             <p:editor id="editor" value="#{editorBean.value}" height="220"/>
              <p:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/> 
              <p:commandButton value="Aceptar"/> 
          </h:form>   

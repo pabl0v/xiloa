@@ -1,5 +1,11 @@
-$(function(){
+$(document).ready(function() {
+    //run code that MUST be after initialize
 	$("#loginForm").appendTo("#aqui_formulario");
+});
+
+
+
+$(function(){
 	var param1var = getQueryVariable("error");
 	
 	if(param1var == '1'){

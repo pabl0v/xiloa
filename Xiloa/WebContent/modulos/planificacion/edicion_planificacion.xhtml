@@ -15,6 +15,7 @@
             <ui:insert name="header" >
 	             <ui:include src="../../modulos/compartido/paginamaestra.xhtml" />
 		    </ui:insert>
+		    <script type="text/javascript" src="../../resources/scripts/edicion_planificacion.js"></script>
 		</div>
         
         <h2>Unidad de Competencia: Certificacion CISCO</h2>
@@ -72,8 +73,8 @@
             <div class="seccion_edicion" style="height: 260px">
                 <h3>Descripcion de la unidad</h3>
                 <h:form>
-                     <div class="seccion_interna">
-                         <p:editor id="editor2" value="#{editorBean.value}" height="200"/>                  
+                     <div>
+                         <p:editor id="editor2" value="#{editorBean.value}" height="190"/>                  
                      </div>    
                      <p>Estatus</p>
                      <p:selectOneMenu id="selector_estatus" styleClass="selector_status_estilo" value="#{pprBean.city}">  
@@ -110,20 +111,22 @@
 
                     <p:tab id="tab1" title="Actividades">  
                         <h:form>     
-                        <p:commandButton value="Agregar" onclick="PF('dlg1').show();"/>      
-                            <p:dataTable var="actividades" value="#{tableBean.carsSmall}" widgetVar="carsTable" emptyMessage="No cars found with given criteria" filteredValue="#{tableBean.filteredCars}">  
+                        <p:commandButton value="Agregar" style="margin-bottom: 5px" onclick="PF('dlg1').show();"/>    
+                            <p:dataTable var="competencia" value="#{planificacionManagedBean.competencias}" widgetVar="carsTable" emptyMessage="No se han encontrado datos." filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{competencia.nombreUCompetencia}" selectionMode="single">  
 							    <f:facet name="header">  
-							         <p:outputPanel>  
-							             <h:outputText value="Search all fields:" />  
-							             <p:inputText id="globalFilter" onkeyup="carsTable.filter()" style="width:150px" />  
+							         <p:outputPanel style="text-align:right;">  
+							             <h:outputText value="Buscar:" />  
+							             <p:inputText id="globalFilter" onkeyup="carsTable.filter()" style="margin-left: 4px; width:150px" />  
 							         </p:outputPanel>  
-							    </f:facet>    
-                                <p:column headerText="Nombre de la actividad"><h:outputText value="#{car.model}" /></p:column>  
-                                <p:column headerText="Tipo"><h:outputText rvalue="#{car.year}" /></p:column>  
-                                <p:column headerText="Lugar/Medio"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                                <p:column headerText="Fecha"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                                <p:column headerText="Responsable"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                                <p:column headerText="Estado"><h:outputText value="#{car.manufacturer}" /></p:column>  
+							    </f:facet>   
+							    <!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
+	               				<p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
+                                <p:column headerText="Nombre de la actividad"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  
+                                <p:column headerText="Tipo"><h:outputText rvalue="#{competencia.nombreUCompetencia}" /></p:column>  
+                                <p:column headerText="Lugar/Medio"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  
+                                <p:column headerText="Fecha"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  
+                                <p:column headerText="Responsable"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  
+                                <p:column headerText="Estado"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  
                             </p:dataTable> 
                         </h:form>       
                     </p:tab>  
