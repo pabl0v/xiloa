@@ -46,15 +46,17 @@
         <div class="contenedor_central">
           <div id="contenedor_tabs">
           	     <!-- Formulario para login principal -->
+          	     <h:form id="messageForm">
+          	     	<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>          	     
+          	     </h:form>
                  <h:form id="loginForm" prependId="false">
-				    <h:messages globalOnly="true"/>
-            		<h:outputLabel for="j_username" value="Usuario:" />  
-					<h:inputText id="j_username" required="true" label="username" />  
-			    	<h:message for="j_username" display="text" style="color:red" />	
-			        <h:outputLabel for="j_password" value="Contraseña:" />  
-					<h:inputSecret id="j_password" label="password" required="true" />  
-			    	<h:message for="j_password" display="text" style="color:red"/>
-			    	<h:commandButton styleClass="boton_verde" type="submit" id="login" value="Continuar" action="#{loginController.doLogin}" />
+            		<h:outputLabel for="username" value="Usuario:" />  
+					<h:inputText id="username" required="true" label="username" value="#{loginController.username}" />
+			    	<h:message for="username" display="text" style="color:red" />	
+			        <h:outputLabel for="password" value="Contraseña:" />  
+					<h:inputSecret id="password" label="password" required="true" value="#{loginController.password}" />  
+			    	<h:message for="password" display="text" style="color:red"/>
+			    	<h:commandButton styleClass="boton_verde" type="submit" id="login" value="Continuar" action="#{loginController.login}" />
 				</h:form>
                 <!-- /******************************************/ -->
                

@@ -29,7 +29,7 @@
 		</session-management>
 	</http>
 
-	<authentication-manager>
+	<authentication-manager alias = "authenticationManager">
 		<authentication-provider>
 			<password-encoder hash="sha"/>
 			<jdbc-user-service
