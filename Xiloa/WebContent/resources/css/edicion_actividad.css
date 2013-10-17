@@ -86,3 +86,6 @@ h2 {
 #modal_agregar_bitacora table{
 	width: 100%;
 }
+#tab_contenedor .ui-tabs{
+	height: 400px;
+}
