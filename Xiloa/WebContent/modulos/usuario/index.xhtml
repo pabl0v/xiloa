@@ -46,16 +46,15 @@
         <div class="contenedor_central">
           <div id="contenedor_tabs">
           	     <!-- Formulario para login principal -->
-          	     <h:form id="messageForm">
-          	     	<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>          	     
+		         <h:form id="messageForm">
+          	     	<p:messages id="messages" showDetail="false" autoUpdate="true" closable="true"/>          	     
           	     </h:form>
                  <h:form id="loginForm" prependId="false">
+
             		<h:outputLabel for="username" value="Usuario:" />  
-					<h:inputText id="username" required="true" label="username" value="#{loginController.username}" />
-			    	<h:message for="username" display="text" style="color:red" />	
+					<h:inputText id="username" required="true" requiredMessage="Escriba un nombre de usuario"  label="username" value="#{loginController.username}" />
 			        <h:outputLabel for="password" value="Contraseña:" />  
-					<h:inputSecret id="password" label="password" required="true" value="#{loginController.password}" />  
-			    	<h:message for="password" display="text" style="color:red"/>
+					<h:inputSecret id="password" label="password" required="true" requiredMessage="La contraseña es requerida" value="#{loginController.password}" />  
 			    	<h:commandButton styleClass="boton_verde" type="submit" id="login" value="Continuar" action="#{loginController.login}" />
 				</h:form>
                 <!-- /******************************************/ -->
@@ -105,13 +104,13 @@
 	                </p:tab>  
 	
 	                <p:tab id="tab3" titleStyleClass="nuevo" title="Registrar nueva cuenta">  
-	                    <h:form>
+	                    <h:form id="formulario">
 	                    	<h2>Registrar una nueva cuenta</h2>
 	                    	<p>Para registrarse, complete la informacion inferior por favor.</p>
 	                    	<p>(La informacion obligatoria esta marcada con un asterisco: *)</p>
 	                     	<div class="seccion_nuevousuario">
 		                        <h:outputLabel for="primernombre" value="*Nombre de usuario:" />  
-		                        <p:inputText id="primernombre" value="#{personBean.firstname}" />
+		                        <p:inputText id="primernombre" required="true" requiredMessage="Surname is required." value="#{personBean.firstname}" />
 	                        </div>  
 	                        <div class="seccion_nuevousuario">
 		                        <h:outputLabel for="nombremostrar" value="*Nombre a mostrar:" />  
@@ -134,7 +133,7 @@
 		                        <h:outputLabel for="captcha" value="*Comprobacion de seguridad:" />  
 		                        <img src="http://www.opencaptcha.com/img/1546546465465j.jpgx"></img>
 	                        </div>  
-	                        <p:commandButton styleClass="boton_verde" value="Registrar" />
+	                        <p:commandButton process="@all" update="formulario" styleClass="boton_verde" value="Registrar"  actionListener="#{personBean.savePerson}" />
 	                   </h:form>
 	                </p:tab>  
 	            </p:tabView>     
@@ -184,12 +183,12 @@
                 <p:inputText id="firstname" value="#{personBean.firstname}" />  
                 <h:outputLabel styleClass="estilo_label" for="surname" value="Segundo nombre:" />  
                 <p:inputText id="surname" value="#{personBean.surname}" required="true" requiredMessage="Surname is required."/>  
-                <h:outputLabel styleClass="estilo_label" for="firstname" value="Primer apellido:" />  
+                <h:outputLabel styleClass="estilo_label" for="firstname" value="Apellido paterno:" />  
                 <p:inputText id="fg" value="#{personBean.firstname}" />  
-                <h:outputLabel styleClass="estilo_label" for="firstname" value="Segundo apellido:" />  
+                <h:outputLabel styleClass="estilo_label" for="firstname" value="Apellido materno:" />  
                 <p:inputText id="fdg4" value="#{personBean.firstname}" />  
                 <h:outputLabel styleClass="estilo_label" for="firstname" value="Cedula:" />  
-                <p:inputText id="fdg3" value="#{personBean.firstname}" /> 
+                <p:inputMask value="#{maskController.date}" mask="999-999999-9999A"/>
          	</div>
            </h:form>
            <h:form>

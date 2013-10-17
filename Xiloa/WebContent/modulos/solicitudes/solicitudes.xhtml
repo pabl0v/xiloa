@@ -22,16 +22,17 @@
             <h2>Solicitudes Activas</h2>                  
             <div id="botones_filtro_contenedor">
                 <div class="botones_filtro" onclick="PF('dlg2').show();"><p class="icono_nuevo">Nueva solicitud</p></div>
-                <div class="botones_filtro" onclick="PF('dlg2').show();"><p class="icono_nuevo">Convocatoria</p></div>
+                <div class="botones_filtro" onclick="PF('dlg2').show();"><p class="icono_folder">Convocatoria</p></div>
             </div>
             <div id="contenedor_filtro">
+              <h:form>
 	            <p>Buscar:</p>
 	            <p:selectOneMenu styleClass="selectores" id="selector_filtro" value="a">  
 			        <f:selectItem itemLabel="Nombre de laa:" itemValue="a" />
 			        <f:selectItem itemLabel="Centro donde esta :" itemValue="a" />
 			        <f:selectItem itemLabel="Otro:" itemValue="a" />  
 			    </p:selectOneMenu>
-		        <p:inputText id="filtro_buscar123"></p:inputText>
+		        <p:inputText style="margin-right:10px;" id="filtro_buscar123"></p:inputText>
 	            <p>Centro evaluador:</p>
 	            <p:selectOneMenu styleClass="selectores" id="selector_filtro24" value="a">  
 			        <f:selectItem itemLabel="Nombre de laa:" itemValue="a" />
@@ -44,6 +45,7 @@
 			        <f:selectItem itemLabel="Centro donde esta " itemValue="a" />
 			        <f:selectItem itemLabel="Otro:" itemValue="a" />  
 			    </p:selectOneMenu>
+			  </h:form>
             </div>
         </div>
       
@@ -57,7 +59,11 @@
                         <p:column headerText="Fecha solicitud"><h:outputText value="#{competencia.nombreCentro}" /></p:column>               
                         <p:column headerText="Evaluador"><h:outputText value="#{competencia.nombreCentro}" /></p:column>                
                         <p:column headerText="Estado"><h:outputText value="#{competencia.nombreCentro}" /></p:column>                             
-                        <p:column headerText="  "><h:outputText value="#{competencia.nombreCentro}" /></p:column> 
+                        <p:column style="width:4%">  
+				            <p:commandButton id="selectButton" oncomplete="window.location='/Xiloa/modulos/solicitudes/registro_solicitud.xhtml'" icon="ui-icon-pencil" title="Editar">  
+				                <f:setPropertyActionListener value="#{car}" target="#{tableBean.selectedCar}" />  
+				            </p:commandButton>  
+				        </p:column>  
                 </p:dataTable>  
             </h:form>  
         </div>

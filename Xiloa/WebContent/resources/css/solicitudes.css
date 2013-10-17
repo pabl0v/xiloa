@@ -19,7 +19,7 @@
     position: relative;
     top: 8px;
     margin: 0 5px;
-    width: 120px;
+    width: 150px;
 }
 #contenedor_tabla_unidadcomp{
     margin: 7px;
@@ -50,7 +50,7 @@
     height: 57px;
     width: 93px;
     background-position-y: 7px;
-    line-height: 94px;
+    line-height: 98px;
 }
 .boton_azul{
     background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxIDEiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPgo8bGluZWFyR3JhZGllbnQgaWQ9Imc3MzgiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CjxzdG9wIHN0b3AtY29sb3I9IiM0QjlGRUUiIG9mZnNldD0iMCIvPjxzdG9wIHN0b3AtY29sb3I9IiMyNDc5REEiIG9mZnNldD0iMSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2c3MzgpIiAvPgo8L3N2Zz4=)!important;
@@ -62,6 +62,9 @@
 }
 .icono_nuevo {
     background: url("../../resources/imagenes/nuevo.png") no-repeat center;
+}
+.icono_folder {
+    background: url("../../resources/imagenes/folder.png") no-repeat center;
 }
 .icono_buscar{
     background: url("../Imagenes/buscar.png") no-repeat center;

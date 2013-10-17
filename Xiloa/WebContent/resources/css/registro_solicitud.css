@@ -7,71 +7,29 @@ h2 {
 }
 #contenedor {
     background: #e6eef9;
-    display: block;
+    display: inline-block;
     height: 100%;
+    
 }
-#contenedor_secciones {
-    background: none;
-    display: inline-block;
-    height: 500px;
-    min-width: 1024px;
-    position: relative;
-}
-.contenedor_calendario {
-    margin: 22px 8px;
-    width: 46%;
-    display: inline-block;
-}
-.contenedor_calendario p{
-    display: inline-block;
-    padding-bottom: 3px;
-    width: 145px;
-}
-.contenedor_calendario input{
-    width: 90px;
-}
-.proteccion_calendario{  
-    width: 136px;
-    display: inline-block;
-}
-.seccion_edicion{
-    width: 47%;
-    height: 230px;
-    margin-top: 4px;
+.seccion_detalle {
+    width: 39%;
+	
     display: inline-block;
     float: left;
-    margin: 12px;
+    padding: 25px;
+    background: #f0f7ff;
+    border: 1px solid #becbdc;
+    margin: 68px 25px;
+    height: 290px;
 }
-.seccion_edicion p{
+
+.seccion_detalle .estilo_label{
+    width: 191px;
+	
     display: inline-block;
+    margin-bottom: 19px;
 }
-.seccion_edicion h3{
-    font-weight: bold;
-    font-size: 15px;
-    margin-bottom: 5px;
-    display: inline-block;
+.seccion_detalle input{
+	
 }
-.seccion_edicion textarea{
-    height: 100px;
-}
-.seccion_interna{
-    background: #f0f7fe;
-    border: 1px solid #abc7ed;
-    height: 162px;
-}
-.formulario_inline{
-    display: inline-block;
-    font-size: 11px;
-    position: relative;
-    top: -2px;
-    margin: 0px;
-    padding: 0px;
-}
-.contenedor_botones {
-    clear:both;
-}
-#tab_contenedor {
-    display: inline-block;	
-    width: 100%;
-    margin-top: 80px;
-}
+
