@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -17,15 +18,55 @@ import javax.servlet.ServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.WebAttributes;
+import org.springframework.stereotype.Controller;
 
-@ManagedBean(name="loginController")
-@RequestScoped
+//@ManagedBean(name="loginController")
+//@RequestScoped
+@Controller
+@Scope("request")
 public class LoginController implements PhaseListener {
 
 	private static final long serialVersionUID = -92971891224906450L;
 	protected final Log logger = LogFactory.getLog(getClass());
+	private String username;
+	private String password;
+	//@ManagedProperty(value="#{authenticationManager}")
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
+    public AuthenticationManager getAuthenticationManager() {
+    	return authenticationManager;
+    }
+ 
+    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+    	this.authenticationManager = authenticationManager;
+    }
+	
+	public String login(){
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
+		try{
+			Authentication authentication = authenticationManager.authenticate(token);
+			SecurityContext sContext = SecurityContextHolder.getContext();
+			sContext.setAuthentication(authentication);
+			return "/modulos/planificacion/planificacion?faces-redirect=true";
+		} catch(AuthenticationException loginError){
+			@SuppressWarnings("unused")
+			FacesContext fContext = FacesContext.getCurrentInstance();
+			@SuppressWarnings("unused")
+			FacesMessage message = new FacesMessage("Invalid username/password. Reason " + loginError.getMessage());
+			return "index";
+		}
+	}
 	
 	/**
 	 *
@@ -52,6 +93,10 @@ public class LoginController implements PhaseListener {
 		dispatcher.forward((ServletRequest) context.getRequest(),(ServletResponse)context.getResponse());
 	    FacesContext.getCurrentInstance().responseComplete();
 	    return null;
+	}
+	
+	public void logout() {
+    	SecurityContextHolder.getContext().setAuthentication(null);
 	}
 	
 	public void afterPhase(PhaseEvent event) {
@@ -81,5 +126,21 @@ public class LoginController implements PhaseListener {
 	 */
 	public PhaseId getPhaseId() {
 		return PhaseId.RENDER_RESPONSE;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+	 
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	 
+	public String getPassword() {
+		return password;
+	}
+	 
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }
