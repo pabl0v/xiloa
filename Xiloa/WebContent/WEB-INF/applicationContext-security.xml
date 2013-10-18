@@ -38,7 +38,7 @@
 
 		<logout
 			invalidate-session="true"
-			logout-success-url="/login"
+			logout-success-url="/modulos/usuario/index.xhtml"
 		/>
 		<session-management session-authentication-error-url="/login.xhtml?error=sesionAbierta">
 			<concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />
