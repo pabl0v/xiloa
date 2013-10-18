@@ -35,6 +35,7 @@
 		</attribute-exchange>
 		</openid-login>
 
+
 		<logout
 			invalidate-session="true"
 			logout-success-url="/login"

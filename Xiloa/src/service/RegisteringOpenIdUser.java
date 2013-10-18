@@ -17,6 +17,7 @@ import dao.IDao;
 @Service
 public class RegisteringOpenIdUser implements UserDetailsService, AuthenticationUserDetailsService<OpenIDAuthenticationToken> {
 	
+	
 	@Autowired
 	private UserDetailsService databaseAuthentication;
 	@Autowired

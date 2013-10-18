@@ -22,6 +22,7 @@ public class Usuario {
 	@Column(name = "usuario_id")
 	private int id;
 	
+	
 	@OneToOne(fetch=FetchType.LAZY, mappedBy="usuario")
 	private Contacto contacto;
 	

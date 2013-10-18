@@ -23,6 +23,7 @@ import model.Usuario;
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class ServiceImp implements IService {
 	
+	
 	@Autowired
 	private IDao<Requisito> requisitoDao;
 	@Autowired
