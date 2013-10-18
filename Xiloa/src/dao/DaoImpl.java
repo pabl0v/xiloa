@@ -55,14 +55,22 @@ public class DaoImpl<T extends Object> implements IDao<T>{
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<T> findByQuery(String jpql) {
+	public List<T> findAllByQuery(String jpql) {
 		List<T> result = em.createQuery(jpql).getResultList();
 		log.debug("finding by query successful, result size : " + result.size());
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public T findOneByQuery(String jpql) {
+		T result = (T) em.createQuery(jpql).getResultList().get(0);
+		log.debug("finding by query successful, result size : " + 1);
+		return result;
+	}	
+
 	@Override
 	public T findByUsername(Class<T> classe, String username) {
 		return em.find(classe, username);
-	}	
+	}
 }

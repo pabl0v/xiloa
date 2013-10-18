@@ -42,8 +42,6 @@ public class LoginController implements PhaseListener {
 	//@ManagedProperty(value="#{authenticationManager}")
 	@Autowired
 	private AuthenticationManager authenticationManager;
-	@Autowired
-	private IService service;
 	
     public AuthenticationManager getAuthenticationManager() {
     	return authenticationManager;
@@ -87,7 +85,7 @@ public class LoginController implements PhaseListener {
 		return null;
 	}
 	
-	public String openIdAuth(/*String openIdService*/) throws ServletException, IOException {
+	public String openIdAuth() throws ServletException, IOException {
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 		
 		RequestDispatcher dispatcher = ((ServletRequest) context.getRequest()).getRequestDispatcher("/j_spring_openid_security_check");
@@ -96,8 +94,13 @@ public class LoginController implements PhaseListener {
 	    return null;
 	}
 	
-	public void logout() {
-    	SecurityContextHolder.getContext().setAuthentication(null);
+	public void logout() throws ServletException, IOException {
+    	//SecurityContextHolder.getContext().setAuthentication(null);
+		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+
+		RequestDispatcher dispatcher = ((ServletRequest) context.getRequest()).getRequestDispatcher("/j_spring_security_logout");
+		dispatcher.forward((ServletRequest) context.getRequest(),(ServletResponse) context.getResponse());
+		FacesContext.getCurrentInstance().responseComplete();
 	}
 	
 	public void afterPhase(PhaseEvent event) {

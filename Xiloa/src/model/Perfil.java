@@ -5,13 +5,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 @Entity(name="perfiles")
 public class Perfil {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@SequenceGenerator(name = "seq_perfiles", sequenceName = "seq_perfiles", allocationSize=1, initialValue= 1)
+	@GeneratedValue(strategy=GenerationType.AUTO, generator = "seq_perfiles")
 	@Column(name = "perfil_id", nullable = false)	
 	private Long id;
 	

@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.UniqueConstraint;
 
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
@@ -19,9 +20,10 @@ public class Rol {
 
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@SequenceGenerator(name = "seq_roles", sequenceName = "seq_roles", allocationSize=1, initialValue= 1)
+	@GeneratedValue(strategy=GenerationType.AUTO, generator = "seq_roles")
 	@Column(name = "rol_id")
-	private int id;
+	private Long id;
 	
 	@Column(name = "rol_nombre", nullable = false)	
 	private String nombre;
@@ -43,11 +45,11 @@ public class Rol {
 	@Column(name = "rol_estatus", nullable = false)
 	private boolean estatus;
 	
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

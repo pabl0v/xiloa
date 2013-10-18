@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 
 import org.springmodules.validation.bean.conf.loader.annotation.handler.Length;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
@@ -18,9 +19,10 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 public class Usuario {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@SequenceGenerator(name = "seq_usuarios", sequenceName = "seq_usuarios", allocationSize=1, initialValue= 1)
+	@GeneratedValue(strategy=GenerationType.AUTO, generator = "seq_usuarios")
 	@Column(name = "usuario_id")
-	private int id;
+	private Long id;
 	
 	
 	@OneToOne(fetch=FetchType.LAZY, mappedBy="usuario")
@@ -47,11 +49,11 @@ public class Usuario {
 	@Column(name = "usuario_estatus", nullable = false)
 	private boolean usuarioEstatus;
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

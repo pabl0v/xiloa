@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -20,7 +21,8 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 public class Contacto {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@SequenceGenerator(name = "seq_contactos", sequenceName = "seq_contactos", allocationSize=1, initialValue= 1)
+	@GeneratedValue(strategy=GenerationType.AUTO, generator = "seq_contactos")
 	@Column(name = "contacto_id", nullable = false)	
 	private int id;
 	

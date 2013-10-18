@@ -26,6 +26,9 @@ values(4,'tecnico docente','tecnico_docente',true);
 insert into roles(rol_id,rol_descripcion,rol_nombre,rol_estatus)
 values(5,'registro academico','registro_academico',true);
 
+insert into roles(rol_id,rol_descripcion,rol_nombre,rol_estatus)
+values(6,'visitante','visitante',true);
+
 insert into perfiles_roles(rol_id,perfil_id)
 values(2,1);
 
@@ -37,6 +40,9 @@ values(4,1);
 
 insert into perfiles_roles(rol_id,perfil_id)
 values(5,1);
+
+insert into perfiles_roles(rol_id,perfil_id)
+values(6,1);
 
 insert into usuarios(usuario_id,usuario_alias,usuario_pwd,usuario_estatus,rol_id)
 values(2,'nlopez','6fb201c9a82fff28137a7458a6a1ab30e62f0638',true,1);
@@ -215,3 +221,5 @@ null,
 1,
 0,
 5;
+
+alter sequence seq_usuarios start with 6;

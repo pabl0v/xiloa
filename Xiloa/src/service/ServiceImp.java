@@ -115,12 +115,23 @@ public class ServiceImp implements IService {
 
 	@Override
 	public Usuario getUsuario(String username) {
-		return usuarioDao.findByQuery("Select u from usuario u where u.usuarioAlias="+username).get(0);
+		return usuarioDao.findOneByQuery("Select u from usuario u where u.usuarioEstatus='true' and u.usuarioAlias="+"'"+username+"'");
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void RegistrarUsuario(Usuario usuario) {
+		usuarioDao.save(usuario);
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void RegistrarUsuarioOpenId(String login, String nombre, String apellido, String email, String rol) {
+		Usuario usuario = new Usuario();
+		usuario.setUsuarioAlias(login);
+		usuario.setUsuarioPwd("");
+		usuario.setUsuarioEstatus(true);
+		usuario.setRol(rolDao.findOneByQuery("Select r from roles r where r.estatus='true' and r.nombre="+"'"+rol+"'"));
 		usuarioDao.save(usuario);
 	}
 }

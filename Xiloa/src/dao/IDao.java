@@ -8,6 +8,7 @@ public interface IDao <T extends Object>{
 	void remove(T pojo);
 	T findById(Class<T> classe, int id);
 	List<T> findAll(Class<T> classe);
-	List<T> findByQuery(String jpql);
+	List<T> findAllByQuery(String jpql);
+	T findOneByQuery(String jpql);
 	T findByUsername(Class<T> classe, String username);	
 }

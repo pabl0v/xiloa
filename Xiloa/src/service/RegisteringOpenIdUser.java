@@ -1,8 +1,5 @@
 package service;
 
-import model.Rol;
-import model.Usuario;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,8 +9,6 @@ import org.springframework.security.openid.OpenIDAttribute;
 import org.springframework.security.openid.OpenIDAuthenticationToken;
 import org.springframework.stereotype.Service;
 
-import dao.IDao;
-
 @Service
 public class RegisteringOpenIdUser implements UserDetailsService, AuthenticationUserDetailsService<OpenIDAuthenticationToken> {
 	
@@ -22,8 +17,6 @@ public class RegisteringOpenIdUser implements UserDetailsService, Authentication
 	private UserDetailsService databaseAuthentication;
 	@Autowired
 	private IService service;
-	@Autowired
-	private IDao<Rol> rolDao; 
 
 	@Override
 	public UserDetails loadUserDetails(OpenIDAuthenticationToken token) {
@@ -34,13 +27,7 @@ public class RegisteringOpenIdUser implements UserDetailsService, Authentication
 		}
 		catch(UsernameNotFoundException e) {}
 		
-		Usuario newUser = new Usuario();
-		newUser.setId(10);
-		newUser.setUsuarioAlias(openId);
-		newUser.setUsuarioEstatus(true);
-		newUser.setUsuarioPwd("");
-		newUser.setRol(rolDao.findById(Rol.class, 1));
-		service.RegistrarUsuario(newUser);
+		service.RegistrarUsuarioOpenId(openId, getUserData(token, "firstname"), getUserData(token, "lastname"), getUserData(token, "email"), "visitante");
 		return databaseAuthentication.loadUserByUsername(openId);
 	}
 
