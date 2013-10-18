@@ -23,9 +23,11 @@
             </ul>
             <div id="opciones_usuario">
                 <div id="informacion_usuario">
+                  <h:form>
                     <p id="usuario">Carmen Tijerino</p>
                     <div class="botones_navegacion" onclick="window.location='/Xiloa/modulos/usuario/configuracion.xhtml';"><p class="icono_gear">Config</p></div>
-                    <div class="botones_navegacion" onclick="window.location='/Xiloa/login.xhtml';"><p class="icono_x">Exit</p></div>
+                    <div class="botones_navegacion" ><p><h:commandButton class="icono_x" action="#{loginController.logout}" value="XXXXXX"/></p></div>
+                  </h:form>
                 </div>                
            </div>
         </div>

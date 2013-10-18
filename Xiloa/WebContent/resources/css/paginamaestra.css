@@ -148,6 +148,8 @@ html {
 }
 .icono_x{
     background: url("../../resources/imagenes/x.png") no-repeat center;
+    width: 83px;
+    height: 29px;
 }
 .botones_navegacion.selected {
     background: #333537;
