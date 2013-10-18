@@ -203,7 +203,7 @@ footer p{
 	padding: 2px;
 	border-radius: 2px;
 }
-#loginForm .boton_verde {
+#loginForm .boton_verde, #openid_form .boton_verde {
 	background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxIDEiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPgo8bGluZWFyR3JhZGllbnQgaWQ9Imc5NDQiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CjxzdG9wIHN0b3AtY29sb3I9IiM3NUM3MTgiIG9mZnNldD0iMCIvPjxzdG9wIHN0b3AtY29sb3I9IiMwNjYxMDYiIG9mZnNldD0iMSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2c5NDQpIiAvPgo8L3N2Zz4=)!important;
     color: white!important;
     font-weight: normal!important;

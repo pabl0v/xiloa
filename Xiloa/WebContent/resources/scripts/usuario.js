@@ -1,11 +1,15 @@
 $(document).ready(function() {
     //run code that MUST be after initialize
+	openid.init('openid_identifier');
 	$("#loginForm").appendTo("#aqui_formulario");
+	$("#openid_form").appendTo("#opciones_openid");
 });
 
 
 
 $(function(){
+	
+	
 	var param1var = getQueryVariable("error");
 	
 	if(param1var == '1'){

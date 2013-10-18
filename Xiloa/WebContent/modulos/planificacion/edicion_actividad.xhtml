@@ -23,17 +23,17 @@
                 <p>Tipo de actividad:</p>
                 <h:form style="display:inline-block;">
                 <p:selectOneMenu style="position:relative; top:7px;" id="city3" value="#{pprBean.city}">  
-                   <f:selectItem itemLabel="Select City" itemValue="" />  
+                   <f:selectItem itemLabel="Tipo de Actividad" itemValue="" />  
                    <f:selectItems value="#{pprBean.cities}" />  
                 </p:selectOneMenu>             
                 <p>Registrado:</p>
-                <span><p:calendar value="#{calendarBean.date3}" id="popupButtonCal2" showOn="button" /></span>  
+                <span><p:calendar value="#{calendarBean.date3}" id="fecha_registrado" showOn="button" /></span>  
                 </h:form>
                 <div class="seccion_interna" style="height:90px; padding: 10px; margin-top:5px;">
              		<h:form>
              		  <div style="dsplay:block;">
                         <p style="width:240px; margin-bottom:20px;">Fecha en que se ejecutara la actividad:</p>
-                        <span style="width:60px"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal1" showOn="button" /></span>
+                        <span style="width:60px"><p:calendar value="#{calendarBean.date3}" id="fecha_ejecutara" showOn="button" /></span>
                       </div>   
                         <p>Hora:</p>
                         <p:inputText style="margin-left:5px;"></p:inputText>  
@@ -62,7 +62,7 @@
                 <h3>Objetivo y alcanze de la actividad</h3>
                 <h:form>
                      <div class="seccion_interna">
-                         <p:editor id="editor" value="#{editorBean.value}" height="160"/>                  
+                         <p:editor id="edtor_objetivo" value="#{editorBean.value}" height="160"/>                  
                      </div>    
                 </h:form>
             </div>     
@@ -70,14 +70,14 @@
                  <h:form>
                     <p>Nombre del centro evaluador:</p>
                       <p:selectOneMenu style="position:relative;top:7px;margin-left:5px;" id="city" value="#{pprBean.city}">  
-                        <f:selectItem itemLabel="Select City" itemValue="" />  
+                        <f:selectItem itemLabel="Nombre del centro" itemValue="" />  
                         <f:selectItems value="#{pprBean.cities}" />  
                       </p:selectOneMenu>  
                     <p style="display:block;margin-top:10px;">Direccion del centro evaluador:</p>
                     <p:inputTextarea style="width:100%" completeMethod="#{autoCompleteBean.completeArea}" queryDelay="750" minQueryLength="4" />  
 	                <p>Estatus:</p>
-	                <p:selectOneMenu style="position:relative;top:7px;margin-left:5px;" id="citydsf" value="#{pprBean.city}">  
-	                   <f:selectItem itemLabel="Select City" itemValue="" />  
+	                <p:selectOneMenu style="position:relative;top:7px;margin-left:5px;" id="estatus" value="#{pprBean.city}">  
+	                   <f:selectItem itemLabel="Estatus" itemValue="" />  
 	                   <f:selectItems value="#{pprBean.cities}" />  
 	                </p:selectOneMenu>
                 </h:form>   
@@ -87,7 +87,7 @@
                 <h3>Materiales y/o documentos a utilizar</h3>
                 <h:form>
                      <div class="seccion_interna">
-                         <p:editor id="editor2" value="#{editorBean.value}" height="160"/>                  
+                         <p:editor id="editor_materiales" value="#{editorBean.value}" height="160"/>                  
                      </div>    
                 </h:form>
             </div>
