@@ -3,9 +3,6 @@ package controller;
 import java.io.IOException;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -30,6 +27,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 
+import service.IService;
+
 //@ManagedBean(name="loginController")
 //@RequestScoped
 @Controller
@@ -43,6 +42,8 @@ public class LoginController implements PhaseListener {
 	//@ManagedProperty(value="#{authenticationManager}")
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	@Autowired
+	private IService service;
 	
     public AuthenticationManager getAuthenticationManager() {
     	return authenticationManager;
@@ -91,7 +92,7 @@ public class LoginController implements PhaseListener {
 		
 		RequestDispatcher dispatcher = ((ServletRequest) context.getRequest()).getRequestDispatcher("/j_spring_openid_security_check");
 		dispatcher.forward((ServletRequest) context.getRequest(),(ServletResponse)context.getResponse());
-	    FacesContext.getCurrentInstance().responseComplete();
+	    FacesContext.getCurrentInstance().responseComplete();	    
 	    return null;
 	}
 	

@@ -20,7 +20,7 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "usuario_id")
-	private Long id;
+	private int id;
 	
 	@OneToOne(fetch=FetchType.LAZY, mappedBy="usuario")
 	private Contacto contacto;
@@ -46,11 +46,11 @@ public class Usuario {
 	@Column(name = "usuario_estatus", nullable = false)
 	private boolean usuarioEstatus;
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

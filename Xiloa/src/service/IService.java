@@ -17,4 +17,6 @@ public interface IService {
 	public List<Planificacion> getPlanificacion();
 	public List<UCompetencia> getUcompetenciaSinPlanificar();
 	public List<Involucrado> getContactos();
+	public Usuario getUsuario(String username);
+	public void RegistrarUsuario(Usuario usuario);
 }

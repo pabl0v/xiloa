@@ -16,6 +16,7 @@ import support.UCompetencia;
 import dao.IDao;
 import model.Contacto;
 import model.Requisito;
+import model.Rol;
 import model.Usuario;
 
 @Service
@@ -28,6 +29,8 @@ public class ServiceImp implements IService {
 	private IDao<Usuario> usuarioDao;
 	@Autowired
 	private IDao<Contacto> contactoDao;
+	@Autowired
+	private IDao<Rol> rolDao;
 	
 	@Override
 	public List<Requisito> getRequisitos(int certificacionId) {
@@ -107,5 +110,16 @@ public class ServiceImp implements IService {
 			involucrados.add(involucrado);
 		}
 		return involucrados;
+	}
+
+	@Override
+	public Usuario getUsuario(String username) {
+		return usuarioDao.findByQuery("Select u from usuario u where u.usuarioAlias="+username).get(0);
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void RegistrarUsuario(Usuario usuario) {
+		usuarioDao.save(usuario);
 	}
 }

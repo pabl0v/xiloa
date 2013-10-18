@@ -23,11 +23,18 @@
 			default-target-url="/modulos/planificacion/planificacion.xhtml" />
 		-->	
 		
-		<openid-login
-			login-page="/demo"
-			authentication-failure-url="/demo?error=true" 
-			default-target-url="/modulos/planificacion/planificacion.xhtml"/>
-			
+		<openid-login 
+				login-page="/demo" 
+				authentication-failure-url="/demo?error=true" 
+				default-target-url="/modulos/planificacion/planificacion.xhtml"
+				user-service-ref="registeringOpenIdUser">
+					<attribute-exchange identifier-match="https://www.google.com/.*">
+					<openid-attribute name="email" type="http://axschema.org/contact/email" required="true" count="1"/>
+					<openid-attribute name="firstname" type="http://axschema.org/namePerson/first" required="true"/>
+					<openid-attribute name="lastname" type="http://axschema.org/namePerson/last" required="true"/>
+		</attribute-exchange>
+		</openid-login>
+
 		<logout
 			invalidate-session="true"
 			logout-success-url="/login"

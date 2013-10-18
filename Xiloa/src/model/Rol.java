@@ -20,7 +20,7 @@ public class Rol {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "rol_id")
-	private Long id;
+	private int id;
 	
 	@Column(name = "rol_nombre", nullable = false)	
 	private String nombre;
@@ -42,11 +42,11 @@ public class Rol {
 	@Column(name = "rol_estatus", nullable = false)
 	private boolean estatus;
 	
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
