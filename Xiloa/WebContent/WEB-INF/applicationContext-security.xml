@@ -24,9 +24,9 @@
 		-->	
 		
 		<openid-login
-			login-page="/demo" 
+			login-page="/demo"
 			authentication-failure-url="/demo?error=true" 
-			default-target-url="/demo"/>
+			default-target-url="/modulos/planificacion/planificacion.xhtml"/>
 			
 		<logout
 			invalidate-session="true"
@@ -37,7 +37,6 @@
 		</session-management>
 	</http>
 
-	<!--
 	<authentication-manager alias = "authenticationManager">
 		<authentication-provider>
 			<password-encoder hash="sha"/>
@@ -48,18 +47,16 @@
 			/>
 		</authentication-provider>
 	</authentication-manager>
-	-->
 	
+	<!--
 	<authentication-manager alias = "authenticationManager">
 	        <authentication-provider user-service-ref="userDetailsService">
-	        		<!--  <password-encoder ref="passwordEncoder"/>-->
 	        </authentication-provider>
 	</authentication-manager>
 	
 	<user-service id="userDetailsService">
-	 	<!-- user name is based on the returned open id identifier -->
-	 	<!-- YOU MUST MANUALLY ADD THE RETURNED OPENID IDENTIFIER HERE -->
-	    <user name="http://krams915.blogspot.com/" password="" authorities="ROLE_USER, ROLE_ADMIN" />
+	    <user name="https://www.google.com/accounts/o8/id?id=AItOawlUBMyHuZBKUCOxbCL_6yaAQR08okwS214" password="" authorities="ROLE_USER, ROLE_ADMIN" />
 	 </user-service>
+	 -->
 	
 </beans:beans>
