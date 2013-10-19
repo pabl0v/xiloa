@@ -11,11 +11,11 @@
 
 	<http auto-config="true" use-expressions="true">
 		<intercept-url pattern="/modulos/usuario/index*" access="permitAll" />
-		<intercept-url pattern="/modulos/compartido/**" access="permitAll" />
-		<intercept-url pattern="/modulos/planificacion/**" access="isAuthenticated()" />
+		<intercept-url pattern="/modulos/usuario/**" access="isAuthenticated()" />		
+		<intercept-url pattern="/modulos/compartido/**" access="isAuthenticated()" />
+		<intercept-url pattern="/modulos/planificacion/**" access="hasRole('admin')" />
 		<intercept-url pattern="/modulos/solicitudes/**" access="isAuthenticated()" />
-		<intercept-url pattern="/**" access="permitAll" />
-		<intercept-url pattern="/*" access="isAuthenticated()" />
+		<intercept-url pattern="/login*" access="permitAll" />
 		
 		<!--
 		<form-login
@@ -60,16 +60,5 @@
 			/>
 		</authentication-provider>
 	</authentication-manager>
-	
-	<!--
-	<authentication-manager alias = "authenticationManager">
-	        <authentication-provider user-service-ref="userDetailsService">
-	        </authentication-provider>
-	</authentication-manager>
-	
-	<user-service id="userDetailsService">
-	    <user name="https://www.google.com/accounts/o8/id?id=AItOawlUBMyHuZBKUCOxbCL_6yaAQR08okwS214" password="" authorities="ROLE_USER, ROLE_ADMIN" />
-	 </user-service>
-	 -->
-	
+		
 </beans:beans>

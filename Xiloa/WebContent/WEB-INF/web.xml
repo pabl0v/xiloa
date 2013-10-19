@@ -77,6 +77,10 @@
 	</welcome-file-list>
 	-->
 	
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
+	
 	<!-- Spring Security Filters -->
 
 	<filter>

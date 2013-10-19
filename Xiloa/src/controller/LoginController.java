@@ -27,8 +27,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 
-import service.IService;
-
 //@ManagedBean(name="loginController")
 //@RequestScoped
 @Controller
