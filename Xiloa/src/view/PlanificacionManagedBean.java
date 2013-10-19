@@ -23,6 +23,7 @@ public class PlanificacionManagedBean {
 	private List<Involucrado> contactos = new ArrayList<Involucrado>();
 	private UCompetencia selectedCompetencia;
 	private Involucrado[] selectedContactos;
+	private Planificacion selectedPlanificacion;
 		
 	public List<Planificacion> getPlanificaciones(){
 		System.out.println("getPlanificaciones method called...");
@@ -31,7 +32,6 @@ public class PlanificacionManagedBean {
 	}
 	
 	public List<UCompetencia> getCompetencias(){
-		System.out.println("getCompetencias method called...");
 		competencias = service.getUcompetenciaSinPlanificar();
 		return competencias;
 	}
@@ -41,7 +41,6 @@ public class PlanificacionManagedBean {
 	}
 
 	public void setSelectedCompetencia(UCompetencia selectedCompetencia) {
-		System.out.println("getSelectedCompetencia method called... "+selectedCompetencia.getNombreCentro());
 		this.selectedCompetencia = selectedCompetencia;
 	}
 
@@ -56,5 +55,13 @@ public class PlanificacionManagedBean {
 
 	public void setSelectedContactos(Involucrado[] selectedContactos) {
 		this.selectedContactos = selectedContactos;
+	}
+
+	public Planificacion getSelectedPlanificacion() {
+		return selectedPlanificacion;
+	}
+
+	public void setSelectedPlanificacion(Planificacion selectedPlanificacion) {
+		this.selectedPlanificacion = selectedPlanificacion;
 	}
 }

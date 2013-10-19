@@ -14,6 +14,7 @@ import support.Planificacion;
 
 import support.UCompetencia;
 import dao.IDao;
+import dao.IDaoInatec;
 import model.Contacto;
 import model.Requisito;
 import model.Rol;
@@ -32,6 +33,8 @@ public class ServiceImp implements IService {
 	private IDao<Contacto> contactoDao;
 	@Autowired
 	private IDao<Rol> rolDao;
+	@Autowired
+	private IDaoInatec inatecDao;
 	
 	@Override
 	public List<Requisito> getRequisitos(int certificacionId) {
@@ -80,7 +83,7 @@ public class ServiceImp implements IService {
 
 	@Override
 	public List<UCompetencia> getUcompetenciaSinPlanificar() {
-		List<UCompetencia> competenciaSinPlanificarList = new ArrayList<UCompetencia>();
+		/*List<UCompetencia> competenciaSinPlanificarList = new ArrayList<UCompetencia>();
 		for(int i = 0; i<5; i++){
 			UCompetencia c = new UCompetencia();
 			c.setIdCentro(i+6);
@@ -90,7 +93,8 @@ public class ServiceImp implements IService {
 			c.setDisponibilidad(10);
 			competenciaSinPlanificarList.add(c);
 		}		
-		return competenciaSinPlanificarList;
+		return competenciaSinPlanificarList;*/
+		return inatecDao.getCertificacionesSinPlanificar();
 	}
 
 	@Override
