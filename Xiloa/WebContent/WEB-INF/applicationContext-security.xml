@@ -7,14 +7,13 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 		
-	<http pattern="/modulos/**" security="none" />
 	<http pattern="/resources/**" security="none" />
 
-
 	<http auto-config="true" use-expressions="true">
-		<intercept-url pattern="/resources/**" access="permitAll" />
 		<intercept-url pattern="/modulos/usuario/index*" access="permitAll" />
+		<intercept-url pattern="/modulos/compartido/**" access="permitAll" />
 		<intercept-url pattern="/modulos/planificacion/**" access="isAuthenticated()" />
+		<intercept-url pattern="/modulos/solicitudes/**" access="isAuthenticated()" />
 		<intercept-url pattern="/**" access="permitAll" />
 		<intercept-url pattern="/*" access="isAuthenticated()" />
 		
@@ -30,11 +29,16 @@
 				authentication-failure-url="/modulos/usuario/index.xhtml?error=true" 
 				default-target-url="/modulos/usuario/visitante.xhtml"
 				user-service-ref="registeringOpenIdUser">
-					<attribute-exchange identifier-match="https://www.google.com/.*">
-					<openid-attribute name="email" type="http://axschema.org/contact/email" required="true" count="1"/>
-					<openid-attribute name="firstname" type="http://axschema.org/namePerson/first" required="true"/>
-					<openid-attribute name="lastname" type="http://axschema.org/namePerson/last" required="true"/>
-		</attribute-exchange>
+			<attribute-exchange identifier-match="https://www.google.com/.*">
+				<openid-attribute name="email" type="http://axschema.org/contact/email" required="true" count="1"/>
+				<openid-attribute name="firstname" type="http://axschema.org/namePerson/first" required="true"/>
+				<openid-attribute name="lastname" type="http://axschema.org/namePerson/last" required="true"/>
+			</attribute-exchange>
+			<attribute-exchange identifier-match=".*yahoo.com*">
+				<openid-attribute name="email" type="http://axschema.org/contact/email" required="true" count="1"/>
+				<openid-attribute name="firstname" type="http://axschema.org/namePerson/first" required="true"/>
+				<openid-attribute name="lastname" type="http://axschema.org/namePerson/last" required="true"/>
+			</attribute-exchange>			
 		</openid-login>
 
 
