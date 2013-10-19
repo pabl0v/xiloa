@@ -25,7 +25,7 @@
 		-->	
 		
 		<openid-login 
-				login-page="/modulos/usuario/index" 
+				login-page="/modulos/usuario/index.xhtml" 
 				authentication-failure-url="/modulos/usuario/index.xhtml?error=true" 
 				default-target-url="/modulos/usuario/visitante.xhtml"
 				user-service-ref="registeringOpenIdUser">
@@ -41,12 +41,11 @@
 			</attribute-exchange>			
 		</openid-login>
 
-
 		<logout
 			invalidate-session="true"
 			logout-success-url="/modulos/usuario/index.xhtml"
 		/>
-		<session-management session-authentication-error-url="/login.xhtml?error=sesionAbierta">
+		<session-management session-authentication-error-url="/modulos/usuario/index.xhtml?error=sesionAbierta">
 			<concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />
 		</session-management>
 	</http>
