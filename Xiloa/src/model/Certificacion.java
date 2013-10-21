@@ -10,10 +10,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -108,12 +110,13 @@ public class Certificacion {
 	@OneToMany(mappedBy = "certificacion")
 	private List<Solicitud> solicitudes;
 	
-	@OneToMany
+	@ManyToMany
 	@JoinTable
 	(
 			name = "pinvolucrados",
-			joinColumns = { @JoinColumn(name = "certificacion_id", referencedColumnName = "certificacion_id") },
-			inverseJoinColumns = { @JoinColumn(name = "contacto_id", referencedColumnName = "contacto_id", unique = true) }
+			joinColumns = @JoinColumn(name = "certificacion_id", unique = false),
+			inverseJoinColumns = @JoinColumn(name = "contacto_id", unique = false),
+			uniqueConstraints = @UniqueConstraint(columnNames = {"certificacion_id", "contacto_id"})
 	)
 	private List<Contacto> involucrados;
 
