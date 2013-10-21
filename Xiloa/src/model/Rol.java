@@ -18,7 +18,6 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @Entity(name = "roles")
 public class Rol {
 
-	
 	@Id
 	@SequenceGenerator(name = "seq_roles", sequenceName = "seq_roles", allocationSize=1, initialValue= 1)
 	@GeneratedValue(strategy=GenerationType.AUTO, generator = "seq_roles")

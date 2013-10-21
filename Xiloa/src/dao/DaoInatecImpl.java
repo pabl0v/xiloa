@@ -4,6 +4,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import model.Rol;
+import model.Usuario;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -20,15 +23,49 @@ public class DaoInatecImpl implements IDaoInatec {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	private static final String SQL_SELECT = "SELECT u.nombre_completo FROM admon.usuario u where u.usuario=?";
+	private static final String SQL_SELECT_USER = 
+			"SELECT "
+			+ "u.id_empleado, "
+			+ "null, "
+			+ "u.usuario, "
+			+ "u.clave, "
+			+ "null, "
+			+ "true "
+			+ "FROM "
+			+ "admon.usuario u "
+			+ "where u.activo = 1 "
+			+ "and u.usuario=?";
+
+	private static final String SQL_SELECT_ROLES = 
+			"select "
+			+"r.id_rol, "
+			+"r.descripcion_rol, "
+			+"r.descripcion_rol "
+			+"from "
+			+"admon.usuarios_sistemas s "
+			+"inner join "
+			+"admon.usuario u "
+			+"on u.usuario = s.usuario "
+			+"and u.id_empleado = s.id_empleado "
+			+"and u.activo = 1 "
+			+"and s.activo = 1 "
+			+"inner join "
+			+"admon.roles r "
+			+"on r.id_rol = s.id_rol "
+			+"and r.activo = 1 "
+			+"and u.usuario=? "
+			+"limit 1";
+
 	private static final String SQL_CERTIFICACIONES_SIN_PLANIFICAR = 
 			"select "
 			+"ci.centroid as id_centro,"
 			+"ci.nombre as nombre,"
 			+"ci.alias as nombre_corto,"
+			+"ci.direccion as direccion,"
 			+"o.id_acuerdo_deta as acreditacion,"
 			+"cc.id_curso id_curso,"
 			+"c.descripcion as nombre_curso,"
+			+"o.costo_normal as costo, "
 			+"o.grupo as grupo_clase,"
 			+"o.cupo as disponibilidad "
 			+"from " 
@@ -41,8 +78,18 @@ public class DaoInatecImpl implements IDaoInatec {
 			+"c.id_tipo_evento=4 "
 			+"order by c.descripcion";
 	
-	public String getUsuario(String usuario){
-		return jdbcTemplate.queryForObject(SQL_SELECT, String.class, usuario);
+	public Usuario getUsuario(String usuario){
+		Usuario user = jdbcTemplate.queryForObject(SQL_SELECT_USER, Usuario.class, usuario);
+		Rol rol = jdbcTemplate.queryForObject(SQL_SELECT_ROLES, Rol.class, usuario);
+		user.setRol(rol);
+		return user;
+	}
+	
+	@Override
+	public void agregarRol(){
+		jdbcTemplate.update(
+		        "insert into admon.roles (id_rol,descripcion_rol,id_sistema,activo,usuario_grabacion,usuario_actualizacion,opciones) values (?,?,?,?,?,?,?)",
+		        213, "Cenicsa",1,1,"tatiana","tatiana","54,63");
 	}
 
 	@Override
@@ -52,10 +99,13 @@ public class DaoInatecImpl implements IDaoInatec {
 		        new RowMapper<UCompetencia>() {
 		            public UCompetencia mapRow(ResultSet rs, int rowNum) throws SQLException {
 		                UCompetencia certificacion = new UCompetencia();
-		                certificacion.setIdCentro(Integer.valueOf(rs.getString("id_centro")));
+		                certificacion.setIdCentro(rs.getInt("id_centro"));
 		                certificacion.setNombreCentro(rs.getString("nombre"));
+		                certificacion.setDireccion(rs.getString("direccion"));
+		                certificacion.setIdUCompetencia(rs.getInt("id_curso"));
 		                certificacion.setNombreUCompetencia(rs.getString("nombre_curso"));
-		                certificacion.setDisponibilidad(Integer.valueOf(rs.getString("disponibilidad")));
+		                certificacion.setCosto(rs.getFloat("costo"));
+		                certificacion.setDisponibilidad(rs.getInt("disponibilidad"));
 		                return certificacion;
 		            }
 		        });

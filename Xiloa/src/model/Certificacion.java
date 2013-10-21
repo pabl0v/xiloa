@@ -73,14 +73,14 @@ public class Certificacion {
 	private Date inscripcionFinaliza;
 	
 	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "certificacion_convocatoria_finaliza", nullable = false)
+	@Column(name = "certificacion_convocatoria_inicia", nullable = false)
 	@Temporal(TemporalType.DATE)
-	private Date convocatoriaFinaliza;
+	private Date convocatoriaInicia;
 	
 	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "certificacion_evaluacion_finaliza", nullable = false)
+	@Column(name = "certificacion_evaluacion_inicia", nullable = false)
 	@Temporal(TemporalType.DATE)
-	private Date evaluacionFinaliza;
+	private Date evaluacionInicia;
 	
 	@NotNull
 	@ManyToOne
@@ -213,20 +213,20 @@ public class Certificacion {
 		this.inscripcionFinaliza = inscripcionFinaliza;
 	}
 
-	public Date getConvocatoriaFinaliza() {
-		return convocatoriaFinaliza;
+	public Date getConvocatoriaInicia() {
+		return convocatoriaInicia;
 	}
 
-	public void setConvocatoriaFinaliza(Date convocatoriaFinaliza) {
-		this.convocatoriaFinaliza = convocatoriaFinaliza;
+	public void setConvocatoriaInicia(Date convocatoriaInicia) {
+		this.convocatoriaInicia = convocatoriaInicia;
 	}
 
-	public Date getEvaluacionFinaliza() {
-		return evaluacionFinaliza;
+	public Date getEvaluacionInicia() {
+		return evaluacionInicia;
 	}
 
-	public void setEvaluacionFinaliza(Date evaluacionFinaliza) {
-		this.evaluacionFinaliza = evaluacionFinaliza;
+	public void setEvaluacionInicia(Date evaluacionInicia) {
+		this.evaluacionInicia = evaluacionInicia;
 	}
 
 	public Usuario getCreador() {

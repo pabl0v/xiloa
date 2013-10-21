@@ -39,7 +39,15 @@
 	</bean>
 	
 	<!-- TransactionManager -->
-	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" />         
+	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" />
+
+	<!--
+	<bean id="transactionManagerInatec" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="inatecDataSource" />
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManagerInatec"/>
+	-->
      
     <tx:annotation-driven/>    
     <context:annotation-config/>

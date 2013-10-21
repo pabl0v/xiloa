@@ -1,9 +1,14 @@
 package service;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,16 +20,21 @@ import support.Planificacion;
 import support.UCompetencia;
 import dao.IDao;
 import dao.IDaoInatec;
+import model.Actividad;
+import model.Certificacion;
 import model.Contacto;
 import model.Requisito;
 import model.Rol;
+import model.Solicitud;
+import model.Unidad;
 import model.Usuario;
 
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class ServiceImp implements IService {
 	
-	
+	@Autowired
+	private IDao<Certificacion> certificacionDao;
 	@Autowired
 	private IDao<Requisito> requisitoDao;
 	@Autowired
@@ -35,6 +45,60 @@ public class ServiceImp implements IService {
 	private IDao<Rol> rolDao;
 	@Autowired
 	private IDaoInatec inatecDao;
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void guardarCertificacion(	String nombre, 
+										String descripcion,
+										Date fechaInicia, 
+										Date fechaFinaliza, 
+										int ifp, 
+										String ifpNombre,
+										String ifpDireccion, 
+										Usuario programador,
+										Date fechaIniciaDivulgacion, 
+										Date fechaFinalizaDivulgacion,
+										Date fechaFinalizaInscripcion, 
+										Date fechaIniciaConvocatoria,
+										Date fechaIniciaEvaluacion, 
+										Usuario creador, 
+										String referencial,
+										int nivelCompetencia, 
+										List<Requisito> requisitos,
+										List<Unidad> unidades, 
+										List<Actividad> actividades,
+										List<Solicitud> solicitudes, 
+										List<Contacto> involucrados,
+										String estatus) {
+		Contacto contacto = contactoDao.findOneByQuery("select c from contactos c where c.id=1");
+		List<Contacto> contactos = new ArrayList<Contacto>();
+		contactos.add(contacto);
+		Usuario usuario = usuarioDao.findOneByQuery("select u from usuarios u where u.id=3");
+		Certificacion certificacion = new Certificacion();
+		certificacion.setNombre(nombre);
+		certificacion.setDescripcion(descripcion);
+		certificacion.setInicia(fechaInicia);
+		certificacion.setFinaliza(fechaFinaliza);
+		certificacion.setIfpId(ifp);
+		certificacion.setIfpNombre(ifpNombre);
+		certificacion.setIfpDireccion(ifpDireccion);
+		certificacion.setProgramador(usuario);	//programador
+		certificacion.setDivulgacionInicia(fechaIniciaDivulgacion);
+		certificacion.setDivulgacionFinaliza(fechaFinalizaDivulgacion);
+		certificacion.setInscripcionFinaliza(fechaFinalizaInscripcion);
+		certificacion.setConvocatoriaInicia(fechaIniciaConvocatoria);
+		certificacion.setEvaluacionInicia(fechaIniciaEvaluacion);
+		certificacion.setCreador(usuario);		//creador
+		certificacion.setReferencial(referencial);
+		certificacion.setNivelCompetencia(nivelCompetencia);
+		certificacion.setUnidades(unidades);
+		certificacion.setActividades(actividades);
+		certificacion.setSolicitudes(solicitudes);
+		certificacion.setInvolucrados(contactos);
+		certificacion.setEstatus(1);
+		
+		certificacionDao.save(certificacion);
+	}
 	
 	@Override
 	public List<Requisito> getRequisitos(int certificacionId) {
@@ -94,6 +158,7 @@ public class ServiceImp implements IService {
 			competenciaSinPlanificarList.add(c);
 		}		
 		return competenciaSinPlanificarList;*/
+		//inatecDao.agregarRol();
 		return inatecDao.getCertificacionesSinPlanificar();
 	}
 
@@ -137,5 +202,25 @@ public class ServiceImp implements IService {
 		usuario.setUsuarioEstatus(true);
 		usuario.setRol(rolDao.findOneByQuery("Select r from roles r where r.estatus='true' and r.nombre="+"'"+rol+"'"));
 		usuarioDao.save(usuario);
+	}
+
+	@Override
+	public User loadUserByUsernameFromLocal(String username) {
+		User user = null;
+		Usuario usuario = new Usuario();
+		usuario = usuarioDao.findOneByQuery("Select u from usuarios u where u.usuarioEstatus='true' and u.usuarioAlias="+"'"+username+"'");		
+		Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(usuario.getRol().getNombre());
+		user = new User(usuario.getUsuarioAlias(),usuario.getUsuarioPwd(),authorities);
+		return user;
+	}
+
+	@Override
+	public User loadUserByUsernameFromInatec(String username) {
+		System.out.println("From Inatec..."+username);
+		User user = null;
+		Usuario usuario = inatecDao.getUsuario(username);
+		Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(usuario.getRol().getNombre());
+		user = new User(usuario.getUsuarioAlias(),usuario.getUsuarioPwd(),authorities);
+		return user;
 	}
 }

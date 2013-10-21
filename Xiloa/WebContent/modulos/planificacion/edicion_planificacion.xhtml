@@ -16,7 +16,7 @@
 		    </ui:insert>
 		    <script type="text/javascript" src="../../resources/scripts/edicion_planificacion.js"></script>
 		</div>
-        <h2>Unidad de Competencia: Certificacion CISCO</h2>
+        <h2>Unidad de Competencia:  <h:outputText value="#{certificacionManagedBean.nombreCertificacion}" /> </h2>
         <div id="contenedor_secciones">                   
             <div class="seccion_edicion">
                 <h3>Planificacion</h3>
@@ -24,19 +24,19 @@
                     <h:form>
                         <div class="contenedor_calendario">
                             <p>Inicia la divulgacion:</p>
-                            <span class="proteccion_calendario"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal1" showOn="button" /></span>  
+                            <span class="proteccion_calendario"><p:calendar value="#{certificacionManagedBean.fechaIniciaDivulgacion}" id="popupButtonCal1" showOn="button" /></span>  
                         </div>    
                         <div class="contenedor_calendario">
                             <p>Finaliza la inscripcion:</p>
-                            <span class="proteccion_calendario"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal2" showOn="button" /></span>  
+                            <span class="proteccion_calendario"><p:calendar value="#{certificacionManagedBean.fechaFinalizaInscripcion}" id="popupButtonCal2" showOn="button" /></span>  
                         </div>
                         <div class="contenedor_calendario">
                             <p>Iniciar convocatorias:</p>
-                            <span class="proteccion_calendario"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal3" showOn="button" /></span>  
+                            <span class="proteccion_calendario"><p:calendar value="#{certificacionManagedBean.fechaIniciaConvocatoria}" id="popupButtonCal3" showOn="button" /></span>  
                         </div>
                         <div class="contenedor_calendario">
                             <p>Inicia evaluaciones:</p>
-                            <span class="proteccion_calendario"><p:calendar value="#{calendarBean.date3}" id="popupButtonCal4" showOn="button" /></span>  
+                            <span class="proteccion_calendario"><p:calendar value="#{certificacionManagedBean.fechaIniciaEvaluacion}" id="popupButtonCal4" showOn="button" /></span>  
                         </div>
                     </h:form>
                 </div>
@@ -61,11 +61,12 @@
                 <h3>Descripcion de la unidad</h3>
                 <h:form>
                      <div>
-                         <p:editor id="editor2" value="#{editorBean.value}" height="190"/>                  
+                         <!--<p:editor id="editor2" value="#{editorBean.value}" height="190"/>-->
+                         <p:editor id="editor2" value="#{certificacionManagedBean.descripcionCertificacion}" height="190"/>   
                      </div>    
                      <p>Estatus</p>
                      <p:selectOneMenu id="selector_estatus" styleClass="selector_status_estilo" value="#{pprBean.city}">  
-                        <f:selectItem itemLabel="Select City" itemValue="" />  
+                        <f:selectItem itemLabel="Planificado" itemValue="" />
                         <f:selectItems value="#{pprBean.cities}" />  
                     </p:selectOneMenu>  
                 </h:form>
@@ -74,12 +75,13 @@
             <div class="seccion_edicion" style="height: 260px">
                  <h:form>
                     <p>Nombre del centro evaluador</p>
-                    <p:inputText id="txt" styleClass="selector_nombrecentro_estilo" value="#{planificacionManagedBean.selectedCompetencia.nombreCentro}" /> 
-					<p:poll interval="3" listener="#{planificacionManagedBean.selectedCompetencia.nombreCentro}" update="txt" /> 
+                    <!-- <h:outputText value="#{certificacionManagedBean.nombreCentro}" />-->
+                    <p:inputText id="txt" styleClass="selector_nombrecentro_estilo" value="#{certificacionManagedBean.nombreCentro}" /> 
+					<!--  <p:poll interval="3" listener="#{planificacionManagedBean.selectedCompetencia.nombreCentro}" update="txt" />--> 
                     <p style="display:block"><br/>Direccion del centro evaluador</p>
-                    <p:inputTextarea rows="105" cols="68" completeMethod="#{autoCompleteBean.completeArea}" queryDelay="750" minQueryLength="4" />  
+                    <p:inputTextarea rows="105" cols="68" value="#{certificacionManagedBean.direccionCentro}" completeMethod="#{certificacionManagedBean.direccionCentro}" queryDelay="750" minQueryLength="4" />  
                     <p style="margin-right:5px;"><br/>Costo de aranceles para el candidato:</p>
-                    <p:inputText />  
+                    <p:inputText value="#{certificacionManagedBean.costo}" />  
                 </h:form>   
             </div>
             <div class="seccion_edicion" style="height: 1px"></div>
@@ -87,7 +89,7 @@
 	            <div class="contenedor_botones">
 		               <h:form>
 		                    <p:commandButton value="Cancelar"/> 
-		                    <p:commandButton value="Aceptar"/> 
+		                    <p:commandButton value="Aceptar" action="#{certificacionManagedBean.guardar}"/> 
 		               </h:form>
 	            </div>
             </div>

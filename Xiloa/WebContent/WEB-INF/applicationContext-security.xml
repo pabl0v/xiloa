@@ -24,7 +24,7 @@
 			default-target-url="/modulos/planificacion/planificacion.xhtml" />
 		-->	
 		
-		<openid-login 
+		<openid-login
 				login-page="/modulos/usuario/index.xhtml" 
 				authentication-failure-url="/modulos/usuario/index.xhtml?error=true" 
 				default-target-url="/modulos/usuario/visitante.xhtml"
@@ -49,6 +49,18 @@
 			<concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />
 		</session-management>
 	</http>
+	
+	<!--
+	<authentication-manager alias = "authenticationManager">
+		<authentication-provider user-service-ref = "localUserService">
+			<password-encoder hash="sha"/>
+		</authentication-provider>
+		<authentication-provider user-service-ref = "inatecUserService">
+			<password-encoder hash="sha"/>
+		</authentication-provider>
+		<authentication-provider user-service-ref = "openIdUserService" />
+	</authentication-manager>
+	-->
 
 	<authentication-manager alias = "authenticationManager">
 		<authentication-provider>
@@ -60,5 +72,18 @@
 			/>
 		</authentication-provider>
 	</authentication-manager>
-		
+	
+	<!--
+	<authentication-manager alias = "authenticationManager">
+		<authentication-provider>
+			<password-encoder hash="md5"/>
+			<jdbc-user-service
+				data-source-ref="inatecDataSource"
+				users-by-username-query = "select usuario,clave,true from admon.usuario where activo = 1 and usuario = ?"
+				authorities-by-username-query =	"select usuario,'admin' from admon.usuario where activo = 1 and usuario = ?"
+			/>
+		</authentication-provider>
+	</authentication-manager>
+	-->
+	
 </beans:beans>
