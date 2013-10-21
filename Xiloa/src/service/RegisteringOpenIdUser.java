@@ -9,12 +9,12 @@ import org.springframework.security.openid.OpenIDAttribute;
 import org.springframework.security.openid.OpenIDAuthenticationToken;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public class RegisteringOpenIdUser implements UserDetailsService, AuthenticationUserDetailsService<OpenIDAuthenticationToken> {
 	
-	@Autowired
+	//@Autowired
 	private UserDetailsService databaseAuthentication;
-	@Autowired
+	//@Autowired
 	private IService service;
 
 	@Override

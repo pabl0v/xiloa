@@ -25,12 +25,12 @@ public class DaoInatecImpl implements IDaoInatec {
 	
 	private static final String SQL_SELECT_USER = 
 			"SELECT "
-			+ "u.id_empleado, "
-			+ "null, "
-			+ "u.usuario, "
-			+ "u.clave, "
-			+ "null, "
-			+ "true "
+			+ "u.id_empleado as id, "
+			+ "null as nombre, "
+			+ "u.usuario as usuario, "
+			+ "u.clave as clave, "
+			+ "null as rol, "
+			+ "true as estatus "
 			+ "FROM "
 			+ "admon.usuario u "
 			+ "where u.activo = 1 "
@@ -79,8 +79,28 @@ public class DaoInatecImpl implements IDaoInatec {
 			+"order by c.descripcion";
 	
 	public Usuario getUsuario(String usuario){
-		Usuario user = jdbcTemplate.queryForObject(SQL_SELECT_USER, Usuario.class, usuario);
-		Rol rol = jdbcTemplate.queryForObject(SQL_SELECT_ROLES, Rol.class, usuario);
+		
+		Usuario user = jdbcTemplate.queryForObject(
+				SQL_SELECT_USER, 
+				new RowMapper<Usuario>() {
+			        public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
+			          Usuario user = new Usuario();
+			          user.setId(rs.getLong("id"));
+			          user.setUsuarioAlias(rs.getString("usuario"));
+			          user.setUsuarioPwd(rs.getString("clave"));
+			          user.setUsuarioEstatus(rs.getBoolean("estatus"));
+			          return user;
+			        }
+			      },
+				usuario);
+		
+		//Rol rol = jdbcTemplate.queryForObject(SQL_SELECT_ROLES, Rol.class, usuario);
+		Rol rol = new Rol();
+		rol.setId((long)100);
+		rol.setDescripcion("inatec");
+		rol.setNombre("inatec");
+		rol.setEstatus(true);
+		
 		user.setRol(rol);
 		return user;
 	}

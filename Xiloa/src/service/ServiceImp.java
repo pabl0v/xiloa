@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -205,10 +206,12 @@ public class ServiceImp implements IService {
 	}
 
 	@Override
-	public User loadUserByUsernameFromLocal(String username) {
+	public User loadUserByUsernameFromLocal(String username) throws UsernameNotFoundException {
 		User user = null;
 		Usuario usuario = new Usuario();
-		usuario = usuarioDao.findOneByQuery("Select u from usuarios u where u.usuarioEstatus='true' and u.usuarioAlias="+"'"+username+"'");		
+		usuario = usuarioDao.findOneByQuery("Select u from usuarios u where u.usuarioEstatus='true' and u.usuarioAlias="+"'"+username+"'");
+		if(usuario == null)
+			throw new UsernameNotFoundException("Usuario inexistente");
 		Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(usuario.getRol().getNombre());
 		user = new User(usuario.getUsuarioAlias(),usuario.getUsuarioPwd(),authorities);
 		return user;

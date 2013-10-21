@@ -13,7 +13,7 @@
 		<intercept-url pattern="/modulos/usuario/index*" access="permitAll" />
 		<intercept-url pattern="/modulos/usuario/**" access="isAuthenticated()" />		
 		<intercept-url pattern="/modulos/compartido/**" access="isAuthenticated()" />
-		<intercept-url pattern="/modulos/planificacion/**" access="hasRole('admin')" />
+		<intercept-url pattern="/modulos/planificacion/**" access="hasAnyRole('admin','inatec')" />
 		<intercept-url pattern="/modulos/solicitudes/**" access="isAuthenticated()" />
 		<intercept-url pattern="/login*" access="permitAll" />
 		
@@ -28,7 +28,7 @@
 				login-page="/modulos/usuario/index.xhtml" 
 				authentication-failure-url="/modulos/usuario/index.xhtml?error=true" 
 				default-target-url="/modulos/usuario/visitante.xhtml"
-				user-service-ref="registeringOpenIdUser">
+				user-service-ref="openIdUserService">
 			<attribute-exchange identifier-match="https://www.google.com/.*">
 				<openid-attribute name="email" type="http://axschema.org/contact/email" required="true" count="1"/>
 				<openid-attribute name="firstname" type="http://axschema.org/namePerson/first" required="true"/>
@@ -50,18 +50,12 @@
 		</session-management>
 	</http>
 	
-	<!--
 	<authentication-manager alias = "authenticationManager">
-		<authentication-provider user-service-ref = "localUserService">
-			<password-encoder hash="sha"/>
+		<authentication-provider ref = "customUserAuthenticationProvider">
 		</authentication-provider>
-		<authentication-provider user-service-ref = "inatecUserService">
-			<password-encoder hash="sha"/>
-		</authentication-provider>
-		<authentication-provider user-service-ref = "openIdUserService" />
 	</authentication-manager>
-	-->
 
+	<!--autentication local
 	<authentication-manager alias = "authenticationManager">
 		<authentication-provider>
 			<password-encoder hash="sha"/>
@@ -72,8 +66,9 @@
 			/>
 		</authentication-provider>
 	</authentication-manager>
+	-->
 	
-	<!--
+	<!-- autenticacion para el inatec
 	<authentication-manager alias = "authenticationManager">
 		<authentication-provider>
 			<password-encoder hash="md5"/>

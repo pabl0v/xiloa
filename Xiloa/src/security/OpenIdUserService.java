@@ -1,4 +1,4 @@
-/*package security;
+package security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
@@ -16,11 +16,11 @@ public class OpenIdUserService implements UserDetailsService, AuthenticationUser
 
 	@Autowired
 	private IService service;
-	
+
 	@Override
-	public UserDetails loadUserDetails(OpenIDAuthenticationToken token) throws UsernameNotFoundException {
+	public UserDetails loadUserDetails(OpenIDAuthenticationToken token) {
 		String openId = token.getIdentityUrl();
-		//buscar en base de datos local
+
 		try
 		{
 			return service.loadUserByUsernameFromLocal(openId);
@@ -44,4 +44,4 @@ public class OpenIdUserService implements UserDetailsService, AuthenticationUser
 	    }
 	    return null;
 	}
-}*/
+}

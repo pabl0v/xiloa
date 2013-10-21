@@ -27,6 +27,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 
+import security.CustomUsernamePasswordAuthenticationToken;
+
 //@ManagedBean(name="loginController")
 //@RequestScoped
 @Controller
@@ -50,7 +52,8 @@ public class LoginController implements PhaseListener {
     }
 	
 	public String login(){
-		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
+		//UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
+		CustomUsernamePasswordAuthenticationToken token = new CustomUsernamePasswordAuthenticationToken(username, password, true);
 		try{
 			Authentication authentication = authenticationManager.authenticate(token);
 			SecurityContext sContext = SecurityContextHolder.getContext();

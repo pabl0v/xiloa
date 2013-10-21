@@ -1,4 +1,4 @@
-/*package security;
+package security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,13 +16,6 @@ public class LocalUserService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {		
-		//buscar en base de datos local
-		try
-		{
-			return service.loadUserByUsernameFromLocal(username);
-		}
-		catch(UsernameNotFoundException e1){}
-
-		return null;
+		return service.loadUserByUsernameFromLocal(username);
 	}
-}*/
+}

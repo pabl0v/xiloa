@@ -1,4 +1,4 @@
-/*package security;
+package security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,14 +15,7 @@ public class InatecUserService implements UserDetailsService {
 	private IService service;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {		
-		//buscar en base de datos local
-		try
-		{
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 			return service.loadUserByUsernameFromInatec(username);
-		}
-		catch(UsernameNotFoundException e1){}
-
-		return null;
 	}	
-}*/
+}

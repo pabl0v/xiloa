@@ -64,6 +64,10 @@ public class DaoImpl<T extends Object> implements IDao<T>{
 	@SuppressWarnings("unchecked")
 	@Override
 	public T findOneByQuery(String jpql) {
+		
+		if(em.createQuery(jpql).getResultList().isEmpty()){
+			return null;
+		}
 		T result = (T) em.createQuery(jpql).getResultList().get(0);
 		log.debug("finding by query successful, result size : " + 1);
 		return result;

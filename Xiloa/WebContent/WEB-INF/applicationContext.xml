@@ -57,5 +57,6 @@
     <context:component-scan base-package="service" />
     <context:component-scan base-package="dao" />
     <context:component-scan base-package="controller" />
-    <context:component-scan base-package="view" />    
+    <context:component-scan base-package="view" />
+    <context:component-scan base-package="security" />
 </beans>

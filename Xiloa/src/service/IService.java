@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import support.Involucrado;
 import support.Planificacion;
@@ -47,7 +48,7 @@ public interface IService {
 	public List<UCompetencia> getUcompetenciaSinPlanificar();
 	public List<Involucrado> getContactos();
 	public Usuario getUsuario(String username);
-	public User loadUserByUsernameFromLocal(String username);
+	public User loadUserByUsernameFromLocal(String username) throws UsernameNotFoundException;
 	public User loadUserByUsernameFromInatec(String username);
 	public void RegistrarUsuario(Usuario usuario);
 	public void RegistrarUsuarioOpenId(String login, String nombre, String apellido, String email, String rol);

@@ -36,12 +36,12 @@ public class Certificacion {
 	private String descripcion;
 	
 	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "certificacion_inicia", nullable = false)
+	@Column(name = "certificacion_inicia", nullable = true)
 	@Temporal(TemporalType.DATE)
 	private Date inicia;
 	
 	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "certificacion_finaliza", nullable = false)
+	@Column(name = "certificacion_finaliza", nullable = true)
 	@Temporal(TemporalType.DATE)
 	private Date finaliza;
 	
@@ -65,7 +65,7 @@ public class Certificacion {
 	private Date divulgacionInicia;
 	
 	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "certificacion_divulgacion_finaliza", nullable = false)
+	@Column(name = "certificacion_divulgacion_finaliza", nullable = true)
 	@Temporal(TemporalType.DATE)
 	private Date divulgacionFinaliza;
 	
