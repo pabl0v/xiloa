@@ -15,6 +15,8 @@ import service.IService;
 public class OpenIdUserService implements UserDetailsService, AuthenticationUserDetailsService<OpenIDAuthenticationToken> {
 
 	@Autowired
+	private LocalUserService localUserService;
+	@Autowired
 	private IService service;
 
 	@Override
@@ -23,12 +25,12 @@ public class OpenIdUserService implements UserDetailsService, AuthenticationUser
 
 		try
 		{
-			return service.loadUserByUsernameFromLocal(openId);
+			return localUserService.loadUserByUsername(openId);
 		}
 		catch(UsernameNotFoundException e1){}
 		
 		service.RegistrarUsuarioOpenId(openId, getUserData(token, "firstname"), getUserData(token, "lastname"), getUserData(token, "email"), "visitante");
-		return service.loadUserByUsernameFromLocal(openId);
+		return localUserService.loadUserByUsername(openId);
 	}
 
 	@Override

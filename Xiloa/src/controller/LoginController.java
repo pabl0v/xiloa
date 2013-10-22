@@ -53,7 +53,7 @@ public class LoginController implements PhaseListener {
 	
 	public String login(){
 		//UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
-		CustomUsernamePasswordAuthenticationToken token = new CustomUsernamePasswordAuthenticationToken(username, password, true);
+		CustomUsernamePasswordAuthenticationToken token = new CustomUsernamePasswordAuthenticationToken(username, password, false);
 		try{
 			Authentication authentication = authenticationManager.authenticate(token);
 			SecurityContext sContext = SecurityContextHolder.getContext();

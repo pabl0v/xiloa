@@ -49,11 +49,19 @@
 			<concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />
 		</session-management>
 	</http>
-	
+
 	<authentication-manager alias = "authenticationManager">
 		<authentication-provider ref = "customUserAuthenticationProvider">
 		</authentication-provider>
 	</authentication-manager>
+
+	<!--
+	<authentication-manager alias = "authenticationManager">
+		<authentication-provider user-service-ref = "customUserAuthenticationProvider">
+			<password-encoder hash="md5"/>
+		</authentication-provider>
+	</authentication-manager>
+	-->
 
 	<!--autentication local
 	<authentication-manager alias = "authenticationManager">

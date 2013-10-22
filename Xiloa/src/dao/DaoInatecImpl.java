@@ -8,6 +8,7 @@ import model.Rol;
 import model.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -78,29 +79,34 @@ public class DaoInatecImpl implements IDaoInatec {
 			+"c.id_tipo_evento=4 "
 			+"order by c.descripcion";
 	
-	public Usuario getUsuario(String usuario){
-		
-		Usuario user = jdbcTemplate.queryForObject(
-				SQL_SELECT_USER, 
-				new RowMapper<Usuario>() {
-			        public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
-			          Usuario user = new Usuario();
-			          user.setId(rs.getLong("id"));
-			          user.setUsuarioAlias(rs.getString("usuario"));
-			          user.setUsuarioPwd(rs.getString("clave"));
-			          user.setUsuarioEstatus(rs.getBoolean("estatus"));
-			          return user;
-			        }
-			      },
-				usuario);
-		
-		//Rol rol = jdbcTemplate.queryForObject(SQL_SELECT_ROLES, Rol.class, usuario);
+	public Usuario getUsuario(String usuario) {
+		Usuario user = null;
+		try
+		{
+			user = jdbcTemplate.queryForObject(
+					SQL_SELECT_USER, 
+					new RowMapper<Usuario>() {
+				        public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
+				          Usuario user = new Usuario();
+				          user.setId(rs.getLong("id"));
+				          user.setUsuarioAlias(rs.getString("usuario"));
+				          user.setUsuarioPwd(rs.getString("clave"));
+				          user.setUsuarioEstatus(rs.getBoolean("estatus"));
+				          return user;
+				        }
+				      },
+					usuario);			
+		}
+		catch(EmptyResultDataAccessException e)
+		{
+			return null;
+		}
+
 		Rol rol = new Rol();
 		rol.setId((long)100);
 		rol.setDescripcion("inatec");
 		rol.setNombre("inatec");
-		rol.setEstatus(true);
-		
+		rol.setEstatus(true);		
 		user.setRol(rol);
 		return user;
 	}
