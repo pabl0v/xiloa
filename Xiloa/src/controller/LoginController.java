@@ -39,6 +39,7 @@ public class LoginController implements PhaseListener {
 	protected final Log logger = LogFactory.getLog(getClass());
 	private String username;
 	private String password;
+	private boolean inatec;
 	//@ManagedProperty(value="#{authenticationManager}")
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -52,8 +53,9 @@ public class LoginController implements PhaseListener {
     }
 	
 	public String login(){
+		System.out.println("inatec: "+inatec);
 		//UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
-		CustomUsernamePasswordAuthenticationToken token = new CustomUsernamePasswordAuthenticationToken(username, password, false);
+		CustomUsernamePasswordAuthenticationToken token = new CustomUsernamePasswordAuthenticationToken(username, password, inatec);
 		try{
 			Authentication authentication = authenticationManager.authenticate(token);
 			SecurityContext sContext = SecurityContextHolder.getContext();
@@ -147,5 +149,13 @@ public class LoginController implements PhaseListener {
 	 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public boolean isInatec() {
+		return inatec;
+	}
+
+	public void setInatec(boolean inatec) {
+		this.inatec = inatec;
 	}
 }

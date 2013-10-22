@@ -60,6 +60,8 @@
 			     <h:outputLabel for="password" value="Contraseña:" />  
 				 <h:inputSecret id="password" label="password" required="true" requiredMessage="La contraseña es requerida" value="#{loginController.password}" />  
 			     <h:commandButton styleClass="boton_verde" type="submit" id="login" value="Continuar" action="#{loginController.login}" />
+			     <h:outputText value="Usuario INATEC: " />  
+        	     <p:selectBooleanCheckbox value="#{loginController.inatec}" />
 				</h:form>
 				<!-- Formulario para login de OpenID -->
 				<h:form id="openid_form">
