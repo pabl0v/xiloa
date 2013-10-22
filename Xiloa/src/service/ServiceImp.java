@@ -218,13 +218,53 @@ public class ServiceImp implements IService {
 
 	@Override
 	public User loadUserByUsernameFromInatec(String username) {
-		System.out.println("From Inatec..."+username);
 		User user = null;
-		Usuario usuario = inatecDao.getUsuario(username);
+		Usuario usuario = inatecDao.getUsuario(username);		
 		if(usuario != null){
 			Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(usuario.getRol().getNombre());
 			user = new User(usuario.getUsuarioAlias(),usuario.getUsuarioPwd(),authorities);			
 		}
 		return user;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void registrarUsuarioInatec(	int entidadId, 
+										String primerNombre,
+										String segundoNombre,
+										String primerApellido,
+										String segundoApellido, 
+										int sexo,
+										String correo, 
+										String telefono,
+										int tipoContacto, 
+										int tipoIdentificacion,
+										String direccionActual,
+										String numeroIdentificacion, 
+										Date fechaNacimiento,
+										int nacionalidadId, 
+										String lugarNacimiento, 
+										String funcion, 
+										Long idEmpleado) {
+			Contacto contacto = new Contacto();
+			contacto.setEntidadId(entidadId);
+			contacto.setPrimerNombre(primerNombre);
+			contacto.setSegundoNombre(segundoNombre);
+			contacto.setPrimerApellido(primerApellido);
+			contacto.setSegundoApellido(segundoApellido);
+			contacto.setSexo(sexo);
+			contacto.setCorreo1(correo);
+			contacto.setTelefono1(telefono);
+			contacto.setTipoContacto(tipoContacto);
+			contacto.setTipoIdentificacion(tipoIdentificacion);
+			contacto.setDireccionActual(direccionActual);
+			contacto.setNumeroIdentificacion(numeroIdentificacion);			
+			contacto.setFechaNacimiento(fechaNacimiento);
+			contacto.setNacionalidadId(nacionalidadId);
+			contacto.setLugarNacimiento(lugarNacimiento);
+			contacto.setFuncion(funcion);
+			contacto.setIdEmpleado(idEmpleado);
+			
+			contactoDao.save(contacto);
 	}
 }

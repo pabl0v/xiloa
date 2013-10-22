@@ -223,3 +223,166 @@ null,
 5;
 
 alter sequence seq_usuarios start with 6;
+
+--script para BD Inatec
+
+--registrando el sistema
+
+insert into admon.sistemas(
+id_sistema,
+nombre_sistema,
+siglas,
+activo,
+usuario_grabacion,
+fecha_grabacion,
+usuario_actualizacion,
+alias)
+select
+40 id_sistema,
+'Sistema de Certificacion de Competencias Laborales' as nombre_sistema,
+'SCCL' as siglas,
+1 as activo,
+'admin' usuario_grabacion,
+'20131022' as fecha_grabacion,
+null as usuario_actualizacion,
+null as alias;
+
+--creando una cuenta administrador para el sistema
+
+insert into admon.usuario(
+usuario,
+id_empleado,
+id_centro,
+clave,
+clave_anterior,
+nombre_completo,
+cargo_usuario,
+tipo_usuario,
+correo,
+contador_intentos,
+activo,
+fecha_cambio_clave,
+usuario_grabacion,
+fecha_grabacion,
+estado)
+select
+'admin',
+null as id_empleado,
+1000 as id_centro,
+'admin' as clave,
+'admin' as clave_anterior,
+'Administrador SCCL' as nombre_completo,
+'Administrador SCCL' as cargo_usuario,
+1 as tipo_usuario,
+null as correo,
+0 as contador_intentos,
+1 as activo,
+now() as fecha_cambio_clave,
+'admin' as usuario_grabacion,
+now() as fecha_grabacion,
+1 as estado
+
+--creando los roles
+
+insert into admon.roles(
+id_rol,
+descripcion_rol,
+id_sistema,
+activo,
+usuario_grabacion,
+fecha_grabacion)
+select
+213 as id_rol,
+'Supervisor' as descripcion_rol,
+40 as id_sistema,
+1 as activo,
+'admon' as usuario_grabacion,
+now() as fecha_grabacion
+union
+select
+214 as id_rol,
+'Evaluador' as descripcion_rol,
+40 as id_sistema,
+1 as activo,
+'admon' as usuario_grabacion,
+now() as fecha_grabacion
+union
+select
+215 as id_rol,
+'Tecnico Docente' as descripcion_rol,
+40 as id_sistema,
+1 as activo,
+'admon' as usuario_grabacion,
+now() as fecha_grabacion
+union
+select
+216 as id_rol,
+'Registro Academico' as descripcion_rol,
+40 as id_sistema,
+1 as activo,
+'admon' as usuario_grabacion,
+now() as fecha_grabacion
+union
+select
+217 as id_rol,
+'Administrador' as descripcion_rol,
+40 as id_sistema,
+1 as activo,
+'admon' as usuario_grabacion,
+now() as fecha_grabacion;
+
+--asignando roles a los usuarios inatec
+
+--asignando usuarios a roles
+
+insert into admon.usuarios_sistemas(
+id_sistema,
+id_empleado,
+usuario,
+id_rol,
+activo,
+usuario_grabacion,
+fecha_grabacion)
+select
+40 as id_sistema,
+id_empleado as id_empleado,
+usuario as usuario,
+213 as id_rol,
+1 as activo,
+'admin' as usuario_grabacion,
+now() as fecha_grabacion
+from admon.usuario
+where usuario='djanson'
+union
+select
+40 as id_sistema,
+id_empleado as id_empleado,
+usuario as usuario,
+214 as id_rol,
+1 as activo,
+'admin' as usuario_grabacion,
+now() as fecha_grabacion
+from admon.usuario
+where usuario='cromero'
+union
+select
+40 as id_sistema,
+id_empleado as id_empleado,
+usuario as usuario,
+215 as id_rol,
+1 as activo,
+'admin' as usuario_grabacion,
+now() as fecha_grabacion
+from admon.usuario
+where usuario='ccantarero'
+union
+select
+40 as id_sistema,
+id_empleado as id_empleado,
+usuario as usuario,
+216 as id_rol,
+1 as activo,
+'admin' as usuario_grabacion,
+now() as fecha_grabacion
+from admon.usuario
+where usuario='admin';

@@ -17,6 +17,24 @@ import model.Usuario;
 
 public interface IService {
 	
+	public void registrarUsuarioInatec(	int entidadId,
+										String primerNombre,
+										String segundoNombre,
+										String primerApellido,
+										String segundoApellido,
+										int sexo,
+										String correo,
+										String telefono,
+										int tipoContacto,
+										int tipoIdentificacion,
+										String direccionActual,
+										String numeroIdentificacion,
+										Date fechaNacimiento,
+										int nacionalidadId,
+										String lugarNacimiento,
+										String funcion,
+										Long idEmpleado);
+	
 	public void guardarCertificacion(	String nombre, 
 										String descripcion,
 										Date fechaInicia,

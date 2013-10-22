@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import model.Contacto;
 import model.Rol;
 import model.Usuario;
 
@@ -23,6 +24,19 @@ public class DaoInatecImpl implements IDaoInatec {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
+	private static final String SQL_SELECT_CONTACTO_INATEC = 
+			"SELECT "
+			+ "u.nombre_completo as nombre_completo, "
+			+ "u.cargo_usuario as funcion, "
+			+ "u.usuario as usuario, "
+			+ "u.clave as clave, "
+			+ "null as rol, "
+			+ "true as estatus "
+			+ "FROM "
+			+ "admon.usuario u "
+			+ "where u.activo = 1 "
+			+ "and u.usuario=?";
 	
 	private static final String SQL_SELECT_USER = 
 			"SELECT "
@@ -136,5 +150,17 @@ public class DaoInatecImpl implements IDaoInatec {
 		            }
 		        });
 		return certificaciones;
+	}
+
+	@Override
+	public List<Contacto> getContactosInatec() {
+		
+		return null;
+	}
+
+	@Override
+	public Contacto getContacto(Usuario usuario) {
+		
+		return null;
 	}
 }

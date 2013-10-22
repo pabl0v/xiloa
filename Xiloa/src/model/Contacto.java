@@ -47,6 +47,9 @@ public class Contacto {
 
 	@Column(name = "segundo_apellido", nullable = true)	
 	private String segundoApellido;
+	
+	@Column(name = "nombre_completo", nullable = true)
+	private String nombreCompleto;
 
 	@NotNull
 	@Column(name = "sexo_id", nullable = false)
@@ -76,7 +79,7 @@ public class Contacto {
 	
 	@NotNull
 	@Column(name = "numero_identificacion", nullable = false)
-	private String numeroIdentificaicon;
+	private String numeroIdentificacion;
 
 	@NotNull
 	@Column(name = "direccion_actual", nullable = false)	
@@ -94,6 +97,15 @@ public class Contacto {
 	@NotNull
 	@Column(name = "lugar_nacimiento", nullable = false)	
 	private String lugarNacimiento;
+	
+	@Column(name = "inatec", nullable = false)
+	private boolean inatec = false;
+	
+	@Column(name = "funcion", nullable = true)
+	private String funcion;
+	
+	@Column(name = "id_empleado", nullable = true)
+	private Long idEmpleado;
 
 	public int getId() {
 		return id;
@@ -149,6 +161,14 @@ public class Contacto {
 
 	public void setSegundoApellido(String segundoApellido) {
 		this.segundoApellido = segundoApellido;
+	}
+
+	public String getNombreCompleto() {
+		return nombreCompleto;
+	}
+
+	public void setNombreCompleto(String nombreCompleto) {
+		this.nombreCompleto = nombreCompleto;
 	}
 
 	public int getSexo() {
@@ -207,12 +227,12 @@ public class Contacto {
 		this.tipoIdentificacion = tipoIdentificacion;
 	}
 
-	public String getNumeroIdentificaicon() {
-		return numeroIdentificaicon;
+	public String getNumeroIdentificacion() {
+		return numeroIdentificacion;
 	}
 
-	public void setNumeroIdentificaicon(String numeroIdentificaicon) {
-		this.numeroIdentificaicon = numeroIdentificaicon;
+	public void setNumeroIdentificacion(String numeroIdentificacion) {
+		this.numeroIdentificacion = numeroIdentificacion;
 	}
 
 	public String getDireccionActual() {
@@ -245,5 +265,29 @@ public class Contacto {
 
 	public void setLugarNacimiento(String lugarNacimiento) {
 		this.lugarNacimiento = lugarNacimiento;
+	}
+
+	public boolean isInatec() {
+		return inatec;
+	}
+
+	public void setInatec(boolean inatec) {
+		this.inatec = inatec;
+	}
+
+	public String getFuncion() {
+		return funcion;
+	}
+
+	public void setFuncion(String funcion) {
+		this.funcion = funcion;
+	}
+
+	public Long getIdEmpleado() {
+		return idEmpleado;
+	}
+
+	public void setIdEmpleado(Long idEmpleado) {
+		this.idEmpleado = idEmpleado;
 	}
 }

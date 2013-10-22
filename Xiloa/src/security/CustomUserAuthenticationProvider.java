@@ -72,6 +72,7 @@ public class CustomUserAuthenticationProvider implements AuthenticationProvider 
 		return CustomUsernamePasswordAuthenticationToken.class.equals(authentication);
 	}
 	
+	@SuppressWarnings("unused")
 	private String sha1(String input) throws NoSuchAlgorithmException {
 		java.security.MessageDigest mDigest = java.security.MessageDigest.getInstance("SHA1");
         byte[] result = mDigest.digest(input.getBytes());
