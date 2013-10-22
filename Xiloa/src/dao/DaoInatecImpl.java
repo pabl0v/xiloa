@@ -26,19 +26,40 @@ public class DaoInatecImpl implements IDaoInatec {
 	private JdbcTemplate jdbcTemplate;
 	
 	private static final String SQL_SELECT_CONTACTO_INATEC = 
-			"SELECT "
-			+ "u.nombre_completo as nombre_completo, "
-			+ "u.cargo_usuario as funcion, "
-			+ "u.usuario as usuario, "
-			+ "u.clave as clave, "
-			+ "null as rol, "
-			+ "true as estatus "
-			+ "FROM "
-			+ "admon.usuario u "
-			+ "where u.activo = 1 "
-			+ "and u.usuario=?";
+			"select "
+			+"u.usuario as usuarioInatec, "
+			+"u.id_centro as entidadId, "
+			+"'Usuario Inatec' as primerNombre, "
+			+"'Usuario Inatec' as primerApellido, "
+			+"u.nombre_completo as nombreCompleto, "
+			+"1 as sexo, "
+			+"u.correo as correo1, "
+			+"'N/D' as telefono1, "
+			+"1 as tipoContacto, "
+			+"1 as tipoIdentificacion, "
+			+"'N/D' as numeroIdentificacion, "
+			+"'N/D' as direccionActual, "
+			+"now() as fechaRegistro, "
+			+"1 as nacionalidadId, "
+			+"'N/D' as lugarNacimiento, "
+			+"true as inatec, "
+			+"r.descripcion_rol as funcion, "
+			+"u.id_empleado as empleadoId "
+			+"from "
+			+"admon.usuario u "
+			+"inner join "
+			+"admon.usuarios_sistemas us "
+			+"on u.usuario=us.usuario "
+			+"and u.activo=1 "
+			+"and us.activo=1 "
+			+"and us.id_sistema=40 "
+			+"inner join "
+			+"admon.roles r "
+			+"on us.id_rol=r.id_rol "
+			+"and r.activo=1 "
+			+"and u.usuario=?";
 	
-	private static final String SQL_SELECT_USER = 
+	private static final String SQL_SELECT_USUARIO = 
 			"SELECT "
 			+ "u.id_empleado as id, "
 			+ "null as nombre, "
@@ -50,26 +71,6 @@ public class DaoInatecImpl implements IDaoInatec {
 			+ "admon.usuario u "
 			+ "where u.activo = 1 "
 			+ "and u.usuario=?";
-
-	private static final String SQL_SELECT_ROLES = 
-			"select "
-			+"r.id_rol, "
-			+"r.descripcion_rol, "
-			+"r.descripcion_rol "
-			+"from "
-			+"admon.usuarios_sistemas s "
-			+"inner join "
-			+"admon.usuario u "
-			+"on u.usuario = s.usuario "
-			+"and u.id_empleado = s.id_empleado "
-			+"and u.activo = 1 "
-			+"and s.activo = 1 "
-			+"inner join "
-			+"admon.roles r "
-			+"on r.id_rol = s.id_rol "
-			+"and r.activo = 1 "
-			+"and u.usuario=? "
-			+"limit 1";
 
 	private static final String SQL_CERTIFICACIONES_SIN_PLANIFICAR = 
 			"select "
@@ -98,7 +99,7 @@ public class DaoInatecImpl implements IDaoInatec {
 		try
 		{
 			user = jdbcTemplate.queryForObject(
-					SQL_SELECT_USER, 
+					SQL_SELECT_USUARIO, 
 					new RowMapper<Usuario>() {
 				        public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {
 				          Usuario user = new Usuario();
@@ -159,8 +160,42 @@ public class DaoInatecImpl implements IDaoInatec {
 	}
 
 	@Override
-	public Contacto getContacto(Usuario usuario) {
-		
-		return null;
+	public Contacto generarContacto(String usuario) {
+		Contacto contacto = null;
+		try
+		{
+			contacto = jdbcTemplate.queryForObject(
+					SQL_SELECT_CONTACTO_INATEC, 
+					new RowMapper<Contacto>() {
+				        public Contacto mapRow(ResultSet rs, int rowNum) throws SQLException {
+				          Contacto c = new Contacto();
+				          c.setUsuarioInatec(rs.getString("usuarioInatec"));
+				          c.setEntidadId(rs.getInt("entidadId"));
+				          c.setPrimerNombre(rs.getString("primerNombre"));
+				          c.setPrimerApellido(rs.getString("primerApellido"));
+				          c.setNombreCompleto(rs.getString("nombreCompleto"));
+				          c.setSexo(rs.getInt("sexo"));
+				          c.setCorreo1(rs.getString("correo1"));
+				          c.setTelefono1(rs.getString("telefono1"));
+				          c.setTipoContacto(rs.getInt("tipoContacto"));
+				          c.setTipoIdentificacion(rs.getInt("tipoIdentificacion"));
+				          c.setNumeroIdentificacion(rs.getString("numeroIdentificacion"));
+				          c.setDireccionActual(rs.getString("direccionActual"));
+				          c.setFechaRegistro(rs.getDate("fechaRegistro"));
+				          c.setNacionalidadId(rs.getInt("nacionalidadId"));
+				          c.setLugarNacimiento(rs.getString("lugarNacimiento"));
+				          c.setInatec(rs.getBoolean("inatec"));
+				          c.setFuncion(rs.getString("funcion"));
+				          c.setIdEmpleado(rs.getLong("empleadoId"));
+				          return c;
+				        }
+				      },
+					usuario);		
+		}
+		catch(EmptyResultDataAccessException e)
+		{
+			return null;
+		}
+		return contacto;
 	}
 }

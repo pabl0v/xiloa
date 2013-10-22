@@ -12,5 +12,5 @@ public interface IDaoInatec {
 	public List<UCompetencia> getCertificacionesSinPlanificar();
 	public Usuario getUsuario(String username);
 	public List<Contacto> getContactosInatec();
-	public Contacto getContacto(Usuario usuario);
+	public Contacto generarContacto(String usuario);
 }

@@ -1,5 +1,7 @@
 package security;
 
+import model.Contacto;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +23,15 @@ public class InatecUserService implements UserDetailsService {
 		if(user == null){
 			throw new UsernameNotFoundException("Usuario no existe");
 		}
+		
+		registrarContacto(user.getUsername());
 		return user;
-	}	
+	}
+		
+	private void registrarContacto(String usuario){
+		if(service.isNuevoContactoInatec(usuario)){
+			Contacto contacto = service.generarNuevoContactoInatec(usuario);
+			service.guardarContacto(contacto);			
+		}
+	}
 }

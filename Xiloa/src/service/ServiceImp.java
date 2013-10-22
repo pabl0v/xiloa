@@ -229,42 +229,22 @@ public class ServiceImp implements IService {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void registrarUsuarioInatec(	int entidadId, 
-										String primerNombre,
-										String segundoNombre,
-										String primerApellido,
-										String segundoApellido, 
-										int sexo,
-										String correo, 
-										String telefono,
-										int tipoContacto, 
-										int tipoIdentificacion,
-										String direccionActual,
-										String numeroIdentificacion, 
-										Date fechaNacimiento,
-										int nacionalidadId, 
-										String lugarNacimiento, 
-										String funcion, 
-										Long idEmpleado) {
-			Contacto contacto = new Contacto();
-			contacto.setEntidadId(entidadId);
-			contacto.setPrimerNombre(primerNombre);
-			contacto.setSegundoNombre(segundoNombre);
-			contacto.setPrimerApellido(primerApellido);
-			contacto.setSegundoApellido(segundoApellido);
-			contacto.setSexo(sexo);
-			contacto.setCorreo1(correo);
-			contacto.setTelefono1(telefono);
-			contacto.setTipoContacto(tipoContacto);
-			contacto.setTipoIdentificacion(tipoIdentificacion);
-			contacto.setDireccionActual(direccionActual);
-			contacto.setNumeroIdentificacion(numeroIdentificacion);			
-			contacto.setFechaNacimiento(fechaNacimiento);
-			contacto.setNacionalidadId(nacionalidadId);
-			contacto.setLugarNacimiento(lugarNacimiento);
-			contacto.setFuncion(funcion);
-			contacto.setIdEmpleado(idEmpleado);
-			
+	public void guardarContacto(Contacto contacto) {			
 			contactoDao.save(contacto);
+	}
+
+	@Override
+	public boolean isNuevoContactoInatec(String usuario) {
+		Contacto contacto = contactoDao.findOneByQuery("select c from contactos c where c.inatec=true and c.usuarioInatec="+"'"+usuario+"'");
+		if(contacto == null)
+			return true;
+		else
+			return false;
+	}
+
+	@Override
+	public Contacto generarNuevoContactoInatec(String usuario) {
+		Contacto contacto = inatecDao.generarContacto(usuario);
+		return contacto;
 	}
 }

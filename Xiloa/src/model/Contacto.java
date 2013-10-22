@@ -27,7 +27,7 @@ public class Contacto {
 	private int id;
 	
 	@OneToOne
-	@JoinColumn(name="usuario_id")		
+	@JoinColumn(name="usuario_id")
 	private Usuario usuario;
 	
 	@NotNull
@@ -86,9 +86,14 @@ public class Contacto {
 	private String direccionActual;
 	
 	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "fecha_nacimiento", nullable = false)
+	@Column(name = "fecha_nacimiento", nullable = true)
 	@Temporal(TemporalType.DATE)	
 	private Date fechaNacimiento;
+	
+	@DateTimeFormat(iso = ISO.DATE)
+	@Column(name = "fecha_registro", nullable = false)
+	@Temporal(TemporalType.DATE)	
+	private Date fechaRegistro;
 	
 	@NotNull
 	@Column(name = "nacionalidad_id", nullable = false)		
@@ -101,12 +106,15 @@ public class Contacto {
 	@Column(name = "inatec", nullable = false)
 	private boolean inatec = false;
 	
+	@Column(name = "usuario_inatec", nullable = true)
+	private String usuarioInatec;
+	
 	@Column(name = "funcion", nullable = true)
 	private String funcion;
 	
 	@Column(name = "id_empleado", nullable = true)
 	private Long idEmpleado;
-
+	
 	public int getId() {
 		return id;
 	}
@@ -251,6 +259,14 @@ public class Contacto {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
+	}
+
 	public int getNacionalidadId() {
 		return nacionalidadId;
 	}
@@ -273,6 +289,14 @@ public class Contacto {
 
 	public void setInatec(boolean inatec) {
 		this.inatec = inatec;
+	}
+
+	public String getUsuarioInatec() {
+		return usuarioInatec;
+	}
+
+	public void setUsuarioInatec(String usuarioInatec) {
+		this.usuarioInatec = usuarioInatec;
 	}
 
 	public String getFuncion() {
