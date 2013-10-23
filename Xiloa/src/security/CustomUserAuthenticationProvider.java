@@ -45,6 +45,7 @@ public class CustomUserAuthenticationProvider implements AuthenticationProvider 
 				throw new BadCredentialsException("Password incorrecto.");
 			}
 			
+			inatecUserService.registrarContacto();				
 			return new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
 		}
 		else

@@ -210,7 +210,7 @@ inatec,
 usuario_id)
 select
 5,
-'aruiz@inactec.edu.ni',
+'lruiz@inactec.edu.ni',
 null,
 'Managua',
 1,

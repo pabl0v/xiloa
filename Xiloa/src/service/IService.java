@@ -3,8 +3,6 @@ package service;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.security.core.userdetails.User;
-
 import support.Involucrado;
 import support.Planificacion;
 import support.UCompetencia;
@@ -52,9 +50,8 @@ public interface IService {
 	public List<Planificacion> getPlanificacion();
 	public List<UCompetencia> getUcompetenciaSinPlanificar();
 	public List<Involucrado> getContactos();
-	public Usuario getUsuario(String username);
-	public User loadUserByUsernameFromLocal(String username);
-	public User loadUserByUsernameFromInatec(String username);
+	public Usuario getUsuarioLocal(String usuario);
+	public Usuario getUsuarioInatec(String usuario);
 	public void RegistrarUsuario(Usuario usuario);
 	public void RegistrarUsuarioOpenId(String login, String nombre, String apellido, String email, String rol);
 }

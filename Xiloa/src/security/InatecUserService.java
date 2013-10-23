@@ -1,8 +1,13 @@
 package security;
 
+import java.util.Collection;
+
 import model.Contacto;
+import model.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,22 +21,32 @@ public class InatecUserService implements UserDetailsService {
 
 	@Autowired
 	private IService service;
+	private Usuario usuario;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = service.loadUserByUsernameFromInatec(username);
-		if(user == null){
-			throw new UsernameNotFoundException("Usuario no existe");
+		usuario = service.getUsuarioInatec(username);
+		if(usuario == null)
+			throw new UsernameNotFoundException("Usuario no existe.");
+		else
+		{
+			Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(usuario.getRol().getNombre());
+			return new User(usuario.getUsuarioAlias(),usuario.getUsuarioPwd(),authorities);			
 		}
-		
-		registrarContacto(user.getUsername());
-		return user;
+	}
+	
+	public Usuario getUsuario(){
+		return usuario;
 	}
 		
-	private void registrarContacto(String usuario){
-		if(service.isNuevoContactoInatec(usuario)){
-			Contacto contacto = service.generarNuevoContactoInatec(usuario);
-			service.guardarContacto(contacto);			
+	public void registrarContacto(){
+		if(usuario != null)
+		{
+			if(service.isNuevoContactoInatec(usuario.getUsuarioAlias()))
+			{
+				Contacto contacto = service.generarNuevoContactoInatec(usuario.getUsuarioAlias());
+				service.guardarContacto(contacto);
+			}
 		}
 	}
 }

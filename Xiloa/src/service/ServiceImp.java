@@ -1,21 +1,16 @@
 package service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import support.Involucrado;
 import support.Planificacion;
-
 
 import support.UCompetencia;
 import dao.IDao;
@@ -147,18 +142,6 @@ public class ServiceImp implements IService {
 
 	@Override
 	public List<UCompetencia> getUcompetenciaSinPlanificar() {
-		/*List<UCompetencia> competenciaSinPlanificarList = new ArrayList<UCompetencia>();
-		for(int i = 0; i<5; i++){
-			UCompetencia c = new UCompetencia();
-			c.setIdCentro(i+6);
-			c.setNombreCentro("Centro "+i+6);
-			c.setIdUCompetencia(i+6);
-			c.setNombreUCompetencia("Competencia "+i+6);
-			c.setDisponibilidad(10);
-			competenciaSinPlanificarList.add(c);
-		}		
-		return competenciaSinPlanificarList;*/
-		//inatecDao.agregarRol();
 		return inatecDao.getCertificacionesSinPlanificar();
 	}
 
@@ -183,8 +166,13 @@ public class ServiceImp implements IService {
 	}
 
 	@Override
-	public Usuario getUsuario(String username) {
-		return usuarioDao.findOneByQuery("Select u from usuario u where u.usuarioEstatus='true' and u.usuarioAlias="+"'"+username+"'");
+	public Usuario getUsuarioLocal(String usuario) {
+		return usuarioDao.findOneByQuery("Select u from usuarios u where u.usuarioEstatus='true' and u.usuarioAlias="+"'"+usuario+"'");
+	}
+	
+	@Override
+	public Usuario getUsuarioInatec(String usuario) {
+		return inatecDao.getUsuario(usuario);
 	}
 
 	@Override
@@ -202,29 +190,6 @@ public class ServiceImp implements IService {
 		usuario.setUsuarioEstatus(true);
 		usuario.setRol(rolDao.findOneByQuery("Select r from roles r where r.estatus='true' and r.nombre="+"'"+rol+"'"));
 		usuarioDao.save(usuario);
-	}
-
-	@Override
-	public User loadUserByUsernameFromLocal(String username) {
-		User user = null;
-		Usuario usuario = new Usuario();
-		usuario = usuarioDao.findOneByQuery("Select u from usuarios u where u.usuarioEstatus='true' and u.usuarioAlias="+"'"+username+"'");
-		if(usuario != null){
-			Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(usuario.getRol().getNombre());
-			user = new User(usuario.getUsuarioAlias(),usuario.getUsuarioPwd(),authorities);
-		}
-		return user;
-	}
-
-	@Override
-	public User loadUserByUsernameFromInatec(String username) {
-		User user = null;
-		Usuario usuario = inatecDao.getUsuario(username);		
-		if(usuario != null){
-			Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(usuario.getRol().getNombre());
-			user = new User(usuario.getUsuarioAlias(),usuario.getUsuarioPwd(),authorities);			
-		}
-		return user;
 	}
 
 	@Override
