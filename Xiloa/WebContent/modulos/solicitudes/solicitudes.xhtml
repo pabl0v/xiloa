@@ -28,14 +28,14 @@
               <h:form>
 	            <p>Buscar:</p>
 	            <p:selectOneMenu styleClass="selectores" id="selector_filtro" value="a">  
-			        <f:selectItem itemLabel="Nombre de laa:" itemValue="a" />
+			        <f:selectItem itemLabel="Nombre de la:" itemValue="a" />
 			        <f:selectItem itemLabel="Centro donde esta :" itemValue="a" />
 			        <f:selectItem itemLabel="Otro:" itemValue="a" />  
 			    </p:selectOneMenu>
 		        <p:inputText style="margin-right:10px;" id="filtro_buscar123"></p:inputText>
 	            <p>Centro evaluador:</p>
 	            <p:selectOneMenu styleClass="selectores" id="selector_filtro24" value="a">  
-			        <f:selectItem itemLabel="Nombre de laa:" itemValue="a" />
+			        <f:selectItem itemLabel="Nombre de la:" itemValue="a" />
 			        <f:selectItem itemLabel="Centro donde esta " itemValue="a" />
 			        <f:selectItem itemLabel="Otro:" itemValue="a" />  
 			    </p:selectOneMenu>
@@ -51,14 +51,14 @@
       
         <div id="contenedor_tabla_solicitudes">
             <h:form>  
-                <p:dataTable emptyMessage="No hay datos para mostrar" var="competencia" value="#{planificacionManagedBean.competencias}">  
+                <p:dataTable emptyMessage="No existen datos para mostrar" var="solicitudI" value="#{solicitudesManagedBean.solicitudI}">  
                         <!--Las columnas de la tabla-->
-                        <p:column headerText="Centro evaluador"><h:outputText value="#{competencia.nombreCentro}" /></p:column>  
-                        <p:column headerText="Nombre del candidato"><h:outputText value="#{competencia.nombreCentro}" /></p:column>  
-                        <p:column headerText="Certificacion a evaluar"><h:outputText value="#{competencia.nombreCentro}"/></p:column>  
-                        <p:column headerText="Fecha solicitud"><h:outputText value="#{competencia.nombreCentro}" /></p:column>               
-                        <p:column headerText="Evaluador"><h:outputText value="#{competencia.nombreCentro}" /></p:column>                
-                        <p:column headerText="Estado"><h:outputText value="#{competencia.nombreCentro}" /></p:column>                             
+                        <p:column headerText="Centro evaluador"><h:outputText value="#{solicitudI.centroEvaluador}" /></p:column>  
+                        <p:column headerText="Nombre del candidato"><h:outputText value="#{solicitudI.nombreCandidato}" /></p:column>  
+                        <p:column headerText="Certificacion a evaluar"><h:outputText value="#{solicitudI.nombreCertificacion}"/></p:column>  
+                        <p:column headerText="Fecha solicitud"><h:outputText value="#{solicitudI.fechaRegistro}" /></p:column>               
+                        <p:column headerText="Evaluador"><h:outputText value="#{solicitudI.nombreEvaluador}" /></p:column>                
+                        <p:column headerText="Estado"><h:outputText value="#{solicitudI.estatus}" /></p:column>                             
                         <p:column style="width:4%">  
 				            <p:commandButton id="selectButton" oncomplete="window.location='/Xiloa/modulos/solicitudes/registro_solicitud.xhtml'" icon="ui-icon-pencil" title="Editar">  
 				                <f:setPropertyActionListener value="#{car}" target="#{tableBean.selectedCar}" />  

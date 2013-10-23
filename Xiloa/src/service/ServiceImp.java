@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import support.Involucrado;
 import support.Planificacion;
+import support.USolicitud;
 
 import support.UCompetencia;
 import dao.IDao;
@@ -41,6 +42,11 @@ public class ServiceImp implements IService {
 	@Autowired
 	private IDaoInatec inatecDao;
 
+	//Inicio : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Propiedades definidas para ser utilizados principalmente en el Modulo SOLICITUDES	
+	@Autowired
+	private IDao<Solicitud> solicitudDao;
+	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Propiedades definidas para ser utilizados principalmente en el Modulo SOLICITUDES	
+	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void guardarCertificacion(	String nombre, 
@@ -212,4 +218,39 @@ public class ServiceImp implements IService {
 		Contacto contacto = inatecDao.generarContacto(usuario);
 		return contacto;
 	}
+	
+	//Inicio : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
+	public List<USolicitud> getUSolicitudes () {
+			System.out.println("Desde el metodo getSolicitudes del ServiceImp");
+			
+			List<Solicitud> Sols = solicitudDao.findAll(Solicitud.class);
+			List<USolicitud> uSols = new ArrayList<USolicitud>();;
+			
+			for(int i = 0; i<Sols.size(); i++){
+				
+				USolicitud uSolicitud = new USolicitud();
+								
+				uSolicitud.setCentroEvaluador(Sols.get(i).getCertificacion().getIfpNombre());
+				uSolicitud.setNombreCertificacion(Sols.get(i).getCertificacion().getNombre());			
+				
+				uSolicitud.setNombreCandidato(Sols.get(i).getContacto().getPrimerNombre() + " " +
+											  Sols.get(i).getContacto().getSegundoNombre()  + " " +
+											  Sols.get(i).getContacto().getPrimerApellido() + " " +
+											  Sols.get(i).getContacto().getSegundoApellido());			
+							
+				uSolicitud.setNombreEvaluador(Sols.get(i).getCertificacion().getInvolucrados().get(0).getCorreo1());
+									
+				uSolicitud.setEstatus(Sols.get(i).getEstatus());
+									
+				uSolicitud.setFechaRegistro(Sols.get(i).getFechaRegistro());
+						
+				uSols.add(uSolicitud);			
+			}
+			
+			return uSols;
+			
+	};
+	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
+	
+	
 }

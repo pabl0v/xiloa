@@ -6,6 +6,7 @@ import java.util.List;
 import support.Involucrado;
 import support.Planificacion;
 import support.UCompetencia;
+import support.USolicitud;
 import model.Actividad;
 import model.Contacto;
 import model.Requisito;
@@ -54,4 +55,8 @@ public interface IService {
 	public Usuario getUsuarioInatec(String usuario);
 	public void RegistrarUsuario(Usuario usuario);
 	public void RegistrarUsuarioOpenId(String login, String nombre, String apellido, String email, String rol);
+	//Inicio : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
+	public List<USolicitud> getUSolicitudes ();
+	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
+	
 }
