@@ -9,18 +9,21 @@ import support.USolicitud;
 import model.Actividad;
 import model.Contacto;
 import model.Requisito;
+import model.Rol;
 import model.Solicitud;
 import model.Unidad;
 import model.Usuario;
 
 public interface IService {
-		
+	
+	public Rol getRolById(int id);
+	
 	public Contacto generarNuevoContactoInatec(String usuario);
 	
 	public boolean isNuevoContactoInatec(String usuario);
 	
 	public void guardarContacto(Contacto contacto);
-		
+	
 	public void guardarCertificacion(	String nombre, 
 										String descripcion,
 										Date fechaInicia,

@@ -234,4 +234,9 @@ public class ServiceImp implements IService {
 			
 	}
 	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES	
+
+	@Override
+	public Rol getRolById(int id) {
+		return rolDao.findOneByQuery("Select r from roles r where r.id_rol="+id);
+	}
 }
