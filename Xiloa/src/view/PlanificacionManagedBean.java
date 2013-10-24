@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import service.IService;
-import support.Involucrado;
 import support.Planificacion;
 import support.UCompetencia;
 
@@ -20,13 +19,10 @@ public class PlanificacionManagedBean {
 	private IService service;
 	private List<Planificacion> planificaciones = new ArrayList<Planificacion>();
 	private List<UCompetencia> competencias = new ArrayList<UCompetencia>();
-	private List<Involucrado> contactos = new ArrayList<Involucrado>();
 	private UCompetencia selectedCompetencia;
-	private Involucrado[] selectedContactos;
 	private Planificacion selectedPlanificacion;
 		
 	public List<Planificacion> getPlanificaciones(){
-		System.out.println("getPlanificaciones method called...");
 		planificaciones = service.getPlanificacion();
 		return planificaciones;
 	}
@@ -42,19 +38,6 @@ public class PlanificacionManagedBean {
 
 	public void setSelectedCompetencia(UCompetencia selectedCompetencia) {
 		this.selectedCompetencia = selectedCompetencia;
-	}
-
-	public List<Involucrado> getContactos() {
-		contactos = service.getContactos();
-		return contactos;
-	}
-
-	public Involucrado[] getSelectedContactos() {
-		return selectedContactos;
-	}
-
-	public void setSelectedContactos(Involucrado[] selectedContactos) {
-		this.selectedContactos = selectedContactos;
 	}
 
 	public Planificacion getSelectedPlanificacion() {

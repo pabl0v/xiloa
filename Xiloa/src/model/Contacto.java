@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -29,6 +30,10 @@ public class Contacto {
 	@OneToOne
 	@JoinColumn(name="usuario_id")
 	private Usuario usuario;
+	
+	@ManyToOne
+	@JoinColumn(name="rol_id")
+	private Rol rol;
 	
 	@NotNull
 	@Column(name = "entidad_id", nullable = false)	
@@ -129,6 +134,14 @@ public class Contacto {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public Rol getRol() {
+		return rol;
+	}
+
+	public void setRol(Rol rol) {
+		this.rol = rol;
 	}
 
 	public int getEntidadId() {

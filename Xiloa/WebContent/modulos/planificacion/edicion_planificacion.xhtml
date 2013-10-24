@@ -48,13 +48,13 @@
                 </h:form>    
                 <h:form id="form">
                    <div class="seccion_interna">
-                   <p:dataTable id="display" emptyMessage="No hay datos para mostrar"  var="contacto" value="#{planificacionManagedBean.selectedContactos}">  
-                        <p:column headerText="Nombre"><h:outputText value="#{contacto.nombre}" /></p:column>  
-                        <p:column headerText="Funcion"><h:outputText value="#{contacto.funcion}" /></p:column>  
-                        <p:column headerText="Correo electronico"><h:outputText value="#{contacto.correo}" /></p:column>  
+                   <p:dataTable id="display" emptyMessage="No hay datos para mostrar"  var="contacto" value="#{certificacionManagedBean.selectedContactos}">  
+                        <p:column headerText="Nombre"><h:outputText value="#{contacto.nombreCompleto}" /></p:column>  
+                        <p:column headerText="Funcion"><h:outputText value="#{contacto.rol.descripcion}" /></p:column>  
+                        <p:column headerText="Correo electronico"><h:outputText value="#{contacto.correo1}" /></p:column>  
                     </p:dataTable> 
                     </div>
-                </h:form>                
+                </h:form>
             </div>
 
             <div class="seccion_edicion" style="height: 260px">
@@ -235,10 +235,10 @@
      <p:dialog id="modalDialog2" styleClass="estilo_dialogoactividades" header="Agregar involucrados:" widgetVar="dlg2" modal="true" resizable="false" width="550" height="400">
      	<h:form>
      		<h3>Añada intregantes de esta lista:</h3>
-     		 <p:dataTable emptyMessage="No hay datos para mostrar"  var="contacto" value="#{planificacionManagedBean.contactos}" rowKey="#{contacto.nombre}" selection="#{planificacionManagedBean.selectedContactos}" selectionMode="multiple">  
-                        <p:column headerText="Nombre"><h:outputText value="#{contacto.nombre}" /></p:column>  
-                        <p:column headerText="Funcion"><h:outputText value="#{contacto.funcion}" /></p:column>  
-                        <p:column headerText="Correo electronico"><h:outputText value="#{contacto.correo}" /></p:column>  
+     		 <p:dataTable emptyMessage="No hay datos para mostrar"  var="contacto" value="#{certificacionManagedBean.contactos}" rowKey="#{contacto.id}" selection="#{certificacionManagedBean.selectedContactos}" selectionMode="multiple">  
+                        <p:column headerText="Nombre"><h:outputText value="#{contacto.nombreCompleto}" /></p:column>  
+                        <p:column headerText="Funcion"><h:outputText value="#{contacto.rol.descripcion}" /></p:column>  
+                        <p:column headerText="Correo electronico"><h:outputText value="#{contacto.correo1}" /></p:column>  
                     </p:dataTable> 
 	        <p:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/> 
 	        <p:commandButton value="Aceptar" update=":form:display" oncomplete="PF('dlg1').hide();"/> 

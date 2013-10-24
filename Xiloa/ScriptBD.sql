@@ -14,20 +14,20 @@ values(1,'admin','admin',true,1);
 
 --otros usuarios y roles
 
-insert into roles(rol_id,rol_descripcion,rol_nombre,rol_estatus)
-values(2,'supervisor','supervisor',true);
+insert into roles(rol_id,rol_descripcion,rol_nombre,id_rol_inatec,rol_estatus)
+values(2,'Supervisor','supervisor',213,true);
+
+insert into roles(rol_id,rol_descripcion,rol_nombre,id_rol_inatec,rol_estatus)
+values(3,'Verificador','verificador',214,true);
+
+insert into roles(rol_id,rol_descripcion,rol_nombre,id_rol_inatec,rol_estatus)
+values(4,'Tecnico Docente','tecnico_docente',215,true);
+
+insert into roles(rol_id,rol_descripcion,rol_nombre,id_rol_inatec,rol_estatus)
+values(5,'Registro Academico','registro_academico',216,true);
 
 insert into roles(rol_id,rol_descripcion,rol_nombre,rol_estatus)
-values(3,'verificador','verificador',true);
-
-insert into roles(rol_id,rol_descripcion,rol_nombre,rol_estatus)
-values(4,'tecnico docente','tecnico_docente',true);
-
-insert into roles(rol_id,rol_descripcion,rol_nombre,rol_estatus)
-values(5,'registro academico','registro_academico',true);
-
-insert into roles(rol_id,rol_descripcion,rol_nombre,rol_estatus)
-values(6,'visitante','visitante',true);
+values(6,'Visitante','visitante',true);
 
 insert into perfiles_roles(rol_id,perfil_id)
 values(2,1);
@@ -78,6 +78,7 @@ telefono2,
 tipo_contacto,
 tipo_identificacion,
 inatec,
+rol_id,
 usuario_id)
 select
 1,
@@ -98,7 +99,8 @@ null,
 null,
 1,
 0,
-true,
+false,
+1,
 2;
 
 insert into contactos(
@@ -121,6 +123,7 @@ telefono2,
 tipo_contacto,
 tipo_identificacion,
 inatec,
+rol_id,
 usuario_id)
 select
 2,
@@ -141,7 +144,8 @@ null,
 null,
 1,
 0,
-true,
+false,
+1,
 3;
 
 insert into contactos(
@@ -164,6 +168,7 @@ telefono2,
 tipo_contacto,
 tipo_identificacion,
 inatec,
+rol_id,
 usuario_id)
 select
 3,
@@ -184,7 +189,8 @@ null,
 null,
 1,
 0,
-true,
+false,
+1,
 4;
 
 insert into contactos(
@@ -207,6 +213,7 @@ telefono2,
 tipo_contacto,
 tipo_identificacion,
 inatec,
+rol_id,
 usuario_id)
 select
 5,
@@ -227,7 +234,8 @@ null,
 null,
 1,
 0,
-true,
+false,
+1,
 5;
 
 alter sequence seq_usuarios start with 6;
@@ -309,7 +317,7 @@ now() as fecha_grabacion
 union
 select
 214 as id_rol,
-'Evaluador' as descripcion_rol,
+'Verificador' as descripcion_rol,
 40 as id_sistema,
 1 as activo,
 'admon' as usuario_grabacion,
@@ -317,7 +325,7 @@ now() as fecha_grabacion
 union
 select
 215 as id_rol,
-'Tecnico_Docente' as descripcion_rol,
+'Tecnico Docente' as descripcion_rol,
 40 as id_sistema,
 1 as activo,
 'admon' as usuario_grabacion,
@@ -325,7 +333,7 @@ now() as fecha_grabacion
 union
 select
 216 as id_rol,
-'Registro_Academico' as descripcion_rol,
+'Registro Academico' as descripcion_rol,
 40 as id_sistema,
 1 as activo,
 'admon' as usuario_grabacion,

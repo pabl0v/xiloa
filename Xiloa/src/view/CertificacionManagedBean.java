@@ -7,12 +7,13 @@ import java.util.Map;
 
 import javax.faces.context.FacesContext;
 
+import model.Contacto;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import service.IService;
-import support.Involucrado;
 
 @Component
 @Scope("session")  //@ViewScoped
@@ -24,9 +25,8 @@ public class CertificacionManagedBean {
 	private String nombreCertificacion;
 	private String descripcionCertificacion;
 	private float costo;
-	private List<Involucrado> contactos = new ArrayList<Involucrado>();
-	private Involucrado[] selectedContactos;
-	private List<Involucrado> involucrados = new ArrayList<Involucrado>();
+	private List<Contacto> contactos = new ArrayList<Contacto>();
+	private Contacto[] selectedContactos;
 	private Date fechaIniciaDivulgacion;
 	private Date fechaFinalizaInscripcion;
 	private Date fechaIniciaConvocatoria;
@@ -39,7 +39,6 @@ public class CertificacionManagedBean {
 	public String nuevaCertificacion(){
 		Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		setIdCurso(params.get("idCompetencia"));
-		System.out.println("Id Del Curso: "+getIdCurso());
 		setNombreCertificacion(params.get("nombreCurso"));
 		setCosto(Float.valueOf(params.get("costoCurso")));
 		setDescripcionCertificacion(params.get("nombreCurso"));
@@ -78,23 +77,15 @@ public class CertificacionManagedBean {
 	public void setCosto(float costo) {
 		this.costo = costo;
 	}
-	public List<Involucrado> getContactos() {
+	public List<Contacto> getContactos() {
+		contactos = service.getContactosInatec();
 		return contactos;
 	}
-	public void setContactos(List<Involucrado> contactos) {
-		this.contactos = contactos;
-	}
-	public Involucrado[] getSelectedContactos() {
+	public Contacto[] getSelectedContactos() {
 		return selectedContactos;
 	}
-	public void setSelectedContactos(Involucrado[] selectedContactos) {
+	public void setSelectedContactos(Contacto[] selectedContactos) {
 		this.selectedContactos = selectedContactos;
-	}
-	public List<Involucrado> getInvolucrados() {
-		return involucrados;
-	}
-	public void setInvolucrados(List<Involucrado> involucrados) {
-		this.involucrados = involucrados;
 	}
 	public Date getFechaIniciaDivulgacion() {
 		return fechaIniciaDivulgacion;
@@ -154,19 +145,19 @@ public class CertificacionManagedBean {
 				getNombreCentro(),
 				getDireccionCentro(), 
 				null, //programador,
-				getFechaIniciaDivulgacion(), 
-				null, //new Date(), //getFechaFinalizaDivulgacion(), 
-				getFechaFinalizaInscripcion(),
-				getFechaIniciaConvocatoria(),
-				getFechaIniciaEvaluacion(),
+				new Date(), //getFechaIniciaDivulgacion(), 
+				new Date(), //getFechaFinalizaDivulgacion(), 
+				new Date(), //getFechaFinalizaInscripcion(),
+				new Date(), //getFechaIniciaConvocatoria(),
+				new Date(), //getFechaIniciaEvaluacion(),
 				null, //creador,
 				"N/D", //referencia, 
 				0, //nivelCompetencia, 
 				null, //requisitos, 
 				null, //unidades, 
 				null, //actividades, 
-				null, //solicitudes, 
-				null, //involucrados, 
+				null, //solicitudes,
+				contactos,
 				estatus);
 	}
 }

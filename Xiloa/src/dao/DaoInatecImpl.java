@@ -189,7 +189,7 @@ public class DaoInatecImpl implements IDaoInatec {
 				          c.setIdEmpleado(rs.getLong("empleadoId"));
 				          return c;
 				        }
-				      },
+					},
 					usuario);		
 		}
 		catch(EmptyResultDataAccessException e)
@@ -197,5 +197,19 @@ public class DaoInatecImpl implements IDaoInatec {
 			return null;
 		}
 		return contacto;
+	}
+
+	@Override
+	public int getIdRol(String usuario) {
+		int id = 0;
+		try
+		{
+			id = jdbcTemplate.queryForInt("select u.id_rol from admon.usuarios_sistemas u where u.id_sistema = 40 and u.usuario="+"'"+usuario+"'");
+		}
+		catch(EmptyResultDataAccessException e)
+		{
+			return 0;
+		}
+		return id;
 	}
 }

@@ -9,10 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import support.Involucrado;
 import support.Planificacion;
 import support.USolicitud;
-
 import support.UCompetencia;
 import dao.IDao;
 import dao.IDaoInatec;
@@ -71,9 +69,6 @@ public class ServiceImp implements IService {
 										List<Solicitud> solicitudes, 
 										List<Contacto> involucrados,
 										String estatus) {
-		Contacto contacto = contactoDao.findOneByQuery("select c from contactos c where c.id=1");
-		List<Contacto> contactos = new ArrayList<Contacto>();
-		contactos.add(contacto);
 		Usuario usuario = usuarioDao.findOneByQuery("select u from usuarios u where u.id=3");
 		Certificacion certificacion = new Certificacion();
 		certificacion.setNombre(nombre);
@@ -95,7 +90,7 @@ public class ServiceImp implements IService {
 		certificacion.setUnidades(unidades);
 		certificacion.setActividades(actividades);
 		certificacion.setSolicitudes(solicitudes);
-		certificacion.setInvolucrados(contactos);
+		certificacion.setInvolucrados(involucrados);
 		certificacion.setEstatus(1);
 		
 		certificacionDao.save(certificacion);
@@ -150,25 +145,10 @@ public class ServiceImp implements IService {
 	public List<UCompetencia> getUcompetenciaSinPlanificar() {
 		return inatecDao.getCertificacionesSinPlanificar();
 	}
-
+	
 	@Override
-	public List<Involucrado> getContactos() {
-		List<Contacto> contactos = new ArrayList<Contacto>();
-		List<Involucrado> involucrados = new ArrayList<Involucrado>();
-		contactos = contactoDao.findAll(Contacto.class);
-		for(int i = 0; i<contactos.size(); i++){
-			Involucrado involucrado = new Involucrado();
-			involucrado.setIdContacto(contactos.get(i).getId());
-			involucrado.setNombre(contactos.get(i).getPrimerNombre()+" "+contactos.get(i).getPrimerApellido());
-			involucrado.setIdFuncion(i);
-			if(i==0) involucrado.setFuncion("Supervisor");
-			if(i==1) involucrado.setFuncion("Evaluador");
-			if(i==2) involucrado.setFuncion("Tecnico docente");
-			if(i==3) involucrado.setFuncion("Registro Academico");
-			involucrado.setCorreo(contactos.get(i).getCorreo1());
-			involucrados.add(involucrado);
-		}
-		return involucrados;
+	public List<Contacto> getContactosInatec() {
+		return contactoDao.findAllByQuery("Select c from contactos c where c.inatec='true' and c.rol.idRolInatec in (213,214,215,216)");
 	}
 
 	@Override
@@ -216,6 +196,9 @@ public class ServiceImp implements IService {
 	@Override
 	public Contacto generarNuevoContactoInatec(String usuario) {
 		Contacto contacto = inatecDao.generarContacto(usuario);
+		Rol rol = rolDao.findOneByQuery("Select r from roles r where r.idRolInatec="+inatecDao.getIdRol(usuario));
+		if(rol != null)
+			contacto.setRol(rol);
 		return contacto;
 	}
 	
@@ -249,8 +232,6 @@ public class ServiceImp implements IService {
 			
 			return uSols;
 			
-	};
-	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
-	
-	
+	}
+	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES	
 }

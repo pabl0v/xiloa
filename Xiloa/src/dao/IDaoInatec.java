@@ -8,6 +8,7 @@ import support.UCompetencia;
 
 public interface IDaoInatec {
 
+	public int getIdRol(String usuario);
 	public void agregarRol();
 	public List<UCompetencia> getCertificacionesSinPlanificar();
 	public Usuario getUsuario(String username);

@@ -3,7 +3,6 @@ package service;
 import java.util.Date;
 import java.util.List;
 
-import support.Involucrado;
 import support.Planificacion;
 import support.UCompetencia;
 import support.USolicitud;
@@ -15,7 +14,7 @@ import model.Unidad;
 import model.Usuario;
 
 public interface IService {
-	
+		
 	public Contacto generarNuevoContactoInatec(String usuario);
 	
 	public boolean isNuevoContactoInatec(String usuario);
@@ -50,7 +49,7 @@ public interface IService {
 	public void updateUsuario(Usuario usuario);
 	public List<Planificacion> getPlanificacion();
 	public List<UCompetencia> getUcompetenciaSinPlanificar();
-	public List<Involucrado> getContactos();
+	public List<Contacto> getContactosInatec();
 	public Usuario getUsuarioLocal(String usuario);
 	public Usuario getUsuarioInatec(String usuario);
 	public void RegistrarUsuario(Usuario usuario);

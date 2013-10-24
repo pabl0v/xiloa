@@ -30,6 +30,9 @@ public class Rol {
 	@Column(name = "rol_descripcion", nullable = false)
 	private String descripcion;
 	
+	@Column(name = "id_rol_inatec", nullable = true)
+	private Integer idRolInatec;
+	
 	@ManyToMany
 	@JoinTable
 	(
@@ -67,6 +70,14 @@ public class Rol {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}	
+
+	public int getIdRolInatec() {
+		return idRolInatec;
+	}
+
+	public void setIdRolInatec(int idRolInatec) {
+		this.idRolInatec = idRolInatec;
+	}
 
 	public List<Perfil> getPerfiles() {
 		return perfiles;
