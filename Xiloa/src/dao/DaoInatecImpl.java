@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import support.Ifp;
 import support.UCompetencia;
 
 @Repository
@@ -93,6 +94,11 @@ public class DaoInatecImpl implements IDaoInatec {
 			+"where "
 			+"c.id_tipo_evento=4 "
 			+"order by c.descripcion";
+	
+	private static final String SQL_SELECT_IFP_INATEC = "select ci.centroid as id_centro, " +
+														       "ci.nombre as nombre " +
+														  "from public.centros_inatec ci " +
+														 "order by ci.nombre";
 	
 	public Usuario getUsuario(String usuario) {
 		Usuario user = null;
@@ -211,5 +217,19 @@ public class DaoInatecImpl implements IDaoInatec {
 			return 0;
 		}
 		return id;
+	}
+	
+	@Override
+	public List<Ifp> getIfpInatec() {
+		List<Ifp> ifpList = jdbcTemplate.query(SQL_SELECT_IFP_INATEC, 
+												new RowMapper<Ifp>() {
+													public Ifp mapRow(ResultSet rs, int rowNum) throws SQLException {
+														Ifp ifp = new Ifp();
+														ifp.setIfpId(rs.getInt("id_centro"));
+														ifp.setIfpNombre(rs.getString("nombre"));
+														return ifp;
+													}
+				      							});	
+		return ifpList;		
 	}
 }

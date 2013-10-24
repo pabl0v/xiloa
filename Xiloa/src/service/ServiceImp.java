@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import support.Ifp;
 import support.Planificacion;
 import support.USolicitud;
 import support.UCompetencia;
@@ -255,6 +256,16 @@ public class ServiceImp implements IService {
 		if (objeto instanceof Solicitud) {
 			solicitudDao.save((Solicitud) objeto);
 		}
+	}
+	
+	@Override
+	public List<Certificacion> getCertificacionesByIdIfp (int idIfp) {
+		return certificacionDao.findAllByQuery("Select c from certificaciones c where c.ifpId="+idIfp);
+	}
+	
+	@Override
+	public List<Ifp> getIfpByInatec () {
+		return inatecDao.getIfpInatec();
 	}
 
 	@Override

@@ -3,10 +3,12 @@ package service;
 import java.util.Date;
 import java.util.List;
 
+import support.Ifp;
 import support.Planificacion;
 import support.UCompetencia;
 import support.USolicitud;
 import model.Actividad;
+import model.Certificacion;
 import model.Contacto;
 import model.Mantenedor;
 import model.Requisito;
@@ -65,7 +67,9 @@ public interface IService {
 	//Inicio : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
 	public List<USolicitud> getUSolicitudes ();
 	public List<Solicitud> getSolicitudes();
-	public void guardar(Object obj);
+	public void guardar(Object obj);	
+	public List<Certificacion> getCertificacionesByIdIfp(int idIfp);
+	public List<Ifp> getIfpByInatec ();
 	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
 	
 }

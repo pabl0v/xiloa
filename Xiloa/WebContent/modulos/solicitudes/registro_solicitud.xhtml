@@ -22,40 +22,36 @@
    			<div class="seccion_detalle">
    			<div style="display:inline-block;">
 	   			<p style="display:inline-block;">Seleccione un centro:</p>
-	       		<p:selectOneMenu id="selector_filtro" styleClass="selector_status_estilo" value="a" style="position: relative;top: 7px;margin-left: 5px;margin-right: 5px;">  
-			            <f:selectItem itemLabel="INATEC" itemValue="a" />
-			            <f:selectItem itemLabel="INATEC" itemValue="a" />
-			            <f:selectItem itemLabel="INATEC" itemValue="a" />             
+	       		<p:selectOneMenu id="selector_filtro" styleClass="selector_status_estilo" value="#{solicitudesManagedBean.selectedIfps}" style="position: relative;top: 7px;margin-left: 5px;margin-right: 5px;">  
+		            <f:selectItem value="#{solicitudesManagedBean.ifpList}" var="ifp" itemLabel="#{ifp.ifpNombre}" itemValue="#{ifp}" />			                         
 			    </p:selectOneMenu>
 		    </div>
 		    <div style="display:inline-block;">
 			    <p style="display:inline-block;">Seleccione la certificacion:</p>
-	       		<p:selectOneMenu id="selector_filtro1" styleClass="selector_status_estilo" value="a" style="position: relative;top: 7px;margin-left: 5px;margin-right: 5px;">  
-			            <f:selectItem itemLabel="Auxiliar en contabilidad" itemValue="a" />
-			            <f:selectItem itemLabel="Auxiliar en contabilidad" itemValue="a" />
-			            <f:selectItem itemLabel="Auxiliar en contabilidad" itemValue="a" />             
+	       		<p:selectOneMenu id="selector_filtro1" styleClass="selector_status_estilo" value="#{solicitudesManagedBean.selectedCertificacion}" style="position: relative;top: 7px;margin-left: 5px;margin-right: 5px;">  
+			    	<f:selectItem value="#{solicitudesManagedBean.certificacionList}" var="certList" itemLabel="#{certList.nombre}" itemValue="#{certList}" />			                         
 			    </p:selectOneMenu>
 		    </div>
 		    <br/>
    			<br/>
-                <h:outputLabel styleClass="estilo_label" for="surname" value="Primer nombre:" /> 
-                <p:inputText id="primerNombre" value="#{personBean.primerNombre}" />  
-                <h:outputLabel styleClass="estilo_label" for="surname" value="Segundo nombre:" />  
-                <p:inputText id="segundoNombre" value="#{personBean.segundoNombre}" required="true" requiredMessage="Surname is required."/>  
-                <h:outputLabel styleClass="estilo_label" for="firstname" value="Primer apellido:" />  
-                <p:inputText id="primerApellido" value="#{personBean.primerApellido}" />  
-                <h:outputLabel styleClass="estilo_label" for="firstname" value="Segundo apellido:" />  
-                <p:inputText id="segundoApellido" value="#{personBean.segundoApellido}" />  
-                <h:outputLabel styleClass="estilo_label" for="firstname" value="Cedula:" />  
-                <p:inputText id="numeroIdentificacion" value="#{personBean.numeroIdentificacion}" /> 
+                <h:outputLabel styleClass="estilo_label" for="primerNombre" value="Primer nombre:" /> 
+                <p:inputText id="primerNombre" value="#{solicitudesManagedBean.primerNombre}" />  
+                <h:outputLabel styleClass="estilo_label" for="segundoNombre" value="Segundo nombre:" />  
+                <p:inputText id="segundoNombre" value="#{solicitudesManagedBean.segundoNombre}" required="true" requiredMessage="Surname is required."/>  
+                <h:outputLabel styleClass="estilo_label" for="primerApellido" value="Primer apellido:" />  
+                <p:inputText id="primerApellido" value="#{solicitudesManagedBean.primerApellido}" />  
+                <h:outputLabel styleClass="estilo_label" for="segundoApellido" value="Segundo apellido:" />  
+                <p:inputText id="segundoApellido" value="#{solicitudesManagedBean.segundoApellido}" />  
+                <h:outputLabel styleClass="estilo_label" for="numeroIdentificacion" value="Cedula:" />  
+                <p:inputText id="numeroIdentificacion" value="#{solicitudesManagedBean.numeroIdentificacion}" /> 
          	</div>           
              <div class="seccion_detalle">
-                <h:outputLabel styleClass="estilo_label" for="firstname2" value="Empresa donde labora actualmente:" />  
-                <p:inputText id="descEmpresaLabora" value="#{personBean.descEmpresaLabora}" />  
-                <h:outputLabel styleClass="estilo_label" for="surname2" value="Años ejerciendo la actividad:" />  
-                <p:inputText id="experiencia" value="#{personBean.experiencia}" required="true" requiredMessage="Surname is required."/>  
+                <h:outputLabel styleClass="estilo_label" for="descEmpresaLabora" value="Empresa donde labora actualmente:" />  
+                <p:inputText id="descEmpresaLabora" value="#{solicitudesManagedBean.descEmpresaLabora}" />  
+                <h:outputLabel styleClass="estilo_label" for="experiencia" value="Años ejerciendo la actividad:" />  
+                <p:inputText id="experiencia" value="#{solicitudesManagedBean.experiencia}" required="true" requiredMessage="Surname is required."/>  
                 <h:outputLabel styleClass="estilo_label" value="Descripcion de la ocupacion actual:" /> 
-                <p:editor id="ocupacion" value="#{editorBean.ocupacion}" height="150"/>    
+                <p:editor id="ocupacion" value="#{solicitudesManagedBean.ocupacion}" height="150"/>    
 				
              </div>
              <div class="seccion_detalle" style="background:none;height:30px;margin-top:-68px;border:none;text-align: right;">

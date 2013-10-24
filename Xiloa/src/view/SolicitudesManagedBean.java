@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import service.IService;
+import support.Ifp;
 import support.USolicitud;
 
 
@@ -34,11 +35,15 @@ public class SolicitudesManagedBean {
 	private String descEmpresaLabora;
 	private int experiencia;
 	private String ocupacion;
-		
-	
+			
 	private List<USolicitud> solicitudI = new ArrayList<USolicitud>();
 	private List<Solicitud> solicitudB = new ArrayList<Solicitud> ();
 	
+	private List<Ifp> ifpList = new ArrayList<Ifp> ();
+	private List<Certificacion> certificacionList = new ArrayList<Certificacion> ();
+	
+	private Ifp selectedIfps;
+	private Certificacion selectedCertificacion;
 	
 	public String getPrimerNombre() {
 		return primerNombre;
@@ -82,7 +87,7 @@ public class SolicitudesManagedBean {
 	public String getOcupacion() {
 		return ocupacion;
 	}
-
+	
 	public List<Solicitud> getSolicitudB() {
 		solicitudB = service.getSolicitudes();
 		return solicitudB;
@@ -97,12 +102,45 @@ public class SolicitudesManagedBean {
 		this.solicitudI = solicitudI;
 	}
 	
+	public List<Ifp> getIfpList() {
+		System.out.println("Desde el SolicitudManagedBean getIfpList");
+		ifpList = service.getIfpByInatec();
+		System.out.println("Desde el SolicitudManagedBean getIfpList " + ifpList.get(0).getIfpNombre());
+		return ifpList;
+	}
+
+	public void setIfpList(List<Ifp> ifpList) {
+		this.ifpList = ifpList;
+	}
+	
+	public List<Certificacion> getCertificacionList() {
+		certificacionList = service.getCertificacionesByIdIfp(this.getSelectedIfps().getIfpId());
+		return certificacionList;
+	}
+
 	public String nuevaSolicitud(){
 		//Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		//setSolicitudI(params.get("solicitudI"));			
-	return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
+	return "/modulos/solicitudes/registro_solicitud?faces-redirect=true";
 	}
 	
+		
+	public Ifp getSelectedIfps() {
+		return selectedIfps;
+	}
+
+	public void setSelectedIfps(Ifp selectedIfps) {
+		this.selectedIfps = selectedIfps;
+	}
+	
+	public Certificacion getSelectedCertificacion() {
+		return selectedCertificacion;
+	}
+
+	public void setSelectedCertificacion(Certificacion selectedCertificacion) {
+		this.selectedCertificacion = selectedCertificacion;
+	}
+
 	public void guardar(){
 		
 		Solicitud     s;
@@ -152,8 +190,7 @@ public class SolicitudesManagedBean {
 				           c, // certificacion
 				           null // evaluaciones
 				           );
-		
-		
+				
 		service.guardar(s);
 		
 	}

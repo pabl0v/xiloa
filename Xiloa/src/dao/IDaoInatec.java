@@ -4,6 +4,7 @@ import java.util.List;
 
 import model.Contacto;
 import model.Usuario;
+import support.Ifp;
 import support.UCompetencia;
 
 public interface IDaoInatec {
@@ -13,5 +14,7 @@ public interface IDaoInatec {
 	public List<UCompetencia> getCertificacionesSinPlanificar();
 	public Usuario getUsuario(String username);
 	public List<Contacto> getContactosInatec();
-	public Contacto generarContacto(String usuario);
+	public Contacto generarContacto(String usuario);	
+	public List<Ifp> getIfpInatec();
+	
 }
