@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.faces.context.FacesContext;
 
+import model.Actividad;
 import model.Contacto;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class CertificacionManagedBean {
 	
 	@Autowired
 	private IService service;
+	private Long certificacionId;
 	private String idCurso;
 	private String nombreCertificacion;
 	private String descripcionCertificacion;
@@ -34,11 +36,16 @@ public class CertificacionManagedBean {
 	private String nombreCentro;
 	private String direccionCentro;
 	private Date fechaIniciaEvaluacion;
+	private List<Actividad> actividades;
 	private String estatus;
 	
 	public CertificacionManagedBean(){
 		super();
 		contactos = new ArrayList<Contacto>();
+		actividades = new ArrayList<Actividad>();
+	}
+	public Long getCertificacionId(){
+		return certificacionId;
 	}
 	
 	public String nuevaCertificacion(){
@@ -52,6 +59,7 @@ public class CertificacionManagedBean {
 		setDireccionCentro(params.get("direccionCentro"));
 		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
 	}
+
 	public IService getService() {
 		return service;
 	}
@@ -143,6 +151,14 @@ public class CertificacionManagedBean {
 	}
 	public void setEstatus(String estatus) {
 		this.estatus = estatus;
+	}
+	public List<Actividad> getActividades() {
+		if(certificacionId != null){
+			actividades = service.getActividades(certificacionId);
+			return actividades;
+		}
+		else
+			return null;
 	}
 	public void guardar(){
 			

@@ -17,6 +17,8 @@ import model.Usuario;
 
 public interface IService {
 	
+	public List<Actividad> getActividades(Long certificacionId);
+	
 	public List<Mantenedor> getMantenedorActividades();
 	
 	public Rol getRolById(int id);

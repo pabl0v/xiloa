@@ -43,7 +43,9 @@ public class ServiceImp implements IService {
 	private IDao<Solicitud> solicitudDao;
 	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Propiedades definidas para ser utilizados principalmente en el Modulo SOLICITUDES
 	@Autowired
-	private IDao<Mantenedor> mantenedorDao;	
+	private IDao<Mantenedor> mantenedorDao;
+	@Autowired
+	private IDao<Actividad> actividadDao;	
 	@Autowired	
 	private IDaoInatec inatecDao;
 
@@ -253,5 +255,10 @@ public class ServiceImp implements IService {
 		if (objeto instanceof Solicitud) {
 			solicitudDao.save((Solicitud) objeto);
 		}
+	}
+
+	@Override
+	public List<Actividad> getActividades(Long certificacionId) {
+		return actividadDao.findAllByQuery("Select a from actividades a where a.certificacion.id="+certificacionId);
 	}
 }

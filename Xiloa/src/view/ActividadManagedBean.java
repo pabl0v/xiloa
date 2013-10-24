@@ -1,5 +1,6 @@
 package view;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +29,11 @@ public class ActividadManagedBean {
 	private String destino;
 	private Usuario creador;
 	private Usuario ejecutor;
+	
+	public ActividadManagedBean(){
+		super();
+		tipoActividades = new ArrayList<Mantenedor>();
+	}
 
 	public String getNombreActividad() {
 		return nombreActividad;
@@ -93,8 +99,10 @@ public class ActividadManagedBean {
 		this.creador = creador;
 	}
 
-	public List<Mantenedor> getMantenedorActividades(){
-		tipoActividades = service.getMantenedorActividades(); 
+	public List<Mantenedor> getTipoActividades(){
+		tipoActividades = service.getMantenedorActividades();
+		System.out.println("Tipos actividad:"+tipoActividades.get(0).getValor());
+		System.out.println("Tipos actividad:"+tipoActividades.get(1).getValor());
 		return tipoActividades;
 	}
 	

@@ -114,7 +114,7 @@
                     <p:tab id="tab1" title="Actividades">  
                         <h:form>     
                         <p:commandButton value="Agregar" style="margin-bottom: 5px" onclick="PF('dlg1').show();"/>    
-                            <p:dataTable var="competencia" value="#{planificacionManagedBean.competencias}" widgetVar="carsTable" emptyMessage="No se han encontrado datos." filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{competencia.nombreUCompetencia}" selectionMode="single">  
+                           	<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" widgetVar="carsTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.id}" selectionMode="single">  
 							    <f:facet name="header">  
 							         <p:outputPanel style="text-align:right;">  
 							             <h:outputText value="Buscar:" />  
@@ -123,7 +123,7 @@
 							    </f:facet>   
 							    <!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
 	               				<p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
-                                <p:column headerText="Nombre de la actividad"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  
+                                <p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombreActividad}" /></p:column>  
                                 <p:column headerText="Tipo"><h:outputText rvalue="#{competencia.nombreUCompetencia}" /></p:column>  
                                 <p:column headerText="Lugar/Medio"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  
                                 <p:column headerText="Fecha"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  
@@ -211,7 +211,7 @@
              <p:inputTextarea rows="10" cols="50" completeMethod="#{autoCompleteBean.completeArea}" queryDelay="750" minQueryLength="4" />
              <div class="dialogoactividades_secciones">  
 	             <p>Fecha:</p>
-	             <p:calendar value="#{calendarBean.date3}" id="popupButtonCal1" showOn="button" />
+	             <p:calendar value="#{actividadManagedBean.fechaInicial}" id="popupButtonCal1" showOn="button" />
              </div>
              <div class="dialogoactividades_secciones">  
              <p>Estatus:</p>
@@ -221,12 +221,12 @@
 	             </p:selectOneMenu>
              </div> 
              <p>Lugar/Medio:</p>
-             <p:inputTextarea rows="10" cols="50" completeMethod="#{autoCompleteBean.completeArea}" queryDelay="750" minQueryLength="4" />
+             <p:inputTextarea rows="10" cols="50" completeMethod="#{actividadManagedBean.destino}" queryDelay="750" minQueryLength="4" />
              <div class="dialogoactividades_secciones2">   
              <p>Tipo de actividad:</p>
-	             <p:selectOneMenu id="tipo" value="#{pprBean.city}">  
-	                <f:selectItem itemLabel="Select City" itemValue="" />  
-	                <f:selectItems value="#{pprBean.cities}" />  
+	             <p:selectOneMenu id="tipo" value="#{actividadManagedBean.selectedTipoActividad}">
+	                <f:selectItem itemLabel="Seleccione..." itemValue="" />
+	                <f:selectItems value="#{actividadManagedBean.tipoActividades}" var="actividad" itemLabel="#{actividad.valor}" itemValue="#{actividad}" />
 	             </p:selectOneMenu> 
              </div>
              <p:commandButton value="Agregar involucrados"/>
