@@ -24,7 +24,8 @@
                     <h:form>
                         <div class="contenedor_calendario">
                             <p>Inicia la divulgacion:</p>
-                            <span class="proteccion_calendario"><p:calendar value="#{certificacionManagedBean.fechaIniciaDivulgacion}" id="popupButtonCal1" showOn="button" /></span>  
+                            	<p:calendar value="#{certificacionManagedBean.fechaIniciaDivulgacion}" id="popupButtonCal1" showOn="button" pattern="dd/MM/yyyy">
+                            	</p:calendar>  
                         </div>    
                         <div class="contenedor_calendario">
                             <p>Finaliza la inscripcion:</p>

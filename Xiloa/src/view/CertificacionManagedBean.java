@@ -11,7 +11,7 @@ import model.Contacto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Component;  
 
 import service.IService;
 
@@ -92,6 +92,10 @@ public class CertificacionManagedBean {
 	public void setSelectedContactos(Contacto[] selectedContactos) {
 		this.selectedContactos = selectedContactos;
 	}
+	/*
+	public void handleDateSelect(DateSelectEvent event){
+		Date date = event.getDate();
+	}*/
 	public Date getFechaIniciaDivulgacion() {
 		return fechaIniciaDivulgacion;
 	}
@@ -141,6 +145,12 @@ public class CertificacionManagedBean {
 		this.estatus = estatus;
 	}
 	public void guardar(){
+		
+		System.out.println("Fecha Inicia Divulgacion: "+fechaIniciaDivulgacion.toString());
+		System.out.println("Fecha Finaliza Inscripcion: "+fechaFinalizaInscripcion.toString());
+		System.out.println("Fecha Inicia Convocatoria: "+fechaIniciaConvocatoria.toString());
+		System.out.println("Fecha Inicia Evaluacion: "+fechaIniciaEvaluacion.toString());
+		
 		service.guardarCertificacion(
 				getNombreCertificacion(),
 				getDescripcionCertificacion(), 
