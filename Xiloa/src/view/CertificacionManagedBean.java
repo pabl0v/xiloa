@@ -145,7 +145,7 @@ public class CertificacionManagedBean {
 		this.estatus = estatus;
 	}
 	public void guardar(){
-		
+			
 		System.out.println("Fecha Inicia Divulgacion: "+fechaIniciaDivulgacion.toString());
 		System.out.println("Fecha Finaliza Inscripcion: "+fechaFinalizaInscripcion.toString());
 		System.out.println("Fecha Inicia Convocatoria: "+fechaIniciaConvocatoria.toString());
@@ -160,11 +160,11 @@ public class CertificacionManagedBean {
 				getNombreCentro(),
 				getDireccionCentro(), 
 				null, //programador,
-				new Date(), //getFechaIniciaDivulgacion(), 
-				new Date(), //getFechaFinalizaDivulgacion(), 
-				new Date(), //getFechaFinalizaInscripcion(),
-				new Date(), //getFechaIniciaConvocatoria(),
-				new Date(), //getFechaIniciaEvaluacion(),
+				getFechaIniciaDivulgacion(), 
+				new Date(), 
+				getFechaFinalizaInscripcion(),
+				getFechaIniciaConvocatoria(),
+				getFechaIniciaEvaluacion(),
 				null, //creador,
 				"N/D", //referencia, 
 				0, //nivelCompetencia, 

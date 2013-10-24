@@ -22,22 +22,36 @@
                 <h3>Planificacion</h3>
                 <div class="seccion_interna">
                     <h:form>
+                   		<p:growl id="growl" showDetail="true"/>
+                   		
                         <div class="contenedor_calendario">
                             <p>Inicia la divulgacion:</p>
-                            	<p:calendar value="#{certificacionManagedBean.fechaIniciaDivulgacion}" id="popupButtonCal1" showOn="button" pattern="dd/MM/yyyy">
-                            	</p:calendar>  
-                        </div>    
+                            <span class="proteccion_calendario">
+                            <p:calendar value="#{certificacionManagedBean.fechaIniciaDivulgacion}" id="popupButtonCal1" showOn="button" pattern="dd/MM/yyyy">
+                            	<p:ajax event="dateSelect" update="growl" />  
+                            </p:calendar></span>  
+                        </div>   
+                        
                         <div class="contenedor_calendario">
                             <p>Finaliza la inscripcion:</p>
-                            <span class="proteccion_calendario"><p:calendar value="#{certificacionManagedBean.fechaFinalizaInscripcion}" id="popupButtonCal2" showOn="button" /></span>  
+                            <span class="proteccion_calendario">
+                            <p:calendar value="#{certificacionManagedBean.fechaFinalizaInscripcion}" id="popupButtonCal2" showOn="button">
+                           		<p:ajax event="dateSelect" update="growl" /> 
+                            </p:calendar></span>  
                         </div>
                         <div class="contenedor_calendario">
                             <p>Inicia convocatoria:</p>
-                            <span class="proteccion_calendario"><p:calendar value="#{certificacionManagedBean.fechaIniciaConvocatoria}" id="popupButtonCal3" showOn="button" /></span>  
+                            <span class="proteccion_calendario">
+                            <p:calendar value="#{certificacionManagedBean.fechaIniciaConvocatoria}" id="popupButtonCal3" showOn="button">
+                            	<p:ajax event="dateSelect" update="growl" /> 
+                            </p:calendar></span>  
                         </div>
                         <div class="contenedor_calendario">
                             <p>Inicia evaluaciones:</p>
-                            <span class="proteccion_calendario"><p:calendar value="#{certificacionManagedBean.fechaIniciaEvaluacion}" id="popupButtonCal4" showOn="button" /></span>  
+                            <span class="proteccion_calendario">
+                            <p:calendar value="#{certificacionManagedBean.fechaIniciaEvaluacion}" id="popupButtonCal4" showOn="button">
+                            	<p:ajax event="dateSelect" update="growl" /> 
+                            </p:calendar></span>  
                         </div>
                     </h:form>
                 </div>
