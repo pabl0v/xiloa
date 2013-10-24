@@ -38,7 +38,6 @@ public class SolicitudesManagedBean {
 	private List<Solicitud> solicitudB = new ArrayList<Solicitud> ();
 	
 	
-	
 	public String getPrimerNombre() {
 		return primerNombre;
 	}
@@ -57,6 +56,17 @@ public class SolicitudesManagedBean {
 
 	public String getNumeroIdentificacion() {
 		return numeroIdentificacion;
+	}
+	
+	public String getNombreCompleto() {
+		String nombreCompleto = "";
+		
+		nombreCompleto = (this.getPrimerNombre().trim().isEmpty() ? "" : (this.getPrimerNombre().trim() + " " )) +
+				         (this.getSegundoNombre().trim().isEmpty() ? "" : (this.getSegundoNombre().trim() + " " )) +
+				         (this.getPrimerApellido().trim().isEmpty() ? "" : (this.getPrimerApellido().trim() + " " )) +
+						 (this.getSegundoApellido().trim().isEmpty() ? "" : (this.getSegundoApellido().trim() + " " ));
+		
+		return nombreCompleto;
 	}
 
 	public String getDescEmpresaLabora() {
@@ -92,14 +102,17 @@ public class SolicitudesManagedBean {
 	}
 	
 	public void guardar(){
-		Contacto evaluador = new Contacto(null, //Contacto 
-										  null, //Rol
+		
+		Rol r = service.getRolById(1);
+				
+		Contacto evaluador = new Contacto(null, //Usuario 
+										  r, //Rol
 										  1, //EntidadId
 										  this.getPrimerNombre(), 
 										  this.getSegundoNombre(), 
 										  this.getPrimerApellido(),
 										  this.getSegundoApellido(), 
-										  this.getPrimerNombre() + " " + this.getSegundoNombre() + " " + this.getPrimerApellido() + " " + this.getSegundoApellido(), // NombreCompleto 
+										  this.getNombreCompleto(), // NombreCompleto 
 										  0, //Sexo
 										  "", // correo1 
 										  "", //correo2 
@@ -120,6 +133,8 @@ public class SolicitudesManagedBean {
 										  );		
 		
 		service.guardarContacto(evaluador);
+		
+		
 		
 		
 		

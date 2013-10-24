@@ -57,7 +57,7 @@
                         <p:column headerText="Nombre del candidato"><h:outputText value="#{solicitudI.contacto.nombreCompleto}" /></p:column>  
                         <p:column headerText="Certificacion a evaluar"><h:outputText value="#{solicitudI.certificacion.nombre}"/></p:column>  
                         <p:column headerText="Fecha solicitud"><h:outputText value="#{solicitudI.fechaRegistro}" /></p:column>               
-                        <p:column headerText="Evaluador"><h:outputText value="#{solicitudI.certificacion.getEvaluador().nombreCompleto}" /></p:column>                
+                        <p:column headerText="Evaluador"><h:outputText value="#{solicitudI.contacto.correo1}" /></p:column>                
                         <p:column headerText="Estado"><h:outputText value="#{solicitudI.estatus}" /></p:column>                             
                         <p:column style="width:4%">  
 				            <p:commandButton id="selectButton" oncomplete="window.location='/Xiloa/modulos/solicitudes/registro_solicitud.xhtml'" icon="ui-icon-pencil" title="Editar">  
