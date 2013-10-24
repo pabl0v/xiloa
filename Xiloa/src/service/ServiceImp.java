@@ -38,15 +38,16 @@ public class ServiceImp implements IService {
 	private IDao<Contacto> contactoDao;
 	@Autowired
 	private IDao<Rol> rolDao;
-	@Autowired
-	private IDao<Mantenedor> mantenedorDao;
-	@Autowired
-	private IDaoInatec inatecDao;
-
 	//Inicio : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Propiedades definidas para ser utilizados principalmente en el Modulo SOLICITUDES	
 	@Autowired
 	private IDao<Solicitud> solicitudDao;
-	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Propiedades definidas para ser utilizados principalmente en el Modulo SOLICITUDES	
+	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Propiedades definidas para ser utilizados principalmente en el Modulo SOLICITUDES
+	@Autowired
+	private IDao<Mantenedor> mantenedorDao;	
+	@Autowired	
+	private IDaoInatec inatecDao;
+
+		
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
@@ -245,5 +246,12 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Mantenedor> getMantenedorActividades() {
 		return mantenedorDao.findAllByQuery("Select m from mantenedores m where m.tipo='1' order by 1");
+	}
+	
+	@Override
+	public void guardar (Object objeto) {
+		if (objeto instanceof Solicitud) {
+			solicitudDao.save((Solicitud) objeto);
+		}
 	}
 }

@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import model.Certificacion;
 import model.Contacto;
+import model.Evaluacion;
 import model.Rol;
 import model.Solicitud;
 import model.Usuario;
@@ -103,9 +105,11 @@ public class SolicitudesManagedBean {
 	
 	public void guardar(){
 		
-		Rol r = service.getRolById(1);
+		Solicitud     s;
+		Rol           r = service.getRolById(1);
+		Certificacion c = new Certificacion();
 				
-		Contacto evaluador = new Contacto(null, //Usuario 
+		Contacto solicitante = new Contacto(null, //Usuario 
 										  r, //Rol
 										  1, //EntidadId
 										  this.getPrimerNombre(), 
@@ -132,13 +136,25 @@ public class SolicitudesManagedBean {
 										  null//idEmpleado
 										  );		
 		
-		service.guardarContacto(evaluador);
+		service.guardarContacto(solicitante);
 		
 		
+		s = new Solicitud (c.getNombre(), //nombre
+				           null, // ticket 
+				           1, // estatus
+				           null, // fechaRegistro
+				           null, // fechaMatricula
+				           this.getExperiencia(), // experiencia
+				           this.getOcupacion(), // ocupacion 
+				           this.getOcupacion(), // oficio
+				           7, // escolaridad
+				           solicitante, // contacto
+				           c, // certificacion
+				           null // evaluaciones
+				           );
 		
 		
-		
-		//service.guardarSolicitud(getSolicitudI());
+		service.guardar(s);
 		
 	}
 	
