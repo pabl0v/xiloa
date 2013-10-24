@@ -20,6 +20,24 @@
        <h2>Registro de solicitud de evaluacion:</h2>
        <h:form>
    			<div class="seccion_detalle">
+   			<div style="display:inline-block;">
+	   			<p style="display:inline-block;">Seleccione un centro:</p>
+	       		<p:selectOneMenu id="selector_filtro" styleClass="selector_status_estilo" value="a" style="position: relative;top: 7px;margin-left: 5px;margin-right: 5px;">  
+			            <f:selectItem itemLabel="INATEC" itemValue="a" />
+			            <f:selectItem itemLabel="INATEC" itemValue="a" />
+			            <f:selectItem itemLabel="INATEC" itemValue="a" />             
+			    </p:selectOneMenu>
+		    </div>
+		    <div style="display:inline-block;">
+			    <p style="display:inline-block;">Seleccione la certificacion:</p>
+	       		<p:selectOneMenu id="selector_filtro1" styleClass="selector_status_estilo" value="a" style="position: relative;top: 7px;margin-left: 5px;margin-right: 5px;">  
+			            <f:selectItem itemLabel="Auxiliar en contabilidad" itemValue="a" />
+			            <f:selectItem itemLabel="Auxiliar en contabilidad" itemValue="a" />
+			            <f:selectItem itemLabel="Auxiliar en contabilidad" itemValue="a" />             
+			    </p:selectOneMenu>
+		    </div>
+		    <br/>
+   			<br/>
                 <h:outputLabel styleClass="estilo_label" for="surname" value="Primer nombre:" /> 
                 <p:inputText id="primerNombre" value="#{personBean.primerNombre}" />  
                 <h:outputLabel styleClass="estilo_label" for="surname" value="Segundo nombre:" />  
@@ -40,8 +58,12 @@
                 <p:editor id="ocupacion" value="#{editorBean.ocupacion}" height="150"/>    
 				
              </div>
-             <p:commandButton onclick="PF('modal_solicitud').hide();" value="Cancelar"/> 
-             <p:commandButton value="Aplicar" action="#{solicitudesManagedBean.guardar}" />    
+             <div class="seccion_detalle" style="background:none;height:30px;margin-top:-68px;border:none;text-align: right;">
+             </div>
+             <div class="seccion_detalle" style="background:none;height:50px;margin-top:-68px;border:none;text-align: right;">
+	             <p:commandButton onclick="PF('modal_solicitud').hide();" value="Cancelar"/> 
+	             <p:commandButton value="Aplicar" action="#{solicitudesManagedBean.guardar}" />
+             </div>    
            </h:form>  
 	</div>  
 </h:body>

@@ -183,34 +183,11 @@
     	</p:dialog>  
         
         
-        <p:dialog id="modal_solicitud_competencia" header="Solicitud de registro para obtener la Certificacion: Auxiliar en Contabilidad" widgetVar="modal_solicitud" modal="true" width="570" height="600">
-		  <p>Para registrar su informacion debe estar registrado, si aun no lo ha hecho, pulse <a>aqui</a> para registar su usuarui en el <a>Sistema de Certificaciones Laborales del INATEC</a></p>         
+        <p:dialog id="modal_solicitud_competencia" header="" widgetVar="modal_solicitud" modal="true" width="480" height="240">
           <h:form>
-   			<div class="seccion_detalle">
-                <h:outputLabel styleClass="estilo_label" for="surname" value="Primer nombre:" /> 
-                <p:inputText id="firstname" value="#{personBean.firstname}" />  
-                <h:outputLabel styleClass="estilo_label" for="surname" value="Segundo nombre:" />  
-                <p:inputText id="surname" value="#{personBean.surname}" required="true" requiredMessage="Surname is required."/>  
-                <h:outputLabel styleClass="estilo_label" for="firstname" value="Apellido paterno:" />  
-                <p:inputText id="fg" value="#{personBean.firstname}" />  
-                <h:outputLabel styleClass="estilo_label" for="firstname" value="Apellido materno:" />  
-                <p:inputText id="fdg4" value="#{personBean.firstname}" />  
-                <h:outputLabel styleClass="estilo_label" for="firstname" value="Cedula:" />  
-                <p:inputMask value="#{maskController.date}" mask="999-999999-9999A"/>
-         	</div>
-           </h:form>
-           <h:form>
-             <div class="seccion_detalle">
-                <h:outputLabel styleClass="estilo_label" for="firstname2" value="Empresa donde labora actualmente:" />  
-                <p:inputText id="firstname2" value="#{personBean.firstname}" />  
-                <h:outputLabel styleClass="estilo_label" for="surname2" value="Años ejerciendo la actividad:" />  
-                <p:inputText id="surname2" value="#{personBean.surname}" required="true" requiredMessage="Surname is required."/>  
-                <h:outputLabel styleClass="estilo_label" value="Descripcion de la ocupacion actual:" /> 
-                <p:editor id="editor2" value="#{editorBean.value}" height="150"/>    			
-             </div>
-             <p:commandButton onclick="PF('modal_solicitud').hide();" value="Cancelar"/> 
-            	<p:commandButton value="Aplicar"/>    
-           </h:form>    
+		  <p style="font-size:16px;padding:10px;font-weight:bold;">Para poder aplicar a una certificacion debe de estar registrado o autenticado.<br/><br/>Si aun no tiene una cuenta, pulse <a style="cursor:pointer;color:blue;" onclick="$('.ui-tabs-nav').children('li').eq(2).click();PF('modal_solicitud').hide();PF('modal_comp').hide();">aqui</a> para registar su usuario en el <a>Sistema de Certificaciones Laborales del INATEC</a></p>         
+          <p:commandButton onclick="PF('modal_solicitud').hide();PF('modal_comp').hide();" value="Cerrar" style="text-align:center;"/>
+          </h:form>
         </p:dialog>   
         <footer>
             <p>2013 &#174;Derechos reservados por INATEC --  Sistema de gestion de Certificaciones Laborales del INATEC</p>
