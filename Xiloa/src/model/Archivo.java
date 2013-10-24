@@ -175,4 +175,28 @@ public class Archivo {
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
 	}
+
+	public Archivo(Laboral laboral, String nombre, String descripcion,
+			String nombreReal, String ruta, String propietario, Date fecha,
+			String tipo, String size, String version, String icono,
+			String categoria) {
+		super();
+		this.laboral = laboral;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.nombreReal = nombreReal;
+		this.ruta = ruta;
+		this.propietario = propietario;
+		this.fecha = fecha;
+		this.tipo = tipo;
+		this.size = size;
+		this.version = version;
+		this.icono = icono;
+		this.categoria = categoria;
+	}
+	
+	public Archivo() {
+		super();		
+	}
+	
 }

@@ -99,4 +99,19 @@ public class Evaluacion {
 	public void setSolicitud(Solicitud solicitud) {
 		this.solicitud = solicitud;
 	}
+
+	public Evaluacion(int estadoInicial, int estadoSiguiente, boolean aprobado,
+			String descripcion, String instrumento, Solicitud solicitud) {
+		super();
+		this.estadoInicial = estadoInicial;
+		this.estadoSiguiente = estadoSiguiente;
+		this.aprobado = aprobado;
+		this.descripcion = descripcion;
+		this.instrumento = instrumento;
+		this.solicitud = solicitud;
+	}
+	
+	public Evaluacion() {
+		super();		
+	}
 }

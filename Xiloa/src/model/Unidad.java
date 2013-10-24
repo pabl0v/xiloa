@@ -63,4 +63,16 @@ public class Unidad {
 	public void setCompetenciaDescripcion(String competenciaDescripcion) {
 		this.competenciaDescripcion = competenciaDescripcion;
 	}
+
+	public Unidad(Certificacion certificacion, String competenciaCodigo,
+			String competenciaDescripcion) {
+		super();
+		this.certificacion = certificacion;
+		this.competenciaCodigo = competenciaCodigo;
+		this.competenciaDescripcion = competenciaDescripcion;
+	}
+	
+	public Unidad() {
+		super();		
+	}
 }

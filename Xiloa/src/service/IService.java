@@ -59,6 +59,7 @@ public interface IService {
 	public void RegistrarUsuarioOpenId(String login, String nombre, String apellido, String email, String rol);
 	//Inicio : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
 	public List<USolicitud> getUSolicitudes ();
+	public List<Solicitud> getSolicitudes();
 	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
 	
 }

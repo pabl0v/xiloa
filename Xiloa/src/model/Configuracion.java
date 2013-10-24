@@ -65,4 +65,17 @@ public class Configuracion {
 	public void setGrupo(String grupo) {
 		this.grupo = grupo;
 	}
+
+	public Configuracion(String nombre, String valor, String tipo, String grupo) {
+		super();
+		this.nombre = nombre;
+		this.valor = valor;
+		this.tipo = tipo;
+		this.grupo = grupo;
+	}
+
+	public Configuracion() {
+		super();		
+	}
+	
 }

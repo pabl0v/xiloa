@@ -104,4 +104,21 @@ public class Perfil {
 	public void setHabilitado(boolean habilitado) {
 		this.habilitado = habilitado;
 	}
+
+	public Perfil(String nombre, String descripcion, String permiso,
+			String modulo, String seccion, boolean permitido, boolean habilitado) {
+		super();
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.permiso = permiso;
+		this.modulo = modulo;
+		this.seccion = seccion;
+		this.permitido = permitido;
+		this.habilitado = habilitado;
+	}
+	
+	public Perfil() {
+		super();		
+	}
+	
 }

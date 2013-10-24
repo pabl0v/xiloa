@@ -76,4 +76,18 @@ public class Mantenedor {
 	public void setAnterior(String anterior) {
 		this.anterior = anterior;
 	}
+
+	public Mantenedor(String etiqueta, String valor, String tipo,
+			String proximo, String anterior) {
+		super();
+		this.etiqueta = etiqueta;
+		this.valor = valor;
+		this.tipo = tipo;
+		this.proximo = proximo;
+		this.anterior = anterior;
+	}
+	
+	public Mantenedor() {
+		super();		
+	}
 }

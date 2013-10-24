@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -59,12 +58,12 @@ public class Solicitud {
 	private int escolaridad;
 
 	@NotNull
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne 
 	@JoinColumn(name="contacto_id")	
 	private Contacto contacto;
 	
 	@NotNull
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne 
 	@JoinColumn(name="certificacion_id")	
 	private Certificacion certificacion;
 	
@@ -173,5 +172,29 @@ public class Solicitud {
 
 	public void setEvaluaciones(List<Evaluacion> evaluaciones) {
 		this.evaluaciones = evaluaciones;
+	}
+
+	public Solicitud(String nombre, String ticket, int estatus,
+			Date fechaRegistro, Date fechaMatricula, int experiencia,
+			String ocupacion, String oficio, int escolaridad,
+			Contacto contacto, Certificacion certificacion,
+			List<Evaluacion> evaluaciones) {
+		super();
+		this.nombre = nombre;
+		this.ticket = ticket;
+		this.estatus = estatus;
+		this.fechaRegistro = fechaRegistro;
+		this.fechaMatricula = fechaMatricula;
+		this.experiencia = experiencia;
+		this.ocupacion = ocupacion;
+		this.oficio = oficio;
+		this.escolaridad = escolaridad;
+		this.contacto = contacto;
+		this.certificacion = certificacion;
+		this.evaluaciones = evaluaciones;
+	}
+	
+	public Solicitud() {
+		super();		
 	}
 }

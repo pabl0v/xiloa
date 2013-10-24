@@ -170,11 +170,12 @@ public class ServiceImp implements IService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void RegistrarUsuarioOpenId(String login, String nombre, String apellido, String email, String rol) {
-		Usuario usuario = new Usuario();
-		usuario.setUsuarioAlias(login);
-		usuario.setUsuarioPwd("");
-		usuario.setUsuarioEstatus(true);
-		usuario.setRol(rolDao.findOneByQuery("Select r from roles r where r.estatus='true' and r.nombre="+"'"+rol+"'"));
+		Usuario usuario = new Usuario(null, //contacto 
+				                      login, //usuarioAlias
+				                      "", //usuarioPwd
+				                      rolDao.findOneByQuery("Select r from roles r where r.estatus='true' and r.nombre="+"'"+rol+"'"), //rol 
+				                      true // usuarioEstatus
+				                      );		
 		usuarioDao.save(usuario);
 	}
 
@@ -203,6 +204,7 @@ public class ServiceImp implements IService {
 	}
 	
 	//Inicio : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
+	@Override
 	public List<USolicitud> getUSolicitudes () {
 			System.out.println("Desde el metodo getSolicitudes del ServiceImp");
 			
@@ -211,32 +213,29 @@ public class ServiceImp implements IService {
 			
 			for(int i = 0; i<Sols.size(); i++){
 				
-				USolicitud uSolicitud = new USolicitud();
-								
-				uSolicitud.setCentroEvaluador(Sols.get(i).getCertificacion().getIfpNombre());
-				uSolicitud.setNombreCertificacion(Sols.get(i).getCertificacion().getNombre());			
+				USolicitud uSolicitud = new USolicitud (Sols.get(i).getCertificacion().getIfpNombre(), 
+														Sols.get(i).getContacto().getNombreCompleto(),
+														Sols.get(i).getCertificacion().getNombre(), 
+														Sols.get(i).getCertificacion().getInvolucrados().get(0).getCorreo1(), 
+														Sols.get(i).getEstatus(),
+														Sols.get(i).getFechaRegistro());
 				
-				uSolicitud.setNombreCandidato(Sols.get(i).getContacto().getPrimerNombre() + " " +
-											  Sols.get(i).getContacto().getSegundoNombre()  + " " +
-											  Sols.get(i).getContacto().getPrimerApellido() + " " +
-											  Sols.get(i).getContacto().getSegundoApellido());			
-							
-				uSolicitud.setNombreEvaluador(Sols.get(i).getCertificacion().getInvolucrados().get(0).getCorreo1());
-									
-				uSolicitud.setEstatus(Sols.get(i).getEstatus());
-									
-				uSolicitud.setFechaRegistro(Sols.get(i).getFechaRegistro());
-						
 				uSols.add(uSolicitud);			
 			}
 			
 			return uSols;
 			
 	}
+	
+	@Override
+	public List<Solicitud> getSolicitudes() {
+		return solicitudDao.findAll(Solicitud.class);		
+	}	
+	
 	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES	
 
 	@Override
 	public Rol getRolById(int id) {
 		return rolDao.findOneByQuery("Select r from roles r where r.id_rol="+id);
-	}
+	}	
 }

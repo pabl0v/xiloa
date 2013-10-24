@@ -174,5 +174,29 @@ public class Actividad {
 
 	public void setBitarora(List<Bitacora> bitarora) {
 		this.bitarora = bitarora;
-	}	
+	}
+
+	public Actividad(Certificacion certificacion, int tipoId,
+			Date fechaInicial, Date fechaFinal, Usuario creadorId,
+			Usuario ejecutorId, String nombre, String descripcion,
+			String destino, List<Contacto> involucrados, List<Bitacora> bitarora) {
+		super();
+		this.certificacion = certificacion;
+		this.tipoId = tipoId;
+		this.fechaInicial = fechaInicial;
+		this.fechaFinal = fechaFinal;
+		this.creadorId = creadorId;
+		this.ejecutorId = ejecutorId;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.destino = destino;
+		this.involucrados = involucrados;
+		this.bitarora = bitarora;
+	}
+
+	public Actividad() {
+		super();
+	}
+	
+	
 }

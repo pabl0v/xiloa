@@ -94,4 +94,18 @@ public class Rol {
 	public void setEstatus(boolean estatus) {
 		this.estatus = estatus;
 	}
+
+	public Rol(String nombre, String descripcion, Integer idRolInatec,
+			List<Perfil> perfiles, boolean estatus) {
+		super();
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.idRolInatec = idRolInatec;
+		this.perfiles = perfiles;
+		this.estatus = estatus;
+	}
+	
+	public Rol() {
+		super();		
+	}
 }

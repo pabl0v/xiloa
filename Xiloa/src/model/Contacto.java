@@ -327,4 +327,45 @@ public class Contacto {
 	public void setIdEmpleado(Long idEmpleado) {
 		this.idEmpleado = idEmpleado;
 	}
+
+	public Contacto(Usuario usuario, Rol rol, int entidadId,
+			String primerNombre, String segundoNombre, String primerApellido,
+			String segundoApellido, String nombreCompleto, int sexo,
+			String correo1, String correo2, String telefono1, String telefono2,
+			int tipoContacto, int tipoIdentificacion,
+			String numeroIdentificacion, String direccionActual,
+			Date fechaNacimiento, Date fechaRegistro, int nacionalidadId,
+			String lugarNacimiento, boolean inatec, String usuarioInatec,
+			String funcion, Long idEmpleado) {
+		super();
+		this.usuario = usuario;
+		this.rol = rol;
+		this.entidadId = entidadId;
+		this.primerNombre = primerNombre;
+		this.segundoNombre = segundoNombre;
+		this.primerApellido = primerApellido;
+		this.segundoApellido = segundoApellido;
+		this.nombreCompleto = nombreCompleto;
+		this.sexo = sexo;
+		this.correo1 = correo1;
+		this.correo2 = correo2;
+		this.telefono1 = telefono1;
+		this.telefono2 = telefono2;
+		this.tipoContacto = tipoContacto;
+		this.tipoIdentificacion = tipoIdentificacion;
+		this.numeroIdentificacion = numeroIdentificacion;
+		this.direccionActual = direccionActual;
+		this.fechaNacimiento = fechaNacimiento;
+		this.fechaRegistro = fechaRegistro;
+		this.nacionalidadId = nacionalidadId;
+		this.lugarNacimiento = lugarNacimiento;
+		this.inatec = inatec;
+		this.usuarioInatec = usuarioInatec;
+		this.funcion = funcion;
+		this.idEmpleado = idEmpleado;
+	}
+	
+	public Contacto() {
+		super();		
+	}
 }

@@ -317,4 +317,39 @@ public class Certificacion {
 			this.involucrados.put(involucrados[i].getRol().getId(), involucrados[i]);
 		}
 	}
+
+	public Certificacion(String nombre, String descripcion, Date inicia,
+			Date finaliza, int ifpId, String ifpDireccion, String ifpNombre,
+			Usuario programador, Date divulgacionInicia,
+			Date divulgacionFinaliza, Date inscripcionFinaliza,
+			Date convocatoriaInicia, Date evaluacionInicia, Usuario creador,
+			int estatus, String referencial, int nivelCompetencia,
+			List<Requisito> requisitos, List<Unidad> unidades,
+			List<Actividad> actividades, List<Solicitud> solicitudes,
+			Map<Integer, Contacto> involucrados) {
+		super();
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.inicia = inicia;
+		this.finaliza = finaliza;
+		this.ifpId = ifpId;
+		this.ifpDireccion = ifpDireccion;
+		this.ifpNombre = ifpNombre;
+		this.programador = programador;
+		this.divulgacionInicia = divulgacionInicia;
+		this.divulgacionFinaliza = divulgacionFinaliza;
+		this.inscripcionFinaliza = inscripcionFinaliza;
+		this.convocatoriaInicia = convocatoriaInicia;
+		this.evaluacionInicia = evaluacionInicia;
+		this.creador = creador;
+		this.estatus = estatus;
+		this.referencial = referencial;
+		this.nivelCompetencia = nivelCompetencia;
+		this.requisitos = requisitos;
+		this.unidades = unidades;
+		this.actividades = actividades;
+		this.solicitudes = solicitudes;
+		this.involucrados = involucrados;
+	}	
+	
 }

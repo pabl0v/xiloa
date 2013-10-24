@@ -80,4 +80,19 @@ public class Requisito {
 	public void setCalificacion(String calificacion) {
 		this.calificacion = calificacion;
 	}
+
+	public Requisito(Certificacion certificacion, String descripcion,
+			String vigencia, String acreditacion, String calificacion) {
+		super();
+		this.certificacion = certificacion;
+		this.descripcion = descripcion;
+		this.vigencia = vigencia;
+		this.acreditacion = acreditacion;
+		this.calificacion = calificacion;
+	}
+	
+	public Requisito() {
+		super();		
+	}
+	
 }

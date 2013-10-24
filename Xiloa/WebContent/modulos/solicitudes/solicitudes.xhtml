@@ -21,7 +21,7 @@
         <div id="cabezera">
             <h2>Solicitudes Activas</h2>                  
             <div id="botones_filtro_contenedor">
-                <div class="botones_filtro" onclick="PF('dlg2').show();"><p class="icono_nuevo">Nueva solicitud</p></div>
+                <div class="botones_filtro" onclick="window.location='/Xiloa/modulos/solicitudes/registro_solicitud.xhtml'" ><p class="icono_nuevo">Nueva solicitud</p></div>
                 <div class="botones_filtro" onclick="PF('dlg2').show();"><p class="icono_folder">Convocatoria</p></div>
             </div>
             <div id="contenedor_filtro">
@@ -51,13 +51,13 @@
       
         <div id="contenedor_tabla_solicitudes">
             <h:form>  
-                <p:dataTable emptyMessage="No existen datos para mostrar" var="solicitudI" value="#{solicitudesManagedBean.solicitudI}">  
+                <p:dataTable emptyMessage="No existen datos para mostrar" var="solicitudI" value="#{solicitudesManagedBean.solicitudB}">  
                         <!--Las columnas de la tabla-->
-                        <p:column headerText="Centro evaluador"><h:outputText value="#{solicitudI.centroEvaluador}" /></p:column>  
-                        <p:column headerText="Nombre del candidato"><h:outputText value="#{solicitudI.nombreCandidato}" /></p:column>  
-                        <p:column headerText="Certificacion a evaluar"><h:outputText value="#{solicitudI.nombreCertificacion}"/></p:column>  
+                        <p:column headerText="Centro evaluador"><h:outputText value="#{solicitudI.certificacion.ifpNombre}" /></p:column>  
+                        <p:column headerText="Nombre del candidato"><h:outputText value="#{solicitudI.contacto.nombreCompleto}" /></p:column>  
+                        <p:column headerText="Certificacion a evaluar"><h:outputText value="#{solicitudI.certificacion.nombre}"/></p:column>  
                         <p:column headerText="Fecha solicitud"><h:outputText value="#{solicitudI.fechaRegistro}" /></p:column>               
-                        <p:column headerText="Evaluador"><h:outputText value="#{solicitudI.nombreEvaluador}" /></p:column>                
+                        <p:column headerText="Evaluador"><h:outputText value="#{solicitudI.certificacion.getEvaluador().nombreCompleto}" /></p:column>                
                         <p:column headerText="Estado"><h:outputText value="#{solicitudI.estatus}" /></p:column>                             
                         <p:column style="width:4%">  
 				            <p:commandButton id="selectButton" oncomplete="window.location='/Xiloa/modulos/solicitudes/registro_solicitud.xhtml'" icon="ui-icon-pencil" title="Editar">  

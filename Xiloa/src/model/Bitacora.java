@@ -108,4 +108,19 @@ public class Bitacora {
 	public void setFechaEvento(Date fechaEvento) {
 		this.fechaEvento = fechaEvento;
 	}
+
+	public Bitacora(Actividad actividad, Contacto contacto, String nombre,
+			String descripcion, Date fecha, Date fechaEvento) {
+		super();
+		this.actividad = actividad;
+		this.contacto = contacto;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.fecha = fecha;
+		this.fechaEvento = fechaEvento;
+	}
+	
+	public Bitacora() {
+		super();		
+	}
 }

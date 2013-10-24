@@ -140,4 +140,24 @@ public class Historia {
 	public void setIpOrigen(String ipOrigen) {
 		this.ipOrigen = ipOrigen;
 	}
+
+	public Historia(String tabla, Date fecha, String usuario, String accion,
+			String item, String certificacion, String nombre, String cambios,
+			String descripcion, String ipOrigen) {
+		super();
+		this.tabla = tabla;
+		this.fecha = fecha;
+		this.usuario = usuario;
+		this.accion = accion;
+		this.item = item;
+		this.certificacion = certificacion;
+		this.nombre = nombre;
+		this.cambios = cambios;
+		this.descripcion = descripcion;
+		this.ipOrigen = ipOrigen;
+	}
+
+	public Historia() {
+		super();		
+	}
 }

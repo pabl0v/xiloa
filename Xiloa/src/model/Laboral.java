@@ -181,4 +181,27 @@ public class Laboral {
 	public void setArchivo(Archivo archivo) {
 		this.archivo = archivo;
 	}
+
+	public Laboral(Contacto contacto, int tipo, String nombre,
+			String descripcion, String institucion, String pais,
+			Date fechaInicia, Date fechaFinaliza, String institucionDireccion,
+			String institucionTelefono, String cargo, Archivo archivo) {
+		super();
+		this.contacto = contacto;
+		this.tipo = tipo;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.institucion = institucion;
+		this.pais = pais;
+		this.fechaInicia = fechaInicia;
+		this.fechaFinaliza = fechaFinaliza;
+		this.institucionDireccion = institucionDireccion;
+		this.institucionTelefono = institucionTelefono;
+		this.cargo = cargo;
+		this.archivo = archivo;
+	}
+	
+	public Laboral() {
+		super();		
+	}
 }

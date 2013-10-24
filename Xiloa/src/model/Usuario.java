@@ -96,4 +96,19 @@ public class Usuario {
 	public void setUsuarioEstatus(boolean usuarioEstatus) {
 		this.usuarioEstatus = usuarioEstatus;
 	}
+
+	public Usuario(Contacto contacto, String usuarioAlias, String usuarioPwd,
+			Rol rol, boolean usuarioEstatus) {
+		super();
+		this.contacto = contacto;
+		this.usuarioAlias = usuarioAlias;
+		this.usuarioPwd = usuarioPwd;
+		this.rol = rol;
+		this.usuarioEstatus = usuarioEstatus;
+	}
+	
+	public Usuario() {
+		super();		
+	}
+	
 }

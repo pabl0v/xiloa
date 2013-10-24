@@ -2,8 +2,6 @@ package support;
 
 import java.util.Date;
 
-import model.Solicitud;
-
 public class USolicitud {
 	private String centroEvaluador;
 	private String nombreCandidato;
@@ -49,6 +47,19 @@ public class USolicitud {
 	public void setNombreEvaluador(String nombreEvaluador) {
 		this.nombreEvaluador = nombreEvaluador;
 	}
+	public USolicitud(String centroEvaluador, String nombreCandidato,
+			String nombreCertificacion, String nombreEvaluador, int estatus,
+			Date fechaRegistro) {
+		super();
+		this.centroEvaluador = centroEvaluador;
+		this.nombreCandidato = nombreCandidato;
+		this.nombreCertificacion = nombreCertificacion;
+		this.nombreEvaluador = nombreEvaluador;
+		this.estatus = estatus;
+		this.fechaRegistro = fechaRegistro;
+	}
+	
+	
 	    
 }
 
