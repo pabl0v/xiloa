@@ -21,8 +21,8 @@ public class Rol {
 	@Id
 	@SequenceGenerator(name = "seq_roles", sequenceName = "seq_roles", allocationSize=1, initialValue= 1)
 	@GeneratedValue(strategy=GenerationType.AUTO, generator = "seq_roles")
-	@Column(name = "rol_id")
-	private Long id;
+	@Column(name = "rol_id", nullable = false)
+	private int id;
 	
 	@Column(name = "rol_nombre", nullable = false)	
 	private String nombre;
@@ -47,11 +47,11 @@ public class Rol {
 	@Column(name = "rol_estatus", nullable = false)
 	private boolean estatus;
 	
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

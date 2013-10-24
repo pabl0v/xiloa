@@ -41,7 +41,7 @@ public interface IService {
 										List<Unidad> unidades,
 										List<Actividad> actividades,
 										List<Solicitud> solicitudes,
-										List<Contacto> involucrados,
+										Contacto[] involucrados,
 										String estatus);
 	public List<Requisito> getRequisitos(int certificacionId);
 	public void updateRequisito(Requisito requisito);

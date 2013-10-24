@@ -25,7 +25,7 @@ public class CertificacionManagedBean {
 	private String nombreCertificacion;
 	private String descripcionCertificacion;
 	private float costo;
-	private List<Contacto> contactos = new ArrayList<Contacto>();
+	private List<Contacto> contactos;
 	private Contacto[] selectedContactos;
 	private Date fechaIniciaDivulgacion;
 	private Date fechaFinalizaInscripcion;
@@ -35,6 +35,11 @@ public class CertificacionManagedBean {
 	private String direccionCentro;
 	private Date fechaIniciaEvaluacion;
 	private String estatus;
+	
+	public CertificacionManagedBean(){
+		super();
+		contactos = new ArrayList<Contacto>();
+	}
 	
 	public String nuevaCertificacion(){
 		Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
@@ -157,7 +162,7 @@ public class CertificacionManagedBean {
 				null, //unidades, 
 				null, //actividades, 
 				null, //solicitudes,
-				contactos,
+				selectedContactos,
 				estatus);
 	}
 }

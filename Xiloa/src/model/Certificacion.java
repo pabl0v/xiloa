@@ -1,7 +1,10 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,10 +15,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -109,16 +112,25 @@ public class Certificacion {
 	
 	@OneToMany(mappedBy = "certificacion")
 	private List<Solicitud> solicitudes;
-	
+		
 	@ManyToMany
 	@JoinTable
 	(
 			name = "pinvolucrados",
 			joinColumns = @JoinColumn(name = "certificacion_id", unique = false),
-			inverseJoinColumns = @JoinColumn(name = "contacto_id", unique = false),
-			uniqueConstraints = @UniqueConstraint(columnNames = {"certificacion_id", "contacto_id"})
+			inverseJoinColumns = @JoinColumn(name = "contacto_id", unique = false)
 	)
-	private List<Contacto> involucrados;
+	@MapKeyColumn(name="id_rol")
+	private Map<Integer, Contacto> involucrados;
+	
+	public Certificacion(){
+		super();
+		this.requisitos = new ArrayList<Requisito>();
+		this.unidades = new ArrayList<Unidad>();
+		this.actividades = new ArrayList<Actividad>();
+		this.solicitudes = new ArrayList<Solicitud>();
+		this.involucrados = new HashMap<Integer, Contacto>();
+	}
 
 	public Long getId() {
 		return id;
@@ -296,11 +308,13 @@ public class Certificacion {
 		this.solicitudes = solicitudes;
 	}
 
-	public List<Contacto> getInvolucrados() {
+	public Map<Integer, Contacto> getInvolucrados() {
 		return involucrados;
 	}
 
-	public void setInvolucrados(List<Contacto> involucrados) {
-		this.involucrados = involucrados;
-	}	
+	public void setInvolucrados(Contacto[] involucrados) {
+		for(int i=0; i<involucrados.length; i++){
+			this.involucrados.put(involucrados[i].getRol().getId(), involucrados[i]);
+		}
+	}
 }

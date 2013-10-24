@@ -118,7 +118,7 @@ public class DaoInatecImpl implements IDaoInatec {
 		}
 
 		Rol rol = new Rol();
-		rol.setId((long)100);
+		rol.setId(100);
 		rol.setDescripcion("inatec");
 		rol.setNombre("inatec");
 		rol.setEstatus(true);		

@@ -67,7 +67,7 @@ public class ServiceImp implements IService {
 										List<Unidad> unidades, 
 										List<Actividad> actividades,
 										List<Solicitud> solicitudes, 
-										List<Contacto> involucrados,
+										Contacto[] involucrados,
 										String estatus) {
 		Usuario usuario = usuarioDao.findOneByQuery("select u from usuarios u where u.id=3");
 		Certificacion certificacion = new Certificacion();
