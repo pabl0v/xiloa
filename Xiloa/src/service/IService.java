@@ -8,6 +8,7 @@ import support.UCompetencia;
 import support.USolicitud;
 import model.Actividad;
 import model.Contacto;
+import model.Mantenedor;
 import model.Requisito;
 import model.Rol;
 import model.Solicitud;
@@ -15,6 +16,8 @@ import model.Unidad;
 import model.Usuario;
 
 public interface IService {
+	
+	public List<Mantenedor> getMantenedorActividades();
 	
 	public Rol getRolById(int id);
 	

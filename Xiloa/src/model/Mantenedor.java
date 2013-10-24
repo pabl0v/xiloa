@@ -23,12 +23,25 @@ public class Mantenedor {
 	@Column(name = "mantenedor_tipo", nullable = false)
 	private String tipo;
 	
-	@Column(name = "mantenedor_proximo", nullable = false)
+	@Column(name = "mantenedor_proximo", nullable = true)
 	private String proximo;
 	
-	@Column(name = "mantenedor_anterior", nullable = false)
+	@Column(name = "mantenedor_anterior", nullable = true)
 	private String anterior;
 
+	public Mantenedor() {
+		super();		
+	}
+	
+	public Mantenedor(String tipo, String etiqueta, String valor, String anterior, String proximo) {
+		super();
+		this.tipo = tipo;
+		this.etiqueta = etiqueta;
+		this.valor = valor;
+		this.anterior = anterior;
+		this.proximo = proximo;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -75,19 +88,5 @@ public class Mantenedor {
 
 	public void setAnterior(String anterior) {
 		this.anterior = anterior;
-	}
-
-	public Mantenedor(String etiqueta, String valor, String tipo,
-			String proximo, String anterior) {
-		super();
-		this.etiqueta = etiqueta;
-		this.valor = valor;
-		this.tipo = tipo;
-		this.proximo = proximo;
-		this.anterior = anterior;
-	}
-	
-	public Mantenedor() {
-		super();		
 	}
 }

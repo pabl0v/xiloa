@@ -1,3 +1,73 @@
+--mantenedor de actividades
+
+insert into mantenedores(
+mantenedor_id,
+mantenedor_tipo,
+mantenedor_etiqueta,
+mantenedor_valor)
+select
+1,
+'Actividades',
+1,
+'Divulgacion'
+union
+select
+2,
+'Actividades',
+1,
+'Verificacion'
+union
+select
+3,
+'Actividades',
+1,
+'Evaluacion'
+union
+select
+4,
+'Actividades',
+1,
+'Convocatoria'
+union
+select
+5,
+'Involucrados',
+2,
+'Creador'
+union
+select
+6,
+'Involucrados',
+2,
+'Ejecutor'
+
+/*union
+select
+7,
+'Involucrados',
+2,
+'Supervisor'
+union
+select
+8,
+'Involucrados',
+2,
+'Registro Academico'
+union
+select
+9,
+'Involucrados',
+2,
+'Docente Tecnico'
+union
+select
+10,
+'Involucrados',
+2,
+'Verificador'
+union
+*/
+
 --registrando usuario administrador
 
 insert into perfiles(perfil_id,perfil_descripcion,perfil_habilitado,perfil_modulo,perfil_nombre,perfil_permiso,perfil_permitido,perfil_seccion)

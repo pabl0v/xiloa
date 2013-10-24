@@ -17,6 +17,7 @@ import dao.IDaoInatec;
 import model.Actividad;
 import model.Certificacion;
 import model.Contacto;
+import model.Mantenedor;
 import model.Requisito;
 import model.Rol;
 import model.Solicitud;
@@ -37,6 +38,8 @@ public class ServiceImp implements IService {
 	private IDao<Contacto> contactoDao;
 	@Autowired
 	private IDao<Rol> rolDao;
+	@Autowired
+	private IDao<Mantenedor> mantenedorDao;
 	@Autowired
 	private IDaoInatec inatecDao;
 
@@ -237,5 +240,10 @@ public class ServiceImp implements IService {
 	@Override
 	public Rol getRolById(int id) {
 		return rolDao.findOneByQuery("Select r from roles r where r.id_rol="+id);
-	}	
+	}
+
+	@Override
+	public List<Mantenedor> getMantenedorActividades() {
+		return mantenedorDao.findAllByQuery("Select m from mantenedores m where m.tipo='1' order by 1");
+	}
 }
