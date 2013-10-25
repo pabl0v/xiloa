@@ -1,11 +1,11 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,12 +29,9 @@ public class Actividad {
 	private Long id;
 	
 	@NotNull
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="certificacion_id")	
-	private Certificacion certificacion;
-
-	@Column(name = "actividad_tipo_id", nullable = false)
-	private int tipoId;
+	@ManyToOne
+	@JoinColumn(name="actividad_tipo_id")
+	private Mantenedor tipo;
 	
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "actividad_fecha_inicial", nullable = false)
@@ -47,14 +44,14 @@ public class Actividad {
 	private Date fechaFinal;
 	
 	@NotNull
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="actividad_creador_id")
-	private Usuario creadorId;
+	private Usuario creador;
 	
 	@NotNull
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="actividad_ejecutor_id")
-	private Usuario ejecutorId;
+	private Usuario ejecutor;
 	
 	@NotNull
 	@Column(name = "actividad_nombre", nullable = false)	
@@ -76,9 +73,14 @@ public class Actividad {
 			inverseJoinColumns = { @JoinColumn(name = "contacto_id", referencedColumnName = "contacto_id", unique = true) }
 	)	
 	private List<Contacto> involucrados;
+
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name="actividad_estado_id")
+	private Mantenedor estado;
 	
-	@OneToMany(mappedBy="actividad")
-	private List<Bitacora> bitarora;
+	/*@OneToMany
+	private List<Bitacora> bitacora;*/
 
 	public Long getId() {
 		return id;
@@ -88,7 +90,7 @@ public class Actividad {
 		this.id = id;
 	}
 
-	public Certificacion getCertificacion() {
+	/*public Certificacion getCertificacion() {
 		return certificacion;
 	}
 
@@ -102,7 +104,7 @@ public class Actividad {
 
 	public void setTipoId(int tipoId) {
 		this.tipoId = tipoId;
-	}
+	}*/
 
 	public Date getFechaInicial() {
 		return fechaInicial;
@@ -120,20 +122,20 @@ public class Actividad {
 		this.fechaFinal = fechaFinal;
 	}
 
-	public Usuario getCreadorId() {
-		return creadorId;
+	public Usuario getCreador() {
+		return creador;
 	}
 
-	public void setCreadorId(Usuario creadorId) {
-		this.creadorId = creadorId;
+	public void setCreador(Usuario creador) {
+		this.creador = creador;
 	}
 
-	public Usuario getEjecutorId() {
-		return ejecutorId;
+	public Usuario getEjecutor() {
+		return ejecutor;
 	}
 
-	public void setEjecutorId(Usuario ejecutorId) {
-		this.ejecutorId = ejecutorId;
+	public void setEjecutor(Usuario ejecutor) {
+		this.ejecutor = ejecutor;
 	}
 
 	public String getNombre() {
@@ -168,35 +170,47 @@ public class Actividad {
 		this.involucrados = involucrados;
 	}
 
-	public List<Bitacora> getBitarora() {
-		return bitarora;
+	public Mantenedor getEstado() {
+		return estado;
 	}
 
-	public void setBitarora(List<Bitacora> bitarora) {
-		this.bitarora = bitarora;
+	public void setEstado(Mantenedor estado) {
+		this.estado = estado;
+	}
+	
+	/*
+	public List<Bitacora> getBitacora() {
+		return bitacora;
 	}
 
-	public Actividad(Certificacion certificacion, int tipoId,
-			Date fechaInicial, Date fechaFinal, Usuario creadorId,
-			Usuario ejecutorId, String nombre, String descripcion,
-			String destino, List<Contacto> involucrados, List<Bitacora> bitarora) {
+	public void setBitacora(List<Bitacora> bitacora) {
+		this.bitacora = bitacora;
+	}*/
+
+	public Actividad(	String nombre, 
+						String descripcion, 
+						String destino,
+						Date fechaInicial, 
+						Date fechaFinal, 
+						Usuario creador,
+						Usuario ejecutor, 
+						List<Contacto> involucrados
+						/*List<Bitacora> bitacora*/) {
 		super();
-		this.certificacion = certificacion;
-		this.tipoId = tipoId;
-		this.fechaInicial = fechaInicial;
-		this.fechaFinal = fechaFinal;
-		this.creadorId = creadorId;
-		this.ejecutorId = ejecutorId;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.destino = destino;
+		this.fechaInicial = fechaInicial;
+		this.fechaFinal = fechaFinal;
+		this.creador = creador;
+		this.ejecutor = ejecutor;
 		this.involucrados = involucrados;
-		this.bitarora = bitarora;
+		//this.bitacora = bitacora;
 	}
 
 	public Actividad() {
 		super();
+		involucrados = new ArrayList<Contacto>();
+		//this.bitacora = new ArrayList<Bitacora>();
 	}
-	
-	
 }

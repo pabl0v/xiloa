@@ -1,3 +1,4 @@
+/*
 package model;
 
 import java.util.Date;
@@ -123,4 +124,4 @@ public class Bitacora {
 	public Bitacora() {
 		super();		
 	}
-}
+}*/

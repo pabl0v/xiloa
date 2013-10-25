@@ -107,7 +107,8 @@ public class Certificacion {
 	@OneToMany(mappedBy = "certificacion")
 	private List<Unidad> unidades;
 	
-	@OneToMany(mappedBy = "certificacion")
+	@OneToMany
+	@JoinColumn(name="cerfificacion_id", referencedColumnName="certificacion_id")
 	private List<Actividad> actividades;
 	
 	@OneToMany(mappedBy = "certificacion")
@@ -296,6 +297,12 @@ public class Certificacion {
 		return actividades;
 	}
 
+	public void setActividades(Actividad[] actividades) {
+		for(int i=0; i<actividades.length; i++){
+			this.actividades.add(actividades[i]);
+		}
+	}
+	
 	public void setActividades(List<Actividad> actividades) {
 		this.actividades = actividades;
 	}
@@ -318,15 +325,28 @@ public class Certificacion {
 		}
 	}
 
-	public Certificacion(String nombre, String descripcion, Date inicia,
-			Date finaliza, int ifpId, String ifpDireccion, String ifpNombre,
-			Usuario programador, Date divulgacionInicia,
-			Date divulgacionFinaliza, Date inscripcionFinaliza,
-			Date convocatoriaInicia, Date evaluacionInicia, Usuario creador,
-			int estatus, String referencial, int nivelCompetencia,
-			List<Requisito> requisitos, List<Unidad> unidades,
-			List<Actividad> actividades, List<Solicitud> solicitudes,
-			Map<Integer, Contacto> involucrados) {
+	public Certificacion(	String nombre, 
+							String descripcion, 
+							Date inicia,
+							Date finaliza, 
+							int ifpId, 
+							String ifpDireccion, 
+							String ifpNombre,
+							Usuario programador, 
+							Date divulgacionInicia,
+							Date divulgacionFinaliza, 
+							Date inscripcionFinaliza,
+							Date convocatoriaInicia, 
+							Date evaluacionInicia, 
+							Usuario creador,
+							int estatus, 
+							String referencial, 
+							int nivelCompetencia,
+							List<Requisito> requisitos, 
+							List<Unidad> unidades,
+							List<Actividad> actividades, 
+							List<Solicitud> solicitudes,
+							Map<Integer, Contacto> involucrados) {
 		super();
 		this.nombre = nombre;
 		this.descripcion = descripcion;
@@ -350,6 +370,5 @@ public class Certificacion {
 		this.actividades = actividades;
 		this.solicitudes = solicitudes;
 		this.involucrados = involucrados;
-	}	
-	
+	}
 }

@@ -252,9 +252,20 @@ public class ServiceImp implements IService {
 	}
 	
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void guardar (Object objeto) {
 		if (objeto instanceof Solicitud) {
 			solicitudDao.save((Solicitud) objeto);
+			return;
+		}
+		if(objeto instanceof Actividad){
+			Usuario usuario = usuarioDao.findOneByQuery("select u from usuarios u where u.id=3");
+			((Actividad) objeto).setCreador(usuario);
+			((Actividad) objeto).setEjecutor(usuario);
+			Mantenedor estado = mantenedorDao.findOneByQuery("Select m from mantenedores m where m.id_mantenedor=1");
+			((Actividad) objeto).setEstado(estado);
+			actividadDao.save((Actividad)objeto);
+			return;
 		}
 	}
 	

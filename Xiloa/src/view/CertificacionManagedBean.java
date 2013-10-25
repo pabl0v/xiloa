@@ -9,6 +9,8 @@ import javax.faces.context.FacesContext;
 
 import model.Actividad;
 import model.Contacto;
+import model.Mantenedor;
+import model.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -36,6 +38,9 @@ public class CertificacionManagedBean {
 	private String nombreCentro;
 	private String direccionCentro;
 	private Date fechaIniciaEvaluacion;
+	private Mantenedor selectedTipoActividad;
+	private List<Mantenedor> tipoActividades;
+	private Actividad actividad;
 	private List<Actividad> actividades;
 	private String estatus;
 	
@@ -152,6 +157,19 @@ public class CertificacionManagedBean {
 	public void setEstatus(String estatus) {
 		this.estatus = estatus;
 	}
+	public List<Mantenedor> getTipoActividades(){
+		tipoActividades = service.getMantenedorActividades();
+		System.out.println("Tipos actividad:"+tipoActividades.get(0).getValor());
+		System.out.println("Tipos actividad:"+tipoActividades.get(1).getValor());
+		return tipoActividades;
+	}
+	public Mantenedor getSelectedTipoActividad() {
+		return selectedTipoActividad;
+	}
+
+	public void setSelectedTipoActividad(Mantenedor selectedTipoActividad) {
+		this.selectedTipoActividad = selectedTipoActividad;
+	}
 	public List<Actividad> getActividades() {
 		if(certificacionId != null){
 			actividades = service.getActividades(certificacionId);
@@ -159,6 +177,12 @@ public class CertificacionManagedBean {
 		}
 		else
 			return null;
+	}
+	public Actividad getActividad() {
+		return actividad;
+	}
+	public void setActividad(Actividad actividad) {
+		this.actividad = actividad;
 	}
 	public void guardar(){
 			
@@ -190,5 +214,11 @@ public class CertificacionManagedBean {
 				null, //solicitudes,
 				selectedContactos,
 				estatus);
+	}
+	
+	public void guardarActividad(){
+		this.actividad.setFechaFinal(new Date());
+		this.actividad.setDescripcion("Prueba");
+		service.guardar(actividad);
 	}
 }
