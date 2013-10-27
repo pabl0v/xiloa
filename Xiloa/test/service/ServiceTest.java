@@ -18,8 +18,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.ContextConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations= {"classpath:/applicationContext4Test.xml"})
-@ContextConfiguration(locations= {"file:WebContent/WEB-INF/applicationContext.xml"})
+@ContextConfiguration(locations= {"classpath:/applicationContext4Test.xml"})
+//@ContextConfiguration(locations= {"file:WebContent/WEB-INF/applicationContext.xml"})
 public class ServiceTest {
 
 	@Autowired
@@ -56,13 +56,6 @@ public class ServiceTest {
 		//creando roles
 						
 		rolAdmin = new Rol("admin","admin",null,perfiles,true);
-		
-		//creando usuarios
-				
-		usuarioAdmin = new Usuario(null,"admin","admin",rolAdmin,true);
-		
-		//creando otros roles
-		
 		rolSupervisor = new Rol("supervisor","supervisor",213,perfiles,true);
 		rolVerificador = new Rol("verificador","Verificador",214,perfiles,true);
 		rolDocente = new Rol("tecnico_docente","Tecnico Docente",215,perfiles,true);
@@ -70,7 +63,8 @@ public class ServiceTest {
 		rolVisitante = new Rol("visitante","Visitante",null,perfiles,true);
 		
 		//creando usuarios
-		
+				
+		usuarioAdmin = new Usuario(null,"admin","admin",rolAdmin,true);		
 		usuarioLopez = new Usuario(null,"nlopez","nlopez",rolAdmin,true);
 		usuarioRuiz = new Usuario(null,"aruiz","aruiz",rolAdmin,true);
 		usuarioPerez = new Usuario(null,"lperez","lperez",rolAdmin,true);
@@ -78,23 +72,14 @@ public class ServiceTest {
 		
 		//creando contactos
 		
-		/*		Usuario usuario, Rol rol, int entidadId,
-				String primerNombre, String segundoNombre, String primerApellido,
-				String segundoApellido, String nombreCompleto, int sexo,
-				String correo1, String correo2, String telefono1, String telefono2,
-				int tipoContacto, int tipoIdentificacion,
-				String numeroIdentificacion, String direccionActual,
-				Date fechaNacimiento, Date fechaRegistro, int nacionalidadId,
-				String lugarNacimiento, boolean inatec, String usuarioInatec,
-				String funcion, Long idEmpleado*/
-		Contacto contactoLopez = new Contacto(null,null,1,"Norcecy",null,"Lopez",null,"Norcecy Lopez",1,"nlopez@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,"Managua",false,null,null,null);
-		Contacto contactoRuiz = new Contacto(null,null,1,"Ana",null,"Ruiz",null,"Ana Ruiz",1,"aruiz@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,"Managua",false,null,null,null);
-		Contacto contactoPerez = new Contacto(null,null,1,"Luis",null,"Perez",null,"Luis Perez",1,"lperez@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,"Managua",false,null,null,null);
-		Contacto contactoArauz = new Contacto(null,null,1,"Luz",null,"Arauz",null,"Luz Arauz",1,"larauz@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,"Managua",false,null,null,null);
+		contactoLopez = new Contacto(null,null,1,"Norcecy",null,"Lopez",null,"Norcecy Lopez",1,"nlopez@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,"Managua",false,null,null,null);
+		contactoRuiz = new Contacto(null,null,1,"Ana",null,"Ruiz",null,"Ana Ruiz",1,"aruiz@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,"Managua",false,null,null,null);
+		contactoPerez = new Contacto(null,null,1,"Luis",null,"Perez",null,"Luis Perez",1,"lperez@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,"Managua",false,null,null,null);
+		contactoArauz = new Contacto(null,null,1,"Luz",null,"Arauz",null,"Luz Arauz",1,"larauz@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,"Managua",false,null,null,null);
 	}
 
 	@Test
-	public void ejecutar1(){
+	public void registrarMantenedores(){
 		service.guardar(mantenedor1);
 		service.guardar(mantenedor2);
 		service.guardar(mantenedor3);
@@ -141,6 +126,51 @@ public class ServiceTest {
 		contactoLopez = (Contacto)service.guardar(contactoLopez);
 		contactoRuiz = (Contacto)service.guardar(contactoRuiz);
 		contactoPerez = (Contacto)service.guardar(contactoPerez);
-		contactoArauz = (Contacto)service.guardar(contactoArauz);		
+		contactoArauz = (Contacto)service.guardar(contactoArauz);
 	}
+/*	
+	@Test
+	public void registrarPerfiles(){
+		
+		perfil = (Perfil)service.guardar(perfil);
+		perfiles.add(perfil);
+		
+		rolAdmin.setPerfiles(perfiles);
+		rolSupervisor.setPerfiles(perfiles);
+		rolVerificador.setPerfiles(perfiles);
+		rolDocente.setPerfiles(perfiles);
+		rolRegistrador.setPerfiles(perfiles);
+		rolVisitante.setPerfiles(perfiles);
+		
+		service.guardar(rolAdmin);
+		service.guardar(rolSupervisor);
+		service.guardar(rolVerificador);
+		service.guardar(rolDocente);
+		service.guardar(rolRegistrador);
+		service.guardar(rolVisitante);
+	}
+	
+	public void registrarUsuarios(){
+		
+		usuarioAdmin = (Usuario)service.guardar(usuarioAdmin);
+		usuarioArauz = (Usuario)service.guardar(usuarioArauz);
+		usuarioLopez = (Usuario)service.guardar(usuarioLopez);
+		usuarioPerez = (Usuario)service.guardar(usuarioPerez);
+		usuarioRuiz = (Usuario)service.guardar(usuarioRuiz);
+		
+		contactoLopez = (Contacto)service.guardar(contactoLopez);
+		contactoRuiz = (Contacto)service.guardar(contactoRuiz);
+		contactoPerez = (Contacto)service.guardar(contactoPerez);
+		contactoArauz = (Contacto)service.guardar(contactoArauz);
+		
+		contactoLopez.setUsuario(usuarioLopez);
+		contactoRuiz.setUsuario(usuarioRuiz);
+		contactoPerez.setUsuario(usuarioPerez);
+		contactoArauz.setUsuario(usuarioArauz);
+		
+		contactoLopez = (Contacto)service.guardar(contactoLopez);
+		contactoRuiz = (Contacto)service.guardar(contactoRuiz);
+		contactoPerez = (Contacto)service.guardar(contactoPerez);
+		contactoArauz = (Contacto)service.guardar(contactoArauz);		
+	}*/
 }
