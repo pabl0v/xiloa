@@ -71,7 +71,7 @@ public interface IService {
 	//Inicio : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
 	public List<USolicitud> getUSolicitudes ();
 	public List<Solicitud> getSolicitudes();
-	public void guardar(Object obj);	
+	public Object guardar(Object obj);	
 	public List<Certificacion> getCertificacionesByIdIfp(int idIfp);
 	public List<Ifp> getIfpByInatec ();
 	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES

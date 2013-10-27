@@ -19,6 +19,7 @@ import model.Actividad;
 import model.Certificacion;
 import model.Contacto;
 import model.Mantenedor;
+import model.Perfil;
 import model.Requisito;
 import model.Rol;
 import model.Solicitud;
@@ -46,10 +47,11 @@ public class ServiceImp implements IService {
 	@Autowired
 	private IDao<Mantenedor> mantenedorDao;
 	@Autowired
-	private IDao<Actividad> actividadDao;	
+	private IDao<Actividad> actividadDao;
+	@Autowired	
+	private IDao<Perfil> perfilDao;
 	@Autowired	
 	private IDaoInatec inatecDao;
-
 		
 	
 	@Override
@@ -269,10 +271,9 @@ public class ServiceImp implements IService {
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void guardar (Object objeto) {
+	public Object guardar (Object objeto) {
 		if (objeto instanceof Solicitud) {
-			solicitudDao.save((Solicitud) objeto);
-			return;
+			return solicitudDao.save((Solicitud) objeto);
 		}
 		if(objeto instanceof Actividad){
 			Usuario usuario = usuarioDao.findOneByQuery("select u from usuarios u where u.id=3");
@@ -285,9 +286,19 @@ public class ServiceImp implements IService {
 			((Actividad) objeto).setDestino("managua");
 			((Actividad) objeto).setFechaInicial(new Date());
 			((Actividad) objeto).setFechaFinal(new Date());
-			actividadDao.save((Actividad)objeto);
-			return;
+			return actividadDao.save((Actividad)objeto);
 		}
+		if(objeto instanceof Mantenedor)
+			return mantenedorDao.save((Mantenedor)objeto);
+		if(objeto instanceof Perfil)
+			return perfilDao.save((Perfil)objeto);
+		if(objeto instanceof Rol)
+			return rolDao.save((Rol)objeto);
+		if(objeto instanceof Contacto)
+			return contactoDao.save((Contacto)objeto);
+		if(objeto instanceof Usuario)
+			return usuarioDao.save((Usuario)objeto);		
+		return null;
 	}
 	
 	@Override
