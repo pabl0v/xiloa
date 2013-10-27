@@ -56,7 +56,6 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
     <context:annotation-config/>
     
-    
     <aop:config>
     	<aop:pointcut id="dao" expression="execution(* dao.*Dao*.*(..))" />
     	<aop:pointcut id="service" expression="execution(* service.*Service*.*(..))" />
