@@ -1,5 +1,6 @@
 package view;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +11,6 @@ import javax.faces.context.FacesContext;
 import model.Actividad;
 import model.Contacto;
 import model.Mantenedor;
-import model.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -20,8 +20,12 @@ import service.IService;
 
 @Component
 @Scope("session")  //@ViewScoped
-public class CertificacionManagedBean {
+public class CertificacionManagedBean implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Autowired
 	private IService service;
 	private Long certificacionId;
@@ -40,14 +44,27 @@ public class CertificacionManagedBean {
 	private Date fechaIniciaEvaluacion;
 	private Mantenedor selectedTipoActividad;
 	private List<Mantenedor> tipoActividades;
+	/*
+	 * 
+	 */
+	private String nombreActividad;
+	private String destinoActividad;
+	private Date fechaActividad;
+	private String estatusActividad;
+	/*
+	 * 
+	 */
 	private Actividad actividad;
 	private List<Actividad> actividades;
-	private String estatus;
+	private List<Mantenedor> estatusList;
+	private Mantenedor selectedEstatus;
 	
 	public CertificacionManagedBean(){
 		super();
 		contactos = new ArrayList<Contacto>();
 		actividades = new ArrayList<Actividad>();
+		estatusList = new ArrayList<Mantenedor>();
+		actividad = new Actividad();
 	}
 	public Long getCertificacionId(){
 		return certificacionId;
@@ -151,11 +168,15 @@ public class CertificacionManagedBean {
 	public void setFechaIniciaEvaluacion(Date fechaIniciaEvaluacion) {
 		this.fechaIniciaEvaluacion = fechaIniciaEvaluacion;
 	}
-	public String getEstatus() {
-		return estatus;
+	public Mantenedor getSelectedEstatus() {
+		return selectedEstatus;
 	}
-	public void setEstatus(String estatus) {
-		this.estatus = estatus;
+	public void setSelectedEstatus(Mantenedor estatus) {
+		this.selectedEstatus = estatus;
+	}
+	public List<Mantenedor> getEstatusList() {
+		estatusList = service.getMantenedorEstatusCertificacion();
+		return estatusList;
 	}
 	public List<Mantenedor> getTipoActividades(){
 		tipoActividades = service.getMantenedorActividades();
@@ -169,6 +190,24 @@ public class CertificacionManagedBean {
 
 	public void setSelectedTipoActividad(Mantenedor selectedTipoActividad) {
 		this.selectedTipoActividad = selectedTipoActividad;
+	}
+	public String getNombreActividad() {
+		return nombreActividad;
+	}
+	public void setNombreActividad(String nombreActividad) {
+		this.nombreActividad = nombreActividad;
+	}
+	public String getDestinoActividad() {
+		return destinoActividad;
+	}
+	public void setDestinoActividad(String destinoActividad) {
+		this.destinoActividad = destinoActividad;
+	}
+	public Date getFechaActividad() {
+		return fechaActividad;
+	}
+	public void setFechaActividad(Date fechaActividad) {
+		this.fechaActividad = fechaActividad;
 	}
 	public List<Actividad> getActividades() {
 		if(certificacionId != null){
@@ -184,12 +223,20 @@ public class CertificacionManagedBean {
 	public void setActividad(Actividad actividad) {
 		this.actividad = actividad;
 	}
+	
 	public void guardar(){
 			
 		System.out.println("Fecha Inicia Divulgacion: "+fechaIniciaDivulgacion.toString());
 		System.out.println("Fecha Finaliza Inscripcion: "+fechaFinalizaInscripcion.toString());
 		System.out.println("Fecha Inicia Convocatoria: "+fechaIniciaConvocatoria.toString());
 		System.out.println("Fecha Inicia Evaluacion: "+fechaIniciaEvaluacion.toString());
+		System.out.println("Descripcion de la unidad: "+descripcionCertificacion);
+		System.out.println("Nombre del centro: "+nombreCentro);
+		System.out.println("Direccion del centro: "+direccionCentro);
+		System.out.println("Costo: "+costo);
+		System.out.println("Selected contactos : "+selectedContactos[0].getNombreCompleto());
+		//selectedEstatus=estatusList.get(0);
+		System.out.println("Selected estatus : "+selectedEstatus.getValor());
 		
 		service.guardarCertificacion(
 				getNombreCertificacion(),
@@ -213,12 +260,44 @@ public class CertificacionManagedBean {
 				null, //actividades, 
 				null, //solicitudes,
 				selectedContactos,
-				estatus);
+				selectedEstatus);
 	}
 	
 	public void guardarActividad(){
-		this.actividad.setFechaFinal(new Date());
-		this.actividad.setDescripcion("Prueba");
-		service.guardar(actividad);
+		//System.out.println("Actividad seleccionada: "+selectedTipoActividad.getValor());
+		System.out.println("Actividad nombre: "+nombreActividad);
+		System.out.println("Actividad destino: "+nombreActividad);
+		System.out.println("Actividad fecha: "+fechaActividad);
+		//System.out.println("Actividad seleccionada: "+selectedTipoActividad.getValor());
+		
+		/*
+		actividad = new Actividad();
+		actividad.setNombre(nombreActividad);
+		actividad.setDescripcion(nombreActividad);
+		actividad.setFechaInicial(fechaActividad);
+		actividad.setFechaFinal(fechaActividad);
+		actividad.setDescripcion(destinoActividad);
+		
+		System.out.println("antes de imprimrir");
+		
+		System.out.println("Nombre: "+actividad.getNombre());
+		System.out.println("Descripcion: "+actividad.getDescripcion());
+		System.out.println("Fecha inicial: "+actividad.getFechaInicial().toString());
+		System.out.println("Fecha final: "+actividad.getFechaFinal().toString());
+		System.out.println("Destino: "+actividad.getDestino());
+		
+		actividad.setCreador(service.getUsuarioLocal("admin"));
+		actividad.setEjecutor(service.getUsuarioLocal("admin"));
+		actividad.setEstado(service.getMantenedorActividades().get(0));
+		
+		actividades.add(actividad);
+		actividades.add(actividad);
+		*/
+		
+		//System.out.println("Creador: "+actividad.getCreador().getUsuarioAlias());
+		//System.out.println("Ejecutor: "+actividad.getEjecutor().getUsuarioAlias());
+		//System.out.println("Estado: "+actividad.getEstado().getValor());
+		
+		//service.guardar(actividad);
 	}
 }

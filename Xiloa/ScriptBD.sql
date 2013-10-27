@@ -2,8 +2,8 @@
 
 insert into mantenedores(
 mantenedor_id,
-mantenedor_tipo,
 mantenedor_etiqueta,
+mantenedor_tipo,
 mantenedor_valor)
 select
 1,
@@ -40,6 +40,25 @@ select
 'Involucrados',
 2,
 'Ejecutor'
+union
+select
+7,
+'Certificaciones',
+3,
+'Pendiente'
+union
+select
+8,
+'Certificaciones',
+3,
+'Activo'
+union
+select
+9,
+'Certificaciones',
+3,
+'Anulado'
+
 
 /*union
 select

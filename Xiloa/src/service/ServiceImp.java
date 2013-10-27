@@ -75,7 +75,7 @@ public class ServiceImp implements IService {
 										List<Actividad> actividades,
 										List<Solicitud> solicitudes, 
 										Contacto[] involucrados,
-										String estatus) {
+										Mantenedor estatus) {
 		Usuario usuario = usuarioDao.findOneByQuery("select u from usuarios u where u.id=3");
 		Certificacion certificacion = new Certificacion();
 		certificacion.setNombre(nombre);
@@ -95,12 +95,23 @@ public class ServiceImp implements IService {
 		certificacion.setReferencial(referencial);
 		certificacion.setNivelCompetencia(nivelCompetencia);
 		certificacion.setUnidades(unidades);
-		certificacion.setActividades(actividades);
+		//certificacion.setActividades(actividades);
 		certificacion.setSolicitudes(solicitudes);
 		certificacion.setInvolucrados(involucrados);
 		certificacion.setEstatus(1);
 		
+		List<Contacto> contactos = new ArrayList<Contacto>();
+		contactos.add(usuario.getContacto());
+		//contactos.add(usuario.getContacto());
+		
+		Actividad actividad = new Actividad("Actividad 1","Actividad 1", "Managua", new Date(), new Date(), usuario, usuario, contactos);
+		List<Actividad> actividades2 = new ArrayList<Actividad>();
+		actividades2.add(actividad);
+		certificacion.setActividades(actividades2);
+		
 		certificacionDao.save(certificacion);
+		//certificacion.setActividades(actividades2);
+		//certificacionDao.save(certificacion);
 	}
 	
 	@Override
@@ -250,6 +261,11 @@ public class ServiceImp implements IService {
 	public List<Mantenedor> getMantenedorActividades() {
 		return mantenedorDao.findAllByQuery("Select m from mantenedores m where m.tipo='1' order by 1");
 	}
+
+	@Override
+	public List<Mantenedor> getMantenedorEstatusCertificacion() {
+		return mantenedorDao.findAllByQuery("Select m from mantenedores m where m.tipo='3' order by 1");
+	}
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
@@ -262,8 +278,13 @@ public class ServiceImp implements IService {
 			Usuario usuario = usuarioDao.findOneByQuery("select u from usuarios u where u.id=3");
 			((Actividad) objeto).setCreador(usuario);
 			((Actividad) objeto).setEjecutor(usuario);
-			Mantenedor estado = mantenedorDao.findOneByQuery("Select m from mantenedores m where m.id_mantenedor=1");
+			Mantenedor estado = mantenedorDao.findOneByQuery("Select m from mantenedores m where m.id=1");
 			((Actividad) objeto).setEstado(estado);
+			((Actividad) objeto).setNombre("actividad 1");
+			((Actividad) objeto).setDescripcion("prueba");
+			((Actividad) objeto).setDestino("managua");
+			((Actividad) objeto).setFechaInicial(new Date());
+			((Actividad) objeto).setFechaFinal(new Date());
 			actividadDao.save((Actividad)objeto);
 			return;
 		}
@@ -282,5 +303,10 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Actividad> getActividades(Long certificacionId) {
 		return actividadDao.findAllByQuery("Select a from actividades a where a.certificacion.id="+certificacionId);
+	}
+
+	@Override
+	public List<Mantenedor> getMantenedores() {
+		return mantenedorDao.findAllByQuery("Select m from mantenedores m");
 	}
 }

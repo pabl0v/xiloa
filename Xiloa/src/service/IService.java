@@ -19,9 +19,13 @@ import model.Usuario;
 
 public interface IService {
 	
+	public List<Mantenedor> getMantenedores();
+	
 	public List<Actividad> getActividades(Long certificacionId);
 	
 	public List<Mantenedor> getMantenedorActividades();
+	
+	public List<Mantenedor> getMantenedorEstatusCertificacion();
 	
 	public Rol getRolById(int id);
 	
@@ -52,7 +56,7 @@ public interface IService {
 										List<Actividad> actividades,
 										List<Solicitud> solicitudes,
 										Contacto[] involucrados,
-										String estatus);
+										Mantenedor estatus);
 	public List<Requisito> getRequisitos(int certificacionId);
 	public void updateRequisito(Requisito requisito);
 	public List<Usuario> getUsuarios();

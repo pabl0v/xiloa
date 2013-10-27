@@ -11,10 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -65,13 +66,14 @@ public class Actividad {
 	@Column(name = "actividad_destino", nullable = false)
 	private String destino;
 
-	@OneToMany
+	@ManyToMany
 	@JoinTable
 	(
 			name = "ainvolucrados",
-			joinColumns = { @JoinColumn(name = "actividad_id", referencedColumnName = "actividad_id") },
-			inverseJoinColumns = { @JoinColumn(name = "contacto_id", referencedColumnName = "contacto_id", unique = true) }
-	)	
+			joinColumns = { @JoinColumn(name = "actividad_id", referencedColumnName = "actividad_id", unique = false) },
+			inverseJoinColumns = { @JoinColumn(name = "contacto_id", referencedColumnName = "contacto_id", unique = false) },
+			uniqueConstraints = @UniqueConstraint(columnNames = { "actividad_id", "contacto_id" })
+	)
 	private List<Contacto> involucrados;
 
 	@NotNull

@@ -6,8 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -107,7 +109,7 @@ public class Certificacion {
 	@OneToMany(mappedBy = "certificacion")
 	private List<Unidad> unidades;
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="cerfificacion_id", referencedColumnName="certificacion_id")
 	private List<Actividad> actividades;
 	
