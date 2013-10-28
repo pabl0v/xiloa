@@ -142,10 +142,6 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Planificacion> getPlanificacion() {
 		List<Planificacion> planificaciones = new ArrayList<Planificacion>();
-		//Contacto evalua;
-		//Contacto coordina;
-		
-		//List<Certificacion> certificaciones = certificacionDao.findAllByQuery("Select c from certificaciones c");
 		List<Certificacion> certificaciones = certificacionDao.findAll(Certificacion.class);
 		for(int i=0; i<certificaciones.size(); i++){
 			Planificacion planificacion = new Planificacion();
@@ -154,28 +150,11 @@ public class ServiceImp implements IService {
 			planificacion.setUnidadCompetencia(certificaciones.get(i).getNombre());
 			planificacion.setDisponibilidad(i);
 			planificacion.setSolicitudes(0);
-			//planificacion.setCoordina(certificaciones.get(i).getInvolucrados().get(2).getNombreCompleto());
-			//planificacion.setEvalua(certificaciones.get(i).getInvolucrados().get(3).getNombreCompleto());
-			planificacion.setCoordina("Coordinador");
-			planificacion.setEvalua("Evaluador");
+			planificacion.setCoordina(certificaciones.get(i).getInvolucrados().get(2).getNombreCompleto());
+			planificacion.setEvalua(certificaciones.get(i).getInvolucrados().get(3).getNombreCompleto());
 			planificacion.setEstatus(certificaciones.get(i).getEstatus().getValor());
 			planificaciones.add(planificacion);
 		}
-		/*
-		for(int i = 0; i<5; i++){
-			Planificacion p = new Planificacion();
-			p.setIdCentro(i+1);
-			p.setNombreCentro("Centro "+i+1);
-			p.setUnidadCompetencia("Unidad "+i+1);
-			p.setDisponibilidad(i+1);
-			p.setEstatus("Convocatoria");
-			evalua = contactoDao.findById(Contacto.class, 2);
-			coordina = contactoDao.findById(Contacto.class, 3);
-			p.setEvalua(evalua.getPrimerNombre()+" "+evalua.getPrimerApellido());
-			p.setCoordina(coordina.getPrimerNombre()+" "+coordina.getPrimerApellido());
-			p.setRegistrado("11-10-2013");
-			planificaciones.add(p);
-		}*/
 		return planificaciones;
 	}
 
@@ -312,8 +291,11 @@ public class ServiceImp implements IService {
 			return perfilDao.save((Perfil)objeto);
 		if(objeto instanceof Rol)
 			return rolDao.save((Rol)objeto);
-		if(objeto instanceof Contacto)
+		if(objeto instanceof Contacto){
+			String nombreCompleto = ((Contacto) objeto).getPrimerNombre()+" "+((Contacto)objeto).getPrimerApellido();
+			((Contacto)objeto).setNombreCompleto(nombreCompleto);
 			return contactoDao.save((Contacto)objeto);
+		}
 		if(objeto instanceof Usuario)
 			return usuarioDao.save((Usuario)objeto);		
 		return null;
