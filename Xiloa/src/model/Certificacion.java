@@ -40,6 +40,12 @@ public class Certificacion {
 	@Column(name = "certificacion_descripcion", nullable = false)
 	private String descripcion;
 	
+	@NotNull
+	@DateTimeFormat(iso = ISO.DATE)
+	@Column(name = "certificacion_fecha_registro", nullable = false)
+	@Temporal(TemporalType.DATE)
+	private Date fechaRegistro;
+	
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "certificacion_inicia", nullable = true)
 	@Temporal(TemporalType.DATE)
@@ -159,6 +165,14 @@ public class Certificacion {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
 	}
 
 	public Date getInicia() {

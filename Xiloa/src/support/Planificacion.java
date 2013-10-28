@@ -3,8 +3,8 @@ package support;
 import java.util.Date;
 import java.util.List;
 
-public class Planificacion {
-	
+public class Planificacion {	
+
 	private int idPlanificacion;
 	private int idCentro;
 	private String nombreCentro;
@@ -116,6 +116,43 @@ public class Planificacion {
 		return estatus;
 	}
 	public void setEstatus(String estatus) {
+		this.estatus = estatus;
+	}
+	public Planificacion(){
+		super();
+	}
+	public Planificacion(	int idPlanificacion, 
+							int idCentro,
+							String nombreCentro, 
+							String unidadCompetencia, 
+							String descripcion,
+							int disponibilidad, 
+							int solicitudes, 
+							Date divulgacionInicia,
+							Date inscripcionFinaliza, 
+							Date convocatoriaInicia,
+							Date evaluacionInicia, 
+							List<Involucrado> involucrados,
+							String coordina, 
+							String evalua, 
+							String registrado, 
+							String estatus) {
+		super();
+		this.idPlanificacion = idPlanificacion;
+		this.idCentro = idCentro;
+		this.nombreCentro = nombreCentro;
+		this.unidadCompetencia = unidadCompetencia;
+		this.descripcion = descripcion;
+		this.disponibilidad = disponibilidad;
+		this.solicitudes = solicitudes;
+		this.divulgacionInicia = divulgacionInicia;
+		this.inscripcionFinaliza = inscripcionFinaliza;
+		this.convocatoriaInicia = convocatoriaInicia;
+		this.evaluacionInicia = evaluacionInicia;
+		this.involucrados = involucrados;
+		this.coordina = coordina;
+		this.evalua = evalua;
+		this.registrado = registrado;
 		this.estatus = estatus;
 	}
 }
