@@ -224,13 +224,14 @@ public class CertificacionManagedBean implements Serializable {
 		this.actividad = actividad;
 	}
 	
-	public void guardar(){
+	public void guardar(){	
 			
 		System.out.println("Fecha Inicia Divulgacion: "+fechaIniciaDivulgacion.toString());
 		System.out.println("Fecha Finaliza Inscripcion: "+fechaFinalizaInscripcion.toString());
 		System.out.println("Fecha Inicia Convocatoria: "+fechaIniciaConvocatoria.toString());
 		System.out.println("Fecha Inicia Evaluacion: "+fechaIniciaEvaluacion.toString());
-		System.out.println("Descripcion de la unidad: "+descripcionCertificacion);
+		System.out.println("Descripcion de la certificacion: "+nombreCertificacion);
+		System.out.println("Descripcion de la certificacion: "+descripcionCertificacion);
 		System.out.println("Nombre del centro: "+nombreCentro);
 		System.out.println("Direccion del centro: "+direccionCentro);
 		System.out.println("Costo: "+costo);
