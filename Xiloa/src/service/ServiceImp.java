@@ -145,6 +145,7 @@ public class ServiceImp implements IService {
 		//Contacto evalua;
 		//Contacto coordina;
 		
+		//List<Certificacion> certificaciones = certificacionDao.findAllByQuery("Select c from certificaciones c");
 		List<Certificacion> certificaciones = certificacionDao.findAll(Certificacion.class);
 		for(int i=0; i<certificaciones.size(); i++){
 			Planificacion planificacion = new Planificacion();
@@ -153,9 +154,12 @@ public class ServiceImp implements IService {
 			planificacion.setUnidadCompetencia(certificaciones.get(i).getNombre());
 			planificacion.setDisponibilidad(i);
 			planificacion.setSolicitudes(0);
-			planificacion.setCoordina(certificaciones.get(i).getInvolucrados().get(213).getNombreCompleto());
-			planificacion.setEvalua(certificaciones.get(i).getInvolucrados().get(214).getNombreCompleto());
+			//planificacion.setCoordina(certificaciones.get(i).getInvolucrados().get(2).getNombreCompleto());
+			//planificacion.setEvalua(certificaciones.get(i).getInvolucrados().get(3).getNombreCompleto());
+			planificacion.setCoordina("Coordinador");
+			planificacion.setEvalua("Evaluador");
 			planificacion.setEstatus(certificaciones.get(i).getEstatus().getValor());
+			planificaciones.add(planificacion);
 		}
 		/*
 		for(int i = 0; i<5; i++){
