@@ -249,11 +249,22 @@ public class ServiceImp implements IService {
 		return solicitudDao.findAll(Solicitud.class);		
 	}	
 	
+	@Override
+	public List<Solicitud> getSolicitudesByIfp(Integer IdIfp) {
+		return solicitudDao.findAllByQuery("select s from solicitudes s where s.certificacion.ifpId= " + IdIfp);
+	}
+	
+	@Override
+	public Contacto getContactoByCedula(String cedula) {
+		Contacto c = contactoDao.findOneByQuery("select c from contactos c where c.numeroIdentificacion = '" + cedula + "'");
+		return c;
+	}	
 	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES	
 
 	@Override
 	public Rol getRolById(int id) {
-		return rolDao.findOneByQuery("Select r from roles r where r.id_rol="+id);
+		//return rolDao.findOneByQuery("Select r from roles r where r.id_rol="+id);
+		return rolDao.findOneByQuery("Select r from roles r where r.id="+id);
 	}
 
 	@Override
@@ -302,9 +313,18 @@ public class ServiceImp implements IService {
 	}
 	
 	@Override
-	public List<Certificacion> getCertificacionesByIdIfp (int idIfp) {
-		return certificacionDao.findAllByQuery("Select c from certificaciones c where c.ifpId="+idIfp);
+	public List<Certificacion> getCertificacionesByIdIfp (Integer id) {
+		if (id == null){
+			return certificacionDao.findAllByQuery("Select c from certificaciones c ");
+		} else {
+			return certificacionDao.findAllByQuery("Select c from certificaciones c where c.ifpId="+ id);
+		}		
 	}
+	
+	@Override
+	public Certificacion getCertificacionById(Long id) {
+		return certificacionDao.findOneByQuery("select c from certificaciones c where c.id="+id);				
+	}	
 	
 	@Override
 	public List<Ifp> getIfpByInatec () {

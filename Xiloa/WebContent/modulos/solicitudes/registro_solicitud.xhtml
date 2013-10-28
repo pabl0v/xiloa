@@ -18,18 +18,21 @@
 		</div>
     
        <h2>Registro de solicitud de evaluacion:</h2>
-       <h:form>
+       <h:form>       
    			<div class="seccion_detalle">
    			<div style="display:inline-block;">
 	   			<p style="display:inline-block;">Seleccione un centro:</p>
-	       		<p:selectOneMenu id="selector_filtro" styleClass="selector_status_estilo" value="#{solicitudesManagedBean.selectedIfps}" style="position: relative;top: 7px;margin-left: 5px;margin-right: 5px;">  
-		            <f:selectItem value="#{solicitudesManagedBean.ifpList}" var="ifp" itemLabel="#{ifp.ifpNombre}" itemValue="#{ifp}" />			                         
-			    </p:selectOneMenu>
+	       		<p:selectOneMenu id="selector_centro" styleClass="selector_status_estilo" value="#{solicitudesManagedBean.selectedIdIfp}" style="position: relative;top: 7px;margin-left: 5px;margin-right: 5px;">  	       		  	       		  
+	       		  <f:selectItem itemLabel="Seleccione un centro" itemValue="" />
+	       		  <f:selectItems value="#{solicitudesManagedBean.listCentros}"/>
+	       		   <p:ajax update="selector_certificacion"  listener="#{solicitudesManagedBean.handleCertificaciones}" />	       		  		  	       		  			                         
+			    </p:selectOneMenu>			    
 		    </div>
 		    <div style="display:inline-block;">
 			    <p style="display:inline-block;">Seleccione la certificacion:</p>
-	       		<p:selectOneMenu id="selector_filtro1" styleClass="selector_status_estilo" value="#{solicitudesManagedBean.selectedCertificacion}" style="position: relative;top: 7px;margin-left: 5px;margin-right: 5px;">  
-			    	<f:selectItem value="#{solicitudesManagedBean.certificacionList}" var="certList" itemLabel="#{certList.nombre}" itemValue="#{certList}" />			                         
+	       		<p:selectOneMenu id="selector_certificacion" styleClass="selector_status_estilo" value="#{solicitudesManagedBean.selectedIdCertificacion}" style="position: relative;top: 7px;margin-left: 5px;margin-right: 5px;">
+	       			<f:selectItem itemLabel="Seleccione una Certificacion" itemValue="" />  
+			    	<f:selectItems value="#{solicitudesManagedBean.listCertificaciones}"/>			                         
 			    </p:selectOneMenu>
 		    </div>
 		    <br/>
@@ -57,8 +60,8 @@
              <div class="seccion_detalle" style="background:none;height:30px;margin-top:-68px;border:none;text-align: right;">
              </div>
              <div class="seccion_detalle" style="background:none;height:50px;margin-top:-68px;border:none;text-align: right;">
-	             <p:commandButton onclick="PF('modal_solicitud').hide();" value="Cancelar"/> 
-	             <p:commandButton value="Aplicar" action="#{solicitudesManagedBean.guardar}" />
+	             <p:commandButton  onclick="PF('modal_solicitud').hide();" value="Cancelar"/> 
+	             <p:commandButton value="Aplicar" action="#{solicitudesManagedBean.guardar}" process="@form"  />
              </div>    
            </h:form>  
 	</div>  
