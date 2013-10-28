@@ -1,5 +1,9 @@
 package support;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class UCompetencia {
 	
 	private int idCentro;
@@ -8,6 +12,9 @@ public class UCompetencia {
 	private int idUCompetencia;
 	private String nombreUCompetencia;
 	private float costo;
+	private Date fechaInicio;
+	private Date fechaFin;
+	private List<String> requisitos = new ArrayList<String>();
 	private int disponibilidad;
 	
 	public int getIdCentro() {
@@ -45,6 +52,24 @@ public class UCompetencia {
 	}
 	public void setCosto(float costo) {
 		this.costo = costo;
+	}
+	public Date getFechaInicio() {
+		return fechaInicio;
+	}
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+	public Date getFechaFin() {
+		return fechaFin;
+	}
+	public void setFechaFin(Date fechaFin) {
+		this.fechaFin = fechaFin;
+	}
+	public List<String> getRequisitos() {
+		return requisitos;
+	}
+	public void setRequisitos(List<String> requisitos) {
+		this.requisitos = requisitos;
 	}
 	public int getDisponibilidad() {
 		return disponibilidad;

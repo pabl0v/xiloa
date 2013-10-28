@@ -77,7 +77,7 @@ public class ServiceImp implements IService {
 										List<Actividad> actividades,
 										List<Solicitud> solicitudes, 
 										Contacto[] involucrados,
-										Mantenedor estatus) {
+										int estatus) {
 		Usuario usuario = usuarioDao.findOneByQuery("select u from usuarios u where u.id=3");
 		Certificacion certificacion = new Certificacion();
 		certificacion.setNombre(nombre);
@@ -100,7 +100,7 @@ public class ServiceImp implements IService {
 		//certificacion.setActividades(actividades);
 		certificacion.setSolicitudes(solicitudes);
 		certificacion.setInvolucrados(involucrados);
-		certificacion.setEstatus(1);
+		certificacion.setEstatus(mantenedorDao.findById(Mantenedor.class, estatus));
 		
 		List<Contacto> contactos = new ArrayList<Contacto>();
 		contactos.add(usuario.getContacto());

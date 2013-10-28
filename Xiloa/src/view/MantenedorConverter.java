@@ -1,3 +1,4 @@
+/*
 package view;
 
 import java.util.ArrayList;
@@ -54,4 +55,4 @@ public class MantenedorConverter implements Converter {
 		loadData();
 		return ((Mantenedor)value).getValor();
 	}
-}
+}*/

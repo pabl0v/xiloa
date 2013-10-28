@@ -93,9 +93,11 @@ public class Certificacion {
 	@ManyToOne
 	@JoinColumn(name="certificacion_creador_id")	
 	private Usuario creador;			//revisar
-	
-	@Column(name = "certificacion_estatus", nullable = false)
-	private int estatus;
+
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name="certificacion_estatus")
+	private Mantenedor estatus;
 	
 	@Column(name = "certificacion_referencial", nullable = false)
 	private String referencial;
@@ -255,11 +257,11 @@ public class Certificacion {
 		this.creador = creador;
 	}
 
-	public int getEstatus() {
+	public Mantenedor getEstatus() {
 		return estatus;
 	}
 
-	public void setEstatus(int estatus) {
+	public void setEstatus(Mantenedor estatus) {
 		this.estatus = estatus;
 	}
 
@@ -341,7 +343,7 @@ public class Certificacion {
 							Date convocatoriaInicia, 
 							Date evaluacionInicia, 
 							Usuario creador,
-							int estatus, 
+							Mantenedor estatus, 
 							String referencial, 
 							int nivelCompetencia,
 							List<Requisito> requisitos, 

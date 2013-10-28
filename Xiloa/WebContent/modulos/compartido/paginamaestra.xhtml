@@ -24,7 +24,7 @@
             <div id="opciones_usuario">
                 <div id="informacion_usuario">
                   <h:form>
-                    <p id="usuario">Carmen Tijerino</p>
+                    <p id="usuario"><h:outputText value="#{loginController.loggedUser}" /></p>
                     <div class="botones_navegacion" onclick="window.location='/Xiloa/modulos/usuario/configuracion.xhtml';"><p class="icono_gear">Config</p></div>                   
                     <div class="botones_navegacion" ><a class="icono_x" href="#{request.contextPath}/j_spring_security_logout">Salir</a></div>
                   </h:form>

@@ -51,7 +51,7 @@
      
     <tx:annotation-driven/>    
     <context:annotation-config/>
-    
+        
 	<!-- Scans within the base package for @Components to configure as beans-->
     <context:component-scan base-package="model" />
     <context:component-scan base-package="service" />

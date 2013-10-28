@@ -12,7 +12,7 @@ public class Mantenedor {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "mantenedor_id", nullable = false)
-	private Long id;
+	private int id;
 
 	@Column(name = "mantenedor_etiqueta", nullable = false)
 	private String etiqueta;
@@ -42,11 +42,11 @@ public class Mantenedor {
 		this.proximo = proximo;
 	}
 	
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

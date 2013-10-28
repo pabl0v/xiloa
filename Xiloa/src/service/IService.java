@@ -56,7 +56,7 @@ public interface IService {
 										List<Actividad> actividades,
 										List<Solicitud> solicitudes,
 										Contacto[] involucrados,
-										Mantenedor estatus);
+										int estatus);
 	public List<Requisito> getRequisitos(int certificacionId);
 	public void updateRequisito(Requisito requisito);
 	public List<Usuario> getUsuarios();

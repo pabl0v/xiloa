@@ -3,6 +3,7 @@ package view;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -12,7 +13,7 @@ import support.Planificacion;
 import support.UCompetencia;
 
 @Component
-@Scope("session")
+@Scope(value="session")
 public class PlanificacionManagedBean {
 	
 	@Autowired
@@ -35,6 +36,9 @@ public class PlanificacionManagedBean {
 	public UCompetencia getSelectedCompetencia() {
 		return selectedCompetencia;
 	}
+	
+	public void onRowSelectCompetencia(SelectEvent event) {  
+    }
 
 	public void setSelectedCompetencia(UCompetencia selectedCompetencia) {
 		this.selectedCompetencia = selectedCompetencia;

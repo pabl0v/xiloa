@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
@@ -29,20 +28,28 @@ import org.springframework.stereotype.Controller;
 
 import security.CustomUsernamePasswordAuthenticationToken;
 
-//@ManagedBean(name="loginController")
-//@RequestScoped
 @Controller
 @Scope("request")
 public class LoginController implements PhaseListener {
 
 	private static final long serialVersionUID = -92971891224906450L;
+	
 	protected final Log logger = LogFactory.getLog(getClass());
 	private String username;
 	private String password;
 	private boolean inatec;
-	//@ManagedProperty(value="#{authenticationManager}")
+	private String loggedUser;
+	
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	
+	public String getLoggedUser(){
+		if(loggedUser==null){
+			loggedUser = SecurityContextHolder.getContext().getAuthentication().getName();
+		}
+		logger.info("Usuario conectado: "+loggedUser);
+		return loggedUser;
+	}
 	
     public AuthenticationManager getAuthenticationManager() {
     	return authenticationManager;
@@ -51,10 +58,8 @@ public class LoginController implements PhaseListener {
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
     	this.authenticationManager = authenticationManager;
     }
-	
+    	
 	public String login(){
-		System.out.println("inatec: "+inatec);
-		//UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
 		CustomUsernamePasswordAuthenticationToken token = new CustomUsernamePasswordAuthenticationToken(username, password, inatec);
 		try{
 			Authentication authentication = authenticationManager.authenticate(token);
@@ -70,15 +75,6 @@ public class LoginController implements PhaseListener {
 		}
 	}
 	
-	/**
-	 *
-	 * Redirects the login request directly to spring security check.
-	 * Leave this method as it is to properly support spring security.
-	 * 
-	 * @return
-	 * @throws ServletException
-	 * @throws IOException
-	 */
 	public String doLogin() throws ServletException, IOException {
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 
@@ -109,11 +105,6 @@ public class LoginController implements PhaseListener {
 	public void afterPhase(PhaseEvent event) {
 	}
 
-	/* (non-Javadoc)
-	 * @see javax.faces.event.PhaseListener#beforePhase(javax.faces.event.PhaseEvent)
-	 * 
-	 * Do something before rendering phase.
-	 */
 	public void beforePhase(PhaseEvent event) {
 		Exception e = (Exception) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(
 				WebAttributes.AUTHENTICATION_EXCEPTION);
@@ -126,11 +117,6 @@ public class LoginController implements PhaseListener {
         }
 	}
 
-	/* (non-Javadoc)
-	 * @see javax.faces.event.PhaseListener#getPhaseId()
-	 * 
-	 * In which phase you want to interfere?
-	 */
 	public PhaseId getPhaseId() {
 		return PhaseId.RENDER_RESPONSE;
 	}

@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 import service.IService;
 
 @Component
-@Scope("session")  //@ViewScoped
+@Scope(value="session")  //@ViewScoped
 public class CertificacionManagedBean implements Serializable {
 	
 	/**
@@ -57,7 +57,7 @@ public class CertificacionManagedBean implements Serializable {
 	private Actividad actividad;
 	private List<Actividad> actividades;
 	private List<Mantenedor> estatusList;
-	private Mantenedor selectedEstatus;
+	private int selectedEstatus;
 	
 	public CertificacionManagedBean(){
 		super();
@@ -168,10 +168,10 @@ public class CertificacionManagedBean implements Serializable {
 	public void setFechaIniciaEvaluacion(Date fechaIniciaEvaluacion) {
 		this.fechaIniciaEvaluacion = fechaIniciaEvaluacion;
 	}
-	public Mantenedor getSelectedEstatus() {
+	public int getSelectedEstatus() {
 		return selectedEstatus;
 	}
-	public void setSelectedEstatus(Mantenedor estatus) {
+	public void setSelectedEstatus(int estatus) {
 		this.selectedEstatus = estatus;
 	}
 	public List<Mantenedor> getEstatusList() {
@@ -236,7 +236,7 @@ public class CertificacionManagedBean implements Serializable {
 		System.out.println("Costo: "+costo);
 		System.out.println("Selected contactos : "+selectedContactos[0].getNombreCompleto());
 		//selectedEstatus=estatusList.get(0);
-		System.out.println("Selected estatus : "+selectedEstatus.getValor());
+		System.out.println("Selected estatus : "+selectedEstatus);
 		
 		service.guardarCertificacion(
 				getNombreCertificacion(),

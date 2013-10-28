@@ -84,7 +84,9 @@ public class DaoInatecImpl implements IDaoInatec {
 			+"c.descripcion as nombre_curso,"
 			+"o.costo_normal as costo, "
 			+"o.grupo as grupo_clase,"
-			+"o.cupo as disponibilidad "
+			+"o.cupo as disponibilidad, "
+			+"o.finicio as fecha_inicio, "
+			+"o.ffin as fecha_fin "
 			+"from " 
 			+"registro_cobranza.rg_oferta o "
 			+"inner join sac.acuerdos_detalles a on (a.id=o.id_acuerdo_deta) "
@@ -153,6 +155,8 @@ public class DaoInatecImpl implements IDaoInatec {
 		                certificacion.setNombreUCompetencia(rs.getString("nombre_curso"));
 		                certificacion.setCosto(rs.getFloat("costo"));
 		                certificacion.setDisponibilidad(rs.getInt("disponibilidad"));
+		                certificacion.setFechaInicio(rs.getDate("fecha_inicio"));
+		                certificacion.setFechaFin(rs.getDate("fecha_fin"));
 		                return certificacion;
 		            }
 		        });
