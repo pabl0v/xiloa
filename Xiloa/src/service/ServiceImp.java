@@ -101,6 +101,7 @@ public class ServiceImp implements IService {
 		certificacion.setSolicitudes(solicitudes);
 		certificacion.setInvolucrados(involucrados);
 		certificacion.setEstatus(mantenedorDao.findById(Mantenedor.class, estatus));
+		certificacion.setFechaRegistro(new Date());
 		
 		List<Contacto> contactos = new ArrayList<Contacto>();
 		contactos.add(usuario.getContacto());
@@ -141,9 +142,22 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Planificacion> getPlanificacion() {
 		List<Planificacion> planificaciones = new ArrayList<Planificacion>();
-		Contacto evalua;
-		Contacto coordina;
-
+		//Contacto evalua;
+		//Contacto coordina;
+		
+		List<Certificacion> certificaciones = certificacionDao.findAll(Certificacion.class);
+		for(int i=0; i<certificaciones.size(); i++){
+			Planificacion planificacion = new Planificacion();
+			planificacion.setRegistrado(certificaciones.get(i).getFechaRegistro().toString());
+			planificacion.setNombreCentro(certificaciones.get(i).getIfpNombre());
+			planificacion.setUnidadCompetencia(certificaciones.get(i).getNombre());
+			planificacion.setDisponibilidad(i);
+			planificacion.setSolicitudes(0);
+			planificacion.setCoordina(certificaciones.get(i).getInvolucrados().get(213).getNombreCompleto());
+			planificacion.setEvalua(certificaciones.get(i).getInvolucrados().get(214).getNombreCompleto());
+			planificacion.setEstatus(certificaciones.get(i).getEstatus().getValor());
+		}
+		/*
 		for(int i = 0; i<5; i++){
 			Planificacion p = new Planificacion();
 			p.setIdCentro(i+1);
@@ -157,7 +171,7 @@ public class ServiceImp implements IService {
 			p.setCoordina(coordina.getPrimerNombre()+" "+coordina.getPrimerApellido());
 			p.setRegistrado("11-10-2013");
 			planificaciones.add(p);
-		}
+		}*/
 		return planificaciones;
 	}
 

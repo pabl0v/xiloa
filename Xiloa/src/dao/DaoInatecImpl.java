@@ -148,6 +148,7 @@ public class DaoInatecImpl implements IDaoInatec {
 		        new RowMapper<UCompetencia>() {
 		            public UCompetencia mapRow(ResultSet rs, int rowNum) throws SQLException {
 		                UCompetencia certificacion = new UCompetencia();
+		                certificacion.setGrupo(rs.getString("grupo_clase"));
 		                certificacion.setIdCentro(rs.getInt("id_centro"));
 		                certificacion.setNombreCentro(rs.getString("nombre"));
 		                certificacion.setDireccion(rs.getString("direccion"));
