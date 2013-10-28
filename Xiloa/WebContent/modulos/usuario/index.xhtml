@@ -39,19 +39,20 @@
         	<h2>Certificaciones de Competencias Laborales disponibles</h2>
 	        <p>Seleccione el nombre de la competencia para ver el detalle y solicitar la certificacion</p>
         	<div id="contenedor_tabla_competencias">    
-	            <p:dataTable id="grid" var="competencia" value="#{planificacionManagedBean.competencias}" paginator="true" rows="10" 
+	            <p:dataTable id="grid" var="competencia" styleClass="tablaCompetencias" value="#{planificacionManagedBean.competencias}" paginator="true" rows="10" 
 	                paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-	                rowsPerPageTemplate="5,10,15" rowKey="#{competencia.disponibilidad}" selection="#{planificacionManagedBean.selectedCompetencia}" selectionMode="single">
+	                rowsPerPageTemplate="5,10,15" rowKey="#{competencia.grupo}" selection="#{planificacionManagedBean.selectedCompetencia}" selectionMode="single">
 	     			<!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
 	                <p:ajax event="rowSelect" update=":cursos:dialogo :cursos:growl" oncomplete="PF('modal_comp').show()" />
+	                <p:column style="display: none" headerText="Unidad de competencia"><h:outputText value="#{competencia.grupo}" width="2%" /></p:column>  
 	                <p:column headerText="Unidad de competencia"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  
 	                <p:column headerText="Centro de Formacion"><h:outputText value="#{competencia.nombreCentro}" /></p:column>  
 	                <p:column headerText="Inicia recepcion de solicitud"><h:outputText value="#{competencia.fechaInicio}" /></p:column>  
 	            </p:dataTable> 
             </div>
         </div>
-		<p:dialog id="modal_info_competencias" header="Detalle:" widgetVar="modal_comp" width="550" height="500">
-			<h:panelGrid id="dialogo">  
+		<p:dialog id="modal_info_competenciasid" styleClass="modal_info_competencias" header="Detalle:" widgetVar="modal_comp" width="550" height="500">
+			<p:outputPanel id="dialogo">  
         	<div class="seccion_detalle">
       			<p>Nombre de la certificacion</p>
       			<h:outputText value="#{planificacionManagedBean.selectedCompetencia.nombreUCompetencia}"></h:outputText>  		
@@ -81,7 +82,7 @@
           	</div>
 	        <p:commandButton onclick="PF('modal_comp').hide()" value="Cancelar"/> 
 	        <p:commandButton onclick="PF('modal_solicitud').show()" value="Aplicar"/>
-	        </h:panelGrid>
+	        </p:outputPanel>
     	</p:dialog>
         </h:form>        
         

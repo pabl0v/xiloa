@@ -214,23 +214,24 @@ footer p{
     border-radius:3px;
     cursor: pointer;
 }
-#modal_info_competencias {
+.modal_info_competencias {
     background: #E6EEF9;
     color: black;
 }
-#modal_info_competencias .seccion_detalle {
+.modal_info_competencias .seccion_detalle {
     background: #fff;
     margin: 11px 5px;
     padding: 5px;
     border-radius: 5px;
     border: 1px solid #ddd;
     font-size: 14px;
+    width:500px;
 }
-#modal_info_competencias .seccion_detalle ul li {
+.modal_info_competencias .seccion_detalle ul li {
     list-style: disc;
     margin-left: 21px;
 }
-#modal_info_competencias p {
+.modal_info_competencias p {
     color: black;
     padding: 5px 0;
     font-size: 13px;
@@ -272,4 +273,8 @@ footer p{
 }
 #error p {
 	display: inline-block;
+}
+/*************************/
+.tablaCompetencias tbody tr:nth-child(1) td {
+	width: 15px;
 }

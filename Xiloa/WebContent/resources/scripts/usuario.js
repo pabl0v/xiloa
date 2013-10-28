@@ -9,6 +9,8 @@ $(document).ready(function() {
 
 $(function(){
 	
+	//Foco en el nombre de usuario
+	$("#username").focus();
 	
 	var param1var = getQueryVariable("error");
 	
