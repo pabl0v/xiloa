@@ -20,10 +20,10 @@
     padding: 5px;
 }
 #contenedor_tabla_unidadcomp{
-    margin: 7px;
-    height: 400px;
-    background: aliceblue;
-    border: 1px solid #888;
+	margin: 7px;
+	height: 388px;
+	overflow-y: scroll;
+    
 }
 #botones_filtro_contenedor{
     width: 250px;  

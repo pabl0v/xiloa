@@ -44,7 +44,7 @@
 	                rowsPerPageTemplate="5,10,15" rowKey="#{competencia.grupo}" selection="#{planificacionManagedBean.selectedCompetencia}" selectionMode="single">
 	     			<!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
 	                <p:ajax event="rowSelect" update=":cursos:dialogo :cursos:growl" oncomplete="PF('modal_comp').show()" />
-	                <p:column style="display: none" headerText="Unidad de competencia"><h:outputText value="#{competencia.grupo}" width="2%" /></p:column>  
+	                <p:column style="display: none" headerText="Unidad de competencia"><h:outputText value="#{competencia.grupo}" /></p:column>  
 	                <p:column headerText="Unidad de competencia"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  
 	                <p:column headerText="Centro de Formacion"><h:outputText value="#{competencia.nombreCentro}" /></p:column>  
 	                <p:column headerText="Inicia recepcion de solicitud"><h:outputText value="#{competencia.fechaInicio}" /></p:column>  

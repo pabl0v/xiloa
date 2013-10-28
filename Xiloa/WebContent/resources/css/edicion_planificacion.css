@@ -73,6 +73,17 @@ h2{
     position: relative;
     top: -53px;
 }
+.contenedor_botones input, #dialogoactividades_botones input{
+	padding: 7px;
+	background: #c4c4c4 -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.8)), to(rgba(255,255,255,0)));
+	display: inline-block;
+	margin: 3px;
+	font-weight:bold;
+	color:#4f4f4f;
+	border-radius: 2px;
+	text-decoration: none !important;
+	cursor: pointer;
+}
 .selector_status_estilo {
 	position: relative;
 	top: 9px;
