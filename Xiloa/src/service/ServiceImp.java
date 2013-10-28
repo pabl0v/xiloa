@@ -251,7 +251,15 @@ public class ServiceImp implements IService {
 	
 	@Override
 	public List<Solicitud> getSolicitudesByIfp(Integer IdIfp) {
-		return solicitudDao.findAllByQuery("select s from solicitudes s where s.certificacion.ifpId= " + IdIfp);
+		
+		String sqlSolicitud;
+		
+		if (IdIfp == null) {
+			sqlSolicitud = "select s from solicitudes s";
+		} else {
+			sqlSolicitud = "select s from solicitudes s where s.certificacion.ifpId= " + IdIfp;		
+		}
+		return solicitudDao.findAllByQuery(sqlSolicitud);
 	}
 	
 	@Override

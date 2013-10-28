@@ -27,24 +27,23 @@
        </div>
         <h:form>
         <div id="contenedor_filtro">            
-	            <p>Buscar:</p>
+	            Buscar:
 	            <p:selectOneMenu styleClass="selectores" id="selector_filtro" value="a">  
 			        <f:selectItem itemLabel="Nombre de la:" itemValue="a" />
 			        <f:selectItem itemLabel="Centro donde esta :" itemValue="a" />
 			        <f:selectItem itemLabel="Otro:" itemValue="a" />  
 			    </p:selectOneMenu>
 		        <p:inputText style="margin-right:10px;" id="filtro_buscar123"></p:inputText>
-	            <p>Centro evaluador:</p>
+	            Centro evaluador:
 	            <p:selectOneMenu styleClass="selectores" id="selector_centrosBySolicitud" value="#{solicitudesManagedBean.selectedIdIfpSolicitud}">			        
 			        <f:selectItems value="#{solicitudesManagedBean.listCentrosBySolicitud}"/>
 			        <p:ajax update="selector_certificacionByCentro, dtSolicitud"  listener="#{solicitudesManagedBean.handleCertByCentro}" />
 			    </p:selectOneMenu>
-			    <p>Certificaciones:</p>
+			    Certificaciones:
 	            <p:selectOneMenu styleClass="selectores" id="selector_certificacionByCentro" value="a">			        
 			        <f:selectItems value="#{solicitudesManagedBean.listCertByCentro}"/>  
 			    </p:selectOneMenu>			  
-        </div>        
-      
+        </div>              
         <div id="contenedor_tabla_solicitudes">           
         	<p:dataTable id="dtSolicitud" widgetVar="dtSolicitudes" emptyMessage="No existen solicitudes activas" var="solicitudI" value="#{solicitudesManagedBean.solicitudB}" >                      
 	            <!--Las columnas de la tabla-->
