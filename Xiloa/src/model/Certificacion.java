@@ -40,6 +40,15 @@ public class Certificacion {
 	@Column(name = "certificacion_descripcion", nullable = false)
 	private String descripcion;
 	
+	@Column(name = "certificacion_codigo_competencia", nullable = false)
+	private String codigoCompetencia;
+	
+	@Column(name = "certificacion_nombre_competencia", nullable = false)
+	private String nombreCompetencia;
+	
+	@Column(name = "certificacion_disponibilidad", nullable = false)
+	private int disponibilidad;
+	
 	@NotNull
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "certificacion_fecha_registro", nullable = false)
@@ -57,7 +66,7 @@ public class Certificacion {
 	private Date finaliza;
 	
 	@Column(name = "certificacion_ifp_id", nullable = false)
-	private int ifpId;					//revisar
+	private int ifpId;
 	
 	@Column(name = "certificacion_ifp_direccion", nullable = false)
 	private String ifpDireccion;
@@ -68,7 +77,7 @@ public class Certificacion {
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="certificacion_programador_id")	
-	private Usuario programador;		//revisar
+	private Usuario programador;
 	
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "certificacion_divulgacion_inicia", nullable = false)
@@ -113,9 +122,10 @@ public class Certificacion {
 	
 	@OneToMany(mappedBy = "certificacion")
 	private List<Requisito> requisitos;
-	
-	@OneToMany(mappedBy = "certificacion")
-	private List<Unidad> unidades;
+
+	/*@OneToMany
+	@JoinColumn(name="cerfificacion_id", referencedColumnName="certificacion_id")
+	private List<Unidad> unidades;*/
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="cerfificacion_id", referencedColumnName="certificacion_id")
@@ -123,7 +133,7 @@ public class Certificacion {
 	
 	@OneToMany(mappedBy = "certificacion")
 	private List<Solicitud> solicitudes;
-		
+	
 	@ManyToMany
 	@JoinTable
 	(
@@ -137,7 +147,8 @@ public class Certificacion {
 	public Certificacion(){
 		super();
 		this.requisitos = new ArrayList<Requisito>();
-		this.unidades = new ArrayList<Unidad>();
+		//this.unidades = new ArrayList<Unidad>();
+		this.disponibilidad = 0;
 		this.actividades = new ArrayList<Actividad>();
 		this.solicitudes = new ArrayList<Solicitud>();
 		this.involucrados = new HashMap<Integer, Contacto>();
@@ -165,6 +176,30 @@ public class Certificacion {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public String getCodigoCompetencia() {
+		return codigoCompetencia;
+	}
+
+	public void setCodigoCompetencia(String codigoCompetencia) {
+		this.codigoCompetencia = codigoCompetencia;
+	}
+
+	public String getNombreCompetencia() {
+		return nombreCompetencia;
+	}
+
+	public void setNombreCompetencia(String nombreCompetencia) {
+		this.nombreCompetencia = nombreCompetencia;
+	}
+
+	public int getDisponibilidad() {
+		return disponibilidad;
+	}
+
+	public void setDisponibilidad(int disponibilidad) {
+		this.disponibilidad = disponibilidad;
 	}
 
 	public Date getFechaRegistro() {
@@ -303,13 +338,13 @@ public class Certificacion {
 		this.requisitos = requisitos;
 	}
 
-	public List<Unidad> getUnidades() {
+	/*public List<Unidad> getUnidades() {
 		return unidades;
 	}
 
 	public void setUnidades(List<Unidad> unidades) {
 		this.unidades = unidades;
-	}
+	}*/
 
 	public List<Actividad> getActividades() {
 		return actividades;
@@ -344,7 +379,10 @@ public class Certificacion {
 	}
 
 	public Certificacion(	String nombre, 
-							String descripcion, 
+							String descripcion,
+							String codigoCompetencia,
+							String nombreCompetencia,
+							int disponibilidad,
 							Date inicia,
 							Date finaliza, 
 							int ifpId, 
@@ -368,6 +406,9 @@ public class Certificacion {
 		super();
 		this.nombre = nombre;
 		this.descripcion = descripcion;
+		this.codigoCompetencia = codigoCompetencia;
+		this.nombreCompetencia = nombreCompetencia;
+		this.disponibilidad = disponibilidad;
 		this.inicia = inicia;
 		this.finaliza = finaliza;
 		this.ifpId = ifpId;
@@ -384,7 +425,7 @@ public class Certificacion {
 		this.referencial = referencial;
 		this.nivelCompetencia = nivelCompetencia;
 		this.requisitos = requisitos;
-		this.unidades = unidades;
+		//this.unidades = unidades;
 		this.actividades = actividades;
 		this.solicitudes = solicitudes;
 		this.involucrados = involucrados;

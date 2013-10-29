@@ -4,13 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
-import javax.faces.context.FacesContext;
 
 import model.Actividad;
 import model.Contacto;
 import model.Mantenedor;
+import model.Unidad;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -22,9 +20,6 @@ import service.IService;
 @Scope(value="session")  //@ViewScoped
 public class CertificacionManagedBean implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	@Autowired
 	private IService service;
@@ -32,6 +27,9 @@ public class CertificacionManagedBean implements Serializable {
 	private String idCurso;
 	private String nombreCertificacion;
 	private String descripcionCertificacion;
+	private int disponibilidad;
+	private String idCompetencia;
+	private String nombreCompetencia;
 	private float costo;
 	private List<Contacto> contactos;
 	private Contacto[] selectedContactos;
@@ -93,6 +91,24 @@ public class CertificacionManagedBean implements Serializable {
 	}
 	public void setDescripcionCertificacion(String descripcionCertificacion) {
 		this.descripcionCertificacion = descripcionCertificacion;
+	}
+	public int getDisponibilidad() {
+		return disponibilidad;
+	}
+	public void setDisponibilidad(int disponibilidad) {
+		this.disponibilidad = disponibilidad;
+	}
+	public String getIdCompetencia() {
+		return idCompetencia;
+	}
+	public void setIdCompetencia(String idCompetencia) {
+		this.idCompetencia = idCompetencia;
+	}
+	public String getNombreCompetencia() {
+		return nombreCompetencia;
+	}
+	public void setNombreCompetencia(String nombreCompetencia) {
+		this.nombreCompetencia = nombreCompetencia;
 	}
 	public float getCosto() {
 		return costo;
@@ -226,10 +242,18 @@ public class CertificacionManagedBean implements Serializable {
 		System.out.println("Selected contactos : "+selectedContactos[0].getNombreCompleto());
 		//selectedEstatus=estatusList.get(0);
 		System.out.println("Selected estatus : "+selectedEstatus);
+		System.out.println("Guardar idCompetencia : "+getIdCompetencia());
+		System.out.println("Guardar nombreCompetencia : "+getNombreCompetencia());
+		
+		List<Unidad> unidades = new ArrayList<Unidad>();
+		unidades.add(new Unidad(idCompetencia, nombreCompetencia));
 		
 		service.guardarCertificacion(
 				getNombreCertificacion(),
-				getDescripcionCertificacion(), 
+				getDescripcionCertificacion(),
+				getIdCompetencia(),
+				getNombreCompetencia(),
+				getDisponibilidad(),
 				null, //new Date(), //fechaInicia,
 				null, //new Date(), //fechaFinaliza,
 				Integer.valueOf(getIdCentro()),
@@ -245,7 +269,6 @@ public class CertificacionManagedBean implements Serializable {
 				"N/D", //referencia, 
 				0, //nivelCompetencia, 
 				null, //requisitos, 
-				null, //unidades, 
 				null, //actividades, 
 				null, //solicitudes,
 				selectedContactos,

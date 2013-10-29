@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Planificacion {	
 
-	private int idPlanificacion;
+	private Long idPlanificacion;
 	private int idCentro;
 	private String nombreCentro;
 	private String unidadCompetencia;
@@ -22,10 +22,10 @@ public class Planificacion {
 	private String registrado;
 	private String estatus;
 	
-	public int getIdPlanificacion() {
+	public Long getIdPlanificacion() {
 		return idPlanificacion;
 	}
-	public void setIdPlanificacion(int idPlanificacion) {
+	public void setIdPlanificacion(Long idPlanificacion) {
 		this.idPlanificacion = idPlanificacion;
 	}
 	public int getIdCentro() {
@@ -121,7 +121,7 @@ public class Planificacion {
 	public Planificacion(){
 		super();
 	}
-	public Planificacion(	int idPlanificacion, 
+	public Planificacion(	Long idPlanificacion, 
 							int idCentro,
 							String nombreCentro, 
 							String unidadCompetencia, 

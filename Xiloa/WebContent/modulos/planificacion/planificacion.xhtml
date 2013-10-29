@@ -40,7 +40,7 @@
                         <p:column headerText="Coordinador"><h:outputText value="#{planificacion.coordina}" /></p:column>                
                         <p:column headerText="Evalua"><h:outputText value="#{planificacion.evalua}" /></p:column>                
                         <p:column headerText="Estatus"><h:outputText value="#{planificacion.estatus}" /></p:column>               
-                        <p:column style="width:4%">  
+                        <p:column style="width:4%">
 				            <p:commandButton id="selectButton" oncomplete="PF('carDialog').show()" icon="ui-icon-pencil" title="Editar">  
 				                <f:setPropertyActionListener value="#{car}" target="#{planificacion.selectedPlanificacion}" />  
 				            </p:commandButton>  
@@ -66,6 +66,9 @@
 				<f:setPropertyActionListener target="#{certificacionManagedBean.idCurso}" value="#{planificacionManagedBean.selectedCompetencia.idUCompetencia}" />
 				<f:setPropertyActionListener target="#{certificacionManagedBean.nombreCertificacion}" value="#{planificacionManagedBean.selectedCompetencia.nombreUCompetencia}" />
 				<f:setPropertyActionListener target="#{certificacionManagedBean.descripcionCertificacion}" value="#{planificacionManagedBean.selectedCompetencia.nombreUCompetencia}" />
+				<f:setPropertyActionListener target="#{certificacionManagedBean.disponibilidad}" value="#{planificacionManagedBean.selectedCompetencia.disponibilidad}" />				
+				<f:setPropertyActionListener target="#{certificacionManagedBean.idCompetencia}" value="#{planificacionManagedBean.selectedCompetencia.idUCompetencia}" />
+				<f:setPropertyActionListener target="#{certificacionManagedBean.nombreCompetencia}" value="#{planificacionManagedBean.selectedCompetencia.nombreUCompetencia}" />				
 				<f:setPropertyActionListener target="#{certificacionManagedBean.costo}" value="#{planificacionManagedBean.selectedCompetencia.costo}" />
 				<f:setPropertyActionListener target="#{certificacionManagedBean.idCentro}" value="#{planificacionManagedBean.selectedCompetencia.idCentro}" />
 				<f:setPropertyActionListener target="#{certificacionManagedBean.nombreCentro}" value="#{planificacionManagedBean.selectedCompetencia.nombreCentro}" />

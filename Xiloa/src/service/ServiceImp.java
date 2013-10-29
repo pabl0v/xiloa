@@ -1,5 +1,6 @@
 package service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -51,13 +52,19 @@ public class ServiceImp implements IService {
 	@Autowired	
 	private IDao<Perfil> perfilDao;
 	@Autowired	
+	private IDao<Unidad> unidadDao;
+	@Autowired
+	private IDao<Planificacion> planificacionDao;
+	@Autowired	
 	private IDaoInatec inatecDao;
-		
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void guardarCertificacion(	String nombre, 
 										String descripcion,
+										String codigoCompetencia,
+										String nombreCompetencia,
+										int disponibilidad,
 										Date fechaInicia, 
 										Date fechaFinaliza, 
 										int ifp, 
@@ -73,7 +80,6 @@ public class ServiceImp implements IService {
 										String referencial,
 										int nivelCompetencia, 
 										List<Requisito> requisitos,
-										List<Unidad> unidades, 
 										List<Actividad> actividades,
 										List<Solicitud> solicitudes, 
 										Contacto[] involucrados,
@@ -82,6 +88,9 @@ public class ServiceImp implements IService {
 		Certificacion certificacion = new Certificacion();
 		certificacion.setNombre(nombre);
 		certificacion.setDescripcion(descripcion);
+		certificacion.setCodigoCompetencia(codigoCompetencia);
+		certificacion.setNombreCompetencia(nombreCompetencia);
+		certificacion.setDisponibilidad(disponibilidad);
 		certificacion.setInicia(fechaInicia);
 		certificacion.setFinaliza(fechaFinaliza);
 		certificacion.setIfpId(ifp);
@@ -95,8 +104,7 @@ public class ServiceImp implements IService {
 		certificacion.setEvaluacionInicia(fechaIniciaEvaluacion);
 		certificacion.setCreador(usuario);		//creador
 		certificacion.setReferencial(referencial);
-		certificacion.setNivelCompetencia(nivelCompetencia);
-		certificacion.setUnidades(unidades);
+		certificacion.setNivelCompetencia(nivelCompetencia);		
 		//certificacion.setActividades(actividades);
 		certificacion.setSolicitudes(solicitudes);
 		certificacion.setInvolucrados(involucrados);
@@ -141,14 +149,36 @@ public class ServiceImp implements IService {
 
 	@Override
 	public List<Planificacion> getPlanificacion() {
+		
+		/*String query = 	"Select "
+						+ "NEW support.Planificacion("
+						+ "c.id, "
+						+ "c.fechaRegistro, "
+						+ "c.ifpNombre, "
+						+ "c.nombreCompetencia, "
+						+ "c.disponibilidad, "
+						+ "count(s.id), "
+						+ "c.involucrados.get(2).getNombreCompleto(), "
+						+ "c.involucrados.get(3).getNombreCompleto(), "
+						+ "c.estatus.getValor())"
+						+ "from "
+						+ "certificaciones c "
+						+ "left join "
+						+ "solicitudes s "
+						+ "on c.id = s.certificacion.id "
+						+ "order by c.id";*/
+		
 		List<Planificacion> planificaciones = new ArrayList<Planificacion>();
+		//planificaciones = planificacionDao.findAllByQuery(query);
 		List<Certificacion> certificaciones = certificacionDao.findAll(Certificacion.class);
+		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 		for(int i=0; i<certificaciones.size(); i++){
 			Planificacion planificacion = new Planificacion();
-			planificacion.setRegistrado(certificaciones.get(i).getFechaRegistro().toString());
+			planificacion.setIdPlanificacion(certificaciones.get(i).getId());
+			planificacion.setRegistrado(formato.format(certificaciones.get(i).getFechaRegistro()));
 			planificacion.setNombreCentro(certificaciones.get(i).getIfpNombre());
-			planificacion.setUnidadCompetencia(certificaciones.get(i).getNombre());
-			planificacion.setDisponibilidad(i);
+			planificacion.setUnidadCompetencia(certificaciones.get(i).getNombreCompetencia());
+			planificacion.setDisponibilidad(certificaciones.get(i).getDisponibilidad());
 			planificacion.setSolicitudes(0);
 			planificacion.setCoordina(certificaciones.get(i).getInvolucrados().get(2).getNombreCompleto());
 			planificacion.setEvalua(certificaciones.get(i).getInvolucrados().get(3).getNombreCompleto());

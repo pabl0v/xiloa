@@ -14,7 +14,6 @@ import model.Mantenedor;
 import model.Requisito;
 import model.Rol;
 import model.Solicitud;
-import model.Unidad;
 import model.Usuario;
 
 public interface IService {
@@ -37,6 +36,9 @@ public interface IService {
 	
 	public void guardarCertificacion(	String nombre, 
 										String descripcion,
+										String codigoCompetencia,
+										String nombreCompetencia,
+										int disponibilidad,
 										Date fechaInicia,
 										Date fechaFinaliza,
 										int ifp,
@@ -52,7 +54,6 @@ public interface IService {
 										String referencia,
 										int nivelCompetencia,
 										List<Requisito> requisitos,
-										List<Unidad> unidades,
 										List<Actividad> actividades,
 										List<Solicitud> solicitudes,
 										Contacto[] involucrados,

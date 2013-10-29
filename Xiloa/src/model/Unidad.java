@@ -2,12 +2,9 @@ package model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
@@ -18,11 +15,6 @@ public class Unidad {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "unidad_id", nullable = false)
 	private Long id;
-
-	@NotNull
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="certificacion_id")	
-	private Certificacion certificacion;
 	
 	@NotNull
 	@Column(name = "competencia_codigo", nullable = false)
@@ -38,14 +30,6 @@ public class Unidad {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Certificacion getCertificacion() {
-		return certificacion;
-	}
-
-	public void setCertificacion(Certificacion certificacion) {
-		this.certificacion = certificacion;
 	}
 
 	public String getCompetenciaCodigo() {
@@ -64,10 +48,8 @@ public class Unidad {
 		this.competenciaDescripcion = competenciaDescripcion;
 	}
 
-	public Unidad(Certificacion certificacion, String competenciaCodigo,
-			String competenciaDescripcion) {
+	public Unidad(String competenciaCodigo, String competenciaDescripcion) {
 		super();
-		this.certificacion = certificacion;
 		this.competenciaCodigo = competenciaCodigo;
 		this.competenciaDescripcion = competenciaDescripcion;
 	}
