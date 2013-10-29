@@ -3,15 +3,19 @@ package view;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import model.Actividad;
 import model.Contacto;
 import model.Mantenedor;
 import model.Unidad;
+import model.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;  
 
 import service.IService;
@@ -40,15 +44,18 @@ public class CertificacionManagedBean implements Serializable {
 	private String nombreCentro;
 	private String direccionCentro;
 	private Date fechaIniciaEvaluacion;
-	private Mantenedor selectedTipoActividad;
+	private int selectedTipoActividad;
 	private List<Mantenedor> tipoActividades;
+	private Map<Integer, Mantenedor> catalogoActividades;
 	/*
 	 * 
 	 */
 	private String nombreActividad;
 	private String destinoActividad;
 	private Date fechaActividad;
-	private String estatusActividad;
+	private List<Mantenedor> catalogoEstatusActividades;
+	private int selectedEstatusActividad;
+	
 	/*
 	 * 
 	 */
@@ -63,7 +70,13 @@ public class CertificacionManagedBean implements Serializable {
 		actividades = new ArrayList<Actividad>();
 		estatusList = new ArrayList<Mantenedor>();
 		actividad = new Actividad();
+		catalogoActividades = new HashMap<Integer, Mantenedor>();
 	}
+	
+	private String getLoggedUser(){
+		return SecurityContextHolder.getContext().getAuthentication().getName();
+	}
+	
 	public Long getCertificacionId(){
 		return certificacionId;
 	}
@@ -186,13 +199,16 @@ public class CertificacionManagedBean implements Serializable {
 		tipoActividades = service.getMantenedorActividades();
 		System.out.println("Tipos actividad:"+tipoActividades.get(0).getValor());
 		System.out.println("Tipos actividad:"+tipoActividades.get(1).getValor());
+		for(int i=0; i<tipoActividades.size(); i++){
+			catalogoActividades.put(tipoActividades.get(i).getId(), tipoActividades.get(i));
+		}
 		return tipoActividades;
 	}
-	public Mantenedor getSelectedTipoActividad() {
+	public int getSelectedTipoActividad() {
 		return selectedTipoActividad;
 	}
 
-	public void setSelectedTipoActividad(Mantenedor selectedTipoActividad) {
+	public void setSelectedTipoActividad(int selectedTipoActividad) {
 		this.selectedTipoActividad = selectedTipoActividad;
 	}
 	public String getNombreActividad() {
@@ -269,27 +285,37 @@ public class CertificacionManagedBean implements Serializable {
 				"N/D", //referencia, 
 				0, //nivelCompetencia, 
 				null, //requisitos, 
-				null, //actividades, 
+				actividades, 
 				null, //solicitudes,
 				selectedContactos,
 				selectedEstatus);
 	}
 	
 	public void guardarActividad(){
-		//System.out.println("Actividad seleccionada: "+selectedTipoActividad.getValor());
-		System.out.println("Actividad nombre: "+nombreActividad);
-		System.out.println("Actividad destino: "+nombreActividad);
-		System.out.println("Actividad fecha: "+fechaActividad);
-		//System.out.println("Actividad seleccionada: "+selectedTipoActividad.getValor());
 		
-		/*
+		Mantenedor tipoActividad = catalogoActividades.get(selectedTipoActividad);
+		Mantenedor estadoActividad = catalogoActividades.get(selectedTipoActividad);
+		//catalogoActividades.values();
+		Usuario usuario = service.getUsuarioLocal(getLoggedUser());
+		
+		System.out.println("Actividad seleccionada: "+selectedTipoActividad);
+		System.out.println("Actividad nombre: "+nombreActividad);
+		System.out.println("Actividad destino: "+destinoActividad);
+		System.out.println("Actividad fecha: "+fechaActividad);
+		
 		actividad = new Actividad();
-		actividad.setNombre(nombreActividad);
-		actividad.setDescripcion(nombreActividad);
+		actividad.setTipo(tipoActividad);
 		actividad.setFechaInicial(fechaActividad);
 		actividad.setFechaFinal(fechaActividad);
-		actividad.setDescripcion(destinoActividad);
+		actividad.setCreador(usuario);
+		actividad.setEjecutor(usuario);
+		actividad.setNombre(nombreActividad);
+		actividad.setDescripcion(nombreActividad);
+		actividad.setDestino(destinoActividad);
+		actividad.setEstado(estadoActividad);
+		actividades.add(actividad);
 		
+		/*
 		System.out.println("antes de imprimrir");
 		
 		System.out.println("Nombre: "+actividad.getNombre());
@@ -315,5 +341,13 @@ public class CertificacionManagedBean implements Serializable {
 	
 	public String nuevaCertificacion(){
 		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
+	}
+
+	public int getSelectedEstatusActividad() {
+		return selectedEstatusActividad;
+	}
+
+	public void setSelectedEstatusActividad(int selectedEstatusActividad) {
+		this.selectedEstatusActividad = selectedEstatusActividad;
 	}
 }

@@ -53,8 +53,6 @@ public class ServiceImp implements IService {
 	private IDao<Perfil> perfilDao;
 	@Autowired	
 	private IDao<Unidad> unidadDao;
-	@Autowired
-	private IDao<Planificacion> planificacionDao;
 	@Autowired	
 	private IDaoInatec inatecDao;
 	
@@ -105,7 +103,7 @@ public class ServiceImp implements IService {
 		certificacion.setCreador(usuario);		//creador
 		certificacion.setReferencial(referencial);
 		certificacion.setNivelCompetencia(nivelCompetencia);		
-		//certificacion.setActividades(actividades);
+		certificacion.setActividades(actividades);
 		certificacion.setSolicitudes(solicitudes);
 		certificacion.setInvolucrados(involucrados);
 		certificacion.setEstatus(mantenedorDao.findById(Mantenedor.class, estatus));
@@ -115,10 +113,11 @@ public class ServiceImp implements IService {
 		contactos.add(usuario.getContacto());
 		//contactos.add(usuario.getContacto());
 		
+		/*
 		Actividad actividad = new Actividad("Actividad 1","Actividad 1", "Managua", new Date(), new Date(), usuario, usuario, contactos);
 		List<Actividad> actividades2 = new ArrayList<Actividad>();
 		actividades2.add(actividad);
-		certificacion.setActividades(actividades2);
+		certificacion.setActividades(actividades2);*/
 		
 		certificacionDao.save(certificacion);
 		//certificacion.setActividades(actividades2);
@@ -322,7 +321,7 @@ public class ServiceImp implements IService {
 			return solicitudDao.save((Solicitud) objeto);
 		}
 		if(objeto instanceof Actividad){
-			Usuario usuario = usuarioDao.findOneByQuery("select u from usuarios u where u.id=3");
+			/*Usuario usuario = usuarioDao.findOneByQuery("select u from usuarios u where u.id=3");
 			((Actividad) objeto).setCreador(usuario);
 			((Actividad) objeto).setEjecutor(usuario);
 			Mantenedor estado = mantenedorDao.findOneByQuery("Select m from mantenedores m where m.id=1");
@@ -331,7 +330,7 @@ public class ServiceImp implements IService {
 			((Actividad) objeto).setDescripcion("prueba");
 			((Actividad) objeto).setDestino("managua");
 			((Actividad) objeto).setFechaInicial(new Date());
-			((Actividad) objeto).setFechaFinal(new Date());
+			((Actividad) objeto).setFechaFinal(new Date());*/
 			return actividadDao.save((Actividad)objeto);
 		}
 		if(objeto instanceof Mantenedor)

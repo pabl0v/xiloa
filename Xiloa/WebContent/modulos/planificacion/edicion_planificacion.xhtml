@@ -78,13 +78,11 @@
 				<div>
 					<p:editor id="editor2" value="#{planificacionManagedBean.selectedCompetencia.nombreUCompetencia}" height="190"/>   
 				</div>    
-				<p>Estatus</p>
-				
+				<p>Estatus</p>				
 				<p:selectOneMenu id="selector_estatus" styleClass="selector_status_estilo" value="#{certificacionManagedBean.selectedEstatus}" >  
 					<f:selectItem itemLabel="Seleccione..." itemValue="" />
 					<f:selectItems value="#{certificacionManagedBean.estatusList}" var="estatus" itemLabel="#{estatus.valor}" itemValue="#{estatus.id}" />
-				</p:selectOneMenu>
-				
+				</p:selectOneMenu>				
 				</div>
 				<div class="seccion_edicion" style="height: 260px">
 					<p>Nombre del centro evaluador</p>
@@ -108,7 +106,7 @@
                     <p:tab id="tab1" title="Actividades">  
                         <h:form>     
                         <p:commandButton value="Agregar" style="margin-bottom: 5px" onclick="PF('dlg1').show();"/>    
-                           	<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" widgetVar="carsTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.id}" selectionMode="single">  
+                           	<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.id}" selectionMode="single">  
 							    <f:facet name="header">  
 							         <p:outputPanel style="text-align:right;">  
 							             <h:outputText value="Buscar:" />  
@@ -130,7 +128,7 @@
                     <p:tab id="tab2" title="Divulgacion">  
                          <h:form>     
                         <p:commandButton value="Agregar" style="margin-bottom: 5px" onclick="PF('dlg1').show();"/>    
-                            <p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" widgetVar="carsTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.id}" selectionMode="single">  
+                            <p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.id}" selectionMode="single">  
 							    <f:facet name="header">  
 							         <p:outputPanel style="text-align:right;">  
 							             <h:outputText value="Buscar:" />  
@@ -152,7 +150,7 @@
                     <p:tab id="tab3" title="Verificacion">  
                        <h:form>     
                         <p:commandButton value="Agregar" style="margin-bottom: 5px" onclick="PF('dlg1').show();"/>    
-                            <p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" widgetVar="carsTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.id}" selectionMode="single">  
+                            <p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.id}" selectionMode="single">  
 							    <f:facet name="header">  
 							         <p:outputPanel style="text-align:right;">  
 							             <h:outputText value="Buscar:" />  
@@ -174,7 +172,7 @@
                     <p:tab id="tab4" title="UC a evaluar">  
                         <h:form>     
                         <p:commandButton value="Agregar" style="margin-bottom: 5px" onclick="PF('dlg1').show();"/>    
-                            <p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" widgetVar="carsTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.id}" selectionMode="single">  
+                            <p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.id}" selectionMode="single">  
 							    <f:facet name="header">  
 							         <p:outputPanel style="text-align:right;">  
 							             <h:outputText value="Buscar:" />  
@@ -212,7 +210,7 @@
 				</div>
 				<div class="dialogoactividades_secciones">  
 					<p>Estatus:</p>
-					<!--
+					<!-- 
 					<p:selectOneMenu id="estatus" value="#{pprBean.city}">
 						<f:selectItem itemLabel="Select City" itemValue="" />  
 						<f:selectItems value="#{pprBean.cities}" />
@@ -223,12 +221,10 @@
 				<p:inputTextarea rows="10" cols="50" value="#{certificacionManagedBean.destinoActividad}" queryDelay="750" minQueryLength="4" />
 				<div class="dialogoactividades_secciones2">   
 					<p>Tipo de actividad:</p>
-					<!-- 
 					<p:selectOneMenu id="tipo" value="#{certificacionManagedBean.selectedTipoActividad}">
 						<f:selectItem itemLabel="Seleccione..." itemValue="" />
-						<f:selectItems value="#{certificacionManagedBean.tipoActividades}" var="actividad" itemLabel="#{actividad.valor}" itemValue="#{actividad}" />
+						<f:selectItems value="#{certificacionManagedBean.tipoActividades}" var="actividad" itemLabel="#{actividad.valor}" itemValue="#{actividad.id}" />
 					</p:selectOneMenu>
-					 -->
 				</div>
 				
 				<!--

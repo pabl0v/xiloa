@@ -108,6 +108,14 @@ public class Actividad {
 		this.tipoId = tipoId;
 	}*/
 
+	public Mantenedor getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Mantenedor tipo) {
+		this.tipo = tipo;
+	}
+
 	public Date getFechaInicial() {
 		return fechaInicial;
 	}
