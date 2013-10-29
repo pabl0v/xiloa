@@ -70,18 +70,6 @@ public class CertificacionManagedBean implements Serializable {
 		return certificacionId;
 	}
 	
-	public String nuevaCertificacion(){
-		Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-		setIdCurso(params.get("idCompetencia"));
-		setNombreCertificacion(params.get("nombreCurso"));
-		setCosto(Float.valueOf(params.get("costoCurso")));
-		setDescripcionCertificacion(params.get("nombreCurso"));
-		setIdCentro(params.get("idCentro"));
-		setNombreCentro(params.get("nombreCentro"));
-		setDireccionCentro(params.get("direccionCentro"));
-		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
-	}
-
 	public IService getService() {
 		return service;
 	}
@@ -300,5 +288,9 @@ public class CertificacionManagedBean implements Serializable {
 		//System.out.println("Estado: "+actividad.getEstado().getValor());
 		
 		//service.guardar(actividad);
+	}
+	
+	public String nuevaCertificacion(){
+		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
 	}
 }

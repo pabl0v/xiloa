@@ -61,17 +61,15 @@
                     <p:column headerText="Disponibilidad"><h:outputText value="#{competencia.disponibilidad}"/></p:column>  
                 </p:dataTable>
              </div>
-             <!--
-             <p:commandButton value="Cancelar" onclick="PF('dlg2').hide();" styleClass="boton_azul"/> 
-             <p:commandButton value="Aceptar" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_planificacion.xhtml';" styleClass="boton_azul flotante" /> -->
              <p:commandButton value="Cancelar" onclick="PF('dlg2').hide();" styleClass="boton_azul"/>
              <p:commandButton value="Aceptar" action="#{certificacionManagedBean.nuevaCertificacion}" styleClass="boton_azul">
-               	<f:param name="idCompetencia" value="1" />
-  				<f:param name="nombreCurso" value="#{planificacionManagedBean.selectedCompetencia.nombreUCompetencia}" />
-  				<f:param name="costoCurso" value="1000" />
-  				<f:param name="idCentro" value="1" />
-  				<f:param name="nombreCentro" value="Inatec" />
-  				<f:param name="direccionCentro" value="Managua" />
+				<f:setPropertyActionListener target="#{certificacionManagedBean.idCurso}" value="#{planificacionManagedBean.selectedCompetencia.idUCompetencia}" />
+				<f:setPropertyActionListener target="#{certificacionManagedBean.nombreCertificacion}" value="#{planificacionManagedBean.selectedCompetencia.nombreUCompetencia}" />
+				<f:setPropertyActionListener target="#{certificacionManagedBean.descripcionCertificacion}" value="#{planificacionManagedBean.selectedCompetencia.nombreUCompetencia}" />
+				<f:setPropertyActionListener target="#{certificacionManagedBean.costo}" value="#{planificacionManagedBean.selectedCompetencia.costo}" />
+				<f:setPropertyActionListener target="#{certificacionManagedBean.idCentro}" value="#{planificacionManagedBean.selectedCompetencia.idCentro}" />
+				<f:setPropertyActionListener target="#{certificacionManagedBean.nombreCentro}" value="#{planificacionManagedBean.selectedCompetencia.nombreCentro}" />
+				<f:setPropertyActionListener target="#{certificacionManagedBean.direccionCentro}" value="#{planificacionManagedBean.selectedCompetencia.direccion}" />
              </p:commandButton>
          </h:form>   
     </p:dialog>  
