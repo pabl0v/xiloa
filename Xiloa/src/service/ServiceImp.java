@@ -3,6 +3,8 @@ package service;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -279,15 +281,36 @@ public class ServiceImp implements IService {
 	}	
 	
 	@Override
-	public List<Solicitud> getSolicitudesByIfp(Integer IdIfp) {
+	public List<Solicitud> getSolicitudesByParam(HashMap<String, Object> param) {
 		
-		String sqlSolicitud;
+		String sqlSolicitud;		
 		
-		if (IdIfp == null) {
-			sqlSolicitud = "select s from solicitudes s";
-		} else {
-			sqlSolicitud = "select s from solicitudes s where s.certificacion.ifpId= " + IdIfp;		
-		}
+		String sqlWhere = null;		
+		
+		if (param.size() > 0 ) {
+			
+			String campo;
+			Object valor;
+			
+			Iterator<String> claveSet = param.keySet().iterator();			
+		    
+		    while(claveSet.hasNext()){		      
+		    	campo = claveSet.next();
+		    	System.out.println("En el ServiceImp " + campo);
+		    	if (param.get(campo) instanceof Integer || param.get(campo) instanceof Long) {
+		    		valor = param.get(campo);
+		    	} else {
+		    		valor = "'" + param.get(campo) + "'";
+		    	}		    	
+		    	
+		    	sqlWhere = (sqlWhere == null) ? "where " + campo + " = " + valor :sqlWhere + " and " + campo + " = " + valor; 
+		        System.out.println("Validamos que el where este formado correctamente: " +  sqlWhere);		        
+		    }
+		}		
+		
+		sqlSolicitud = "select s from solicitudes s " + ((sqlWhere == null) ? "" : sqlWhere) ;
+		System.out.println("select s from solicitudes s " + ((sqlWhere == null) ? "" : sqlWhere));
+		
 		return solicitudDao.findAllByQuery(sqlSolicitud);
 	}
 	

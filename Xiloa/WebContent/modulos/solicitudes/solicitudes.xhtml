@@ -27,21 +27,22 @@
        </div>
         <h:form>
         <div id="contenedor_filtro">            
-	            Buscar:
-	            <p:selectOneMenu styleClass="selectores" id="selector_filtro" value="a">  
-			        <f:selectItem itemLabel="Nombre de la:" itemValue="a" />
-			        <f:selectItem itemLabel="Centro donde esta :" itemValue="a" />
-			        <f:selectItem itemLabel="Otro:" itemValue="a" />  
+	            <p>Buscar:</p>
+	            <p:selectOneMenu styleClass="selectores" id="selector_buscarByAll" value="#{solicitudesManagedBean.selectedBuscarByAll}">
+	            	<f:selectItems value="#{solicitudesManagedBean.listBuscarByAll}"/>	            			        
 			    </p:selectOneMenu>
-		        <p:inputText style="margin-right:10px;" id="filtro_buscar123"></p:inputText>
-	            Centro evaluador:
-	            <p:selectOneMenu styleClass="selectores" id="selector_centrosBySolicitud" value="#{solicitudesManagedBean.selectedIdIfpSolicitud}">			        
+		        <p:inputText style="margin-right:10px;" id="filtro_buscarByAll" value="#{solicitudesManagedBean.buscarByAllValue}">
+		        	<p:ajax update="dtSolicitud" listener="#{solicitudesManagedBean.handleBuscar}" process="@form" />
+		        </p:inputText>
+	            <p>Centro evaluador:</p>
+	            <p:selectOneMenu styleClass="selectores" id="selector_centrosBySolicitud" value="#{solicitudesManagedBean.selectedIdIfpSolicitud}" >			        
 			        <f:selectItems value="#{solicitudesManagedBean.listCentrosBySolicitud}"/>
 			        <p:ajax update="selector_certificacionByCentro, dtSolicitud"  listener="#{solicitudesManagedBean.handleCertByCentro}" />
 			    </p:selectOneMenu>
-			    Certificaciones:
-	            <p:selectOneMenu styleClass="selectores" id="selector_certificacionByCentro" value="a">			        
-			        <f:selectItems value="#{solicitudesManagedBean.listCertByCentro}"/>  
+			    <p>Certificaciones:</p>
+	            <p:selectOneMenu styleClass="selectores" id="selector_certificacionByCentro" value="#{solicitudesManagedBean.selectedIdCertByCentro}" >			        
+			        <f:selectItems value="#{solicitudesManagedBean.listCertByCentro}" />
+			        <p:ajax update="dtSolicitud" listener="#{solicitudesManagedBean.handleBuscar}" />  
 			    </p:selectOneMenu>			  
         </div>              
         <div id="contenedor_tabla_solicitudes">           
@@ -54,8 +55,8 @@
                 <p:column id="evaluadorColumn" headerText="Evaluador"><h:outputText value="#{solicitudI.contacto.correo1}" /></p:column>                
                 <p:column id="estadoColumn" headerText="Estado"><h:outputText value="#{solicitudI.estatus}" /></p:column>                             
                 <p:column style="width:4%">  
-	            	<p:commandButton id="selectButton" oncomplete="window.location='/Xiloa/modulos/solicitudes/registro_solicitud.xhtml'" icon="ui-icon-pencil" title="Editar">  
-        				<f:setPropertyActionListener value="#{car}" target="#{tableBean.selectedCar}" />  
+	            	<p:commandButton id="selectButton" action="#{solicitudesManagedBean.editaSolicitud}" icon="ui-icon-pencil" title="Editar">  
+        				<f:setPropertyActionListener value="#{solicitudI}" target="#{expedienteManagedBean.solicitudExp}" />  
         			</p:commandButton>  
     			</p:column>  
             </p:dataTable>            

@@ -16,83 +16,84 @@
 	    	</ui:insert>
 	    	<script type="text/javascript" src="../../resources/scripts/expediente.js"></script>
 		</div>
-    	<h2>Expediente: 12-0000-000</h2>
-    	<div id="seccion_datossolicitante" class="seccion_expediente" style="padding:10px;">
-    	  <h:form>
+		<h:form>
+    	<h2>Expediente: #{expedienteManagedBean.solicitudExp.id} </h2>
+    	<div id="seccion_datossolicitante" class="seccion_expediente" style="padding:10px;">    	  
     		<p>Datos del solicitante/Candidato</p>
-    		<h:outputLabel styleClass="estilo_label" for="firstname2" value="Nombre del candidato:" />  
-            <p:inputText id="firstgme2" value="#{personBean.firstname}" />
-            <h:outputLabel styleClass="estilo_label" for="firstname2" value="Numero de identificacion:" />  
-            <p:inputText id="ffgge2" value="#{personBean.firstname}" />
-            <h:outputLabel styleClass="estilo_label" for="firstname2" value="Solicitud para evaluar:" />  
-            <p:inputText id="dme2" value="#{personBean.firstname}" />
-            <h:outputLabel styleClass="estilo_label" for="firstname2" value="Genero:" />  
-            <p:inputText id="fijhgjfame2" value="#{personBean.firstname}" />
-            <h:outputLabel styleClass="estilo_label" for="firstname2" value="Telefono:" />  
-            <p:inputText id="firstjghme2" value="#{personBean.firstname}" />
-            <h:outputLabel styleClass="estilo_label" for="firstname2" value="Celular:" />  
-            <p:inputText id="firtme2" value="#{personBean.firstname}" />
-            <h:outputLabel styleClass="estilo_label" for="firstname2" value="Correo electronico:" />  
-            <p:inputText id="fihghame2" value="#{personBean.firstname}" />
-            <h:outputLabel styleClass="estilo_label" for="firstname2" value="Direccion actual:" />  
-            <p:inputText id="firstngdfe2" value="#{personBean.firstname}" />
-            <h:outputLabel styleClass="estilo_label" for="firstname2" value="Municipio:" />  
-            <p:inputText id="firssame2" value="#{personBean.firstname}" />
-          </h:form>  
+    		<h:outputLabel styleClass="estilo_label" for="nombreCandidato" value="Nombre del candidato:" />  
+            <p:inputText id="nombreCandidato" value="#{expedienteManagedBean.solicitudExp.contacto.nombreCompleto}" />
+            <h:outputLabel styleClass="estilo_label" for="numeroIdentificacion" value="Numero de identificacion:" />  
+            <p:inputText id="numeroIdentificacion" value="#{expedienteManagedBean.solicitudExp.contacto.numeroIdentificacion}" />
+            <h:outputLabel styleClass="estilo_label" for="certificacionNombre" value="Solicitud para evaluar:" />  
+            <p:inputText id="certificacionNombre" value="#{expedienteManagedBean.solicitudExp.certificacion.nombre}" />
+            <h:outputLabel styleClass="estilo_label" for="genero" value="Genero:" />  
+            <p:inputText id="genero" value="#{expedienteManagedBean.solicitudExp.contacto.sexo}" />
+            <h:outputLabel styleClass="estilo_label" for="telefono" value="Telefono:" />  
+            <p:inputText id="telefono" value="#{expedienteManagedBean.solicitudExp.contacto.telefono1}" />
+            <h:outputLabel styleClass="estilo_label" for="celular" value="Celular:" />  
+            <p:inputText id="celular" value="#{expedienteManagedBean.solicitudExp.contacto.telefono2}" />
+            <h:outputLabel styleClass="estilo_label" for="email1" value="Correo electronico:" />  
+            <p:inputText id="email1" value="#{expedienteManagedBean.solicitudExp.contacto.correo1}" />
+            <h:outputLabel styleClass="estilo_label" for="direccionActual" value="Direccion actual:" />  
+            <p:inputText id="direccionActual" value="#{expedienteManagedBean.solicitudExp.contacto.direccionActual}" />
+            <h:outputLabel styleClass="estilo_label" for="municipio" value="Municipio:" />  
+            <p:inputText id="municipio" value="#{expedienteManagedBean.solicitudExp.contacto.nacionalidadId}" />            
     	</div>
     	<div class="seccion_expediente">
     		<p>Trayectoria profesional y academica:</p>
-    		<div>
-    		  <h:form>
-	    		<h:outputLabel styleClass="estilo_label" for="firstname2" value="Estatus actual:" />  
-	            <p:inputText id="firstname2" value="#{personBean.firstname}" />
-	            <h:outputLabel styleClass="estilo_label" for="firstname2" value="Siguiente Estatus:" />  
-            	<p:inputText id="firstname3" value="#{personBean.firstname}" />
-              </h:form>
+    		<div>    		  
+	    		<h:outputLabel styleClass="estilo_label" for="statusActual" value="Estatus actual:" />  
+	            <p:inputText id="statusActual" value="#{personBean.firstname}" />
+	            <h:outputLabel styleClass="estilo_label" for="statusSiguiente" value="Siguiente Estatus:" />  
+            	<p:inputText id="statusSiguiente" value="#{personBean.firstname}" />              
     		</div>	
-    		<div id="contenedor_tab_profesional">
-    			<p:tabView id="tabView1">  
-                    <p:tab id="tab1" title="Experiencia">  
-                         <p:dataTable emptyMessage="No hay datos para mostrar"  var="divulgacion" value="#{tableBean.carsSmall}">  
-                             <p:column headerText="Empresa"><h:outputText value="#{car.model}" /></p:column>  
-                             <p:column headerText="Cargo"><h:outputText value="#{car.year}" /></p:column>  
-                             <p:column headerText="Desde"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                             <p:column headerText="Hasta"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                             <p:column headerText="Direccion"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                             <p:column headerText="Editar"><h:outputText value="#{car.manufacturer}" /></p:column>  
+    		<div id="contenedor_tab_profesional">    			
+    			<p:tabView id="tabView1">    			   
+                    <p:tab id="tab1" title="Experiencia">
+                    	<p:commandButton value="Agregar" onclick="PF('dlg1').show();" />  
+                         <p:dataTable emptyMessage="No hay datos para mostrar"  var="datosLaborales" value="#{expedienteManagedBean.listDatosLaborales}">  
+                             <p:column headerText="Empresa"><h:outputText value="#{datosLaborales.institucion}" /></p:column>  
+                             <p:column headerText="Cargo"><h:outputText value="#{datosLaborales.cargo}" /></p:column>  
+                             <p:column headerText="Desde"><h:outputText value="#{datosLaborales.fechaInicia}" /></p:column>  
+                             <p:column headerText="Hasta"><h:outputText value="#{datosLaborales.fechaFinaliza}" /></p:column>  
+                             <p:column headerText="Direccion"><h:outputText value="#{datosLaborales.institucionDireccion}" /></p:column>  
+                             <p:column headerText="Editar"><h:outputText value="#{datosLaborales.id}" /></p:column>  
                         </p:dataTable>    
                     </p:tab>  
 
-                    <p:tab id="tab2" title="Estudios">  
-                        <p:dataTable emptyMessage="No hay datos para mostrar"  var="divulgacion" value="#{tableBean.carsSmall}">  
-                             <p:column headerText="Empresa"><h:outputText value="#{car.model}" /></p:column>  
-                             <p:column headerText="Cargo"><h:outputText value="#{car.year}" /></p:column>  
-                             <p:column headerText="Desde"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                             <p:column headerText="Hasta"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                             <p:column headerText="Direccion"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                             <p:column headerText="Editar"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                    <p:tab id="tab2" title="Estudios">
+                    	<p:commandButton value="Agregar" />  
+                        <p:dataTable emptyMessage="No hay datos para mostrar"  var="datosEstudios" value="#{expedienteManagedBean.listDatosEstudios}">  
+                             <p:column headerText="Empresa"><h:outputText value="#{datosEstudios.institucion}" /></p:column>  
+                             <p:column headerText="Cargo"><h:outputText value="#{datosEstudios.cargo}" /></p:column>  
+                             <p:column headerText="Desde"><h:outputText value="#{datosEstudios.fechaInicia}" /></p:column>  
+                             <p:column headerText="Hasta"><h:outputText value="#{datosEstudios.fechaFinaliza}" /></p:column>  
+                             <p:column headerText="Direccion"><h:outputText value="#{datosEstudios.institucionDireccion}" /></p:column>  
+                             <p:column headerText="Editar"><h:outputText value="#{datosEstudios.id}" /></p:column>  
                         </p:dataTable>       
                     </p:tab>  
 
-                    <p:tab id="tab3" title="Calificaciones">  
-                        <p:dataTable emptyMessage="No hay datos para mostrar"  var="divulgacion" value="#{tableBean.carsSmall}">  
-                             <p:column headerText="Empresa"><h:outputText value="#{car.model}" /></p:column>  
-                             <p:column headerText="Cargo"><h:outputText value="#{car.year}" /></p:column>  
-                             <p:column headerText="Desde"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                             <p:column headerText="Hasta"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                             <p:column headerText="Direccion"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                             <p:column headerText="Editar"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                    <p:tab id="tab3" title="Calificaciones">
+                    	<p:commandButton value="Agregar" />  
+                        <p:dataTable emptyMessage="No hay datos para mostrar"  var="datosCalificacion" value="#{expedienteManagedBean.listDatosCalificacion}">  
+                             <p:column headerText="Empresa"><h:outputText value="#{datosCalificacion.institucion}" /></p:column>  
+                             <p:column headerText="Cargo"><h:outputText value="#{datosCalificacion.cargo}" /></p:column>  
+                             <p:column headerText="Desde"><h:outputText value="#{datosCalificacion.fechaInicia}" /></p:column>  
+                             <p:column headerText="Hasta"><h:outputText value="#{datosCalificacion.fechaFinaliza}" /></p:column>  
+                             <p:column headerText="Direccion"><h:outputText value="#{datosCalificacion.institucionDireccion}" /></p:column>  
+                             <p:column headerText="Editar"><h:outputText value="#{datosCalificacion.id}" /></p:column>  
                         </p:dataTable>    
                     </p:tab>  
                     
-                    <p:tab id="tab4" title="Certificaciones">  
-                        <p:dataTable emptyMessage="No hay datos para mostrar"  var="divulgacion" value="#{tableBean.carsSmall}">  
-                             <p:column headerText="Empresa"><h:outputText value="#{car.model}" /></p:column>  
-                             <p:column headerText="Cargo"><h:outputText value="#{car.year}" /></p:column>  
-                             <p:column headerText="Desde"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                             <p:column headerText="Hasta"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                             <p:column headerText="Direccion"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                             <p:column headerText="Editar"><h:outputText value="#{car.manufacturer}" /></p:column>  
+                    <p:tab id="tab4" title="Certificaciones">
+                    	<p:commandButton value="Agregar" />  
+                        <p:dataTable emptyMessage="No hay datos para mostrar"  var="datosCertificacion" value="#{expedienteManagedBean.listDatosCertificaciones}">  
+                             <p:column headerText="Empresa"><h:outputText value="#{datosCertificacion.institucion}" /></p:column>  
+                             <p:column headerText="Cargo"><h:outputText value="#{datosCertificacion.cargo}" /></p:column>  
+                             <p:column headerText="Desde"><h:outputText value="#{datosCertificacion.fechaInicia}" /></p:column>  
+                             <p:column headerText="Hasta"><h:outputText value="#{datosCertificacion.fechaFinaliza}" /></p:column>  
+                             <p:column headerText="Direccion"><h:outputText value="#{datosCertificacion.institucionDireccion}" /></p:column>  
+                             <p:column headerText="Editar"><h:outputText value="#{datosCertificacion.id}" /></p:column>  
                         </p:dataTable>    
                     </p:tab>  
 
@@ -102,7 +103,8 @@
     	<div class="seccion_expediente" style="width:98%">
     		<div id="contenedor_tab_planes">
     			<p:tabView id="tabView2">  
-                    <p:tab id="tab1" title="UC a evaluar">  
+                    <p:tab id="tab1" title="UC a evaluar"> 
+                    	<p:commandButton value="Agregar" /> 
                          <p:dataTable emptyMessage="No hay datos"  var="divulgacion" value="#{tableBean.carsSmall}">  
                              <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{car.model}" /></p:column>  
                              <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{car.year}" /></p:column>  
@@ -113,6 +115,7 @@
                     </p:tab>  
 
                     <p:tab id="tab2" title="Portafolio">  
+                    	<p:commandButton value="Agregar" />
                          <p:dataTable emptyMessage="No hay datos"  var="divulgacion" value="#{tableBean.carsSmall}">  
                              <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{car.model}" /></p:column>  
                              <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{car.year}" /></p:column>  
@@ -122,7 +125,8 @@
                         </p:dataTable>     
                     </p:tab>  
 
-                    <p:tab id="tab3" title="Plan de evaluacion">  
+                    <p:tab id="tab3" title="Plan de evaluacion">
+                    	<p:commandButton value="Agregar" />  
                          <p:dataTable emptyMessage="No hay datos"  var="divulgacion" value="#{tableBean.carsSmall}">  
                              <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{car.model}" /></p:column>  
                              <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{car.year}" /></p:column>  
@@ -132,7 +136,8 @@
                         </p:dataTable>  
                     </p:tab>  
                     
-                    <p:tab id="tab4" title="Plan de formacion">  
+                    <p:tab id="tab4" title="Plan de formacion">
+                    	<p:commandButton value="Agregar" />  
                          <p:dataTable emptyMessage="No hay datos"  var="divulgacion" value="#{tableBean.carsSmall}">  
                              <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{car.model}" /></p:column>  
                              <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{car.year}" /></p:column>  
@@ -144,6 +149,58 @@
                 </p:tabView>  
     		</div>
     	</div>
+    	
+    	<!-- Cuadro de dialogo emergente que registra datos laborales y académicos -->    	
+    	<p:dialog id="modalDialog" styleClass="estilo_dialogoactividades" header="Agregar Datos Laborales y Academicos:" widgetVar="dlg1" modal="true" resizable="false" width="550" height="570">
+		<div id="contenedor_dialogoactividades">  
+			<h:form>
+				<h3>Planificacion de actividades</h3>				
+				<h:outputLabel styleClass="estilo_label" for="nombreInstitucion" value="Nombre de la institucion:" />  
+            	<p:inputText id="nombreInstitucion" value="#{expedienteManagedBean.nombreInstitucion}" />
+                <h:outputLabel styleClass="estilo_label" for="nombreCargo" value="Cargo:" />  
+            	<p:inputText id="nombreCargo" value="#{expedienteManagedBean.nombreCargo}" />
+            	
+				<div class="dialogoactividades_secciones">
+					<p:growl id="growlFechaDesde" showDetail="true"/>
+					<p>Fecha Desde:</p>
+					<p:calendar value="#{expedienteManagedBean.fechaDesde}" id="popupButtonCal1" showOn="button">
+						<p:ajax event="dateSelect" update="growlFechaDesde" />
+					</p:calendar>
+				</div>
+				<div class="dialogoactividades_secciones">
+					<p:growl id="growlFechaHasta" showDetail="true"/>
+					<p>Fecha Hasta:</p>
+					<p:calendar value="#{expedienteManagedBean.fechaHasta}" id="popupButtonCal2" showOn="button">
+						<p:ajax event="dateSelect" update="growlFechaHasta" />
+					</p:calendar>
+				</div>
+				<div class="dialogoactividades_secciones">  
+					<p>Estatus:</p>					
+				</div> 
+				<p>Lugar/Medio:</p>
+				<p:inputTextarea rows="10" cols="50" value="#{certificacionManagedBean.destinoActividad}" queryDelay="750" minQueryLength="4" />
+				<div class="dialogoactividades_secciones2">   
+					<p>Tipo de actividad:</p>					
+				</div>				
+						
+				<p:commandButton value="Agregar involucrados"/>
+				<div id="dialogoactividades_involucrados">
+					<p:dataTable var="involucrados" value="#{tableBean.carsSmall}">
+						<p:column headerText="Nombre"><h:outputText value="#{car.model}" /></p:column>
+						<p:column headerText="Funcion"><h:outputText value="#{car.year}" /></p:column>
+						<p:column headerText="Correo electronico"><h:outputText value="#{car.manufacturer}" /></p:column>
+					</p:dataTable>
+				</div>
+				<div id="dialogoactividades_botones">					
+					<h:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/>
+					<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardarActividad}"/>					
+			</div>
+			</h:form>
+		</div>
+	</p:dialog>
+    	
+    	<!--  Fin Cuadro de dialogo emergente que registra datos laborales y académicos -->
+    	</h:form>
     </div> 
 </h:body>
 </html>

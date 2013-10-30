@@ -1,6 +1,7 @@
 package service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import support.Ifp;
@@ -72,7 +73,7 @@ public interface IService {
 	//Inicio : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
 	public List<USolicitud> getUSolicitudes ();
 	public List<Solicitud> getSolicitudes();
-	public List<Solicitud> getSolicitudesByIfp(Integer IdIfp);
+	public List<Solicitud> getSolicitudesByParam(HashMap<String, Object> param);
 	public Certificacion getCertificacionById(Long id);
 	public Contacto getContactoByCedula(String cedula);
 	public Object guardar(Object obj);	

@@ -19,6 +19,7 @@
     
        <h2>Registro de solicitud de evaluacion:</h2>
        <h:form>       
+       		<p:growl id="growl" showDetail="true" sticky="true" />
    			<div class="seccion_detalle">
    			<div style="display:inline-block;">
 	   			<p style="display:inline-block;">Seleccione un centro:</p>
@@ -38,9 +39,9 @@
 		    <br/>
    			<br/>
                 <h:outputLabel styleClass="estilo_label" for="primerNombre" value="Primer nombre:" /> 
-                <p:inputText id="primerNombre" value="#{solicitudesManagedBean.primerNombre}" />  
+                <p:inputText id="primerNombre" value="#{solicitudesManagedBean.primerNombre}"  />  
                 <h:outputLabel styleClass="estilo_label" for="segundoNombre" value="Segundo nombre:" />  
-                <p:inputText id="segundoNombre" value="#{solicitudesManagedBean.segundoNombre}" required="true" requiredMessage="Surname is required."/>  
+                <p:inputText id="segundoNombre" value="#{solicitudesManagedBean.segundoNombre}" />  
                 <h:outputLabel styleClass="estilo_label" for="primerApellido" value="Primer apellido:" />  
                 <p:inputText id="primerApellido" value="#{solicitudesManagedBean.primerApellido}" />  
                 <h:outputLabel styleClass="estilo_label" for="segundoApellido" value="Segundo apellido:" />  
@@ -52,7 +53,7 @@
                 <h:outputLabel styleClass="estilo_label" for="descEmpresaLabora" value="Empresa donde labora actualmente:" />  
                 <p:inputText id="descEmpresaLabora" value="#{solicitudesManagedBean.descEmpresaLabora}" />  
                 <h:outputLabel styleClass="estilo_label" for="experiencia" value="Años ejerciendo la actividad:" />  
-                <p:inputText id="experiencia" value="#{solicitudesManagedBean.experiencia}" required="true" requiredMessage="Surname is required."/>  
+                <p:inputText id="experiencia" value="#{solicitudesManagedBean.experiencia}" />  
                 <h:outputLabel styleClass="estilo_label" value="Descripcion de la ocupacion actual:" /> 
                 <p:editor id="ocupacion" value="#{solicitudesManagedBean.ocupacion}" height="150"/>    
 				
@@ -60,8 +61,8 @@
              <div class="seccion_detalle" style="background:none;height:30px;margin-top:-68px;border:none;text-align: right;">
              </div>
              <div class="seccion_detalle" style="background:none;height:50px;margin-top:-68px;border:none;text-align: right;">
-	             <p:commandButton  onclick="PF('modal_solicitud').hide();" value="Cancelar"/> 
-	             <p:commandButton value="Aplicar" action="#{solicitudesManagedBean.guardar}" process="@form"  />
+	             <p:commandButton value="Cancelar" action="#{solicitudesManagedBean.cancelarEdicion}" /> 
+	             <p:commandButton value="Aplicar" action="#{solicitudesManagedBean.guardar}" update="growl" process="@form"  />
              </div>    
            </h:form>  
 	</div>  

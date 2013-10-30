@@ -27,7 +27,7 @@ public class Laboral {
 	private Long id;
 	
 	@NotNull
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="contacto_id")
 	private Contacto contacto;
 	

@@ -2,10 +2,13 @@ package view;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.event.ActionEvent;
+import javax.faces.context.FacesContext;
+import javax.faces.application.FacesMessage;
+
 import javax.faces.model.SelectItem;
 
 import model.Certificacion;
@@ -45,10 +48,14 @@ public class SolicitudesManagedBean {
 	private List<SelectItem> listCertificaciones = new ArrayList<SelectItem>();	
 	private List<SelectItem> listCentrosBySolicitud = new ArrayList<SelectItem>();
 	private List<SelectItem> listCertByCentro = new ArrayList<SelectItem>();
+	private List<SelectItem> listBuscarByAll = new ArrayList<SelectItem> ();
 	private Integer selectedIdIfp;
 	private Integer selectedIdIfpSolicitud = null;
 	private Long selectedIdCertificacion;
-	private Long selectedIdCertByCentro;
+	private Long selectedIdCertByCentro = null;	
+	
+	private String selectedBuscarByAll = null;
+	private String buscarByAllValue;	
 	
 	public String getPrimerNombre() {
 		return primerNombre;
@@ -155,6 +162,14 @@ public class SolicitudesManagedBean {
 
 	public void setSelectedIdCertByCentro(Long selectedIdCertByCentro) {
 		this.selectedIdCertByCentro = selectedIdCertByCentro;
+	}	
+	
+	public String getSelectedBuscarByAll() {
+		return selectedBuscarByAll;
+	}
+
+	public void setSelectedBuscarByAll(String selectedBuscarByAll) {
+		this.selectedBuscarByAll = selectedBuscarByAll;
 	}
 
 	public List<SelectItem> getListCentros() {
@@ -187,6 +202,22 @@ public class SolicitudesManagedBean {
 
 	public void setListCertByCentro(List<SelectItem> listCertByCentro) {
 		this.listCertByCentro = listCertByCentro;
+	}	
+	
+	public List<SelectItem> getListBuscarByAll() {
+		return listBuscarByAll;
+	}
+
+	public void setListBuscarByAll(List<SelectItem> listBuscarByAll) {
+		this.listBuscarByAll = listBuscarByAll;
+	}
+		
+	public String getBuscarByAllValue() {
+		return buscarByAllValue;
+	}
+
+	public void setBuscarByAllValue(String buscarByAllValue) {
+		this.buscarByAllValue = buscarByAllValue;
 	}
 
 	public List<Solicitud> getSolicitudB() {		
@@ -205,6 +236,18 @@ public class SolicitudesManagedBean {
 	public void setSolicitudI(List<USolicitud> solicitudI) {
 		this.solicitudI = solicitudI;
 	}
+	
+	public void llenarListBuscarByAll () {
+		this.listBuscarByAll.add(new SelectItem(null, "Todos los campos"));
+		this.listBuscarByAll.add(new SelectItem("s.certificacion.ifpNombre", "Centro Evaluador"));
+		this.listBuscarByAll.add(new SelectItem("s.contacto.nombreCompleto", "Nombre del Candidato"));
+		this.listBuscarByAll.add(new SelectItem("s.certificacion.nombre", "Certificacion a Evaluar"));
+		this.listBuscarByAll.add(new SelectItem("s.fechaRegistro", "Fecha Solicitud"));
+		this.listBuscarByAll.add(new SelectItem("s.contacto.correo1", "Evaluador"));
+		this.listBuscarByAll.add(new SelectItem("s.estatus", "Estado"));		
+	}
+	
+	
 		
    //Llenado de Centro
 	@PostConstruct
@@ -215,6 +258,8 @@ public class SolicitudesManagedBean {
 			this.listCentros.add(new SelectItem(dato.getIfpId(),dato.getIfpNombre()));
 			this.listCentrosBySolicitud.add(new SelectItem(dato.getIfpId(),dato.getIfpNombre()));
 		}		
+		
+		llenarListBuscarByAll();
 		
 		handleCertByCentro();
 	}
@@ -235,14 +280,51 @@ public class SolicitudesManagedBean {
 			this.listCertByCentro.add(new SelectItem(dato.getId(),dato.getNombre()));
 		}
 		
-		this.solicitudB = service.getSolicitudesByIfp(this.getSelectedIdIfpSolicitud());		
-	}	
+		this.solicitudB = service.getSolicitudesByParam(asignaParams ());		
+	}
+	
+	public void handleBuscar () {						
+		this.solicitudB = service.getSolicitudesByParam(asignaParams ());				
+	}
+	
+	public HashMap<String, Object> asignaParams () {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+				
+		if (this.getSelectedIdIfpSolicitud() != null) {
+			params.put("s.certificacion.ifpId", this.getSelectedIdIfpSolicitud());
+		}
+		
+		if (this.selectedIdCertByCentro != null) {
+			params.put("s.certificacion.id", this.selectedIdCertByCentro);
+		}
+		
+		if (this.buscarByAllValue != null && this.selectedBuscarByAll != null) {			
+			params.put(this.selectedBuscarByAll, this.buscarByAllValue);
+		}
+		
+		return params;
+	}
+	
 	
 	
 	public String nuevaSolicitud(){
 		//Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 		//setSolicitudI(params.get("solicitudI"));			
 	return "/modulos/solicitudes/registro_solicitud?faces-redirect=true";
+	}
+	
+	public String editaSolicitud(){
+		//Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+		//setSolicitudI(params.get("solicitudI"));			
+	return "/modulos/solicitudes/expediente?faces-redirect=true";
+	}
+	
+	public String cancelarEdicion() {
+		System.out.println("cancelarEdicion....");		
+		
+		System.out.println("Redireccionando a: " + "/modulos/solicitudes/solicitudes?faces-redirect=true");
+		
+		return "/modulos/solicitudes/solicitudes?faces-redirect=true";				
 	}
 			
 	public void guardar(){
@@ -257,11 +339,11 @@ public class SolicitudesManagedBean {
 			solicitante = new Contacto(null, //Usuario 
 									  r, //Rol
 									  1, //EntidadId
-									  this.getPrimerNombre(), 
-									  this.getSegundoNombre(), 
-									  this.getPrimerApellido(),
-									  this.getSegundoApellido(), 
-									  this.getNombreCompleto(), // NombreCompleto 
+									  this.getPrimerNombre().toUpperCase().trim(), 
+									  this.getSegundoNombre().toUpperCase().trim(), 
+									  this.getPrimerApellido().toUpperCase().trim(),
+									  this.getSegundoApellido().toUpperCase().trim(), 
+									  this.getNombreCompleto().toUpperCase().trim(), // NombreCompleto 
 									  0, //Sexo
 									  "", // correo1 
 									  "", //correo2 
@@ -269,7 +351,7 @@ public class SolicitudesManagedBean {
 									  "", //telefono2
 									  1, // tipoContacto
 									  1, // tipoIdentificacion
-									  this.getNumeroIdentificacion(), 
+									  this.getNumeroIdentificacion().toUpperCase().trim(), 
 									  "" , // direccionActual
 									  null, // fechaNacimiento
 									  new Date(), // fechaRegistro 
@@ -300,7 +382,16 @@ public class SolicitudesManagedBean {
 				           null // evaluaciones
 				           );
 				
-		service.guardar(s);
+		s = (Solicitud) service.guardar(s);
+		
+		s.setTicket(s.getId().toString());
+		
+		s = (Solicitud) service.guardar(s);		
+		
+		FacesContext context = FacesContext.getCurrentInstance();  
+        
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje", "La solicitud ha sido registrada exitosamente. El número es: " + s.getTicket())); 
+          
 		
 	}
 
