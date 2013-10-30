@@ -2,10 +2,14 @@ package view;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
+import model.Actividad;
 import model.Mantenedor;
-import model.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -22,17 +26,32 @@ public class ActividadManagedBean {
 
 	private String nombreActividad;
 	private String descripcionActividad;
-	private Mantenedor selectedTipoActividad;
-	private List<Mantenedor> tipoActividades;
+	private int selectedTipoActividad;
+	private Map<Integer,Mantenedor> catalogoTiposActividad;
 	private Date fechaInicial;
 	private Date fechaFinal;
 	private String destino;
-	private Usuario creador;
-	private Usuario ejecutor;
+	private int selectedEstatusActividad;
+	private Map<Integer,Mantenedor> catalogoEstatusActividad;
+	private Actividad actividad;
 	
 	public ActividadManagedBean(){
 		super();
-		tipoActividades = new ArrayList<Mantenedor>();
+		actividad = new Actividad();
+		catalogoTiposActividad = new HashMap<Integer,Mantenedor>();
+		catalogoEstatusActividad = new HashMap<Integer,Mantenedor>();
+	}
+	
+	@PostConstruct
+	private void llenarCatalogos(){
+		List<Mantenedor> catalogos = service.getMantenedores();
+		for(int i=0; i<catalogos.size(); i++){
+			Mantenedor catalogo = catalogos.get(i);
+			if(catalogo.getTipo().equalsIgnoreCase("1"))
+				catalogoTiposActividad.put(catalogo.getId(), catalogo);
+			if(catalogo.getTipo().equalsIgnoreCase("4"))
+				catalogoEstatusActividad.put(catalogo.getId(), catalogo);
+		}
 	}
 
 	public String getNombreActividad() {
@@ -41,6 +60,9 @@ public class ActividadManagedBean {
 
 	public void setNombreActividad(String nombreActividad) {
 		this.nombreActividad = nombreActividad;
+		this.descripcionActividad = nombreActividad;
+		this.actividad.setNombre(nombreActividad);
+		this.actividad.setDescripcion(nombreActividad);
 	}
 
 	public String getDescripcionActividad() {
@@ -49,14 +71,20 @@ public class ActividadManagedBean {
 
 	public void setDescripcionActividad(String descripcionActividad) {
 		this.descripcionActividad = descripcionActividad;
+		this.actividad.setDescripcion(descripcionActividad);
 	}
 
-	public Mantenedor getSelectedTipoActividad() {
+	public int getSelectedTipoActividad() {
 		return selectedTipoActividad;
 	}
 
-	public void setSelectedTipoActividad(Mantenedor selectedTipoActividad) {
+	public void setSelectedTipoActividad(int selectedTipoActividad) {
 		this.selectedTipoActividad = selectedTipoActividad;
+		this.actividad.setTipo(catalogoTiposActividad.get(selectedTipoActividad));
+	}
+
+	public List<Mantenedor> getCatalogoTiposActividad() {
+		return new ArrayList<Mantenedor>(catalogoTiposActividad.values());
 	}
 
 	public Date getFechaInicial() {
@@ -65,6 +93,7 @@ public class ActividadManagedBean {
 
 	public void setFechaInicial(Date fechaInicial) {
 		this.fechaInicial = fechaInicial;
+		this.actividad.setFechaInicial(fechaInicial);
 	}
 
 	public Date getFechaFinal() {
@@ -73,6 +102,7 @@ public class ActividadManagedBean {
 
 	public void setFechaFinal(Date fechaFinal) {
 		this.fechaFinal = fechaFinal;
+		this.actividad.setFechaFinal(fechaFinal);
 	}
 
 	public String getDestino() {
@@ -81,32 +111,72 @@ public class ActividadManagedBean {
 
 	public void setDestino(String destino) {
 		this.destino = destino;
+		this.actividad.setDestino(destino);
 	}
 
-	public Usuario getCreador() {
-		return creador;
+	public int getSelectedEstatusActividad() {
+		return selectedEstatusActividad;
 	}
 
-	public Usuario getEjecutor() {
-		return ejecutor;
+	public void setSelectedEstatusActividad(int selectedEstatusActividad) {
+		this.selectedEstatusActividad = selectedEstatusActividad;
+		this.actividad.setEstado(catalogoEstatusActividad.get(selectedEstatusActividad));
 	}
 
-	public void setEjecutor(Usuario ejecutor) {
-		this.ejecutor = ejecutor;
-	}
-
-	public void setCreador(Usuario creador) {
-		this.creador = creador;
-	}
-
-	public List<Mantenedor> getTipoActividades(){
-		tipoActividades = service.getMantenedorActividades();
-		System.out.println("Tipos actividad:"+tipoActividades.get(0).getValor());
-		System.out.println("Tipos actividad:"+tipoActividades.get(1).getValor());
-		return tipoActividades;
+	public List<Mantenedor> getCatalogoEstatusActividad() {
+		return new ArrayList<Mantenedor>(catalogoEstatusActividad.values());
 	}
 	
-	public void guardar(){
-		
+	public Actividad getActividad(){
+		return actividad;
 	}
+	
+	/*
+	private Actividad actividad;
+	private Map<Integer, Mantenedor> catalogoActividades;
+	private int selectedTipoActividad;
+	private Map<Integer, Mantenedor> catalogoEstatusActividades;
+	private int selectedEstatusActividad;
+	
+	public ActividadManagedBean(){
+		super();
+		actividad = new Actividad();
+	}
+	
+	public Actividad getActividad(){
+		return this.actividad;
+	}
+
+	public int getSelectedTipoActividad() {
+		return selectedTipoActividad;
+	}
+
+	public void setSelectedTipoActividad(int selectedTipoActividad) {
+		this.selectedTipoActividad = selectedTipoActividad;
+	}
+
+	public int getSelectedEstatusActividad() {
+		return selectedEstatusActividad;
+	}
+
+	public void setSelectedEstatusActividad(int selectedEstatusActividad) {
+		this.selectedEstatusActividad = selectedEstatusActividad;
+	}
+
+	public List<Mantenedor> getCatalogoActividades() {
+		return (List<Mantenedor>) catalogoActividades.values();
+	}
+
+	public void setCatalogoActividades(Map<Integer, Mantenedor> catalogoActividades) {
+		this.catalogoActividades = catalogoActividades;
+	}
+
+	public List<Mantenedor> getCatalogoEstatusActividades() {
+		return (List<Mantenedor>) catalogoEstatusActividades.values();
+	}
+
+	public void setCatalogoEstatusActividades(Map<Integer, Mantenedor> catalogoEstatusActividades) {
+		this.catalogoEstatusActividades = catalogoEstatusActividades;
+	}
+	*/
 }

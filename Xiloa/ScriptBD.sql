@@ -7,25 +7,25 @@ mantenedor_tipo,
 mantenedor_valor)
 select
 1,
-'Actividades',
+'Tipo Actividad',
 1,
 'Divulgacion'
 union
 select
 2,
-'Actividades',
+'Tipo Actividad',
 1,
 'Verificacion'
 union
 select
 3,
-'Actividades',
+'Tipo Actividad',
 1,
 'Evaluacion'
 union
 select
 4,
-'Actividades',
+'Tipo Actividad',
 1,
 'Convocatoria'
 union
@@ -43,22 +43,39 @@ select
 union
 select
 7,
-'Certificaciones',
+'Estatus Certificacion',
 3,
 'Pendiente'
 union
 select
 8,
-'Certificaciones',
+'Estatus Certificacion',
 3,
 'Activo'
 union
 select
 9,
-'Certificaciones',
+'Estatus Certificacion',
 3,
 'Anulado'
-
+union
+select
+10,
+'Estatus Actividad',
+4,
+'Pendiente'
+union
+select
+11,
+'Estatus Actividad',
+4,
+'Activo'
+union
+select
+12,
+'Estatus Actividad',
+4,
+'Anulado'
 
 /*union
 select

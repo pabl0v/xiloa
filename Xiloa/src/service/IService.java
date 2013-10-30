@@ -18,7 +18,7 @@ import model.Solicitud;
 import model.Usuario;
 
 public interface IService {
-	
+		
 	public List<Mantenedor> getMantenedores();
 	
 	public List<Actividad> getActividades(Long certificacionId);

@@ -40,7 +40,7 @@ public class Actividad {
 	private Date fechaInicial;
 	
 	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "actividad_fecha_final", nullable = false)
+	@Column(name = "actividad_fecha_final", nullable = true)
 	@Temporal(TemporalType.DATE)
 	private Date fechaFinal;
 	

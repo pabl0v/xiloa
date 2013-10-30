@@ -128,7 +128,7 @@ public class Certificacion {
 	private List<Unidad> unidades;*/
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name="cerfificacion_id", referencedColumnName="certificacion_id")
+	@JoinColumn(name="certificacion_id", referencedColumnName="certificacion_id")
 	private List<Actividad> actividades;
 	
 	@OneToMany(mappedBy = "certificacion")

@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import model.Actividad;
 import model.Contacto;
 import model.Mantenedor;
@@ -44,17 +46,19 @@ public class CertificacionManagedBean implements Serializable {
 	private String nombreCentro;
 	private String direccionCentro;
 	private Date fechaIniciaEvaluacion;
-	private int selectedTipoActividad;
 	private List<Mantenedor> tipoActividades;
+	private Usuario usuario;
 	private Map<Integer, Mantenedor> catalogoActividades;
+	private int selectedTipoActividad;
+	private List<Mantenedor> catalogoEstatusActividades;
+	private int selectedEstatusActividad;
+	
 	/*
 	 * 
 	 */
 	private String nombreActividad;
 	private String destinoActividad;
 	private Date fechaActividad;
-	private List<Mantenedor> catalogoEstatusActividades;
-	private int selectedEstatusActividad;
 	
 	/*
 	 * 
@@ -67,16 +71,21 @@ public class CertificacionManagedBean implements Serializable {
 	public CertificacionManagedBean(){
 		super();
 		contactos = new ArrayList<Contacto>();
+		actividad = new Actividad();
 		actividades = new ArrayList<Actividad>();
 		estatusList = new ArrayList<Mantenedor>();
-		actividad = new Actividad();
 		catalogoActividades = new HashMap<Integer, Mantenedor>();
 	}
 	
-	private String getLoggedUser(){
-		return SecurityContextHolder.getContext().getAuthentication().getName();
+	@PostConstruct
+	private void generarActividades(){
+		usuario = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName()); 
 	}
 	
+	public void agregarActividad(Actividad actividad){
+		actividades.add(actividad);
+	}
+		
 	public Long getCertificacionId(){
 		return certificacionId;
 	}
@@ -291,8 +300,38 @@ public class CertificacionManagedBean implements Serializable {
 				selectedEstatus);
 	}
 	
-	public void guardarActividad(){
+	private Usuario getUsuario(){
+		return this.usuario;
+	}
+	
+	public void guardarActividad(Actividad actividad){
+		actividad.setCreador(getUsuario());
+		this.actividades.add(actividad);
+	}
+	/*
+	public void guardarActividad(	String nombreActividad, 
+									String descripcionActividad, 
+									Mantenedor tipoActividad,
+									Date fechaInicial, 
+									Date fechaFinal, 
+									String destino, 
+									Mantenedor estatusActividad){
 		
+		Actividad actividad = new Actividad();
+		actividad.setNombre(nombreActividad);
+		actividad.setDescripcion(descripcionActividad);
+		actividad.setTipo(tipoActividad);
+		actividad.setFechaInicial(fechaInicial);
+		actividad.setFechaFinal(fechaFinal);
+		actividad.setDestino(destino);
+		actividad.setEstado(estatusActividad);
+		
+		actividades.add(actividad);
+	}*/
+
+	/*
+	public void guardarActividad(){
+
 		Mantenedor tipoActividad = catalogoActividades.get(selectedTipoActividad);
 		Mantenedor estadoActividad = catalogoActividades.get(selectedTipoActividad);
 		//catalogoActividades.values();
@@ -314,30 +353,8 @@ public class CertificacionManagedBean implements Serializable {
 		actividad.setDestino(destinoActividad);
 		actividad.setEstado(estadoActividad);
 		actividades.add(actividad);
-		
-		/*
-		System.out.println("antes de imprimrir");
-		
-		System.out.println("Nombre: "+actividad.getNombre());
-		System.out.println("Descripcion: "+actividad.getDescripcion());
-		System.out.println("Fecha inicial: "+actividad.getFechaInicial().toString());
-		System.out.println("Fecha final: "+actividad.getFechaFinal().toString());
-		System.out.println("Destino: "+actividad.getDestino());
-		
-		actividad.setCreador(service.getUsuarioLocal("admin"));
-		actividad.setEjecutor(service.getUsuarioLocal("admin"));
-		actividad.setEstado(service.getMantenedorActividades().get(0));
-		
-		actividades.add(actividad);
-		actividades.add(actividad);
-		*/
-		
-		//System.out.println("Creador: "+actividad.getCreador().getUsuarioAlias());
-		//System.out.println("Ejecutor: "+actividad.getEjecutor().getUsuarioAlias());
-		//System.out.println("Estado: "+actividad.getEstado().getValor());
-		
-		//service.guardar(actividad);
-	}
+		System.out.println("Total actividades en lista: "+actividades.size());
+	}*/
 	
 	public String nuevaCertificacion(){
 		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";

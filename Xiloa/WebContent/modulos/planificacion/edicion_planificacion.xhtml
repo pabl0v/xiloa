@@ -104,9 +104,9 @@
             <div id="tab_contenedor">
                 <p:tabView id="tabView">  
                     <p:tab id="tab1" title="Actividades">  
-                        <h:form>     
+                        <h:form id="actividadesForm">     
                         <p:commandButton value="Agregar" style="margin-bottom: 5px" onclick="PF('dlg1').show();"/>    
-                           	<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.id}" selectionMode="single">  
+                           	<p:dataTable id="actividadesDataTable" emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" widgetVar="actividadesTable" paginator="true" rows="10" rowKey="#{actividad.nombre}" selectionMode="single">  
 							    <f:facet name="header">  
 							         <p:outputPanel style="text-align:right;">  
 							             <h:outputText value="Buscar:" />  
@@ -128,7 +128,7 @@
                     <p:tab id="tab2" title="Divulgacion">  
                          <h:form>     
                         <p:commandButton value="Agregar" style="margin-bottom: 5px" onclick="PF('dlg1').show();"/>    
-                            <p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.id}" selectionMode="single">  
+                            <p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.nombre}" selectionMode="single">  
 							    <f:facet name="header">  
 							         <p:outputPanel style="text-align:right;">  
 							             <h:outputText value="Buscar:" />  
@@ -200,30 +200,28 @@
 			<h:form>
 				<h3>Planificacion de actividades</h3>
 				<p>Nombre de la actividad</p>
-				<p:inputTextarea rows="10" cols="50" value="#{certificacionManagedBean.nombreActividad}" queryDelay="750" minQueryLength="4" />
+				<p:inputTextarea rows="10" cols="50" value="#{actividadManagedBean.nombreActividad}" queryDelay="750" minQueryLength="4" />
 				<div class="dialogoactividades_secciones">
 					<p:growl id="growl" showDetail="true"/>
 					<p>Fecha:</p>
-					<p:calendar value="#{certificacionManagedBean.fechaActividad}" id="popupButtonCal1" showOn="button">
+					<p:calendar value="#{actividadManagedBean.fechaInicial}" id="popupButtonCal1" showOn="button">
 						<p:ajax event="dateSelect" update="growl" />
 					</p:calendar>
 				</div>
 				<div class="dialogoactividades_secciones">  
 					<p>Estatus:</p>
-					<!-- 
-					<p:selectOneMenu id="estatus" value="#{pprBean.city}">
-						<f:selectItem itemLabel="Select City" itemValue="" />  
-						<f:selectItems value="#{pprBean.cities}" />
+					<p:selectOneMenu id="selectEstatus" value="#{actividadManagedBean.selectedEstatusActividad}">
+						<f:selectItem itemLabel="Seleccione..." itemValue="" />
+						<f:selectItems value="#{actividadManagedBean.catalogoEstatusActividad}" var="estatus" itemLabel="#{estatus.valor}" itemValue="#{estatus.id}" />
 					</p:selectOneMenu>
-					-->
 				</div> 
 				<p>Lugar/Medio:</p>
-				<p:inputTextarea rows="10" cols="50" value="#{certificacionManagedBean.destinoActividad}" queryDelay="750" minQueryLength="4" />
+				<p:inputTextarea rows="10" cols="50" value="#{actividadManagedBean.destino}" queryDelay="750" minQueryLength="4" />
 				<div class="dialogoactividades_secciones2">   
 					<p>Tipo de actividad:</p>
-					<p:selectOneMenu id="tipo" value="#{certificacionManagedBean.selectedTipoActividad}">
+					<p:selectOneMenu id="selectTipo" value="#{actividadManagedBean.selectedTipoActividad}">
 						<f:selectItem itemLabel="Seleccione..." itemValue="" />
-						<f:selectItems value="#{certificacionManagedBean.tipoActividades}" var="actividad" itemLabel="#{actividad.valor}" itemValue="#{actividad.id}" />
+						<f:selectItems value="#{actividadManagedBean.catalogoTiposActividad}" var="tipo" itemLabel="#{tipo.valor}" itemValue="#{tipo.id}" />
 					</p:selectOneMenu>
 				</div>
 				
@@ -252,7 +250,7 @@
 				<div id="dialogoactividades_botones">
 					<!-- <h:form>-->
 					<h:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/>
-					<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardarActividad}"/>
+					<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardarActividad(actividadManagedBean.actividad)}" update=":tabView" oncomplete="PF('dlg1').hide();"/>
 					<!-- </h:form>-->
 			</div>
 			</h:form>
