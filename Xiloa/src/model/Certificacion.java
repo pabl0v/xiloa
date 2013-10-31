@@ -120,12 +120,12 @@ public class Certificacion {
 	@Column(name = "certificacion_nivel_competencia", nullable = false)
 	private int nivelCompetencia;
 	
+	@OneToMany//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name="certificacion_id", referencedColumnName="certificacion_id")
+	private List<Unidad> unidades;
+	
 	@OneToMany(mappedBy = "certificacion")
 	private List<Requisito> requisitos;
-
-	/*@OneToMany
-	@JoinColumn(name="cerfificacion_id", referencedColumnName="certificacion_id")
-	private List<Unidad> unidades;*/
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="certificacion_id", referencedColumnName="certificacion_id")
@@ -155,7 +155,7 @@ public class Certificacion {
 	public Certificacion(){
 		super();
 		this.requisitos = new ArrayList<Requisito>();
-		//this.unidades = new ArrayList<Unidad>();
+		this.unidades = new ArrayList<Unidad>();
 		this.disponibilidad = 0;
 		this.actividades = new ArrayList<Actividad>();
 		this.solicitudes = new ArrayList<Solicitud>();
@@ -346,13 +346,13 @@ public class Certificacion {
 		this.requisitos = requisitos;
 	}
 
-	/*public List<Unidad> getUnidades() {
+	public List<Unidad> getUnidades() {
 		return unidades;
 	}
 
 	public void setUnidades(List<Unidad> unidades) {
 		this.unidades = unidades;
-	}*/
+	}
 
 	public List<Actividad> getActividades() {
 		return actividades;
@@ -433,7 +433,7 @@ public class Certificacion {
 		this.referencial = referencial;
 		this.nivelCompetencia = nivelCompetencia;
 		this.requisitos = requisitos;
-		//this.unidades = unidades;
+		this.unidades = unidades;
 		this.actividades = actividades;
 		this.solicitudes = solicitudes;
 		this.involucrados = involucrados;

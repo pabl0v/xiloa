@@ -24,6 +24,10 @@ public class Unidad {
 	@Column(name = "competencia_descripcion", nullable = false)	
 	private String competenciaDescripcion;
 
+	@NotNull
+	@Column(name = "competencia_estatus", nullable = false)	
+	private boolean estatus;
+
 	public Long getId() {
 		return id;
 	}
@@ -48,13 +52,22 @@ public class Unidad {
 		this.competenciaDescripcion = competenciaDescripcion;
 	}
 
-	public Unidad(String competenciaCodigo, String competenciaDescripcion) {
+	public Unidad(String competenciaCodigo, String competenciaDescripcion, boolean estatus) {
 		super();
 		this.competenciaCodigo = competenciaCodigo;
 		this.competenciaDescripcion = competenciaDescripcion;
+		this.estatus = estatus;
 	}
 	
 	public Unidad() {
 		super();		
+	}
+
+	public boolean isEstatus() {
+		return estatus;
+	}
+
+	public void setEstatus(boolean estatus) {
+		this.estatus = estatus;
 	}
 }

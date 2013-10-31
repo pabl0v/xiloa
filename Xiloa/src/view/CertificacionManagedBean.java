@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 
 import model.Actividad;
 import model.Certificacion;
@@ -26,7 +24,7 @@ import org.springframework.stereotype.Component;
 import service.IService;
 
 @Component
-@Scope(value="session")  //@ViewScoped
+@Scope(value="session")
 public class CertificacionManagedBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -56,7 +54,6 @@ public class CertificacionManagedBean implements Serializable {
 	private List<Mantenedor> catalogoEstatusActividades;
 	private int selectedEstatusActividad;
 	private Certificacion certificacion;
-	private String test;
 	
 	/*
 	 * 
@@ -267,25 +264,10 @@ public class CertificacionManagedBean implements Serializable {
 		this.actividad = actividad;
 	}
 	
-	public void guardar(){	
-			
-		System.out.println("Fecha Inicia Divulgacion: "+fechaIniciaDivulgacion.toString());
-		System.out.println("Fecha Finaliza Inscripcion: "+fechaFinalizaInscripcion.toString());
-		System.out.println("Fecha Inicia Convocatoria: "+fechaIniciaConvocatoria.toString());
-		System.out.println("Fecha Inicia Evaluacion: "+fechaIniciaEvaluacion.toString());
-		System.out.println("Descripcion de la certificacion: "+nombreCertificacion);
-		System.out.println("Descripcion de la certificacion: "+descripcionCertificacion);
-		System.out.println("Nombre del centro: "+nombreCentro);
-		System.out.println("Direccion del centro: "+direccionCentro);
-		System.out.println("Costo: "+costo);
-		System.out.println("Selected contactos : "+selectedContactos[0].getNombreCompleto());
-		//selectedEstatus=estatusList.get(0);
-		System.out.println("Selected estatus : "+selectedEstatus);
-		System.out.println("Guardar idCompetencia : "+getIdCompetencia());
-		System.out.println("Guardar nombreCompetencia : "+getNombreCompetencia());
-		
+	public String guardar(){
+					
 		List<Unidad> unidades = new ArrayList<Unidad>();
-		unidades.add(new Unidad(idCompetencia, nombreCompetencia));
+		unidades.add(new Unidad(idCompetencia, nombreCompetencia,true));
 		
 		service.guardarCertificacion(
 				getNombreCertificacion(),
@@ -312,6 +294,8 @@ public class CertificacionManagedBean implements Serializable {
 				null, //solicitudes,
 				selectedContactos,
 				selectedEstatus);
+		
+		return "/modulos/planificacion/planificacion?faces-redirect=true";
 	}
 	
 	private Usuario getUsuario(){
@@ -323,57 +307,9 @@ public class CertificacionManagedBean implements Serializable {
 		System.out.println("Nueva Actividad: "+actividad.getNombre());
 		this.actividades.add(actividad);
 	}
-	/*
-	public void guardarActividad(	String nombreActividad, 
-									String descripcionActividad, 
-									Mantenedor tipoActividad,
-									Date fechaInicial, 
-									Date fechaFinal, 
-									String destino, 
-									Mantenedor estatusActividad){
-		
-		Actividad actividad = new Actividad();
-		actividad.setNombre(nombreActividad);
-		actividad.setDescripcion(descripcionActividad);
-		actividad.setTipo(tipoActividad);
-		actividad.setFechaInicial(fechaInicial);
-		actividad.setFechaFinal(fechaFinal);
-		actividad.setDestino(destino);
-		actividad.setEstado(estatusActividad);
-		
-		actividades.add(actividad);
-	}*/
-
-	/*
-	public void guardarActividad(){
-
-		Mantenedor tipoActividad = catalogoActividades.get(selectedTipoActividad);
-		Mantenedor estadoActividad = catalogoActividades.get(selectedTipoActividad);
-		//catalogoActividades.values();
-		Usuario usuario = service.getUsuarioLocal(getLoggedUser());
-		
-		System.out.println("Actividad seleccionada: "+selectedTipoActividad);
-		System.out.println("Actividad nombre: "+nombreActividad);
-		System.out.println("Actividad destino: "+destinoActividad);
-		System.out.println("Actividad fecha: "+fechaActividad);
-		
-		actividad = new Actividad();
-		actividad.setTipo(tipoActividad);
-		actividad.setFechaInicial(fechaActividad);
-		actividad.setFechaFinal(fechaActividad);
-		actividad.setCreador(usuario);
-		actividad.setEjecutor(usuario);
-		actividad.setNombre(nombreActividad);
-		actividad.setDescripcion(nombreActividad);
-		actividad.setDestino(destinoActividad);
-		actividad.setEstado(estadoActividad);
-		actividades.add(actividad);
-		System.out.println("Total actividades en lista: "+actividades.size());
-	}*/
-	
 	public String nuevaCertificacion(){
-		//return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
-		return "/modulos/planificacion/edicion?faces-redirect=true";
+		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
+		//return "/modulos/planificacion/edicion?faces-redirect=true";
 	}
 	
 	public String editarCertificacion(Certificacion certificacion){
@@ -388,15 +324,5 @@ public class CertificacionManagedBean implements Serializable {
 
 	public void setSelectedEstatusActividad(int selectedEstatusActividad) {
 		this.selectedEstatusActividad = selectedEstatusActividad;
-	}
-
-	public String getTest() {
-		if(actividades.isEmpty())
-			return "hola";
-		return actividades.get(0).getNombre();
-	}
-
-	public void setTest(String test) {
-		this.test = test;
 	}
 }
