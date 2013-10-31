@@ -103,12 +103,12 @@
 
 			<div id="tab_contenedor">
 				<p:tabView id="tabView">
-				  
+				
 					<p:tab id="tab1" title="Actividades">  
 						<h:form id="actividadesForm">     
 							<p:commandButton value="Agregar" style="margin-bottom: 5px" onclick="PF('dlg1').show();"/>
 							<h:panelGroup id="contenidoActividades" style="border:0">
-								<p:dataTable id="actividadesDataTable" emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" rows="10" rowKey="#{actividad.nombre}" selectionMode="single">  
+								<p:dataTable id="actividadesDataTable" emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" paginator="true" rows="10" rowKey="#{actividad.nombre}" selectionMode="single">  
 									<f:facet name="header">  
 										<p:outputPanel style="text-align:right;">  
 											<h:outputText value="Buscar:" />  
@@ -120,7 +120,11 @@
 									<p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>  
 									<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>  
 									<p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
-									<p:column headerText="Fecha"><h:outputText value="#{actividad.fechaInicial}" /></p:column>  
+									<p:column headerText="Fecha">
+										<h:outputText value="#{actividad.fechaInicial}" >
+									 		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+										</h:outputText>
+									</p:column>  
 									<p:column headerText="Responsable"><h:outputText value="#{actividad.ejecutor.nombreCompleto}" /></p:column>  
 									<p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>  
 								</p:dataTable> 
@@ -143,7 +147,11 @@
 								<p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>  
 								<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>  
 								<p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
-								<p:column headerText="Fecha"><h:outputText value="#{actividad.fechaInicial}" /></p:column>  
+								<p:column headerText="Fecha">
+									<h:outputText value="#{actividad.fechaInicial}" >
+									 	<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+									</h:outputText>
+								</p:column>  
 								<p:column headerText="Responsable"><h:outputText value="#{actividad.ejecutor.nombreCompleto}" /></p:column>  
 								<p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>  
 							</p:dataTable> 
@@ -164,7 +172,11 @@
 								<p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>  
 								<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>  
 								<p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
-								<p:column headerText="Fecha"><h:outputText value="#{actividad.fechaInicial}" /></p:column>  
+								<p:column headerText="Fecha">
+									<h:outputText value="#{actividad.fechaInicial}" >
+									 	<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+									</h:outputText>
+								</p:column>  
 								<p:column headerText="Responsable"><h:outputText value="#{actividad.ejecutor.nombreCompleto}" /></p:column>  
 								<p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>  
 							</p:dataTable> 
@@ -185,7 +197,11 @@
 								<p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>  
 								<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>  
 								<p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
-								<p:column headerText="Fecha"><h:outputText value="#{actividad.fechaInicial}" /></p:column>  
+								<p:column headerText="Fecha">
+									<h:outputText value="#{actividad.fechaInicial}" >
+									 	<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+									</h:outputText>
+								</p:column>  
 								<p:column headerText="Responsable"><h:outputText value="#{actividad.ejecutor.nombreCompleto}" /></p:column>  
 								<p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>  
 							</p:dataTable> 
@@ -197,7 +213,7 @@
     </div>
         
 	<p:dialog id="modalDialog" styleClass="estilo_dialogoactividades" header="Agregar actividades:" widgetVar="dlg1" modal="true" resizable="false" width="550" height="570">
-		<div id="contenedor_dialogoactividades">  
+		<div id="contenedor_dialogoactividades">
 			<h:form>
 				<h3>Planificacion de actividades</h3>
 				<p>Nombre de la actividad</p>
@@ -250,7 +266,7 @@
 				</div>
 				<div id="dialogoactividades_botones">
 					<h:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/>
-					<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardarActividad(actividadManagedBean.actividad)}" update=":contenidoActividades" oncomplete="PF('dlg1').hide();"/>
+					<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardarActividad(actividadManagedBean.actividad)}" update=":tabView" oncomplete="PF('dlg1').hide();"/>
 			</div>
 			</h:form>
 		</div>
@@ -260,7 +276,7 @@
     
      <p:dialog id="modalDialog2" styleClass="estilo_dialogoactividades" header="Agregar involucrados:" widgetVar="dlg2" modal="true" resizable="false" width="550" height="400">
      	<h:form>
-     		<h3>Agrege intregantes de esta lista:</h3>
+     		<h3>Agregue intregantes de esta lista:</h3>
      		 <p:dataTable emptyMessage="No hay datos para mostrar"  var="contacto" value="#{certificacionManagedBean.contactos}" rowKey="#{contacto.id}" selection="#{certificacionManagedBean.selectedContactos}" selectionMode="multiple">  
                         <p:column headerText="Nombre"><h:outputText value="#{contacto.nombreCompleto}" /></p:column>  
                         <p:column headerText="Funcion"><h:outputText value="#{contacto.rol.descripcion}" /></p:column>  
