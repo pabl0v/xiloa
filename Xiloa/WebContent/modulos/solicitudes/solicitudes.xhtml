@@ -32,7 +32,7 @@
 	            	<f:selectItems value="#{solicitudesManagedBean.listBuscarByAll}"/>	            			        
 			    </p:selectOneMenu>
 		        <p:inputText style="margin-right:10px;" id="filtro_buscarByAll" value="#{solicitudesManagedBean.buscarByAllValue}">
-		        	<p:ajax update="dtSolicitud" listener="#{solicitudesManagedBean.handleBuscar}" process="@form" />
+		        	<p:ajax event="keyup" update="dtSolicitud" listener="#{solicitudesManagedBean.handleBuscar}" process="@form" />
 		        </p:inputText>
 	            <p>Centro evaluador:</p>
 	            <p:selectOneMenu styleClass="selectores" id="selector_centrosBySolicitud" value="#{solicitudesManagedBean.selectedIdIfpSolicitud}" >			        

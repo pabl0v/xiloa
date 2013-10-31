@@ -24,7 +24,9 @@ public class ServiceTest {
 
 	@Autowired
 	private IService service;
-	private static Mantenedor mantenedor1, mantenedor2, mantenedor3, mantenedor4, mantenedor5, mantenedor6, mantenedor7, mantenedor8, mantenedor9, mantenedor10, mantenedor11, mantenedor12;
+	private static Mantenedor mantenedor1, mantenedor2, mantenedor3, mantenedor4, mantenedor5, mantenedor6, 
+	               mantenedor7, mantenedor8, mantenedor9, mantenedor10, mantenedor11, mantenedor12,
+	               mantenedor13, mantenedor14, mantenedor15, mantenedor16;
 	private static Perfil perfil;
 	private static List<Perfil> perfiles;
 	private static Rol rolAdmin, rolSupervisor, rolVerificador, rolRegistrador, rolDocente, rolVisitante;
@@ -55,6 +57,11 @@ public class ServiceTest {
 		mantenedor10 = new Mantenedor("4","Estatus actividades","Pendiente",null,null);
 		mantenedor11 = new Mantenedor("4","Estatus actividades","Activo",null,null);
 		mantenedor12 = new Mantenedor("4","Estatus actividades","Anulado",null,null);
+		
+		mantenedor13 = new Mantenedor("5","Tipos Datos Laborales","Experiencias",null,null);
+		mantenedor14 = new Mantenedor("5","Tipos Datos Laborales","Estudios",null,null);
+		mantenedor15 = new Mantenedor("5","Tipos Datos Laborales","Calificaciones",null,null);
+		mantenedor16 = new Mantenedor("5","Tipos Datos Laborales","Certificaciones",null,null);
 
 		service.guardar(mantenedor1);
 		service.guardar(mantenedor2);
@@ -68,6 +75,10 @@ public class ServiceTest {
 		service.guardar(mantenedor10);
 		service.guardar(mantenedor11);
 		service.guardar(mantenedor12);
+		service.guardar(mantenedor13);
+		service.guardar(mantenedor14);
+		service.guardar(mantenedor15);
+		service.guardar(mantenedor16);
 
 		//creando perfiles
 		

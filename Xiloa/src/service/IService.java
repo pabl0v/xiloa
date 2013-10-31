@@ -10,6 +10,7 @@ import support.USolicitud;
 import model.Actividad;
 import model.Certificacion;
 import model.Contacto;
+import model.Laboral;
 import model.Mantenedor;
 import model.Requisito;
 import model.Rol;
@@ -21,6 +22,8 @@ public interface IService {
 	public List<Certificacion> getCertificaciones();
 		
 	public List<Mantenedor> getMantenedores();
+	
+	public List<Mantenedor> getMantenedoresByTipo(Integer tipo);
 	
 	public List<Actividad> getActividades(Long certificacionId);
 	
@@ -79,6 +82,7 @@ public interface IService {
 	public Object guardar(Object obj);	
 	public List<Certificacion> getCertificacionesByIdIfp(Integer id);
 	public List<Ifp> getIfpByInatec ();
+	public List<Laboral> getListLaboralByTipo(Integer tipo, Contacto contacto);
 	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
 	
 }

@@ -35,3 +35,30 @@ h2 {
 #contenedor_tab_planes .ui-tabs-panels {
 	height: 310px!important;
 }
+.estilo_dialogoLaborales {
+    background: #E6EEF9;
+}
+#contenedor_dialogoLaborales {
+    margin: 3px;
+    border-radius: 6px;
+    padding: 5px;
+}
+#contenedor_dialogoLaborales h3{
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+#contenedor_dialogoLaborales .dialogoLaborales_secciones{
+    width: 215px;  
+    display: inline-table;
+    height: 50px;
+}
+#contenedor_dialogoLaborales .selectores{
+    position: relative;
+    top: 8px;
+    margin: 0 5px;
+    width: 150px;
+}
+#dialogoLaborales_botones{
+	display: inline-block;	
+}

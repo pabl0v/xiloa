@@ -19,6 +19,7 @@ import dao.IDaoInatec;
 import model.Actividad;
 import model.Certificacion;
 import model.Contacto;
+import model.Laboral;
 import model.Mantenedor;
 import model.Perfil;
 import model.Requisito;
@@ -55,6 +56,9 @@ public class ServiceImp implements IService {
 	private IDao<Unidad> unidadDao;
 	@Autowired	
 	private IDaoInatec inatecDao;
+	
+	@Autowired	
+	private IDao<Laboral> laboralDao;
 	
 	@Override
 	public List<Certificacion> getCertificaciones(){
@@ -305,6 +309,9 @@ public class ServiceImp implements IService {
 		if (objeto instanceof Solicitud) {
 			return solicitudDao.save((Solicitud) objeto);
 		}
+		if (objeto instanceof Laboral) {
+			return laboralDao.save((Laboral) objeto);
+		}
 		if(objeto instanceof Actividad){
 			return actividadDao.save((Actividad)objeto);
 		}
@@ -353,4 +360,15 @@ public class ServiceImp implements IService {
 	public List<Mantenedor> getMantenedores() {
 		return mantenedorDao.findAllByQuery("Select m from mantenedores m");
 	}
+	
+	@Override
+	public List<Mantenedor> getMantenedoresByTipo(Integer tipo) {
+		return mantenedorDao.findAllByQuery("Select m from mantenedores m where m.tipo='"+tipo+"'");
+	}
+	
+	@Override
+	public List<Laboral> getListLaboralByTipo(Integer tipo, Contacto contacto) {
+		return laboralDao.findAllByQuery("select l from laborales l where l.tipo = " + tipo + " and l.contacto.id = "+contacto.getId());				
+	}	
+	
 }

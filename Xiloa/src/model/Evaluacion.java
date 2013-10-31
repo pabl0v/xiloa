@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,7 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 @Entity(name="evaluacion")
@@ -39,8 +45,13 @@ public class Evaluacion {
 	@Column(name = "evaluacion_instrumento", nullable = false)
 	private String instrumento;
 	
+	@DateTimeFormat(iso = ISO.DATE)
+	@Column(name = "evaluacion_fecha", nullable = false)
+	@Temporal(TemporalType.DATE)
+	private Date fecha;
+	
 	@NotNull
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="solicitud_id")
 	private Solicitud solicitud;
 
@@ -99,18 +110,29 @@ public class Evaluacion {
 	public void setSolicitud(Solicitud solicitud) {
 		this.solicitud = solicitud;
 	}
+		
+	public Date getFecha() {
+		return fecha;
+	}
 
-	public Evaluacion(int estadoInicial, int estadoSiguiente, boolean aprobado,
-			String descripcion, String instrumento, Solicitud solicitud) {
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+		
+	public Evaluacion(Long id, int estadoInicial, int estadoSiguiente,
+			boolean aprobado, String descripcion, String instrumento,
+			Date fecha, Solicitud solicitud) {
 		super();
+		this.id = id;
 		this.estadoInicial = estadoInicial;
 		this.estadoSiguiente = estadoSiguiente;
 		this.aprobado = aprobado;
 		this.descripcion = descripcion;
 		this.instrumento = instrumento;
+		this.fecha = fecha;
 		this.solicitud = solicitud;
 	}
-	
+
 	public Evaluacion() {
 		super();		
 	}

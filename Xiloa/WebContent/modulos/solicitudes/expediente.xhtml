@@ -37,32 +37,37 @@
             <h:outputLabel styleClass="estilo_label" for="direccionActual" value="Direccion actual:" />  
             <p:inputText id="direccionActual" value="#{expedienteManagedBean.solicitudExp.contacto.direccionActual}" />
             <h:outputLabel styleClass="estilo_label" for="municipio" value="Municipio:" />  
-            <p:inputText id="municipio" value="#{expedienteManagedBean.solicitudExp.contacto.nacionalidadId}" />            
+            <p:inputText id="municipio" value="#{expedienteManagedBean.solicitudExp.contacto.nacionalidadId}" />  
+            <p:commandButton value="Aplicar" id="updateContacto" action="#{expedienteManagedBean.actualizarContacto}" />          
     	</div>
     	<div class="seccion_expediente">
     		<p>Trayectoria profesional y academica:</p>
     		<div>    		  
 	    		<h:outputLabel styleClass="estilo_label" for="statusActual" value="Estatus actual:" />  
-	            <p:inputText id="statusActual" value="#{personBean.firstname}" />
+	            <p:inputText id="statusActual" value="#{expedienteManagedBean.estadoActual}" />
 	            <h:outputLabel styleClass="estilo_label" for="statusSiguiente" value="Siguiente Estatus:" />  
-            	<p:inputText id="statusSiguiente" value="#{personBean.firstname}" />              
+            	<p:inputText id="statusSiguiente" value="#{expedienteManagedBean.estadoSiguiente}" />
+            	<p:commandButton value="Agregar" onclick="PF('dlg1').show();" />              
     		</div>	
     		<div id="contenedor_tab_profesional">    			
     			<p:tabView id="tabView1">    			   
-                    <p:tab id="tab1" title="Experiencia">
-                    	<p:commandButton value="Agregar" onclick="PF('dlg1').show();" />  
-                         <p:dataTable emptyMessage="No hay datos para mostrar"  var="datosLaborales" value="#{expedienteManagedBean.listDatosLaborales}">  
+                    <p:tab id="tab1" title="Experiencia">                    	  
+                         <p:dataTable emptyMessage="No hay datos para mostrar" var="datosLaborales" value="#{expedienteManagedBean.listDatosLaborales}">      
                              <p:column headerText="Empresa"><h:outputText value="#{datosLaborales.institucion}" /></p:column>  
                              <p:column headerText="Cargo"><h:outputText value="#{datosLaborales.cargo}" /></p:column>  
                              <p:column headerText="Desde"><h:outputText value="#{datosLaborales.fechaInicia}" /></p:column>  
                              <p:column headerText="Hasta"><h:outputText value="#{datosLaborales.fechaFinaliza}" /></p:column>  
                              <p:column headerText="Direccion"><h:outputText value="#{datosLaborales.institucionDireccion}" /></p:column>  
-                             <p:column headerText="Editar"><h:outputText value="#{datosLaborales.id}" /></p:column>  
+                             <p:column >
+                             	<p:commandButton id="editarExperiencia" action="#{expedienteManagedBean.editarLaboral}" onclick="PF('dlg1').show();" 
+                             	                 icon="ui-icon-pencil" title="Editar">  
+        							<f:setPropertyActionListener value="#{datosLaborales}" target="#{expedienteManagedBean.selectedLaboral}" />  
+        						</p:commandButton>                             	
+                             </p:column>                             
                         </p:dataTable>    
                     </p:tab>  
 
-                    <p:tab id="tab2" title="Estudios">
-                    	<p:commandButton value="Agregar" />  
+                    <p:tab id="tab2" title="Estudios">                    	  
                         <p:dataTable emptyMessage="No hay datos para mostrar"  var="datosEstudios" value="#{expedienteManagedBean.listDatosEstudios}">  
                              <p:column headerText="Empresa"><h:outputText value="#{datosEstudios.institucion}" /></p:column>  
                              <p:column headerText="Cargo"><h:outputText value="#{datosEstudios.cargo}" /></p:column>  
@@ -73,8 +78,7 @@
                         </p:dataTable>       
                     </p:tab>  
 
-                    <p:tab id="tab3" title="Calificaciones">
-                    	<p:commandButton value="Agregar" />  
+                    <p:tab id="tab3" title="Calificaciones">                    	  
                         <p:dataTable emptyMessage="No hay datos para mostrar"  var="datosCalificacion" value="#{expedienteManagedBean.listDatosCalificacion}">  
                              <p:column headerText="Empresa"><h:outputText value="#{datosCalificacion.institucion}" /></p:column>  
                              <p:column headerText="Cargo"><h:outputText value="#{datosCalificacion.cargo}" /></p:column>  
@@ -85,8 +89,7 @@
                         </p:dataTable>    
                     </p:tab>  
                     
-                    <p:tab id="tab4" title="Certificaciones">
-                    	<p:commandButton value="Agregar" />  
+                    <p:tab id="tab4" title="Certificaciones">                    	  
                         <p:dataTable emptyMessage="No hay datos para mostrar"  var="datosCertificacion" value="#{expedienteManagedBean.listDatosCertificaciones}">  
                              <p:column headerText="Empresa"><h:outputText value="#{datosCertificacion.institucion}" /></p:column>  
                              <p:column headerText="Cargo"><h:outputText value="#{datosCertificacion.cargo}" /></p:column>  
@@ -105,45 +108,46 @@
     			<p:tabView id="tabView2">  
                     <p:tab id="tab1" title="UC a evaluar"> 
                     	<p:commandButton value="Agregar" /> 
-                         <p:dataTable emptyMessage="No hay datos"  var="divulgacion" value="#{tableBean.carsSmall}">  
-                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{car.model}" /></p:column>  
-                             <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{car.year}" /></p:column>  
-                             <p:column headerText="Requisito"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                             <p:column headerText="Estado"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                             <p:column headerText="Editar"><h:outputText value="#{car.manufacturer}" /></p:column>              
+                         <p:dataTable emptyMessage="No hay datos"  var="uC" value="#{expedienteManagedBean.listDatosCertificaciones}">  
+                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{uC.institucion}" /></p:column>  
+                             <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{uC.institucion}" /></p:column>  
+                             <p:column headerText="Requisito"><h:outputText value="#{uC.institucion}" /></p:column>  
+                             <p:column headerText="Estado"><h:outputText value="#{uC.institucion}" /></p:column>  
+                             <p:column headerText="Editar"></p:column>              
                         </p:dataTable>    
                     </p:tab>  
 
                     <p:tab id="tab2" title="Portafolio">  
                     	<p:commandButton value="Agregar" />
-                         <p:dataTable emptyMessage="No hay datos"  var="divulgacion" value="#{tableBean.carsSmall}">  
-                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{car.model}" /></p:column>  
-                             <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{car.year}" /></p:column>  
-                             <p:column headerText="Requisito"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                             <p:column headerText="Estado"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                             <p:column headerText="Editar"><h:outputText value="#{car.manufacturer}" /></p:column>              
+                         <p:dataTable emptyMessage="No hay datos"  var="portafolioEvidencia" value="#{expedienteManagedBean.listDatosCertificaciones}">  
+                             <p:column headerText="Documento de soporte o evidencia"><h:outputText value="#{portafolioEvidencia.institucion}" /></p:column>  
+                             <p:column headerText="Descripcion"><h:outputText value="#{portafolioEvidencia.institucion}" /></p:column>  
+                             <p:column headerText="Respaldo de"><h:outputText value="#{portafolioEvidencia.institucion}" /></p:column>  
+                             <p:column headerText="Estado"><h:outputText value="#{portafolioEvidencia.institucion}" /></p:column>  
+                             <p:column headerText="Editar"></p:column>              
                         </p:dataTable>     
                     </p:tab>  
 
                     <p:tab id="tab3" title="Plan de evaluacion">
                     	<p:commandButton value="Agregar" />  
-                         <p:dataTable emptyMessage="No hay datos"  var="divulgacion" value="#{tableBean.carsSmall}">  
-                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{car.model}" /></p:column>  
-                             <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{car.year}" /></p:column>  
-                             <p:column headerText="Requisito"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                             <p:column headerText="Estado"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                             <p:column headerText="Editar"><h:outputText value="#{car.manufacturer}" /></p:column>              
+                         <p:dataTable emptyMessage="No hay datos"  var="evaluaciones" value="#{expedienteManagedBean.listEvaluaciones}">  
+                             <p:column headerText="Instrumento de evaluacion"><h:outputText value="#{evaluaciones.instrumento}" /></p:column>  
+                             <p:column headerText="Observacion"><h:outputText value="#{evaluaciones.descripcion}" /></p:column>  
+                             <p:column headerText="Fecha"><h:outputText value="#{evaluaciones.fecha}" /></p:column>  
+                             <p:column headerText="Aprobado"><h:outputText value="#{evaluaciones.aprobado}" /></p:column>  
+                             <p:column headerText="Estado"><h:outputText value="#{evaluaciones.estadoInicial}" /></p:column>
+                             <p:column headerText="Editar"></p:column>              
                         </p:dataTable>  
                     </p:tab>  
                     
                     <p:tab id="tab4" title="Plan de formacion">
                     	<p:commandButton value="Agregar" />  
-                         <p:dataTable emptyMessage="No hay datos"  var="divulgacion" value="#{tableBean.carsSmall}">  
-                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{car.model}" /></p:column>  
-                             <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{car.year}" /></p:column>  
-                             <p:column headerText="Requisito"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                             <p:column headerText="Estado"><h:outputText value="#{car.manufacturer}" /></p:column>  
-                             <p:column headerText="Editar"><h:outputText value="#{car.manufacturer}" /></p:column>              
+                         <p:dataTable emptyMessage="No hay datos"  var="formacion" value="#{expedienteManagedBean.listDatosCertificaciones}">  
+                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{formacion.institucion}" /></p:column>  
+                             <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{formacion.institucion}" /></p:column>  
+                             <p:column headerText="Requisito"><h:outputText value="#{formacion.institucion}" /></p:column>  
+                             <p:column headerText="Estado"><h:outputText value="#{formacion.institucion}" /></p:column>  
+                             <p:column headerText="Editar"></p:column>              
                         </p:dataTable>  
                     </p:tab>  
                 </p:tabView>  
@@ -151,54 +155,41 @@
     	</div>
     	
     	<!-- Cuadro de dialogo emergente que registra datos laborales y académicos -->    	
-    	<p:dialog id="modalDialog" styleClass="estilo_dialogoactividades" header="Agregar Datos Laborales y Academicos:" widgetVar="dlg1" modal="true" resizable="false" width="550" height="570">
-		<div id="contenedor_dialogoactividades">  
-			<h:form>
-				<h3>Planificacion de actividades</h3>				
+    	<p:dialog id="modalDialog" styleClass="estilo_dialogoLaborales" header="Agregar Datos Laborales y Academicos:" widgetVar="dlg1" 
+    	          modal="true" resizable="false" width="520" height="340" showEffect="clip" hideEffect="clip" >
+		<div id="contenedor_dialogoLaborales">			
+				<h3>Registro de Datos Laborales y Academicos</h3>	
+				<p>Tipo dato laboral:</p>			
+				<p:selectOneMenu styleClass="selectores" id="selector_tipoDatoLaboral" value="#{expedienteManagedBean.tipoLaboral}" >				
+					<f:selectItems value="#{expedienteManagedBean.listTipoDatosLaborales}" />			        
+			    </p:selectOneMenu>					
 				<h:outputLabel styleClass="estilo_label" for="nombreInstitucion" value="Nombre de la institucion:" />  
             	<p:inputText id="nombreInstitucion" value="#{expedienteManagedBean.nombreInstitucion}" />
                 <h:outputLabel styleClass="estilo_label" for="nombreCargo" value="Cargo:" />  
             	<p:inputText id="nombreCargo" value="#{expedienteManagedBean.nombreCargo}" />
             	
-				<div class="dialogoactividades_secciones">
+				<div class="dialogoLaborales_secciones">
 					<p:growl id="growlFechaDesde" showDetail="true"/>
 					<p>Fecha Desde:</p>
 					<p:calendar value="#{expedienteManagedBean.fechaDesde}" id="popupButtonCal1" showOn="button">
 						<p:ajax event="dateSelect" update="growlFechaDesde" />
 					</p:calendar>
 				</div>
-				<div class="dialogoactividades_secciones">
+				<div class="dialogoLaborales_secciones">
 					<p:growl id="growlFechaHasta" showDetail="true"/>
 					<p>Fecha Hasta:</p>
 					<p:calendar value="#{expedienteManagedBean.fechaHasta}" id="popupButtonCal2" showOn="button">
 						<p:ajax event="dateSelect" update="growlFechaHasta" />
 					</p:calendar>
-				</div>
-				<div class="dialogoactividades_secciones">  
-					<p>Estatus:</p>					
-				</div> 
-				<p>Lugar/Medio:</p>
-				<p:inputTextarea rows="10" cols="50" value="#{certificacionManagedBean.destinoActividad}" queryDelay="750" minQueryLength="4" />
-				<div class="dialogoactividades_secciones2">   
-					<p>Tipo de actividad:</p>					
 				</div>				
-						
-				<p:commandButton value="Agregar involucrados"/>
-				<div id="dialogoactividades_involucrados">
-					<p:dataTable var="involucrados" value="#{tableBean.carsSmall}">
-						<p:column headerText="Nombre"><h:outputText value="#{car.model}" /></p:column>
-						<p:column headerText="Funcion"><h:outputText value="#{car.year}" /></p:column>
-						<p:column headerText="Correo electronico"><h:outputText value="#{car.manufacturer}" /></p:column>
-					</p:dataTable>
-				</div>
-				<div id="dialogoactividades_botones">					
+				<h:outputLabel styleClass="estilo_label" for="institucionDireccion" value="Direccion de la institucion:" />  
+            	<p:inputText id="institucionDireccion" value="#{expedienteManagedBean.institucionDireccion}" />					
+				<div id="dialogoLaborales_botones">					
 					<h:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/>
-					<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardarActividad}"/>					
-			</div>
-			</h:form>
+					<h:commandButton value="Aceptar" action="#{expedienteManagedBean.guardarDatosLaborales}" update=":tabView1" />					
+			</div>			
 		</div>
-	</p:dialog>
-    	
+	</p:dialog>    	
     	<!--  Fin Cuadro de dialogo emergente que registra datos laborales y académicos -->
     	</h:form>
     </div> 

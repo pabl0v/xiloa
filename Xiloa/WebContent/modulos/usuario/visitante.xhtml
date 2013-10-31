@@ -18,106 +18,97 @@
         <title>SCCL</title>
     </h:head>
     <h:body>
-    
-        <div id="contenedor"> 
-        <header id="barra_login">
-       	  <h:form>
-            <h1>Sistema de gestion de Certificacion de competencias laborales</h1>
-            <div class="botones_navegacion" ><p><a href="#{request.contextPath}/j_spring_security_logout">Logout</a></p></div>
-          </h:form>
-        </header>
-        <div id="barra_buscar">
-            <p>Buscar por</p>
-            <h:form>
+    	<div id="contenedor">        
+         <h:form id="cursos">
+         	<p:growl id="growl" showDetail="true"/>
+        	<header id="barra_login">       	  
+            	<h1>Sistema de gestion de Certificacion de competencias laborales</h1>
+            	<div class="botones_navegacion" ><p><a href="#{request.contextPath}/j_spring_security_logout">Logout</a></p></div>          
+        	</header>
+        	<div id="barra_buscar">
+            	<p>Buscar por</p>            
 	            <p:selectOneMenu id="selector_filtro" styleClass="selector_status_estilo" value="a">  
 		            <f:selectItem itemLabel="Nombre de la competencia a certificar:" itemValue="a" />
 		            <f:selectItem itemLabel="Centro donde esta disponible:" itemValue="a" />
 		            <f:selectItem itemLabel="Otro:" itemValue="a" />  
-		            </p:selectOneMenu>
-	            <p:inputText id="filtro_buscar"></p:inputText>
-            </h:form>
-        </div>
-        <div class="contenedor_central" style="width:100%;">
-        	<h2>Certificaciones de Competencias Laborales disponibles</h2>
-	        <p>Seleccione en el nombre de la competencia para ver el detalle y solicitar la certificacion</p>
-        	<div id="contenedor_tabla_competencias">    
-	            <p:dataTable var="competencia" value="#{planificacionManagedBean.competencias}" paginator="true" rows="10" 
-	                paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-	                rowsPerPageTemplate="5,10,15" rowKey="#{competencia.disponibilidad}" selectionMode="single">
-	     			<!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
-	                <p:ajax event="rowSelect" oncomplete="PF('modal_comp').show()" />                  
-	                <p:column headerText="Unidad de competencia"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  
-	                <p:column headerText="Centro de Formacion"><h:outputText value="#{competencia.nombreCentro}" /></p:column>  
-	                <p:column headerText="Inicia recepcion de solicitud"><h:outputText value="#{competencia.disponibilidad}" /></p:column>  
-	            </p:dataTable> 
-            </div>
-        </div>
-       
+		        </p:selectOneMenu>
+	            <p:inputText id="filtro_buscar"></p:inputText>            
+        	</div>
+        	<div class="contenedor_central" style="width:100%;">
+        		<h2>Certificaciones de Competencias Laborales disponibles</h2>
+	        	<p>Seleccione en el nombre de la competencia para ver el detalle y solicitar la certificacion</p>
+	        	<div id="contenedor_tabla_competencias">    
+		            <p:dataTable var="competencia" value="#{planificacionManagedBean.competencias}" paginator="true" rows="10" 
+		                paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
+		                rowsPerPageTemplate="5,10,15" rowKey="#{competencia.disponibilidad}" selectionMode="single" 
+		                selection="#{planificacionManagedBean.selectedCompetencia}" styleClass="tablaCompetencias" >
+		     			<!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
+		                <p:ajax event="rowSelect" update=":cursos:panelDialogo :cursos:growl" oncomplete="PF('modal_comp').show()" />                  
+		                <p:column headerText="Unidad de competencia"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  
+		                <p:column headerText="Centro de Formacion"><h:outputText value="#{competencia.nombreCentro}" /></p:column>  
+		                <p:column headerText="Inicia recepcion de solicitud"><h:outputText value="#{competencia.disponibilidad}" /></p:column>  
+		            </p:dataTable> 
+	            </div>
+        	</div>              
+	        <p:dialog id="modal_info_competencias" styleClass="modal_info_competencias" header="Detalle:" widgetVar="modal_comp" width="550" height="500">  
+		        <p:outputPanel id="panelDialogo">
+		        	<div class="seccion_detalle">
+		      			<p>Nombre de la certificacion</p>
+		      			<h:outputText value="#{planificacionManagedBean.selectedCompetencia.nombreUCompetencia}"></h:outputText>  		
+		          	</div>
+		          	<div class="seccion_detalle">
+		      			<p>Ultimo dia para solicitar evaluacion:</p>
+		      			<h:outputText value="#{planificacionManagedBean.selectedCompetencia.fechaFin}"></h:outputText>  		
+		          	</div>
+		          	<div class="seccion_detalle">
+		      			<p>Direccion del Centro evaluador:</p>
+		      			<h:outputText value="#{planificacionManagedBean.selectedCompetencia.direccion}"></h:outputText>  		
+		          	</div>
+		          	<div class="seccion_detalle">
+		      			<p>Requisitos para aplicar a la evaluacion:</p>
+		      			<ul>
+		      				<li>Formato de solicitud</li>
+		      				<li>Copia de cedula</li>
+		      				<li>2 fotos (Tamaño diploma)</li>
+		      				<li>Experiencia de 3 años en panaderia</li>
+		      				<li>Leer y escribir</li>
+		      				<li>Mayor de 20 años de edad</li>
+		      			</ul>  		
+		          	</div>
+		          	<div class="seccion_detalle">
+		      			<p>Arancel:</p>
+		      			<h:outputText value="#{planificacionManagedBean.selectedCompetencia.costo}"></h:outputText>  		
+		          	</div>
+			          	<p:commandButton onclick="PF('modal_comp').hide()" value="Cancelar"/> 
+			            <p:commandButton onclick="PF('modal_solicitud').show()" value="Aplicar"/>		            
+		            </p:outputPanel>
+	    	</p:dialog>        
         
-        <p:dialog id="modal_info_competencias" header="Detalle:" widgetVar="modal_comp" width="550" height="500">  
-        	<div class="seccion_detalle">
-      			<p>Nombre de la certificacion</p>
-      			<h:outputText value="Auxiliar en contabilidad"></h:outputText>  		
-          	</div>
-          	<div class="seccion_detalle">
-      			<p>Ultimo dia para solicitar evaluacion:</p>
-      			<h:outputText value="2013/01/22"></h:outputText>  		
-          	</div>
-          	<div class="seccion_detalle">
-      			<p>Direccion del Centro evaluador:</p>
-      			<h:outputText value="Centro Juvenil Don Bosco. Villa Don Bosco, MAnagua, Telfono: +50500000000, email: info@donbosco.com.ni"></h:outputText>  		
-          	</div>
-          	<div class="seccion_detalle">
-      			<p>Requisitos para aplicar a la evaluacion:</p>
-      			<ul>
-      				<li>Formato de solicitud</li>
-      				<li>Copia de cedula</li>
-      				<li>2 fotos (Tamaño diploma)</li>
-      				<li>Experiencia de 3 años en panaderia</li>
-      				<li>Leer y escribir</li>
-      				<li>Mayor de 20 años de edad</li>
-      			</ul>  		
-          	</div>
-          	<div class="seccion_detalle">
-      			<p>Arancel:</p>
-      			<h:outputText value="C$ 200.00"></h:outputText>  		
-          	</div>
-          	<h:form>
-	          	<p:commandButton onclick="PF('modal_comp').hide()" value="Cancelar"/> 
-	            <p:commandButton onclick="PF('modal_solicitud').show()" value="Aplicar"/>
-            </h:form>
-    	</p:dialog>  
-        
-        
-        <p:dialog id="modal_solicitud_competencia" header="Solicitud de registro para obtener la Certificacion: Auxiliar en Contabilidad" widgetVar="modal_solicitud" modal="true" width="570" height="600">
-		  <p>Para registrar su informacion debe estar registrado, si aun no lo ha hecho, pulse <a>aqui</a> para registar su usuarui en el <a>Sistema de Certificaciones Laborales del INATEC</a></p>         
-          <h:form>
-   			<div class="seccion_detalle">
-                <h:outputLabel styleClass="estilo_label" for="surname" value="Primer nombre:" /> 
-                <p:inputText id="firstname" value="#{personBean.firstname}" />  
-                <h:outputLabel styleClass="estilo_label" for="surname" value="Segundo nombre:" />  
-                <p:inputText id="surname" value="#{personBean.surname}" required="true" requiredMessage="Surname is required."/>  
-                <h:outputLabel styleClass="estilo_label" for="firstname" value="Apellido paterno:" />  
-                <p:inputText id="fg" value="#{personBean.firstname}" />  
-                <h:outputLabel styleClass="estilo_label" for="firstname" value="Apellido materno:" />  
-                <p:inputText id="fdg4" value="#{personBean.firstname}" />  
-                <h:outputLabel styleClass="estilo_label" for="firstname" value="Cedula:" />  
-                <p:inputMask value="#{maskController.date}" mask="999-999999-9999A"/>
-         	</div>
-           </h:form>
-           <h:form>
-             <div class="seccion_detalle">
-                <h:outputLabel styleClass="estilo_label" for="firstname2" value="Empresa donde labora actualmente:" />  
-                <p:inputText id="firstname2" value="#{personBean.firstname}" />  
-                <h:outputLabel styleClass="estilo_label" for="surname2" value="Años ejerciendo la actividad:" />  
-                <p:inputText id="surname2" value="#{personBean.surname}" required="true" requiredMessage="Surname is required."/>  
-                <h:outputLabel styleClass="estilo_label" value="Descripcion de la ocupacion actual:" /> 
-                <p:editor id="editor2" value="#{editorBean.value}" height="150"/>    			
-             </div>
-             <p:commandButton onclick="PF('modal_solicitud').hide();" value="Cancelar"/> 
-            	<p:commandButton value="Aplicar"/>    
-           </h:form>    
-        </p:dialog>   
+	        <p:dialog id="modal_solicitud_competencia" header="Solicitud de registro para obtener la Certificacion: #{planificacionManagedBean.selectedCompetencia.nombreUCompetencia}" widgetVar="modal_solicitud" modal="true" width="570" height="600">	          			          
+	   			<div class="seccion_detalle">
+	                <h:outputLabel styleClass="estilo_label" for="primerNombre" value="Primer nombre:" /> 
+	                <p:inputText id="primerNombre" value="#{personBean.firstname}" />  
+	                <h:outputLabel styleClass="estilo_label" for="segundoNombre" value="Segundo nombre:" />  
+	                <p:inputText id="segundoNombre" value="#{personBean.surname}" />  
+	                <h:outputLabel styleClass="estilo_label" for="primerApellido" value="Apellido paterno:" />  
+	                <p:inputText id="primerApellido" value="#{personBean.firstname}" />  
+	                <h:outputLabel styleClass="estilo_label" for="segundoApellido" value="Apellido materno:" />  
+	                <p:inputText id="segundoApellido" value="#{personBean.firstname}" />  
+	                <h:outputLabel styleClass="estilo_label" for="cedula" value="Cedula:" />  
+	                <p:inputMask value="#{maskController.date}" mask="999-999999-9999A"/>
+	         	</div>           
+	             <div class="seccion_detalle">
+	                <h:outputLabel styleClass="estilo_label" for="empresaLabora" value="Empresa donde labora actualmente:" />  
+	                <p:inputText id="empresaLabora" value="#{personBean.firstname}" />  
+	                <h:outputLabel styleClass="estilo_label" for="experiencia" value="Años ejerciendo la actividad:" />  
+	                <p:inputText id="experiencia" value="#{personBean.surname}" />  
+	                <h:outputLabel styleClass="estilo_label" value="Descripcion de la ocupacion actual:" /> 
+	                <p:editor id="ocupacion" value="#{editorBean.value}" height="150"/>    			
+	             </div>
+	             <p:commandButton onclick="PF('modal_solicitud').hide();" value="Cancelar"/> 
+	             <p:commandButton value="Aplicar"/>
+	        </p:dialog>
+        </h:form>   
         <footer>
             <p>2013 &#174;Derechos reservados por INATEC --  Sistema de gestion de Certificaciones Laborales del INATEC</p>
         </footer>

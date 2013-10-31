@@ -55,6 +55,12 @@ header p{
     top: -14px;
     margin-left: 6px;
 }
+#barra_buscar input{
+    display: inline-block;
+    position: relative;	
+    top: -14px;
+    margin-left: 6px;
+}
 .selector_status_estilo {
     position: relative;
     top: -6px;
