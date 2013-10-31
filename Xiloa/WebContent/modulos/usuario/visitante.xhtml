@@ -8,7 +8,7 @@
       
     <h:head>       
         <link type="text/css" rel="stylesheet" href="../../resources/css/reset.css"></link>
-		<link type="text/css" rel="stylesheet" href="../../resources/css/usuario.css"></link>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/visitante.css"></link>
  		<!-- Requeridos por OpenID -->
 		<link type="text/css" rel="stylesheet" href="../../resources/openidselector/css/openid.css" />
 		<script type="text/javascript" src="../../resources/openidselector/js/openid-jquery.js"></script>
@@ -84,7 +84,7 @@
 		            </p:outputPanel>
 	    	</p:dialog>        
         
-	        <p:dialog id="modal_solicitud_competencia" header="Solicitud de registro para obtener la Certificacion: #{planificacionManagedBean.selectedCompetencia.nombreUCompetencia}" widgetVar="modal_solicitud" modal="true" width="570" height="600">	          			          
+	        <p:dialog id="modal_solicitud_competencia" styleClass="modal_solicitud_competencia" header="Solicitud de registro para obtener la Certificacion: #{planificacionManagedBean.selectedCompetencia.nombreUCompetencia}" widgetVar="modal_solicitud" modal="true" width="570" height="600">	          			          
 	   			<div class="seccion_detalle">
 	                <h:outputLabel styleClass="estilo_label" for="primerNombre" value="Primer nombre:" /> 
 	                <p:inputText id="primerNombre" value="#{personBean.firstname}" />  

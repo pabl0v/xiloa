@@ -1,0 +1,286 @@
+html {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+}
+#contenedor {
+    min-width: 1024px;
+    position: relative;
+}
+.ui-widget {
+    font-size: 1em;
+    font-size: 13px;
+}
+#barra_login h1{
+	background: url("../../resources/imagenes/inatec_logo.png") no-repeat left;
+	height: 49px;
+	background-size: 21%;
+	position: relative;
+	top: -12px;
+	left: -14px;
+	padding-left: 115px;
+	line-height: 43px;
+}
+header {
+    height: 25px;
+    background: #003366;
+    color: white;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: bold!important;
+}
+header h1{
+    display: inline-block;
+    font-weight: bold!important;
+}
+header p{
+    float:right;
+}
+#barra_buscar {
+    background: #f8fdbd;
+    height: 15px;
+    padding: 12px;
+}
+#barra_buscar p{
+    display: inline-block;
+    position: relative;
+    top: -14px;
+    margin-right: 8px;
+}
+#barra_buscar form{
+    display: inline-block;
+}
+#barra_buscar form input{
+    display: inline-block;
+    position: relative;	
+    top: -14px;
+    margin-left: 6px;
+}
+#barra_buscar input{
+    display: inline-block;
+    position: relative;	
+    top: -14px;
+    margin-left: 6px;
+}
+.selector_status_estilo {
+    position: relative;
+    top: -6px;
+}
+.contenedor_central {
+    width: 47%;
+    height: 500px;
+    display: inline-block;
+    float: left;
+    margin: 10px;
+    margin-left: 26px;
+    margin-right: 0;
+}
+.contenedor_central h2{
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+.contenedor_central h3{
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 8px;
+    margin-bottom: 5px;
+}
+#contenedor_tabla_competencias .ui-corner-top{
+	display: none!important;
+}
+#contenedor_tabla_competencias table {
+	border: none!important;
+}
+#contenedor_tabla_competencias .ui-state-default,#contenedor_tabla_competencias .ui-widget-header {
+	background: none;
+}
+#contenedor_tabla_competencias tbody tr {
+	color: green;
+}
+#contenedor_tabla_competencias .ui-widget {
+	border-top: 3px solid green;
+}
+#contenedor_tabla_competencias {
+    width: 94%;	
+    margin-top: 9px;
+    height: 322px;
+    background: white;
+}
+/***************************************/
+#contenedor_tabs {
+	position: relative;
+}
+#contenedor_tabs .ui-tabs-nav {
+	background: none;
+	border-bottom: 1px solid rgb(209, 209, 209);
+}
+#contenedor_tabs .ui-widget-content {
+	border: none;
+}
+/***************************************/
+footer {
+    position:fixed;
+    bottom: 0px;
+    left: 0px;
+    clear: both;
+    width: 100%;
+    height: 40px;
+    background: #003366;
+}
+footer p{
+    color: white;
+    padding: 12px;
+    font-size: 12px!important;
+    font-weight: bold;
+    text-align: center;
+}
+.opid_boton_grande {
+    width: 150px;
+    height: 55px;
+    display: inline-block; 
+    float: left; 
+}
+.opid_boton_pequeno {
+    width: 45px;
+    height: 45px;
+}
+.contenedor_botonesgrandes {
+    width: 100%;	
+    margin-top: 10px;
+}
+.contenedor_botonespequenos {
+    width: 77%;
+    height: 50px;
+}
+.boton_verde {
+	background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxIDEiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPgo8bGluZWFyR3JhZGllbnQgaWQ9Imc5NDQiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CjxzdG9wIHN0b3AtY29sb3I9IiM3NUM3MTgiIG9mZnNldD0iMCIvPjxzdG9wIHN0b3AtY29sb3I9IiMwNjYxMDYiIG9mZnNldD0iMSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2c5NDQpIiAvPgo8L3N2Zz4=)!important;
+    color: white!important;
+    font-weight: normal!important;
+    text-shadow: none!important;
+    border: 1px solid #FFFFFF!important;
+    margin-top: 9px; 
+}
+.ui-tabs-selected {
+    border-bottom: 1px solid rgb(255, 255, 255)!important;	
+    position: relative!important;
+    top: 2px!important;
+}
+#opciones_openid{
+	margin-top: 50px;
+}
+.seccion_nuevousuario {
+	margin: 10px;
+}
+.seccion_nuevousuario label{
+	width: 240px!important;
+	display: inline-block;
+	font-weight: bold;
+	color: black;
+}
+/******************************/
+.user a{
+	background: url("../../resources/imagenes/iconos_tab/user24.png") no-repeat left!important;
+	padding-left: 25px!important;
+}
+.llave a{
+	background: url("../../resources/imagenes/iconos_tab/llave24.png") no-repeat left!important;
+	padding-left: 25px!important;
+}
+.nuevo a{
+	background: url("../../resources/imagenes/iconos_tab/nuevo24.png") no-repeat left!important;
+	padding-left: 25px!important;
+}
+/******************************/
+#loginForm {
+	width: 279px;
+	background: white;
+	height: 78px;
+	margin-left: -6px;
+	display: inline-block;
+}
+#loginForm label{
+	margin: 8px;
+	width: 85px;
+	display: inline-block;
+}
+#loginForm input{
+	margin: 8px;
+	padding: 2px;
+	border-radius: 2px;
+}
+#loginForm .boton_verde, #openid_form .boton_verde {
+	background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxIDEiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPgo8bGluZWFyR3JhZGllbnQgaWQ9Imc5NDQiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CjxzdG9wIHN0b3AtY29sb3I9IiM3NUM3MTgiIG9mZnNldD0iMCIvPjxzdG9wIHN0b3AtY29sb3I9IiMwNjYxMDYiIG9mZnNldD0iMSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2c5NDQpIiAvPgo8L3N2Zz4=)!important;
+    color: white!important;
+    font-weight: normal!important;
+    text-shadow: none!important;
+    border: 1px solid #FFFFFF!important;
+    margin-top: 9px; 
+    padding: 7px!important;
+    border-radius:3px;
+    cursor: pointer;
+}
+.modal_info_competencias {
+    background: #E6EEF9;
+    color: black;
+}
+.modal_info_competencias .seccion_detalle {
+    background: #fff;
+    margin: 11px 5px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    width:500px;
+}
+.modal_info_competencias .seccion_detalle ul li {
+    list-style: disc;
+    margin-left: 21px;
+}
+.modal_info_competencias p {
+    color: black;
+    padding: 5px 0;
+    font-size: 13px;
+    font-weight: bold;
+}
+/***************************/
+.modal_solicitud_competencia .estilo_label{
+	color: black;
+    padding: 5px 0;
+	font-size: 13px;
+    font-weight: bold;
+	width: 275px;
+	display: inline-block;
+	padding: 12px;
+}
+.modal_solicitud_competencia {
+	background: #E6EEF9;
+	color: black;
+}
+.modal_solicitud_competencia input{
+	width: 200px;
+}
+.modal_solicitud_competencia .seccion_detalle{
+	background: #fff;
+	margin: 11px 5px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+#aqui_formulario {
+	display: inline-block;
+}
+#error {
+	width: 154px;
+	height: 77px;
+	background: red;
+	display: none;
+}
+#error p {
+	display: inline-block;
+}
+/*************************/
+.tablaCompetencias tbody tr:nth-child(1) td {
+	width: 15px;
+}

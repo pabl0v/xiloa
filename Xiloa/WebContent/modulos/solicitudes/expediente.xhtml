@@ -17,9 +17,10 @@
 	    	<script type="text/javascript" src="../../resources/scripts/expediente.js"></script>
 		</div>
 		<h:form>
-    	<h2>Expediente: #{expedienteManagedBean.solicitudExp.id} </h2>
+    	<h2>Expediente: <a>#{expedienteManagedBean.solicitudExp.id}</a></h2>
+    	<h3>Datos del solicitante/Candidato</h3>
     	<div id="seccion_datossolicitante" class="seccion_expediente" style="padding:10px;">    	  
-    		<p>Datos del solicitante/Candidato</p>
+   		
     		<h:outputLabel styleClass="estilo_label" for="nombreCandidato" value="Nombre del candidato:" />  
             <p:inputText id="nombreCandidato" value="#{expedienteManagedBean.solicitudExp.contacto.nombreCompleto}" />
             <h:outputLabel styleClass="estilo_label" for="numeroIdentificacion" value="Numero de identificacion:" />  
@@ -38,17 +39,24 @@
             <p:inputText id="direccionActual" value="#{expedienteManagedBean.solicitudExp.contacto.direccionActual}" />
             <h:outputLabel styleClass="estilo_label" for="municipio" value="Municipio:" />  
             <p:inputText id="municipio" value="#{expedienteManagedBean.solicitudExp.contacto.nacionalidadId}" />  
-            <p:commandButton value="Aplicar" id="updateContacto" action="#{expedienteManagedBean.actualizarContacto}" />          
+            <p:commandButton style="display:block;" value="Aplicar" id="updateContacto" action="#{expedienteManagedBean.actualizarContacto}" />          
     	</div>
-    	<div class="seccion_expediente">
-    		<p>Trayectoria profesional y academica:</p>
-    		<div>    		  
-	    		<h:outputLabel styleClass="estilo_label" for="statusActual" value="Estatus actual:" />  
-	            <p:inputText id="statusActual" value="#{expedienteManagedBean.estadoActual}" />
-	            <h:outputLabel styleClass="estilo_label" for="statusSiguiente" value="Siguiente Estatus:" />  
-            	<p:inputText id="statusSiguiente" value="#{expedienteManagedBean.estadoSiguiente}" />
-            	<p:commandButton value="Agregar" onclick="PF('dlg1').show();" />              
+    		<div class="barra_azul">  
+    			<p style="padding: 7px;font-weight:bold;">Trayectoria profesional y academica:</p>  		
+    			<div>  
+	    			<h:outputLabel styleClass="estilo_label" for="statusActual" value="Estatus actual:" />  
+	            	<p:inputText id="statusActual" value="#{expedienteManagedBean.estadoActual}" />
+	            </div>
+	            <div>
+	            	<h:outputLabel styleClass="estilo_label" for="statusSiguiente" value="Siguiente Estatus:" />  
+            		<p:inputText id="statusSiguiente" value="#{expedienteManagedBean.estadoSiguiente}" />
+            	</div>
+            	<div>
+            		<p:commandButton value="Agregar" onclick="PF('dlg1').show();" />
+            	</div>              
     		</div>	
+    	<div class="seccion_expediente">
+    		
     		<div id="contenedor_tab_profesional">    			
     			<p:tabView id="tabView1">    			   
                     <p:tab id="tab1" title="Experiencia">                    	  
