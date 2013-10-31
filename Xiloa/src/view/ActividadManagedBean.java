@@ -1,7 +1,6 @@
 package view;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,13 +23,8 @@ public class ActividadManagedBean {
 	@Autowired
 	private IService service;
 
-	private String nombreActividad;
-	private String descripcionActividad;
 	private int selectedTipoActividad;
 	private Map<Integer,Mantenedor> catalogoTiposActividad;
-	private Date fechaInicial;
-	private Date fechaFinal;
-	private String destino;
 	private int selectedEstatusActividad;
 	private Map<Integer,Mantenedor> catalogoEstatusActividad;
 	private Actividad actividad;
@@ -42,36 +36,17 @@ public class ActividadManagedBean {
 		catalogoEstatusActividad = new HashMap<Integer,Mantenedor>();
 	}
 	
+	
 	@PostConstruct
 	private void llenarCatalogos(){
-		List<Mantenedor> catalogos = service.getMantenedores();
-		for(int i=0; i<catalogos.size(); i++){
-			Mantenedor catalogo = catalogos.get(i);
-			if(catalogo.getTipo().equalsIgnoreCase("1"))
-				catalogoTiposActividad.put(catalogo.getId(), catalogo);
-			if(catalogo.getTipo().equalsIgnoreCase("4"))
-				catalogoEstatusActividad.put(catalogo.getId(), catalogo);
-		}
+		catalogoTiposActividad = service.getMapMantenedoresByTipo("1");
+		catalogoEstatusActividad = service.getMapMantenedoresByTipo("4");
 	}
-
-	public String getNombreActividad() {
-		return nombreActividad;
-	}
-
-	public void setNombreActividad(String nombreActividad) {
-		this.nombreActividad = nombreActividad;
-		this.descripcionActividad = nombreActividad;
-		this.actividad.setNombre(nombreActividad);
-		this.actividad.setDescripcion(nombreActividad);
-	}
-
-	public String getDescripcionActividad() {
-		return descripcionActividad;
-	}
-
-	public void setDescripcionActividad(String descripcionActividad) {
-		this.descripcionActividad = descripcionActividad;
-		this.actividad.setDescripcion(descripcionActividad);
+	
+	public void reset(){
+		this.actividad = new Actividad();
+		this.selectedEstatusActividad = 0;
+		this.selectedTipoActividad = 0;
 	}
 
 	public int getSelectedTipoActividad() {
@@ -83,37 +58,6 @@ public class ActividadManagedBean {
 		this.actividad.setTipo(catalogoTiposActividad.get(selectedTipoActividad));
 	}
 
-	public List<Mantenedor> getCatalogoTiposActividad() {
-		return new ArrayList<Mantenedor>(catalogoTiposActividad.values());
-	}
-
-	public Date getFechaInicial() {
-		return fechaInicial;
-	}
-
-	public void setFechaInicial(Date fechaInicial) {
-		this.fechaInicial = fechaInicial;
-		this.actividad.setFechaInicial(fechaInicial);
-	}
-
-	public Date getFechaFinal() {
-		return fechaFinal;
-	}
-
-	public void setFechaFinal(Date fechaFinal) {
-		this.fechaFinal = fechaFinal;
-		this.actividad.setFechaFinal(fechaFinal);
-	}
-
-	public String getDestino() {
-		return destino;
-	}
-
-	public void setDestino(String destino) {
-		this.destino = destino;
-		this.actividad.setDestino(destino);
-	}
-
 	public int getSelectedEstatusActividad() {
 		return selectedEstatusActividad;
 	}
@@ -122,12 +66,40 @@ public class ActividadManagedBean {
 		this.selectedEstatusActividad = selectedEstatusActividad;
 		this.actividad.setEstado(catalogoEstatusActividad.get(selectedEstatusActividad));
 	}
+	
+	public Actividad getActividad(){
+		return actividad;
+	}
+	
+	public void setActividad(Actividad actividad){
+		this.actividad = actividad;
+	}
+
+	public void setCatalogoTiposActividad(Map<Integer, Mantenedor> catalogoTiposActividad) {
+		System.out.println("ActividadManagedBean setCatalogoTiposActividad : "+catalogoTiposActividad.size());
+		this.catalogoTiposActividad = catalogoTiposActividad;
+	}
+	
+	public List<Mantenedor> getCatalogoTiposActividad() {
+		return new ArrayList<Mantenedor>(catalogoTiposActividad.values());
+	}
+	
+	/*
+	public Map<Integer, Mantenedor> getCatalogoTiposActividad() {
+		return catalogoTiposActividad;
+	}*/
+	
+	public void setCatalogoEstatusActividad(Map<Integer, Mantenedor> catalogoEstatusActividad) {
+		System.out.println("ActividadManagedBean setCatalogoEstatusActividad : "+catalogoEstatusActividad.size());
+		this.catalogoEstatusActividad = catalogoEstatusActividad;
+	}
 
 	public List<Mantenedor> getCatalogoEstatusActividad() {
 		return new ArrayList<Mantenedor>(catalogoEstatusActividad.values());
 	}
 	
-	public Actividad getActividad(){
-		return actividad;
-	}	
+	/*
+	public Map<Integer, Mantenedor> getCatalogoEstatusActividad() {
+		return catalogoEstatusActividad;
+	}*/
 }

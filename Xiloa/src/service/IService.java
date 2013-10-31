@@ -3,6 +3,7 @@ package service;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import support.Ifp;
 import support.UCompetencia;
@@ -24,6 +25,8 @@ public interface IService {
 	public List<Mantenedor> getMantenedores();
 	
 	public List<Mantenedor> getMantenedoresByTipo(Integer tipo);
+	
+	public Map<Integer, Mantenedor> getMapMantenedoresByTipo(String tipo);
 	
 	public List<Actividad> getActividades(Long certificacionId);
 	

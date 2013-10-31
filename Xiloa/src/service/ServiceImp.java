@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -367,8 +368,19 @@ public class ServiceImp implements IService {
 	}
 	
 	@Override
+	public Map<Integer, Mantenedor> getMapMantenedoresByTipo(String tipo) {
+		List<Mantenedor> l = mantenedorDao.findAllByQuery("Select m from mantenedores m where m.tipo='"+tipo+"'");
+		Map<Integer, Mantenedor> m = new HashMap<Integer, Mantenedor>();
+		if(l != null){
+			for(int i=0; i<l.size(); i++){
+				m.put(l.get(i).getId(), l.get(i));
+			}			
+		}
+		return m;
+	}
+	
+	@Override
 	public List<Laboral> getListLaboralByTipo(Integer tipo, Contacto contacto) {
 		return laboralDao.findAllByQuery("select l from laborales l where l.tipo = " + tipo + " and l.contacto.id = "+contacto.getId());				
-	}	
-	
+	}
 }

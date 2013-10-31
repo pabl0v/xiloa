@@ -58,8 +58,7 @@ public class Actividad {
 	@Column(name = "actividad_nombre", nullable = false)	
 	private String nombre;
 	
-	@NotNull
-	@Column(name = "actividad_descripcion", nullable = false)
+	@Column(name = "actividad_descripcion", nullable = true)
 	private String descripcion;
 	
 	@NotNull

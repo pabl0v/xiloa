@@ -104,9 +104,14 @@
 			<div id="tab_contenedor">
 				<p:tabView id="tabView">
 				
-					<p:tab id="tab1" title="Actividades">  
-						<h:form id="actividadesForm">     
-							<p:commandButton value="Agregar" style="margin-bottom: 5px" onclick="PF('dlg1').show();"/>
+					<p:tab id="tab1" title="Actividades">
+						<h:form id="actividadesForm">
+							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
+								<!--
+								<f:setPropertyActionListener target="#{actividadManagedBean.catalogoTiposActividad}" value="#{certificacionManagedBean.catalogoTiposActividad}" />
+								<f:setPropertyActionListener target="#{actividadManagedBean.catalogoEstatusActividad}" value="#{certificacionManagedBean.catalogoEstatusActividad}" />
+								-->
+							</p:commandButton>
 							<h:panelGroup id="contenidoActividades" style="border:0">
 								<p:dataTable id="actividadesDataTable" emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" paginator="true" rows="10" rowKey="#{actividad.nombre}" selectionMode="single">  
 									<f:facet name="header">  
@@ -134,7 +139,13 @@
 
 					<p:tab id="tab2" title="Divulgacion">  
 						<h:form>     
-							<p:commandButton value="Agregar" style="margin-bottom: 5px" onclick="PF('dlg1').show();"/>    
+							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
+								 <!--
+								<f:setPropertyActionListener target="#{actividadManagedBean.catalogoTiposActividad}" value="#{certificacionManagedBean.catalogoTiposActividad}" />
+								<f:setPropertyActionListener target="#{actividadManagedBean.catalogoEstatusActividad}" value="#{certificacionManagedBean.catalogoEstatusActividad}" />
+								 -->
+								 <f:setPropertyActionListener target="#{actividadManagedBean.catalogoTiposActividad}" value="1" />
+							</p:commandButton>    
 							<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.nombre}" selectionMode="single">  
 								<f:facet name="header">  
 									<p:outputPanel style="text-align:right;">  
@@ -160,7 +171,13 @@
 					
 					<p:tab id="tab3" title="Verificacion">  
 						<h:form>     
-							<p:commandButton value="Agregar" style="margin-bottom: 5px" onclick="PF('dlg1').show();"/>    
+							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
+								<!--
+								<f:setPropertyActionListener target="#{actividadManagedBean.catalogoTiposActividad}" value="#{certificacionManagedBean.catalogoTiposActividad}" />
+								<f:setPropertyActionListener target="#{actividadManagedBean.catalogoEstatusActividad}" value="#{certificacionManagedBean.catalogoEstatusActividad}" />
+								 -->
+								 <f:setPropertyActionListener target="#{actividadManagedBean.catalogoTiposActividad}" value="2" />
+							</p:commandButton>    
 							<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.nombre}" selectionMode="single">  
 								<f:facet name="header">  
 									<p:outputPanel style="text-align:right;">  
@@ -185,7 +202,13 @@
                     
 					<p:tab id="tab4" title="UC a evaluar">  
 						<h:form>     
-							<p:commandButton value="Agregar" style="margin-bottom: 5px" onclick="PF('dlg1').show();"/>    
+							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
+								<!-- 
+								<f:setPropertyActionListener target="#{actividadManagedBean.catalogoTiposActividad}" value="#{certificacionManagedBean.catalogoTiposActividad}" />
+								<f:setPropertyActionListener target="#{actividadManagedBean.catalogoEstatusActividad}" value="#{certificacionManagedBean.catalogoEstatusActividad}" />
+								 -->
+								 <f:setPropertyActionListener target="#{actividadManagedBean.catalogoTiposActividad}" value="3" />
+							</p:commandButton>    
 							<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.nombre}" selectionMode="single">  
 								<f:facet name="header">  
 									<p:outputPanel style="text-align:right;">  
@@ -214,18 +237,18 @@
         
 	<p:dialog id="modalDialog" styleClass="estilo_dialogoactividades" header="Agregar actividades:" widgetVar="dlg1" modal="true" resizable="false" width="550" height="570">
 		<div id="contenedor_dialogoactividades">
-			<h:form>
+			<h:form id="formDialogo1">
 				<h3>Planificacion de actividades</h3>
 				<p>Nombre de la actividad</p>
-				<p:inputTextarea rows="10" cols="50" value="#{actividadManagedBean.nombreActividad}" queryDelay="750" minQueryLength="4" />
+				<p:inputTextarea rows="10" cols="50" value="#{actividadManagedBean.actividad.nombre}" queryDelay="750" minQueryLength="4" />
 				<div class="dialogoactividades_secciones">
 					<p:growl id="growl" showDetail="true"/>
 					<p>Fecha:</p>
-					<p:calendar value="#{actividadManagedBean.fechaInicial}" id="popupButtonCal1" showOn="button" pattern="dd/MM/yyyy">
+					<p:calendar value="#{actividadManagedBean.actividad.fechaInicial}" id="popupButtonCal1" showOn="button" pattern="dd/MM/yyyy">
 						<p:ajax event="dateSelect" update="growl" />
 					</p:calendar>
 				</div>
-				<div class="dialogoactividades_secciones">  
+				<div class="dialogoactividades_secciones">
 					<p>Estatus:</p>
 					<p:selectOneMenu id="selectEstatus" value="#{actividadManagedBean.selectedEstatusActividad}">
 						<f:selectItem itemLabel="Seleccione..." itemValue="" />
@@ -233,7 +256,7 @@
 					</p:selectOneMenu>
 				</div> 
 				<p>Lugar/Medio:</p>
-				<p:inputTextarea rows="10" cols="50" value="#{actividadManagedBean.destino}" queryDelay="750" minQueryLength="4" />
+				<p:inputTextarea rows="10" cols="50" value="#{actividadManagedBean.actividad.destino}" queryDelay="750" minQueryLength="4" />
 				<div class="dialogoactividades_secciones2">   
 					<p>Tipo de actividad:</p>
 					<p:selectOneMenu id="selectTipo" value="#{actividadManagedBean.selectedTipoActividad}">
@@ -266,7 +289,7 @@
 				</div>
 				<div id="dialogoactividades_botones">
 					<h:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/>
-					<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardarActividad(actividadManagedBean.actividad)}" update=":tabView" oncomplete="PF('dlg1').hide();"/>
+					<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardarActividad(actividadManagedBean.actividad)}" update=":tabView, :formDialogo1" oncomplete="PF('dlg1').hide();"/>
 			</div>
 			</h:form>
 		</div>

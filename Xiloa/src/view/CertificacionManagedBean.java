@@ -49,9 +49,9 @@ public class CertificacionManagedBean implements Serializable {
 	private Date fechaIniciaEvaluacion;
 	private List<Mantenedor> tipoActividades;
 	private Usuario usuario;
-	private Map<Integer, Mantenedor> catalogoActividades;
+	private Map<Integer, Mantenedor> catalogoTiposActividad;
 	private int selectedTipoActividad;
-	private List<Mantenedor> catalogoEstatusActividades;
+	private Map<Integer, Mantenedor> catalogoEstatusActividad;
 	private int selectedEstatusActividad;
 	private Certificacion certificacion;
 	
@@ -77,12 +77,17 @@ public class CertificacionManagedBean implements Serializable {
 		actividad = new Actividad();
 		actividades = new ArrayList<Actividad>();
 		estatusList = new ArrayList<Mantenedor>();
-		catalogoActividades = new HashMap<Integer, Mantenedor>();
+		catalogoTiposActividad = new HashMap<Integer, Mantenedor>();
+		catalogoEstatusActividad = new HashMap<Integer, Mantenedor>();
 	}
 	
 	@PostConstruct
-	private void generarActividades(){
-		usuario = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName()); 
+	private void init(){
+		usuario = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
+		catalogoTiposActividad = service.getMapMantenedoresByTipo("1");
+		System.out.println("Catalogo de tipos de actividad: "+catalogoTiposActividad.size());
+		catalogoEstatusActividad = service.getMapMantenedoresByTipo("4");
+		System.out.println("Catalogo de estatus de actividad: "+catalogoEstatusActividad.size());
 	}
 	
 	public Certificacion getCertificacion(){
@@ -220,7 +225,7 @@ public class CertificacionManagedBean implements Serializable {
 		System.out.println("Tipos actividad:"+tipoActividades.get(0).getValor());
 		System.out.println("Tipos actividad:"+tipoActividades.get(1).getValor());
 		for(int i=0; i<tipoActividades.size(); i++){
-			catalogoActividades.put(tipoActividades.get(i).getId(), tipoActividades.get(i));
+			catalogoTiposActividad.put(tipoActividades.get(i).getId(), tipoActividades.get(i));
 		}
 		return tipoActividades;
 	}
@@ -249,14 +254,25 @@ public class CertificacionManagedBean implements Serializable {
 	public void setFechaActividad(Date fechaActividad) {
 		this.fechaActividad = fechaActividad;
 	}
+
 	public List<Actividad> getActividades() {
-		//if(certificacionId != null){
-			//actividades = service.getActividades(certificacionId);
 			return actividades;
-		//}
-		//else
-			//return null;
 	}
+	
+	/*public List<Actividad> getActividades(int codigo){
+		System.out.println("Codigo de actividad: "+codigo);
+		List<Actividad> lista = new ArrayList<Actividad>();
+		if(codigo==0)
+			return actividades;
+		else{
+			for(int i=0; i<actividades.size(); i++){
+				if(actividades.get(i).getId()==(long)codigo)
+					lista.add(actividades.get(i));
+			}
+		}
+		return lista;
+	}*/
+	
 	public Actividad getActividad() {
 		return actividad;
 	}
@@ -324,5 +340,13 @@ public class CertificacionManagedBean implements Serializable {
 
 	public void setSelectedEstatusActividad(int selectedEstatusActividad) {
 		this.selectedEstatusActividad = selectedEstatusActividad;
+	}
+
+	public Map<Integer, Mantenedor> getCatalogoTiposActividad() {
+		return this.catalogoTiposActividad;
+	}
+
+	public Map<Integer, Mantenedor> getCatalogoEstatusActividad() {
+		return this.catalogoEstatusActividad;
 	}
 }

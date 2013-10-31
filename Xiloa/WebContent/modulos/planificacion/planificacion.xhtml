@@ -30,7 +30,7 @@
       
         <div id="contenedor_tabla_planificacion">
             <h:form id="form">  
-                <p:dataTable emptyMessage="No hay datos para mostrar" var="planificacion" value="#{planificacionManagedBean.certificaciones}" selection="#{planificacionManagedBean.selectedCertificacion}" rowKey="#{planificacion.id}" selectionMode="single">  
+                <p:dataTable emptyMessage="No hay datos para mostrar" var="planificacion" value="#{planificacionManagedBean.certificaciones}" selection="#{planificacionManagedBean.selectedCertificacion}" paginator="true" rows="12" rowKey="#{planificacion.id}" selectionMode="single">  
                         <!--Las columnas de la tabla-->
                         <p:column headerText="Registrado"><h:outputText value="#{planificacion.fechaRegistro}" /></p:column>  
                         <p:column headerText="Centro de Formacion"><h:outputText value="#{planificacion.ifpNombre}" /></p:column>  
