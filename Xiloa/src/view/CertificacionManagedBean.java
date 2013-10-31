@@ -8,8 +8,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 import model.Actividad;
+import model.Certificacion;
 import model.Contacto;
 import model.Mantenedor;
 import model.Unidad;
@@ -52,6 +55,8 @@ public class CertificacionManagedBean implements Serializable {
 	private int selectedTipoActividad;
 	private List<Mantenedor> catalogoEstatusActividades;
 	private int selectedEstatusActividad;
+	private Certificacion certificacion;
+	private String test;
 	
 	/*
 	 * 
@@ -70,6 +75,7 @@ public class CertificacionManagedBean implements Serializable {
 	
 	public CertificacionManagedBean(){
 		super();
+		certificacion = new Certificacion();
 		contactos = new ArrayList<Contacto>();
 		actividad = new Actividad();
 		actividades = new ArrayList<Actividad>();
@@ -80,6 +86,14 @@ public class CertificacionManagedBean implements Serializable {
 	@PostConstruct
 	private void generarActividades(){
 		usuario = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName()); 
+	}
+	
+	public Certificacion getCertificacion(){
+		return this.certificacion;
+	}
+	
+	public void setCertificacion(Certificacion certificacion){
+		this.certificacion = certificacion;
 	}
 	
 	public void agregarActividad(Actividad actividad){
@@ -239,12 +253,12 @@ public class CertificacionManagedBean implements Serializable {
 		this.fechaActividad = fechaActividad;
 	}
 	public List<Actividad> getActividades() {
-		if(certificacionId != null){
-			actividades = service.getActividades(certificacionId);
+		//if(certificacionId != null){
+			//actividades = service.getActividades(certificacionId);
 			return actividades;
-		}
-		else
-			return null;
+		//}
+		//else
+			//return null;
 	}
 	public Actividad getActividad() {
 		return actividad;
@@ -306,6 +320,7 @@ public class CertificacionManagedBean implements Serializable {
 	
 	public void guardarActividad(Actividad actividad){
 		actividad.setCreador(getUsuario());
+		System.out.println("Nueva Actividad: "+actividad.getNombre());
 		this.actividades.add(actividad);
 	}
 	/*
@@ -357,7 +372,14 @@ public class CertificacionManagedBean implements Serializable {
 	}*/
 	
 	public String nuevaCertificacion(){
-		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
+		//return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
+		return "/modulos/planificacion/edicion?faces-redirect=true";
+	}
+	
+	public String editarCertificacion(Certificacion certificacion){
+		this.certificacion = certificacion;
+		System.out.println("Nombre de la certificacion a editar: "+certificacion.getNombre());
+		return "/modulos/planificacion/edicion?faces-redirect=true";
 	}
 
 	public int getSelectedEstatusActividad() {
@@ -366,5 +388,15 @@ public class CertificacionManagedBean implements Serializable {
 
 	public void setSelectedEstatusActividad(int selectedEstatusActividad) {
 		this.selectedEstatusActividad = selectedEstatusActividad;
+	}
+
+	public String getTest() {
+		if(actividades.isEmpty())
+			return "hola";
+		return actividades.get(0).getNombre();
+	}
+
+	public void setTest(String test) {
+		this.test = test;
 	}
 }

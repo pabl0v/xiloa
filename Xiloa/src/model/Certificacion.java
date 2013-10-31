@@ -134,7 +134,7 @@ public class Certificacion {
 	@OneToMany(mappedBy = "certificacion")
 	private List<Solicitud> solicitudes;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable
 	(
 			name = "pinvolucrados",
@@ -143,6 +143,14 @@ public class Certificacion {
 	)
 	@MapKeyColumn(name="id_rol")
 	private Map<Integer, Contacto> involucrados;
+	
+	public Contacto getCoordinador(){
+		return involucrados.get(2);
+	}
+	
+	public Contacto getEvaluador(){
+		return involucrados.get(3);
+	}
 	
 	public Certificacion(){
 		super();

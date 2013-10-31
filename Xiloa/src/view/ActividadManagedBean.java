@@ -129,54 +129,5 @@ public class ActividadManagedBean {
 	
 	public Actividad getActividad(){
 		return actividad;
-	}
-	
-	/*
-	private Actividad actividad;
-	private Map<Integer, Mantenedor> catalogoActividades;
-	private int selectedTipoActividad;
-	private Map<Integer, Mantenedor> catalogoEstatusActividades;
-	private int selectedEstatusActividad;
-	
-	public ActividadManagedBean(){
-		super();
-		actividad = new Actividad();
-	}
-	
-	public Actividad getActividad(){
-		return this.actividad;
-	}
-
-	public int getSelectedTipoActividad() {
-		return selectedTipoActividad;
-	}
-
-	public void setSelectedTipoActividad(int selectedTipoActividad) {
-		this.selectedTipoActividad = selectedTipoActividad;
-	}
-
-	public int getSelectedEstatusActividad() {
-		return selectedEstatusActividad;
-	}
-
-	public void setSelectedEstatusActividad(int selectedEstatusActividad) {
-		this.selectedEstatusActividad = selectedEstatusActividad;
-	}
-
-	public List<Mantenedor> getCatalogoActividades() {
-		return (List<Mantenedor>) catalogoActividades.values();
-	}
-
-	public void setCatalogoActividades(Map<Integer, Mantenedor> catalogoActividades) {
-		this.catalogoActividades = catalogoActividades;
-	}
-
-	public List<Mantenedor> getCatalogoEstatusActividades() {
-		return (List<Mantenedor>) catalogoEstatusActividades.values();
-	}
-
-	public void setCatalogoEstatusActividades(Map<Integer, Mantenedor> catalogoEstatusActividades) {
-		this.catalogoEstatusActividades = catalogoEstatusActividades;
-	}
-	*/
+	}	
 }

@@ -3,13 +3,16 @@ package view;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
+import model.Certificacion;
+
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import service.IService;
-import support.Planificacion;
 import support.UCompetencia;
 
 @Component
@@ -18,37 +21,47 @@ public class PlanificacionManagedBean {
 	
 	@Autowired
 	private IService service;
-	private List<Planificacion> planificaciones = new ArrayList<Planificacion>();
-	private List<UCompetencia> competencias = new ArrayList<UCompetencia>();
+	private List<Certificacion> certificaciones;
+	private List<UCompetencia> competencias;
 	private UCompetencia selectedCompetencia;
-	private Planificacion selectedPlanificacion;
-		
-	public List<Planificacion> getPlanificaciones(){
-		planificaciones = service.getPlanificacion();
-		return planificaciones;
+	private Certificacion selectedCertificacion;
+	
+	public PlanificacionManagedBean(){
+		super();
+		certificaciones = new ArrayList<Certificacion>();
+		competencias = new ArrayList<UCompetencia>();
+	}
+	
+	@PostConstruct
+	private void llenarDatos(){
+		competencias = service.getUcompetenciaSinPlanificar();
+		certificaciones = service.getCertificaciones();
+	}
+	
+	public List<Certificacion> getCertificaciones(){
+		return certificaciones;
 	}
 	
 	public List<UCompetencia> getCompetencias(){
-		competencias = service.getUcompetenciaSinPlanificar();
 		return competencias;
+	}
+		
+	public Certificacion getSelectedCertificacion() {
+		return selectedCertificacion;
+	}
+
+	public void setSelectedCertificacion(Certificacion selectedCertificacion) {
+		this.selectedCertificacion = selectedCertificacion;
 	}
 
 	public UCompetencia getSelectedCompetencia() {
 		return selectedCompetencia;
 	}
 	
-	public void onRowSelectCompetencia(SelectEvent event) {  
-    }
-
 	public void setSelectedCompetencia(UCompetencia selectedCompetencia) {
 		this.selectedCompetencia = selectedCompetencia;
 	}
-
-	public Planificacion getSelectedPlanificacion() {
-		return selectedPlanificacion;
-	}
-
-	public void setSelectedPlanificacion(Planificacion selectedPlanificacion) {
-		this.selectedPlanificacion = selectedPlanificacion;
-	}
+	
+	public void onRowSelectCompetencia(SelectEvent event) {  
+    }
 }

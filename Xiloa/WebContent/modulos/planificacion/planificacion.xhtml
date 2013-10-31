@@ -30,19 +30,19 @@
       
         <div id="contenedor_tabla_planificacion">
             <h:form id="form">  
-                <p:dataTable emptyMessage="No hay datos para mostrar" var="planificacion" value="#{planificacionManagedBean.planificaciones}">  
+                <p:dataTable emptyMessage="No hay datos para mostrar" var="planificacion" value="#{planificacionManagedBean.certificaciones}" selection="#{planificacionManagedBean.selectedCertificacion}" rowKey="#{planificacion.id}" selectionMode="single">  
                         <!--Las columnas de la tabla-->
-                        <p:column headerText="Registrado"><h:outputText value="#{planificacion.registrado}" /></p:column>  
-                        <p:column headerText="Centro de Formacion"><h:outputText value="#{planificacion.nombreCentro}" /></p:column>  
-                        <p:column headerText="Unidad de Competencia"><h:outputText value="#{planificacion.unidadCompetencia}"/></p:column>  
+                        <p:column headerText="Registrado"><h:outputText value="#{planificacion.fechaRegistro}" /></p:column>  
+                        <p:column headerText="Centro de Formacion"><h:outputText value="#{planificacion.ifpNombre}" /></p:column>  
+                        <p:column headerText="Unidad de Competencia"><h:outputText value="#{planificacion.nombreCompetencia}"/></p:column>
                         <p:column headerText="Disponible"><h:outputText value="#{planificacion.disponibilidad}" /></p:column>               
-                        <p:column headerText="Solicitudes"><h:outputText value="#{planificacion.solicitudes}" /></p:column>                
-                        <p:column headerText="Coordinador"><h:outputText value="#{planificacion.coordina}" /></p:column>                
-                        <p:column headerText="Evalua"><h:outputText value="#{planificacion.evalua}" /></p:column>                
-                        <p:column headerText="Estatus"><h:outputText value="#{planificacion.estatus}" /></p:column>               
+                        <p:column headerText="Solicitudes"><h:outputText value="#{planificacion.disponibilidad}" /></p:column>                
+                        <p:column headerText="Coordinador"><h:outputText value="#{planificacion.coordinador.nombreCompleto}" /></p:column>                
+                        <p:column headerText="Evalua"><h:outputText value="#{planificacion.evaluador.nombreCompleto}" /></p:column>
+                        <p:column headerText="Estatus"><h:outputText value="#{planificacion.estatus.valor}" /></p:column>               
                         <p:column style="width:4%">
-				            <p:commandButton id="selectButton" oncomplete="PF('carDialog').show()" icon="ui-icon-pencil" title="Editar">  
-				                <f:setPropertyActionListener value="#{car}" target="#{planificacion.selectedPlanificacion}" />  
+				            <p:commandButton id="selectButton" action="#{certificacionManagedBean.editarCertificacion(planificacionManagedBean.selectedCertificacion)}" icon="ui-icon-pencil" title="Editar">  
+				                <!-- <f:setPropertyActionListener target="#{certificacionManagedBean.certificacion}" value="#{planificacionManagedBean.selectedCertificacion}}" /> -->  
 				            </p:commandButton>  
 				        </p:column> 
                 </p:dataTable>

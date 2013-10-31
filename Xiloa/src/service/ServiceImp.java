@@ -1,6 +1,5 @@
 package service;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import support.Ifp;
-import support.Planificacion;
 import support.USolicitud;
 import support.UCompetencia;
 import dao.IDao;
@@ -57,6 +55,11 @@ public class ServiceImp implements IService {
 	private IDao<Unidad> unidadDao;
 	@Autowired	
 	private IDaoInatec inatecDao;
+	
+	@Override
+	public List<Certificacion> getCertificaciones(){
+		return certificacionDao.findAll(Certificacion.class);
+	}
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
@@ -146,47 +149,6 @@ public class ServiceImp implements IService {
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)	
 	public void updateUsuario(Usuario usuario) {
 		usuarioDao.save(usuario);
-	}
-
-	@Override
-	public List<Planificacion> getPlanificacion() {
-		
-		/*String query = 	"Select "
-						+ "NEW support.Planificacion("
-						+ "c.id, "
-						+ "c.fechaRegistro, "
-						+ "c.ifpNombre, "
-						+ "c.nombreCompetencia, "
-						+ "c.disponibilidad, "
-						+ "count(s.id), "
-						+ "c.involucrados.get(2).getNombreCompleto(), "
-						+ "c.involucrados.get(3).getNombreCompleto(), "
-						+ "c.estatus.getValor())"
-						+ "from "
-						+ "certificaciones c "
-						+ "left join "
-						+ "solicitudes s "
-						+ "on c.id = s.certificacion.id "
-						+ "order by c.id";*/
-		
-		List<Planificacion> planificaciones = new ArrayList<Planificacion>();
-		//planificaciones = planificacionDao.findAllByQuery(query);
-		List<Certificacion> certificaciones = certificacionDao.findAll(Certificacion.class);
-		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-		for(int i=0; i<certificaciones.size(); i++){
-			Planificacion planificacion = new Planificacion();
-			planificacion.setIdPlanificacion(certificaciones.get(i).getId());
-			planificacion.setRegistrado(formato.format(certificaciones.get(i).getFechaRegistro()));
-			planificacion.setNombreCentro(certificaciones.get(i).getIfpNombre());
-			planificacion.setUnidadCompetencia(certificaciones.get(i).getNombreCompetencia());
-			planificacion.setDisponibilidad(certificaciones.get(i).getDisponibilidad());
-			planificacion.setSolicitudes(0);
-			planificacion.setCoordina(certificaciones.get(i).getInvolucrados().get(2).getNombreCompleto());
-			planificacion.setEvalua(certificaciones.get(i).getInvolucrados().get(3).getNombreCompleto());
-			planificacion.setEstatus(certificaciones.get(i).getEstatus().getValor());
-			planificaciones.add(planificacion);
-		}
-		return planificaciones;
 	}
 
 	@Override
@@ -344,16 +306,6 @@ public class ServiceImp implements IService {
 			return solicitudDao.save((Solicitud) objeto);
 		}
 		if(objeto instanceof Actividad){
-			/*Usuario usuario = usuarioDao.findOneByQuery("select u from usuarios u where u.id=3");
-			((Actividad) objeto).setCreador(usuario);
-			((Actividad) objeto).setEjecutor(usuario);
-			Mantenedor estado = mantenedorDao.findOneByQuery("Select m from mantenedores m where m.id=1");
-			((Actividad) objeto).setEstado(estado);
-			((Actividad) objeto).setNombre("actividad 1");
-			((Actividad) objeto).setDescripcion("prueba");
-			((Actividad) objeto).setDestino("managua");
-			((Actividad) objeto).setFechaInicial(new Date());
-			((Actividad) objeto).setFechaFinal(new Date());*/
 			return actividadDao.save((Actividad)objeto);
 		}
 		if(objeto instanceof Mantenedor)

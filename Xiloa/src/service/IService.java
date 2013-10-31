@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import support.Ifp;
-import support.Planificacion;
 import support.UCompetencia;
 import support.USolicitud;
 import model.Actividad;
@@ -18,6 +17,8 @@ import model.Solicitud;
 import model.Usuario;
 
 public interface IService {
+	
+	public List<Certificacion> getCertificaciones();
 		
 	public List<Mantenedor> getMantenedores();
 	
@@ -63,7 +64,6 @@ public interface IService {
 	public void updateRequisito(Requisito requisito);
 	public List<Usuario> getUsuarios();
 	public void updateUsuario(Usuario usuario);
-	public List<Planificacion> getPlanificacion();
 	public List<UCompetencia> getUcompetenciaSinPlanificar();
 	public List<Contacto> getContactosInatec();
 	public Usuario getUsuarioLocal(String usuario);
