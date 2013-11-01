@@ -35,6 +35,11 @@ public class Actividad {
 	private Mantenedor tipo;
 	
 	@DateTimeFormat(iso = ISO.DATE)
+	@Column(name = "actividad_fecha_registro", nullable = false)
+	@Temporal(TemporalType.DATE)
+	private Date fechaRegistro;
+	
+	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "actividad_fecha_inicial", nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Date fechaInicial;
@@ -221,5 +226,13 @@ public class Actividad {
 		super();
 		involucrados = new ArrayList<Contacto>();
 		//this.bitacora = new ArrayList<Bitacora>();
+	}
+
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
 	}
 }

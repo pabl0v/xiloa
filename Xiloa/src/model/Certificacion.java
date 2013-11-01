@@ -49,6 +49,9 @@ public class Certificacion {
 	@Column(name = "certificacion_disponibilidad", nullable = false)
 	private int disponibilidad;
 	
+	@Column(name = "certificacion_costo", nullable = false)
+	private float costo;
+	
 	@NotNull
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "certificacion_fecha_registro", nullable = false)
@@ -210,6 +213,14 @@ public class Certificacion {
 		this.disponibilidad = disponibilidad;
 	}
 
+	public float getCosto() {
+		return costo;
+	}
+
+	public void setCosto(float costo) {
+		this.costo = costo;
+	}
+
 	public Date getFechaRegistro() {
 		return fechaRegistro;
 	}
@@ -364,6 +375,10 @@ public class Certificacion {
 		}
 	}
 	
+	public void addActividad(Actividad actividad){
+		this.actividades.add(actividad);
+	}
+	
 	public void setActividades(List<Actividad> actividades) {
 		this.actividades = actividades;
 	}
@@ -376,9 +391,14 @@ public class Certificacion {
 		this.solicitudes = solicitudes;
 	}
 
+	/*
 	public Map<Integer, Contacto> getInvolucrados() {
 		return involucrados;
-	}
+	}*/
+	
+	public List<Contacto> getInvolucrados() {
+		return new ArrayList<Contacto>(involucrados.values());
+	}	
 
 	public void setInvolucrados(Contacto[] involucrados) {
 		for(int i=0; i<involucrados.length; i++){

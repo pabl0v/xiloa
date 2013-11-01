@@ -95,7 +95,7 @@
 				<div class="seccion_edicion" style="height: 1px"></div>
 				<div class="seccion_edicion" style="height: 1px">
 					<div class="contenedor_botones">
-						<h:commandButton value="Cancelar"/> 
+						<h:commandButton value="Cancelar" action="#{certificacionManagedBean.cancelar}"/> 
 						<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardar}"/> 
 					</div>
             	</div>
@@ -121,7 +121,8 @@
 										</p:outputPanel>  
 									</f:facet>
 									<!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
-									<p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
+									<!-- <p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />-->
+									<p:ajax event="rowSelect" listener="#{actividadManagedBean.editarActividad(actividad)}" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
 									<p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>  
 									<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>  
 									<p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
@@ -154,7 +155,8 @@
 									</p:outputPanel>  
 								</f:facet>   
 								<!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
-								<p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
+								<!-- <p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />-->
+								<p:ajax event="rowSelect" listener="#{actividadManagedBean.editarActividad(actividad)}" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
 								<p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>  
 								<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>  
 								<p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
@@ -185,7 +187,8 @@
 										<p:inputText id="globalFilter" onkeyup="carsTable.filter()" style="margin-left: 4px; width:150px" />  
 									</p:outputPanel>  
 								</f:facet>               
-								<p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
+								<!-- <p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />-->
+								<p:ajax event="rowSelect" listener="#{actividadManagedBean.editarActividad(actividad)}" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
 								<p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>  
 								<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>  
 								<p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
@@ -216,7 +219,8 @@
 										<p:inputText id="globalFilter" onkeyup="carsTable.filter()" style="margin-left: 4px; width:150px" />  
 									</p:outputPanel>  
 								</f:facet>               
-								<p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
+								<!--  <p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />-->
+								<p:ajax event="rowSelect" listener="#{actividadManagedBean.editarActividad(actividad)}" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />								          
 								<p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>  
 								<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>  
 								<p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  

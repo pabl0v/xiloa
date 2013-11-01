@@ -1,6 +1,7 @@
 package view;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ public class ActividadManagedBean {
 	public ActividadManagedBean(){
 		super();
 		actividad = new Actividad();
+		actividad.setFechaRegistro(new Date());
 		catalogoTiposActividad = new HashMap<Integer,Mantenedor>();
 		catalogoEstatusActividad = new HashMap<Integer,Mantenedor>();
 	}
@@ -102,4 +104,14 @@ public class ActividadManagedBean {
 	public Map<Integer, Mantenedor> getCatalogoEstatusActividad() {
 		return catalogoEstatusActividad;
 	}*/
+	
+	public void editarActividad(Actividad actividad){
+		System.out.println("ActividadManagedBean recibe actividad: "+actividad.getNombre());
+		this.actividad = actividad;
+	}
+	
+	public String cancelar(){
+		actividad = new Actividad();
+		return "/modulos/planificacion/edicion?faces-redirect=true";
+	}
 }

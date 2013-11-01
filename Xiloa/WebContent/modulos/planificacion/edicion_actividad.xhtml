@@ -16,7 +16,7 @@
 	    	</ui:insert>
 	    	<script type="text/javascript" src="../../resources/scripts/edicion_actividad.js"></script>
 		</div>    
-        <h2>Unidad de Competencia: Certificacion CISCO</h2>
+        <h2>Unidad de Competencia: <h:outputText value="#{actividadManagedBean.actividad.nombre}" /></h2>
         <div id="contenedor_secciones">
                       
             <div class="seccion_edicion" style="height:140px;">
@@ -27,13 +27,13 @@
                    <f:selectItems value="#{pprBean.cities}" />  
                 </p:selectOneMenu>             
                 <p>Registrado:</p>
-                <span><p:calendar value="#{calendarBean.date3}" id="fecha_registrado" showOn="button" /></span>  
+                <span><p:calendar value="#{actividadManagedBean.actividad.fechaRegistro}" id="fecha_registrado" showOn="button" pattern="dd/MM/yyyy" /></span>  
                 </h:form>
                 <div class="seccion_interna" style="height:90px; padding: 10px; margin-top:5px;">
              		<h:form>
              		  <div style="dsplay:block;">
                         <p style="width:240px; margin-bottom:20px;">Fecha en que se ejecutara la actividad:</p>
-                        <span style="width:60px"><p:calendar value="#{calendarBean.date3}" id="fecha_ejecutara" showOn="button" /></span>
+                        <span style="width:60px"><p:calendar value="#{actividadManagedBean.actividad.fechaInicial}" id="fecha_ejecutara" showOn="button" /></span>
                       </div>   
                         <p>Hora:</p>
                         <p:inputText style="margin-left:5px;"></p:inputText>  
@@ -94,7 +94,7 @@
             
             <div class="seccion_edicion" style="height:30px;">
                <h:form>
-                    <p:commandButton value="Cancelar"/> 
+                    <p:commandButton value="Cancelar" action="#{actividadManagedBean.cancelar}"/> 
                     <p:commandButton value="Aceptar"/> 
                </h:form>
             </div>

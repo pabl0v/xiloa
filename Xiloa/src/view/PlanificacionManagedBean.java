@@ -16,7 +16,7 @@ import service.IService;
 import support.UCompetencia;
 
 @Component
-@Scope(value="session")
+@Scope(value="request")
 public class PlanificacionManagedBean {
 	
 	@Autowired

@@ -68,7 +68,7 @@ public class CertificacionManagedBean implements Serializable {
 	private Actividad actividad;
 	private List<Actividad> actividades;
 	private List<Mantenedor> estatusList;
-	private int selectedEstatus;
+	private Integer selectedEstatus;
 	
 	public CertificacionManagedBean(){
 		super();
@@ -163,6 +163,7 @@ public class CertificacionManagedBean implements Serializable {
 	}
 	public void setSelectedContactos(Contacto[] selectedContactos) {
 		this.selectedContactos = selectedContactos;
+		this.certificacion.setInvolucrados(selectedContactos);
 	}
 	/*
 	public void handleDateSelect(DateSelectEvent event){
@@ -210,12 +211,15 @@ public class CertificacionManagedBean implements Serializable {
 	public void setFechaIniciaEvaluacion(Date fechaIniciaEvaluacion) {
 		this.fechaIniciaEvaluacion = fechaIniciaEvaluacion;
 	}
-	public int getSelectedEstatus() {
+	public Integer getSelectedEstatus() {
 		return selectedEstatus;
 	}
-	public void setSelectedEstatus(int estatus) {
+	
+	public void setSelectedEstatus(Integer estatus) {
 		this.selectedEstatus = estatus;
+		this.certificacion.setEstatus(catalogoEstatusActividad.get(estatus));
 	}
+	
 	public List<Mantenedor> getEstatusList() {
 		estatusList = service.getMantenedorEstatusCertificacion();
 		return estatusList;
@@ -259,25 +263,26 @@ public class CertificacionManagedBean implements Serializable {
 			return actividades;
 	}
 	
-	/*public List<Actividad> getActividades(int codigo){
-		System.out.println("Codigo de actividad: "+codigo);
-		List<Actividad> lista = new ArrayList<Actividad>();
-		if(codigo==0)
-			return actividades;
-		else{
-			for(int i=0; i<actividades.size(); i++){
-				if(actividades.get(i).getId()==(long)codigo)
-					lista.add(actividades.get(i));
-			}
-		}
-		return lista;
-	}*/
-	
 	public Actividad getActividad() {
 		return actividad;
 	}
 	public void setActividad(Actividad actividad) {
 		this.actividad = actividad;
+	}
+	
+	public String cancelar(){
+		certificacion = new Certificacion();
+		return "/modulos/planificacion/planificacion?faces-redirect=true";
+	}
+	
+	public String guardarEdicion(){
+		certificacion.setFechaRegistro(new Date());
+		certificacion.setCreador(usuario);
+		certificacion.setProgramador(usuario);
+		certificacion.setReferencial("N/D");
+		certificacion = (Certificacion) service.guardar(certificacion);
+		certificacion = new Certificacion();
+		return "/modulos/planificacion/planificacion?faces-redirect=true";
 	}
 	
 	public String guardar(){
@@ -322,10 +327,38 @@ public class CertificacionManagedBean implements Serializable {
 		actividad.setCreador(getUsuario());
 		System.out.println("Nueva Actividad: "+actividad.getNombre());
 		this.actividades.add(actividad);
+		this.certificacion.addActividad(actividad);
 	}
+	
 	public String nuevaCertificacion(){
-		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
-		//return "/modulos/planificacion/edicion?faces-redirect=true";
+		
+		String codigoCompetencia = certificacion.getCodigoCompetencia();
+		String nombreCompetencia = certificacion.getNombreCompetencia();
+		int disponibilidad = certificacion.getDisponibilidad();
+		String nombre = certificacion.getNombre();
+		String descripcion = certificacion.getDescripcion();
+		float costo = certificacion.getCosto();
+		int ifpId = certificacion.getIfpId();
+		String ifpNombre = certificacion.getIfpNombre();
+		String ifpDireccion = certificacion.getIfpDireccion();
+		
+		certificacion = new Certificacion();
+		
+		certificacion.setCodigoCompetencia(codigoCompetencia);
+		certificacion.setNombreCompetencia(nombreCompetencia);
+		certificacion.setDisponibilidad(disponibilidad);
+		certificacion.setNombre(nombre);
+		certificacion.setDescripcion(descripcion);
+		certificacion.setCosto(costo);
+		certificacion.setIfpId(Integer.valueOf(ifpId));
+		certificacion.setIfpNombre(ifpNombre);
+		certificacion.setIfpDireccion(ifpDireccion);
+		
+		certificacion.setActividades(new ArrayList<Actividad>());
+		certificacion.setUnidades(new ArrayList<Unidad>());
+		certificacion.setInvolucrados(new Contacto[] {});
+
+		return "/modulos/planificacion/edicion?faces-redirect=true";
 	}
 	
 	public String editarCertificacion(Certificacion certificacion){

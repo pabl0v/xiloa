@@ -63,7 +63,7 @@
                 </h:form>    
                 <h:form id="form">
                    <div class="seccion_interna">
-                   <p:dataTable id="display" emptyMessage="No hay datos para mostrar"  var="contacto" value="#{certificacionManagedBean.selectedContactos}">  
+                   <p:dataTable id="display" emptyMessage="No hay datos para mostrar"  var="contacto" value="#{certificacionManagedBean.certificacion.involucrados}">  
                         <p:column headerText="Nombre"><h:outputText value="#{contacto.nombreCompleto}" /></p:column>  
                         <p:column headerText="Funcion"><h:outputText value="#{contacto.rol.descripcion}" /></p:column>  
                         <p:column headerText="Correo electronico"><h:outputText value="#{contacto.correo1}" /></p:column>  
@@ -88,127 +88,166 @@
 					<p>Nombre del centro evaluador</p>
 					<p:inputText id="txt" styleClass="selector_nombrecentro_estilo" value="#{certificacionManagedBean.certificacion.ifpNombre}" completeMethod="#{certificacionManagedBean.certificacion.ifpNombre}"/>  
 					<p style="display:block"><br/>Direccion del centro evaluador</p>
-					<p:inputTextarea rows="105" cols="68" value="#{certificacionManagedBean.direccionCentro}" queryDelay="750" minQueryLength="4" />  
+					<p:inputTextarea rows="105" cols="68" value="#{certificacionManagedBean.certificacion.ifpDireccion}" queryDelay="750" minQueryLength="4" />  
 					<p style="margin-right:5px;"><br/>Costo de aranceles para el candidato:</p>
-					<p:inputText value="#{certificacionManagedBean.costo}" /> 
+					<p:inputText value="#{certificacionManagedBean.certificacion.costo}" /> 
 				</div>
 				<div class="seccion_edicion" style="height: 1px"></div>
 				<div class="seccion_edicion" style="height: 1px">
 					<div class="contenedor_botones">
-						<h:commandButton value="Cancelar"/> 
-						<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardar}"/> 
+						<h:commandButton value="Cancelar" action="#{certificacionManagedBean.cancelar}"/> 
+						<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardarEdicion}"/>
 					</div>
             	</div>
             </h:form>
 
-            <div id="tab_contenedor">
-                <p:tabView id="tabView">  
-                    <p:tab id="tab1" title="Actividades">  
-                        <h:form id="actividadesForm">     
-                        <p:commandButton value="Agregar" style="margin-bottom: 5px" onclick="PF('dlg1').show();"/>    
-                           	<p:dataTable id="actividadesDataTable" emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" widgetVar="actividadesTable" paginator="true" rows="10" rowKey="#{actividad.nombre}" selectionMode="single">  
-							    <f:facet name="header">  
-							         <p:outputPanel style="text-align:right;">  
-							             <h:outputText value="Buscar:" />  
-							             <p:inputText id="globalFilter" onkeyup="carsTable.filter()" style="margin-left: 4px; width:150px" />  
-							         </p:outputPanel>  
-							    </f:facet>
-							    <!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
-	               				<p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
-                                <p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>  
-                                <p:column headerText="Tipo"><h:outputText rvalue="#{actividad.nombre}" /></p:column>  
-                                <p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
-                                <p:column headerText="Fecha"><h:outputText value="#{actividad.fechaInicial}" /></p:column>  
-                                <p:column headerText="Responsable"><h:outputText value="#{actividad.ejecutor.nombreCompleto}" /></p:column>  
-                                <p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>  
-                            </p:dataTable> 
-                        </h:form>       
-                    </p:tab>  
+			<div id="tab_contenedor">
+				<p:tabView id="tabView">				
+					<p:tab id="tab1" title="Actividades">
+						<h:form id="actividadesForm">
+							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
+								<!--
+								<f:setPropertyActionListener target="#{actividadManagedBean.catalogoTiposActividad}" value="#{certificacionManagedBean.catalogoTiposActividad}" />
+								<f:setPropertyActionListener target="#{actividadManagedBean.catalogoEstatusActividad}" value="#{certificacionManagedBean.catalogoEstatusActividad}" />
+								-->
+							</p:commandButton>
+							<h:panelGroup id="contenidoActividades" style="border:0">
+								<p:dataTable id="actividadesDataTable" emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" paginator="true" rows="10" rowKey="#{actividad.nombre}" selectionMode="single">  
+									<f:facet name="header">  
+										<p:outputPanel style="text-align:right;">  
+											<h:outputText value="Buscar:" />  
+											<p:inputText id="globalFilter" onkeyup="carsTable.filter()" style="margin-left: 4px; width:150px" />  
+										</p:outputPanel>  
+									</f:facet>
+									<!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
+									<p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
+									<p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>  
+									<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>  
+									<p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
+									<p:column headerText="Fecha">
+										<h:outputText value="#{actividad.fechaInicial}" >
+									 		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+										</h:outputText>
+									</p:column>  
+									<p:column headerText="Responsable"><h:outputText value="#{actividad.ejecutor.nombreCompleto}" /></p:column>  
+									<p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>  
+								</p:dataTable> 
+							</h:panelGroup>
+						</h:form>
+					</p:tab>
 
-                    <p:tab id="tab2" title="Divulgacion">  
-                         <h:form>     
-                        <p:commandButton value="Agregar" style="margin-bottom: 5px" onclick="PF('dlg1').show();"/>    
-                            <p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.nombre}" selectionMode="single">  
-							    <f:facet name="header">  
-							         <p:outputPanel style="text-align:right;">  
-							             <h:outputText value="Buscar:" />  
-							             <p:inputText id="globalFilter" onkeyup="carsTable.filter()" style="margin-left: 4px; width:150px" />  
-							         </p:outputPanel>  
-							    </f:facet>   
-							    <!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
-	               				<p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
-                                <p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>  
-                                <p:column headerText="Tipo"><h:outputText rvalue="#{actividad.nombre}" /></p:column>  
-                                <p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
-                                <p:column headerText="Fecha"><h:outputText value="#{actividad.fechaInicial}" /></p:column>  
-                                <p:column headerText="Responsable"><h:outputText value="#{actividad.ejecutor.nombreCompleto}" /></p:column>  
-                                <p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>  
-                            </p:dataTable> 
-                        </h:form>      
-                    </p:tab>  
-
-                    <p:tab id="tab3" title="Verificacion">  
-                       <h:form>     
-                        <p:commandButton value="Agregar" style="margin-bottom: 5px" onclick="PF('dlg1').show();"/>    
-                            <p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.id}" selectionMode="single">  
-							    <f:facet name="header">  
-							         <p:outputPanel style="text-align:right;">  
-							             <h:outputText value="Buscar:" />  
-							             <p:inputText id="globalFilter" onkeyup="carsTable.filter()" style="margin-left: 4px; width:150px" />  
-							         </p:outputPanel>  
-							    </f:facet>   
-							    <!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
-	               				<p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
-                                <p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>  
-                                <p:column headerText="Tipo"><h:outputText rvalue="#{actividad.nombre}" /></p:column>  
-                                <p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
-                                <p:column headerText="Fecha"><h:outputText value="#{actividad.fechaInicial}" /></p:column>  
-                                <p:column headerText="Responsable"><h:outputText value="#{actividad.ejecutor.nombreCompleto}" /></p:column>  
-                                <p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>  
-                            </p:dataTable> 
-                        </h:form>       
-                    </p:tab>  
+					<p:tab id="tab2" title="Divulgacion">  
+						<h:form>     
+							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
+								 <!--
+								<f:setPropertyActionListener target="#{actividadManagedBean.catalogoTiposActividad}" value="#{certificacionManagedBean.catalogoTiposActividad}" />
+								<f:setPropertyActionListener target="#{actividadManagedBean.catalogoEstatusActividad}" value="#{certificacionManagedBean.catalogoEstatusActividad}" />
+								 -->
+								 <f:setPropertyActionListener target="#{actividadManagedBean.catalogoTiposActividad}" value="1" />
+							</p:commandButton>    
+							<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.nombre}" selectionMode="single">  
+								<f:facet name="header">  
+									<p:outputPanel style="text-align:right;">  
+										<h:outputText value="Buscar:" />  
+										<p:inputText id="globalFilter" onkeyup="carsTable.filter()" style="margin-left: 4px; width:150px" />  
+									</p:outputPanel>  
+								</f:facet>   
+								<!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
+								<p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
+								<p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>  
+								<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>  
+								<p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
+								<p:column headerText="Fecha">
+									<h:outputText value="#{actividad.fechaInicial}" >
+									 	<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+									</h:outputText>
+								</p:column>  
+								<p:column headerText="Responsable"><h:outputText value="#{actividad.ejecutor.nombreCompleto}" /></p:column>  
+								<p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>  
+							</p:dataTable> 
+						</h:form>      
+					</p:tab>
+					
+					<p:tab id="tab3" title="Verificacion">  
+						<h:form>     
+							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
+								<!--
+								<f:setPropertyActionListener target="#{actividadManagedBean.catalogoTiposActividad}" value="#{certificacionManagedBean.catalogoTiposActividad}" />
+								<f:setPropertyActionListener target="#{actividadManagedBean.catalogoEstatusActividad}" value="#{certificacionManagedBean.catalogoEstatusActividad}" />
+								 -->
+								 <f:setPropertyActionListener target="#{actividadManagedBean.catalogoTiposActividad}" value="2" />
+							</p:commandButton>    
+							<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.nombre}" selectionMode="single">  
+								<f:facet name="header">  
+									<p:outputPanel style="text-align:right;">  
+										<h:outputText value="Buscar:" />  
+										<p:inputText id="globalFilter" onkeyup="carsTable.filter()" style="margin-left: 4px; width:150px" />  
+									</p:outputPanel>  
+								</f:facet>               
+								<p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
+								<p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>  
+								<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>  
+								<p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
+								<p:column headerText="Fecha">
+									<h:outputText value="#{actividad.fechaInicial}" >
+									 	<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+									</h:outputText>
+								</p:column>  
+								<p:column headerText="Responsable"><h:outputText value="#{actividad.ejecutor.nombreCompleto}" /></p:column>  
+								<p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>  
+							</p:dataTable> 
+						</h:form>       
+					</p:tab>  
                     
-                    <p:tab id="tab4" title="UC a evaluar">  
-                        <h:form>     
-                        <p:commandButton value="Agregar" style="margin-bottom: 5px" onclick="PF('dlg1').show();"/>    
-                            <p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.id}" selectionMode="single">  
-							    <f:facet name="header">  
-							         <p:outputPanel style="text-align:right;">  
-							             <h:outputText value="Buscar:" />  
-							             <p:inputText id="globalFilter" onkeyup="carsTable.filter()" style="margin-left: 4px; width:150px" />  
-							         </p:outputPanel>  
-							    </f:facet>   
-							    <!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
-	               				<p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
-                                <p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>  
-                                <p:column headerText="Tipo"><h:outputText rvalue="#{actividad.nombre}" /></p:column>  
-                                <p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
-                                <p:column headerText="Fecha"><h:outputText value="#{actividad.fechaInicial}" /></p:column>  
-                                <p:column headerText="Responsable"><h:outputText value="#{actividad.ejecutor.nombreCompleto}" /></p:column>  
-                                <p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>  
-                            </p:dataTable> 
-                        </h:form>       
-                    </p:tab>  
-                </p:tabView>  
-            </div>
-        </div>
+					<p:tab id="tab4" title="UC a evaluar">  
+						<h:form>     
+							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
+								<!-- 
+								<f:setPropertyActionListener target="#{actividadManagedBean.catalogoTiposActividad}" value="#{certificacionManagedBean.catalogoTiposActividad}" />
+								<f:setPropertyActionListener target="#{actividadManagedBean.catalogoEstatusActividad}" value="#{certificacionManagedBean.catalogoEstatusActividad}" />
+								 -->
+								 <f:setPropertyActionListener target="#{actividadManagedBean.catalogoTiposActividad}" value="3" />
+							</p:commandButton>    
+							<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.nombre}" selectionMode="single">  
+								<f:facet name="header">  
+									<p:outputPanel style="text-align:right;">  
+										<h:outputText value="Buscar:" />  
+										<p:inputText id="globalFilter" onkeyup="carsTable.filter()" style="margin-left: 4px; width:150px" />  
+									</p:outputPanel>  
+								</f:facet>               
+								<p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
+								<p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>  
+								<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>  
+								<p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
+								<p:column headerText="Fecha">
+									<h:outputText value="#{actividad.fechaInicial}" >
+									 	<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+									</h:outputText>
+								</p:column>  
+								<p:column headerText="Responsable"><h:outputText value="#{actividad.ejecutor.nombreCompleto}" /></p:column>  
+								<p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>  
+							</p:dataTable> 
+						</h:form>       
+					</p:tab>
+				</p:tabView>
+			</div>
+		</div>
     </div>
         
 	<p:dialog id="modalDialog" styleClass="estilo_dialogoactividades" header="Agregar actividades:" widgetVar="dlg1" modal="true" resizable="false" width="550" height="570">
-		<div id="contenedor_dialogoactividades">  
-			<h:form>
+		<div id="contenedor_dialogoactividades">
+			<h:form id="formDialogo1">
 				<h3>Planificacion de actividades</h3>
 				<p>Nombre de la actividad</p>
-				<p:inputTextarea rows="10" cols="50" value="#{actividadManagedBean.nombreActividad}" queryDelay="750" minQueryLength="4" />
+				<p:inputTextarea rows="10" cols="50" value="#{actividadManagedBean.actividad.nombre}" queryDelay="750" minQueryLength="4" />
 				<div class="dialogoactividades_secciones">
 					<p:growl id="growl" showDetail="true"/>
 					<p>Fecha:</p>
-					<p:calendar value="#{actividadManagedBean.fechaInicial}" id="popupButtonCal1" showOn="button">
+					<p:calendar value="#{actividadManagedBean.actividad.fechaInicial}" id="popupButtonCal1" showOn="button" pattern="dd/MM/yyyy">
 						<p:ajax event="dateSelect" update="growl" />
 					</p:calendar>
 				</div>
-				<div class="dialogoactividades_secciones">  
+				<div class="dialogoactividades_secciones">
 					<p>Estatus:</p>
 					<p:selectOneMenu id="selectEstatus" value="#{actividadManagedBean.selectedEstatusActividad}">
 						<f:selectItem itemLabel="Seleccione..." itemValue="" />
@@ -216,7 +255,7 @@
 					</p:selectOneMenu>
 				</div> 
 				<p>Lugar/Medio:</p>
-				<p:inputTextarea rows="10" cols="50" value="#{actividadManagedBean.destino}" queryDelay="750" minQueryLength="4" />
+				<p:inputTextarea rows="10" cols="50" value="#{actividadManagedBean.actividad.destino}" queryDelay="750" minQueryLength="4" />
 				<div class="dialogoactividades_secciones2">   
 					<p>Tipo de actividad:</p>
 					<p:selectOneMenu id="selectTipo" value="#{actividadManagedBean.selectedTipoActividad}">
@@ -248,10 +287,8 @@
 					</p:dataTable>
 				</div>
 				<div id="dialogoactividades_botones">
-					<!-- <h:form>-->
 					<h:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/>
-					<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardarActividad(actividadManagedBean.actividad)}" update=":tabView" oncomplete="PF('dlg1').hide();"/>
-					<!-- </h:form>-->
+					<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardarActividad(actividadManagedBean.actividad)}" update=":tabView, :formDialogo1" oncomplete="PF('dlg1').hide();"/>
 			</div>
 			</h:form>
 		</div>
@@ -261,7 +298,7 @@
     
      <p:dialog id="modalDialog2" styleClass="estilo_dialogoactividades" header="Agregar involucrados:" widgetVar="dlg2" modal="true" resizable="false" width="550" height="400">
      	<h:form>
-     		<h3>Añada intregantes de esta lista:</h3>
+     		<h3>Agregue intregantes de esta lista:</h3>
      		 <p:dataTable emptyMessage="No hay datos para mostrar"  var="contacto" value="#{certificacionManagedBean.contactos}" rowKey="#{contacto.id}" selection="#{certificacionManagedBean.selectedContactos}" selectionMode="multiple">  
                         <p:column headerText="Nombre"><h:outputText value="#{contacto.nombreCompleto}" /></p:column>  
                         <p:column headerText="Funcion"><h:outputText value="#{contacto.rol.descripcion}" /></p:column>  
