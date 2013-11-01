@@ -24,9 +24,9 @@ public class ActividadManagedBean {
 	@Autowired
 	private IService service;
 
-	private int selectedTipoActividad;
+	private Integer selectedTipoActividad;
 	private Map<Integer,Mantenedor> catalogoTiposActividad;
-	private int selectedEstatusActividad;
+	private Integer selectedEstatusActividad;
 	private Map<Integer,Mantenedor> catalogoEstatusActividad;
 	private Actividad actividad;
 	
@@ -51,20 +51,20 @@ public class ActividadManagedBean {
 		this.selectedTipoActividad = 0;
 	}
 
-	public int getSelectedTipoActividad() {
+	public Integer getSelectedTipoActividad() {
 		return selectedTipoActividad;
 	}
 
-	public void setSelectedTipoActividad(int selectedTipoActividad) {
+	public void setSelectedTipoActividad(Integer selectedTipoActividad) {
 		this.selectedTipoActividad = selectedTipoActividad;
 		this.actividad.setTipo(catalogoTiposActividad.get(selectedTipoActividad));
 	}
 
-	public int getSelectedEstatusActividad() {
+	public Integer getSelectedEstatusActividad() {
 		return selectedEstatusActividad;
 	}
 
-	public void setSelectedEstatusActividad(int selectedEstatusActividad) {
+	public void setSelectedEstatusActividad(Integer selectedEstatusActividad) {
 		this.selectedEstatusActividad = selectedEstatusActividad;
 		this.actividad.setEstado(catalogoEstatusActividad.get(selectedEstatusActividad));
 	}
