@@ -86,3 +86,12 @@ h2 {
 #tab_contenedor .ui-tabs{
 	height: 400px;
 }
+#datos_actividad {
+	font-size: 14px;
+}
+#datos_actividad p {
+	margin: 13px 1px;
+}
+#datos_actividad input{
+	
+}

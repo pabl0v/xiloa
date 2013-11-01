@@ -240,7 +240,7 @@
 		</div>
     </div>
         
-	<p:dialog id="modalDialog" styleClass="estilo_dialogoactividades" header="Agregar actividades:" widgetVar="dlg1" modal="true" resizable="false" width="550" height="570">
+	<p:dialog id="modalDialog" styleClass="estilo_dialogoactividades" header="Agregar actividades:" widgetVar="dlg1" modal="true" resizable="false" width="550" height="400">
 		<div id="contenedor_dialogoactividades">
 			<h:form id="formDialogo1">
 				<h3>Planificacion de actividades</h3>
@@ -283,7 +283,8 @@
                     </p:dataTable> 
                     </div>
                 </h:form>
-                --> 		
+                -->
+                <!-- 		
 				<p:commandButton value="Agregar involucrados"/>
 				<div id="dialogoactividades_involucrados">
 					<p:dataTable var="involucrados" value="#{tableBean.carsSmall}">
@@ -292,10 +293,11 @@
 						<p:column headerText="Correo electronico"><h:outputText value="#{car.manufacturer}" /></p:column>
 					</p:dataTable>
 				</div>
+				-->
 				<div id="dialogoactividades_botones">
 					<h:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/>
 					<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardarActividad(actividadManagedBean.actividad)}" update=":tabView, :formDialogo1" oncomplete="PF('dlg1').hide();"/>
-			</div>
+				</div>
 			</h:form>
 		</div>
 	</p:dialog>

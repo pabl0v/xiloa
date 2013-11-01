@@ -128,7 +128,10 @@ public class ActividadManagedBean {
 		//return "/modulos/planificacion/edicion_actividad?faces-redirect=true";
 	}
 
-
+	public String guardar(){
+		return "/modulos/planificacion/edicion?faces-redirect=true";
+	}
+	
 	public String getNombreCentro() {
 		return nombreCentro;
 	}

@@ -69,6 +69,15 @@ public class Actividad {
 	@NotNull
 	@Column(name = "actividad_destino", nullable = false)
 	private String destino;
+	
+	@Column(name = "actividad_hora", nullable = true)
+	private String hora;
+	
+	@Column(name = "actividad_alcance", nullable = true)
+	private String alcance;
+	
+	@Column(name = "actividad_materiales", nullable = true)
+	private String materiales;
 
 	@ManyToMany
 	@JoinTable
@@ -234,5 +243,29 @@ public class Actividad {
 
 	public void setFechaRegistro(Date fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
+	}
+
+	public String getHora() {
+		return hora;
+	}
+
+	public void setHora(String hora) {
+		this.hora = hora;
+	}
+
+	public String getAlcance() {
+		return alcance;
+	}
+
+	public void setAlcance(String alcance) {
+		this.alcance = alcance;
+	}
+
+	public String getMateriales() {
+		return materiales;
+	}
+
+	public void setMateriales(String materiales) {
+		this.materiales = materiales;
 	}
 }

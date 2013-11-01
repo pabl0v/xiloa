@@ -20,15 +20,6 @@
         <div id="contenedor_secciones">
                       
             <div class="seccion_edicion" style="height:140px;">
-                <p>Tipo de actividad:</p>
-                <h:form style="display:inline-block;">
-                <p:selectOneMenu style="position:relative; top:7px;" id="city3" value="#{actividadManagedBean.selectedTipoActividad}">  
-                   <f:selectItem itemLabel="Seleccione..." itemValue="" />  
-                   <f:selectItems value="#{actividadManagedBean.catalogoTiposActividad}" var="tipo" itemLabel="#{tipo.valor}" itemValue="#{tipo.id}"/>  
-                </p:selectOneMenu>                         
-                <p>Registrado:</p>
-                <span><p:calendar value="#{actividadManagedBean.actividad.fechaRegistro}" id="fecha_registrado" showOn="button" pattern="dd/MM/yyyy" /></span>  
-                </h:form>
                 <div class="seccion_interna" style="height:90px; padding: 10px; margin-top:5px;">
              		<h:form>
              		  <div style="dsplay:block;">
@@ -38,7 +29,7 @@
                         <p>Hora:</p>
                         <p:inputText style="margin-left:5px;"></p:inputText>  
                         <p style="margin-left:4px;">Lugar:</p>
-                        <p:inputText style="margin-left:5px;"></p:inputText>   
+                        <p:inputText style="margin-left:5px;" value="#{actividadManagedBean.actividad.destino}" completeMethod="#{actividadManagedBean.actividad.destino}"></p:inputText>   
             		</h:form>
                 </div>          
             </div>          
@@ -62,27 +53,40 @@
                 <h3>Objetivo y alcanze de la actividad</h3>
                 <h:form>
                      <div class="seccion_interna">
-                         <p:editor id="edtor_objetivo" value="#{editorBean.value}" height="160"/>                  
+                         <p:editor id="edtor_objetivo" value="#{actividadManagedBean.actividad.alcance}" height="160"/>                  
                      </div>    
                 </h:form>
             </div>     
-            <div class="seccion_edicion">
+            <div id="datos_actividad" class="seccion_edicion">
                  <h:form>
                     <p>Nombre del centro evaluador : <b><h:outputText value="#{actividadManagedBean.nombreCentro}" /></b></p>
                     <p style="display:block;margin-top:10px;">Direccion del centro evaluador: <b><h:outputText value="#{actividadManagedBean.direccionCentro}" /></b></p>  
-	                <p>Estatus:</p>
-	                <p:selectOneMenu style="position:relative;top:7px;margin-left:5px;" id="estatus" value="#{actividadManagedBean.selectedEstatusActividad}">  
+	                <p>Registrado: <b><h:outputText value="#{actividadManagedBean.actividad.fechaRegistro}"/></b></p>
+	                <!--
+                	<span style="margin-left:37px;"><p:calendar value="#{actividadManagedBean.actividad.fechaRegistro}" id="fecha_registrado" showOn="button" pattern="dd/MM/yyyy" /></span>
+                	-->
+	                <br/>
+	                <p>Tipo de actividad: <b><h:outputText value="#{actividadManagedBean.actividad.tipo.valor}" /></b></p>
+	                <!--
+	                <p:selectOneMenu style="position:relative; top:7px;margin-left:2px;width:190px;" id="city3" value="#{actividadManagedBean.selectedTipoActividad}">  
+                    <f:selectItem itemLabel="Seleccione..." itemValue="" />  
+                    <f:selectItems value="#{actividadManagedBean.catalogoTiposActividad}" var="tipo" itemLabel="#{tipo.valor}" itemValue="#{tipo.id}"/>  
+                	</p:selectOneMenu>
+                	-->     
+                	<br/>                    
+                	<p>Estatus:</p>
+                	<p:selectOneMenu style="position:relative;top:7px;margin-left:62px;width:190px;" id="estatus" value="#{actividadManagedBean.selectedEstatusActividad}">  
 	                   <f:selectItem itemLabel="Seleccione..." itemValue="" />  
 	                   <f:selectItems value="#{actividadManagedBean.catalogoEstatusActividad}" var="estatus" itemLabel="#{estatus.valor}" itemValue="#{estatus.id}" />  
-	                </p:selectOneMenu>
-                </h:form>   
+	                </p:selectOneMenu>  
+                </h:form>
             </div>
             
             <div class="seccion_edicion" style="position: relative;top: -150px;">
                 <h3>Materiales y/o documentos a utilizar</h3>
                 <h:form>
                      <div class="seccion_interna">
-                         <p:editor id="editor_materiales" value="#{editorBean.value}" height="160"/>                  
+                         <p:editor id="editor_materiales" value="#{actividadManagedBean.actividad.materiales}" height="160"/>                  
                      </div>    
                 </h:form>
             </div>
@@ -90,7 +94,7 @@
             <div class="seccion_edicion" style="height:30px;">
                <h:form>
                     <p:commandButton value="Cancelar" action="#{actividadManagedBean.cancelar}"/> 
-                    <p:commandButton value="Aceptar"/> 
+                    <p:commandButton value="Aceptar" action="#{actividadManagedBean.guardar}"/> 
                </h:form>
             </div>
         </div>
