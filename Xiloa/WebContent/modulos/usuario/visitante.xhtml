@@ -79,33 +79,40 @@
 		      			<p>Arancel:</p>
 		      			<h:outputText value="#{planificacionManagedBean.selectedCompetencia.costo}"></h:outputText>  		
 		          	</div>
-			          	<p:commandButton onclick="PF('modal_comp').hide()" value="Cancelar"/> 
-			            <p:commandButton onclick="PF('modal_solicitud').show()" value="Aplicar"/>		            
+			          	<p:commandButton onclick="PF('modal_comp').hide()" value="Cancelar"/>
+			          	<p:commandButton id="registrarSolicitud" action="#{solicitudesManagedBean.inicializaDatos}" 
+			          					 value="Aplicar" oncomplete="PF('modal_solicitud').show()" 
+			          					 update=":cursos:modal_solicitud_competencia">  
+        					<f:setPropertyActionListener value="#{planificacionManagedBean.selectedCompetencia.idUCompetencia}" 
+        					                             target="#{solicitudesManagedBean.selectedIdCertificacion}" />
+        					<f:setPropertyActionListener value="#{planificacionManagedBean.selectedCompetencia.idCentro}" 
+        					                             target="#{solicitudesManagedBean.selectedIdIfp}" />
+        				</p:commandButton>			            		            
 		            </p:outputPanel>
 	    	</p:dialog>        
         
 	        <p:dialog id="modal_solicitud_competencia" styleClass="modal_solicitud_competencia" 
-	                  header="Solicitud de registro para obtener la Certificacion: #{planificacionManagedBean.selectedCompetencia.nombreUCompetencia}" 
+	                  header="Solicitud de registro para obtener la Certificacion: #{solicitudesManagedBean.certificacionSolicitante.nombre}" 
 	                  widgetVar="modal_solicitud" modal="true" width="570" height="600">	          			          
-	   			<div class="seccion_detalle">
+	   			<div class="seccion_detalle">	   			
 	                <h:outputLabel styleClass="estilo_label" for="primerNombre" value="Primer nombre:" /> 
-	                <p:inputText id="primerNombre" value="#{personBean.firstname}" />  
+	                <p:inputText id="primerNombre" value="#{solicitudesManagedBean.primerNombre}" />  
 	                <h:outputLabel styleClass="estilo_label" for="segundoNombre" value="Segundo nombre:" />  
-	                <p:inputText id="segundoNombre" value="#{personBean.surname}" />  
+	                <p:inputText id="segundoNombre" value="#{solicitudesManagedBean.segundoNombre}" />  
 	                <h:outputLabel styleClass="estilo_label" for="primerApellido" value="Apellido paterno:" />  
-	                <p:inputText id="primerApellido" value="#{personBean.firstname}" />  
+	                <p:inputText id="primerApellido" value="#{solicitudesManagedBean.primerApellido}" />  
 	                <h:outputLabel styleClass="estilo_label" for="segundoApellido" value="Apellido materno:" />  
-	                <p:inputText id="segundoApellido" value="#{personBean.firstname}" />  
+	                <p:inputText id="segundoApellido" value="#{solicitudesManagedBean.segundoApellido}" />  
 	                <h:outputLabel styleClass="estilo_label" for="cedula" value="Cedula:" />  
-	                <p:inputMask value="#{maskController.date}" mask="999-999999-9999A"/>
+	                <p:inputMask id="cedula" value="#{solicitudesManagedBean.numeroIdentificacion}" mask="999-999999-9999A"/>
 	         	</div>           
 	             <div class="seccion_detalle">
 	                <h:outputLabel styleClass="estilo_label" for="empresaLabora" value="Empresa donde labora actualmente:" />  
-	                <p:inputText id="empresaLabora" value="#{personBean.firstname}" />  
+	                <p:inputText id="empresaLabora" value="#{solicitudesManagedBean.descEmpresaLabora}" />  
 	                <h:outputLabel styleClass="estilo_label" for="experiencia" value="Años ejerciendo la actividad:" />  
-	                <p:inputText id="experiencia" value="#{personBean.surname}" />  
+	                <p:inputText id="experiencia" value="#{solicitudesManagedBean.experiencia}" />  
 	                <h:outputLabel styleClass="estilo_label" value="Descripcion de la ocupacion actual:" /> 
-	                <p:editor id="ocupacion" value="#{editorBean.value}" height="150"/>    			
+	                <p:editor id="ocupacion" value="#{solicitudesManagedBean.ocupacion}" height="150"/>    			
 	             </div>
 	             <p:commandButton onclick="PF('modal_solicitud').hide();" value="Cancelar"/> 
 	             <p:commandButton value="Aplicar"/>

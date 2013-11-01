@@ -178,10 +178,10 @@
     	
     	<!-- Cuadro de dialogo emergente que registra datos laborales y académicos -->    	    	
     	<p:dialog id="modalLaborales" styleClass="estilo_dialogoLaborales" header="Agregar Datos Laborales y Academicos:" widgetVar="dlg1" 
-    	          modal="true" resizable="false" width="540" height="450" showEffect="clip" hideEffect="clip" >
+    	          modal="true" resizable="false" width="440" height="450" showEffect="clip" hideEffect="clip" >
     	   <div id="modal_laborales">					
-				<h3>Registro de Datos Laborales y Academicos</h3>					
-				<p>Tipo dato laboral:</p>			
+				<h3 style="margin-left: -11px;">Registro de Datos Laborales y Academicos</h3>					
+				<p style="margin-left: 4px;">Tipo dato laboral:</p>			
 				<p:selectOneMenu styleClass="selectores" id="selector_tipoDatoLaboral" value="#{expedienteManagedBean.tipoLaboral}" >				
 					<f:selectItems value="#{expedienteManagedBean.listTipoDatosLaborales}" />			        
 			    </p:selectOneMenu>					

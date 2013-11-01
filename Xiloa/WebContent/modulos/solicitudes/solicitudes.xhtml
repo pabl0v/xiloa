@@ -46,7 +46,9 @@
 			    </p:selectOneMenu>			  
         </div>              
         <div id="contenedor_tabla_solicitudes">           
-        	<p:dataTable id="dtSolicitud" widgetVar="dtSolicitudes" emptyMessage="No existen solicitudes activas" var="solicitudI" value="#{solicitudesManagedBean.solicitudB}" >                      
+        	<p:dataTable id="dtSolicitud" widgetVar="dtSolicitudes" emptyMessage="No existen solicitudes activas" 
+        	             var="solicitudI" value="#{solicitudesManagedBean.solicitudB}" selectionMode="single" 
+        	             paginator="true" rows="12" rowKey="#{solicitudI.id}" >                      
 	            <!--Las columnas de la tabla-->
                 <p:column id="centroColumn" headerText="Centro evaluador"><h:outputText value="#{solicitudI.certificacion.ifpNombre}" /></p:column>                      
                 <p:column id="candidatoColumn" headerText="Nombre del candidato"><h:outputText value="#{solicitudI.contacto.nombreCompleto}" /></p:column>  

@@ -226,8 +226,21 @@ public class ExpedienteManagedBean implements Serializable {
 	}
 	
 	public void actualizarContacto() {
-		
-		
+		System.out.println("correo " + solicitudExp.getContacto().getCorreo1());
+		if (solicitudExp.getContacto().getDireccionActual() == null) {
+			solicitudExp.getContacto().setDireccionActual("");			
+		}
+		if (solicitudExp.getContacto().getCorreo1() == null) {
+			solicitudExp.getContacto().setCorreo1("");			
+		}
+		if (solicitudExp.getContacto().getDireccionActual() == null) {
+			solicitudExp.getContacto().setDireccionActual("");			
+		}
+		if (solicitudExp.getContacto().getTelefono1() == null) {
+			solicitudExp.getContacto().setTelefono1("");			
+		}
+		Contacto contactoExp = (Contacto)service.guardar(solicitudExp.getContacto());
+		System.out.println("Despues de guardar " + contactoExp.getCorreo1());
 	}
 
 	public void guardarDatosLaborales() {

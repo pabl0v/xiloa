@@ -15,9 +15,11 @@ import model.Certificacion;
 import model.Contacto;
 import model.Rol;
 import model.Solicitud;
+import model.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import service.IService;
@@ -38,7 +40,10 @@ public class SolicitudesManagedBean {
 	private String numeroIdentificacion;
 	private String descEmpresaLabora;
 	private int    experiencia;
-	private String ocupacion;	
+	private String ocupacion;
+	
+	private Contacto userSolicitante;
+	private Certificacion certificacionSolicitante;
 			
 	private List<USolicitud> solicitudI = new ArrayList<USolicitud>();
 	private List<Solicitud> solicitudB = new ArrayList<Solicitud> ();	
@@ -219,6 +224,22 @@ public class SolicitudesManagedBean {
 	public void setBuscarByAllValue(String buscarByAllValue) {
 		this.buscarByAllValue = buscarByAllValue;
 	}
+	
+	public Contacto getUserSolicitante() {
+		return userSolicitante;
+	}
+
+	public void setUserSolicitante(Contacto userSolicitante) {
+		this.userSolicitante = userSolicitante;
+	}
+
+	public Certificacion getCertificacionSolicitante() {
+		return certificacionSolicitante;
+	}
+
+	public void setCertificacionSolicitante(Certificacion certificacionSolicitante) {
+		this.certificacionSolicitante = certificacionSolicitante;
+	}
 
 	public List<Solicitud> getSolicitudB() {		
 		return this.solicitudB;
@@ -393,6 +414,23 @@ public class SolicitudesManagedBean {
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje", "La solicitud ha sido registrada exitosamente. El número es: " + s.getTicket())); 
           
 		
+	}
+	
+	public void inicializaDatos (){
+		Usuario userConectado = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
+		
+		this.certificacionSolicitante = service.getCertificacionById(this.getSelectedIdCertificacion());
+		
+		this.userSolicitante = userConectado.getContacto();		
+		
+		this.primerNombre = (this.userSolicitante.getPrimerNombre() == null) ? "" : this.userSolicitante.getPrimerNombre(); 
+		this.segundoNombre = (this.userSolicitante.getSegundoNombre() == null) ? "" : this.userSolicitante.getSegundoNombre();
+	    this.primerApellido = (this.userSolicitante.getPrimerApellido() == null) ? "" : this.userSolicitante.getPrimerApellido();
+	    this.segundoApellido = (this.userSolicitante.getSegundoApellido() == null) ? "" : this.userSolicitante.getSegundoApellido();
+	    this.numeroIdentificacion = (this.userSolicitante.getNumeroIdentificacion() == null) ? "" : this.userSolicitante.getNumeroIdentificacion();
+	    this.setDescEmpresaLabora("");
+		this.setExperiencia(new Integer(0));
+		this.setOcupacion("");		
 	}
 
 	
