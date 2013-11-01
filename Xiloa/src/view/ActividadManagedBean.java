@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct;
 import model.Actividad;
 import model.Mantenedor;
 
+import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Component;
 import service.IService;
 
 @Component
-@Scope("request")
+@Scope("session")
 public class ActividadManagedBean {
 
 	@Autowired
@@ -29,6 +30,8 @@ public class ActividadManagedBean {
 	private Integer selectedEstatusActividad;
 	private Map<Integer,Mantenedor> catalogoEstatusActividad;
 	private Actividad actividad;
+	private String nombreCentro;
+	private String direccionCentro;
 	
 	public ActividadManagedBean(){
 		super();
@@ -74,6 +77,7 @@ public class ActividadManagedBean {
 	}
 	
 	public void setActividad(Actividad actividad){
+		System.out.println("Seteando actividad: "+actividad.getNombre());
 		this.actividad = actividad;
 	}
 
@@ -105,13 +109,42 @@ public class ActividadManagedBean {
 		return catalogoEstatusActividad;
 	}*/
 	
-	public void editarActividad(Actividad actividad){
+	public String editarActividad(Actividad actividad, String nombreCentro, String direccionCentro){
 		System.out.println("ActividadManagedBean recibe actividad: "+actividad.getNombre());
 		this.actividad = actividad;
+		this.setNombreCentro(nombreCentro);
+		this.setDireccionCentro(direccionCentro);
+		return "/modulos/planificacion/edicion_actividad?faces-redirect=true";
 	}
 	
 	public String cancelar(){
 		actividad = new Actividad();
 		return "/modulos/planificacion/edicion?faces-redirect=true";
 	}
+	
+	public void selectedActividadListener(SelectEvent event){
+		this.actividad = (Actividad)event.getObject();
+		System.out.println("Nombre de actividad: "+actividad.getNombre());
+		//return "/modulos/planificacion/edicion_actividad?faces-redirect=true";
+	}
+
+
+	public String getNombreCentro() {
+		return nombreCentro;
+	}
+
+
+	public void setNombreCentro(String nombreCentro) {
+		this.nombreCentro = nombreCentro;
+	}
+
+
+	public String getDireccionCentro() {
+		return direccionCentro;
+	}
+
+
+	public void setDireccionCentro(String direccionCentro) {
+		this.direccionCentro = direccionCentro;
+	}	
 }

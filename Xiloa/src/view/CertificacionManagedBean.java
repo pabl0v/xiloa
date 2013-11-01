@@ -54,6 +54,7 @@ public class CertificacionManagedBean implements Serializable {
 	private Map<Integer, Mantenedor> catalogoEstatusActividad;
 	private int selectedEstatusActividad;
 	private Certificacion certificacion;
+	private Actividad selectedActividad;
 	
 	/*
 	 * 
@@ -73,6 +74,7 @@ public class CertificacionManagedBean implements Serializable {
 	public CertificacionManagedBean(){
 		super();
 		certificacion = new Certificacion();
+		selectedActividad = new Actividad();
 		contactos = new ArrayList<Contacto>();
 		actividad = new Actividad();
 		actividades = new ArrayList<Actividad>();
@@ -381,5 +383,13 @@ public class CertificacionManagedBean implements Serializable {
 
 	public Map<Integer, Mantenedor> getCatalogoEstatusActividad() {
 		return this.catalogoEstatusActividad;
+	}
+
+	public Actividad getSelectedActividad() {
+		return selectedActividad;
+	}
+
+	public void setSelectedActividad(Actividad selectedActividad) {
+		this.selectedActividad = selectedActividad;
 	}
 }

@@ -22,10 +22,10 @@
             <div class="seccion_edicion" style="height:140px;">
                 <p>Tipo de actividad:</p>
                 <h:form style="display:inline-block;">
-                <p:selectOneMenu style="position:relative; top:7px;" id="city3" value="#{pprBean.city}">  
-                   <f:selectItem itemLabel="Tipo de Actividad" itemValue="" />  
-                   <f:selectItems value="#{pprBean.cities}" />  
-                </p:selectOneMenu>             
+                <p:selectOneMenu style="position:relative; top:7px;" id="city3" value="#{actividadManagedBean.selectedTipoActividad}">  
+                   <f:selectItem itemLabel="Seleccione..." itemValue="" />  
+                   <f:selectItems value="#{actividadManagedBean.catalogoTiposActividad}" var="tipo" itemLabel="#{tipo.valor}" itemValue="#{tipo.id}"/>  
+                </p:selectOneMenu>                         
                 <p>Registrado:</p>
                 <span><p:calendar value="#{actividadManagedBean.actividad.fechaRegistro}" id="fecha_registrado" showOn="button" pattern="dd/MM/yyyy" /></span>  
                 </h:form>
@@ -33,7 +33,7 @@
              		<h:form>
              		  <div style="dsplay:block;">
                         <p style="width:240px; margin-bottom:20px;">Fecha en que se ejecutara la actividad:</p>
-                        <span style="width:60px"><p:calendar value="#{actividadManagedBean.actividad.fechaInicial}" id="fecha_ejecutara" showOn="button" /></span>
+                        <span style="width:60px"><p:calendar value="#{actividadManagedBean.actividad.fechaInicial}" id="fecha_ejecutara" showOn="button" pattern="dd/MM/yyyy"/></span>
                       </div>   
                         <p>Hora:</p>
                         <p:inputText style="margin-left:5px;"></p:inputText>  
@@ -68,17 +68,12 @@
             </div>     
             <div class="seccion_edicion">
                  <h:form>
-                    <p>Nombre del centro evaluador:</p>
-                      <p:selectOneMenu style="position:relative;top:7px;margin-left:5px;" id="city" value="#{pprBean.city}">  
-                        <f:selectItem itemLabel="Nombre del centro" itemValue="" />  
-                        <f:selectItems value="#{pprBean.cities}" />  
-                      </p:selectOneMenu>  
-                    <p style="display:block;margin-top:10px;">Direccion del centro evaluador:</p>
-                    <p:inputTextarea style="width:100%" completeMethod="#{autoCompleteBean.completeArea}" queryDelay="750" minQueryLength="4" />  
+                    <p>Nombre del centro evaluador : <b><h:outputText value="#{actividadManagedBean.nombreCentro}" /></b></p>
+                    <p style="display:block;margin-top:10px;">Direccion del centro evaluador: <b><h:outputText value="#{actividadManagedBean.direccionCentro}" /></b></p>  
 	                <p>Estatus:</p>
-	                <p:selectOneMenu style="position:relative;top:7px;margin-left:5px;" id="estatus" value="#{pprBean.city}">  
-	                   <f:selectItem itemLabel="Estatus" itemValue="" />  
-	                   <f:selectItems value="#{pprBean.cities}" />  
+	                <p:selectOneMenu style="position:relative;top:7px;margin-left:5px;" id="estatus" value="#{actividadManagedBean.selectedEstatusActividad}">  
+	                   <f:selectItem itemLabel="Seleccione..." itemValue="" />  
+	                   <f:selectItems value="#{actividadManagedBean.catalogoEstatusActividad}" var="estatus" itemLabel="#{estatus.valor}" itemValue="#{estatus.id}" />  
 	                </p:selectOneMenu>
                 </h:form>   
             </div>
