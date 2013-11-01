@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
+import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
 
 import model.Archivo;
@@ -241,6 +243,10 @@ public class ExpedienteManagedBean implements Serializable {
 		}
 		Contacto contactoExp = (Contacto)service.guardar(solicitudExp.getContacto());
 		System.out.println("Despues de guardar " + contactoExp.getCorreo1());
+		  
+	    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!"));
+	        
+	      
 	}
 
 	public void guardarDatosLaborales() {

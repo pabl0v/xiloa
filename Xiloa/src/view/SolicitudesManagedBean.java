@@ -349,15 +349,46 @@ public class SolicitudesManagedBean {
 	}
 			
 	public void guardar(){
-				
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+		
+		Solicitud sol = grabarSolicitud(new Integer(1));
+		
+		if ( sol != null) {        
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje", "La solicitud ha sido registrada exitosamente. El número es: " + sol.getTicket()));
+		}else {
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje", "Error al grabar la solicitud. Favor revisar..."));
+		}
+          
+		
+	}
+	
+	public String guardarBySolicitante(){
+		Solicitud sol = grabarSolicitud(new Integer(2));
+		
+		System.out.println("La solicitud ha sido grabada " + sol.getId());
+		return "/modulos/solicitudes/solicitudes?faces-redirect=true";
+		
+	}
+	
+	public Solicitud grabarSolicitud(Integer tipoGrabar){
+		
 		Solicitud     s;
+		Usuario       u;
 		Rol           r = service.getRolById(1);		
 		Certificacion c = service.getCertificacionById(this.getSelectedIdCertificacion());			
 		
 		Contacto solicitante = service.getContactoByCedula(this.getNumeroIdentificacion());
 		
 		if (solicitante == null ) {
-			solicitante = new Contacto(null, //Usuario 
+			
+			if (tipoGrabar == 2) {
+				u = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
+			} else {
+				u = null;
+			}
+			
+			solicitante = new Contacto(u, //Usuario 
 									  r, //Rol
 									  1, //EntidadId
 									  this.getPrimerNombre().toUpperCase().trim(), 
@@ -407,27 +438,27 @@ public class SolicitudesManagedBean {
 		
 		s.setTicket(s.getId().toString());
 		
-		s = (Solicitud) service.guardar(s);		
+		s = (Solicitud) service.guardar(s);
 		
-		FacesContext context = FacesContext.getCurrentInstance();  
-        
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje", "La solicitud ha sido registrada exitosamente. El número es: " + s.getTicket())); 
-          
-		
+		return s;
 	}
 	
 	public void inicializaDatos (){
-		Usuario userConectado = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
+		Usuario userConectado = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());	
+		
+		if (userConectado.getContacto() != null) {			
+			System.out.println("EXISTE EL CONTACTO");
+		    this.userSolicitante = userConectado.getContacto();
+			
+			this.primerNombre = (this.userSolicitante.getPrimerNombre() == null) ? "" : this.userSolicitante.getPrimerNombre(); 
+			this.segundoNombre = (this.userSolicitante.getSegundoNombre() == null) ? "" : this.userSolicitante.getSegundoNombre();
+		    this.primerApellido = (this.userSolicitante.getPrimerApellido() == null) ? "" : this.userSolicitante.getPrimerApellido();
+		    this.segundoApellido = (this.userSolicitante.getSegundoApellido() == null) ? "" : this.userSolicitante.getSegundoApellido();
+		    this.numeroIdentificacion = (this.userSolicitante.getNumeroIdentificacion() == null) ? "" : this.userSolicitante.getNumeroIdentificacion();
+		}		
 		
 		this.certificacionSolicitante = service.getCertificacionById(this.getSelectedIdCertificacion());
-		
-		this.userSolicitante = userConectado.getContacto();		
-		
-		this.primerNombre = (this.userSolicitante.getPrimerNombre() == null) ? "" : this.userSolicitante.getPrimerNombre(); 
-		this.segundoNombre = (this.userSolicitante.getSegundoNombre() == null) ? "" : this.userSolicitante.getSegundoNombre();
-	    this.primerApellido = (this.userSolicitante.getPrimerApellido() == null) ? "" : this.userSolicitante.getPrimerApellido();
-	    this.segundoApellido = (this.userSolicitante.getSegundoApellido() == null) ? "" : this.userSolicitante.getSegundoApellido();
-	    this.numeroIdentificacion = (this.userSolicitante.getNumeroIdentificacion() == null) ? "" : this.userSolicitante.getNumeroIdentificacion();
+				
 	    this.setDescEmpresaLabora("");
 		this.setExperiencia(new Integer(0));
 		this.setOcupacion("");		

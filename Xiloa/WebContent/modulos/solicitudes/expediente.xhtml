@@ -20,7 +20,7 @@
     	<h2>Expediente: <a>#{expedienteManagedBean.solicitudExp.id}</a></h2>
     	<h3>Datos del solicitante/Candidato</h3>
     	<div id="seccion_datossolicitante" class="seccion_expediente" style="padding:10px;">    	  
-   		
+   		 	<p:messages id="msgContacto" showDetail="true" autoUpdate="true" closable="true" />  
     		<h:outputLabel styleClass="estilo_label" for="nombreCandidato" value="Nombre del candidato:" />  
             <p:inputText id="nombreCandidato" value="#{expedienteManagedBean.solicitudExp.contacto.nombreCompleto}" />
             <h:outputLabel styleClass="estilo_label" for="numeroIdentificacion" value="Numero de identificacion:" />  
@@ -58,12 +58,13 @@
     	<div id="contenedor_datos_lab" class="seccion_expediente">	    					
     		<p:tabView id="tabView_datosLaborales">    			   
             	<p:tab id="tab1" title="Experiencia">                    	  
-                	<p:dataTable emptyMessage="No hay datos para mostrar" var="datosLaborales" value="#{expedienteManagedBean.listDatosLaborales}"
-                	 selection="#{expedienteManagedBean.selectedLaboral}" rowKey="#{datosLaborales}" >      
+                	<p:dataTable emptyMessage="No hay datos para mostrar" var="datosLaborales" 
+                				 value="#{expedienteManagedBean.listDatosLaborales}" selection="#{expedienteManagedBean.selectedLaboral}" 
+                				 rowKey="#{datosLaborales}" selectionMode="single" paginator="true" rows="4" >      
                     	<p:column headerText="Empresa"><h:outputText value="#{datosLaborales.institucion}" /></p:column>  
                          <p:column headerText="Cargo"><h:outputText value="#{datosLaborales.cargo}" /></p:column>  
-                         <p:column headerText="Desde"><h:outputText value="#{datosLaborales.fechaInicia}" /></p:column>  
-                         <p:column headerText="Hasta"><h:outputText value="#{datosLaborales.fechaFinaliza}" /></p:column>  
+                         <p:column headerText="Desde"><h:outputText value="#{datosLaborales.fechaInicia}" pattern="dd/mm/yyyy" /></p:column>  
+                         <p:column headerText="Hasta"><h:outputText value="#{datosLaborales.fechaFinaliza}" pattern="dd/mm/yyyy" /></p:column>  
                          <p:column headerText="Direccion"><h:outputText value="#{datosLaborales.institucionDireccion}" /></p:column>  
                          <p:column >
                          	<p:commandButton id="editarExperiencia" action="#{expedienteManagedBean.editarLaboral}" 
@@ -76,7 +77,9 @@
                </p:tab>  
 
                <p:tab id="tab2" title="Estudios">                    	  
-                   <p:dataTable emptyMessage="No hay datos para mostrar"  var="datosEstudios" value="#{expedienteManagedBean.listDatosEstudios}">  
+                   <p:dataTable emptyMessage="No hay datos para mostrar"  var="datosEstudios" 
+                                value="#{expedienteManagedBean.listDatosEstudios}" selection="#{expedienteManagedBean.selectedLaboral}" 
+                				 rowKey="#{datosEstudios}" selectionMode="single" paginator="true" rows="4" >  
                         <p:column headerText="Empresa"><h:outputText value="#{datosEstudios.institucion}" /></p:column>  
                         <p:column headerText="Cargo"><h:outputText value="#{datosEstudios.cargo}" /></p:column>  
                         <p:column headerText="Desde"><h:outputText value="#{datosEstudios.fechaInicia}" /></p:column>  
@@ -92,7 +95,9 @@
                </p:tab>  
 
                <p:tab id="tab3" title="Calificaciones">                    	  
-                   <p:dataTable emptyMessage="No hay datos para mostrar"  var="datosCalificacion" value="#{expedienteManagedBean.listDatosCalificacion}">  
+                   <p:dataTable emptyMessage="No hay datos para mostrar"  var="datosCalificacion" 
+                                value="#{expedienteManagedBean.listDatosCalificacion}" selection="#{expedienteManagedBean.selectedLaboral}" 
+                				 rowKey="#{datosCalificacion}" selectionMode="single" paginator="true" rows="4" >  
                         <p:column headerText="Empresa"><h:outputText value="#{datosCalificacion.institucion}" /></p:column>  
                         <p:column headerText="Cargo"><h:outputText value="#{datosCalificacion.cargo}" /></p:column>  
                         <p:column headerText="Desde"><h:outputText value="#{datosCalificacion.fechaInicia}" /></p:column>  
@@ -109,7 +114,9 @@
                </p:tab>  
                     
                <p:tab id="tab4" title="Certificaciones">                    	  
-                   <p:dataTable emptyMessage="No hay datos para mostrar"  var="datosCertificacion" value="#{expedienteManagedBean.listDatosCertificaciones}">  
+                   <p:dataTable emptyMessage="No hay datos para mostrar"  var="datosCertificacion" 
+                   				value="#{expedienteManagedBean.listDatosCertificaciones}" selection="#{expedienteManagedBean.selectedLaboral}" 
+                				rowKey="#{datosCertificacion}" selectionMode="single" paginator="true" rows="4" >  
                         <p:column headerText="Empresa"><h:outputText value="#{datosCertificacion.institucion}" /></p:column>  
                         <p:column headerText="Cargo"><h:outputText value="#{datosCertificacion.cargo}" /></p:column>  
                         <p:column headerText="Desde"><h:outputText value="#{datosCertificacion.fechaInicia}" /></p:column>  
@@ -192,12 +199,12 @@
 	            	<p:inputText id="nombreCargo" value="#{expedienteManagedBean.nombreCargo}" />            	
 					<p:growl id="growlFechaDesde" showDetail="true"/>
 					<p>Fecha Desde:</p>					
-					<p:calendar value="#{expedienteManagedBean.fechaDesde}" id="popupButtonCal1" showOn="button">
+					<p:calendar value="#{expedienteManagedBean.fechaDesde}" pattern="dd/mm/yyyy" id="popupButtonCal1" showOn="button">
 						<p:ajax event="dateSelect" update="growlFechaDesde" />
 					</p:calendar>				
 					<p:growl id="growlFechaHasta" showDetail="true"/>
 					<p>Fecha Hasta:</p>					
-					<p:calendar value="#{expedienteManagedBean.fechaHasta}" id="popupButtonCal2" showOn="button">
+					<p:calendar value="#{expedienteManagedBean.fechaHasta}" pattern="dd/mm/yyyy" id="popupButtonCal2" showOn="button">
 						<p:ajax event="dateSelect" update="growlFechaHasta" />
 					</p:calendar>
 					<p>Direccion de la institucion:</p>					  
