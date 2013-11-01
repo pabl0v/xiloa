@@ -28,7 +28,11 @@
             <h:outputLabel styleClass="estilo_label" for="certificacionNombre" value="Solicitud para evaluar:" />  
             <p:inputText id="certificacionNombre" value="#{expedienteManagedBean.solicitudExp.certificacion.nombre}" />
             <h:outputLabel styleClass="estilo_label" for="genero" value="Genero:" />  
-            <p:inputText id="genero" value="#{expedienteManagedBean.solicitudExp.contacto.sexo}" />
+            <p:selectOneMenu id="genero" styleClass="selectores selector_genero" value="#{expedienteManagedBean.solicitudExp.contacto.sexo}" >  	       		  	       		  
+	       		 <f:selectItem itemLabel="Femenino" itemValue="0" />
+	       		 <f:selectItem itemLabel="Masculino" itemValue="1" />	        		       		  		  	       		  			                         
+			</p:selectOneMenu>
+            <!--  <p:inputText id="genero" value="#{expedienteManagedBean.solicitudExp.contacto.sexo}" /> -->            
             <h:outputLabel styleClass="estilo_label" for="telefono" value="Telefono:" />  
             <p:inputText id="telefono" value="#{expedienteManagedBean.solicitudExp.contacto.telefono1}" />
             <h:outputLabel styleClass="estilo_label" for="celular" value="Celular:" />  

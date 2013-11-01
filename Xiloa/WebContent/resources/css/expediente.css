@@ -50,16 +50,22 @@ h3 {
 	margin-left: 15px;
 	border: 1px solid #b7cfee;
 }
-#seccion_datossolicitante label{
-	display: inline-block;
-	width: 40%;
-	margin: 10px 8px;
+.selector_genero {
+	
+	width:150px!important;
+	margin-left:0px!important;
 }
 #seccion_datossolicitante{
 	height: 377px;
 }
 #seccion_datossolicitante input{
 	width: 44%;
+}
+#seccion_datossolicitante .selectores{
+    position: relative;
+    top: 8px;
+    margin: 0 5px;
+    width: 150px;
 }
 .seccion_expediente .ui-tabs-panels {
 	height: 250px!important;
@@ -82,6 +88,13 @@ h3 {
 	width: 275px;
 	display: inline-block;
 	padding: 12px;
+}
+
+.estilo_label {
+	
+	display: inline-block;
+width: 40%;
+margin: 10px 8px;
 }
 #modal_laborales h3{
     font-size: 15px;
