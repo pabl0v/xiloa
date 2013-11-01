@@ -383,4 +383,9 @@ public class ServiceImp implements IService {
 	public List<Laboral> getListLaboralByTipo(Integer tipo, Contacto contacto) {
 		return laboralDao.findAllByQuery("select l from laborales l where l.tipo = " + tipo + " and l.contacto.id = "+contacto.getId());				
 	}
+	
+	@Override
+	public Laboral getLaboralById(Long idLaboral) {
+		return laboralDao.findOneByQuery("select l from laborales l where l.id="+idLaboral);				
+	}
 }

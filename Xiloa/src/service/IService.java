@@ -86,6 +86,7 @@ public interface IService {
 	public List<Certificacion> getCertificacionesByIdIfp(Integer id);
 	public List<Ifp> getIfpByInatec ();
 	public List<Laboral> getListLaboralByTipo(Integer tipo, Contacto contacto);
+	public Laboral getLaboralById(Long idLaboral);
 	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
 	
 }

@@ -49,6 +49,7 @@ public class ExpedienteManagedBean implements Serializable {
 	private Integer tipoLaboral;
 	private String estadoActual;
 	private String estadoSiguiente;
+	private Long idSeletedLaboral;
 	private List<SelectItem> listTipoDatosLaborales = new ArrayList<SelectItem> ();
 	private Laboral selectedLaboral;
 	
@@ -171,6 +172,14 @@ public class ExpedienteManagedBean implements Serializable {
 		this.estadoSiguiente = estadoSiguiente;
 	}
 	
+	public Long getIdSeletedLaboral() {
+		return idSeletedLaboral;
+	}
+
+	public void setIdSeletedLaboral(Long idSeletedLaboral) {
+		this.idSeletedLaboral = idSeletedLaboral;
+	}
+
 	public List<SelectItem> getListTipoDatosLaborales() {
 		return listTipoDatosLaborales;
 	}
@@ -206,11 +215,14 @@ public class ExpedienteManagedBean implements Serializable {
 		}			
 	}
 	
-	public void editarLaboral(){
-		System.out.println("Metodo editarLaboral");
-		System.out.println("Datos laborales a editar");
-		System.out.println("Tipo: " + this.selectedLaboral.getTipo() );
-		System.out.println("Id: " + this.selectedLaboral.getId() );
+	public void editarLaboral(){		
+		this.setNombreInstitucion(this.selectedLaboral.getInstitucion());
+		this.setInstitucionDireccion(this.selectedLaboral.getInstitucionDireccion());
+		this.setTipoLaboral(this.selectedLaboral.getTipo());
+		this.setNombreCargo(this.selectedLaboral.getCargo());
+		this.setFechaDesde(this.selectedLaboral.getFechaInicia());
+		this.setFechaHasta(this.selectedLaboral.getFechaFinaliza());
+		this.setIdSeletedLaboral(this.selectedLaboral.getId());		
 	}
 	
 	public void actualizarContacto() {
@@ -219,30 +231,50 @@ public class ExpedienteManagedBean implements Serializable {
 	}
 
 	public void guardarDatosLaborales() {
-		System.out.println("Revision de datos laborales a registrar");
-		System.out.println("Solicitud " + this.solicitudExp.getId());
-		System.out.println("Tipo Dato laboral " + this.tipoLaboral);
-		System.out.println("Institucion: " + this.nombreInstitucion);
-		System.out.println("Direccion: " + this.institucionDireccion);
-		System.out.println("Cargo: " + this.nombreCargo);
-		System.out.println("Fecha Inicio " + this.fechaDesde);
-		System.out.println("Fecha Fin " + this.fechaHasta);	
+		System.out.println("Revision de datos laborales a registrar");		
 		
-		Laboral exp = new Laboral (this.solicitudExp.getContacto(), // contacto, 
-								   this.tipoLaboral, // tipo, 
-								   "", // nombre,
-								   "", // descripcion, 
-								   this.nombreInstitucion, // institucion, 
-								   "Nicaragua", // pais,
-								   this.fechaDesde, // fechaInicia, 
-								   this.fechaHasta, // fechaFinaliza, 
-								   this.institucionDireccion, // institucionDireccion,
-								   "", // institucionTelefono, 
-								   this.nombreCargo, // cargo, 
-								   null // archivo
-									);
+		System.out.println("Valor del selectedLaboral " + this.idSeletedLaboral);
 		
-		exp = (Laboral)service.guardar(exp);
+		if (this.idSeletedLaboral == null) {
+		
+			this.selectedLaboral = new Laboral (this.solicitudExp.getContacto(), // contacto, 
+									   this.tipoLaboral, // tipo, 
+									   "", // nombre,
+									   "", // descripcion, 
+									   this.nombreInstitucion.toUpperCase(), // institucion, 
+									   "Nicaragua".toUpperCase(), // pais,
+									   this.fechaDesde, // fechaInicia, 
+									   this.fechaHasta, // fechaFinaliza, 
+									   this.institucionDireccion.toUpperCase(), // institucionDireccion,
+									   "", // institucionTelefono, 
+									   this.nombreCargo.toUpperCase(), // cargo, 
+									   null // archivo
+										);		
+			
+		} else {
+			this.selectedLaboral = service.getLaboralById(this.idSeletedLaboral);
+						
+			this.selectedLaboral.setInstitucion(this.nombreInstitucion.toUpperCase());
+			this.selectedLaboral.setInstitucionDireccion(this.institucionDireccion.toUpperCase());		
+			this.selectedLaboral.setCargo(this.nombreCargo.toUpperCase());		
+			this.selectedLaboral.setFechaInicia(this.fechaDesde);
+			this.selectedLaboral.setFechaFinaliza(this.fechaHasta);	
+			
+		}
+		this.selectedLaboral = (Laboral)service.guardar(this.selectedLaboral);
+		
+		limpiarCampos ();
 	}
+	
+	public void limpiarCampos (){
+		this.setSelectedLaboral(null);
+		this.setNombreCargo(null);	
+		this.setNombreInstitucion(null);
+		this.setFechaDesde(null);
+		this.setFechaHasta(null);
+		this.setInstitucionDireccion(null);
+		this.setIdSeletedLaboral(null);	
+		
+	}	
 
 }

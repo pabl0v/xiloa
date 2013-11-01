@@ -70,27 +70,46 @@ h3 {
 .estilo_dialogoLaborales {
     background: #E6EEF9;
 }
-#contenedor_dialogoLaborales {
-    margin: 3px;
-    border-radius: 6px;
-    padding: 5px;
+#modal_laborales {
+    background: #E6EEF9;
+	color: black;
 }
-#contenedor_dialogoLaborales h3{
+#modal_laborales .estilo_label{
+	color: black;
+    padding: 5px 0;
+	font-size: 13px;
+    font-weight: bold;
+	width: 275px;
+	display: inline-block;
+	padding: 12px;
+}
+#modal_laborales h3{
     font-size: 15px;
     font-weight: bold;
     margin-bottom: 7px;
 }
-#contenedor_dialogoLaborales .dialogoLaborales_secciones{
-    width: 215px;  
-    display: inline-table;
-    height: 50px;
+#modal_laborales input{
+	width: 200px;
 }
-#contenedor_dialogoLaborales .selectores{
+#modal_laborales .dialogoLaborales_secciones{
+	background: #fff;
+	margin: 11px 5px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+#modal_laborales .selectores{
     position: relative;
     top: 8px;
     margin: 0 5px;
     width: 150px;
 }
-#dialogoLaborales_botones{
-	display: inline-block;	
+#modal_laborales .dialogoLaborales_botones{
+    display: inline-table;
+    width: 45px;
+    height: 70px;
+    font-size: 12px;
+    margin-right: 4px;
+ 	
 }
