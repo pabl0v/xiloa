@@ -43,7 +43,7 @@ public class ActividadManagedBean {
 	
 	
 	@PostConstruct
-	private void llenarCatalogos(){
+	private void init(){
 		catalogoTiposActividad = service.getMapMantenedoresByTipo("1");
 		catalogoEstatusActividad = service.getMapMantenedoresByTipo("4");
 	}
