@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,36 +23,32 @@ public class Evaluacion {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "evaluacion_id", nullable = false)
 	private Long id;
-	
+
 	@NotNull
-	@Column(name = "evaluacion_estado_inicial", nullable = false)
-	private int estadoInicial;
-	
-	@NotNull
-	@Column(name = "evaluacion_estado_siguiente", nullable = false)
-	private int estadoSiguiente;
-	
-	@NotNull
-	@Column(name = "evaluacion_aprobado", nullable = false)
-	private boolean aprobado;
-	
-	@NotNull
-	@Column(name = "evaluacion_descripcion", nullable = false)
-	private String descripcion;
-	
-	@NotNull
-	@Column(name = "evaluacion_instrumento", nullable = false)
-	private String instrumento;
-	
+	@ManyToOne
+	@JoinColumn(name="evaluacion_solicitud_id")
+	private Solicitud solicitud;
+				
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "evaluacion_fecha", nullable = false)
 	@Temporal(TemporalType.DATE)
-	private Date fecha;
+	private Date fechaEvaluacion;
 	
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name="solicitud_id")
-	private Solicitud solicitud;
+	@JoinColumn(name="evaluacion_unidad_id")	
+	private Unidad unidad;
+	
+	@NotNull
+	@Column(name = "evaluacion_puntaje", nullable = false)
+	private Integer puntaje;
+
+	@Column(name = "evaluacion_observaciones", nullable = false)
+	private String observaciones;
+			
+	@NotNull
+	@Column(name = "evaluacion_aprobado", nullable = false)
+	private boolean aprobado;
 
 	public Long getId() {
 		return id;
@@ -63,20 +58,44 @@ public class Evaluacion {
 		this.id = id;
 	}
 
-	public int getEstadoInicial() {
-		return estadoInicial;
+	public Solicitud getSolicitud() {
+		return solicitud;
 	}
 
-	public void setEstadoInicial(int estadoInicial) {
-		this.estadoInicial = estadoInicial;
+	public void setSolicitud(Solicitud solicitud) {
+		this.solicitud = solicitud;
 	}
 
-	public int getEstadoSiguiente() {
-		return estadoSiguiente;
+	public Date getFechaEvaluacion() {
+		return fechaEvaluacion;
 	}
 
-	public void setEstadoSiguiente(int estadoSiguiente) {
-		this.estadoSiguiente = estadoSiguiente;
+	public void setFechaEvaluacion(Date fecha) {
+		this.fechaEvaluacion = fecha;
+	}
+	
+	public Integer getPuntaje(){
+		return puntaje;
+	}
+	
+	public void setPuntaje(Integer puntaje){
+		this.puntaje = puntaje;
+	}
+
+	public Unidad getUnidad() {
+		return unidad;
+	}
+
+	public void setUnidad(Unidad unidad) {
+		this.unidad = unidad;
+	}
+	
+	public String getObservaciones(){
+		return observaciones;
+	}
+	
+	public void setObservaciones(String observaciones){
+		this.observaciones = observaciones;
 	}
 
 	public boolean isAprobado() {
@@ -87,53 +106,18 @@ public class Evaluacion {
 		this.aprobado = aprobado;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-	public String getInstrumento() {
-		return instrumento;
-	}
-
-	public void setInstrumento(String instrumento) {
-		this.instrumento = instrumento;
-	}
-
-	public Solicitud getSolicitud() {
-		return solicitud;
-	}
-
-	public void setSolicitud(Solicitud solicitud) {
-		this.solicitud = solicitud;
-	}
-		
-	public Date getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
-	}
-		
-	public Evaluacion(Long id, int estadoInicial, int estadoSiguiente,
-			boolean aprobado, String descripcion, String instrumento,
-			Date fecha, Solicitud solicitud) {
-		super();
-		this.id = id;
-		this.estadoInicial = estadoInicial;
-		this.estadoSiguiente = estadoSiguiente;
-		this.aprobado = aprobado;
-		this.descripcion = descripcion;
-		this.instrumento = instrumento;
-		this.fecha = fecha;
-		this.solicitud = solicitud;
-	}
-
 	public Evaluacion() {
 		super();		
+	}
+
+	public Evaluacion(Long id, Solicitud solicitud, Date fecha, Unidad unidad, Integer puntaje, String observaciones, boolean aprobado) {
+		super();
+		this.id = id;
+		this.solicitud = solicitud;
+		this.fechaEvaluacion = fecha;
+		this.unidad = unidad;
+		this.puntaje = puntaje;
+		this.observaciones = observaciones;
+		this.aprobado = aprobado;
 	}
 }

@@ -32,7 +32,7 @@ import security.CustomUsernamePasswordAuthenticationToken;
 @Scope("request")
 public class LoginController implements PhaseListener {
 
-	private static final long serialVersionUID = -92971891224906450L;
+	private static final long serialVersionUID = 1L;
 	
 	protected final Log logger = LogFactory.getLog(getClass());
 	private String username;

@@ -84,8 +84,10 @@ public class CertificacionManagedBean implements Serializable {
 	
 	public String guardarEdicion(){
 		
+		certificacion.setFechaRegistro(new Date());
 		certificacion.setFechaActualiza(new Date());
 		certificacion.setActualiza(usuario);
+		certificacion.setReferencial("N/D");
 		certificacion = (Certificacion) service.guardar(certificacion);
 		certificacion = new Certificacion();
 		return "/modulos/planificacion/planificacion?faces-redirect=true";

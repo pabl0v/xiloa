@@ -1,10 +1,14 @@
 package model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
@@ -23,7 +27,11 @@ public class Unidad {
 	@NotNull
 	@Column(name = "competencia_descripcion", nullable = false)	
 	private String competenciaDescripcion;
-
+	
+	@OneToMany//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name="unidad_id", referencedColumnName="unidad_id")
+	private List<Instrumento> instrumentos;
+	
 	@NotNull
 	@Column(name = "competencia_estatus", nullable = false)	
 	private boolean estatus;
@@ -50,6 +58,14 @@ public class Unidad {
 
 	public void setCompetenciaDescripcion(String competenciaDescripcion) {
 		this.competenciaDescripcion = competenciaDescripcion;
+	}
+
+	public List<Instrumento> getInstrumentos() {
+		return instrumentos;
+	}
+
+	public void setInstrumentos(List<Instrumento> instrumentos) {
+		this.instrumentos = instrumentos;
 	}
 
 	public Unidad(String competenciaCodigo, String competenciaDescripcion, boolean estatus) {
