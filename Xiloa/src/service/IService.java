@@ -11,6 +11,7 @@ import support.USolicitud;
 import model.Actividad;
 import model.Certificacion;
 import model.Contacto;
+import model.Evaluacion;
 import model.Laboral;
 import model.Mantenedor;
 import model.Requisito;
@@ -87,6 +88,7 @@ public interface IService {
 	public List<Ifp> getIfpByInatec ();
 	public List<Laboral> getListLaboralByTipo(Integer tipo, Contacto contacto);
 	public Laboral getLaboralById(Long idLaboral);
+	public List<Evaluacion> getEvaluaciones(Solicitud solicitud);
 	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
 	
 }

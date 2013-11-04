@@ -118,9 +118,9 @@
                </p:tab>  
                     
                <p:tab id="tab4" title="Certificaciones">                    	  
-                   <p:dataTable emptyMessage="No hay datos para mostrar"  var="datosCertificacion" 
-                   				value="#{expedienteManagedBean.listDatosCertificaciones}" selection="#{expedienteManagedBean.selectedLaboral}" 
-                				rowKey="#{datosCertificacion}" selectionMode="single" paginator="true" rows="4" >  
+                   <p:dataTable emptyMessage="No hay datos para mostrar"  var="datosCertificacion" value="#{expedienteManagedBean.listDatosCertificaciones}" 
+                                selection="#{expedienteManagedBean.selectedLaboral}" rowKey="#{datosCertificacion}" 
+                                selectionMode="single" paginator="true" rows="4" >  
                         <p:column headerText="Empresa"><h:outputText value="#{datosCertificacion.institucion}" /></p:column>  
                         <p:column headerText="Cargo"><h:outputText value="#{datosCertificacion.cargo}" /></p:column>  
                         <p:column headerText="Desde"><h:outputText value="#{datosCertificacion.fechaInicia}" /></p:column>  
@@ -139,49 +139,78 @@
     	</div>
     	<div id="contenedor_tab_planes" class="seccion_expediente" style="width:98%">
     		
-    			<p:tabView id="tabView2">  
-                    <p:tab id="tab1" title="UC a evaluar"> 
-                    	<p:commandButton value="Agregar" /> 
-                         <p:dataTable emptyMessage="No hay datos"  var="uC" value="#{expedienteManagedBean.listDatosCertificaciones}">  
-                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{uC.institucion}" /></p:column>  
-                             <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{uC.institucion}" /></p:column>  
-                             <p:column headerText="Requisito"><h:outputText value="#{uC.institucion}" /></p:column>  
-                             <p:column headerText="Estado"><h:outputText value="#{uC.institucion}" /></p:column>  
-                             <p:column headerText="Editar"></p:column>              
+    			<p:tabView id="tabView_Evaluaciones">  
+                    <p:tab id="tab1" title="UC a evaluar">                    	 
+                         <p:dataTable emptyMessage="No hay datos"  var="uC" value="#{expedienteManagedBean.listEvaluaciones}"
+                         			  selection="#{expedienteManagedBean.selectedLaboral}" rowKey="#{uC}" 
+                         			  selectionMode="single" paginator="true" rows="4" >  
+                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{uC.instrumento}" /></p:column>  
+                             <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{uC.instrumento}" /></p:column>  
+                             <p:column headerText="Requisito"><h:outputText value="#{uC.instrumento}" /></p:column>  
+                             <p:column headerText="Estado"><h:outputText value="#{uC.instrumento}" /></p:column>  
+                             <p:column headerText="Editar">
+                             	<p:commandButton id="editarEvaluaciones" action="#{expedienteManagedBean.editarLaboral}" 
+                         	            	     oncomplete="PF('dlgEval').show();" update=":formExpediente:modalLaborales"   
+                         	                	 icon="ui-icon-pencil" title="Editar">    	
+                         			<f:setPropertyActionListener value="#{uC}" target="#{expedienteManagedBean.seletedEvaluacion}" />						  
+    							</p:commandButton>                        
+                             </p:column>              
                         </p:dataTable>    
                     </p:tab>  
 
                     <p:tab id="tab2" title="Portafolio">  
                     	<p:commandButton value="Agregar" />
-                         <p:dataTable emptyMessage="No hay datos"  var="portafolioEvidencia" value="#{expedienteManagedBean.listDatosCertificaciones}">  
+                         <p:dataTable emptyMessage="No hay datos"  var="portafolioEvidencia" value="#{expedienteManagedBean.listDatosCertificaciones}"
+                                      selection="#{expedienteManagedBean.selectedLaboral}" rowKey="#{portafolioEvidencia}" 
+                         			  selectionMode="single" paginator="true" rows="4" >  
                              <p:column headerText="Documento de soporte o evidencia"><h:outputText value="#{portafolioEvidencia.institucion}" /></p:column>  
                              <p:column headerText="Descripcion"><h:outputText value="#{portafolioEvidencia.institucion}" /></p:column>  
                              <p:column headerText="Respaldo de"><h:outputText value="#{portafolioEvidencia.institucion}" /></p:column>  
                              <p:column headerText="Estado"><h:outputText value="#{portafolioEvidencia.institucion}" /></p:column>  
-                             <p:column headerText="Editar"></p:column>              
+                             <p:column headerText="Editar">
+								<p:commandButton id="editarEvaluacionesPortafolio" action="#{expedienteManagedBean.editarLaboral}" 
+                         	    	             oncomplete="PF('dlgEval').show();" update=":formExpediente:modalLaborales"   
+                         	        	         icon="ui-icon-pencil" title="Editar">    	
+                         			<f:setPropertyActionListener value="#{portafolioEvidencia}" target="#{expedienteManagedBean.seletedLaboral}" />						  
+    							</p:commandButton>                                                     
+                             </p:column>              
                         </p:dataTable>     
                     </p:tab>  
 
-                    <p:tab id="tab3" title="Plan de evaluacion">
-                    	<p:commandButton value="Agregar" />  
-                         <p:dataTable emptyMessage="No hay datos"  var="evaluaciones" value="#{expedienteManagedBean.listEvaluaciones}">  
+                    <p:tab id="tab3" title="Plan de evaluacion">                    	  
+                         <p:dataTable emptyMessage="No hay datos"  var="evaluaciones" value="#{expedienteManagedBean.listEvaluaciones}"
+                                      selection="#{expedienteManagedBean.selectedLaboral}" rowKey="#{evaluaciones}" 
+                         			  selectionMode="single" paginator="true" rows="4" >  
                              <p:column headerText="Instrumento de evaluacion"><h:outputText value="#{evaluaciones.instrumento}" /></p:column>  
                              <p:column headerText="Observacion"><h:outputText value="#{evaluaciones.descripcion}" /></p:column>  
                              <p:column headerText="Fecha"><h:outputText value="#{evaluaciones.fecha}" /></p:column>  
-                             <p:column headerText="Aprobado"><h:outputText value="#{evaluaciones.aprobado}" /></p:column>  
+                             <p:column headerText="Aprobado"><p:selectBooleanCheckbox value="#{evaluaciones.aprobado}" /></p:column>  
                              <p:column headerText="Estado"><h:outputText value="#{evaluaciones.estadoInicial}" /></p:column>
-                             <p:column headerText="Editar"></p:column>              
+                             <p:column headerText="Editar">
+                             	<p:commandButton id="editarEvaluacionesPlan" action="#{expedienteManagedBean.editarLaboral}" 
+                         	                 	oncomplete="PF('dlgEval').show();" update=":formExpediente:modalLaborales"   
+                         	                 	icon="ui-icon-pencil" title="Editar">    	
+                         			<f:setPropertyActionListener value="#{evaluaciones}" target="#{expedienteManagedBean.seletedEvaluacion}" />						  
+    							</p:commandButton>                        
+                             </p:column>              
                         </p:dataTable>  
                     </p:tab>  
                     
-                    <p:tab id="tab4" title="Plan de formacion">
-                    	<p:commandButton value="Agregar" />  
-                         <p:dataTable emptyMessage="No hay datos"  var="formacion" value="#{expedienteManagedBean.listDatosCertificaciones}">  
-                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{formacion.institucion}" /></p:column>  
-                             <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{formacion.institucion}" /></p:column>  
-                             <p:column headerText="Requisito"><h:outputText value="#{formacion.institucion}" /></p:column>  
-                             <p:column headerText="Estado"><h:outputText value="#{formacion.institucion}" /></p:column>  
-                             <p:column headerText="Editar"></p:column>              
+                    <p:tab id="tab4" title="Plan de formacion">                    	  
+                         <p:dataTable emptyMessage="No hay datos"  var="formacion" value="#{expedienteManagedBean.listEvaluaciones}"
+                                      selection="#{expedienteManagedBean.selectedLaboral}" rowKey="#{formacion}" 
+                         			  selectionMode="single" paginator="true" rows="4" >  
+                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{formacion.instrumento}" /></p:column>  
+                             <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{formacion.instrumento}" /></p:column>  
+                             <p:column headerText="Observaciones"><h:outputText value="#{formacion.descripcion}" /></p:column>  
+                             <p:column headerText="Estado"><h:outputText value="#{formacion.aprobado}" /></p:column>  
+                             <p:column headerText="Editar">
+                             	<p:commandButton id="editarEvaluacionesPlanForma" action="#{expedienteManagedBean.editarLaboral}" 
+                         	                 	 oncomplete="PF('dlgEval').show();" update=":formExpediente:modalLaborales"   
+                         	                 	 icon="ui-icon-pencil" title="Editar">    	
+                         			<f:setPropertyActionListener value="#{formacion}" target="#{expedienteManagedBean.seletedEvaluacion}" />						  
+    							</p:commandButton>                        
+                             </p:column>              
                         </p:dataTable>  
                     </p:tab>  
                 </p:tabView>    		
@@ -220,6 +249,35 @@
 		    </div>					
 		</p:dialog>    	
     	<!--  Fin Cuadro de dialogo emergente que registra datos laborales y académicos -->
+    	
+    	<!-- ******************************************************************************************** -->
+    	
+    	<!-- Cuadro de dialogo emergente que registra datos sobre las Evaluaciones -->    	    	
+    	<p:dialog id="modalEvaluaciones" styleClass="estilo_dialogoLaborales" header="Registrar informacion sobre Evaluaciones:" widgetVar="dlgEval" 
+    	          modal="true" resizable="false" width="440" height="500" showEffect="clip" hideEffect="clip" >
+    	   <div id="modal_evaluacion">					
+				<h3 style="margin-left: -11px;">Datos Evaluaciones</h3>				
+			    <div class="dialogoLaborales_secciones" >					
+					<p>Elemento de compentencia o realizacion profesional:</p>  
+	            	<p:inputText id="nombreCompetencia" value="#{expedienteManagedBean.seletedEvaluacion.descripcion}" />
+	            	<p>Tecnica o instrumento de evaluacion:</p>	                  
+	            	<p:inputText id="nombreInstrumento" value="#{expedienteManagedBean.seletedEvaluacion.instrumento}" />            	
+					<p:growl id="growlFechaEval" showDetail="true"/>
+					<p>Fecha:</p>					
+					<p:calendar id="popupBtnFechaEval" value="#{expedienteManagedBean.seletedEvaluacion.fecha}" pattern="dd/mm/yyyy" showOn="button">
+						<p:ajax event="dateSelect" update="growlFechaEval" />
+					</p:calendar>					
+					<p>Aprobado:</p>					  
+            		<p:inputText id="aprobadoEval" value="#{expedienteManagedBean.seletedEvaluacion.aprobado}" />
+            		<p>Observaciones:</p>	      
+            		<p:editor id="observacionReprobado" value="#{expedienteManagedBean.seletedEvaluacion.descripcion}" height="150"/>	            	
+				</div>				
+				<p:commandButton value="Cancelar" onclick="PF('dlgEval').hide();"/>
+				<p:commandButton value="Aceptar" action="#{expedienteManagedBean.guardarDatosLaborales}" update=":formExpediente:tabView_Evaluaciones,:formExpediente:modalEvaluaciones" 
+				                 oncomplete="PF('dlgEval').hide();"/>								
+		    </div>					
+		</p:dialog>    	
+    	<!--  Fin Cuadro de dialogo emergente que registra datos sobre las evaluaciones -->
     	</h:form>
     </div> 
 </h:body>

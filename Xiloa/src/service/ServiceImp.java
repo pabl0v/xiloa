@@ -20,6 +20,7 @@ import dao.IDaoInatec;
 import model.Actividad;
 import model.Certificacion;
 import model.Contacto;
+import model.Evaluacion;
 import model.Laboral;
 import model.Mantenedor;
 import model.Perfil;
@@ -60,6 +61,9 @@ public class ServiceImp implements IService {
 	
 	@Autowired	
 	private IDao<Laboral> laboralDao;
+	
+	@Autowired	
+	private IDao<Evaluacion> evaluacionDao;
 	
 	@Override
 	public List<Certificacion> getCertificaciones(){
@@ -389,5 +393,10 @@ public class ServiceImp implements IService {
 	@Override
 	public Laboral getLaboralById(Long idLaboral) {
 		return laboralDao.findOneByQuery("select l from laborales l where l.id="+idLaboral);				
+	}
+	
+	@Override
+	public List<Evaluacion> getEvaluaciones(Solicitud solicitud) {
+		return evaluacionDao.findAllByQuery("select e from evaluacion e where e.solicitud.id=" + solicitud.getId());
 	}
 }

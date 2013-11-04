@@ -55,6 +55,8 @@ public class ExpedienteManagedBean implements Serializable {
 	private List<SelectItem> listTipoDatosLaborales = new ArrayList<SelectItem> ();
 	private Laboral selectedLaboral;
 	
+	private Evaluacion seletedEvaluacion;
+	
 	
 	private Map<Integer, Mantenedor> catalogoTipoDatosLaborales = new HashMap<Integer, Mantenedor>();
 
@@ -103,6 +105,7 @@ public class ExpedienteManagedBean implements Serializable {
 	}
 
 	public List<Evaluacion> getListEvaluaciones() {
+		listEvaluaciones = service.getEvaluaciones(this.solicitudExp);			
 		return listEvaluaciones;
 	}
 
@@ -206,6 +209,14 @@ public class ExpedienteManagedBean implements Serializable {
 
 	public void setSelectedLaboral(Laboral selectedLaboral) {
 		this.selectedLaboral = selectedLaboral;
+	}
+	
+	public Evaluacion getSeletedEvaluacion() {
+		return seletedEvaluacion;
+	}
+
+	public void setSeletedEvaluacion(Evaluacion seletedEvaluacion) {
+		this.seletedEvaluacion = seletedEvaluacion;
 	}
 
 	@PostConstruct
