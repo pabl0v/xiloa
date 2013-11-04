@@ -1,5 +1,6 @@
 package view;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,7 +21,9 @@ import service.IService;
 
 @Component
 @Scope("session")
-public class ActividadManagedBean {
+public class ActividadManagedBean implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Autowired
 	private IService service;
@@ -119,7 +122,7 @@ public class ActividadManagedBean {
 	
 	public String cancelar(){
 		actividad = new Actividad();
-		return "/modulos/planificacion/edicion?faces-redirect=true";
+		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
 	}
 	
 	public void selectedActividadListener(SelectEvent event){
@@ -129,7 +132,7 @@ public class ActividadManagedBean {
 	}
 
 	public String guardar(){
-		return "/modulos/planificacion/edicion?faces-redirect=true";
+		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
 	}
 	
 	public String getNombreCentro() {

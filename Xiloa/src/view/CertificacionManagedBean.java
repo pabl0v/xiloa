@@ -139,12 +139,12 @@ public class CertificacionManagedBean implements Serializable {
 		certificacion.setUnidades(new ArrayList<Unidad>());
 		certificacion.setInvolucrados(new Contacto[] {});
 
-		return "/modulos/planificacion/edicion?faces-redirect=true";
+		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
 	}
 	
 	public String editarCertificacion(Certificacion certificacion){
 		this.certificacion = certificacion;
-		return "/modulos/planificacion/edicion?faces-redirect=true";
+		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
 	}
 	
 	public Integer getSelectedEstatusCertificacion() {

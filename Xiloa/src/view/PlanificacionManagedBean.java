@@ -1,5 +1,6 @@
 package view;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,9 @@ import support.UCompetencia;
 
 @Component
 @Scope(value="request")
-public class PlanificacionManagedBean {
+public class PlanificacionManagedBean implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	
 	@Autowired
 	private IService service;
@@ -33,7 +36,7 @@ public class PlanificacionManagedBean {
 	}
 	
 	@PostConstruct
-	private void llenarDatos(){
+	private void init(){
 		competencias = service.getUcompetenciaSinPlanificar();
 		certificaciones = service.getCertificaciones();
 	}
