@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import model.Actividad;
+import model.Certificacion;
 import model.Mantenedor;
 
 import org.primefaces.event.SelectEvent;
@@ -28,6 +29,7 @@ public class ActividadManagedBean implements Serializable {
 	@Autowired
 	private IService service;
 
+	private Certificacion certificacion;
 	private Integer selectedTipoActividad;
 	private Map<Integer,Mantenedor> catalogoTiposActividad;
 	private Integer selectedEstatusActividad;
@@ -49,6 +51,14 @@ public class ActividadManagedBean implements Serializable {
 	private void init(){
 		catalogoTiposActividad = service.getMapMantenedoresByTipo("1");
 		catalogoEstatusActividad = service.getMapMantenedoresByTipo("4");
+	}
+	
+	public Certificacion getCertificacion() {
+		return certificacion;
+	}
+
+	public void setCertificacion(Certificacion certificacion) {
+		this.certificacion = certificacion;
 	}
 	
 	public void reset(){
@@ -152,5 +162,5 @@ public class ActividadManagedBean implements Serializable {
 
 	public void setDireccionCentro(String direccionCentro) {
 		this.direccionCentro = direccionCentro;
-	}	
+	}
 }

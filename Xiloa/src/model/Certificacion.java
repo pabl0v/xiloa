@@ -3,8 +3,10 @@ package model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -59,6 +61,11 @@ public class Certificacion {
 	private Date fechaRegistro;
 	
 	@DateTimeFormat(iso = ISO.DATE)
+	@Column(name = "certificacion_fecha_actualiza", nullable = true)
+	@Temporal(TemporalType.DATE)
+	private Date fechaActualiza;
+	
+	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "certificacion_inicia", nullable = true)
 	@Temporal(TemporalType.DATE)
 	private Date inicia;
@@ -110,7 +117,11 @@ public class Certificacion {
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="certificacion_creador_id")	
-	private Usuario creador;			//revisar
+	private Usuario creador;
+	
+	@ManyToOne
+	@JoinColumn(name="certificacion_actualiza_id")	
+	private Usuario actualiza;
 
 	@NotNull
 	@ManyToOne
@@ -123,9 +134,9 @@ public class Certificacion {
 	@Column(name = "certificacion_nivel_competencia", nullable = false)
 	private int nivelCompetencia;
 	
-	@OneToMany//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="certificacion_id", referencedColumnName="certificacion_id")
-	private List<Unidad> unidades;
+	private Set<Unidad> unidades;
 	
 	@OneToMany(mappedBy = "certificacion")
 	private List<Requisito> requisitos;
@@ -158,7 +169,7 @@ public class Certificacion {
 	public Certificacion(){
 		super();
 		this.requisitos = new ArrayList<Requisito>();
-		this.unidades = new ArrayList<Unidad>();
+		this.unidades = new HashSet<Unidad>();
 		this.disponibilidad = 0;
 		this.actividades = new ArrayList<Actividad>();
 		this.solicitudes = new ArrayList<Solicitud>();
@@ -227,6 +238,14 @@ public class Certificacion {
 
 	public void setFechaRegistro(Date fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
+	}
+
+	public Date getFechaActualiza() {
+		return fechaActualiza;
+	}
+
+	public void setFechaActualiza(Date fechaActualiza) {
+		this.fechaActualiza = fechaActualiza;
 	}
 
 	public Date getInicia() {
@@ -325,6 +344,14 @@ public class Certificacion {
 		this.creador = creador;
 	}
 
+	public Usuario getActualiza() {
+		return actualiza;
+	}
+
+	public void setActualiza(Usuario actualiza) {
+		this.actualiza = actualiza;
+	}
+
 	public Mantenedor getEstatus() {
 		return estatus;
 	}
@@ -357,11 +384,11 @@ public class Certificacion {
 		this.requisitos = requisitos;
 	}
 
-	public List<Unidad> getUnidades() {
+	public Set<Unidad> getUnidades() {
 		return unidades;
 	}
 
-	public void setUnidades(List<Unidad> unidades) {
+	public void setUnidades(Set<Unidad> unidades) {
 		this.unidades = unidades;
 	}
 
@@ -427,7 +454,7 @@ public class Certificacion {
 							String referencial, 
 							int nivelCompetencia,
 							List<Requisito> requisitos, 
-							List<Unidad> unidades,
+							Set<Unidad> unidades,
 							List<Actividad> actividades, 
 							List<Solicitud> solicitudes,
 							Map<Integer, Contacto> involucrados) {

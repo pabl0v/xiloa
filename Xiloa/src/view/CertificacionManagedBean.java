@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -82,17 +83,16 @@ public class CertificacionManagedBean implements Serializable {
 	}
 	
 	public String guardarEdicion(){
-		certificacion.setFechaRegistro(new Date());
-		certificacion.setCreador(usuario);
-		certificacion.setProgramador(usuario);
-		certificacion.setReferencial("N/D");
+		
+		certificacion.setFechaActualiza(new Date());
+		certificacion.setActualiza(usuario);
 		certificacion = (Certificacion) service.guardar(certificacion);
 		certificacion = new Certificacion();
 		return "/modulos/planificacion/planificacion?faces-redirect=true";
 	}
 	
 	public String guardar(){
-
+		
 		certificacion.setFechaRegistro(new Date());
 		certificacion.setCreador(usuario);
 		certificacion.setProgramador(usuario);
@@ -136,7 +136,7 @@ public class CertificacionManagedBean implements Serializable {
 		certificacion.setIfpDireccion(ifpDireccion);
 		
 		certificacion.setActividades(new ArrayList<Actividad>());
-		certificacion.setUnidades(new ArrayList<Unidad>());
+		certificacion.setUnidades(new HashSet<Unidad>());
 		certificacion.setInvolucrados(new Contacto[] {});
 
 		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
