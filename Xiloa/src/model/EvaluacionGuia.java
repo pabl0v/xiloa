@@ -1,0 +1,71 @@
+package model;
+
+import javax.persistence.AssociationOverride;
+import javax.persistence.AssociationOverrides;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.Transient;
+
+
+@Entity(name = "evaluacion_guia")
+@AssociationOverrides({
+	@AssociationOverride(name = "pk.evaluacion", joinColumns = @JoinColumn(name = "evaluacion_id")),
+	@AssociationOverride(name = "pk.guia", joinColumns = @JoinColumn(name = "guia_id"))})
+public class EvaluacionGuia {
+	
+	@EmbeddedId
+	private EvaluacionGuiaId pk;
+	private Integer puntaje;
+	
+	public EvaluacionGuiaId getPk() {
+		return pk;
+	}
+	
+	public void setPk(EvaluacionGuiaId pk) {
+		this.pk = pk;
+	}
+	
+	public Integer getPuntaje() {
+		return puntaje;
+	}
+	
+	public void setPuntaje(Integer puntaje) {
+		this.puntaje = puntaje;
+	}
+	
+	@Transient
+	public Evaluacion getEvaluacion(){
+		return pk.getEvaluacion();
+	}
+	
+	public void setEvaluacion(Evaluacion evaluacion){
+		pk.setEvaluacion(evaluacion);
+	}
+	
+	@Transient
+	public Guia getGuia(){
+		return pk.getGuia();
+	}
+	
+	public void setGuia(Guia guia){
+		pk.setGuia(guia);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null || !(obj instanceof EvaluacionGuia))
+			return false;
+		EvaluacionGuia that = (EvaluacionGuia) obj;
+		if (pk != null ? !pk.equals(that.getPk()) : that.getPk() != null)
+			return false;
+		return true;
+	 }
+	
+	@Override
+	public int hashCode() {
+		return (pk != null ? pk.hashCode() : 0);
+	}
+}

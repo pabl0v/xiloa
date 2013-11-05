@@ -1,14 +1,19 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -16,7 +21,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
-@Entity(name="evaluacion")
+@Entity(name="evaluaciones")
 public class Evaluacion {
 
 	@Id
@@ -36,8 +41,11 @@ public class Evaluacion {
 	
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name="evaluacion_unidad_id")	
+	@JoinColumn(name="evaluacion_unidad_id")
 	private Unidad unidad;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.evaluacion", cascade = CascadeType.ALL)
+	private List<EvaluacionGuia> guias;
 	
 	@NotNull
 	@Column(name = "evaluacion_puntaje", nullable = false)
@@ -107,15 +115,17 @@ public class Evaluacion {
 	}
 
 	public Evaluacion() {
-		super();		
+		super();
+		this.guias = new ArrayList<EvaluacionGuia>();		
 	}
 
-	public Evaluacion(Long id, Solicitud solicitud, Date fecha, Unidad unidad, Integer puntaje, String observaciones, boolean aprobado) {
+	public Evaluacion(Long id, Solicitud solicitud, Date fecha, Unidad unidad, List<EvaluacionGuia> guias, Integer puntaje, String observaciones, boolean aprobado) {
 		super();
 		this.id = id;
 		this.solicitud = solicitud;
 		this.fechaEvaluacion = fecha;
 		this.unidad = unidad;
+		this.guias = guias;
 		this.puntaje = puntaje;
 		this.observaciones = observaciones;
 		this.aprobado = aprobado;

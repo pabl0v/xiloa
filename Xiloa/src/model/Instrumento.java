@@ -24,6 +24,15 @@ public class Instrumento {
 	
 	@NotNull
 	@ManyToOne
+	@JoinColumn(name="instrumento_unidad")
+	private Unidad unidad;
+	
+	@NotNull
+	@Column(name = "instrumento_codigo", nullable = false)	
+	private String codigo;
+	
+	@NotNull
+	@ManyToOne
 	@JoinColumn(name="instrumento_tipo")
 	private Mantenedor tipo;
 		
@@ -31,8 +40,15 @@ public class Instrumento {
 	@Column(name = "instrumento_nombre", nullable = false)	
 	private String nombre;
 	
-	@OneToMany//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name="instrumento_id", referencedColumnName="instrumento_id")	
+	@NotNull
+	@Column(name = "instrumento_descripcion", nullable = false)	
+	private String descripcion;
+	
+	@NotNull
+	@Column(name = "instrumento_puntaje_minimo", nullable = false)	
+	private Integer puntajeMinimo;
+	
+	@OneToMany(mappedBy="instrumento")	
 	private List<Guia> guias;
 
 	@NotNull
@@ -45,6 +61,22 @@ public class Instrumento {
 	
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Unidad getUnidad() {
+		return unidad;
+	}
+
+	public void setUnidad(Unidad unidad) {
+		this.unidad = unidad;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 
 	public Mantenedor getTipo() {
@@ -63,12 +95,28 @@ public class Instrumento {
 		this.nombre = nombre;
 	}
 
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
 	public List<Guia> getGuias() {
 		return guias;
 	}
 
 	public void setGuias(List<Guia> guias) {
 		this.guias = guias;
+	}
+
+	public Integer getPuntajeMinimo() {
+		return puntajeMinimo;
+	}
+
+	public void setPuntajeMinimo(Integer puntajeMinimo) {
+		this.puntajeMinimo = puntajeMinimo;
 	}
 
 	public boolean getEstatus() {
@@ -84,11 +132,15 @@ public class Instrumento {
 		this.guias = new ArrayList<Guia>();
 	}
 	
-	public Instrumento(Mantenedor tipo, String nombre, List<Guia> guias, boolean estatus){
+	public Instrumento(Unidad unidad, String codigo, Mantenedor tipo, String nombre, String descripcion, Integer puntajeMinimo, List<Guia> guias, boolean estatus){
 		super();
 		
+		this.unidad = unidad;
+		this.codigo = codigo;
 		this.tipo = tipo;
 		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.puntajeMinimo = puntajeMinimo;
 		this.guias = guias;
 		this.estatus = estatus;
 	}

@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 @Entity(name="guias")
@@ -14,6 +17,10 @@ public class Guia {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "guia_id", nullable = false)
 	private Long id;
+	
+	@ManyToOne
+	@JoinColumn(name="guia_instrumento_id")
+	private Instrumento instrumento;
 	
 	@NotNull
 	@Column(name = "guia_pregunta", nullable = false)	
@@ -39,6 +46,14 @@ public class Guia {
 		this.id = id;
 	}
 	
+	public Instrumento getInstrumento() {
+		return instrumento;
+	}
+
+	public void setInstrumento(Instrumento instrumento) {
+		this.instrumento = instrumento;
+	}
+
 	public String getPregunta() {
 		return pregunta;
 	}
@@ -75,7 +90,8 @@ public class Guia {
 		super();
 	}
 	
-	public Guia(String pregunta, String respuesta, int puntaje, boolean estatus){
+	public Guia(Instrumento instrumento, String pregunta, String respuesta, int puntaje, boolean estatus){
+		this.instrumento = instrumento;
 		this.pregunta = pregunta;
 		this.respuesta = respuesta;
 		this.puntaje = puntaje;
