@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">  
+    <h:head>
+        <link type="text/css" rel="stylesheet" href="../../resources/css/instrumentos.css"></link>
+    </h:head>
+    <h:body>
+    <div id="contenedor">      
+      	<div id="header">
+            <ui:insert name="header" >
+	             <ui:include src="../../modulos/compartido/paginamaestra.xhtml" />
+		    </ui:insert>
+		    <script type="text/javascript" src="../../resources/scripts/instrumentos.js"></script>
+		</div>
+        <h2>Instrumentos a utilizar:  <h:outputText value="#{certificacionManagedBean.certificacion.nombreCompetencia}" /> </h2>
+        <div id="contenedor_secciones">                   
+            <div class="seccion_edicion" style="font-size: 14px;">             
+              <h:outputLabel styleClass="estilo_label" for="nombreCandidato" value="Codigo:" />  
+              <p:inputText id="codigo" value="#{expedienteManagedBean.solicitudExp.contacto.nombreCompleto}" />
+              <br/>
+              <h:outputLabel styleClass="estilo_label" for="numeroIdentificacion" value="Tipo:" />  
+              <p:selectOneMenu id="selector_estatus1" styleClass="selector_status_estilo" value="#{certificacionManagedBean.selectedEstatusCertificacion}" >  
+					<f:selectItem itemLabel="Seleccione..." itemValue="" />
+					<f:selectItems value="#{certificacionManagedBean.catalogoEstatusCertificacion}" var="estatus" itemLabel="#{estatus.valor}" itemValue="#{estatus.id}" />
+			  </p:selectOneMenu>	
+			  <br/>		
+              <h:outputLabel styleClass="estilo_label" for="certificacionNombre" value="Unidad:" />  
+              <p:selectOneMenu id="selector_estatus2" styleClass="selector_status_estilo" value="#{certificacionManagedBean.selectedEstatusCertificacion}" >  
+					<f:selectItem itemLabel="Seleccione..." itemValue="" />
+					<f:selectItems value="#{certificacionManagedBean.catalogoEstatusCertificacion}" var="estatus" itemLabel="#{estatus.valor}" itemValue="#{estatus.id}" />
+			  </p:selectOneMenu>	
+			  <br/>		
+              <h:outputLabel styleClass="estilo_label" for="certificacionNombre" value="Nombre:" />  
+              <p:inputText id="certificacionNombre2" value="#{expedienteManagedBean.solicitudExp.certificacion.nombre}" />
+              <br/>
+              <h:outputLabel styleClass="estilo_label" for="certificacionNombre" value="Descripcion:" />  
+              <p:inputText id="certificacionNombre3" value="#{expedienteManagedBean.solicitudExp.certificacion.nombre}" />
+              <br/>
+              <h:outputLabel styleClass="estilo_label" for="certificacionNombre" value="Puntaje minimo:" />  
+              <p:inputText id="certificacionNombre4" value="#{expedienteManagedBean.solicitudExp.certificacion.nombre}" />
+              <br/>
+              <h:outputLabel styleClass="estilo_label" for="certificacionNombre" value="Estatus" />  
+              <p:selectOneMenu id="selector_estatus" styleClass="selector_status_estilo" value="#{certificacionManagedBean.selectedEstatusCertificacion}" >  
+					<f:selectItem itemLabel="Seleccione..." itemValue="" />
+					<f:selectItems value="#{certificacionManagedBean.catalogoEstatusCertificacion}" var="estatus" itemLabel="#{estatus.valor}" itemValue="#{estatus.id}" />
+			  </p:selectOneMenu>	
+			  <div class="contenedor_botones">		
+	              <h:commandButton value="Cancelar" action="#{certificacionManagedBean.cancelar}"/> 
+				  <h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardarEdicion}"/>
+			  </div>
+            </div>          
+            <div class="seccion_edicion">
+               <div class="seccion_interna">
+                   <p:dataTable id="display" emptyMessage="No hay datos para mostrar"  var="contacto" value="#{certificacionManagedBean.certificacion.involucrados}">  
+                        <p:column headerText="Pregunta"><h:outputText value="#{contacto.nombreCompleto}" /></p:column>  
+                        <p:column headerText="Respuesta"><h:outputText value="#{contacto.rol.descripcion}" /></p:column>  
+                        <p:column headerText="Puntaje"><h:outputText value="#{contacto.correo1}" /></p:column>  
+                        <p:column headerText="Estatus"><h:outputText value="#{contacto.correo1}" /></p:column>  
+                    </p:dataTable> 
+                </div>
+                <div class="contenedor_botones">
+                	<h:commandButton value="Agregar" onclick="PF('dlg1').show();"/> 
+                </div>
+            </div>
+		</div>
+	</div>
+			
+        
+	<p:dialog id="modalDialog" styleClass="estilo_dialogoactividades" header="Agregar guia:" widgetVar="dlg1" modal="true" resizable="false" width="350" height="300">
+		<div id="contenedor_dialogoactividades">
+		  	<h:outputLabel styleClass="estilo_label" for="nombreCandidato" value="Pregunta:" />  
+            <p:inputText id="codigo1" value="#{expedienteManagedBean.solicitudExp.contacto.nombreCompleto}" />
+            <br/>	
+            <h:outputLabel styleClass="estilo_label" for="nombreCandidato" value="Respuesta:" />  
+            <p:inputText id="codigo2" value="#{expedienteManagedBean.solicitudExp.contacto.nombreCompleto}" />
+            <br/>	
+            <h:outputLabel styleClass="estilo_label" for="nombreCandidato" value="Puntaje:" />  
+            <p:inputText id="codigo3" value="#{expedienteManagedBean.solicitudExp.contacto.nombreCompleto}" />
+            <br/>	
+            <h:outputLabel styleClass="estilo_label" for="nombreCandidato" value="Estatus:" />  
+            <p:selectOneMenu id="selector_estatus3" styleClass="selector_status_estilo" value="#{certificacionManagedBean.selectedEstatusCertificacion}" >  
+				<f:selectItem itemLabel="Seleccione..." itemValue="" />
+				<f:selectItems value="#{certificacionManagedBean.catalogoEstatusCertificacion}" var="estatus" itemLabel="#{estatus.valor}" itemValue="#{estatus.id}" />
+			</p:selectOneMenu>	
+			<br/>	
+			<div class="contenedor_botones" style="margin-top:32px;">	
+	            <h:commandButton value="Cancelar" onclick="PF('dlg1').hide();" action="#{certificacionManagedBean.cancelar}"/> 
+				<h:commandButton value="Aceptar" onclick="PF('dlg1').hide();" action="#{certificacionManagedBean.guardarEdicion}"/>
+			</div>
+		</div>
+	</p:dialog>
+</h:body>
+</html>

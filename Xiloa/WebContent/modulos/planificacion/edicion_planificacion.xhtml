@@ -84,18 +84,21 @@
 					<f:selectItems value="#{certificacionManagedBean.catalogoEstatusCertificacion}" var="estatus" itemLabel="#{estatus.valor}" itemValue="#{estatus.id}" />
 				</p:selectOneMenu>				
 				</div>
-				<div class="seccion_edicion" style="height: 260px">
-					<p>Nombre del centro evaluador</p>
-					<p:inputText id="txt" styleClass="selector_nombrecentro_estilo" value="#{certificacionManagedBean.certificacion.ifpNombre}" completeMethod="#{certificacionManagedBean.certificacion.ifpNombre}"/>  
-					<p style="display:block"><br/>Direccion del centro evaluador</p>
-					<p:inputTextarea rows="105" cols="68" value="#{certificacionManagedBean.certificacion.ifpDireccion}" queryDelay="750" minQueryLength="4" />  
-					<p style="margin-right:5px;"><br/>Costo de aranceles para el candidato:</p>
-					<p:inputText value="#{certificacionManagedBean.certificacion.costo}" /> 
+				<div id="info_competencia" class="seccion_edicion" style="height: 260px;font-size:15px;">
+					<p>Nombre del centro evaluador:</p>
+					<div><h:outputText value="#{certificacionManagedBean.certificacion.ifpNombre}"/></div>  
+					<br/>
+					<p>Direccion del centro evaluador:</p>
+					<div><h:outputText value="#{certificacionManagedBean.certificacion.ifpDireccion}" /></div>
+					<br/>  
+					<p>Costo de aranceles para el candidato:</p>
+					<div><h:outputText value="#{certificacionManagedBean.certificacion.costo}" /></div> 
 				</div>
 				<div class="seccion_edicion" style="height: 1px"></div>
 				<div class="seccion_edicion" style="height: 1px">
 					<div class="contenedor_botones">
-						<h:commandButton value="Cancelar" action="#{certificacionManagedBean.cancelar}"/> 
+						<h:commandButton id="prueba" value="Agregar instrumento" oncomplete="window.location='/Xiloa/modulos/planificacion/instrumentos.xhtml'"/> 
+						<h:commandButton value="Cancelar" onclick="$('#prueba').disabled=true;" action="#{certificacionManagedBean.cancelar}"/> 
 						<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardarEdicion}"/>
 					</div>
             	</div>

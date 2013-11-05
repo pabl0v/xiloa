@@ -1,9 +1,9 @@
 h2{
-    padding: 12px!important;
+    padding: 15px!important;
     padding-bottom: 0px!important;
     color: #101140;
     font-weight: bold!important;
-    font-size: 18px!important;
+    font-size: 20px!important;
 }
 #contenedor {
     background: #e6eef9;
@@ -12,10 +12,10 @@ h2{
 }
 #contenedor_secciones {	
     background: none;
-    display: inline-block;
     height: 500px;
     min-width: 1024px;
     position: relative;
+    
 }
 .contenedor_calendario {
     margin: 22px 8px;
@@ -35,12 +35,12 @@ h2{
     display: inline-block;
 }
 .seccion_edicion{
-    width: 47%;
+    width: 45%;
     height: 220px;
     margin-top: 4px;
     display: inline-block;
     float: left;
-    margin: 7px 12px;
+    margin: 7px 15px;
 }
 .seccion_edicion p{
     display: inline-block;
@@ -58,7 +58,7 @@ h2{
 .seccion_interna{
     background: #f0f7fe;
     border: 1px solid #abc7ed;
-    height: 190px;
+    height: 290px;
 }
 .formulario_inline{
     display: inline-block;
@@ -69,9 +69,7 @@ h2{
     padding: 0px;
 }
 .contenedor_botones {
-    float:right;
-    position: relative;
-    top: -94px;
+	margin-top: 10px;
 }
 .contenedor_botones input, #dialogoactividades_botones input{
 	padding: 7px;
@@ -87,7 +85,7 @@ h2{
 .selector_status_estilo {
 	position: relative;
 	top: 9px;
-	left: 9px;
+    width: 200px!important;
 	}
 .selector_nombrecentro_estilo {
 	position: relative;
@@ -162,4 +160,27 @@ h2{
 #info_competencia div{
 	font-weight: bold;
 	margin-bottom: 1px;
+}
+.seccion_edicion > input {
+	width: 190px;
+}
+.seccion_edicion > label {
+	margin-top: 25px;
+	display: inline-block;
+	width: 185px;
+}
+.seccion_edicion {
+	margin: 20px;
+}
+
+#contenedor_dialogoactividades .estilo_label{
+		margin-top: 25px;
+	display: inline-block;
+	width: 145px;
+}
+#contenedor_dialogoactividades .selector_status_estilo{
+	width: 140px!important;
+}
+#contenedor_dialogoactividades input{
+	width: 140px;
 }
