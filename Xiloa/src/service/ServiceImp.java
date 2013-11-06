@@ -345,11 +345,8 @@ public class ServiceImp implements IService {
 	}
 
 	@Override
-	public List<Actividad> getActividades(Long certificacionId) {
-		Object [] objs =  new Object [] {certificacionId};
-		return actividadDao.findAllByNamedQueryParam("Actividades.findByIdCert", objs);
-		
-		//return actividadDao.findAllByQuery("Select a from actividades a where a.certificacion.id="+certificacionId);
+	public List<Actividad> getActividades(Long certificacionId) {		
+		return actividadDao.findAllByQuery("Select a from actividades a where a.certificacion.id="+certificacionId);
 		//return actividadDao.findAllByQuery("Select a from actividades a");
 	}
 
