@@ -45,7 +45,7 @@ public class InatecUserService implements UserDetailsService {
 			if(service.isNuevoContactoInatec(usuario.getUsuarioAlias()))
 			{
 				Contacto contacto = service.generarNuevoContactoInatec(usuario.getUsuarioAlias());
-				service.guardarContacto(contacto);
+				service.guardar(contacto);				
 			}
 		}
 	}

@@ -96,7 +96,7 @@ public class ServiceImp implements IService {
 										List<Solicitud> solicitudes, 
 										Contacto[] involucrados,
 										int estatus) {
-		Usuario usuario = usuarioDao.findOneByQuery("select u from usuarios u where u.id=3");
+		Usuario usuario = usuarioDao.findById(Usuario.class, 3); //usuarioDao.findOneByQuery("select u from usuarios u where u.id=3");
 		Certificacion certificacion = new Certificacion();
 		certificacion.setNombre(nombre);
 		certificacion.setDescripcion(descripcion);
@@ -179,13 +179,7 @@ public class ServiceImp implements IService {
 	public Usuario getUsuarioInatec(String usuario) {
 		return inatecDao.getUsuario(usuario);
 	}
-
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void RegistrarUsuario(Usuario usuario) {
-		usuarioDao.save(usuario);
-	}
-
+	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void RegistrarUsuarioOpenId(String login, String nombre, String apellido, String email, String rol) {
@@ -196,12 +190,6 @@ public class ServiceImp implements IService {
 				                      true // usuarioEstatus
 				                      );		
 		usuarioDao.save(usuario);
-	}
-
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void guardarContacto(Contacto contacto) {			
-			contactoDao.save(contacto);
 	}
 
 	@Override
@@ -224,20 +212,14 @@ public class ServiceImp implements IService {
 	
 	//Inicio : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
 	@Override
-	public List<USolicitud> getUSolicitudes () {
-			System.out.println("Desde el metodo getSolicitudes del ServiceImp");
+	public List<USolicitud> getUSolicitudes () {			
 			
 			List<Solicitud> Sols = solicitudDao.findAll(Solicitud.class);
 			List<USolicitud> uSols = new ArrayList<USolicitud>();;
 			
 			for(int i = 0; i<Sols.size(); i++){
 				
-				USolicitud uSolicitud = new USolicitud (Sols.get(i).getCertificacion().getIfpNombre(), 
-														Sols.get(i).getContacto().getNombreCompleto(),
-														Sols.get(i).getCertificacion().getNombre(), 
-														Sols.get(i).getCertificacion().getInvolucrados().get(0).getCorreo1(), 
-														Sols.get(i).getEstatus(),
-														Sols.get(i).getFechaRegistro());
+				USolicitud uSolicitud = new USolicitud (Sols.get(i), false);
 				
 				uSols.add(uSolicitud);			
 			}
@@ -250,6 +232,11 @@ public class ServiceImp implements IService {
 	public List<Solicitud> getSolicitudes() {
 		return solicitudDao.findAll(Solicitud.class);		
 	}	
+	
+	@Override
+	public Solicitud getSolicitudById(Long idSolicitud) {
+		return solicitudDao.findById(Solicitud.class, idSolicitud.intValue());		
+	}
 	
 	@Override
 	public List<Solicitud> getSolicitudesByParam(HashMap<String, Object> param) {
@@ -266,21 +253,18 @@ public class ServiceImp implements IService {
 			Iterator<String> claveSet = param.keySet().iterator();			
 		    
 		    while(claveSet.hasNext()){		      
-		    	campo = claveSet.next();
-		    	System.out.println("En el ServiceImp " + campo);
+		    	campo = claveSet.next();		    	
 		    	if (param.get(campo) instanceof Integer || param.get(campo) instanceof Long) {
 		    		valor = param.get(campo);
 		    	} else {
 		    		valor = "'" + param.get(campo) + "'";
 		    	}		    	
 		    	
-		    	sqlWhere = (sqlWhere == null) ? "where " + campo + " = " + valor :sqlWhere + " and " + campo + " = " + valor; 
-		        System.out.println("Validamos que el where este formado correctamente: " +  sqlWhere);		        
+		    	sqlWhere = (sqlWhere == null) ? "where " + campo + " = " + valor :sqlWhere + " and " + campo + " = " + valor;		        		        
 		    }
 		}		
 		
-		sqlSolicitud = "select s from solicitudes s " + ((sqlWhere == null) ? "" : sqlWhere) ;
-		System.out.println("select s from solicitudes s " + ((sqlWhere == null) ? "" : sqlWhere));
+		sqlSolicitud = "select s from solicitudes s " + ((sqlWhere == null) ? "" : sqlWhere) ;		
 		
 		return solicitudDao.findAllByQuery(sqlSolicitud);
 	}
@@ -294,8 +278,7 @@ public class ServiceImp implements IService {
 
 	@Override
 	public Rol getRolById(int id) {
-		//return rolDao.findOneByQuery("Select r from roles r where r.id_rol="+id);
-		return rolDao.findOneByQuery("Select r from roles r where r.id="+id);
+		return rolDao.findById(Rol.class, id);
 	}
 
 	@Override
@@ -316,6 +299,9 @@ public class ServiceImp implements IService {
 		}
 		if (objeto instanceof Laboral) {
 			return laboralDao.save((Laboral) objeto);
+		}
+		if (objeto instanceof Evaluacion) {
+			return evaluacionDao.save((Evaluacion) objeto);
 		}
 		if(objeto instanceof Actividad){
 			return actividadDao.save((Actividad)objeto);
@@ -341,7 +327,7 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Certificacion> getCertificacionesByIdIfp (Integer id) {
 		if (id == null){
-			return certificacionDao.findAllByQuery("Select c from certificaciones c ");
+			return certificacionDao.findAll(Certificacion.class);					
 		} else {
 			return certificacionDao.findAllByQuery("Select c from certificaciones c where c.ifpId="+ id);
 		}		
@@ -349,7 +335,8 @@ public class ServiceImp implements IService {
 	
 	@Override
 	public Certificacion getCertificacionById(Long id) {
-		return certificacionDao.findOneByQuery("select c from certificaciones c where c.id="+id);				
+		return certificacionDao.findById(Certificacion.class, id.intValue());
+		//return certificacionDao.findOneByQuery("select c from certificaciones c where c.id="+id);				
 	}	
 	
 	@Override
@@ -359,13 +346,16 @@ public class ServiceImp implements IService {
 
 	@Override
 	public List<Actividad> getActividades(Long certificacionId) {
-		return actividadDao.findAllByQuery("Select a from actividades a where a.certificacion.id="+certificacionId);
+		Object [] objs =  new Object [] {certificacionId};
+		return actividadDao.findAllByNamedQueryParam("Actividades.findByIdCert", objs);
+		
+		//return actividadDao.findAllByQuery("Select a from actividades a where a.certificacion.id="+certificacionId);
 		//return actividadDao.findAllByQuery("Select a from actividades a");
 	}
 
 	@Override
 	public List<Mantenedor> getMantenedores() {
-		return mantenedorDao.findAllByQuery("Select m from mantenedores m");
+		return mantenedorDao.findAll(Mantenedor.class);		
 	}
 	
 	@Override
@@ -392,7 +382,7 @@ public class ServiceImp implements IService {
 	
 	@Override
 	public Laboral getLaboralById(Long idLaboral) {
-		return laboralDao.findOneByQuery("select l from laborales l where l.id="+idLaboral);				
+		return laboralDao.findById(Laboral.class, idLaboral.intValue());				
 	}
 	
 	@Override

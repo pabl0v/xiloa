@@ -16,13 +16,17 @@
                 <ui:include src="../../modulos/compartido/paginamaestra.xhtml" />
 	    	</ui:insert>
 	    	 <script type="text/javascript" src="../../resources/scripts/solicitudes.js"></script>
-		</div>
+		</div>		
         
         <div id="cabezera">
             <h2>Solicitudes Activas</h2>                  
-            <div id="botones_filtro_contenedor">
-                <div class="botones_filtro" onclick="window.location='/Xiloa/modulos/solicitudes/registro_solicitud.xhtml'" ><p class="icono_nuevo">Nueva solicitud</p></div>
-                <div class="botones_filtro" onclick="PF('dlg2').show();"><p class="icono_folder">Convocatoria</p></div>
+            <div id="botones_filtro_contenedor">                 
+                <div class="botones_filtro" onclick="window.location='/Xiloa/modulos/solicitudes/registro_solicitud.xhtml'" >
+                	<p class="icono_nuevo">Nueva solicitud</p>
+                </div>  
+                <div class="botones_filtro" onclick="window.location='/Xiloa/modulos/solicitudes/convocatoria.xhtml'">
+                	<p class="icono_folder">Convocatoria</p>
+                </div>            
             </div>
        </div>
         <h:form>
@@ -47,22 +51,32 @@
         </div>              
         <div id="contenedor_tabla_solicitudes">           
         	<p:dataTable id="dtSolicitud" widgetVar="dtSolicitudes" emptyMessage="No existen solicitudes activas" 
-        	             var="solicitudI" value="#{solicitudesManagedBean.solicitudB}" selectionMode="single" 
-        	             paginator="true" rows="12" rowKey="#{solicitudI.id}" >                      
+        	             var="varSolicitudI" value="#{solicitudesManagedBean.solicitudB}" selectionMode="single"
+        	             selection="#{solicitudesManagedBean.selectedSolicitud}"         	              
+        	             paginator="true" rows="12" rowKey="#{varSolicitudI}" >                      
 	            <!--Las columnas de la tabla-->
-                <p:column id="centroColumn" headerText="Centro evaluador"><h:outputText value="#{solicitudI.certificacion.ifpNombre}" /></p:column>                      
-                <p:column id="candidatoColumn" headerText="Nombre del candidato"><h:outputText value="#{solicitudI.contacto.nombreCompleto}" /></p:column>  
-                <p:column id="certificacionColumn" headerText="Certificacion a evaluar"><h:outputText value="#{solicitudI.certificacion.nombre}"/></p:column>  
-                <p:column id="fechaColumn" headerText="Fecha solicitud"><h:outputText value="#{solicitudI.fechaRegistro}" /></p:column>               
-                <p:column id="evaluadorColumn" headerText="Evaluador"><h:outputText value="#{solicitudI.contacto.correo1}" /></p:column>                
-                <p:column id="estadoColumn" headerText="Estado"><h:outputText value="#{solicitudI.estatus}" /></p:column>                             
+                <p:column id="centroColumn" headerText="Centro evaluador"><h:outputText value="#{varSolicitudI.certificacion.ifpNombre}" /></p:column>                      
+                <p:column id="candidatoColumn" headerText="Nombre del candidato"><h:outputText value="#{varSolicitudI.contacto.nombreCompleto}" /></p:column>  
+                <p:column id="certificacionColumn" headerText="Certificacion a evaluar"><h:outputText value="#{varSolicitudI.certificacion.nombre}"/></p:column>  
+                <p:column id="fechaColumn" headerText="Fecha solicitud"><h:outputText value="#{varSolicitudI.fechaRegistro}" /></p:column>               
+                <p:column id="evaluadorColumn" headerText="Evaluador"><h:outputText value="#{varSolicitudI.contacto.correo1}" /></p:column>                
+                <p:column id="estadoColumn" headerText="Estado"><h:outputText value="#{varSolicitudI.estatus}" /></p:column>                
                 <p:column style="width:4%">  
 	            	<p:commandButton id="selectButton" action="#{solicitudesManagedBean.editaSolicitud}" icon="ui-icon-pencil" title="Editar">  
-        				<f:setPropertyActionListener value="#{solicitudI}" target="#{expedienteManagedBean.solicitudExp}" />  
+        				<f:setPropertyActionListener value="#{varSolicitudI}" target="#{expedienteManagedBean.solicitudExp}" />        				  
         			</p:commandButton>  
-    			</p:column>  
+    			</p:column>
+    			  
             </p:dataTable>            
         </div>
+        <div id="contenedor_exportar">
+    		<p>Con seleccionado:</p>
+	    	<p:selectOneMenu styleClass="selectores" id="selector_accionConvocatoria" value="#{solicitudesManagedBean.selectedAccionConvo}">
+    			<f:selectItem itemLabel="Autorizar" itemValue="1" />  
+    			<f:selectItem itemLabel="Exportar a Excel" itemValue="2" />  
+    			<f:selectItem itemLabel="Exportar a PDF" itemValue="3" />	    		            			        
+	    	</p:selectOneMenu>    	
+    	</div>
      </h:form>
     </div>
         
@@ -79,14 +93,7 @@
              <p:commandButton value="Cancelar" styleClass="boton_azul"/> 
              <p:commandButton value="Aceptar" styleClass="boton_azul flotante" /> 
          </h:form>   
-    </p:dialog>  
+    </p:dialog>    
     
-    <div id="contenedor_exportar">
-    	<p>Con seleccionado:</p>
-    	<select>
-    		<option>Exportar a XLS</option>
-    		<option>Exportar a PDF</option>
-    	</select>
-    </div>
 </h:body>
 </html>

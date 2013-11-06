@@ -10,5 +10,9 @@ public interface IDao <T extends Object>{
 	List<T> findAll(Class<T> classe);
 	List<T> findAllByQuery(String jpql);
 	T findOneByQuery(String jpql);
-	T findByUsername(Class<T> classe, String username);	
+	T findByUsername(Class<T> classe, String username);
+	
+	T findOneByNamedQueryParam(String namedQuery, Object [] params);
+	List<T> findAllByNamedQueryParam(String named, Object [] params);
+	
 }

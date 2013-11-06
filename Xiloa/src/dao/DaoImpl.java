@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -76,5 +77,31 @@ public class DaoImpl<T extends Object> implements IDao<T>{
 	@Override
 	public T findByUsername(Class<T> classe, String username) {
 		return em.find(classe, username);
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public T findOneByNamedQueryParam(String namedQuery, Object [] params){
+		T result;
+		Query q = em.createNamedQuery(namedQuery);
+		int i = 1;
+		for (Object obj :  params) {
+			q.setParameter(i++, obj);
+		}		
+		result = (T) q.getSingleResult();
+		return result;
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<T> findAllByNamedQueryParam(String named, Object [] params){
+		List<T> result;
+		Query q = em.createNamedQuery(named);
+		int i = 1;
+		for (Object obj :  params) {
+			q.setParameter(i++, obj);
+		}
+		result = q.getResultList(); 
+		return result;
 	}
 }

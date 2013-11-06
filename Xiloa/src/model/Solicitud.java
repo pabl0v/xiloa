@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,7 +22,23 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 @Entity(name="solicitudes")
-public class Solicitud {
+@NamedQueries ({	
+	@NamedQuery(name="Solicitud.findById", query="select s from solicitudes s where s.id=?1"),
+	@NamedQuery(name="Solicitud.findByIdIfp", query="select s from solicitudes s where s.certificacion.ifpId=?1"),
+	@NamedQuery(name="Solicitud.findByIdCert", query="select s from solicitudes s where s.certificacion.id=?1"),
+	@NamedQuery(name="Solicitud.findByIfpNombre", query="select s from solicitudes s where s.certificacion.ifpNombre=?1"),
+	@NamedQuery(name="Solicitud.findByNombreContacto", query="select s from solicitudes s where s.contacto.nombreCompleto=?1"),
+	@NamedQuery(name="Solicitud.findByNombreCert", query="select s from solicitudes s where s.certificacion.nombre=?1"),
+	@NamedQuery(name="Solicitud.findByFechaSolicitud", query="select s from solicitudes s where s.fechaRegistro=?1"),
+	@NamedQuery(name="Solicitud.findByContactoCorreo", query="select s from solicitudes s where s.contacto.correo1=?1"),
+	@NamedQuery(name="Solicitud.findByEstatusSolicitud", query="select s from solicitudes s where s.estatus=?1")	
+})
+public class Solicitud implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

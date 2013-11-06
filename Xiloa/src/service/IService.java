@@ -40,9 +40,7 @@ public interface IService {
 	public Contacto generarNuevoContactoInatec(String usuario);
 	
 	public boolean isNuevoContactoInatec(String usuario);
-	
-	public void guardarContacto(Contacto contacto);
-	
+		
 	public void guardarCertificacion(	String nombre, 
 										String descripcion,
 										String codigoCompetencia,
@@ -74,8 +72,7 @@ public interface IService {
 	public List<UCompetencia> getUcompetenciaSinPlanificar();
 	public List<Contacto> getContactosInatec();
 	public Usuario getUsuarioLocal(String usuario);
-	public Usuario getUsuarioInatec(String usuario);
-	public void RegistrarUsuario(Usuario usuario);
+	public Usuario getUsuarioInatec(String usuario);	
 	public void RegistrarUsuarioOpenId(String login, String nombre, String apellido, String email, String rol);
 	//Inicio : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
 	public List<USolicitud> getUSolicitudes ();
@@ -89,6 +86,7 @@ public interface IService {
 	public List<Laboral> getListLaboralByTipo(Integer tipo, Contacto contacto);
 	public Laboral getLaboralById(Long idLaboral);
 	public List<Evaluacion> getEvaluaciones(Solicitud solicitud);
+	public Solicitud getSolicitudById(Long idSolicitud);
 	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
 	
 }

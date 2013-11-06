@@ -1,65 +1,39 @@
 package support;
 
-import java.util.Date;
+import java.io.Serializable;
 
-public class USolicitud {
-	private String centroEvaluador;
-	private String nombreCandidato;
-	private String nombreCertificacion;
-    private String nombreEvaluador;
-    private int estatus;
-    private Date fechaRegistro;
+import model.Solicitud;
+
+public class USolicitud implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private Solicitud solicitud;
+	private boolean esConvocatoria; 
+	 
     
-    
-	public int getEstatus() {
-		return estatus;
+	public Solicitud getSolicitud() {
+		return solicitud;
 	}
-	public void setEstatus(int estatus) {
-		this.estatus = estatus;
+	public void setSolicitud(Solicitud solicitud) {
+		this.solicitud = solicitud;
 	}
-	public Date getFechaRegistro() {
-		return fechaRegistro;
+	
+	public boolean isEsConvocatoria() {
+		return esConvocatoria;
 	}
-	public void setFechaRegistro(Date fechaRegistro) {
-		this.fechaRegistro = fechaRegistro;
+	public void setEsConvocatoria(boolean esConvocatoria) {
+		this.esConvocatoria = esConvocatoria;
 	}
-	public String getCentroEvaluador() {
-		return centroEvaluador;
-	}
-	public void setCentroEvaluador(String centroEvaluador) {
-		this.centroEvaluador = centroEvaluador;
-	}
-	public String getNombreCandidato() {
-		return nombreCandidato;
-	}
-	public void setNombreCandidato(String nombreCandidato) {
-		this.nombreCandidato = nombreCandidato;
-	}
-	public String getNombreCertificacion() {
-		return nombreCertificacion;
-	}
-	public void setNombreCertificacion(String nombreCertificacion) {
-		this.nombreCertificacion = nombreCertificacion;
-	}
-	public String getNombreEvaluador() {
-		return nombreEvaluador;
-	}
-	public void setNombreEvaluador(String nombreEvaluador) {
-		this.nombreEvaluador = nombreEvaluador;
-	}
-	public USolicitud(String centroEvaluador, String nombreCandidato,
-			String nombreCertificacion, String nombreEvaluador, int estatus,
-			Date fechaRegistro) {
+	
+	public USolicitud(Solicitud solicitud, boolean esConvocatoria) {
 		super();
-		this.centroEvaluador = centroEvaluador;
-		this.nombreCandidato = nombreCandidato;
-		this.nombreCertificacion = nombreCertificacion;
-		this.nombreEvaluador = nombreEvaluador;
-		this.estatus = estatus;
-		this.fechaRegistro = fechaRegistro;
+		this.solicitud = solicitud;
+		this.esConvocatoria = esConvocatoria;
 	}
-	
-	
 	    
 }
 

@@ -3,7 +3,9 @@ package view;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -13,8 +15,10 @@ import javax.faces.model.SelectItem;
 
 import model.Certificacion;
 import model.Contacto;
+import model.Evaluacion;
 import model.Rol;
 import model.Solicitud;
+import model.Unidad;
 import model.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +49,7 @@ public class SolicitudesManagedBean {
 	private Contacto userSolicitante;
 	private Certificacion certificacionSolicitante;
 			
-	private List<USolicitud> solicitudI = new ArrayList<USolicitud>();
+	private List<USolicitud> listSolicitudI = new ArrayList<USolicitud>();
 	private List<Solicitud> solicitudB = new ArrayList<Solicitud> ();	
 			
 	//Implementacion SelectItems
@@ -54,6 +58,7 @@ public class SolicitudesManagedBean {
 	private List<SelectItem> listCentrosBySolicitud = new ArrayList<SelectItem>();
 	private List<SelectItem> listCertByCentro = new ArrayList<SelectItem>();
 	private List<SelectItem> listBuscarByAll = new ArrayList<SelectItem> ();
+	private List<SelectItem> listAccionConvo = new ArrayList<SelectItem> ();
 	private Integer selectedIdIfp;
 	private Integer selectedIdIfpSolicitud = null;
 	private Long selectedIdCertificacion;
@@ -61,6 +66,11 @@ public class SolicitudesManagedBean {
 	
 	private String selectedBuscarByAll = null;
 	private String buscarByAllValue;	
+	
+	private Integer selectedAccionConvo;
+	private boolean ck_convo;
+	private Solicitud selectedSolicitud;
+	private USolicitud selectedUSolicitud;
 	
 	public String getPrimerNombre() {
 		return primerNombre;
@@ -215,8 +225,16 @@ public class SolicitudesManagedBean {
 
 	public void setListBuscarByAll(List<SelectItem> listBuscarByAll) {
 		this.listBuscarByAll = listBuscarByAll;
-	}
+	}	
 		
+	public List<SelectItem> getListAccionConvo() {
+		return listAccionConvo;
+	}
+
+	public void setListAccionConvo(List<SelectItem> listAccionConvo) {
+		this.listAccionConvo = listAccionConvo;
+	}
+
 	public String getBuscarByAllValue() {
 		return buscarByAllValue;
 	}
@@ -249,15 +267,47 @@ public class SolicitudesManagedBean {
 		this.solicitudB = solicitudB;
 	}	
 	
-	public List<USolicitud> getSolicitudI() {		
-		solicitudI = service.getUSolicitudes();
-		return solicitudI;
+	public List<USolicitud> getListSolicitudI() {		
+		listSolicitudI = service.getUSolicitudes();
+		return listSolicitudI;
 	}
 
-	public void setSolicitudI(List<USolicitud> solicitudI) {
-		this.solicitudI = solicitudI;
+	public void setListSolicitudI(List<USolicitud> solicitudI) {
+		this.listSolicitudI = solicitudI;
 	}
 	
+	public Integer getSelectedAccionConvo() {
+		return selectedAccionConvo;
+	}
+
+	public void setSelectedAccionConvo(Integer selectedAccionConvo) {
+		this.selectedAccionConvo = selectedAccionConvo;
+	}
+	
+	public boolean isCk_convo() {
+		return ck_convo;
+	}
+
+	public void setCk_convo(boolean ck_convo) {
+		this.ck_convo = ck_convo;
+	}
+	
+	public Solicitud getSelectedSolicitud() {
+		return selectedSolicitud;
+	}
+
+	public void setSelectedSolicitud(Solicitud selectedSolicitud) {
+		this.selectedSolicitud = selectedSolicitud;
+	}
+	
+	public USolicitud getSelectedUSolicitud() {
+		return selectedUSolicitud;
+	}
+
+	public void setSelectedUSolicitud(USolicitud selectedUSolicitud) {
+		this.selectedUSolicitud = selectedUSolicitud;
+	}
+
 	public void llenarListBuscarByAll () {
 		this.listBuscarByAll.add(new SelectItem(null, "Todos los campos"));
 		this.listBuscarByAll.add(new SelectItem("s.certificacion.ifpNombre", "Centro Evaluador"));
@@ -266,6 +316,13 @@ public class SolicitudesManagedBean {
 		this.listBuscarByAll.add(new SelectItem("s.fechaRegistro", "Fecha Solicitud"));
 		this.listBuscarByAll.add(new SelectItem("s.contacto.correo1", "Evaluador"));
 		this.listBuscarByAll.add(new SelectItem("s.estatus", "Estado"));		
+	}
+	
+	public void llenarListAccionConvo () {
+		this.listAccionConvo.add(new SelectItem(null, "Seleccione la accion"));
+		this.listAccionConvo.add(new SelectItem(new Integer(1), "Autorizar"));
+		this.listAccionConvo.add(new SelectItem(new Integer(2), "Exportar a Excel"));
+		this.listAccionConvo.add(new SelectItem(new Integer(3), "Exportar a PDF"));
 	}
 	
 	
@@ -281,7 +338,7 @@ public class SolicitudesManagedBean {
 		}		
 		
 		llenarListBuscarByAll();
-		
+		llenarListAccionConvo ();
 		handleCertByCentro();
 	}
 	
@@ -340,11 +397,7 @@ public class SolicitudesManagedBean {
 	return "/modulos/solicitudes/expediente?faces-redirect=true";
 	}
 	
-	public String cancelarEdicion() {
-		System.out.println("cancelarEdicion....");		
-		
-		System.out.println("Redireccionando a: " + "/modulos/solicitudes/solicitudes?faces-redirect=true");
-		
+	public String cancelarEdicion() {		
 		return "/modulos/solicitudes/solicitudes?faces-redirect=true";				
 	}
 			
@@ -415,7 +468,8 @@ public class SolicitudesManagedBean {
 									  null//idEmpleado
 									  );		
 
-			service.guardarContacto(solicitante);
+			service.guardar(solicitante);
+			
 			
 			solicitante = service.getContactoByCedula(solicitante.getNumeroIdentificacion());
 		}		
@@ -440,6 +494,25 @@ public class SolicitudesManagedBean {
 		
 		s = (Solicitud) service.guardar(s);
 		
+		/* Por cada unidad de competencia se debe registrar el instrumento a utilizar en la evaluacion */
+		
+		Set<Unidad> setUnidades =  c.getUnidades();
+		
+		/*
+		for(Unidad unidad : setUnidades){			
+			Evaluacion e = new Evaluacion(s, //solicitud
+										  new Date(), // fecha
+										  unidad, // unidad
+										  0, // puntaje
+										  "",// observaciones
+										  false// aprobado
+										  );
+			
+			e = (Evaluacion) service.guardar(e);
+			
+		}
+		*/			   
+		
 		return s;
 	}
 	
@@ -462,6 +535,29 @@ public class SolicitudesManagedBean {
 	    this.setDescEmpresaLabora("");
 		this.setExperiencia(new Integer(0));
 		this.setOcupacion("");		
+	}	
+	
+	public void marcarConvocatoria () {
+		
+		System.out.println("Marcando la convocatoria " + this.selectedUSolicitud.getSolicitud().getId() );
+		
+		this.selectedUSolicitud.setEsConvocatoria(true);
+	}
+	
+	public void handleConvocatoria() {
+		// Cuando ha seleccionado la opcion Aplicar - Las solicitudes pasan a convocatoria		
+		if (this.selectedAccionConvo == 1) { 
+			
+			for (USolicitud obj : listSolicitudI){
+				if (obj.isEsConvocatoria()) {
+					System.out.println("Esta marcado ");
+					Solicitud sol = obj.getSolicitud();
+					sol.setEstatus(3);
+					sol = (Solicitud)service.guardar(sol);
+				}
+			}
+		}	
+		
 	}
 
 	

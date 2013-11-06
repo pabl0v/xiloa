@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+	<link type="text/css" rel="stylesheet" href="../../resources/css/solicitudes.css"></link>
+    </h:head>
+    <h:body>
+ 
+    <div id="contenedor">
+    	<div id="header">
+            <ui:insert name="header" >
+                <ui:include src="../../modulos/compartido/paginamaestra.xhtml" />
+	    	</ui:insert>
+	    	 <script type="text/javascript" src="../../resources/scripts/solicitudes.js"></script>
+		</div>
+		
+        <h:form>
+        <div id="cabezera">
+            <h2>Solicitudes Activas</h2>                  
+            <div id="botones_filtro_contenedor">                 
+                <div class="botones_filtro" onclick="window.location='/Xiloa/modulos/solicitudes/registro_solicitud.xhtml'" ><p class="icono_nuevo">Nueva solicitud</p></div>  
+                <div class="botones_filtro" onclick="PF('dlg2').show();"><p class="icono_folder">Convocatoria</p></div>            
+            </div>
+       </div>
+        
+        <div id="contenedor_filtro">            
+	            <p>Buscar:</p>
+	            <p:selectOneMenu styleClass="selectores" id="selector_buscarByAll" value="#{solicitudesManagedBean.selectedBuscarByAll}">
+	            	<f:selectItems value="#{solicitudesManagedBean.listBuscarByAll}"/>	            			        
+			    </p:selectOneMenu>
+		        <p:inputText style="margin-right:10px;" id="filtro_buscarByAll" value="#{solicitudesManagedBean.buscarByAllValue}">
+		        	<p:ajax event="keyup" update="dtSolicitud" listener="#{solicitudesManagedBean.handleBuscar}" process="@form" />
+		        </p:inputText>
+	            <p>Centro evaluador:</p>
+	            <p:selectOneMenu styleClass="selectores" id="selector_centrosBySolicitud" value="#{solicitudesManagedBean.selectedIdIfpSolicitud}" >			        
+			        <f:selectItems value="#{solicitudesManagedBean.listCentrosBySolicitud}"/>
+			        <p:ajax update="selector_certificacionByCentro, dtSolicitud"  listener="#{solicitudesManagedBean.handleCertByCentro}" />
+			    </p:selectOneMenu>
+			    <p>Certificaciones:</p>
+	            <p:selectOneMenu styleClass="selectores" id="selector_certificacionByCentro" value="#{solicitudesManagedBean.selectedIdCertByCentro}" >			        
+			        <f:selectItems value="#{solicitudesManagedBean.listCertByCentro}" />
+			        <p:ajax update="dtSolicitud" listener="#{solicitudesManagedBean.handleBuscar}" />  
+			    </p:selectOneMenu>			  
+        </div>              
+        <div id="contenedor_tabla_solicitudes">           
+        	<p:dataTable id="dtSolicitud" widgetVar="dtSolicitudes" emptyMessage="No existen solicitudes activas" var="varSolicitudI" 
+        	             value="#{solicitudesManagedBean.listSolicitudI}" selectionMode="single"
+        	             selection="#{solicitudesManagedBean.selectedUSolicitud}" 
+        	             paginator="true" rows="12" rowKey="#{varSolicitudI}" >                                             	             
+	            <!--Las columnas de la tabla-->
+	            <p:ajax event="rowSelect" listener="#{solicitudesManagedBean.marcarConvocatoria}" />
+                <p:column id="centroColumn" headerText="Centro evaluador"><h:outputText value="#{varSolicitudI.solicitud.certificacion.ifpNombre}" /></p:column>                      
+                <p:column id="candidatoColumn" headerText="Nombre del candidato"><h:outputText value="#{varSolicitudI.solicitud.contacto.nombreCompleto}" /></p:column>  
+                <p:column id="certificacionColumn" headerText="Certificacion a evaluar"><h:outputText value="#{varSolicitudI.solicitud.certificacion.nombre}"/></p:column>  
+                <p:column id="fechaColumn" headerText="Fecha solicitud"><h:outputText value="#{varSolicitudI.solicitud.fechaRegistro}" /></p:column>               
+                <p:column id="evaluadorColumn" headerText="Evaluador"><h:outputText value="#{varSolicitudI.solicitud.contacto.correo1}" /></p:column>                
+                <p:column id="estadoColumn" headerText="Estado"><h:outputText value="#{varSolicitudI.solicitud.estatus}" /></p:column>
+                <p:column id="pasaConvocatoria" headerText="Convocatoria" >
+                	<p:selectBooleanCheckbox id="pasaConvo" value="#{varSolicitudI.esConvocatoria}">  
+        			      <p:ajax update="dtSolicitud" listener="#{solicitudesManagedBean.marcarConvocatoria}" />
+        			</p:selectBooleanCheckbox>                	  
+                </p:column>  
+            </p:dataTable>            
+        </div>
+        <div id="contenedor_exportar">
+    		<p>Con seleccionado:</p>
+	    	<p:selectOneMenu styleClass="selectores" id="selector_accionConvocatoria" value="#{solicitudesManagedBean.selectedAccionConvo}" >
+	    		<f:selectItems value="#{solicitudesManagedBean.listAccionConvo}" />	    	    
+    			<p:ajax update="dtSolicitud"  listener="#{solicitudesManagedBean.handleConvocatoria}" />	    		            			        
+	    	</p:selectOneMenu>    	
+    	</div>
+     </h:form>
+    </div>    
+</h:body>
+</html>

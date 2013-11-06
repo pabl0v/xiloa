@@ -1,6 +1,5 @@
 package view;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,22 +14,25 @@ import javax.faces.model.SelectItem;
 import model.Archivo;
 import model.Contacto;
 import model.Evaluacion;
+import model.Instrumento;
 import model.Laboral;
 import model.Mantenedor;
 import model.Solicitud;
+import model.Unidad;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import service.IService;
+import support.BeanEvaluacion;
 import support.Ifp;
 
 @Component
 @Scope(value="session")
-public class ExpedienteManagedBean implements Serializable {
+public class ExpedienteManagedBean  {
 	
-	private static final long serialVersionUID = 1L;
+	
 	
 	@Autowired
 	private IService service;	
@@ -42,6 +44,7 @@ public class ExpedienteManagedBean implements Serializable {
 	private List<Laboral> listDatosCalificacion = new ArrayList<Laboral> ();
 	private List<Laboral> listDatosCertificaciones = new ArrayList<Laboral> ();
 	private List<Evaluacion> listEvaluaciones = new ArrayList<Evaluacion> ();
+	private List<BeanEvaluacion> listBeanEval = new ArrayList<BeanEvaluacion> ();
 	
 	private String nombreInstitucion;
 	private String nombreCargo;
@@ -56,6 +59,7 @@ public class ExpedienteManagedBean implements Serializable {
 	private Laboral selectedLaboral;
 	
 	private Evaluacion seletedEvaluacion;
+	private BeanEvaluacion selectedBeanEvaluacion;
 	
 	
 	private Map<Integer, Mantenedor> catalogoTipoDatosLaborales = new HashMap<Integer, Mantenedor>();
@@ -111,6 +115,25 @@ public class ExpedienteManagedBean implements Serializable {
 
 	public void setListEvaluaciones(List<Evaluacion> listEvaluaciones) {
 		this.listEvaluaciones = listEvaluaciones;
+	}
+
+	public List<BeanEvaluacion> getListBeanEval() {
+		List<BeanEvaluacion> listBeanEv = new ArrayList<BeanEvaluacion> ();
+		for (Evaluacion eva : listEvaluaciones) {
+			List<Instrumento> listInstrumento = new ArrayList<Instrumento> ();
+			/*
+			listInstrumento = eva.getUnidad().getInstrumentos();
+			for (Instrumento ob : listInstrumento) {				
+				listBeanEv.add(new BeanEvaluacion( ob, eva.getUnidad(), eva));			    
+			}
+			*/			
+		}
+		listBeanEval = listBeanEv;
+		return listBeanEval;
+	}
+
+	public void setListBeanEval(List<BeanEvaluacion> listBeanEval) {
+		this.listBeanEval = listBeanEval;
 	}
 
 	public String getNombreInstitucion() {
@@ -219,6 +242,14 @@ public class ExpedienteManagedBean implements Serializable {
 		this.seletedEvaluacion = seletedEvaluacion;
 	}
 
+	public BeanEvaluacion getSelectedBeanEvaluacion() {
+		return selectedBeanEvaluacion;
+	}
+
+	public void setSelectedBeanEvaluacion(BeanEvaluacion selectedBeanEvaluacion) {
+		this.selectedBeanEvaluacion = selectedBeanEvaluacion;
+	}
+
 	@PostConstruct
 	private void fillCatalogos(){
 		List<Mantenedor> listaCatalogo = service.getMantenedoresByTipo(new Integer(5));
@@ -236,6 +267,10 @@ public class ExpedienteManagedBean implements Serializable {
 		this.setFechaDesde(this.selectedLaboral.getFechaInicia());
 		this.setFechaHasta(this.selectedLaboral.getFechaFinaliza());
 		this.setIdSeletedLaboral(this.selectedLaboral.getId());		
+	}
+	
+	public void editarEvaluacion() {
+		
 	}
 	
 	public void actualizarContacto() {
