@@ -92,12 +92,12 @@
 					<div><h:outputText value="#{certificacionManagedBean.certificacion.ifpDireccion}" /></div>
 					<br/>  
 					<p>Costo de aranceles para el candidato:</p>
-					<div><h:outputText value="#{certificacionManagedBean.certificacion.costo}" /></div> 
+					<div>C$ <h:outputText value="#{certificacionManagedBean.certificacion.costoFormateado}" /></div> 
 				</div>
 				<div class="seccion_edicion" style="height: 1px"></div>
 				<div class="seccion_edicion" style="height: 1px">
 					<div class="contenedor_botones">
-						<h:commandButton id="prueba" value="Agregar instrumento" oncomplete="window.location='/Xiloa/modulos/planificacion/instrumentos.xhtml'"/> 
+						<h:commandButton id="prueba" value="Instrumentos" action="#{certificacionManagedBean.configurarInstrumentos}"/> 
 						<h:commandButton value="Cancelar" onclick="$('#prueba').disabled=true;" action="#{certificacionManagedBean.cancelar}"/> 
 						<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardarEdicion}"/>
 					</div>
@@ -306,7 +306,7 @@
 	<!-- 
 	<p:dialog id="modalDialog3" styleClass="estilo_dialogoactividades" header="Agregar involucrados:" widgetVar="dlg3" modal="true" resizable="false" width="550" height="400">
 		<h:form>
-			<h3>Añada intregantes de esta lista:</h3>
+			<h3>AÃ±ada intregantes de esta lista:</h3>
 			<p:dataTable emptyMessage="No hay datos para mostrar"  var="contacto" value="#{certificacionManagedBean.contactos}" rowKey="#{contacto.id}" selection="#{certificacionManagedBean.selectedContactos}" selectionMode="multiple">  
 				<p:column headerText="Nombre"><h:outputText value="#{contacto.nombreCompleto}" /></p:column>  
 				<p:column headerText="Funcion"><h:outputText value="#{contacto.rol.descripcion}" /></p:column>  

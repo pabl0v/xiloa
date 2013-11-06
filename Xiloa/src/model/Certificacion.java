@@ -1,10 +1,12 @@
 package model;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -224,6 +226,13 @@ public class Certificacion {
 		this.disponibilidad = disponibilidad;
 	}
 
+	public String getCostoFormateado() {
+		NumberFormat format = NumberFormat.getInstance(Locale.US);
+		format.setMaximumFractionDigits(2);
+		format.setMinimumFractionDigits(2);
+		return format.format(costo);
+	}
+	
 	public float getCosto() {
 		return costo;
 	}

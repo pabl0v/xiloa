@@ -169,4 +169,8 @@ public class CertificacionManagedBean implements Serializable {
 	public void setSelectedActividad(Actividad actividad){
 		this.selectedActividad = actividad;
 	}
+	
+	public String configurarInstrumentos(){
+		return "/modulos/planificacion/instrumentos?faces-redirect=true";
+	}
 }
