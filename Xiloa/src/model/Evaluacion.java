@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,6 +24,9 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 @Entity(name="evaluaciones")
+@NamedQueries({
+	@NamedQuery(name="Evaluacion.findAllBySolicitudId", query="select e from evaluaciones e where e.solicitud.id=?1")
+})
 public class Evaluacion {
 
 	@Id
@@ -119,9 +124,8 @@ public class Evaluacion {
 		this.guias = new ArrayList<EvaluacionGuia>();		
 	}
 
-	public Evaluacion(Long id, Solicitud solicitud, Date fecha, Unidad unidad, List<EvaluacionGuia> guias, Integer puntaje, String observaciones, boolean aprobado) {
-		super();
-		this.id = id;
+	public Evaluacion(Solicitud solicitud, Date fecha, Unidad unidad, List<EvaluacionGuia> guias, Integer puntaje, String observaciones, boolean aprobado) {
+		super();		
 		this.solicitud = solicitud;
 		this.fechaEvaluacion = fecha;
 		this.unidad = unidad;

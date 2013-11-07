@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,6 +21,10 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 @Entity(name="laborales")
+@NamedQueries ({
+	@NamedQuery(name="Laboral.findById", query="select l from laborales l where l.id=?1"),
+	@NamedQuery(name="Laboral.findAllByTipoAndContactoId", query="select l from laborales l where l.tipo = ?1 and l.contacto.id = ?2")
+})
 public class Laboral {
 
 	@Id

@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
 import javax.persistence.EmbeddedId;
@@ -12,7 +14,12 @@ import javax.persistence.Transient;
 @AssociationOverrides({
 	@AssociationOverride(name = "pk.evaluacion", joinColumns = @JoinColumn(name = "evaluacion_id")),
 	@AssociationOverride(name = "pk.guia", joinColumns = @JoinColumn(name = "guia_id"))})
-public class EvaluacionGuia {
+public class EvaluacionGuia implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	@EmbeddedId
 	private EvaluacionGuiaId pk;

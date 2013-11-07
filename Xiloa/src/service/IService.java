@@ -77,7 +77,6 @@ public interface IService {
 	public Usuario getUsuarioLocal(String usuario);
 	public Usuario getUsuarioInatec(String usuario);	
 	public void RegistrarUsuarioOpenId(String login, String nombre, String apellido, String email, String rol);
-	//Inicio : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
 	public List<USolicitud> getUSolicitudes ();
 	public List<Solicitud> getSolicitudes();
 	public List<Solicitud> getSolicitudesByParam(HashMap<String, Object> param);
@@ -93,6 +92,8 @@ public interface IService {
 	public List<Unidad> getUnidadesByCertificacionId(Long certificacionId);
 	public List<Instrumento> getInstrumentosByCertificacionId(Long certificacionId);
 	public List<Guia> getGuiasByInstrumentoId(Long instrumentoId);
-	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
+	public Unidad getUnidadById(Long idUnidad);
+	public Instrumento getInstrumentoById(Long idInstrumento);
+	public List<Instrumento> getInstrumentoByUnidad (Long idUnidad);
 	
 }

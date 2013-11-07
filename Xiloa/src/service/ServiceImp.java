@@ -215,8 +215,7 @@ public class ServiceImp implements IService {
 			contacto.setRol(rol);
 		return contacto;
 	}
-	
-	//Inicio : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
+
 	@Override
 	public List<USolicitud> getUSolicitudes () {			
 			
@@ -280,7 +279,6 @@ public class ServiceImp implements IService {
 		Contacto c = contactoDao.findOneByQuery("select c from contactos c where c.numeroIdentificacion = '" + cedula + "'");
 		return c;
 	}	
-	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES	
 
 	@Override
 	public Rol getRolById(int id) {
@@ -340,14 +338,15 @@ public class ServiceImp implements IService {
 		if (id == null){
 			return certificacionDao.findAll(Certificacion.class);					
 		} else {
-			return certificacionDao.findAllByQuery("Select c from certificaciones c where c.ifpId="+ id);
+			Object [] objs =  new Object [] {id};
+			return certificacionDao.findAllByNamedQueryParam("Certificacion.findByIfpId", objs);
 		}		
 	}
 	
 	@Override
 	public Certificacion getCertificacionById(Long id) {
-		return certificacionDao.findById(Certificacion.class, id.intValue());
-		//return certificacionDao.findOneByQuery("select c from certificaciones c where c.id="+id);				
+		Object [] objs =  new Object [] {id};
+		return certificacionDao.findOneByNamedQueryParam("Certificacion.findById", objs);						
 	}	
 	
 	@Override
@@ -385,22 +384,44 @@ public class ServiceImp implements IService {
 	
 	@Override
 	public List<Laboral> getListLaboralByTipo(Integer tipo, Contacto contacto) {
-		return laboralDao.findAllByQuery("select l from laborales l where l.tipo = " + tipo + " and l.contacto.id = "+contacto.getId());				
+		Object [] objs =  new Object [] {tipo, contacto.getId()};
+		return laboralDao.findAllByNamedQueryParam("Laboral.findAllByTipoAndContactoId", objs);					
 	}
 	
 	@Override
 	public Laboral getLaboralById(Long idLaboral) {
-		return laboralDao.findById(Laboral.class, idLaboral.intValue());				
+		Object [] objs =  new Object [] {idLaboral};
+		return laboralDao.findOneByNamedQueryParam("Laboral.findById", objs);				
 	}
 	
 	@Override
 	public List<Evaluacion> getEvaluaciones(Solicitud solicitud) {
-		return evaluacionDao.findAllByQuery("select e from evaluacion e where e.solicitud.id=" + solicitud.getId());
+		Object [] objs =  new Object [] {solicitud.getId()};
+		return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllBySolicitudId", objs);		
 	}
+	
+	@Override
+	public Unidad getUnidadById(Long idUnidad){
+		Object [] objs =  new Object [] {idUnidad};
+		return unidadDao.findOneByNamedQueryParam("Unidad.findById", objs);
+	}
+	
+	@Override
+	public Instrumento getInstrumentoById(Long idInstrumento){
+		Object [] objs =  new Object [] {idInstrumento};
+		return instrumentoDao.findOneByNamedQueryParam("Instrumento.findById", objs);		
+	}
+	
+	@Override
+	public List<Instrumento> getInstrumentoByUnidad (Long idUnidad) {
+		Object [] objs =  new Object [] {idUnidad};
+		return instrumentoDao.findAllByNamedQueryParam("Instrumento.findAllByUnidadId", objs);				
+	}	
 
 	@Override
 	public List<Unidad> getUnidadesByCertificacionId(Long certificacionId) {
-		return unidadDao.findAllByQuery("select u from unidades u where u.certificacion.id="+certificacionId);
+		Object [] objs =  new Object [] {certificacionId};
+		return unidadDao.findAllByNamedQueryParam("Certificacion.findUnidadesByCert", objs);		
 	}
 
 	@Override
@@ -411,7 +432,7 @@ public class ServiceImp implements IService {
 
 	@Override
 	public List<Guia> getGuiasByInstrumentoId(Long instrumentoId) {
-		String query = "select g from guias g where g.instrumento.id="+instrumentoId;
-		return guiaDao.findAllByQuery(query);
+		Object [] objs =  new Object [] {instrumentoId};
+		return guiaDao.findAllByNamedQueryParam("Guia.findByIdInstrumento", objs);
 	}
 }

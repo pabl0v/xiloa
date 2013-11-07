@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -273,6 +274,12 @@ public class ExpedienteManagedBean  {
 		
 	}
 	
+	
+	
+	public String registrar_evaluacion() {		
+		return "/modulos/solicitudes/registro_evaluacion?faces-redirect=true";
+	}
+	
 	public void actualizarContacto() {
 		System.out.println("correo " + solicitudExp.getContacto().getCorreo1());
 		if (solicitudExp.getContacto().getDireccionActual() == null) {
@@ -296,8 +303,7 @@ public class ExpedienteManagedBean  {
 	}
 
 	public void guardarDatosLaborales() {
-		System.out.println("Revision de datos laborales a registrar");		
-		
+				
 		System.out.println("Valor del selectedLaboral " + this.idSeletedLaboral);
 		
 		if (this.idSeletedLaboral == null) {
@@ -332,6 +338,8 @@ public class ExpedienteManagedBean  {
 	}
 	
 	public void limpiarCampos (){
+		System.out.println("Metodo Limpiar Campos");
+		
 		this.setSelectedLaboral(null);
 		this.setNombreCargo(null);	
 		this.setNombreInstitucion(null);
@@ -339,7 +347,7 @@ public class ExpedienteManagedBean  {
 		this.setFechaHasta(null);
 		this.setInstitucionDireccion(null);
 		this.setIdSeletedLaboral(null);	
-		
+			
 	}	
 
 }

@@ -140,7 +140,9 @@
     	<div id="contenedor_tab_planes" class="seccion_expediente" style="width:98%">
     		
     			<p:tabView id="tabView_Evaluaciones">  
-                    <p:tab id="tab1" title="UC a evaluar">                    	 
+                    <p:tab id="tab1" title="UC a evaluar" >                    	                   	 
+                    	 <p:commandButton value="Agregar" action="#{evaluacionManagedBean.registrar_evaluacion(expedienteManagedBean.solicitudExp)}" />
+                    	  
                          <p:dataTable emptyMessage="No hay datos"  var="uC" value="#{expedienteManagedBean.listBeanEval}"
                          			  selection="#{expedienteManagedBean.selectedBeanEvaluacion}" rowKey="#{uC}" 
                          			  selectionMode="single" paginator="true" rows="4" >  
@@ -152,7 +154,7 @@
                              	<p:commandButton id="editarEvaluaciones" action="#{expedienteManagedBean.editarEvaluacion}" 
                          	            	     oncomplete="PF('dlgEval').show();" update=":formExpediente:modalEvaluaciones"   
                          	                	 icon="ui-icon-pencil" title="Editar">    	
-                         			<f:setPropertyActionListener value="#{uC}" target="#{expedienteManagedBean.seletedBeanEvaluacion}" />						  
+                         			<f:setPropertyActionListener value="#{uC}" target="#{expedienteManagedBean.selectedBeanEvaluacion}" />						  
     							</p:commandButton>                        
                              </p:column>              
                         </p:dataTable>    
@@ -171,7 +173,7 @@
 								<p:commandButton id="editarEvaluacionesPortafolio" action="#{expedienteManagedBean.editarLaboral}" 
                          	    	             oncomplete="PF('dlgEval').show();" update=":formExpediente:modalLaborales"   
                          	        	         icon="ui-icon-pencil" title="Editar">    	
-                         			<f:setPropertyActionListener value="#{portafolioEvidencia}" target="#{expedienteManagedBean.seletedLaboral}" />						  
+                         			<f:setPropertyActionListener value="#{portafolioEvidencia}" target="#{expedienteManagedBean.selectedLaboral}" />						  
     							</p:commandButton>                                                     
                              </p:column>              
                         </p:dataTable>     
@@ -208,7 +210,7 @@
                              	<p:commandButton id="editarEvaluacionesPlanForma" action="#{expedienteManagedBean.editarEvaluacion}" 
                          	                 	 oncomplete="PF('dlgEval').show();" update=":formExpediente:modalEvaluaciones"   
                          	                 	 icon="ui-icon-pencil" title="Editar">    	
-                         			<f:setPropertyActionListener value="#{formacion}" target="#{expedienteManagedBean.seletedBeanEvaluacion}" />						  
+                         			<f:setPropertyActionListener value="#{formacion}" target="#{expedienteManagedBean.selectedBeanEvaluacion}" />						  
     							</p:commandButton>                        
                              </p:column>              
                         </p:dataTable>  
@@ -244,7 +246,8 @@
             		<p:inputText id="institucionDireccion" value="#{expedienteManagedBean.institucionDireccion}" />
 				</div>				
 				<p:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/>
-				<p:commandButton value="Aceptar" action="#{expedienteManagedBean.guardarDatosLaborales}" update=":formExpediente:tabView_datosLaborales,:formExpediente:modalLaborales" 
+				<p:commandButton value="Aceptar" action="#{expedienteManagedBean.guardarDatosLaborales}" 
+								 update=":formExpediente:tabView_datosLaborales,:formExpediente:modalLaborales" 
 				                 oncomplete="PF('dlg1').hide();"/>								
 		    </div>					
 		</p:dialog>    	
@@ -252,32 +255,7 @@
     	
     	<!-- ******************************************************************************************** -->
     	
-    	<!-- Cuadro de dialogo emergente que registra datos sobre las Evaluaciones -->    	    	
-    	<p:dialog id="modalEvaluaciones" styleClass="estilo_dialogoLaborales" header="Registrar informacion sobre Evaluaciones:" widgetVar="dlgEval" 
-    	          modal="true" resizable="false" width="440" height="500" showEffect="clip" hideEffect="clip" >
-    	   <div id="modal_evaluacion">					
-				<h3 style="margin-left: -11px;">Datos Evaluaciones</h3>				
-			    <div class="dialogoLaborales_secciones" >					
-					<p>Elemento de compentencia o realizacion profesional:</p>  
-	            	<p:inputText id="nombreCompetencia" value="#{expedienteManagedBean.seletedEvaluacion.unidad.competenciaDescripcion}" />
-	            	<p>Tecnica o instrumento de evaluacion:</p>	                  
-	            	<p:inputText id="nombreInstrumento" value="#{expedienteManagedBean.seletedEvaluacion.instrumento}" />            	
-					<p:growl id="growlFechaEval" showDetail="true"/>
-					<p>Fecha:</p>					
-					<p:calendar id="popupBtnFechaEval" value="#{expedienteManagedBean.seletedEvaluacion.fecha}" pattern="dd/mm/yyyy" showOn="button">
-						<p:ajax event="dateSelect" update="growlFechaEval" />
-					</p:calendar>					
-					<p>Aprobado:</p>					  
-            		<p:inputText id="aprobadoEval" value="#{expedienteManagedBean.seletedEvaluacion.aprobado}" />
-            		<p>Observaciones:</p>	      
-            		<p:editor id="observacionReprobado" value="#{expedienteManagedBean.seletedEvaluacion.descripcion}" height="150"/>	            	
-				</div>				
-				<p:commandButton value="Cancelar" onclick="PF('dlgEval').hide();"/>
-				<p:commandButton value="Aceptar" action="#{expedienteManagedBean.guardarDatosLaborales}" update=":formExpediente:tabView_Evaluaciones,:formExpediente:modalEvaluaciones" 
-				                 oncomplete="PF('dlgEval').hide();"/>								
-		    </div>					
-		</p:dialog>    	
-    	<!--  Fin Cuadro de dialogo emergente que registra datos sobre las evaluaciones -->
+    	
     	</h:form>
     </div> 
 </h:body>

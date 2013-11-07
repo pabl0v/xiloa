@@ -10,11 +10,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 @Entity(name="instrumentos")
+@NamedQueries({
+	@NamedQuery(name="Instrumento.findAllByUnidadId", query="select i from instrumentos i where i.unidad.id=?1"),
+	@NamedQuery(name="Instrumento.findById", query="select i from instrumentos i where i.id=?1")
+})
 public class Instrumento {
 	
 	@Id
