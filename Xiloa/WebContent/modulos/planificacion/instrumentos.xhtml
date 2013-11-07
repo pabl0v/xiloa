@@ -18,7 +18,7 @@
 		</div>
         <h2>Configuracion de instrumentos - <h:outputText value="#{instrumentoManagedBean.nombreCertificacion}" /> </h2>
         <div id="contenedor_secciones">
-        	<h:form id="contenido">
+        		    <h:form id="contenido">
 		            <div class="seccion_edicion" style="font-size: 14px;">             
 		              <h:outputLabel styleClass="estilo_label" value="Codigo:" />  
 		              <p:inputText id="codigo" value="#{instrumentoManagedBean.instrumento.codigo}" />
@@ -51,6 +51,7 @@
 						  <h:commandButton value="Aceptar" action="#{instrumentoManagedBean.guardar}"/>
 					  </div>
 		            </div>
+		            </h:form>
 		            <div class="seccion_edicion">
 		                <h3>Guias</h3>
 		                <h:form styleClass="formulario_inline">
@@ -68,6 +69,7 @@
 		                </div>		                
 		          </div>	
 		          <div class="seccion_edicion" style="width: 93%;margin-top: 124px;">
+		          		<h:form>
 						<p:dataTable id="instrumentosDataTable" emptyMessage="No hay datos para mostrar" var="instrumento" value="#{instrumentoManagedBean.instrumentos}" selection="#{instrumentoManagedBean.instrumento}" paginator="true" rows="10" rowKey="#{instrumento.id}" selectionMode="single">  
 							<f:facet name="header">
 								Instrumentos existentes
@@ -82,8 +84,8 @@
 								<p:commandButton id="selectButton" action="#{instrumentoManagedBean.editarInstrumento(instrumentoManagedBean.instrumento)}" icon="ui-icon-pencil" title="Editar"/>  
 							</p:column>
 						</p:dataTable>
-		          </div>	            					
-			</h:form>
+						</h:form>
+		          </div>
 		</div>
 	</div>
 
