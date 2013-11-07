@@ -65,11 +65,9 @@
 		                        <p:column headerText="Estatus"><h:outputText value="#{guia.estatus}" /></p:column>  
 		                    </p:dataTable>
 		                </h:form>
-		                </div>
-		            </div>
-		            <br/>
-		            <br/>		            
-					<div class="seccion_edicion">
+		                </div>		                
+		          </div>	
+		          <div class="seccion_edicion" style="width: 93%;margin-top: 124px;">
 						<p:dataTable id="instrumentosDataTable" emptyMessage="No hay datos para mostrar" var="instrumento" value="#{instrumentoManagedBean.instrumentos}" selection="#{instrumentoManagedBean.instrumento}" paginator="true" rows="10" rowKey="#{instrumento.id}" selectionMode="single">  
 							<f:facet name="header">
 								Instrumentos existentes
@@ -84,7 +82,7 @@
 								<p:commandButton id="selectButton" action="#{instrumentoManagedBean.editarInstrumento(instrumentoManagedBean.instrumento)}" icon="ui-icon-pencil" title="Editar"/>  
 							</p:column>
 						</p:dataTable>
-		            </div>
+		          </div>	            					
 			</h:form>
 		</div>
 	</div>
