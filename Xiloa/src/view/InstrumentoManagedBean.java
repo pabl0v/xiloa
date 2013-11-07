@@ -28,6 +28,7 @@ public class InstrumentoManagedBean implements Serializable {
 	@Autowired
 	private IService service;
 	
+	private String nombreCertificacion;
 	private Instrumento instrumento;
 	private Guia guia;
 	private List<Instrumento> instrumentos;
@@ -50,6 +51,10 @@ public class InstrumentoManagedBean implements Serializable {
 	@PostConstruct
 	private void init(){
 		catalogoTiposInstrumento = service.getMapMantenedoresByTipo("6");
+	}
+	
+	public String getNombreCertificacion() {
+		return nombreCertificacion;
 	}
 
 	public Instrumento getInstrumento() {
@@ -97,12 +102,12 @@ public class InstrumentoManagedBean implements Serializable {
 		this.instrumento.setUnidad(catalogoUnidades.get(selectedUnidad));
 	}
 
-	public String configurarInstrumento(Long id){
-		List<Unidad> unidades = service.getUnidadesByCertificacionId(id);
-		System.out.println("setCertificacionId: "+id+" con "+unidades.size()+" registros...");
+	public String configurarInstrumento(Long idCertificacion, String nombreCertificacion){
+		List<Unidad> unidades = service.getUnidadesByCertificacionId(idCertificacion);
 		for(int i=0; i<unidades.size(); i++)
-			catalogoUnidades.put(unidades.get(i).getId(), unidades.get(i));
-		instrumentos = service.getInstrumentosByCertificacionId(id);
+			this.catalogoUnidades.put(unidades.get(i).getId(), unidades.get(i));
+		this.instrumentos = service.getInstrumentosByCertificacionId(idCertificacion);
+		this.nombreCertificacion = nombreCertificacion;
 		return "/modulos/planificacion/instrumentos?faces-redirect=true";
 	}
 		
