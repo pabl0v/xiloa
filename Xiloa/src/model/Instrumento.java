@@ -48,7 +48,7 @@ public class Instrumento {
 	@Column(name = "instrumento_puntaje_minimo", nullable = false)	
 	private Integer puntajeMinimo;
 	
-	@OneToMany(mappedBy="instrumento")	
+	@OneToMany(mappedBy="instrumento")
 	private List<Guia> guias;
 
 	@NotNull

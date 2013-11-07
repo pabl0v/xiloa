@@ -97,7 +97,7 @@
 				<div class="seccion_edicion" style="height: 1px"></div>
 				<div class="seccion_edicion" style="height: 1px">
 					<div class="contenedor_botones">
-						<h:commandButton id="prueba" value="Instrumentos" action="#{certificacionManagedBean.configurarInstrumentos}"/> 
+						<h:commandButton id="prueba" value="Instrumentos" action="#{instrumentoManagedBean.configurarInstrumento(certificacionManagedBean.certificacion.id)}"/> 
 						<h:commandButton value="Cancelar" onclick="$('#prueba').disabled=true;" action="#{certificacionManagedBean.cancelar}"/> 
 						<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardarEdicion}"/>
 					</div>

@@ -21,6 +21,8 @@ import model.Actividad;
 import model.Certificacion;
 import model.Contacto;
 import model.Evaluacion;
+import model.Guia;
+import model.Instrumento;
 import model.Laboral;
 import model.Mantenedor;
 import model.Perfil;
@@ -56,6 +58,10 @@ public class ServiceImp implements IService {
 	private IDao<Perfil> perfilDao;
 	@Autowired	
 	private IDao<Unidad> unidadDao;
+	@Autowired	
+	private IDao<Guia> guiaDao;
+	@Autowired	
+	private IDao<Instrumento> instrumentoDao;
 	@Autowired	
 	private IDaoInatec inatecDao;
 	
@@ -321,6 +327,11 @@ public class ServiceImp implements IService {
 			return usuarioDao.save((Usuario)objeto);
 		if(objeto instanceof Certificacion)
 			return certificacionDao.save((Certificacion)objeto);
+		if(objeto instanceof Guia)
+			return guiaDao.save((Guia)objeto);
+		if(objeto instanceof Instrumento){
+			return instrumentoDao.save((Instrumento)objeto);
+		}
 		return null;
 	}
 	
@@ -385,5 +396,22 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Evaluacion> getEvaluaciones(Solicitud solicitud) {
 		return evaluacionDao.findAllByQuery("select e from evaluacion e where e.solicitud.id=" + solicitud.getId());
+	}
+
+	@Override
+	public List<Unidad> getUnidadesByCertificacionId(Long certificacionId) {
+		return unidadDao.findAllByQuery("select u from unidades u where u.certificacion.id="+certificacionId);
+	}
+
+	@Override
+	public List<Instrumento> getInstrumentosByCertificacionId(Long certificacionId) {
+		String query = "select i from instrumentos i where i.unidad in (select u from unidades u where u.certificacion.id="+certificacionId+")";
+		return instrumentoDao.findAllByQuery(query);
+	}
+
+	@Override
+	public List<Guia> getGuiasByInstrumentoId(Long instrumentoId) {
+		String query = "select g from guias g where g.instrumento.id="+instrumentoId;
+		return guiaDao.findAllByQuery(query);
 	}
 }

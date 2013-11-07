@@ -136,8 +136,7 @@ public class Certificacion {
 	@Column(name = "certificacion_nivel_competencia", nullable = false)
 	private int nivelCompetencia;
 	
-	@OneToMany//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name="certificacion_id", referencedColumnName="certificacion_id")
+	@OneToMany(mappedBy="certificacion")
 	private Set<Unidad> unidades;
 	
 	@OneToMany(mappedBy = "certificacion")

@@ -1,10 +1,15 @@
 package model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
@@ -17,19 +22,23 @@ public class Unidad {
 	private Long id;
 	
 	@NotNull
-	@Column(name = "competencia_codigo", nullable = false)
+	@ManyToOne
+	@JoinColumn(name="certificacion_id")
+	private Certificacion certificacion;
+	
+	@NotNull
+	@Column(name = "unidad_codigo", nullable = false)
 	private String competenciaCodigo;
 
 	@NotNull
-	@Column(name = "competencia_descripcion", nullable = false)	
+	@Column(name = "unidad_descripcion", nullable = false)	
 	private String competenciaDescripcion;
 	
-	//@OneToMany//(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	//@JoinColumn(name="unidad_id", referencedColumnName="unidad_id")
-	//private List<Instrumento> instrumentos;
+	@OneToMany(mappedBy="unidad")
+	private List<Instrumento> instrumentos;
 	
 	@NotNull
-	@Column(name = "competencia_estatus", nullable = false)	
+	@Column(name = "unidad_estatus", nullable = false)	
 	private boolean estatus;
 
 	public Long getId() {
@@ -38,6 +47,14 @@ public class Unidad {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Certificacion getCertificacion() {
+		return certificacion;
+	}
+
+	public void setCertificacion(Certificacion certificacion) {
+		this.certificacion = certificacion;
 	}
 
 	public String getCompetenciaCodigo() {
@@ -56,14 +73,17 @@ public class Unidad {
 		this.competenciaDescripcion = competenciaDescripcion;
 	}
 
-	/*
 	public List<Instrumento> getInstrumentos() {
 		return instrumentos;
 	}
 
 	public void setInstrumentos(List<Instrumento> instrumentos) {
 		this.instrumentos = instrumentos;
-	}*/
+	}
+	
+	public void addInstrumento(Instrumento instrumento){
+		this.instrumentos.add(instrumento);
+	}
 
 	public Unidad(String competenciaCodigo, String competenciaDescripcion, boolean estatus) {
 		super();

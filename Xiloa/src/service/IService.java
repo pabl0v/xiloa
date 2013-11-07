@@ -12,11 +12,14 @@ import model.Actividad;
 import model.Certificacion;
 import model.Contacto;
 import model.Evaluacion;
+import model.Guia;
+import model.Instrumento;
 import model.Laboral;
 import model.Mantenedor;
 import model.Requisito;
 import model.Rol;
 import model.Solicitud;
+import model.Unidad;
 import model.Usuario;
 
 public interface IService {
@@ -87,6 +90,9 @@ public interface IService {
 	public Laboral getLaboralById(Long idLaboral);
 	public List<Evaluacion> getEvaluaciones(Solicitud solicitud);
 	public Solicitud getSolicitudById(Long idSolicitud);
+	public List<Unidad> getUnidadesByCertificacionId(Long certificacionId);
+	public List<Instrumento> getInstrumentosByCertificacionId(Long certificacionId);
+	public List<Guia> getGuiasByInstrumentoId(Long instrumentoId);
 	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Metodos definidos para ser utilizados principalmente en el Modulo SOLICITUDES
 	
 }
