@@ -269,13 +269,13 @@
 	            	<p:inputText id="nombreArchivo" value="#{expedienteManagedBean.archivoExp.nombre}" />
 	            	<p>Descripcion:</p>	                  
 	            	<p:inputText id="descripcionArchivo" value="#{expedienteManagedBean.archivoExp.descripcion}" />
-	            	<p:fileUpload value="#{expedienteManagedBean.file}" mode="simple"/> 	            	
+	            	<p:fileUpload id="fileEvidencia" value="#{expedienteManagedBean.file}" mode="simple"/> 	            	
 	            	                    		
 				</div>				
 				<p:commandButton value="Cancelar" onclick="PF('dlgPortafolio').hide();"/>
 				<p:commandButton value="Aceptar" action="#{expedienteManagedBean.uploadFile}" 
-								 update=":formExpediente:tabView_Evaluaciones:tabPortafolio,:formExpediente:modalPortafolio" 
-				                 oncomplete="PF('dlgPortafolio').hide();"/>								
+								 
+				                 />								
 		    </div>					
 		</p:dialog>
 		

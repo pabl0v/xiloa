@@ -435,6 +435,10 @@ public class ExpedienteManagedBean  {
 			
 			System.out.println("Direccion del contex " + FacesContext.getCurrentInstance().getExternalContext().getRequestPathInfo());
 			
+			System.out.println("Revisando los otros valores: ");
+			System.out.println("Nombre " + archivoExp.getNombre());
+			System.out.println("Descripcion " + archivoExp.getDescripcion());
+			
 			InputStream inputStream = file.getInputstream(); //event.getFile().getInputstream();
 			//OutputStream out = new FileOutputStream(new File(targetFolder,event.getFile().getFileName()));
 			OutputStream out = new FileOutputStream(new File(targetFolder,file.getFileName()));
