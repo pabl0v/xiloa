@@ -13,6 +13,8 @@ import model.Instrumento;
 import model.Mantenedor;
 import model.Unidad;
 
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -162,4 +164,11 @@ public class InstrumentoManagedBean implements Serializable {
 	public void editarInstrumento(Instrumento instrumento){
 		
 	}
+	
+	public void onRowSelect(SelectEvent event) {
+		setSelectedInstrumento((Instrumento) event.getObject());
+    }  
+  
+    public void onRowUnselect(UnselectEvent event) {  
+    }
 }
