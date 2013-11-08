@@ -113,8 +113,13 @@ public class Instrumento {
 		return guias;
 	}
 
+
 	public void setGuias(List<Guia> guias) {
 		this.guias = guias;
+	}
+	
+	public void addGuia(Guia guia){
+		this.guias.add(guia);
 	}
 
 	public Integer getPuntajeMinimo() {
@@ -127,6 +132,13 @@ public class Instrumento {
 
 	public boolean getEstatus() {
 		return estatus;
+	}
+	
+	public String getEstatusLabel(){
+		if(estatus)
+			return "Activo";
+		else
+			return "Inactivo";
 	}
 
 	public void setEstatus(boolean estatus) {

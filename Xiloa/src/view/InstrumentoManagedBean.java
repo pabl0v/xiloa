@@ -29,7 +29,8 @@ public class InstrumentoManagedBean implements Serializable {
 	private IService service;
 	
 	private String nombreCertificacion;
-	private Instrumento instrumento;
+	private Instrumento selectedInstrumento;
+	private Instrumento nuevoInstrumento;
 	private Guia guia;
 	private List<Instrumento> instrumentos;
 	
@@ -41,7 +42,9 @@ public class InstrumentoManagedBean implements Serializable {
 	public InstrumentoManagedBean(){
 		super();
 		guia = new Guia();
-		instrumento = new Instrumento();
+		guia.setEstatus(true);
+		selectedInstrumento = new Instrumento();
+		nuevoInstrumento = new Instrumento();
 		selectedTipoInstrumento = null;
 		catalogoTiposInstrumento = new HashMap<Integer, Mantenedor>();
 		selectedUnidad = null;
@@ -57,13 +60,22 @@ public class InstrumentoManagedBean implements Serializable {
 		return nombreCertificacion;
 	}
 
-	public Instrumento getInstrumento() {
-		return instrumento;
+	public Instrumento getSelectedInstrumento() {
+		return selectedInstrumento;
 	}
 
-	public void setInstrumento(Instrumento instrumento) {
-		this.instrumento = instrumento;
-		this.instrumento.setGuias(service.getGuiasByInstrumentoId(instrumento.getId()));
+	public void setSelectedInstrumento(Instrumento instrumento) {
+		this.selectedInstrumento = instrumento;
+		this.selectedInstrumento.setGuias(service.getGuiasByInstrumentoId(instrumento.getId()));
+	}
+	
+	public Instrumento getNuevoInstrumento() {
+		return nuevoInstrumento;
+	}
+
+	public void setNuevoInstrumento(Instrumento nuevoInstrumento) {
+		this.nuevoInstrumento = nuevoInstrumento;
+		//this.instrumento.setGuias(service.getGuiasByInstrumentoId(instrumento.getId()));
 	}
 	
 	public Guia getGuia() {
@@ -80,7 +92,7 @@ public class InstrumentoManagedBean implements Serializable {
 
 	public void setSelectedTipoInstrumento(Integer selectedTipoInstrumento) {
 		this.selectedTipoInstrumento = selectedTipoInstrumento;
-		this.instrumento.setTipo(catalogoTiposInstrumento.get(selectedTipoInstrumento));
+		this.nuevoInstrumento.setTipo(catalogoTiposInstrumento.get(selectedTipoInstrumento));
 	}
 
 	public List<Mantenedor> getCatalogoTiposInstrumento() {
@@ -99,7 +111,7 @@ public class InstrumentoManagedBean implements Serializable {
 
 	public void setSelectedUnidad(Long selectedUnidad) {
 		this.selectedUnidad = selectedUnidad;
-		this.instrumento.setUnidad(catalogoUnidades.get(selectedUnidad));
+		this.nuevoInstrumento.setUnidad(catalogoUnidades.get(selectedUnidad));
 	}
 
 	public String configurarInstrumento(Long idCertificacion, String nombreCertificacion){
@@ -115,21 +127,28 @@ public class InstrumentoManagedBean implements Serializable {
 		return new ArrayList<Unidad>(catalogoUnidades.values());
 	}
 	
-	public String guardar(){
-		service.guardar(instrumento);
-		instrumento = new Instrumento();
-		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
+	public void nuevoInstrumento(Instrumento instrumento){
+		instrumento.setDescripcion(instrumento.getNombre());
+		instrumento.setGuias(null);
+		nuevoInstrumento = (Instrumento) service.guardar(instrumento);
+		instrumentos.add(nuevoInstrumento);
+		setSelectedInstrumento(nuevoInstrumento);
+		nuevoInstrumento = new Instrumento();
 	}
-	
-	public String cancelar(){
-		instrumento = new Instrumento();
+		
+	public String aceptar(){
+		nuevoInstrumento = new Instrumento();
+		selectedInstrumento = new Instrumento();
 		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
 	}
 	
 	public void agregarGuia(){
-		guia.setInstrumento(instrumento);
+		guia.setInstrumento(selectedInstrumento);
+		//selectedInstrumento.addGuia(guia);
 		service.guardar(guia);
+		setSelectedInstrumento(selectedInstrumento);
 		guia = new Guia();
+		guia.setEstatus(true);
 	}
 
 	public List<Instrumento> getInstrumentos() {

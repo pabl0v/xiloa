@@ -106,7 +106,7 @@
 
 			<div id="tab_contenedor">
 				<p:tabView id="tabView">				
-					<p:tab id="tab1" title="Actividades">
+					<p:tab id="tab1" title="Todas">
 						<h:form id="actividadesForm">
 							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
 							</p:commandButton>
@@ -168,7 +168,7 @@
 						</h:form>      
 					</p:tab>
 					
-					<p:tab id="tab3" title="Verificacion">  
+					<p:tab id="tab3" title="Convocatoria">  
 						<h:form>     
 							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
 							</p:commandButton>    
@@ -194,7 +194,7 @@
 						</h:form>       
 					</p:tab>  
                     
-					<p:tab id="tab4" title="UC a evaluar">  
+					<p:tab id="tab4" title="Verificacion">  
 						<h:form>     
 							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
 							</p:commandButton>    
@@ -219,6 +219,31 @@
 							</p:dataTable> 
 						</h:form>       
 					</p:tab>
+					<p:tab id="tab5" title="Evaluacion">  
+						<h:form>     
+							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
+							</p:commandButton>    
+							<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.nombre}" selectionMode="single">  
+								<f:facet name="header">  
+									<p:outputPanel style="text-align:right;">  
+										<h:outputText value="Buscar:" />  
+										<p:inputText id="globalFilter" onkeyup="carsTable.filter()" style="margin-left: 4px; width:150px" />  
+									</p:outputPanel>  
+								</f:facet>               
+								<p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
+								<p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>  
+								<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>  
+								<p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
+								<p:column headerText="Fecha">
+									<h:outputText value="#{actividad.fechaInicial}" >
+									 	<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+									</h:outputText>
+								</p:column>  
+								<p:column headerText="Responsable"><h:outputText value="#{actividad.ejecutor.nombreCompleto}" /></p:column>  
+								<p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>  
+							</p:dataTable> 
+						</h:form>       
+					</p:tab>					
 				</p:tabView>
 			</div>
 		</div>

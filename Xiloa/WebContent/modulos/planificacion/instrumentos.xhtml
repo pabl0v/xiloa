@@ -18,70 +18,45 @@
 		</div>
         <h2>Configuracion de instrumentos - <h:outputText value="#{instrumentoManagedBean.nombreCertificacion}" /> </h2>
         <div id="contenedor_secciones">
-        		    <h:form id="contenido">
-		            <div class="seccion_edicion" style="font-size: 14px;">             
-		              <h:outputLabel styleClass="estilo_label" value="Codigo:" />  
-		              <p:inputText id="codigo" value="#{instrumentoManagedBean.instrumento.codigo}" />
-		              <br/>
-		              <h:outputLabel styleClass="estilo_label" value="Tipo:" />  
-		              <p:selectOneMenu id="selector_estatus1" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedTipoInstrumento}" >  
-							<f:selectItem itemLabel="Seleccione..." itemValue="" />
-							<f:selectItems value="#{instrumentoManagedBean.catalogoTiposInstrumento}" var="tipo" itemLabel="#{tipo.valor}" itemValue="#{tipo.id}" />
-					  </p:selectOneMenu>	
-					  <br/>		
-		              <h:outputLabel styleClass="estilo_label" value="Unidad:" />  
-		              <p:selectOneMenu id="selector_estatus2" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedUnidad}" >  
-							<f:selectItem itemLabel="Seleccione..." itemValue="" />
-							<f:selectItems value="#{instrumentoManagedBean.catalogoUnidades}" var="unidad" itemLabel="#{unidad.competenciaDescripcion}" itemValue="#{unidad.id}" />
-					  </p:selectOneMenu>	
-					  <br/>		
-		              <h:outputLabel styleClass="estilo_label" value="Nombre:" />  
-		              <p:inputText id="certificacionNombre2" value="#{instrumentoManagedBean.instrumento.nombre}" />
-		              <br/>
-		              <h:outputLabel styleClass="estilo_label" value="Descripcion:" />  
-		              <p:inputText id="certificacionNombre3" value="#{instrumentoManagedBean.instrumento.descripcion}" />
-		              <br/>
-		              <h:outputLabel styleClass="estilo_label" value="Puntaje minimo:" />  
-		              <p:inputText id="certificacionNombre4" value="#{instrumentoManagedBean.instrumento.puntajeMinimo}" />
-		              <br/>
-		              <h:outputLabel styleClass="estilo_label" value="Activo" />
-		              <p:selectBooleanCheckbox value="#{instrumentoManagedBean.instrumento.estatus}" /> 
-					  <div class="contenedor_botones">		
-			              <h:commandButton value="Cancelar" action="#{instrumentoManagedBean.cancelar}"/> 
-						  <h:commandButton value="Aceptar" action="#{instrumentoManagedBean.guardar}"/>
-					  </div>
-		            </div>
-		            </h:form>
 		            <div class="seccion_edicion">
-		                <h3>Guias</h3>
 		                <h:form styleClass="formulario_inline">
-		                    <p:commandButton value="Agregar guias" onclick="PF('dlg1').show();"/> 
+		                    <p:commandButton value="Agregar guia" onclick="PF('dlg1').show();"/> 
 		                </h:form>
 						<div class="seccion_interna">
-						<h:form>
-		                   <p:dataTable id="display" emptyMessage="No hay datos para mostrar"  var="guia" value="#{instrumentoManagedBean.instrumento.guias}">  
+						<h:form id="guias">
+		                   <p:dataTable id="display" emptyMessage="No hay datos para mostrar"  var="guia" value="#{instrumentoManagedBean.selectedInstrumento.guias}">  
 		                        <p:column headerText="Pregunta"><h:outputText value="#{guia.pregunta}" /></p:column>  
 		                        <p:column headerText="Respuesta"><h:outputText value="#{guia.respuesta}" /></p:column>  
 		                        <p:column headerText="Puntaje"><h:outputText value="#{guia.puntaje}" /></p:column>  
-		                        <p:column headerText="Estatus"><h:outputText value="#{guia.estatus}" /></p:column>  
+		                        <p:column headerText="Estado"><h:outputText value="#{guia.estatusLabel}" /></p:column>  
 		                    </p:dataTable>
 		                </h:form>
 		                </div>		                
-		          </div>	
+		          </div>
+		          
+		         <div class="seccion_edicion">
+		         	<h:form>
+		          	<div class="contenedor_botones">
+						<h:commandButton value="Aceptar" action="#{instrumentoManagedBean.aceptar}"/> 
+					</div>
+					</h:form>
+				</div>
+		          		          
 		          <div class="seccion_edicion" style="width: 93%;margin-top: 124px;">
-		          		<h:form>
-						<p:dataTable id="instrumentosDataTable" emptyMessage="No hay datos para mostrar" var="instrumento" value="#{instrumentoManagedBean.instrumentos}" selection="#{instrumentoManagedBean.instrumento}" paginator="true" rows="10" rowKey="#{instrumento.id}" selectionMode="single">  
+		          		<h:form id="instrumentos">
+		          		<p:commandButton value="Agregar Instrumento" style="margin-bottom: 5px" update=":instrumentoDialogo" onclick="PF('dlg2').show();"/>
+						<p:dataTable id="instrumentosDataTable" emptyMessage="No hay datos para mostrar" var="var" value="#{instrumentoManagedBean.instrumentos}" selection="#{instrumentoManagedBean.selectedInstrumento}" paginator="true" rows="10" rowKey="#{var.id}" selectionMode="single">  
 							<f:facet name="header">
 								Instrumentos existentes
 							</f:facet>
-							<p:column headerText="Unidad"><h:outputText value="#{instrumento.unidad.competenciaDescripcion}" /></p:column>
-							<p:column headerText="Instrumento"><h:outputText value="#{instrumento.tipo.valor}" /></p:column>  
-							<p:column headerText="Codigo"><h:outputText value="#{instrumento.codigo}" /></p:column>  
-							<p:column headerText="Nombre"><h:outputText value="#{instrumento.nombre}" /></p:column>  
-							<p:column headerText="Puntaje Min."><h:outputText value="#{instrumento.puntajeMinimo}" /></p:column>  
-							<p:column headerText="Estado"><h:outputText value="#{instrumento.estatus}" /></p:column>
+							<p:column headerText="Instrumento"><h:outputText value="#{var.tipo.valor}" /></p:column>
+							<p:column headerText="Unidad de Competencia"><h:outputText value="#{var.unidad.competenciaDescripcion}" /></p:column>
+							<p:column headerText="Codigo"><h:outputText value="#{var.codigo}" /></p:column>  
+							<p:column headerText="Nombre"><h:outputText value="#{var.nombre}" /></p:column>  
+							<p:column headerText="Puntaje Minimo"><h:outputText value="#{var.puntajeMinimo}" /></p:column>  
+							<p:column headerText="Estado"><h:outputText value="#{var.estatusLabel}" /></p:column>
 							<p:column style="width:4%">
-								<p:commandButton id="selectButton" action="#{instrumentoManagedBean.editarInstrumento(instrumentoManagedBean.instrumento)}" icon="ui-icon-pencil" title="Editar"/>  
+								<p:commandButton id="selectButton" action="#{instrumentoManagedBean.editarInstrumento(instrumentoManagedBean.selectedInstrumento)}" update=":guias:display" icon="ui-icon-pencil" title="Editar"/>  
 							</p:column>
 						</p:dataTable>
 						</h:form>
@@ -89,9 +64,9 @@
 		</div>
 	</div>
 
-	<p:dialog id="modalDialog" styleClass="estilo_dialogoactividades" header="Agregar guia:" widgetVar="dlg1" modal="true" resizable="false" width="350" height="300">
+	<p:dialog id="modalDialog1" styleClass="estilo_dialogoactividades" header="Agregar Guia:" widgetVar="dlg1" modal="true" resizable="false" width="350" height="300">
 		<div id="contenedor_dialogoactividades">
-		<h:panelGrid id="modal" columns="2" cellpadding="4">
+		<h:panelGrid id="modal1" columns="2" cellpadding="4">
 		<h:form>
 		  	<h:outputLabel styleClass="estilo_label" value="Pregunta:" />  
             <p:inputText id="codigo1" value="#{instrumentoManagedBean.guia.pregunta}" />
@@ -105,13 +80,48 @@
             <h:outputLabel styleClass="estilo_label" value="Activo:" />
 			<p:selectBooleanCheckbox value="#{instrumentoManagedBean.guia.estatus}" />
 			<br/>	
-			<div class="contenedor_botones" style="margin-top:32px;">	
+			<div class="contenedor_botones" style="margin-top:32px;">			
 	            <h:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/> 
-				<h:commandButton value="Aceptar" onclick="PF('dlg1').hide();" action="#{instrumentoManagedBean.agregarGuia}"/>
+				<h:commandButton value="Aceptar" update=":guias:display" action="#{instrumentoManagedBean.agregarGuia}" onclick="PF('dlg1').hide();"/>
+			</div>
+		</h:form>
+		</h:panelGrid>
+		</div>
+	</p:dialog>	
+	
+	<p:dialog id="modalDialog2" styleClass="estilo_dialogoactividades" header="Agregar Instrumento:" widgetVar="dlg2" modal="true" resizable="false" width="350" height="350">
+		<div id="contenedor_dialogoactividades">
+		<h:panelGrid id="modal2" columns="2" cellpadding="5">
+		<h:form id="instrumentoDialogo">
+		  	<h:outputLabel styleClass="estilo_label" value="Instrumento:" />
+			<p:selectOneMenu id="selector_estatus1" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedTipoInstrumento}" >  
+				<f:selectItem itemLabel="Seleccione..." itemValue="" />
+				<f:selectItems value="#{instrumentoManagedBean.catalogoTiposInstrumento}" var="tipo" itemLabel="#{tipo.valor}" itemValue="#{tipo.id}" />
+			</p:selectOneMenu>
+            <br/>	
+            <h:outputLabel styleClass="estilo_label" value="Unidad:" />
+			<p:selectOneMenu id="selector_estatus2" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedUnidad}" >  
+				<f:selectItem itemLabel="Seleccione..." itemValue="" />
+				<f:selectItems value="#{instrumentoManagedBean.catalogoUnidades}" var="unidad" itemLabel="#{unidad.competenciaDescripcion}" itemValue="#{unidad.id}" />
+			</p:selectOneMenu>
+            <br/> 
+            <h:outputLabel styleClass="estilo_label" value="Codigo:" />
+            <p:inputText id="codigo4" value="#{instrumentoManagedBean.nuevoInstrumento.codigo}" />
+            <br/>
+            <h:outputLabel styleClass="estilo_label" value="Nombre:" />
+			<p:inputText id="codigo5" value="#{instrumentoManagedBean.nuevoInstrumento.nombre}" />
+			<br/>
+            <h:outputLabel styleClass="estilo_label" value="Puntaje Minimo:" />
+			<p:inputText id="codigo6" value="#{instrumentoManagedBean.nuevoInstrumento.puntajeMinimo}" />
+			<br/>
+			<div class="contenedor_botones" style="margin-top:32px;">		
+	            <h:commandButton value="Cancelar" onclick="PF('dlg2').hide();"/> 
+				<h:commandButton value="Aceptar" update=":instrumentos:instrumentosDataTable" action="#{instrumentoManagedBean.nuevoInstrumento(instrumentoManagedBean.nuevoInstrumento)}" onclick="PF('dlg2').hide();"/>
 			</div>
 		</h:form>
 		</h:panelGrid>
 		</div>
 	</p:dialog>
+	
 </h:body>
 </html>

@@ -24,7 +24,7 @@ public class Guia {
 	private Long id;
 	
 	@ManyToOne
-	@JoinColumn(name="guia_instrumento_id")
+	@JoinColumn(name="instrumento_id")
 	private Instrumento instrumento;
 	
 	@NotNull
@@ -85,6 +85,13 @@ public class Guia {
 	
 	public boolean getEstatus(){
 		return estatus;
+	}
+	
+	public String getEstatusLabel(){
+		if(estatus)
+			return "Activo";
+		else
+			return "Inactivo";
 	}
 	
 	public void setEstatus(boolean estatus){
