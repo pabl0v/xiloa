@@ -1,13 +1,19 @@
 package view;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
@@ -15,25 +21,26 @@ import javax.faces.model.SelectItem;
 import model.Archivo;
 import model.Contacto;
 import model.Evaluacion;
+import model.EvaluacionGuia;
+import model.Guia;
 import model.Instrumento;
 import model.Laboral;
 import model.Mantenedor;
 import model.Solicitud;
-import model.Unidad;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
+
 import service.IService;
 import support.BeanEvaluacion;
-import support.Ifp;
 
 @Component
 @Scope(value="session")
 public class ExpedienteManagedBean  {
-	
-	
 	
 	@Autowired
 	private IService service;	
@@ -62,6 +69,13 @@ public class ExpedienteManagedBean  {
 	private Evaluacion seletedEvaluacion;
 	private BeanEvaluacion selectedBeanEvaluacion;
 	
+	private UploadedFile file;
+	
+	private Archivo archivoExp;
+	private Long evalIdByArchivoExp;
+	private List<Archivo> listPortafolio;
+	
+	private List<SelectItem> listEvalBySolicitud = new ArrayList<SelectItem> ();	
 	
 	private Map<Integer, Mantenedor> catalogoTipoDatosLaborales = new HashMap<Integer, Mantenedor>();
 
@@ -118,17 +132,21 @@ public class ExpedienteManagedBean  {
 		this.listEvaluaciones = listEvaluaciones;
 	}
 
-	public List<BeanEvaluacion> getListBeanEval() {
+	public List<BeanEvaluacion> getListBeanEval() {		
 		List<BeanEvaluacion> listBeanEv = new ArrayList<BeanEvaluacion> ();
-		for (Evaluacion eva : listEvaluaciones) {
-			List<Instrumento> listInstrumento = new ArrayList<Instrumento> ();
-			/*
-			listInstrumento = eva.getUnidad().getInstrumentos();
-			for (Instrumento ob : listInstrumento) {				
-				listBeanEv.add(new BeanEvaluacion( ob, eva.getUnidad(), eva));			    
+		
+		List<Evaluacion> listEval = service.getEvaluaciones(this.solicitudExp);
+		for (Evaluacion e : listEval) {
+			List<Instrumento> listInstrumento = service.getIntrumentoByEvaluacion(e.getId());
+			for (Instrumento inst : listInstrumento) {				
+				listBeanEv.add(new BeanEvaluacion(this.solicitudExp, //Solicitud, 
+												  e, //	Evaluacion
+												  inst// Instrumento
+												  )
+							  );
 			}
-			*/			
 		}
+					
 		listBeanEval = listBeanEv;
 		return listBeanEval;
 	}
@@ -250,6 +268,46 @@ public class ExpedienteManagedBean  {
 	public void setSelectedBeanEvaluacion(BeanEvaluacion selectedBeanEvaluacion) {
 		this.selectedBeanEvaluacion = selectedBeanEvaluacion;
 	}
+	
+	public UploadedFile getFile() {
+		return file;
+	}
+
+	public void setFile(UploadedFile file) {
+		this.file = file;
+	}
+
+	public Archivo getArchivoExp() {
+		return archivoExp;
+	}
+
+	public void setArchivoExp(Archivo archivoExp) {
+		this.archivoExp = archivoExp;
+	}
+
+	public List<Archivo> getListPortafolio() {
+		return listPortafolio;
+	}
+
+	public void setListPortafolio(List<Archivo> listPortafolio) {
+		this.listPortafolio = listPortafolio;
+	}
+
+	public List<SelectItem> getListEvalBySolicitud() {		
+		return listEvalBySolicitud;
+	}
+
+	public void setListEvalBySolicitud(List<SelectItem> listEvalBySolicitud) {
+		this.listEvalBySolicitud = listEvalBySolicitud;
+	}	
+
+	public Long getEvalIdByArchivoExp() {
+		return evalIdByArchivoExp;
+	}
+
+	public void setEvalIdByArchivoExp(Long evalIdByArchivoExp) {
+		this.evalIdByArchivoExp = evalIdByArchivoExp;
+	}
 
 	@PostConstruct
 	private void fillCatalogos(){
@@ -258,6 +316,8 @@ public class ExpedienteManagedBean  {
 			this.catalogoTipoDatosLaborales.put(dato.getId(), dato);			
 			this.listTipoDatosLaborales.add(new SelectItem(dato.getId(), dato.getValor()));			
 		}			
+		
+		archivoExp = new Archivo();
 	}
 	
 	public void editarLaboral(){		
@@ -270,7 +330,7 @@ public class ExpedienteManagedBean  {
 		this.setIdSeletedLaboral(this.selectedLaboral.getId());		
 	}
 	
-	public void editarEvaluacion() {
+	public void editarEvaluacion() {		
 		
 	}
 	
@@ -318,8 +378,8 @@ public class ExpedienteManagedBean  {
 									   this.fechaHasta, // fechaFinaliza, 
 									   this.institucionDireccion.toUpperCase(), // institucionDireccion,
 									   "", // institucionTelefono, 
-									   this.nombreCargo.toUpperCase(), // cargo, 
-									   null // archivo
+									   this.nombreCargo.toUpperCase()//, // cargo, 
+									   //null // archivo
 										);		
 			
 		} else {
@@ -349,5 +409,76 @@ public class ExpedienteManagedBean  {
 		this.setIdSeletedLaboral(null);	
 			
 	}	
+	
+	
+	public void nuevoArchivo() {
+		archivoExp = new Archivo();
+		
+		listEvalBySolicitud = new ArrayList<SelectItem> ();
+		List<Evaluacion> listE = this.getListEvaluaciones();
+		
+		System.out.println("Obtiene el listado de las evaluaciones");
+		listEvalBySolicitud.add(new SelectItem(null, "Seleccione la evaluacion"));
+		for (Evaluacion dato : listE) {
+			listEvalBySolicitud.add(new SelectItem(dato.getId(), dato.getUnidad().getCompetenciaDescripcion()));
+		}
+	}
+	
+	public void uploadFile(){
+		System.out.println("Entra al uploadFile");
+		//System.out.println("Nombre del archivo " + file.getFileName());
+		//System.out.println("Tamaño " + file.getSize());
+		
+		try {
+			File targetFolder = new File("/portafolio");
+			System.out.println("La ruta donde se copiara el archivo: " +targetFolder.getAbsolutePath());
+			
+			System.out.println("Direccion del contex " + FacesContext.getCurrentInstance().getExternalContext().getRequestPathInfo());
+			
+			InputStream inputStream = file.getInputstream(); //event.getFile().getInputstream();
+			//OutputStream out = new FileOutputStream(new File(targetFolder,event.getFile().getFileName()));
+			OutputStream out = new FileOutputStream(new File(targetFolder,file.getFileName()));
+			int read = 0;
+			byte[] bytes = new byte[1024];
+			
+			while ((read = inputStream.read(bytes)) != -1) {
+				out.write(bytes, 0, read);			
+			}
+			inputStream.close();
+			out.flush();
+			out.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		/*
+			Date fechaAhora = new Date();
+			//this.file = event.getFile();
+			
+	        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+	        String txtField = ec.getRequestParameterMap().get("formExpediente:txtField");
+	        String filePath = ec.getRealPath(String.format("/portafolio/%s",file.getFileName() + "_" + this.solicitudExp.getId() + "_" + fechaAhora));
+	        
+	        try {
+	            FileOutputStream fos = new FileOutputStream(filePath);
+	            fos.write(file.getContents());
+	            fos.flush();
+	            fos.close();
+	 
+	        } catch (FileNotFoundException e) {
+	            e.printStackTrace();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        
+	        FacesContext context = FacesContext.getCurrentInstance();
+	        
+	        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,String.format("Archivo cargado: %s ", file.getFileName()),
+	                String.format("Mensaje: %s", txtField)));
+	        */
+	        			
+	}
 
 }

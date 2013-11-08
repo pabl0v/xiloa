@@ -146,13 +146,13 @@
                          <p:dataTable emptyMessage="No hay datos"  var="uC" value="#{expedienteManagedBean.listBeanEval}"
                          			  selection="#{expedienteManagedBean.selectedBeanEvaluacion}" rowKey="#{uC}" 
                          			  selectionMode="single" paginator="true" rows="4" >  
-                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{uC.unidad.competenciaDescripcion}" /></p:column>  
+                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{uC.evaluacion.unidad.competenciaDescripcion}" /></p:column>  
                              <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{uC.instrumento.nombre}" /></p:column>  
                              <p:column headerText="Requisito"><h:outputText value="#{uC.instrumento.nombre}" /></p:column>  
                              <p:column headerText="Estado"><h:outputText value="#{uC.evaluacion.aprobado}" /></p:column>  
                              <p:column headerText="Editar">
                              	<p:commandButton id="editarEvaluaciones" action="#{expedienteManagedBean.editarEvaluacion}" 
-                         	            	     oncomplete="PF('dlgEval').show();" update=":formExpediente:modalEvaluaciones"   
+                         	            	     oncomplete="PF('dlgEval').show();" update=":formExpediente:tabView_Evaluaciones"     
                          	                	 icon="ui-icon-pencil" title="Editar">    	
                          			<f:setPropertyActionListener value="#{uC}" target="#{expedienteManagedBean.selectedBeanEvaluacion}" />						  
     							</p:commandButton>                        
@@ -160,8 +160,8 @@
                         </p:dataTable>    
                     </p:tab>  
 
-                    <p:tab id="tab2" title="Portafolio">  
-                    	<p:commandButton value="Agregar" />
+                    <p:tab id="tabPortafolio" title="Portafolio">  
+                    	<p:commandButton value="Agregar" action="#{expedienteManagedBean.nuevoArchivo}" oncomplete="PF('dlgPortafolio').show();" update=":formExpediente:modalPortafolio" />                    	
                          <p:dataTable emptyMessage="No hay datos"  var="portafolioEvidencia" value="#{expedienteManagedBean.listDatosCertificaciones}"
                                       selection="#{expedienteManagedBean.selectedLaboral}" rowKey="#{portafolioEvidencia}" 
                          			  selectionMode="single" paginator="true" rows="4" >  
@@ -190,7 +190,7 @@
                              <p:column headerText="Estado"><h:outputText value="#{evaluaciones.evaluacion.aprobado}" /></p:column>
                              <p:column headerText="Editar">
                              	<p:commandButton id="editarEvaluacionesPlan" action="#{expedienteManagedBean.editarEvaluacion}" 
-                         	                 	oncomplete="PF('dlgEval').show();" update=":formExpediente:modalEvaluaciones"   
+                         	                 	oncomplete="PF('dlgEval').show();" update=":formExpediente:tabView_Evaluaciones"   
                          	                 	icon="ui-icon-pencil" title="Editar">    	
                          			<f:setPropertyActionListener value="#{evaluaciones}" target="#{expedienteManagedBean.selectedBeanEvaluacion}" />						  
     							</p:commandButton>                        
@@ -202,13 +202,13 @@
                          <p:dataTable emptyMessage="No hay datos"  var="formacion" value="#{expedienteManagedBean.listBeanEval}"
                                       selection="#{expedienteManagedBean.selectedBeanEvaluacion}" rowKey="#{formacion}" 
                          			  selectionMode="single" paginator="true" rows="4" >  
-                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{formacion.unidad.competenciaDescripcion}" /></p:column>  
+                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{formacion.evaluacion.unidad.competenciaDescripcion}" /></p:column>  
                              <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{formacion.instrumento.nombre}" /></p:column>  
                              <p:column headerText="Observaciones"><h:outputText value="#{formacion.evaluacion.observaciones}" /></p:column>  
                              <p:column headerText="Estado"><h:outputText value="#{formacion.evaluacion.aprobado}" /></p:column>  
                              <p:column headerText="Editar">
                              	<p:commandButton id="editarEvaluacionesPlanForma" action="#{expedienteManagedBean.editarEvaluacion}" 
-                         	                 	 oncomplete="PF('dlgEval').show();" update=":formExpediente:modalEvaluaciones"   
+                         	                 	 oncomplete="PF('dlgEval').show();" update=":formExpediente:tabView_Evaluaciones"   
                          	                 	 icon="ui-icon-pencil" title="Editar">    	
                          			<f:setPropertyActionListener value="#{formacion}" target="#{expedienteManagedBean.selectedBeanEvaluacion}" />						  
     							</p:commandButton>                        
@@ -253,9 +253,32 @@
 		</p:dialog>    	
     	<!--  Fin Cuadro de dialogo emergente que registra datos laborales y académicos -->
     	
-    	<!-- ******************************************************************************************** -->
+    	<!-- ******************************************************************************************** -->    	
     	
-    	
+    	<!-- Cuadro de dialogo emergente que registra datos laborales y académicos -->    	    	
+    	<p:dialog id="modalPortafolio" styleClass="estilo_dialogoLaborales" header="Agregar Archivos al portafolio:" widgetVar="dlgPortafolio" 
+    	          modal="true" resizable="false" width="440" height="450" showEffect="clip" hideEffect="clip" >
+    	   <div id="modal_Portafolio">					
+				<h3 style="margin-left: -11px;">Registro de Archivos al portafolio de evidencias</h3>					
+				<p style="margin-left: 4px;">Evaluacion:</p>			
+				<p:selectOneMenu styleClass="selectores" id="selector_EvalByArchivo" value="#{expedienteManagedBean.evalIdByArchivoExp}" >				
+					<f:selectItems value="#{expedienteManagedBean.listEvalBySolicitud}" />							        
+			    </p:selectOneMenu>			    
+			    <div class="dialogoLaborales_secciones" >					
+					<p>Nombre del Archivo:</p>  
+	            	<p:inputText id="nombreArchivo" value="#{expedienteManagedBean.archivoExp.nombre}" />
+	            	<p>Descripcion:</p>	                  
+	            	<p:inputText id="descripcionArchivo" value="#{expedienteManagedBean.archivoExp.descripcion}" />
+	            	<p:fileUpload value="#{expedienteManagedBean.file}" mode="simple"/> 	            	
+	            	                    		
+				</div>				
+				<p:commandButton value="Cancelar" onclick="PF('dlgPortafolio').hide();"/>
+				<p:commandButton value="Aceptar" action="#{expedienteManagedBean.uploadFile}" 
+								 update=":formExpediente:tabView_Evaluaciones:tabPortafolio,:formExpediente:modalPortafolio" 
+				                 oncomplete="PF('dlgPortafolio').hide();"/>								
+		    </div>					
+		</p:dialog>
+		
     	</h:form>
     </div> 
 </h:body>

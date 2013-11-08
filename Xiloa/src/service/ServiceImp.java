@@ -21,6 +21,7 @@ import model.Actividad;
 import model.Certificacion;
 import model.Contacto;
 import model.Evaluacion;
+import model.EvaluacionGuia;
 import model.Guia;
 import model.Instrumento;
 import model.Laboral;
@@ -70,6 +71,12 @@ public class ServiceImp implements IService {
 	
 	@Autowired	
 	private IDao<Evaluacion> evaluacionDao;
+	
+	@Autowired	
+	private IDao<EvaluacionGuia> evaluacionGuiaDao;
+	
+	@Autowired
+	private IDao<Long> longDao;
 	
 	@Override
 	public List<Certificacion> getCertificaciones(){
@@ -307,6 +314,9 @@ public class ServiceImp implements IService {
 		if (objeto instanceof Evaluacion) {
 			return evaluacionDao.save((Evaluacion) objeto);
 		}
+		if (objeto instanceof EvaluacionGuia) {
+			return evaluacionGuiaDao.save((EvaluacionGuia) objeto);
+		}
 		if(objeto instanceof Actividad){
 			return actividadDao.save((Actividad)objeto);
 		}
@@ -435,4 +445,23 @@ public class ServiceImp implements IService {
 		Object [] objs =  new Object [] {instrumentoId};
 		return guiaDao.findAllByNamedQueryParam("Guia.findByIdInstrumento", objs);
 	}
+	
+	@Override
+	public List<EvaluacionGuia> getEvaluacionGuiaByEvaluacionId(Long evaluacionId) {
+		Object [] objs =  new Object [] {evaluacionId};
+		return evaluacionGuiaDao.findAllByNamedQueryParam("EvaluacionGuia.findByEvaluacionId", objs);		
+	}
+	
+	@Override
+	public List<Instrumento> getIntrumentoByEvaluacion(Long evaluacionId){
+		Object [] objs =  new Object [] {evaluacionId};
+		List<Long> instrumentosId = longDao.findAllByNamedQueryParam("EvaluacionGuia.findInstrumentoByEvaluacionId", objs);
+		List<Instrumento> listInstrumentos = new ArrayList<Instrumento> ();
+		
+		for (Long dato : instrumentosId) {
+			listInstrumentos.add(this.getInstrumentoById(dato));
+		}
+		return listInstrumentos;
+	}
+	
 }

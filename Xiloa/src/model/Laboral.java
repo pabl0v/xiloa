@@ -79,11 +79,13 @@ public class Laboral {
 	@Column(name = "laboral_institucion_cargo", nullable = false)
 	private String cargo;
 	
+	/*
 	@NotNull
 	@OneToOne
 	@JoinColumn(name="laboral_file_id")
 	private Archivo archivo;
-
+    */
+	
 	public Long getId() {
 		return id;
 	}
@@ -179,7 +181,7 @@ public class Laboral {
 	public void setCargo(String cargo) {
 		this.cargo = cargo;
 	}
-
+	/*
 	public Archivo getArchivo() {
 		return archivo;
 	}
@@ -187,11 +189,11 @@ public class Laboral {
 	public void setArchivo(Archivo archivo) {
 		this.archivo = archivo;
 	}
-
+	*/
 	public Laboral(Contacto contacto, int tipo, String nombre,
 			String descripcion, String institucion, String pais,
 			Date fechaInicia, Date fechaFinaliza, String institucionDireccion,
-			String institucionTelefono, String cargo, Archivo archivo) {
+			String institucionTelefono, String cargo) {
 		super();
 		this.contacto = contacto;
 		this.tipo = tipo;
@@ -204,7 +206,6 @@ public class Laboral {
 		this.institucionDireccion = institucionDireccion;
 		this.institucionTelefono = institucionTelefono;
 		this.cargo = cargo;
-		this.archivo = archivo;
 	}
 	
 	public Laboral() {

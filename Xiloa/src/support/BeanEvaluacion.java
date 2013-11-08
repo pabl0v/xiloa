@@ -1,13 +1,20 @@
 package support;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import service.IService;
 import model.Evaluacion;
 import model.Instrumento;
-import model.Unidad;
+import model.Solicitud;
 
 public class BeanEvaluacion {
 	
-	Evaluacion evaluacion;
-	Instrumento instrumento;
+	@Autowired
+	private IService service;
+	
+	private Solicitud solicitudBeanEval;
+	private Evaluacion evaluacion;
+	private Instrumento instrumento;
 			
 	public Evaluacion getEvaluacion() {
 		return evaluacion;
@@ -16,16 +23,29 @@ public class BeanEvaluacion {
 		this.evaluacion = evaluacion;
 	}	
 	
-	public Instrumento getInstrumento() {
+	public Instrumento getInstrumento() {				
 		return instrumento;
 	}
+	
 	public void setInstrumento(Instrumento instrumento) {
 		this.instrumento = instrumento;
 	}
-	public BeanEvaluacion(Instrumento instrumento, Evaluacion evaluacion) {
-		super();			
+	
+	public Solicitud getSolicitudBeanEval() {
+		return solicitudBeanEval;
+	}
+	
+	public void setSolicitudBeanEval(Solicitud solicitudBeanEval) {
+		this.solicitudBeanEval = solicitudBeanEval;
+	}
+	public BeanEvaluacion(Solicitud solicitudBeanEval, Evaluacion evaluacion,
+			Instrumento instrumento) {
+		super();
+		this.solicitudBeanEval = solicitudBeanEval;
 		this.evaluacion = evaluacion;
 		this.instrumento = instrumento;
 	}
+	
+	
 	
 }

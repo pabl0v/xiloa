@@ -12,6 +12,7 @@ import model.Actividad;
 import model.Certificacion;
 import model.Contacto;
 import model.Evaluacion;
+import model.EvaluacionGuia;
 import model.Guia;
 import model.Instrumento;
 import model.Laboral;
@@ -95,5 +96,6 @@ public interface IService {
 	public Unidad getUnidadById(Long idUnidad);
 	public Instrumento getInstrumentoById(Long idInstrumento);
 	public List<Instrumento> getInstrumentoByUnidad (Long idUnidad);
-	
+	public List<EvaluacionGuia> getEvaluacionGuiaByEvaluacionId(Long evaluacionId);
+	public List<Instrumento> getIntrumentoByEvaluacion(Long evaluacionId);
 }

@@ -16,6 +16,7 @@
 		<intercept-url pattern="/modulos/planificacion/**" access="hasAnyRole('admin','inatec')" />
 		<intercept-url pattern="/modulos/solicitudes/**" access="isAuthenticated()" />
 		<intercept-url pattern="/login*" access="permitAll" />
+		<intercept-url pattern="/modulos/portafolio/**" access="isAuthenticated()" />	
 		
 		<!--
 		<form-login

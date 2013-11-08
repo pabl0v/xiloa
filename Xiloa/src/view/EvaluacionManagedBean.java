@@ -20,6 +20,7 @@ import model.Certificacion;
 import model.Contacto;
 import model.Evaluacion;
 import model.EvaluacionGuia;
+import model.EvaluacionGuiaId;
 import model.Guia;
 import model.Instrumento;
 import model.Solicitud;
@@ -179,9 +180,25 @@ public class EvaluacionManagedBean {
 		
 		eval = (Evaluacion) service.guardar(eval);
 		
-		if (eval != null) {
-			System.out.println("Se ha agregado la Evaluacion " + eval.getId());
+		if (eval != null) {			
+						
+			for (Guia dato : this.selectedGuia) {
+												
+				EvaluacionGuiaId pkDetalleGuia = new EvaluacionGuiaId();
+				
+				pkDetalleGuia.setEvaluacion(eval);
+				pkDetalleGuia.setGuia(dato);
+				
+				EvaluacionGuia detalleEvaGuia = new EvaluacionGuia();
+				
+				detalleEvaGuia.setPk(pkDetalleGuia);
+				detalleEvaGuia.setPuntaje(new Integer(0));				
+				
+				detalleEvaGuia = (EvaluacionGuia) service.guardar(detalleEvaGuia);				
+			}
+						
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "La evaluacion ha sido registrada exitosamente. El número es: " + eval.getId()));
+			
 		}else {
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje", "Error al grabar la evaluacion. Favor revisar..."));
 		}

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,10 +25,18 @@ public class Archivo {
 	@Column(name = "archivo_id", nullable = false)
 	private Long id;
 	
+	/*
 	@NotNull
 	@OneToOne(mappedBy = "archivo")	
 	private Laboral laboral;
-
+	*/
+	
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name="evaluacion_id")
+	private Evaluacion evaluacion;
+    
+	
 	@NotNull
 	@Column(name = "archivo_nombre", nullable = false)	
 	private String nombre;
@@ -79,13 +89,21 @@ public class Archivo {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	/*
 	public Laboral getLaboral() {
 		return laboral;
 	}
 
 	public void setLaboral(Laboral laboral) {
 		this.laboral = laboral;
+	}
+	*/
+	public Evaluacion getEvaluacion() {
+		return evaluacion;
+	}
+
+	public void setEvaluacion(Evaluacion evaluacion) {
+		this.evaluacion = evaluacion;
 	}
 
 	public String getNombre() {
@@ -176,12 +194,12 @@ public class Archivo {
 		this.categoria = categoria;
 	}
 
-	public Archivo(Laboral laboral, String nombre, String descripcion,
+	public Archivo(Evaluacion evaluacion, String nombre, String descripcion,
 			String nombreReal, String ruta, String propietario, Date fecha,
 			String tipo, String size, String version, String icono,
 			String categoria) {
 		super();
-		this.laboral = laboral;
+		this.evaluacion = evaluacion;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.nombreReal = nombreReal;
