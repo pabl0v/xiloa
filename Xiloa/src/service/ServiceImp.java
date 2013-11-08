@@ -337,9 +337,10 @@ public class ServiceImp implements IService {
 			return certificacionDao.save((Certificacion)objeto);
 		if(objeto instanceof Guia)
 			return guiaDao.save((Guia)objeto);
-		if(objeto instanceof Instrumento){
+		if(objeto instanceof Instrumento)
 			return instrumentoDao.save((Instrumento)objeto);
-		}
+		if(objeto instanceof Actividad)
+			return actividadDao.save((Actividad)objeto);
 		return null;
 	}
 	

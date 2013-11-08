@@ -16,7 +16,7 @@
 	    	</ui:insert>
 	    	<script type="text/javascript" src="../../resources/scripts/edicion_actividad.js"></script>
 		</div>    
-        <h2>Unidad de Competencia: <h:outputText value="#{actividadManagedBean.actividad.nombre}" /></h2>
+        <h2>Actividad: <h:outputText value="#{actividadManagedBean.actividad.nombre}" /></h2>
         <div id="contenedor_secciones">
                       
             <div class="seccion_edicion" style="height:140px;">
@@ -36,16 +36,15 @@
             <div class="seccion_edicion">
                 <h3>Involucrados</h3>
                 <h:form styleClass="formulario_inline">
-                    <p:commandButton value="Agregar involucrados"/> 
+                    <p:commandButton value="Agregar involucrados" onclick="PF('dlg1').show();"/> 
                 </h:form>    
-                <h:form>
+                <h:form id="form_contactos_actividad">
                     <div class="seccion_interna" style="height:220px;">
-                    <p:dataTable var="involucrados" value="#{tableBean.carsSmall}">  
-                        <p:column headerText="Nombre"><h:outputText value="#{car.model}" /></p:column>  
-                        <p:column headerText="Funcion"><h:outputText value="#{car.year}" /></p:column>  
-                        <p:column headerText="Correo electronico"><h:outputText value="#{car.manufacturer}" />  
-                        </p:column>  
-                    </p:dataTable> 
+                    <p:dataTable id="display_contactos_actividad" var="contacto" value="#{actividadManagedBean.actividad.involucrados}">  
+                        <p:column headerText="Nombre"><h:outputText value="#{contacto.nombreCompleto}" /></p:column>  
+                        <p:column headerText="Funcion"><h:outputText value="#{contacto.rol.descripcion}" /></p:column>  
+                        <p:column headerText="Correo electronico"><h:outputText value="#{contacto.correo1}" /></p:column>
+                    </p:dataTable>
                     </div>
                 </h:form>                
             </div>
@@ -62,17 +61,8 @@
                     <p>Nombre del centro evaluador : <b><h:outputText value="#{actividadManagedBean.nombreCentro}" /></b></p>
                     <p style="display:block;margin-top:10px;">Direccion del centro evaluador: <b><h:outputText value="#{actividadManagedBean.direccionCentro}" /></b></p>  
 	                <p>Registrado: <b><h:outputText value="#{actividadManagedBean.actividad.fechaRegistro}"/></b></p>
-	                <!--
-                	<span style="margin-left:37px;"><p:calendar value="#{actividadManagedBean.actividad.fechaRegistro}" id="fecha_registrado" showOn="button" pattern="dd/MM/yyyy" /></span>
-                	-->
 	                <br/>
 	                <p>Tipo de actividad: <b><h:outputText value="#{actividadManagedBean.actividad.tipo.valor}" /></b></p>
-	                <!--
-	                <p:selectOneMenu style="position:relative; top:7px;margin-left:2px;width:190px;" id="city3" value="#{actividadManagedBean.selectedTipoActividad}">  
-                    <f:selectItem itemLabel="Seleccione..." itemValue="" />  
-                    <f:selectItems value="#{actividadManagedBean.catalogoTiposActividad}" var="tipo" itemLabel="#{tipo.valor}" itemValue="#{tipo.id}"/>  
-                	</p:selectOneMenu>
-                	-->     
                 	<br/>                    
                 	<p>Estatus:</p>
                 	<p:selectOneMenu style="position:relative;top:7px;margin-left:62px;width:190px;" id="estatus" value="#{actividadManagedBean.selectedEstatusActividad}">  
@@ -94,7 +84,7 @@
             <div class="seccion_edicion" style="height:30px;">
                <h:form>
                     <p:commandButton value="Cancelar" action="#{actividadManagedBean.cancelar}"/> 
-                    <p:commandButton value="Aceptar" action="#{actividadManagedBean.guardar}"/> 
+                    <p:commandButton value="Aceptar" action="#{actividadManagedBean.guardar(actividadManagedBean.actividad)}"/> 
                </h:form>
             </div>
         </div>
@@ -103,7 +93,7 @@
                 <p:tabView id="tabView">  
                     <p:tab id="tab1" title="Bitacoras">  
                         <h:form>     
-                        <p:commandButton value="Agregar" onclick="PF('dlg1').show();"/>      
+                        <p:commandButton value="Agregar" onclick="PF('dlg2').show();"/>      
                             <p:dataTable var="actividades" value="#{tableBean.carsSmall}">  
                                 <p:column headerText="Asunto"><h:outputText value="#{car.model}" /></p:column>  
                                 <p:column headerText="Reporta"><h:outputText value="#{car.year}" /></p:column>  
@@ -116,8 +106,21 @@
                 </p:tabView>  
             </div>     
     </div>
+    
+     <p:dialog id="modalIntegrantes" styleClass="estilo_dialogoactividades" header="Agregar involucrados:" widgetVar="dlg1" modal="true" resizable="false" width="550" height="400">
+     	<h:form>
+     		<h3>Agregue intregantes:</h3>
+     		 <p:dataTable emptyMessage="No hay datos para mostrar"  var="contacto" value="#{actividadManagedBean.contactos}" rowKey="#{contacto.id}" selection="#{actividadManagedBean.selectedContactos}" selectionMode="multiple">  
+                        <p:column headerText="Nombre"><h:outputText value="#{contacto.nombreCompleto}" /></p:column>  
+                        <p:column headerText="Funcion"><h:outputText value="#{contacto.rol.descripcion}" /></p:column>  
+                        <p:column headerText="Correo electronico"><h:outputText value="#{contacto.correo1}" /></p:column>  
+                    </p:dataTable> 
+	        <p:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/> 
+	        <p:commandButton value="Aceptar" update=":form_contactos_actividad:display_contactos_actividad" oncomplete="PF('dlg1').hide();"/> 
+	    </h:form>   
+     </p:dialog>
         
-     <p:dialog id="modal_agregar_bitacora" header="Certificacion Cisco" widgetVar="dlg1" modal="true" width="550" height="470">  
+     <p:dialog id="modalBitacora" header="Agregar bitacora" widgetVar="dlg2" modal="true" width="550" height="470">  
          <h:form>  
             <h3>Bitacora</h3>
 	         <p:panelGrid columns="2">  
@@ -133,7 +136,7 @@
 			</p:panelGrid>
              <h3>Descripcion del evento</h3>
              <p:editor id="editor" value="#{editorBean.value}" height="220"/>
-             <p:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/> 
+             <p:commandButton value="Cancelar" onclick="PF('dlg2').hide();"/> 
              <p:commandButton value="Aceptar"/> 
          </h:form>   
     </p:dialog>     

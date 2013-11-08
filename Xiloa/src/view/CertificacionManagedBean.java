@@ -99,7 +99,6 @@ public class CertificacionManagedBean implements Serializable {
 		certificacion.setCreador(usuario);
 		certificacion.setProgramador(usuario);
 		certificacion.setReferencial("N/D");
-		//certificacion.getUnidades().add(new Unidad("0001","UC1",true));
 		certificacion = (Certificacion) service.guardar(certificacion);
 		certificacion = new Certificacion();
 		return "/modulos/planificacion/planificacion?faces-redirect=true";
@@ -147,6 +146,7 @@ public class CertificacionManagedBean implements Serializable {
 	
 	public String editarCertificacion(Certificacion certificacion){
 		this.certificacion = certificacion;
+		this.selectedEstatusCertificacion = certificacion.getEstatus().getId();
 		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
 	}
 	
@@ -170,9 +170,4 @@ public class CertificacionManagedBean implements Serializable {
 	public void setSelectedActividad(Actividad actividad){
 		this.selectedActividad = actividad;
 	}
-	
-	/*
-	public String configurarInstrumentos(){
-		return "/modulos/planificacion/instrumentos?faces-redirect=true";
-	}*/
 }

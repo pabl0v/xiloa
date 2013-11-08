@@ -1,11 +1,9 @@
-/*
 package model;
 
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +16,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
-@Entity(name="bitacora")
+@Entity(name="bitacoras")
 public class Bitacora {
 
 	@Id
@@ -27,27 +25,18 @@ public class Bitacora {
 	private Long id;
 
 	@NotNull
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="actividad_id")
-	private Actividad actividad;	
+	@ManyToOne
+	@JoinColumn(name="bitacora_usuario_id")
+	private Contacto usuario;
 	
 	@NotNull
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="contacto_id")
-	private Contacto contacto;
-	
-	@NotNull
-	@Column(name = "bitacora_nombre", nullable = false)	
-	private String nombre;
-
-	@NotNull
-	@Column(name = "bitacora_descripcion", nullable = false)	
-	private String descripcion;
+	@Column(name = "bitacora_observaciones", nullable = false)	
+	private String observaciones;
 	
 	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "bitacora_fecha", nullable = false)
+	@Column(name = "bitacora_fecha_registro", nullable = false)
 	@Temporal(TemporalType.DATE)
-	private Date fecha;
+	private Date fechaRegistro;
 	
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "bitacora_fecha_evento", nullable = false)
@@ -62,44 +51,28 @@ public class Bitacora {
 		this.id = id;
 	}
 
-	public Actividad getActividad() {
-		return actividad;
+	public Contacto getUsuario() {
+		return usuario;
 	}
 
-	public void setActividad(Actividad actividad) {
-		this.actividad = actividad;
+	public void setUsuario(Contacto usuario) {
+		this.usuario = usuario;
 	}
 
-	public Contacto getContacto() {
-		return contacto;
+	public String getObservaciones() {
+		return observaciones;
 	}
 
-	public void setContacto(Contacto contacto) {
-		this.contacto = contacto;
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public Date getFechaRegistro() {
+		return fechaRegistro;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-	public Date getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
+	public void setFechaRegistro(Date fecha) {
+		this.fechaRegistro = fecha;
 	}
 
 	public Date getFechaEvento() {
@@ -109,19 +82,16 @@ public class Bitacora {
 	public void setFechaEvento(Date fechaEvento) {
 		this.fechaEvento = fechaEvento;
 	}
-
-	public Bitacora(Actividad actividad, Contacto contacto, String nombre,
-			String descripcion, Date fecha, Date fechaEvento) {
-		super();
-		this.actividad = actividad;
-		this.contacto = contacto;
-		this.nombre = nombre;
-		this.descripcion = descripcion;
-		this.fecha = fecha;
-		this.fechaEvento = fechaEvento;
-	}
 	
 	public Bitacora() {
 		super();		
 	}
-}*/
+
+	public Bitacora(Contacto usuario, String observaciones, Date fechaRegistro, Date fechaEvento) {
+		super();
+		this.usuario = usuario;
+		this.observaciones = observaciones;
+		this.fechaRegistro = fechaRegistro;
+		this.fechaEvento = fechaEvento;
+	}
+}

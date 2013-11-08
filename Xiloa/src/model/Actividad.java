@@ -2,10 +2,13 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,9 +16,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -33,6 +37,22 @@ public class Actividad {
 	@ManyToOne
 	@JoinColumn(name="actividad_tipo_id")
 	private Mantenedor tipo;
+	
+	@Column(name = "actividad_nombre", nullable = true)
+	private String nombre;
+	
+	@NotNull
+	@Column(name = "actividad_destino", nullable = false)
+	private String destino;
+	
+	@Column(name = "actividad_hora", nullable = true)
+	private String hora;
+	
+	@Column(name = "actividad_alcance", nullable = true)
+	private String alcance;
+	
+	@Column(name = "actividad_materiales", nullable = true)
+	private String materiales;
 	
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "actividad_fecha_registro", nullable = false)
@@ -58,45 +78,26 @@ public class Actividad {
 	@ManyToOne
 	@JoinColumn(name="actividad_ejecutor_id")
 	private Usuario ejecutor;
-	
-	@NotNull
-	@Column(name = "actividad_nombre", nullable = false)	
-	private String nombre;
-	
-	@Column(name = "actividad_descripcion", nullable = true)
-	private String descripcion;
-	
-	@NotNull
-	@Column(name = "actividad_destino", nullable = false)
-	private String destino;
-	
-	@Column(name = "actividad_hora", nullable = true)
-	private String hora;
-	
-	@Column(name = "actividad_alcance", nullable = true)
-	private String alcance;
-	
-	@Column(name = "actividad_materiales", nullable = true)
-	private String materiales;
-
-	@ManyToMany
+			
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable
 	(
 			name = "ainvolucrados",
-			joinColumns = { @JoinColumn(name = "actividad_id", referencedColumnName = "actividad_id", unique = false) },
-			inverseJoinColumns = { @JoinColumn(name = "contacto_id", referencedColumnName = "contacto_id", unique = false) },
-			uniqueConstraints = @UniqueConstraint(columnNames = { "actividad_id", "contacto_id" })
+			joinColumns = @JoinColumn(name = "actividad_id", unique = false),
+			inverseJoinColumns = @JoinColumn(name = "contacto_id", unique = false)
 	)
-	private List<Contacto> involucrados;
+	@MapKeyColumn(name="id_rol")
+	private Map<Integer, Contacto> involucrados;
+	
+	@OneToMany
+	@JoinColumn(name="actividad_id", referencedColumnName="actividad_id")
+	private List<Bitacora> bitacora;
 
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="actividad_estado_id")
 	private Mantenedor estado;
 	
-	/*@OneToMany
-	private List<Bitacora> bitacora;*/
-
 	public Long getId() {
 		return id;
 	}
@@ -105,28 +106,60 @@ public class Actividad {
 		this.id = id;
 	}
 
-	/*public Certificacion getCertificacion() {
-		return certificacion;
-	}
-
-	public void setCertificacion(Certificacion certificacion) {
-		this.certificacion = certificacion;
-	}
-
-	public int getTipoId() {
-		return tipoId;
-	}
-
-	public void setTipoId(int tipoId) {
-		this.tipoId = tipoId;
-	}*/
-
 	public Mantenedor getTipo() {
 		return tipo;
 	}
 
 	public void setTipo(Mantenedor tipo) {
 		this.tipo = tipo;
+	}
+	
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getDestino() {
+		return destino;
+	}
+
+	public void setDestino(String destino) {
+		this.destino = destino;
+	}
+	
+	public String getHora() {
+		return hora;
+	}
+
+	public void setHora(String hora) {
+		this.hora = hora;
+	}
+
+	public String getAlcance() {
+		return alcance;
+	}
+
+	public void setAlcance(String alcance) {
+		this.alcance = alcance;
+	}
+
+	public String getMateriales() {
+		return materiales;
+	}
+
+	public void setMateriales(String materiales) {
+		this.materiales = materiales;
+	}
+
+	public Date getFechaRegistro() {
+		return fechaRegistro;
+	}
+
+	public void setFechaRegistro(Date fechaRegistro) {
+		this.fechaRegistro = fechaRegistro;
 	}
 
 	public Date getFechaInicial() {
@@ -161,36 +194,22 @@ public class Actividad {
 		this.ejecutor = ejecutor;
 	}
 
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-
-	public String getDestino() {
-		return destino;
-	}
-
-	public void setDestino(String destino) {
-		this.destino = destino;
-	}
-
 	public List<Contacto> getInvolucrados() {
-		return involucrados;
+		return new ArrayList<Contacto>(involucrados.values());
+	}
+	
+	public void setInvolucrados(Contacto[] involucrados) {
+		for(int i=0; i<involucrados.length; i++){
+			this.involucrados.put(involucrados[i].getRol().getId(), involucrados[i]);
+		}
+	}
+	
+	public List<Bitacora> getBitacora() {
+		return bitacora;
 	}
 
-	public void setInvolucrados(List<Contacto> involucrados) {
-		this.involucrados = involucrados;
+	public void setBitacora(List<Bitacora> bitacora) {
+		this.bitacora = bitacora;
 	}
 
 	public Mantenedor getEstado() {
@@ -201,71 +220,40 @@ public class Actividad {
 		this.estado = estado;
 	}
 	
-	/*
-	public List<Bitacora> getBitacora() {
-		return bitacora;
+	public Actividad() {
+		super();
+		involucrados = new HashMap<Integer, Contacto>();
+		bitacora = new ArrayList<Bitacora>();
 	}
-
-	public void setBitacora(List<Bitacora> bitacora) {
-		this.bitacora = bitacora;
-	}*/
-
-	public Actividad(	String nombre, 
-						String descripcion, 
+	
+	public Actividad(	Mantenedor tipo,
+						String nombre, 
 						String destino,
+						String hora,
+						String alcance,
+						String materiales,
+						Date fechaRegistro,
 						Date fechaInicial, 
 						Date fechaFinal, 
 						Usuario creador,
 						Usuario ejecutor, 
-						List<Contacto> involucrados
-						/*List<Bitacora> bitacora*/) {
+						Map<Integer,Contacto> involucrados,
+						List<Bitacora> bitacora,
+						Mantenedor estado) {
 		super();
+		this.tipo = tipo;
 		this.nombre = nombre;
-		this.descripcion = descripcion;
 		this.destino = destino;
+		this.hora = hora;
+		this.alcance = alcance;
+		this.materiales = materiales;
+		this.fechaRegistro = fechaRegistro;
 		this.fechaInicial = fechaInicial;
 		this.fechaFinal = fechaFinal;
 		this.creador = creador;
 		this.ejecutor = ejecutor;
 		this.involucrados = involucrados;
-		//this.bitacora = bitacora;
-	}
-
-	public Actividad() {
-		super();
-		involucrados = new ArrayList<Contacto>();
-		//this.bitacora = new ArrayList<Bitacora>();
-	}
-
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-	public void setFechaRegistro(Date fechaRegistro) {
-		this.fechaRegistro = fechaRegistro;
-	}
-
-	public String getHora() {
-		return hora;
-	}
-
-	public void setHora(String hora) {
-		this.hora = hora;
-	}
-
-	public String getAlcance() {
-		return alcance;
-	}
-
-	public void setAlcance(String alcance) {
-		this.alcance = alcance;
-	}
-
-	public String getMateriales() {
-		return materiales;
-	}
-
-	public void setMateriales(String materiales) {
-		this.materiales = materiales;
+		this.bitacora = bitacora;
+		this.estado = estado;
 	}
 }
