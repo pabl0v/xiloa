@@ -111,7 +111,7 @@
 							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
 							</p:commandButton>
 							<h:panelGroup id="contenidoActividades" style="border:0">
-								<p:dataTable id="actividadesDataTable" emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" selection="#{certificacionManagedBean.selectedActividad}" paginator="true" rows="10" rowKey="#{actividad.nombre}" selectionMode="single">  
+								<p:dataTable id="actividadesDataTable" emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" selection="#{certificacionManagedBean.selectedActividad}" paginator="true" rows="10" rowKey="#{actividad}" selectionMode="single">  
 									<f:facet name="header">  
 										<p:outputPanel style="text-align:right;">  
 											<h:outputText value="Buscar:" />  
@@ -145,7 +145,7 @@
 						<h:form>     
 							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
 							</p:commandButton>    
-							<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.nombre}" selectionMode="single">  
+							<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad}" selectionMode="single">  
 								<f:facet name="header">  
 									<p:outputPanel style="text-align:right;">  
 										<h:outputText value="Buscar:" />  
@@ -172,7 +172,7 @@
 						<h:form>     
 							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
 							</p:commandButton>    
-							<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.nombre}" selectionMode="single">  
+							<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad}" selectionMode="single">  
 								<f:facet name="header">  
 									<p:outputPanel style="text-align:right;">  
 										<h:outputText value="Buscar:" />  
@@ -198,7 +198,7 @@
 						<h:form>     
 							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
 							</p:commandButton>    
-							<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.nombre}" selectionMode="single">  
+							<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad}" selectionMode="single">  
 								<f:facet name="header">  
 									<p:outputPanel style="text-align:right;">  
 										<h:outputText value="Buscar:" />  
@@ -223,7 +223,7 @@
 						<h:form>     
 							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
 							</p:commandButton>    
-							<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad.nombre}" selectionMode="single">  
+							<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad}" selectionMode="single">  
 								<f:facet name="header">  
 									<p:outputPanel style="text-align:right;">  
 										<h:outputText value="Buscar:" />  
