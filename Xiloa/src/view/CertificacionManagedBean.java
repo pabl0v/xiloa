@@ -140,6 +140,8 @@ public class CertificacionManagedBean implements Serializable {
 		certificacion.setActividades(new ArrayList<Actividad>());
 		certificacion.setUnidades(new HashSet<Unidad>());
 		certificacion.setInvolucrados(new Contacto[] {});
+		
+		selectedEstatusCertificacion = 7;
 
 		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
 	}
