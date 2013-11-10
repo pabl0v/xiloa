@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +13,6 @@ import model.Actividad;
 import model.Certificacion;
 import model.Contacto;
 import model.Mantenedor;
-import model.Unidad;
 import model.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +111,7 @@ public class CertificacionManagedBean implements Serializable {
 		this.certificacion.addActividad(actividad);
 	}
 	
+	/*
 	public String nuevaCertificacion(){
 		
 		String codigoCompetencia = certificacion.getCodigoCompetencia();
@@ -144,7 +143,7 @@ public class CertificacionManagedBean implements Serializable {
 		selectedEstatusCertificacion = 7;
 
 		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
-	}
+	}*/
 	
 	public String editarCertificacion(Certificacion certificacion){
 		this.certificacion = certificacion;

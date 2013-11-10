@@ -38,7 +38,7 @@ public class Actividad {
 	@JoinColumn(name="actividad_tipo_id")
 	private Mantenedor tipo;
 	
-	@Column(name = "actividad_nombre", nullable = true)
+	@Column(name = "actividad_nombre", nullable = false)
 	private String nombre;
 	
 	@NotNull
@@ -60,7 +60,7 @@ public class Actividad {
 	private Date fechaRegistro;
 	
 	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "actividad_fecha_inicial", nullable = false)
+	@Column(name = "actividad_fecha_inicial", nullable = true)
 	@Temporal(TemporalType.DATE)
 	private Date fechaInicial;
 	
@@ -74,7 +74,6 @@ public class Actividad {
 	@JoinColumn(name="actividad_creador_id")
 	private Usuario creador;
 	
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name="actividad_ejecutor_id")
 	private Usuario ejecutor;

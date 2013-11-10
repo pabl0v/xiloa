@@ -34,6 +34,7 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 @Entity(name="certificaciones")
 @NamedQueries({
+	@NamedQuery(name="Certificacion.findAll", query="select c from certificaciones c order by c.id desc"),
 	@NamedQuery(name="Certificacion.findByIfpId", query="select c from certificaciones c where c.ifpId=?1"),
 	@NamedQuery(name="Certificacion.findById", query="select c from certificaciones c where c.id=?1"),
 	@NamedQuery(name="Certificacion.findUnidadesByCert", query="select c.unidades from certificaciones c where c.id=?1")
@@ -51,11 +52,13 @@ public class Certificacion {
 	@Column(name = "certificacion_descripcion", nullable = false)
 	private String descripcion;
 	
+	/*
 	@Column(name = "certificacion_codigo_competencia", nullable = false)
 	private String codigoCompetencia;
 	
 	@Column(name = "certificacion_nombre_competencia", nullable = false)
 	private String nombreCompetencia;
+	*/
 	
 	@Column(name = "certificacion_disponibilidad", nullable = false)
 	private int disponibilidad;
@@ -137,10 +140,10 @@ public class Certificacion {
 	@JoinColumn(name="certificacion_estatus")
 	private Mantenedor estatus;
 	
-	@Column(name = "certificacion_referencial", nullable = false)
+	@Column(name = "certificacion_referencial", nullable = true)
 	private String referencial;
 	
-	@Column(name = "certificacion_nivel_competencia", nullable = false)
+	@Column(name = "certificacion_nivel_competencia", nullable = true)
 	private int nivelCompetencia;
 	
 	@OneToMany(mappedBy="certificacion")
@@ -208,6 +211,7 @@ public class Certificacion {
 		this.descripcion = descripcion;
 	}
 
+	/*
 	public String getCodigoCompetencia() {
 		return codigoCompetencia;
 	}
@@ -222,7 +226,7 @@ public class Certificacion {
 
 	public void setNombreCompetencia(String nombreCompetencia) {
 		this.nombreCompetencia = nombreCompetencia;
-	}
+	}*/
 
 	public int getDisponibilidad() {
 		return disponibilidad;
@@ -250,7 +254,7 @@ public class Certificacion {
 	public Date getFechaRegistro() {
 		return fechaRegistro;
 	}
-
+	
 	public void setFechaRegistro(Date fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
 	}
@@ -450,8 +454,8 @@ public class Certificacion {
 
 	public Certificacion(	String nombre, 
 							String descripcion,
-							String codigoCompetencia,
-							String nombreCompetencia,
+							//String codigoCompetencia,
+							//String nombreCompetencia,
 							int disponibilidad,
 							Date inicia,
 							Date finaliza, 
@@ -459,11 +463,11 @@ public class Certificacion {
 							String ifpDireccion, 
 							String ifpNombre,
 							Usuario programador, 
-							Date divulgacionInicia,
-							Date divulgacionFinaliza, 
-							Date inscripcionFinaliza,
-							Date convocatoriaInicia, 
-							Date evaluacionInicia, 
+							//Date divulgacionInicia,
+							//Date divulgacionFinaliza, 
+							//Date inscripcionFinaliza,
+							//Date convocatoriaInicia, 
+							//Date evaluacionInicia, 
 							Usuario creador,
 							Mantenedor estatus, 
 							String referencial, 
@@ -476,8 +480,8 @@ public class Certificacion {
 		super();
 		this.nombre = nombre;
 		this.descripcion = descripcion;
-		this.codigoCompetencia = codigoCompetencia;
-		this.nombreCompetencia = nombreCompetencia;
+		//this.codigoCompetencia = codigoCompetencia;
+		//this.nombreCompetencia = nombreCompetencia;
 		this.disponibilidad = disponibilidad;
 		this.inicia = inicia;
 		this.finaliza = finaliza;
@@ -485,11 +489,11 @@ public class Certificacion {
 		this.ifpDireccion = ifpDireccion;
 		this.ifpNombre = ifpNombre;
 		this.programador = programador;
-		this.divulgacionInicia = divulgacionInicia;
-		this.divulgacionFinaliza = divulgacionFinaliza;
-		this.inscripcionFinaliza = inscripcionFinaliza;
-		this.convocatoriaInicia = convocatoriaInicia;
-		this.evaluacionInicia = evaluacionInicia;
+		//this.divulgacionInicia = divulgacionInicia;
+		//this.divulgacionFinaliza = divulgacionFinaliza;
+		//this.inscripcionFinaliza = inscripcionFinaliza;
+		//this.convocatoriaInicia = convocatoriaInicia;
+		//this.evaluacionInicia = evaluacionInicia;
 		this.creador = creador;
 		this.estatus = estatus;
 		this.referencial = referencial;

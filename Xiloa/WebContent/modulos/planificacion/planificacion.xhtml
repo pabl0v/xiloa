@@ -30,47 +30,36 @@
       
         <div id="contenedor_tabla_planificacion">
             <h:form id="form">  
-                <p:dataTable emptyMessage="No hay datos para mostrar" var="planificacion" value="#{planificacionManagedBean.certificaciones}" selection="#{planificacionManagedBean.selectedCertificacion}" paginator="true" rows="12" rowKey="#{planificacion.id}" selectionMode="single">  
+                <p:dataTable id="certificaciones" emptyMessage="No hay datos para mostrar" var="certificacion" value="#{planificacionManagedBean.certificaciones}" selection="#{planificacionManagedBean.selectedCertificacion}" paginator="true" rows="12" rowKey="#{certificacion.id}" selectionMode="single">  
                         <!--Las columnas de la tabla-->
-                        <p:column headerText="Registrado"><h:outputText value="#{planificacion.fechaRegistro}" /></p:column>  
-                        <p:column headerText="Centro de Formacion"><h:outputText value="#{planificacion.ifpNombre}" /></p:column>  
-                        <p:column headerText="Unidad de Competencia"><h:outputText value="#{planificacion.nombreCompetencia}"/></p:column>
-                        <p:column headerText="Disponible"><h:outputText value="#{planificacion.disponibilidad}" /></p:column>               
+                        <p:column headerText="Registrado"><h:outputText value="#{certificacion.fechaRegistro}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>  
+                        <p:column headerText="Centro de Formacion"><h:outputText value="#{certificacion.ifpNombre}" /></p:column>  
+                        <p:column headerText="Certificacion"><h:outputText value="#{certificacion.nombre}"/></p:column>
+                        <p:column headerText="Disponible"><h:outputText value="#{certificacion.disponibilidad}" /></p:column>               
                         <p:column headerText="Solicitudes"><h:outputText value="0" /></p:column>                
-                        <p:column headerText="Coordinador"><h:outputText value="#{planificacion.coordinador.nombreCompleto}" /></p:column>                
-                        <p:column headerText="Evalua"><h:outputText value="#{planificacion.evaluador.nombreCompleto}" /></p:column>
-                        <p:column headerText="Estatus"><h:outputText value="#{planificacion.estatus.valor}" /></p:column>               
+                        <p:column headerText="Coordinador"><h:outputText value="#{certificacion.coordinador.nombreCompleto}" /></p:column>                
+                        <p:column headerText="Evalua"><h:outputText value="#{certificacion.evaluador.nombreCompleto}" /></p:column>
+                        <p:column headerText="Estatus"><h:outputText value="#{certificacion.estatus.valor}" /></p:column>               
                         <p:column style="width:4%">
 				            <p:commandButton id="selectButton" action="#{certificacionManagedBean.editarCertificacion(planificacionManagedBean.selectedCertificacion)}" icon="ui-icon-pencil" title="Editar"/>  
 				        </p:column> 
                 </p:dataTable>
-            </h:form>  
+            </h:form>
         </div>
     </div>
 
     <p:dialog id="modalDialog" header="Seleccione la unidad de competencia a planificar:" widgetVar="dlg2" modal="true" width="740" height="480">  
          <h:form>  
              <div id="contenedor_tabla_unidadcomp">
-                <p:dataTable emptyMessage="No hay datos para mostrar" var="competencia" value="#{planificacionManagedBean.competencias}" selection="#{planificacionManagedBean.selectedCompetencia}" rowKey="#{competencia.grupo}" selectionMode="single"  paginator="true" rows="11" >  
-                    <!--Las columnas de la tabla-->
+                <p:dataTable emptyMessage="No hay datos para mostrar" var="competencia" value="#{planificacionManagedBean.competencias}" selection="#{planificacionManagedBean.selectedCompetencia}" rowKey="#{competencia.grupo}" selectionMode="single"  paginator="true" rows="11" >
                     <p:column style="display:none;" headerText="idCentro"><h:outputText value="#{competencia.grupo}" /></p:column>
-                    <p:column headerText="Centro de formacion profesional"><h:outputText value="#{competencia.nombreCentro}" /></p:column>  
-                    <p:column headerText="Unidad de Competencia (Modulo)"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  
+                    <p:column headerText="Centro de Formacion Profesional"><h:outputText value="#{competencia.nombreCentro}" /></p:column>  
+                    <p:column headerText="Modulo"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  
                     <p:column headerText="Disponibilidad"><h:outputText value="#{competencia.disponibilidad}"/></p:column>  
                 </p:dataTable>
              </div>
              <p:commandButton value="Cancelar" onclick="PF('dlg2').hide();" styleClass="boton_azul"/>
-             <p:commandButton value="Aceptar" action="#{certificacionManagedBean.nuevaCertificacion}" styleClass="boton_azul">
-				<f:setPropertyActionListener target="#{certificacionManagedBean.certificacion.codigoCompetencia}" value="#{planificacionManagedBean.selectedCompetencia.idUCompetencia}" />
-				<f:setPropertyActionListener target="#{certificacionManagedBean.certificacion.nombreCompetencia}" value="#{planificacionManagedBean.selectedCompetencia.nombreUCompetencia}" />
-				<f:setPropertyActionListener target="#{certificacionManagedBean.certificacion.disponibilidad}" value="#{planificacionManagedBean.selectedCompetencia.disponibilidad}" />
-				<f:setPropertyActionListener target="#{certificacionManagedBean.certificacion.nombre}" value="#{planificacionManagedBean.selectedCompetencia.nombreUCompetencia}" />
-				<f:setPropertyActionListener target="#{certificacionManagedBean.certificacion.descripcion}" value="#{planificacionManagedBean.selectedCompetencia.nombreUCompetencia}" />
-				<f:setPropertyActionListener target="#{certificacionManagedBean.certificacion.costo}" value="#{planificacionManagedBean.selectedCompetencia.costo}" />
-				<f:setPropertyActionListener target="#{certificacionManagedBean.certificacion.ifpId}" value="#{planificacionManagedBean.selectedCompetencia.idCentro}" />
-				<f:setPropertyActionListener target="#{certificacionManagedBean.certificacion.ifpNombre}" value="#{planificacionManagedBean.selectedCompetencia.nombreCentro}" />
-				<f:setPropertyActionListener target="#{certificacionManagedBean.certificacion.ifpDireccion}" value="#{planificacionManagedBean.selectedCompetencia.direccion}" />
-             </p:commandButton>
+             <p:commandButton value="Aceptar" update=":form:certificaciones" action="#{planificacionManagedBean.nuevaCertificacion(planificacionManagedBean.selectedCompetencia)}" oncomplete="PF('dlg2').hide();" styleClass="boton_azul"/>
          </h:form>   
     </p:dialog>  
 </h:body>

@@ -80,7 +80,9 @@ public class ServiceImp implements IService {
 	
 	@Override
 	public List<Certificacion> getCertificaciones(){
-		return certificacionDao.findAll(Certificacion.class);
+		//return certificacionDao.findAll(Certificacion.class);
+		Object [] objs =  new Object [] {};
+		return certificacionDao.findAllByNamedQueryParam("Certificacion.findAll", objs);
 	}
 	
 	@Override
@@ -109,6 +111,7 @@ public class ServiceImp implements IService {
 										List<Solicitud> solicitudes, 
 										Contacto[] involucrados,
 										int estatus) {
+		/*
 		Usuario usuario = usuarioDao.findById(Usuario.class, 3); //usuarioDao.findOneByQuery("select u from usuarios u where u.id=3");
 		Certificacion certificacion = new Certificacion();
 		certificacion.setNombre(nombre);
@@ -146,9 +149,9 @@ public class ServiceImp implements IService {
 		actividades2.add(actividad);
 		certificacion.setActividades(actividades2);*/
 		
-		certificacionDao.save(certificacion);
-		//certificacion.setActividades(actividades2);
 		//certificacionDao.save(certificacion);
+		//certificacion.setActividades(actividades2);
+		//certificacionDao.save(certificacion);*/
 	}
 	
 	@Override

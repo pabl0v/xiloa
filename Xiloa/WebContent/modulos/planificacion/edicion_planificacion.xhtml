@@ -16,45 +16,13 @@
 		    </ui:insert>
 		    <script type="text/javascript" src="../../resources/scripts/edicion_planificacion.js"></script>
 		</div>
-        <h2>Unidad de Competencia:  <h:outputText value="#{certificacionManagedBean.certificacion.nombreCompetencia}" /> </h2>
+        <h2>Nombre de la Certificacion:  <h:outputText value="#{certificacionManagedBean.certificacion.nombre}" /> </h2>
         <div id="contenedor_secciones">                   
             <div class="seccion_edicion">
-                <h3>Planificacion</h3>
-                <div class="seccion_interna">
-                    <h:form>
-                   		<p:growl id="growl" showDetail="true"/>
-                   		
-                        <div class="contenedor_calendario">
-                            <p>Inicia la divulgacion:</p>
-                            <span class="proteccion_calendario">
-                            <p:calendar value="#{certificacionManagedBean.certificacion.divulgacionInicia}" id="popupButtonCal1" showOn="button" pattern="dd/MM/yyyy">
-                            	<p:ajax event="dateSelect" update="growl" />  
-                            </p:calendar></span>  
-                        </div>   
-                        
-                        <div class="contenedor_calendario">
-                            <p>Finaliza la inscripcion:</p>
-                            <span class="proteccion_calendario">
-                            <p:calendar value="#{certificacionManagedBean.certificacion.inscripcionFinaliza}" id="popupButtonCal2" showOn="button" pattern="dd/MM/yyyy">
-                           		<p:ajax event="dateSelect" update="growl" /> 
-                            </p:calendar></span>  
-                        </div>
-                        <div class="contenedor_calendario">
-                            <p>Inicia convocatoria:</p>
-                            <span class="proteccion_calendario">
-                            <p:calendar value="#{certificacionManagedBean.certificacion.convocatoriaInicia}" id="popupButtonCal3" showOn="button" pattern="dd/MM/yyyy">
-                            	<p:ajax event="dateSelect" update="growl" /> 
-                            </p:calendar></span>  
-                        </div>
-                        <div class="contenedor_calendario">
-                            <p>Inicia evaluaciones:</p>
-                            <span class="proteccion_calendario">
-                            <p:calendar value="#{certificacionManagedBean.certificacion.evaluacionInicia}" id="popupButtonCal4" showOn="button" pattern="dd/MM/yyyy">
-                            	<p:ajax event="dateSelect" update="growl" /> 
-                            </p:calendar></span>  
-                        </div>                        
-                    </h:form>
-                </div>
+                <h3>Descripcion de la Certificacion</h3>
+				<div>
+					<p:editor id="editor2" value="#{certificacionManagedBean.certificacion.descripcion}" height="190"/>   
+				</div>
             </div>          
             <div class="seccion_edicion">
                 <h3>Involucrados</h3>
@@ -74,7 +42,7 @@
 
 			<h:form id="dataForm">
             	<div class="seccion_edicion" style="height: 260px">
-                <h3>Descripcion de la unidad</h3>
+                <h3>Descripcion de la Certificacion</h3>
 				<div>
 					<p:editor id="editor2" value="#{certificacionManagedBean.certificacion.descripcion}" height="190"/>   
 				</div>    
@@ -105,8 +73,6 @@
             </h:form>
 
 			<div id="tab_contenedor">
-				<p:tabView id="tabView">				
-					<p:tab id="tab1" title="Todas">
 						<h:form id="actividadesForm">
 							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
 							</p:commandButton>
@@ -118,11 +84,6 @@
 											<p:inputText id="globalFilter" onkeyup="carsTable.filter()" style="margin-left: 4px; width:150px" />  
 										</p:outputPanel>  
 									</f:facet>
-									<!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
-									<!-- <p:ajax event="rowSelect" listener="#{actividadManagedBean.selectedActividadListener}" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" >
-											<f:setPropertyActionListener target="#{actividadManagedBean.actividad}" value="#{certificacionManagedBean.selectedActividad}"/>
-										</p:ajax>-->
-									<!-- <p:ajax event="rowSelect" listener="#{actividadManagedBean.selectedActividadListener}" />-->          
 									<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>
 									<p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>    
 									<p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
@@ -139,112 +100,6 @@
 								</p:dataTable> 
 							</h:panelGroup>
 						</h:form>
-					</p:tab>
-
-					<p:tab id="tab2" title="Divulgacion">  
-						<h:form>     
-							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
-							</p:commandButton>    
-							<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad}" selectionMode="single">  
-								<f:facet name="header">  
-									<p:outputPanel style="text-align:right;">  
-										<h:outputText value="Buscar:" />  
-										<p:inputText id="globalFilter" onkeyup="carsTable.filter()" style="margin-left: 4px; width:150px" />  
-									</p:outputPanel>  
-								</f:facet>   
-								<!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
-								<p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
-								<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>
-								<p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>    
-								<p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
-								<p:column headerText="Fecha">
-									<h:outputText value="#{actividad.fechaInicial}" >
-									 	<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-									</h:outputText>
-								</p:column>  
-								<p:column headerText="Responsable"><h:outputText value="#{actividad.ejecutor.nombreCompleto}" /></p:column>  
-								<p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>  
-							</p:dataTable> 
-						</h:form>      
-					</p:tab>
-					
-					<p:tab id="tab3" title="Convocatoria">  
-						<h:form>     
-							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
-							</p:commandButton>    
-							<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad}" selectionMode="single">  
-								<f:facet name="header">  
-									<p:outputPanel style="text-align:right;">  
-										<h:outputText value="Buscar:" />  
-										<p:inputText id="globalFilter" onkeyup="carsTable.filter()" style="margin-left: 4px; width:150px" />  
-									</p:outputPanel>  
-								</f:facet>               
-								<p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
-								<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>
-								<p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>    
-								<p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
-								<p:column headerText="Fecha">
-									<h:outputText value="#{actividad.fechaInicial}" >
-									 	<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-									</h:outputText>
-								</p:column>  
-								<p:column headerText="Responsable"><h:outputText value="#{actividad.ejecutor.nombreCompleto}" /></p:column>  
-								<p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>  
-							</p:dataTable> 
-						</h:form>       
-					</p:tab>  
-                    
-					<p:tab id="tab4" title="Verificacion">  
-						<h:form>     
-							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
-							</p:commandButton>    
-							<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad}" selectionMode="single">  
-								<f:facet name="header">  
-									<p:outputPanel style="text-align:right;">  
-										<h:outputText value="Buscar:" />  
-										<p:inputText id="globalFilter" onkeyup="carsTable.filter()" style="margin-left: 4px; width:150px" />  
-									</p:outputPanel>  
-								</f:facet>               
-								<p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
-								<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>
-								<p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>    
-								<p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
-								<p:column headerText="Fecha">
-									<h:outputText value="#{actividad.fechaInicial}" >
-									 	<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-									</h:outputText>
-								</p:column>  
-								<p:column headerText="Responsable"><h:outputText value="#{actividad.ejecutor.nombreCompleto}" /></p:column>  
-								<p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>  
-							</p:dataTable> 
-						</h:form>       
-					</p:tab>
-					<p:tab id="tab5" title="Evaluacion">  
-						<h:form>     
-							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
-							</p:commandButton>    
-							<p:dataTable emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" widgetVar="actividadesTable" filteredValue="#{tableBean.filteredCars}" paginator="true" rows="10" rowKey="#{actividad}" selectionMode="single">  
-								<f:facet name="header">  
-									<p:outputPanel style="text-align:right;">  
-										<h:outputText value="Buscar:" />  
-										<p:inputText id="globalFilter" onkeyup="carsTable.filter()" style="margin-left: 4px; width:150px" />  
-									</p:outputPanel>  
-								</f:facet>               
-								<p:ajax event="rowSelect" oncomplete="window.location='/Xiloa/modulos/planificacion/edicion_actividad.xhtml'" />          
-								<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>
-								<p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>    
-								<p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
-								<p:column headerText="Fecha">
-									<h:outputText value="#{actividad.fechaInicial}" >
-									 	<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-									</h:outputText>
-								</p:column>  
-								<p:column headerText="Responsable"><h:outputText value="#{actividad.ejecutor.nombreCompleto}" /></p:column>  
-								<p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>  
-							</p:dataTable> 
-						</h:form>       
-					</p:tab>					
-				</p:tabView>
 			</div>
 		</div>
     </div>
