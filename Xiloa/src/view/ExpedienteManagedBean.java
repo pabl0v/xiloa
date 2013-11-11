@@ -6,9 +6,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -27,9 +29,11 @@ import model.Instrumento;
 import model.Laboral;
 import model.Mantenedor;
 import model.Solicitud;
+import model.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import org.primefaces.event.FileUploadEvent;
@@ -37,34 +41,47 @@ import org.primefaces.model.UploadedFile;
 
 import service.IService;
 import support.BeanEvaluacion;
+import support.Departamento;
+import support.Municipio;
 
 @Component
 @Scope(value="session")
-public class ExpedienteManagedBean  {
+public class ExpedienteManagedBean implements Serializable  {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Autowired
 	private IService service;	
 	
 	private Solicitud solicitudExp;
 	
-	private List<Laboral> listDatosLaborales = new ArrayList<Laboral> ();
-	private List<Laboral> listDatosEstudios = new ArrayList<Laboral> ();
-	private List<Laboral> listDatosCalificacion = new ArrayList<Laboral> ();
-	private List<Laboral> listDatosCertificaciones = new ArrayList<Laboral> ();
-	private List<Evaluacion> listEvaluaciones = new ArrayList<Evaluacion> ();
-	private List<BeanEvaluacion> listBeanEval = new ArrayList<BeanEvaluacion> ();
+	private List<Laboral> listDatosLaborales;
+	private List<Laboral> listDatosEstudios;
+	private List<Laboral> listDatosCalificacion;
+	private List<Laboral> listDatosCertificaciones;
+	private List<Evaluacion> listEvaluaciones;
+	private List<BeanEvaluacion> listBeanEval;
 	
+	private String telefonoInstitucion;	
+	private String descripcionCargo;
+	private String paisInstitucion;
 	private String nombreInstitucion;
 	private String nombreCargo;
 	private Date fechaDesde;
 	private Date fechaHasta;
 	private String institucionDireccion;
 	private Integer tipoLaboral;
+	
 	private String estadoActual;
 	private String estadoSiguiente;
+	
 	private Long idSeletedLaboral;
-	private List<SelectItem> listTipoDatosLaborales = new ArrayList<SelectItem> ();
+	private List<SelectItem> listTipoDatosLaborales;
 	private Laboral selectedLaboral;
+	private Laboral nuevoLaboral;
 	
 	private Evaluacion seletedEvaluacion;
 	private BeanEvaluacion selectedBeanEvaluacion;
@@ -74,12 +91,223 @@ public class ExpedienteManagedBean  {
 	private Archivo archivoExp;
 	private Long evalIdByArchivoExp;
 	private List<Archivo> listPortafolio;
+	private List<Archivo> listPortafolioContacto;
 	
-	private List<SelectItem> listEvalBySolicitud = new ArrayList<SelectItem> ();	
+	private boolean disableSolicitarCertificacion;
 	
-	private Map<Integer, Mantenedor> catalogoTipoDatosLaborales = new HashMap<Integer, Mantenedor>();
+	private List<SelectItem> listEvalBySolicitud;	
+	
+	private Map<Integer, Mantenedor> catalogoTipoDatosLaborales;
+	private Map<Integer, Mantenedor> catalogoEstadosSolicitud;
+	
+	private Map<Integer, Departamento> catalogoDepartamento;
+	private Map<Integer, Municipio> catalogoMunicipiosByDepto;
+	
+	private List<SelectItem> listDeptos;
+	private List<SelectItem> listMunicipioByDptos;
+	
+	private List<Archivo> listPortafolioLaboral;
+	
+	private Long selectedArchivoId;
+	
+	public ExpedienteManagedBean() {
+		super();
+		
+		this.setDisableSolicitarCertificacion(true);
+		
+		listDatosLaborales = new ArrayList<Laboral> ();
+		listDatosEstudios = new ArrayList<Laboral> ();
+		listDatosCalificacion = new ArrayList<Laboral> ();
+		listDatosCertificaciones = new ArrayList<Laboral> ();
+		listEvaluaciones = new ArrayList<Evaluacion> ();
+		listBeanEval = new ArrayList<BeanEvaluacion> ();
+		listPortafolioContacto = new ArrayList<Archivo> ();
+		listPortafolioLaboral = new ArrayList<Archivo> ();
+		
+		listTipoDatosLaborales = new ArrayList<SelectItem> ();
+		
+		listEvalBySolicitud = new ArrayList<SelectItem> ();	
+		
+		catalogoTipoDatosLaborales = new HashMap<Integer, Mantenedor>();
+		catalogoEstadosSolicitud = new HashMap<Integer, Mantenedor>();
+		
+		catalogoDepartamento = new HashMap<Integer, Departamento>();
+		catalogoMunicipiosByDepto = new HashMap<Integer, Municipio>();
+		
+		listDeptos = new ArrayList<SelectItem> ();
+		listMunicipioByDptos = new ArrayList<SelectItem> ();
+		
+		nuevoLaboral = new Laboral();
+	}
+	
+	
+	
+	public List<Archivo> getListPortafolioContacto() {
+		actualizaListaPortafolio (new Integer(2));
+		/*Contacto c = solicitudExp.getContacto();
+		Object [] objs;
+		objs =  new Object [] {c.getId()};
+		this.listPortafolioContacto = service.getArchivoByParam ("Archivo.findByContactoId", objs);
+		*/
+		return listPortafolioContacto;
+	}
+
+
+
+	public void setListPortafolioContacto(List<Archivo> listPortafolioContacto) {
+		this.listPortafolioContacto = listPortafolioContacto;
+	}
+
+
+
+	public Long getSelectedArchivoId() {
+		return selectedArchivoId;
+	}
+
+
+
+	public void setSelectedArchivoId(Long selectedArchivoId) {
+		this.selectedArchivoId = selectedArchivoId;
+	}
+
+
+
+	public List<Archivo> getListPortafolioLaboral() {
+		return listPortafolioLaboral;
+	}
+
+
+
+	public void setListPortafolioLaboral(List<Archivo> listPortafolioLaboral) {
+		this.listPortafolioLaboral = listPortafolioLaboral;
+	}
+
+
+
+	public String getTelefonoInstitucion() {
+		return telefonoInstitucion;
+	}
+
+
+
+	public void setTelefonoInstitucion(String telefonoInstitucion) {
+		this.telefonoInstitucion = telefonoInstitucion;
+	}
+
+
+
+	public String getDescripcionCargo() {
+		return descripcionCargo;
+	}
+
+
+
+	public void setDescripcionCargo(String descripcionCargo) {
+		this.descripcionCargo = descripcionCargo;
+	}
+
+
+
+	public String getPaisInstitucion() {
+		return paisInstitucion;
+	}
+
+
+
+	public void setPaisInstitucion(String paisInstitucion) {
+		this.paisInstitucion = paisInstitucion;
+	}
+
+
+
+	public Laboral getNuevoLaboral() {
+		return nuevoLaboral;
+	}
+
+	public void setNuevoLaboral(Laboral nuevoLaboral) {
+		this.nuevoLaboral = nuevoLaboral;
+	}
+
+	public List<SelectItem> getListDeptos() {
+		if (this.catalogoDepartamento.size() > 0 ) {
+			
+			Integer idValor;
+			Departamento valor;
+			
+			Iterator<Integer> claveSet = this.catalogoDepartamento.keySet().iterator();
+			
+			listDeptos = new ArrayList<SelectItem> ();
+		    
+		    while(claveSet.hasNext()){		      
+		    	idValor = claveSet.next();
+		    	valor = this.catalogoDepartamento.get(idValor);
+		    	this.listDeptos.add(new SelectItem(idValor, valor.getDpto_nombre()));		    			        		        
+		    }
+		}
+		
+		return listDeptos;
+	}
+
+
+	public void setListDeptos(List<SelectItem> listDeptos) {
+		this.listDeptos = listDeptos;
+	}
+
+
+	public List<SelectItem> getListMunicipioByDptos() {
+		return listMunicipioByDptos;
+	}
+
+
+	public void setListMunicipioByDptos(List<SelectItem> listMunicipioByDptos) {
+		this.listMunicipioByDptos = listMunicipioByDptos;
+	}
+
+
+	public Map<Integer, Departamento> getCatalogoDepartamento() {		
+		return this.catalogoDepartamento;
+	}
+
+
+
+	public void setCatalogoDepartamento(Map<Integer, Departamento> catalogoDepartamento) {
+		this.catalogoDepartamento = catalogoDepartamento;
+	}
+
+
+
+	public Map<Integer, Municipio> getCatalogoMunicipiosByDepto() {
+		return catalogoMunicipiosByDepto;
+	}
+
+
+
+	public void setCatalogoMunicipiosByDepto(Map<Integer, Municipio> catalogoMunicipiosByDepto) {
+		this.catalogoMunicipiosByDepto = catalogoMunicipiosByDepto;
+	}
+
+
+
+	public boolean isDisableSolicitarCertificacion() {
+		return disableSolicitarCertificacion;
+	}
+
+	public void setDisableSolicitarCertificacion(
+			boolean disableSolicitarCertificacion) {
+		this.disableSolicitarCertificacion = disableSolicitarCertificacion;
+	}
+
+
 
 	public Solicitud getSolicitudExp() {
+		List<Mantenedor> listaEstadosSol = service.getMantenedoresByTipo(Integer.valueOf(this.solicitudExp.getTipomantenedorestado()));
+		
+		for (Mantenedor dato : listaEstadosSol) {
+			this.catalogoEstadosSolicitud.put(dato.getId(), dato);						
+		}
+		
+		this.catalogoDepartamento = service.getDepartamentosByInatec();
+		
 		return solicitudExp;
 	}
 
@@ -87,7 +315,7 @@ public class ExpedienteManagedBean  {
 		this.solicitudExp = solicitudExp;
 	}
 
-	public List<Laboral> getListDatosLaborales() {
+	public List<Laboral> getListDatosLaborales() {		
 		this.listDatosLaborales = service.getListLaboralByTipo(new Integer(13), this.solicitudExp.getContacto());
 		return this.listDatosLaborales;
 	}
@@ -204,6 +432,8 @@ public class ExpedienteManagedBean  {
 	}		
 		
 	public String getEstadoActual() {
+		String estadoSolicitud = this.catalogoEstadosSolicitud.get(this.solicitudExp.getEstatus()).getValor();
+		estadoActual = estadoSolicitud;
 		return estadoActual;
 	}
 
@@ -212,6 +442,9 @@ public class ExpedienteManagedBean  {
 	}
 
 	public String getEstadoSiguiente() {
+		Mantenedor estado = service.getMantenedorById(new Integer(this.getSolicitudExp().getEstatus()));		
+		String sigEstadoSolicitud = this.catalogoEstadosSolicitud.get(Integer.valueOf(estado.getProximo())).getValor();
+		estadoSiguiente = sigEstadoSolicitud;
 		return estadoSiguiente;
 	}
 
@@ -309,15 +542,54 @@ public class ExpedienteManagedBean  {
 		this.evalIdByArchivoExp = evalIdByArchivoExp;
 	}
 
+	public Map<Integer, Mantenedor> getCatalogoEstadosSolicitud() {
+		return catalogoEstadosSolicitud;
+	}
+
+	public void setCatalogoEstadosSolicitud(
+			Map<Integer, Mantenedor> catalogoEstadosSolicitud) {
+		this.catalogoEstadosSolicitud = catalogoEstadosSolicitud;
+	}
+
 	@PostConstruct
 	private void fillCatalogos(){
-		List<Mantenedor> listaCatalogo = service.getMantenedoresByTipo(new Integer(5));
+		List<Mantenedor> listaCatalogo = service.getMantenedoresByTipo(new Integer(5));		
 		for (Mantenedor dato : listaCatalogo) {
 			this.catalogoTipoDatosLaborales.put(dato.getId(), dato);			
 			this.listTipoDatosLaborales.add(new SelectItem(dato.getId(), dato.getValor()));			
-		}			
+		}		
 		
 		archivoExp = new Archivo();
+	}
+	
+	public void handleMunicipios() {
+		
+		Contacto cExp = this.getSolicitudExp().getContacto();
+		
+		if (cExp != null) {
+			
+			System.out.println("Consulta la informacion del Departamento");
+			System.out.println("Departamento " + cExp.getDepartamentoId());
+			this.catalogoMunicipiosByDepto = service.getMunicipioDptoByInatec(cExp.getDepartamentoId());
+			
+			if (this.catalogoMunicipiosByDepto.size() > 0 ) {
+				
+				Integer idValor;
+				Municipio valor;
+				
+				Iterator<Integer> claveSet = this.catalogoMunicipiosByDepto.keySet().iterator();
+				
+				this.listMunicipioByDptos = new ArrayList<SelectItem> ();
+				
+			    while(claveSet.hasNext()){		      
+			    	idValor = claveSet.next();
+			    	valor = this.catalogoMunicipiosByDepto.get(idValor);
+			    	this.listMunicipioByDptos.add(new SelectItem(idValor, valor.getMunicipio_nombre()));			    			    			        		        
+			    }
+			}
+			
+			
+		}
 	}
 	
 	public void editarLaboral(){		
@@ -327,19 +599,27 @@ public class ExpedienteManagedBean  {
 		this.setNombreCargo(this.selectedLaboral.getCargo());
 		this.setFechaDesde(this.selectedLaboral.getFechaInicia());
 		this.setFechaHasta(this.selectedLaboral.getFechaFinaliza());
-		this.setIdSeletedLaboral(this.selectedLaboral.getId());		
-	}
-	
-	public void editarEvaluacion() {		
+		this.setIdSeletedLaboral(this.selectedLaboral.getId());
+		this.setTelefonoInstitucion(this.selectedLaboral.getInstitucionTelefono());
+		this.setPaisInstitucion(this.selectedLaboral.getPais());
+		this.setDescripcionCargo(this.selectedLaboral.getDescripcion());
+		
+		actualizaListaPortafolio (new Integer(1));
 		
 	}
 	
-	
-	
-	public String registrar_evaluacion() {		
-		return "/modulos/solicitudes/registro_evaluacion?faces-redirect=true";
+	public void nuevoLaboral() {		
+		limpiarCampos();
 	}
 	
+	public String RegistrarEditarEvaluacion() {		
+		return "/modulos/solicitudes/registro_evaluacion?faces-redirect=true";		
+	}	
+	
+	public void nuevoPortafolio (){
+		
+	}
+			
 	public void actualizarContacto() {
 		System.out.println("correo " + solicitudExp.getContacto().getCorreo1());
 		if (solicitudExp.getContacto().getDireccionActual() == null) {
@@ -363,23 +643,24 @@ public class ExpedienteManagedBean  {
 	}
 
 	public void guardarDatosLaborales() {
-				
-		System.out.println("Valor del selectedLaboral " + this.idSeletedLaboral);
+		String nombreCargoLaboral;
 		
-		if (this.idSeletedLaboral == null) {
+		nombreCargoLaboral = this.nombreCargo.toUpperCase() + " /  " + this.nombreInstitucion.toUpperCase();
 		
+		if (this.idSeletedLaboral == null) {			
+			
 			this.selectedLaboral = new Laboral (this.solicitudExp.getContacto(), // contacto, 
 									   this.tipoLaboral, // tipo, 
-									   "", // nombre,
-									   "", // descripcion, 
+									   nombreCargoLaboral.toUpperCase(), // nombre,
+									   this.descripcionCargo, // descripcion, 
 									   this.nombreInstitucion.toUpperCase(), // institucion, 
-									   "Nicaragua".toUpperCase(), // pais,
+									   this.paisInstitucion.toUpperCase(), // pais,
 									   this.fechaDesde, // fechaInicia, 
 									   this.fechaHasta, // fechaFinaliza, 
 									   this.institucionDireccion.toUpperCase(), // institucionDireccion,
-									   "", // institucionTelefono, 
-									   this.nombreCargo.toUpperCase()//, // cargo, 
-									   //null // archivo
+									   this.telefonoInstitucion, // institucionTelefono, 
+									   this.nombreCargo.toUpperCase(), // cargo,
+									   null // archivo
 										);		
 			
 		} else {
@@ -390,10 +671,19 @@ public class ExpedienteManagedBean  {
 			this.selectedLaboral.setCargo(this.nombreCargo.toUpperCase());		
 			this.selectedLaboral.setFechaInicia(this.fechaDesde);
 			this.selectedLaboral.setFechaFinaliza(this.fechaHasta);	
-			
+			this.selectedLaboral.setDescripcion(this.descripcionCargo.toUpperCase());
+			this.selectedLaboral.setNombre(nombreCargoLaboral.toUpperCase());
+			this.selectedLaboral.setInstitucionTelefono(this.telefonoInstitucion.toUpperCase());
+			this.selectedLaboral.setPais(this.paisInstitucion.toUpperCase());			
 		}
 		this.selectedLaboral = (Laboral)service.guardar(this.selectedLaboral);
 		
+		if (this.selectedLaboral != null) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!"));
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje: ", "Se genero un error al grabar los datos laborales / academicos. Favor revisar..."));
+		}
+			
 		limpiarCampos ();
 	}
 	
@@ -407,6 +697,9 @@ public class ExpedienteManagedBean  {
 		this.setFechaHasta(null);
 		this.setInstitucionDireccion(null);
 		this.setIdSeletedLaboral(null);	
+		this.setDescripcionCargo(null);
+		this.setPaisInstitucion(null);
+		this.setTelefonoInstitucion(null);
 			
 	}	
 	
@@ -424,22 +717,88 @@ public class ExpedienteManagedBean  {
 		}
 	}
 	
-	public void uploadFile(){
-		System.out.println("Entra al uploadFile");
+	public void guardarArchivo() {
+		if (archivoExp != null) {
+			archivoExp = (Archivo) service.guardar(archivoExp);
+			
+			if (archivoExp != null)
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!"));
+			else
+				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje: ", "Error al grabar el archivo. Favor revisar..."));
+		}
+		
+		
+	}
+	
+	public void actualizaListaPortafolio (Integer tipo){
+		Object [] objs;
+		if (tipo == 1) {
+			if (selectedLaboral != null) {			
+				 objs =  new Object [] {selectedLaboral.getId()};
+				this.setListPortafolioLaboral(service.getArchivoByParam ("Archivo.findByLaboralId", objs));
+			}
+		} else {							
+				Contacto c = solicitudExp.getContacto();
+				objs =  new Object [] {c.getId()};
+				this.listPortafolioContacto = service.getArchivoByParam ("Archivo.findByContactoId", objs);
+		}
+	}
+	
+	public void uploadFile(FileUploadEvent event){
+	//public void uploadFile(){
+		
 		//System.out.println("Nombre del archivo " + file.getFileName());
 		//System.out.println("Tamaño " + file.getSize());
 		
+		Date fechaAhora = new Date();
+		
+		FacesMessage msg = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");  
+	    FacesContext.getCurrentInstance().addMessage(null, msg);  
+		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+		
+	    String directorio = ec.getRealPath("/portafolio");
+	    
+	    System.out.println("Valor Directorio " + directorio);
+	    Usuario u = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
+	    String nombreFile;
+	    String nombrePropietario;
 		try {
-			File targetFolder = new File("/portafolio");
-			System.out.println("La ruta donde se copiara el archivo: " +targetFolder.getAbsolutePath());
 			
-			System.out.println("Direccion del contex " + FacesContext.getCurrentInstance().getExternalContext().getRequestPathInfo());
+			File targetFolder = new File(directorio);			
 			
-			System.out.println("Revisando los otros valores: ");
-			System.out.println("Nombre " + archivoExp.getNombre());
-			System.out.println("Descripcion " + archivoExp.getDescripcion());
+			if (this.file == null) {								
+				this.file = event.getFile();				
+				
+			} /*else {		
+				archivoExp.setArchivoFisico(file.getContents());				
+			}*/
+			nombreFile = file.getFileName();
+			/*
+			if (u.getContacto().getNombreCompleto() != null)
+				nombrePropietario = u.getContacto().getNombreCompleto();
+			else
+				nombrePropietario = u.getContacto().getPrimerNombre() + " " + u.getContacto().getPrimerApellido();
+			*/
+			nombrePropietario = "admin";
+			archivoExp.setNombre(nombreFile);
+			archivoExp.setSize(String.valueOf(file.getSize()));
+			//archivoExp.setArchivoFisico(file.getContents());
+			archivoExp.setFecha(fechaAhora);					
+			archivoExp.setNombreReal(nombreFile);
+			archivoExp.setRuta(nombreFile);
+			archivoExp.setPropietario(nombrePropietario);
+			archivoExp.setTipo(nombreFile);
+			archivoExp.setCategoria(nombreFile);
+			archivoExp.setIcono(nombreFile);
+			archivoExp.setVersion(nombreFile);
 			
-			InputStream inputStream = file.getInputstream(); //event.getFile().getInputstream();
+						
+			FileOutputStream fos = new FileOutputStream(String.format(directorio+"/%s",file.getFileName()));
+            fos.write(file.getContents());
+            fos.flush();
+            fos.close();
+			/*
+			InputStream inputStream = file.getInputstream(); 
 			//OutputStream out = new FileOutputStream(new File(targetFolder,event.getFile().getFileName()));
 			OutputStream out = new FileOutputStream(new File(targetFolder,file.getFileName()));
 			int read = 0;
@@ -451,37 +810,10 @@ public class ExpedienteManagedBean  {
 			inputStream.close();
 			out.flush();
 			out.close();
-			
+			*/
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		
-		
-		/*
-			Date fechaAhora = new Date();
-			//this.file = event.getFile();
-			
-	        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-	        String txtField = ec.getRequestParameterMap().get("formExpediente:txtField");
-	        String filePath = ec.getRealPath(String.format("/portafolio/%s",file.getFileName() + "_" + this.solicitudExp.getId() + "_" + fechaAhora));
-	        
-	        try {
-	            FileOutputStream fos = new FileOutputStream(filePath);
-	            fos.write(file.getContents());
-	            fos.flush();
-	            fos.close();
-	 
-	        } catch (FileNotFoundException e) {
-	            e.printStackTrace();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	        
-	        FacesContext context = FacesContext.getCurrentInstance();
-	        
-	        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,String.format("Archivo cargado: %s ", file.getFileName()),
-	                String.format("Mensaje: %s", txtField)));
-	        */
+		}		
 	        			
 	}
 

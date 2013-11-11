@@ -4,7 +4,9 @@ import java.util.List;
 
 import model.Contacto;
 import model.Usuario;
+import support.Departamento;
 import support.Ifp;
+import support.Municipio;
 import support.UCompetencia;
 
 public interface IDaoInatec {
@@ -16,5 +18,6 @@ public interface IDaoInatec {
 	public List<Contacto> getContactosInatec();
 	public Contacto generarContacto(String usuario);	
 	public List<Ifp> getIfpInatec();
-	
+	public List<Departamento> getDepartamentosInatec();
+	public List<Municipio> getMunicipioByDeptoInatec(Integer idDepto);	
 }

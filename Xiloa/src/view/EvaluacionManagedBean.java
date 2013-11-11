@@ -1,11 +1,10 @@
 package view;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Component;
 import service.IService;
 
 import model.Certificacion;
-import model.Contacto;
 import model.Evaluacion;
 import model.EvaluacionGuia;
 import model.EvaluacionGuiaId;
@@ -28,7 +26,13 @@ import model.Unidad;
 
 @Component
 @Scope(value="session")
-public class EvaluacionManagedBean {
+public class EvaluacionManagedBean implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Autowired
 	private IService service;
 	
@@ -41,6 +45,8 @@ public class EvaluacionManagedBean {
 	private boolean     aprobado;
 	private String      observaciones;
 	
+	private Evaluacion selectedEvaluacion;	
+	
 	private Guia []     selectedGuia;
 	private List<Guia>  listGuiaByInstru;
 	
@@ -48,12 +54,25 @@ public class EvaluacionManagedBean {
 	private List<SelectItem> listUnidadCompentecia = new ArrayList<SelectItem> ();
 	private List<SelectItem> listInstrumentoByUnidad = new ArrayList<SelectItem> ();
 
+	public Evaluacion getSelectedEvaluacion() {
+		return selectedEvaluacion;
+	}
+
+	public void setSelectedEvaluacion(Evaluacion selectedEvaluacion) {
+		this.selectedEvaluacion = selectedEvaluacion;
+		this.setIdSelectedUnidad(this.selectedEvaluacion.getUnidad().getId());
+		this.setFechaEvaluacion(selectedEvaluacion.getFechaEvaluacion());
+		this.setObservaciones(selectedEvaluacion.getObservaciones());
+		this.setAprobado(selectedEvaluacion.isAprobado());
+	}
+
 	public Solicitud getSolicitudEval() {		
 		return solicitudEval;
 	}
 
 	public void setSolicitudEval(Solicitud solicitudEval) {		
 		this.solicitudEval = solicitudEval;		
+		inicializaSelectItems();
 	}	
 	
 	public List<SelectItem> getListUnidadCompentecia() {
@@ -78,6 +97,15 @@ public class EvaluacionManagedBean {
 
 	public void setSelectedInstrumento(Instrumento selectedInstrumento) {
 		this.selectedInstrumento = selectedInstrumento;
+		this.setIdSelectedInstrByUnd(this.selectedInstrumento.getId());
+		Object [] objs =  new Object [] {this.selectedEvaluacion.getId(), this.selectedInstrumento.getId()};
+		List<Guia> guiasEvalInst = service.getGuiaByParam("EvaluacionGuia.findGuiasByEvalAndInstrumento", objs);
+		
+		selectedGuia = new Guia [guiasEvalInst.size()];
+		int i=0;
+		for (Guia dato : guiasEvalInst) {
+			selectedGuia[i++] = dato;
+		}
 	}
 
 	public List<SelectItem> getListInstrumentoByUnidad() {
@@ -163,41 +191,99 @@ public class EvaluacionManagedBean {
 	
 	public void handleGuiasByInstrumento(){		
 		selectedInstrumento = service.getInstrumentoById(idSelectedInstrByUnd);
-		listGuiaByInstru = service.getGuiasByInstrumentoId(selectedInstrumento.getId());				
+		Object [] objs =  new Object [] {selectedInstrumento.getId()};
+		listGuiaByInstru = service.getGuiaByParam("Guia.findByIdInstrumento", objs);						
+	}
+	
+	public void inicializaSelectItems (){
+		if (solicitudEval != null){
+			Certificacion c = this.solicitudEval.getCertificacion();
+			
+			List<Unidad> setUnidades =  service.getUnidadesByCertificacionId(c.getId());				
+						
+			this.listUnidadCompentecia = new ArrayList<SelectItem>();
+			
+			this.listUnidadCompentecia.add(new SelectItem(null, "Seleccione la unidad de competencia"));
+			
+			for(Unidad unidad : setUnidades){
+				this.listUnidadCompentecia.add(new SelectItem(unidad.getId(), unidad.getCompetenciaDescripcion()));			
+			}
+			
+			this.listInstrumentoByUnidad = new ArrayList<SelectItem>();
+			this.listInstrumentoByUnidad.add(new SelectItem(null, "Seleccione el instrumento"));
+		} else {
+			this.listUnidadCompentecia.add(new SelectItem(null, "Seleccione la unidad de competencia"));
+			this.listInstrumentoByUnidad.add(new SelectItem(null, "Seleccione el instrumento"));
+		}
 	}
 	
 	public void guardarEvaluacion() {
+		
 		FacesContext context = FacesContext.getCurrentInstance();
 		
-		Evaluacion eval = new Evaluacion (this.getSolicitudEval(), // solicitud 
-										  this.getFechaEvaluacion(), // fecha 
-										  this.getSelectedUnidad(), // unidad 
-										  null , // List<EvaluacionGuia> guias 
-								          new Integer(0), // puntaje, 
-								          this.getObservaciones(), // observaciones 
-								          this.isAprobado() // aprobado
-								             );
+		Evaluacion eval;	
 		
-		eval = (Evaluacion) service.guardar(eval);
+		boolean isError = false;
 		
-		if (eval != null) {			
+		System.out.println("Metodo GuardarEvaluacion");		
+		
+		//Se registra nueva evaluacion
+		if (selectedEvaluacion == null){
+			System.out.println("Nueva evaluacion");
+			eval = new Evaluacion (this.getSolicitudEval(), // solicitud 
+			   					   this.getFechaEvaluacion(), // fecha 
+								   this.getSelectedUnidad(), // unidad 
+								   null , // List<EvaluacionGuia> guias 
+								   new Integer(0), // puntaje, 
+								   this.getObservaciones(), // observaciones 
+								   this.isAprobado() // aprobado
+								   );
+			eval = (Evaluacion) service.guardar(eval);
+			
+			if (eval != null) {
+									
+				for (Guia dato : this.selectedGuia) {
+													
+					EvaluacionGuiaId pkDetalleGuia = new EvaluacionGuiaId();
+					
+					pkDetalleGuia.setEvaluacion(eval);
+					pkDetalleGuia.setGuia(dato);
+					
+					EvaluacionGuia detalleEvaGuia = new EvaluacionGuia();
+					
+					detalleEvaGuia.setPk(pkDetalleGuia);
+					detalleEvaGuia.setPuntaje(new Integer(0));				
+					
+					detalleEvaGuia = (EvaluacionGuia) service.guardar(detalleEvaGuia);				
+				}
+			} else {
+				isError = true;
+			}			
+
+		} else { // Guarda los cambios en la edicion de la evaluacion
+			
+			System.out.println("Objeto evaluacion " + selectedEvaluacion.getId());			
+			
+			System.out.println("Guardando los cambios");
+			//System.out.println("Aprobado: " + this.aprobado);
+			System.out.println("Observaciones " + this.observaciones);			
+			eval = selectedEvaluacion;
+			eval.setObservaciones(this.observaciones);
+			System.out.println("Tomando las observaciones segun el objeto actualizado: " + eval.getObservaciones());
+			
+			eval.setAprobado(this.aprobado);			
 						
-			for (Guia dato : this.selectedGuia) {
-												
-				EvaluacionGuiaId pkDetalleGuia = new EvaluacionGuiaId();
-				
-				pkDetalleGuia.setEvaluacion(eval);
-				pkDetalleGuia.setGuia(dato);
-				
-				EvaluacionGuia detalleEvaGuia = new EvaluacionGuia();
-				
-				detalleEvaGuia.setPk(pkDetalleGuia);
-				detalleEvaGuia.setPuntaje(new Integer(0));				
-				
-				detalleEvaGuia = (EvaluacionGuia) service.guardar(detalleEvaGuia);				
+			eval = (Evaluacion) service.guardar(eval);			
+			/*
+			if (eval == null){
+				isError = true;
 			}
-						
-			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "La evaluacion ha sido registrada exitosamente. El número es: " + eval.getId()));
+			*/
+			
+		}
+			
+		if (!isError){						
+	        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "La evaluacion ha sido registrada exitosamente. El número es: " + eval.getId()));		
 			
 		}else {
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje", "Error al grabar la evaluacion. Favor revisar..."));
@@ -205,26 +291,33 @@ public class EvaluacionManagedBean {
 		
 	}	
 	
+	public void resetValores () {
+		this.selectedEvaluacion = null;
+		this.selectedGuia = null;
+		this.selectedInstrumento = null;
+		this.selectedUnidad = null;
+		this.idSelectedInstrByUnd = null;
+		this.idSelectedUnidad = null;
+		this.listGuiaByInstru = null;
+		this.listInstrumentoByUnidad = null;
+		this.listUnidadCompentecia = null;
+		this.aprobado = false;
+		this.fechaEvaluacion = null;
+		this.observaciones = null;
+	}
+	
 	public String registrar_evaluacion (Solicitud sol) {		
 		
 		this.setSolicitudEval(sol);
 		
-		Certificacion c = this.solicitudEval.getCertificacion();
-				
-		List<Unidad> setUnidades =  service.getUnidadesByCertificacionId(c.getId());				
-					
-		this.listUnidadCompentecia = new ArrayList<SelectItem>();
-		
-		this.listUnidadCompentecia.add(new SelectItem(null, "Seleccione la unidad de competencia"));
-		
-		for(Unidad unidad : setUnidades){
-			this.listUnidadCompentecia.add(new SelectItem(unidad.getId(), unidad.getCompetenciaDescripcion()));			
-		}
-		
-		this.listInstrumentoByUnidad = new ArrayList<SelectItem>();
-		this.listInstrumentoByUnidad.add(new SelectItem(null, "Seleccione el instrumento"));
+		inicializaSelectItems();
 		
 		return "/modulos/solicitudes/registro_evaluacion?faces-redirect=true";
-	}	
+	}
+	
+	public String cancelarRegistro () {
+		resetValores ();
+		return "/modulos/solicitudes/expediente?faces-redirect=true";
+	}
 
 }

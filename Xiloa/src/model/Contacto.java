@@ -102,7 +102,14 @@ public class Contacto {
 	
 	@NotNull
 	@Column(name = "nacionalidad_id", nullable = false)		
-	private int nacionalidadId;
+	private Integer nacionalidadId;
+	
+	@Column(name = "departamento_id", nullable = true)		
+	private Integer departamentoId;
+	
+	@Column(name = "municipio_id", nullable = true)		
+	private Integer municipioId;
+	
 
 	@NotNull
 	@Column(name = "lugar_nacimiento", nullable = false)	
@@ -280,7 +287,7 @@ public class Contacto {
 		this.fechaRegistro = fechaRegistro;
 	}
 
-	public int getNacionalidadId() {
+	public Integer getNacionalidadId() {
 		return nacionalidadId;
 	}
 
@@ -327,6 +334,22 @@ public class Contacto {
 	public void setIdEmpleado(Long idEmpleado) {
 		this.idEmpleado = idEmpleado;
 	}
+	
+	public Integer getDepartamentoId() {
+		return departamentoId;
+	}
+
+	public void setDepartamentoId(Integer departamentoId) {
+		this.departamentoId = departamentoId;
+	}
+
+	public Integer getMunicipioId() {
+		return municipioId;
+	}
+
+	public void setMunicipioId(Integer municipioId) {
+		this.municipioId = municipioId;
+	}
 
 	public Contacto(Usuario usuario, Rol rol, int entidadId,
 			String primerNombre, String segundoNombre, String primerApellido,
@@ -336,7 +359,7 @@ public class Contacto {
 			String numeroIdentificacion, String direccionActual,
 			Date fechaNacimiento, Date fechaRegistro, int nacionalidadId,
 			String lugarNacimiento, boolean inatec, String usuarioInatec,
-			String funcion, Long idEmpleado) {
+			String funcion, Long idEmpleado, Integer departamentoId, Integer municipioId){
 		super();
 		this.usuario = usuario;
 		this.rol = rol;
@@ -362,7 +385,9 @@ public class Contacto {
 		this.inatec = inatec;
 		this.usuarioInatec = usuarioInatec;
 		this.funcion = funcion;
-		this.idEmpleado = idEmpleado;
+		this.idEmpleado = idEmpleado;		
+		this.departamentoId = departamentoId;
+		this.municipioId = municipioId;
 	}
 	
 	public Contacto() {

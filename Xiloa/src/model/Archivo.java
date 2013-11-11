@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -8,7 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -18,7 +22,16 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 @Entity(name="archivo")
-public class Archivo {
+@NamedQueries({
+	@NamedQuery(name="Archivo.findByLaboralId", query="select a from archivo a where a.laboral.id=?1"),
+	@NamedQuery(name="Archivo.findByContactoId", query="select a from archivo a where a.laboral.contacto.id=?1")
+})
+public class Archivo implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -33,10 +46,9 @@ public class Archivo {
 	
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name="evaluacion_id")
-	private Evaluacion evaluacion;
-    
-	
+	@JoinColumn(name="laboral_id")
+	private Laboral laboral;
+		
 	@NotNull
 	@Column(name = "archivo_nombre", nullable = false)	
 	private String nombre;
@@ -81,7 +93,16 @@ public class Archivo {
 	@NotNull
 	@Column(name = "archivo_categoria", nullable = false)	
 	private String categoria;
-
+	
+	@NotNull
+	@Column(name = "archivo_estado", nullable = false)	
+	private String estado;
+	
+	/*
+	@Lob()
+	@Column(name="archivo_fisico", nullable=false)
+	private byte[] archivoFisico;
+*/
 	public Long getId() {
 		return id;
 	}
@@ -89,22 +110,14 @@ public class Archivo {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	/*
+	
 	public Laboral getLaboral() {
 		return laboral;
 	}
 
 	public void setLaboral(Laboral laboral) {
 		this.laboral = laboral;
-	}
-	*/
-	public Evaluacion getEvaluacion() {
-		return evaluacion;
-	}
-
-	public void setEvaluacion(Evaluacion evaluacion) {
-		this.evaluacion = evaluacion;
-	}
+	}	
 
 	public String getNombre() {
 		return nombre;
@@ -193,13 +206,31 @@ public class Archivo {
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
 	}
+	/*
+	public byte[] getArchivoFisico() {
+		return archivoFisico;
+	}
 
-	public Archivo(Evaluacion evaluacion, String nombre, String descripcion,
+	public void setArchivoFisico(byte[] archivoFisico) {
+		this.archivoFisico = archivoFisico;
+	}
+	*/
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Archivo(Laboral laboral, String nombre, String descripcion,
 			String nombreReal, String ruta, String propietario, Date fecha,
 			String tipo, String size, String version, String icono,
-			String categoria) {
+			String categoria,// byte [] archivoFisico, 
+			String estado) {
 		super();
-		this.evaluacion = evaluacion;
+		this.laboral = laboral;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.nombreReal = nombreReal;
@@ -211,6 +242,8 @@ public class Archivo {
 		this.version = version;
 		this.icono = icono;
 		this.categoria = categoria;
+		//this.archivoFisico = archivoFisico;
+		this.estado = estado;
 	}
 	
 	public Archivo() {

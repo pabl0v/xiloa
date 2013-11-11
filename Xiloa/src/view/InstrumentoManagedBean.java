@@ -81,7 +81,8 @@ public class InstrumentoManagedBean implements Serializable {
 
 	public void setSelectedInstrumento(Instrumento instrumento) {
 		this.selectedInstrumento = instrumento;
-		this.selectedInstrumento.setGuias(service.getGuiasByInstrumentoId(instrumento.getId()));
+		Object [] objs =  new Object [] {instrumento.getId()};
+		this.selectedInstrumento.setGuias(service.getGuiaByParam("Guia.findByIdInstrumento", objs));				
 	}
 		
 	public Guia getGuia() {

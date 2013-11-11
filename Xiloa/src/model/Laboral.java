@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -25,7 +26,12 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 	@NamedQuery(name="Laboral.findById", query="select l from laborales l where l.id=?1"),
 	@NamedQuery(name="Laboral.findAllByTipoAndContactoId", query="select l from laborales l where l.tipo = ?1 and l.contacto.id = ?2")
 })
-public class Laboral {
+public class Laboral implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -72,19 +78,19 @@ public class Laboral {
 	private String institucionDireccion;
 
 	@NotNull
-	@Column(name = "laboral_institucion_telefono", nullable = false)
+	@Column(name = "laboral_institucion_telefono", nullable = true)
 	private String institucionTelefono;
 
 	@NotNull
 	@Column(name = "laboral_institucion_cargo", nullable = false)
 	private String cargo;
 	
-	/*
+	
 	@NotNull
 	@OneToOne
 	@JoinColumn(name="laboral_file_id")
 	private Archivo archivo;
-    */
+ 
 	
 	public Long getId() {
 		return id;
@@ -181,7 +187,7 @@ public class Laboral {
 	public void setCargo(String cargo) {
 		this.cargo = cargo;
 	}
-	/*
+	
 	public Archivo getArchivo() {
 		return archivo;
 	}
@@ -189,11 +195,11 @@ public class Laboral {
 	public void setArchivo(Archivo archivo) {
 		this.archivo = archivo;
 	}
-	*/
+	
 	public Laboral(Contacto contacto, int tipo, String nombre,
 			String descripcion, String institucion, String pais,
 			Date fechaInicia, Date fechaFinaliza, String institucionDireccion,
-			String institucionTelefono, String cargo) {
+			String institucionTelefono, String cargo, Archivo archivo) {
 		super();
 		this.contacto = contacto;
 		this.tipo = tipo;
@@ -206,6 +212,7 @@ public class Laboral {
 		this.institucionDireccion = institucionDireccion;
 		this.institucionTelefono = institucionTelefono;
 		this.cargo = cargo;
+		this.archivo = archivo;
 	}
 	
 	public Laboral() {

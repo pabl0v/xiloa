@@ -12,12 +12,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import support.Departamento;
 import support.Ifp;
+import support.Municipio;
 import support.USolicitud;
 import support.UCompetencia;
 import dao.IDao;
 import dao.IDaoInatec;
 import model.Actividad;
+import model.Archivo;
 import model.Bitacora;
 import model.Certificacion;
 import model.Contacto;
@@ -82,11 +85,15 @@ public class ServiceImp implements IService {
 	@Autowired
 	private IDao<Bitacora> bitacoraDao;
 	
+	@Autowired
+	private IDao<Integer> integerDao;
+	
+	@Autowired
+	private IDao<Archivo> archivoDao;
+	
 	@Override
 	public List<Certificacion> getCertificaciones(){
-		//return certificacionDao.findAll(Certificacion.class);
-		Object [] objs =  new Object [] {};
-		return certificacionDao.findAllByNamedQueryParam("Certificacion.findAll", objs);
+		return certificacionDao.findAll(Certificacion.class);
 	}
 	
 	@Override
@@ -301,12 +308,14 @@ public class ServiceImp implements IService {
 
 	@Override
 	public List<Mantenedor> getMantenedorActividades() {
-		return mantenedorDao.findAllByQuery("Select m from mantenedores m where m.tipo='1' order by 1");
+		return this.getMantenedoresByTipo(new Integer(1));
+		//return mantenedorDao.findAllByQuery("Select m from mantenedores m where m.tipo='1' order by 1");
 	}
 
 	@Override
 	public List<Mantenedor> getMantenedorEstatusCertificacion() {
-		return mantenedorDao.findAllByQuery("Select m from mantenedores m where m.tipo='3' order by 1");
+		return this.getMantenedoresByTipo(new Integer(3));
+		//return mantenedorDao.findAllByQuery("Select m from mantenedores m where m.tipo='3' order by 1");
 	}
 	
 	@Override
@@ -317,6 +326,9 @@ public class ServiceImp implements IService {
 		}
 		if (objeto instanceof Laboral) {
 			return laboralDao.save((Laboral) objeto);
+		}
+		if (objeto instanceof Archivo) {
+			return archivoDao.save((Archivo) objeto);
 		}
 		if (objeto instanceof Evaluacion) {
 			return evaluacionDao.save((Evaluacion) objeto);
@@ -389,12 +401,15 @@ public class ServiceImp implements IService {
 	
 	@Override
 	public List<Mantenedor> getMantenedoresByTipo(Integer tipo) {
-		return mantenedorDao.findAllByQuery("Select m from mantenedores m where m.tipo='"+tipo+"'");
+		Object [] objs =  new Object [] {tipo.toString()};
+		return mantenedorDao.findAllByNamedQueryParam("Mantenedor.findByTipo", objs);		
 	}
 	
 	@Override
 	public Map<Integer, Mantenedor> getMapMantenedoresByTipo(String tipo) {
-		List<Mantenedor> l = mantenedorDao.findAllByQuery("Select m from mantenedores m where m.tipo='"+tipo+"'");
+		Object [] objs =  new Object [] {tipo};
+		
+		List<Mantenedor> l = mantenedorDao.findAllByNamedQueryParam("Mantenedor.findByTipo", objs);				
 		Map<Integer, Mantenedor> m = new HashMap<Integer, Mantenedor>();
 		if(l != null){
 			for(int i=0; i<l.size(); i++){
@@ -451,12 +466,6 @@ public class ServiceImp implements IService {
 		String query = "select i from instrumentos i where i.unidad in (select u from unidades u where u.certificacion.id="+certificacionId+")";
 		return instrumentoDao.findAllByQuery(query);
 	}
-
-	@Override
-	public List<Guia> getGuiasByInstrumentoId(Long instrumentoId) {
-		Object [] objs =  new Object [] {instrumentoId};
-		return guiaDao.findAllByNamedQueryParam("Guia.findByIdInstrumento", objs);
-	}
 	
 	@Override
 	public List<EvaluacionGuia> getEvaluacionGuiaByEvaluacionId(Long evaluacionId) {
@@ -480,5 +489,51 @@ public class ServiceImp implements IService {
 	public List<Bitacora> getBitacoras(Long actividadId) {
 		Object [] objs =  new Object [] {actividadId};
 		return bitacoraDao.findAllByNamedQueryParam("Bitacoras.findAllByActividadId", objs);
+	}
+	
+	@Override
+	public Integer getMantenedorMinByTipo(String tipo) {		
+		Object [] objs =  new Object [] {tipo};
+		return integerDao.findOneByNamedQueryParam("Mantenedor.findMinByTipo", objs);				
+	}
+
+	@Override
+	public Mantenedor getMantenedorById(Integer idMantenedor) {
+		return mantenedorDao.findById(Mantenedor.class, idMantenedor.intValue());	
+	}
+	
+	@Override
+	public Map<Integer, Departamento> getDepartamentosByInatec() {
+		List<Departamento> lista = inatecDao.getDepartamentosInatec();
+		
+		Map<Integer, Departamento> m = new HashMap<Integer, Departamento>();
+		
+		for (Departamento d : lista){
+			m.put(d.getDpto_id(), d);
+		}
+		
+		return m;
+	}
+
+	@Override
+	public Map<Integer, Municipio> getMunicipioDptoByInatec(Integer idDpto) {
+		List<Municipio> lista = inatecDao.getMunicipioByDeptoInatec(idDpto);
+		
+		Map<Integer, Municipio> m = new HashMap<Integer, Municipio>();
+		
+		for(Municipio dato : lista) {
+			m.put(dato.getMunicipio_id(), dato);
+		} 
+		return m;
+	}	
+
+@Override
+	public List<Guia> getGuiaByParam(String namedString, Object [] parametros){
+		return guiaDao.findAllByNamedQueryParam(namedString, parametros);
+	}		
+	
+	@Override
+	public List<Archivo> getArchivoByParam (String namedString, Object [] parametros) {
+		return archivoDao.findAllByNamedQueryParam(namedString, parametros);
 	}
 }

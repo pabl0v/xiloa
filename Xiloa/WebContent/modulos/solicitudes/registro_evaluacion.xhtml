@@ -52,8 +52,10 @@
 	            </p:dataTable>		        
 			</div>
 			<div class="seccion_detalle" style="background:none;height:50px;margin-top:-68px;border:none;text-align: right;">
-				<p:commandButton value="Cancelar" />
-				<p:commandButton value="Aceptar" action="#{evaluacionManagedBean.guardarEvaluacion}" update="msgEvaluacion" />								
+				<p:commandButton value="Cancelar" action="#{evaluacionManagedBean.cancelarRegistro}" >
+					<f:setPropertyActionListener value="#{evaluacionManagedBean.solicitudEval}" target="#{expedienteManagedBean.solicitudExp}" />
+				</p:commandButton>
+				<p:commandButton value="Aceptar" action="#{evaluacionManagedBean.guardarEvaluacion}" update=":formEvaluacion:msgEvaluacion" process="@form" />								
 		    </div>
 		</h:form>		      
 	</div>  

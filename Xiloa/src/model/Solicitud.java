@@ -39,6 +39,8 @@ public class Solicitud implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private final String tipoMantenedorEstado = new String("7");
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -88,6 +90,10 @@ public class Solicitud implements Serializable {
 	
 	@OneToMany(mappedBy="solicitud")
 	private List<Evaluacion> evaluaciones;
+	
+	public String getTipomantenedorestado() {
+		return tipoMantenedorEstado;
+	}
 
 	public Long getId() {
 		return id;
@@ -191,7 +197,7 @@ public class Solicitud implements Serializable {
 
 	public void setEvaluaciones(List<Evaluacion> evaluaciones) {
 		this.evaluaciones = evaluaciones;
-	}
+	}	
 
 	public Solicitud(String nombre, String ticket, int estatus,
 			Date fechaRegistro, Date fechaMatricula, int experiencia,

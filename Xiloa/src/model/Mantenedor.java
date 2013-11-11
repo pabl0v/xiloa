@@ -5,8 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 @Entity(name="mantenedores")
+@NamedQueries({
+	@NamedQuery(name="Mantenedor.findMinByTipo", query="select min(m.id) from mantenedores m where m.tipo = ?1"),
+	@NamedQuery(name="Mantenedor.findByTipo", query="select m from mantenedores m where m.tipo = ?1 order by 1")	
+})
 public class Mantenedor {
 
 	@Id

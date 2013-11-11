@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +28,12 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @NamedQueries({
 	@NamedQuery(name="Evaluacion.findAllBySolicitudId", query="select e from evaluaciones e where e.solicitud.id=?1")
 })
-public class Evaluacion {
+public class Evaluacion implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -87,6 +93,14 @@ public class Evaluacion {
 		this.fechaEvaluacion = fecha;
 	}
 	
+	public List<EvaluacionGuia> getGuias() {
+		return guias;
+	}
+
+	public void setGuias(List<EvaluacionGuia> guias) {
+		this.guias = guias;
+	}
+
 	public Integer getPuntaje(){
 		return puntaje;
 	}

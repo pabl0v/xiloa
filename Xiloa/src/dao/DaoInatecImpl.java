@@ -16,7 +16,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import support.Departamento;
 import support.Ifp;
+import support.Municipio;
 import support.UCompetencia;
 
 @Repository
@@ -101,6 +103,16 @@ public class DaoInatecImpl implements IDaoInatec {
 														       "ci.nombre as nombre " +
 														  "from public.centros_inatec ci " +
 														 "order by ci.nombre";
+	
+	private static final String SQL_SELECT_DPTOS_INATEC = "select d.departamentoid as dpto_id,  " +
+		       											         "d.nombre as dpto_nombre " +
+		       											    "from public.departamento d " +
+		       											   "order by d.nombre";
+	
+	private static final String SQL_SELECT_MunicipioByDpto_INATEC = "select m.municipioid as municipio_id,  " +
+																	       "m.departamentoid as municipio_dpto_id, " +
+		       														       "m.nombre as municipio_nombre " +
+		       														  "from public.municipio m ";	
 	
 	public Usuario getUsuario(String usuario) {
 		Usuario user = null;
@@ -237,4 +249,36 @@ public class DaoInatecImpl implements IDaoInatec {
 				      							});	
 		return ifpList;		
 	}
+
+	@Override
+	public List<Departamento> getDepartamentosInatec() {
+		List<Departamento> dptos = jdbcTemplate.query(SQL_SELECT_DPTOS_INATEC, 
+														new RowMapper<Departamento>() {
+															public Departamento mapRow(ResultSet rs, int rowNum) throws SQLException {
+																Departamento depto = new Departamento();
+																depto.setDpto_id(rs.getInt("dpto_id"));																		
+																depto.setDpto_nombre(rs.getString("dpto_nombre"));																
+																return depto;
+															}
+															});	
+		return dptos;
+	}
+
+	@Override
+	public List<Municipio> getMunicipioByDeptoInatec(Integer idDepto) {
+		List<Municipio> muni = jdbcTemplate.query(SQL_SELECT_MunicipioByDpto_INATEC + 
+				                                  " where m.departamentoid = " + idDepto +
+				                                  " order by m.nombre", 
+													new RowMapper<Municipio>() {
+														public Municipio mapRow(ResultSet rs, int rowNum) throws SQLException {
+															Municipio munic = new Municipio();
+															munic.setMunicipio_id(rs.getInt("municipio_id"));
+															munic.setMunicipio_dpto_id(rs.getInt("municipio_dpto_id"));
+															munic.setMunicipio_nombre(rs.getString("municipio_nombre"));																															
+															return munic;
+														}
+														});	
+		return muni;
+	}
+	
 }

@@ -5,10 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import support.Departamento;
 import support.Ifp;
+import support.Municipio;
 import support.UCompetencia;
 import support.USolicitud;
 import model.Actividad;
+import model.Archivo;
 import model.Bitacora;
 import model.Certificacion;
 import model.Contacto;
@@ -33,6 +36,10 @@ public interface IService {
 	public List<Mantenedor> getMantenedoresByTipo(Integer tipo);
 	
 	public Map<Integer, Mantenedor> getMapMantenedoresByTipo(String tipo);
+	
+	public Map<Integer, Departamento> getDepartamentosByInatec();
+	
+	public Map<Integer, Municipio> getMunicipioDptoByInatec(Integer idDpto);
 	
 	public List<Actividad> getActividades(Long certificacionId);
 	
@@ -92,12 +99,15 @@ public interface IService {
 	public List<Evaluacion> getEvaluaciones(Solicitud solicitud);
 	public Solicitud getSolicitudById(Long idSolicitud);
 	public List<Unidad> getUnidadesByCertificacionId(Long certificacionId);
-	public List<Instrumento> getInstrumentosByCertificacionId(Long certificacionId);
-	public List<Guia> getGuiasByInstrumentoId(Long instrumentoId);
+	public List<Instrumento> getInstrumentosByCertificacionId(Long certificacionId);	
 	public Unidad getUnidadById(Long idUnidad);
 	public Instrumento getInstrumentoById(Long idInstrumento);
 	public List<Instrumento> getInstrumentoByUnidad (Long idUnidad);
 	public List<EvaluacionGuia> getEvaluacionGuiaByEvaluacionId(Long evaluacionId);
 	public List<Instrumento> getIntrumentoByEvaluacion(Long evaluacionId);
+	public Integer getMantenedorMinByTipo(String tipo);
+	public Mantenedor getMantenedorById(Integer idMantenedor);	
+	public List<Guia> getGuiaByParam(String namedString, Object [] parametros);
+	public List<Archivo> getArchivoByParam (String namedString, Object [] parametros);
 	public List<Bitacora> getBitacoras(Long actividadId);
 }
