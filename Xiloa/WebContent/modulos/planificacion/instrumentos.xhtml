@@ -18,7 +18,7 @@
 		</div>
         <h2>Configuracion de Instrumentos - <h:outputText value="#{instrumentoManagedBean.nombreCertificacion}" /> </h2>
         <div id="contenedor_secciones">
-		            <div class="seccion_edicion">
+		            <div class="seccion_edicion" style="width: 93%;">
 		                <h:form styleClass="formulario_inline">
 		                    <p:commandButton value="Agregar guia" update=":guiaDialogo" action="#{instrumentoManagedBean.nuevaGuia}" onclick="PF('dlg1').show();"/> 
 		                </h:form>
@@ -34,16 +34,15 @@
 								</p:column>		                        
 		                    </p:dataTable>
 		                </h:form>
-		                </div>		                
+		                </div>	
+		                <h:form>
+		               		<div class="contenedor_botones">
+		               			<h:commandButton style="float:right;" value="Cerrar" action="#{instrumentoManagedBean.aceptar}"/> 
+		               		</div>
+		                </h:form>	                
 		          </div>
 		          
-		         <div class="seccion_edicion">
-		         	<h:form>
-		          	<div class="contenedor_botones">
-						<h:commandButton value="Aceptar" action="#{instrumentoManagedBean.aceptar}"/> 
-					</div>
-					</h:form>
-				</div>
+		         
 		          		          
 		          <div class="seccion_edicion" style="width: 93%;margin-top: 124px;">
 		          		<h:form id="instrumentos">

@@ -118,17 +118,17 @@
 	    </h:form>   
      </p:dialog>
         
-     <p:dialog id="modalBitacora" header="Agregar bitacora" widgetVar="dlg2" modal="true" width="550" height="470">  
-         <h:form id="form_bitacora">
-            <h3>Bitacora</h3>  
+     <p:dialog id="modalBitacora" styleClass="modal_agregar_bitacora" header="Agregar bitacora" widgetVar="dlg2" modal="true" width="450" height="380" resizable="false">  
+         <h:form id="form_bitacora" >
+             <h3>Bitacora</h3>  
 			 <p>Fecha del Evento:</p> 
-			 <span class="proteccion_calendario">
+
 			 <p:calendar value="#{actividadManagedBean.bitacora.fechaEvento}" id="fecha_evento" showOn="button" pattern="dd/MM/yyyy"/>
-			 </span>          
+	        
              <h3>Descripcion del evento</h3>
-             <p:inputTextarea rows="10" cols="50" value="#{actividadManagedBean.bitacora.observaciones}" queryDelay="750" minQueryLength="4" />
-             <h:commandButton value="Cancelar" onclick="PF('dlg2').hide();"/>
-			 <h:commandButton value="Aceptar" action="#{actividadManagedBean.guardarBitacora(actividadManagedBean.bitacora)}" update=":form_bitacoras:bitacorasDataTable, :form_bitacora" oncomplete="PF('dlg2').hide();"/>
+             <p:inputTextarea rows="12" cols="65" value="#{actividadManagedBean.bitacora.observaciones}" queryDelay="750" minQueryLength="4" />
+             <h:commandButton styleClass="botones" value="Cancelar" onclick="PF('dlg2').hide();"/>
+			 <h:commandButton styleClass="botones" value="Aceptar" action="#{actividadManagedBean.guardarBitacora(actividadManagedBean.bitacora)}" update=":form_bitacoras:bitacorasDataTable, :form_bitacora" oncomplete="PF('dlg2').hide();"/>
          </h:form>
     </p:dialog>     
 </h:body>

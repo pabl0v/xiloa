@@ -41,30 +41,30 @@
             </div>
 
 			<h:form id="dataForm">
-            	<div class="seccion_edicion" style="height: 260px">
-                <h3>Descripcion de la Certificacion</h3>
-				<div>
-					<p:editor id="editor2" value="#{certificacionManagedBean.certificacion.descripcion}" height="190"/>   
-				</div>    
-				<p>Estatus</p>				
-				<p:selectOneMenu id="selector_estatus" styleClass="selector_status_estilo" value="#{certificacionManagedBean.selectedEstatusCertificacion}" >  
-					<f:selectItem itemLabel="Seleccione..." itemValue="" />
-					<f:selectItems value="#{certificacionManagedBean.catalogoEstatusCertificacion}" var="estatus" itemLabel="#{estatus.valor}" itemValue="#{estatus.id}" />
-				</p:selectOneMenu>				
-				</div>
 				<div id="info_competencia" class="seccion_edicion" style="height: 260px;font-size:15px;">
-					<p>Nombre del centro evaluador:</p>
-					<div><h:outputText value="#{certificacionManagedBean.certificacion.ifpNombre}"/></div>  
-					<br/>
-					<p>Direccion del centro evaluador:</p>
+					<p>Nombre del centro:</p>
+					<div style="display:inline-block;"><h:outputText value="#{certificacionManagedBean.certificacion.ifpNombre}"/></div>
+	
+					<p style="display:block;">Direccion del centro:</p>
 					<div><h:outputText value="#{certificacionManagedBean.certificacion.ifpDireccion}" /></div>
-					<br/>  
-					<p>Costo de aranceles para el candidato:</p>
-					<div>C$ <h:outputText value="#{certificacionManagedBean.certificacion.costoFormateado}" /></div> 
+
+					<p>Arancel:</p>
+					<div style="display:inline-block;">C$ <h:outputText value="#{certificacionManagedBean.certificacion.costoFormateado}" /></div>				
 				</div>
+				<div class="seccion_edicion">
+					
+				 </div>
 				<div class="seccion_edicion" style="height: 1px"></div>
 				<div class="seccion_edicion" style="height: 1px">
+					<div style="float:left;position: relative;top: -173px;">
+						<p>Estatus</p>				
+						<p:selectOneMenu id="selector_estatus" styleClass="selector_status_estilo" value="#{certificacionManagedBean.selectedEstatusCertificacion}" >  
+							<f:selectItem itemLabel="Seleccione..." itemValue="" />
+							<f:selectItems value="#{certificacionManagedBean.catalogoEstatusCertificacion}" var="estatus" itemLabel="#{estatus.valor}" itemValue="#{estatus.id}" />
+						</p:selectOneMenu>	
+						</div>
 					<div class="contenedor_botones">
+						
 						<h:commandButton id="prueba" value="Instrumentos" action="#{instrumentoManagedBean.configurarInstrumento(certificacionManagedBean.certificacion.id,certificacionManagedBean.certificacion.nombre)}"/> 
 						<h:commandButton value="Cancelar" onclick="$('#prueba').disabled=true;" action="#{certificacionManagedBean.cancelar}"/> 
 						<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardarEdicion}"/>

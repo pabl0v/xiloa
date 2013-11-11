@@ -1,3 +1,7 @@
+html {
+	background: #e6eef9!important;
+}
+
 h2{
     padding: 12px!important;
     padding-bottom: 0px!important;
@@ -16,6 +20,7 @@ h2{
     height: 500px;
     min-width: 1024px;
     position: relative;
+    width: 100%;
 }
 .contenedor_calendario {
     margin: 22px 8px;
@@ -71,7 +76,7 @@ h2{
 .contenedor_botones {
     float:right;
     position: relative;
-    top: -94px;
+    top: -173px;
 }
 .contenedor_botones input, #dialogoactividades_botones input{
 	padding: 7px;
@@ -88,6 +93,7 @@ h2{
 	position: relative;
 	top: 9px;
 	left: 9px;
+	margin-right: 50px;
 	}
 .selector_nombrecentro_estilo {
 	position: relative;
@@ -96,10 +102,11 @@ h2{
 }
 #tab_contenedor {
 	display: inline-block;
-	width: 100%;
+	padding: 13px;
+	width: 98%;
 	height: 171px;
 	height: 1px;
-	margin-top: -17px;
+	margin-top: -155px;
 }
 .estilo_dialogoactividades {
     background: #E6EEF9;
@@ -157,7 +164,7 @@ h2{
 }
 #info_competencia p{
 	
-	margin-top: 20px;
+	margin-top: 12px;
 }
 #info_competencia div{
 	font-weight: bold;

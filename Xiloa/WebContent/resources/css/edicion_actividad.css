@@ -75,12 +75,26 @@ h2 {
     width: 100%;
     margin-top: 80px;
 }
-#modal_agregar_bitacora h3 {
+.modal_agregar_bitacora {
+	background: #e6eef9;
+}
+.modal_agregar_bitacora .botones{
+	padding: 7px;
+	background: #c4c4c4 -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.8)), to(rgba(255,255,255,0)));
+	display: inline-block;
+	margin: 3px;
+	font-weight:bold;
+	color:#4f4f4f;
+	border-radius: 2px;
+	text-decoration: none !important;
+	cursor: pointer;
+}
+.modal_agregar_bitacora h3 {
 	margin: 5px 0;
 	font-size: 15px;
 	font-weight: bold; 
 }
-#modal_agregar_bitacora table{
+.modal_agregar_bitacora table{
 	width: 100%;
 }
 #tab_contenedor .ui-tabs{
