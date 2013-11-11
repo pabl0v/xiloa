@@ -108,43 +108,20 @@ public class CertificacionManagedBean implements Serializable {
 	
 	public void agregarActividad(Actividad actividad){
 		actividad.setCreador(getUsuario());
-		this.certificacion.addActividad(actividad);
+		actividad.setFechaRegistro(new Date());
+		Mantenedor estado = service.getMapMantenedoresByTipo("4").get(10);		//estatus pendiente
+		actividad.setEstado(estado);
+		Integer indice;
+		if(certificacion.getActividades().isEmpty())
+			indice = 0;
+		else
+			indice = certificacion.getActividades().size();
+		actividad.setIndice(indice);
+		actividad.setCertificacion(certificacion);
+		actividad = (Actividad)service.guardar(actividad);
+		certificacion.addActividad(actividad);
 	}
-	
-	/*
-	public String nuevaCertificacion(){
 		
-		String codigoCompetencia = certificacion.getCodigoCompetencia();
-		String nombreCompetencia = certificacion.getNombreCompetencia();
-		int disponibilidad = certificacion.getDisponibilidad();
-		String nombre = certificacion.getNombre();
-		String descripcion = certificacion.getDescripcion();
-		float costo = certificacion.getCosto();
-		int ifpId = certificacion.getIfpId();
-		String ifpNombre = certificacion.getIfpNombre();
-		String ifpDireccion = certificacion.getIfpDireccion();
-		
-		certificacion = new Certificacion();
-		
-		certificacion.setCodigoCompetencia(codigoCompetencia);
-		certificacion.setNombreCompetencia(nombreCompetencia);
-		certificacion.setDisponibilidad(disponibilidad);
-		certificacion.setNombre(nombre);
-		certificacion.setDescripcion(descripcion);
-		certificacion.setCosto(costo);
-		certificacion.setIfpId(Integer.valueOf(ifpId));
-		certificacion.setIfpNombre(ifpNombre);
-		certificacion.setIfpDireccion(ifpDireccion);
-		
-		certificacion.setActividades(new ArrayList<Actividad>());
-		certificacion.setUnidades(new HashSet<Unidad>());
-		certificacion.setInvolucrados(new Contacto[] {});
-		
-		selectedEstatusCertificacion = 7;
-
-		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
-	}*/
-	
 	public String editarCertificacion(Certificacion certificacion){
 		this.certificacion = certificacion;
 		this.selectedEstatusCertificacion = certificacion.getEstatus().getId();

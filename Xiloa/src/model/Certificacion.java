@@ -10,7 +10,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,6 +20,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKey;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -151,11 +151,11 @@ public class Certificacion {
 	
 	@OneToMany(mappedBy = "certificacion")
 	private List<Requisito> requisitos;
-	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name="certificacion_id", referencedColumnName="certificacion_id")
-	private List<Actividad> actividades;
-	
+		
+	@OneToMany(mappedBy = "certificacion",fetch = FetchType.EAGER)
+	@MapKey(name = "indice")
+	private Map<Integer,Actividad> actividades;	
+		
 	@OneToMany(mappedBy = "certificacion")
 	private List<Solicitud> solicitudes;
 	
@@ -182,7 +182,7 @@ public class Certificacion {
 		this.requisitos = new ArrayList<Requisito>();
 		this.unidades = new HashSet<Unidad>();
 		this.disponibilidad = 0;
-		this.actividades = new ArrayList<Actividad>();
+		this.actividades = new HashMap<Integer,Actividad>();
 		this.solicitudes = new ArrayList<Solicitud>();
 		this.involucrados = new HashMap<Integer, Contacto>();
 	}
@@ -412,22 +412,30 @@ public class Certificacion {
 	}
 
 	public List<Actividad> getActividades() {
-		return actividades;
+		return new ArrayList<Actividad>(actividades.values());
 	}
 
+	/*
 	public void setActividades(Actividad[] actividades) {
 		for(int i=0; i<actividades.length; i++){
 			this.actividades.add(actividades[i]);
 		}
-	}
+	}*/
 	
 	public void addActividad(Actividad actividad){
-		this.actividades.add(actividad);
+		Integer indice;
+		if(actividades.isEmpty())
+			indice = 0;
+		else
+			indice = actividades.size();
+		actividad.setIndice(indice);
+		this.actividades.put(indice, actividad);
 	}
 	
+	/*
 	public void setActividades(List<Actividad> actividades) {
 		this.actividades = actividades;
-	}
+	}*/
 
 	public List<Solicitud> getSolicitudes() {
 		return solicitudes;
@@ -474,7 +482,7 @@ public class Certificacion {
 							int nivelCompetencia,
 							List<Requisito> requisitos, 
 							Set<Unidad> unidades,
-							List<Actividad> actividades, 
+							//List<Actividad> actividades, 
 							List<Solicitud> solicitudes,
 							Map<Integer, Contacto> involucrados) {
 		super();
@@ -500,7 +508,7 @@ public class Certificacion {
 		this.nivelCompetencia = nivelCompetencia;
 		this.requisitos = requisitos;
 		this.unidades = unidades;
-		this.actividades = actividades;
+		//this.actividades = actividades;
 		this.solicitudes = solicitudes;
 		this.involucrados = involucrados;
 	}

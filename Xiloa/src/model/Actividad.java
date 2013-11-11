@@ -35,6 +35,15 @@ public class Actividad {
 	
 	@NotNull
 	@ManyToOne
+	@JoinColumn(name="certificacion_id")	
+	private Certificacion certificacion;
+	
+	@NotNull
+	@JoinColumn(name="actividad_indice")
+	private Integer indice;
+	
+	@NotNull
+	@ManyToOne
 	@JoinColumn(name="actividad_tipo_id")
 	private Mantenedor tipo;
 	
@@ -90,7 +99,7 @@ public class Actividad {
 	
 	@OneToMany
 	@JoinColumn(name="actividad_id", referencedColumnName="actividad_id")
-	private List<Bitacora> bitacora;
+	private List<Bitacora> bitacoras;
 
 	@NotNull
 	@ManyToOne
@@ -103,6 +112,22 @@ public class Actividad {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public Certificacion getCertificacion() {
+		return certificacion;
+	}
+
+	public void setCertificacion(Certificacion certificacion) {
+		this.certificacion = certificacion;
+	}
+
+	public Integer getIndice(){
+		return indice;
+	}
+	
+	public void setIndice(Integer indice){
+		this.indice = indice;
 	}
 
 	public Mantenedor getTipo() {
@@ -203,12 +228,12 @@ public class Actividad {
 		}
 	}
 	
-	public List<Bitacora> getBitacora() {
-		return bitacora;
+	public List<Bitacora> getBitacoras() {
+		return bitacoras;
 	}
 
-	public void setBitacora(List<Bitacora> bitacora) {
-		this.bitacora = bitacora;
+	public void setBitacoras(List<Bitacora> bitacoras) {
+		this.bitacoras = bitacoras;
 	}
 
 	public Mantenedor getEstado() {
@@ -222,10 +247,12 @@ public class Actividad {
 	public Actividad() {
 		super();
 		involucrados = new HashMap<Integer, Contacto>();
-		bitacora = new ArrayList<Bitacora>();
+		bitacoras = new ArrayList<Bitacora>();
 	}
 	
-	public Actividad(	Mantenedor tipo,
+	public Actividad(	Certificacion certificacion,
+						Integer indice,
+						Mantenedor tipo,
 						String nombre, 
 						String destino,
 						String hora,
@@ -237,9 +264,11 @@ public class Actividad {
 						Usuario creador,
 						Usuario ejecutor, 
 						Map<Integer,Contacto> involucrados,
-						List<Bitacora> bitacora,
+						List<Bitacora> bitacoras,
 						Mantenedor estado) {
 		super();
+		this.certificacion = certificacion;
+		this.indice = indice;
 		this.tipo = tipo;
 		this.nombre = nombre;
 		this.destino = destino;
@@ -252,7 +281,7 @@ public class Actividad {
 		this.creador = creador;
 		this.ejecutor = ejecutor;
 		this.involucrados = involucrados;
-		this.bitacora = bitacora;
+		this.bitacoras = bitacoras;
 		this.estado = estado;
 	}
 }

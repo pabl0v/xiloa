@@ -9,6 +9,7 @@ import support.Ifp;
 import support.UCompetencia;
 import support.USolicitud;
 import model.Actividad;
+import model.Bitacora;
 import model.Certificacion;
 import model.Contacto;
 import model.Evaluacion;
@@ -98,4 +99,5 @@ public interface IService {
 	public List<Instrumento> getInstrumentoByUnidad (Long idUnidad);
 	public List<EvaluacionGuia> getEvaluacionGuiaByEvaluacionId(Long evaluacionId);
 	public List<Instrumento> getIntrumentoByEvaluacion(Long evaluacionId);
+	public List<Bitacora> getBitacoras(Long actividadId);
 }

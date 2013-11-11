@@ -92,32 +92,39 @@ public class PlanificacionManagedBean implements Serializable {
 		certificacion.setIfpId(competencia.getIdCentro());
 		certificacion.setIfpNombre(competencia.getNombreCentro());
 		certificacion.setIfpDireccion(competencia.getDireccion());
-		certificacion.setActividades(new ArrayList<Actividad>());
+		//certificacion.setActividades(new ArrayList<Actividad>());
 		certificacion.setUnidades(new HashSet<Unidad>());
 		certificacion.setInvolucrados(new Contacto[] {});
 		
-		/*
 		certificacion.setDivulgacionInicia(new Date());
 		certificacion.setDivulgacionFinaliza(new Date());
 		certificacion.setInscripcionFinaliza(new Date());
 		certificacion.setEvaluacionInicia(new Date());
 		certificacion.setConvocatoriaInicia(new Date());
-		*/
-		Mantenedor estado = service.getMapMantenedoresByTipo("4").get(10);		//estatus pendiente
 		
-		Actividad divulgacion = new Actividad(actividades.get(1),"Divulgacion","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado);
-		Actividad verificacion = new Actividad(actividades.get(2),"Verificacion","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado);
-		Actividad evaluacion = new Actividad(actividades.get(3),"Evaluacion","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado);
-		Actividad convocatoria = new Actividad(actividades.get(4),"Convocatoria","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado);
+		certificacion.setEstatus(estatus);
+		certificacion = (Certificacion)service.guardar(certificacion);
 		
+		Mantenedor estado = service.getMapMantenedoresByTipo("4").get(10);		//estatus pendiente		
+		Actividad divulgacion = new Actividad(certificacion,0,actividades.get(1),"Divulgacion","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado);
+		Actividad convocatoria = new Actividad(certificacion,1,actividades.get(4),"Convocatoria","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado);
+		Actividad evaluacion = new Actividad(certificacion,2,actividades.get(3),"Evaluacion","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado);
+		Actividad verificacion = new Actividad(certificacion,3,actividades.get(2),"Verificacion","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado);
+		
+		divulgacion = (Actividad)service.guardar(divulgacion);
+		convocatoria = (Actividad)service.guardar(convocatoria);
+		evaluacion = (Actividad)service.guardar(evaluacion);
+		verificacion = (Actividad)service.guardar(verificacion);
+		
+		certificaciones = service.getCertificaciones();
+		/*
 		certificacion.addActividad(divulgacion);
 		certificacion.addActividad(verificacion);
 		certificacion.addActividad(evaluacion);
 		certificacion.addActividad(convocatoria);
 		
-		certificacion.setEstatus(estatus);
-		
-		certificaciones.add(0, (Certificacion) service.guardar(certificacion));
+		//certificaciones.add(0, (Certificacion) service.guardar(certificacion));
+		certificaciones.add(0, certificacion);*/
 	}
 	
 	public void onRowSelectCompetencia(SelectEvent event) {  

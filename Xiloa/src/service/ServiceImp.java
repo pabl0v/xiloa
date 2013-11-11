@@ -18,6 +18,7 @@ import support.UCompetencia;
 import dao.IDao;
 import dao.IDaoInatec;
 import model.Actividad;
+import model.Bitacora;
 import model.Certificacion;
 import model.Contacto;
 import model.Evaluacion;
@@ -77,6 +78,9 @@ public class ServiceImp implements IService {
 	
 	@Autowired
 	private IDao<Long> longDao;
+	
+	@Autowired
+	private IDao<Bitacora> bitacoraDao;
 	
 	@Override
 	public List<Certificacion> getCertificaciones(){
@@ -344,6 +348,8 @@ public class ServiceImp implements IService {
 			return instrumentoDao.save((Instrumento)objeto);
 		if(objeto instanceof Actividad)
 			return actividadDao.save((Actividad)objeto);
+		if(objeto instanceof Bitacora)
+			return bitacoraDao.save((Bitacora)objeto);
 		return null;
 	}
 	
@@ -467,5 +473,10 @@ public class ServiceImp implements IService {
 		}
 		return listInstrumentos;
 	}
-	
+
+	@Override
+	public List<Bitacora> getBitacoras(Long actividadId) {
+		Object [] objs =  new Object [] {actividadId};
+		return bitacoraDao.findAllByNamedQueryParam("Bitacoras.findAllByActividadId", objs);
+	}
 }

@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import model.Actividad;
+import model.Bitacora;
 import model.Certificacion;
 import model.Contacto;
 import model.Mantenedor;
@@ -31,14 +32,13 @@ public class ActividadManagedBean implements Serializable {
 	private IService service;
 
 	private Certificacion certificacion;
+	private Integer indiceActividad;
 	private Integer selectedTipoActividad;
 	private Map<Integer,Mantenedor> catalogoTiposActividad;
 	private Integer selectedEstatusActividad;
 	private Map<Integer,Mantenedor> catalogoEstatusActividad;
 	private Actividad actividad;
-	private String nombreCertificacion;
-	private String nombreCentro;
-	private String direccionCentro;
+	private Bitacora bitacora;
 	
 	private List<Contacto> contactos;
 	private Contacto[] selectedContactos;
@@ -47,12 +47,13 @@ public class ActividadManagedBean implements Serializable {
 		super();
 		actividad = new Actividad();
 		actividad.setFechaRegistro(new Date());
+		indiceActividad = 0;
 		contactos = new ArrayList<Contacto>();
 		catalogoTiposActividad = new HashMap<Integer,Mantenedor>();
 		catalogoEstatusActividad = new HashMap<Integer,Mantenedor>();
+		bitacora = new Bitacora();
 	}
-	
-	
+
 	@PostConstruct
 	private void init(){
 		catalogoTiposActividad = service.getMapMantenedoresByTipo("1");
@@ -110,6 +111,27 @@ public class ActividadManagedBean implements Serializable {
 		return actividad;
 	}
 	
+	public Bitacora getBitacora() {
+		return bitacora;
+	}
+	
+	public void agregarBitacora(){
+		bitacora = new Bitacora();
+	}
+
+	public void guardarBitacora(Bitacora bitacora) {
+		System.out.println("guardarBitacora: "+actividad.getId()+bitacora.getObservaciones());
+		bitacora.setActividad(actividad);
+		bitacora.setFechaRegistro(new Date());
+		bitacora.setUsuario(contactos.get(0));
+		service.guardar(bitacora);
+		this.bitacora = new Bitacora();
+	}
+
+	public List<Bitacora> getBitacoras() {
+		return service.getBitacoras(actividad.getId());
+	}
+
 	public void setCatalogoTiposActividad(Map<Integer, Mantenedor> catalogoTiposActividad) {
 		System.out.println("ActividadManagedBean setCatalogoTiposActividad : "+catalogoTiposActividad.size());
 		this.catalogoTiposActividad = catalogoTiposActividad;
@@ -132,21 +154,15 @@ public class ActividadManagedBean implements Serializable {
 	public List<Mantenedor> getCatalogoEstatusActividad() {
 		return new ArrayList<Mantenedor>(catalogoEstatusActividad.values());
 	}
-	
-	/*
-	public Map<Integer, Mantenedor> getCatalogoEstatusActividad() {
-		return catalogoEstatusActividad;
-	}*/
-	
-	public String editarActividad(String nombreCertificacion, Actividad actividad, String nombreCentro, String direccionCentro){
+		
+	public String editarActividad(Certificacion certificacion, Actividad actividad){
+		this.certificacion = certificacion;
 		this.actividad = actividad;
-		this.setNombreCertificacion(nombreCertificacion);
-		this.setNombreCentro(nombreCentro);
-		this.setDireccionCentro(direccionCentro);
+		this.indiceActividad = certificacion.getActividades().indexOf(actividad);
 		this.selectedEstatusActividad = actividad.getEstado().getId();
 		return "/modulos/planificacion/edicion_actividad?faces-redirect=true";
 	}
-	
+		
 	public String cancelar(){
 		actividad = new Actividad();
 		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
@@ -158,31 +174,7 @@ public class ActividadManagedBean implements Serializable {
 
 	public String guardar(Actividad actividad){
 		actividad.setEstado(catalogoEstatusActividad.get(selectedEstatusActividad));
-		this.actividad = (Actividad)service.guardar(actividad);
+		actividad = (Actividad)service.guardar(actividad);
 		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
-	}
-	
-	public String getNombreCentro() {
-		return nombreCentro;
-	}
-
-	public String getNombreCertificacion(){
-		return nombreCertificacion;
-	}
-	
-	public void setNombreCertificacion(String nombre){
-		this.nombreCertificacion = nombre;
-	}
-	
-	public void setNombreCentro(String nombreCentro) {
-		this.nombreCentro = nombreCentro;
-	}
-
-	public String getDireccionCentro() {
-		return direccionCentro;
-	}
-
-	public void setDireccionCentro(String direccionCentro) {
-		this.direccionCentro = direccionCentro;
 	}
 }

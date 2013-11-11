@@ -77,7 +77,7 @@
 							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
 							</p:commandButton>
 							<h:panelGroup id="contenidoActividades" style="border:0">
-								<p:dataTable id="actividadesDataTable" emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" selection="#{certificacionManagedBean.selectedActividad}" paginator="true" rows="10" rowKey="#{actividad}" selectionMode="single">  
+								<p:dataTable id="actividadesDataTable" emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" selection="#{certificacionManagedBean.selectedActividad}" paginator="true" rows="10" rowKey="#{actividad.id}" selectionMode="single">  
 									<f:facet name="header">  
 										<p:outputPanel style="text-align:right;">  
 											<h:outputText value="Buscar:" />  
@@ -95,7 +95,7 @@
 									<p:column headerText="Responsable"><h:outputText value="#{actividad.ejecutor.nombreCompleto}" /></p:column>  
 									<p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>
 									<p:column style="width:4%">
-										<p:commandButton id="selectButtonTab1" action="#{actividadManagedBean.editarActividad(certificacionManagedBean.certificacion.nombre,certificacionManagedBean.selectedActividad,certificacionManagedBean.certificacion.ifpNombre,certificacionManagedBean.certificacion.ifpDireccion)}" icon="ui-icon-pencil" title="Editar"/>  
+										<p:commandButton id="selectButtonTab1" action="#{actividadManagedBean.editarActividad(certificacionManagedBean.certificacion,certificacionManagedBean.selectedActividad)}" icon="ui-icon-pencil" title="Editar"/>  
 									</p:column>
 								</p:dataTable> 
 							</h:panelGroup>
@@ -110,54 +110,15 @@
 				<h3>Planificacion de actividades</h3>
 				<p>Nombre de la actividad</p>
 				<p:inputTextarea rows="10" cols="50" value="#{actividadManagedBean.actividad.nombre}" queryDelay="750" minQueryLength="4" />
-				<div class="dialogoactividades_secciones">
-					<p:growl id="growl" showDetail="true"/>
-					<p>Fecha:</p>
-					<p:calendar value="#{actividadManagedBean.actividad.fechaInicial}" id="popupButtonCal1" showOn="button" pattern="dd/MM/yyyy">
-						<p:ajax event="dateSelect" update="growl" />
-					</p:calendar>
-				</div>
-				<div class="dialogoactividades_secciones">
-					<p>Estatus:</p>
-					<p:selectOneMenu id="selectEstatus" value="#{actividadManagedBean.selectedEstatusActividad}">
-						<f:selectItem itemLabel="Seleccione..." itemValue="" />
-						<f:selectItems value="#{actividadManagedBean.catalogoEstatusActividad}" var="estatus" itemLabel="#{estatus.valor}" itemValue="#{estatus.id}" />
-					</p:selectOneMenu>
-				</div> 
 				<p>Lugar/Medio:</p>
 				<p:inputTextarea rows="10" cols="50" value="#{actividadManagedBean.actividad.destino}" queryDelay="750" minQueryLength="4" />
-				<div class="dialogoactividades_secciones2">   
+				<div class="dialogoactividades_secciones2">
 					<p>Tipo de actividad:</p>
 					<p:selectOneMenu id="selectTipo" value="#{actividadManagedBean.selectedTipoActividad}">
 						<f:selectItem itemLabel="Seleccione..." itemValue="" />
 						<f:selectItems value="#{actividadManagedBean.catalogoTiposActividad}" var="tipo" itemLabel="#{tipo.valor}" itemValue="#{tipo.id}" />
 					</p:selectOneMenu>
 				</div>
-				
-				<!--
-                <h:form styleClass="formulario_inline">
-                    <p:commandButton value="Agregar involucrados" onclick="PF('dlg3').show();"/> 
-                </h:form>
-                <h:form id="form2">
-                   <div class="seccion_interna">
-                   <p:dataTable id="display2" emptyMessage="No hay datos para mostrar"  var="contacto" value="#{certificacionManagedBean.selectedContactos}">  
-                        <p:column headerText="Nombre"><h:outputText value="#{contacto.nombreCompleto}" /></p:column>  
-                        <p:column headerText="Funcion"><h:outputText value="#{contacto.rol.descripcion}" /></p:column>  
-                        <p:column headerText="Correo electronico"><h:outputText value="#{contacto.correo1}" /></p:column>  
-                    </p:dataTable> 
-                    </div>
-                </h:form>
-                -->
-                <!-- 		
-				<p:commandButton value="Agregar involucrados"/>
-				<div id="dialogoactividades_involucrados">
-					<p:dataTable var="involucrados" value="#{tableBean.carsSmall}">
-						<p:column headerText="Nombre"><h:outputText value="#{car.model}" /></p:column>
-						<p:column headerText="Funcion"><h:outputText value="#{car.year}" /></p:column>
-						<p:column headerText="Correo electronico"><h:outputText value="#{car.manufacturer}" /></p:column>
-					</p:dataTable>
-				</div>
-				-->
 				<div id="dialogoactividades_botones">
 					<h:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/>
 					<h:commandButton value="Aceptar" action="#{certificacionManagedBean.agregarActividad(actividadManagedBean.actividad)}" update=":tabView, :formDialogo1" oncomplete="PF('dlg1').hide();"/>
