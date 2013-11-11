@@ -350,6 +350,8 @@ public class ServiceImp implements IService {
 			return actividadDao.save((Actividad)objeto);
 		if(objeto instanceof Bitacora)
 			return bitacoraDao.save((Bitacora)objeto);
+		if(objeto instanceof Unidad)
+			return unidadDao.save((Unidad)objeto);
 		return null;
 	}
 	

@@ -90,10 +90,12 @@ public class Unidad {
 		this.instrumentos.add(instrumento);
 	}
 
-	public Unidad(String competenciaCodigo, String competenciaDescripcion, boolean estatus) {
+	public Unidad(Certificacion certificacion, String competenciaCodigo, String competenciaDescripcion, List<Instrumento> instrumentos, boolean estatus) {
 		super();
+		this.certificacion = certificacion;
 		this.competenciaCodigo = competenciaCodigo;
 		this.competenciaDescripcion = competenciaDescripcion;
+		this.instrumentos = instrumentos;
 		this.estatus = estatus;
 	}
 	

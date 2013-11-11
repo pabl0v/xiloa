@@ -101,9 +101,11 @@ public class PlanificacionManagedBean implements Serializable {
 		certificacion.setInscripcionFinaliza(new Date());
 		certificacion.setEvaluacionInicia(new Date());
 		certificacion.setConvocatoriaInicia(new Date());
-		
+
 		certificacion.setEstatus(estatus);
 		certificacion = (Certificacion)service.guardar(certificacion);
+		
+		service.guardar(new Unidad(certificacion,"001","UC1",null,true));
 		
 		Mantenedor estado = service.getMapMantenedoresByTipo("4").get(10);		//estatus pendiente		
 		Actividad divulgacion = new Actividad(certificacion,0,actividades.get(1),"Divulgacion","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado);

@@ -410,6 +410,10 @@ public class Certificacion {
 	public void setUnidades(Set<Unidad> unidades) {
 		this.unidades = unidades;
 	}
+	
+	public void addUnidad(Unidad unidad){
+		this.unidades.add(unidad);
+	}
 
 	public List<Actividad> getActividades() {
 		return new ArrayList<Actividad>(actividades.values());
