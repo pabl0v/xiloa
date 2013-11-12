@@ -2,9 +2,11 @@ package dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import model.Contacto;
+import model.Requisito;
 import model.Rol;
 import model.Usuario;
 
@@ -112,7 +114,21 @@ public class DaoInatecImpl implements IDaoInatec {
 	private static final String SQL_SELECT_MunicipioByDpto_INATEC = "select m.municipioid as municipio_id,  " +
 																	       "m.departamentoid as municipio_dpto_id, " +
 		       														       "m.nombre as municipio_nombre " +
-		       														  "from public.municipio m ";	
+		       														  "from public.municipio m ";
+	
+	private static final String SQL_SELECT_REQUISITOS_CERTIFICACION = 
+			"select "
+				+"cr.id as codigo_requisito, "
+				+"cr.descripcion as descripcion_requisito, "
+				+"a.id as codigo_acreditacion "
+			+"from "
+				+"sac.acuerdos ac " 
+				+"inner join sac.acuerdos_detalles a on (a.acuerdoid=ac.acuerdoid) " 
+				+"inner join registro_cobranza.cu_curso_clasificacion cc on (cc.id=a.id_curso_clasificacion) " 
+				+"inner join registro_cobranza.cu_cat_curso c on (c.id=cc.id_curso) " 
+				+"inner join registro_cobranza.cu_estructura_formativa ef on (ef.id=cc.id_estructura_formativa) " 
+				+"inner join registro_cobranza.cu_estructura_requisito er on (er.id_estructura_formativa=ef.id) " 
+				+"inner join registro_cobranza.cu_cat_requisito cr on (cr.id=er.id_requisito) "; 
 	
 	public Usuario getUsuario(String usuario) {
 		Usuario user = null;
@@ -280,5 +296,28 @@ public class DaoInatecImpl implements IDaoInatec {
 														});	
 		return muni;
 	}
-	
+
+	@Override
+	public List<Requisito> getRequisitos(int cursoId, int centroId) {
+		List<Requisito> requisitos = new ArrayList<Requisito>();
+		try
+		{
+			requisitos = jdbcTemplate.query(
+							SQL_SELECT_REQUISITOS_CERTIFICACION + " where ac.centroid='" + 3001 + "' and c.id= " + 1995 + " order by cr.descripcion",
+							new RowMapper<Requisito>() {
+								public Requisito mapRow(ResultSet rs, int rowNum) throws SQLException {
+									Requisito requisito = new Requisito();
+									requisito.setCodigo(rs.getString("codigo_requisito"));
+									requisito.setDescripcion(rs.getString("descripcion_requisito"));
+									requisito.setAcreditacion(rs.getString("codigo_acreditacion"));
+									return requisito;
+								}
+							}); 
+		}
+		catch(EmptyResultDataAccessException e)
+		{
+			return null;
+		}
+		return requisitos;
+	}
 }

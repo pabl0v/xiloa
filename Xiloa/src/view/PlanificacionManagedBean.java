@@ -14,6 +14,7 @@ import model.Actividad;
 import model.Certificacion;
 import model.Contacto;
 import model.Mantenedor;
+import model.Requisito;
 import model.Unidad;
 import model.Usuario;
 
@@ -83,6 +84,7 @@ public class PlanificacionManagedBean implements Serializable {
 		Usuario creador = service.getUsuarioLocal("admin");						//actualizar
 		
 		Certificacion certificacion = new Certificacion();
+		certificacion.setCursoId(competencia.getIdUCompetencia());
 		certificacion.setNombre(competencia.getNombreUCompetencia());
 		certificacion.setDescripcion(competencia.getNombreUCompetencia());
 		certificacion.setDisponibilidad(competencia.getDisponibilidad());
@@ -103,9 +105,13 @@ public class PlanificacionManagedBean implements Serializable {
 		certificacion.setConvocatoriaInicia(new Date());
 
 		certificacion.setEstatus(estatus);
+		//certificacion.setRequisitos(service.getRequisitos(certificacion.getCursoId(), certificacion.getIfpId()));
 		certificacion = (Certificacion)service.guardar(certificacion);
 		
-		service.guardar(new Unidad(certificacion,"001","UC1",null,true));
+		List<Requisito> requisitos = service.getRequisitos(certificacion);
+		service.guardar(requisitos.get(0));
+		
+		service.guardar(new Unidad(certificacion,"001","UC1",null,true));		
 		
 		Mantenedor estado = service.getMapMantenedoresByTipo("4").get(10);		//estatus pendiente		
 		Actividad divulgacion = new Actividad(certificacion,0,actividades.get(1),"Divulgacion","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado);

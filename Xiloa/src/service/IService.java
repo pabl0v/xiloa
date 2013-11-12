@@ -53,30 +53,7 @@ public interface IService {
 	
 	public boolean isNuevoContactoInatec(String usuario);
 		
-	public void guardarCertificacion(	String nombre, 
-										String descripcion,
-										String codigoCompetencia,
-										String nombreCompetencia,
-										int disponibilidad,
-										Date fechaInicia,
-										Date fechaFinaliza,
-										int ifp,
-										String ifpNombre,
-										String ifpDireccion,
-										Usuario programador,
-										Date fechaIniciaDivulgacion,
-										Date fechaFinalizaDivulgacion,
-										Date fechaFinalizaInscripcion,
-										Date fechaIniciaConvocatoria,
-										Date fechaIniciaEvaluacion,
-										Usuario creador,
-										String referencia,
-										int nivelCompetencia,
-										List<Requisito> requisitos,
-										List<Actividad> actividades,
-										List<Solicitud> solicitudes,
-										Contacto[] involucrados,
-										int estatus);
+	public void guardarCertificacion(Certificacion certificacion);
 	public List<Requisito> getRequisitos(int certificacionId);
 	public void updateRequisito(Requisito requisito);
 	public List<Usuario> getUsuarios();
@@ -110,4 +87,5 @@ public interface IService {
 	public List<Guia> getGuiaByParam(String namedString, Object [] parametros);
 	public List<Archivo> getArchivoByParam (String namedString, Object [] parametros);
 	public List<Bitacora> getBitacoras(Long actividadId);
+	public List<Requisito> getRequisitos(Certificacion certificacion);
 }

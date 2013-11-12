@@ -98,71 +98,8 @@ public class ServiceImp implements IService {
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void guardarCertificacion(	String nombre, 
-										String descripcion,
-										String codigoCompetencia,
-										String nombreCompetencia,
-										int disponibilidad,
-										Date fechaInicia, 
-										Date fechaFinaliza, 
-										int ifp, 
-										String ifpNombre,
-										String ifpDireccion, 
-										Usuario programador,
-										Date fechaIniciaDivulgacion, 
-										Date fechaFinalizaDivulgacion,
-										Date fechaFinalizaInscripcion, 
-										Date fechaIniciaConvocatoria,
-										Date fechaIniciaEvaluacion, 
-										Usuario creador, 
-										String referencial,
-										int nivelCompetencia, 
-										List<Requisito> requisitos,
-										List<Actividad> actividades,
-										List<Solicitud> solicitudes, 
-										Contacto[] involucrados,
-										int estatus) {
-		/*
-		Usuario usuario = usuarioDao.findById(Usuario.class, 3); //usuarioDao.findOneByQuery("select u from usuarios u where u.id=3");
-		Certificacion certificacion = new Certificacion();
-		certificacion.setNombre(nombre);
-		certificacion.setDescripcion(descripcion);
-		certificacion.setCodigoCompetencia(codigoCompetencia);
-		certificacion.setNombreCompetencia(nombreCompetencia);
-		certificacion.setDisponibilidad(disponibilidad);
-		certificacion.setInicia(fechaInicia);
-		certificacion.setFinaliza(fechaFinaliza);
-		certificacion.setIfpId(ifp);
-		certificacion.setIfpNombre(ifpNombre);
-		certificacion.setIfpDireccion(ifpDireccion);
-		certificacion.setProgramador(usuario);	//programador
-		certificacion.setDivulgacionInicia(fechaIniciaDivulgacion);
-		certificacion.setDivulgacionFinaliza(fechaFinalizaDivulgacion);
-		certificacion.setInscripcionFinaliza(fechaFinalizaInscripcion);
-		certificacion.setConvocatoriaInicia(fechaIniciaConvocatoria);
-		certificacion.setEvaluacionInicia(fechaIniciaEvaluacion);
-		certificacion.setCreador(usuario);		//creador
-		certificacion.setReferencial(referencial);
-		certificacion.setNivelCompetencia(nivelCompetencia);		
-		certificacion.setActividades(actividades);
-		certificacion.setSolicitudes(solicitudes);
-		certificacion.setInvolucrados(involucrados);
-		certificacion.setEstatus(mantenedorDao.findById(Mantenedor.class, estatus));
-		certificacion.setFechaRegistro(new Date());
-		
-		List<Contacto> contactos = new ArrayList<Contacto>();
-		contactos.add(usuario.getContacto());
-		//contactos.add(usuario.getContacto());
-		
-		/*
-		Actividad actividad = new Actividad("Actividad 1","Actividad 1", "Managua", new Date(), new Date(), usuario, usuario, contactos);
-		List<Actividad> actividades2 = new ArrayList<Actividad>();
-		actividades2.add(actividad);
-		certificacion.setActividades(actividades2);*/
-		
-		//certificacionDao.save(certificacion);
-		//certificacion.setActividades(actividades2);
-		//certificacionDao.save(certificacion);*/
+	public void guardarCertificacion(Certificacion certificacion) {
+		certificacion = certificacionDao.save(certificacion);
 	}
 	
 	@Override
@@ -364,6 +301,8 @@ public class ServiceImp implements IService {
 			return bitacoraDao.save((Bitacora)objeto);
 		if(objeto instanceof Unidad)
 			return unidadDao.save((Unidad)objeto);
+		if(objeto instanceof Requisito)
+			return requisitoDao.save((Requisito)objeto);
 		return null;
 	}
 	
@@ -535,5 +474,17 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Archivo> getArchivoByParam (String namedString, Object [] parametros) {
 		return archivoDao.findAllByNamedQueryParam(namedString, parametros);
+	}
+
+	@Override
+	public List<Requisito> getRequisitos(Certificacion certificacion) {
+		//List<Requisito> requisitos = inatecDao.getRequisitos(certificacion.getCursoId(), certificacion.getIfpId());
+		List<Requisito> requisitos = inatecDao.getRequisitos(1995, 3001);
+		for(int i=0; i<requisitos.size(); i++){
+			System.out.println("Requisito No."+i);
+			requisitos.get(i).setCertificacion(certificacion);
+			//requisitoDao.save(requisitos.get(i));
+		}
+		return requisitos;
 	}
 }

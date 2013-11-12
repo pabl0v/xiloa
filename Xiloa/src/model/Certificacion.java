@@ -46,6 +46,9 @@ public class Certificacion {
 	@Column(name = "certificacion_id", nullable = false)
 	private Long id;
 	
+	@Column(name = "certificacion_curso_id", nullable = false)
+	private int cursoId;
+	
 	@Column(name = "certificacion_nombre", nullable = false)
 	private String nombre;
 	
@@ -193,6 +196,14 @@ public class Certificacion {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public int getCursoId() {
+		return cursoId;
+	}
+
+	public void setCursoId(int cursoId) {
+		this.cursoId = cursoId;
 	}
 
 	public String getNombre() {
@@ -464,7 +475,8 @@ public class Certificacion {
 		}
 	}
 
-	public Certificacion(	String nombre, 
+	public Certificacion(	int cursoId,
+							String nombre, 
 							String descripcion,
 							//String codigoCompetencia,
 							//String nombreCompetencia,
@@ -490,6 +502,7 @@ public class Certificacion {
 							List<Solicitud> solicitudes,
 							Map<Integer, Contacto> involucrados) {
 		super();
+		this.cursoId = cursoId;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		//this.codigoCompetencia = codigoCompetencia;

@@ -13,32 +13,29 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 public class Requisito {
 	
 	@Id
-	@Column(name = "requisitos_id", nullable = false)
-	private String requisitoId;
+	@Column(name = "requisito_id", nullable = false)
+	private Long id;
 	
 	@NotNull
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="certificacion_id")
 	private Certificacion certificacion;
-	
-	@Column(name = "requisitos_descripcion", nullable = false)
+		
+	@Column(name = "requisito_codigo", nullable = false)
+	private String codigo;
+
+	@Column(name = "requisito_descripcion", nullable = false)
 	private String descripcion;
 	
-	@Column(name = "requisitos_vigencia", nullable = false)
-	private String vigencia;
-	
-	@Column(name = "requisitos_acreditacion", nullable = false)
+	@Column(name = "requisito_codigo_acreditacion", nullable = false)
 	private String acreditacion;
 	
-	@Column(name = "requisitos_calificacion", nullable = false)
-	private String calificacion;
-
-	public String getRequisitoId() {
-		return requisitoId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setRequisitoId(String requisitoId) {
-		this.requisitoId = requisitoId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Certificacion getCertificacion() {
@@ -49,20 +46,20 @@ public class Requisito {
 		this.certificacion = certificacion;
 	}
 	
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
 	public String getDescripcion() {
 		return descripcion;
 	}
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
-	}
-
-	public String getVigencia() {
-		return vigencia;
-	}
-
-	public void setVigencia(String vigencia) {
-		this.vigencia = vigencia;
 	}
 
 	public String getAcreditacion() {
@@ -72,27 +69,16 @@ public class Requisito {
 	public void setAcreditacion(String acreditacion) {
 		this.acreditacion = acreditacion;
 	}
-
-	public String getCalificacion() {
-		return calificacion;
-	}
-
-	public void setCalificacion(String calificacion) {
-		this.calificacion = calificacion;
-	}
-
-	public Requisito(Certificacion certificacion, String descripcion,
-			String vigencia, String acreditacion, String calificacion) {
-		super();
-		this.certificacion = certificacion;
-		this.descripcion = descripcion;
-		this.vigencia = vigencia;
-		this.acreditacion = acreditacion;
-		this.calificacion = calificacion;
-	}
 	
 	public Requisito() {
 		super();		
 	}
-	
+
+	public Requisito(Certificacion certificacion, String codigo, String descripcion, String acreditacion) {
+		super();
+		this.certificacion = certificacion;
+		this.codigo = codigo;
+		this.descripcion = descripcion;
+		this.acreditacion = acreditacion;
+	}
 }
