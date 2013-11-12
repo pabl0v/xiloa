@@ -104,4 +104,13 @@ public class DaoImpl<T extends Object> implements IDao<T>{
 		result = q.getResultList(); 
 		return result;
 	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<T> findAllByNamedQuery(String named){
+		List<T> result;
+		Query q = em.createNamedQuery(named);
+		result = q.getResultList(); 
+		return result;
+	}
 }

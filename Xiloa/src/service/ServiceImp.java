@@ -93,7 +93,7 @@ public class ServiceImp implements IService {
 	
 	@Override
 	public List<Certificacion> getCertificaciones(){
-		return certificacionDao.findAll(Certificacion.class);
+		return certificacionDao.findAllByNamedQuery("Certificacion.findAll");
 	}
 	
 	@Override
