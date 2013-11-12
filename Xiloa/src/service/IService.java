@@ -1,6 +1,5 @@
 package service;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,8 +51,8 @@ public interface IService {
 	public Contacto generarNuevoContactoInatec(String usuario);
 	
 	public boolean isNuevoContactoInatec(String usuario);
-		
-	public void guardarCertificacion(Certificacion certificacion);
+	
+	public Certificacion guardarCertificacion(Certificacion certificacion, List<Requisito> requisitos, List<Unidad> unidades);
 	public List<Requisito> getRequisitos(int certificacionId);
 	public void updateRequisito(Requisito requisito);
 	public List<Usuario> getUsuarios();
@@ -87,5 +86,6 @@ public interface IService {
 	public List<Guia> getGuiaByParam(String namedString, Object [] parametros);
 	public List<Archivo> getArchivoByParam (String namedString, Object [] parametros);
 	public List<Bitacora> getBitacoras(Long actividadId);
-	public List<Requisito> getRequisitos(Certificacion certificacion);
+	public List<Requisito> getRequisitos(int cursoId, int centroId);
+	public List<Unidad> getUnidades(int cursoId, int centroId);
 }

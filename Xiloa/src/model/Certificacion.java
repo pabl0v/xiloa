@@ -152,7 +152,7 @@ public class Certificacion {
 	@OneToMany(mappedBy="certificacion")
 	private Set<Unidad> unidades;
 	
-	@OneToMany(mappedBy = "certificacion")
+	@OneToMany(mappedBy = "certificacion",fetch = FetchType.EAGER)
 	private List<Requisito> requisitos;
 		
 	@OneToMany(mappedBy = "certificacion",fetch = FetchType.EAGER)

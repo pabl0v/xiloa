@@ -2,7 +2,8 @@ package model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -13,20 +14,24 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 public class Requisito {
 	
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "requisito_id", nullable = false)
 	private Long id;
 	
 	@NotNull
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="certificacion_id")
 	private Certificacion certificacion;
 		
+	@NotNull
 	@Column(name = "requisito_codigo", nullable = false)
 	private String codigo;
 
+	@NotNull
 	@Column(name = "requisito_descripcion", nullable = false)
 	private String descripcion;
 	
+	@NotNull
 	@Column(name = "requisito_codigo_acreditacion", nullable = false)
 	private String acreditacion;
 	

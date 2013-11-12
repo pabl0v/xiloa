@@ -95,11 +95,35 @@ public class ServiceImp implements IService {
 	public List<Certificacion> getCertificaciones(){
 		return certificacionDao.findAllByNamedQuery("Certificacion.findAll");
 	}
-	
+		
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void guardarCertificacion(Certificacion certificacion) {
+	public Certificacion guardarCertificacion(Certificacion certificacion, List<Requisito> requisitos, List<Unidad> unidades) {
+		
 		certificacion = certificacionDao.save(certificacion);
+		
+		for(int i=0; i<requisitos.size(); i++){
+			requisitos.get(i).setCertificacion(certificacion);
+			requisitoDao.save(requisitos.get(i));
+		}
+		
+		for(int i=0; i<unidades.size(); i++){
+			unidades.get(i).setCertificacion(certificacion);
+			unidadDao.save(unidades.get(i));
+		}
+		
+		unidadDao.save(new Unidad(certificacion,"001","UC1",null,true));
+		
+		Mantenedor estado = getMapMantenedoresByTipo("4").get(10);				//estatus pendiente
+		Map<Integer, Mantenedor> actividades = getMapMantenedoresByTipo("1");	//actualizar
+		Usuario creador = getUsuarioLocal("admin");								//actualizar
+		
+		actividadDao.save(new Actividad(certificacion,0,actividades.get(1),"Divulgacion","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado));
+		actividadDao.save(new Actividad(certificacion,1,actividades.get(4),"Convocatoria","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado));
+		actividadDao.save(new Actividad(certificacion,2,actividades.get(3),"Evaluacion","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado));
+		actividadDao.save(new Actividad(certificacion,3,actividades.get(2),"Verificacion","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado));
+				
+		return certificacionDao.save(certificacion);
 	}
 	
 	@Override
@@ -466,7 +490,7 @@ public class ServiceImp implements IService {
 		return m;
 	}	
 
-@Override
+	@Override
 	public List<Guia> getGuiaByParam(String namedString, Object [] parametros){
 		return guiaDao.findAllByNamedQueryParam(namedString, parametros);
 	}		
@@ -475,16 +499,14 @@ public class ServiceImp implements IService {
 	public List<Archivo> getArchivoByParam (String namedString, Object [] parametros) {
 		return archivoDao.findAllByNamedQueryParam(namedString, parametros);
 	}
+	
+	@Override
+	public List<Requisito> getRequisitos(int cursoId, int centroId){
+		return inatecDao.getRequisitos(cursoId, centroId);
+	}
 
 	@Override
-	public List<Requisito> getRequisitos(Certificacion certificacion) {
-		//List<Requisito> requisitos = inatecDao.getRequisitos(certificacion.getCursoId(), certificacion.getIfpId());
-		List<Requisito> requisitos = inatecDao.getRequisitos(1995, 3001);
-		for(int i=0; i<requisitos.size(); i++){
-			System.out.println("Requisito No."+i);
-			requisitos.get(i).setCertificacion(certificacion);
-			//requisitoDao.save(requisitos.get(i));
-		}
-		return requisitos;
+	public List<Unidad> getUnidades(int cursoId, int centroId) {
+		return null;
 	}
 }

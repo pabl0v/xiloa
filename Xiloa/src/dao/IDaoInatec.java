@@ -2,7 +2,6 @@ package dao;
 
 import java.util.List;
 
-import model.Certificacion;
 import model.Contacto;
 import model.Requisito;
 import model.Usuario;

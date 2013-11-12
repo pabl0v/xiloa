@@ -3,14 +3,11 @@ package view;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import model.Actividad;
 import model.Certificacion;
 import model.Contacto;
 import model.Mantenedor;
@@ -38,20 +35,17 @@ public class PlanificacionManagedBean implements Serializable {
 	private List<UCompetencia> competencias;
 	private UCompetencia selectedCompetencia;
 	private Certificacion selectedCertificacion;
-	private Map<Integer,Mantenedor> actividades;
 	
 	public PlanificacionManagedBean(){
 		super();
 		certificaciones = new ArrayList<Certificacion>();
 		competencias = new ArrayList<UCompetencia>();
-		actividades = new HashMap<Integer,Mantenedor>();
 	}
 	
 	@PostConstruct
 	private void init(){
 		competencias = service.getUcompetenciaSinPlanificar();
 		certificaciones = service.getCertificaciones();
-		actividades = service.getMapMantenedoresByTipo("1");
 	}
 	
 	public List<Certificacion> getCertificaciones(){
@@ -94,10 +88,8 @@ public class PlanificacionManagedBean implements Serializable {
 		certificacion.setIfpId(competencia.getIdCentro());
 		certificacion.setIfpNombre(competencia.getNombreCentro());
 		certificacion.setIfpDireccion(competencia.getDireccion());
-		//certificacion.setActividades(new ArrayList<Actividad>());
 		certificacion.setUnidades(new HashSet<Unidad>());
 		certificacion.setInvolucrados(new Contacto[] {});
-		
 		certificacion.setDivulgacionInicia(new Date());
 		certificacion.setDivulgacionFinaliza(new Date());
 		certificacion.setInscripcionFinaliza(new Date());
@@ -105,34 +97,12 @@ public class PlanificacionManagedBean implements Serializable {
 		certificacion.setConvocatoriaInicia(new Date());
 
 		certificacion.setEstatus(estatus);
-		//certificacion.setRequisitos(service.getRequisitos(certificacion.getCursoId(), certificacion.getIfpId()));
-		certificacion = (Certificacion)service.guardar(certificacion);
 		
-		List<Requisito> requisitos = service.getRequisitos(certificacion);
-		service.guardar(requisitos.get(0));
+		List<Requisito> requisitos = service.getRequisitos(certificacion.getCursoId(), certificacion.getIfpId());
+		List<Unidad> unidades = service.getUnidades(certificacion.getCursoId(), certificacion.getIfpId());
 		
-		service.guardar(new Unidad(certificacion,"001","UC1",null,true));		
-		
-		Mantenedor estado = service.getMapMantenedoresByTipo("4").get(10);		//estatus pendiente		
-		Actividad divulgacion = new Actividad(certificacion,0,actividades.get(1),"Divulgacion","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado);
-		Actividad convocatoria = new Actividad(certificacion,1,actividades.get(4),"Convocatoria","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado);
-		Actividad evaluacion = new Actividad(certificacion,2,actividades.get(3),"Evaluacion","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado);
-		Actividad verificacion = new Actividad(certificacion,3,actividades.get(2),"Verificacion","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado);
-		
-		divulgacion = (Actividad)service.guardar(divulgacion);
-		convocatoria = (Actividad)service.guardar(convocatoria);
-		evaluacion = (Actividad)service.guardar(evaluacion);
-		verificacion = (Actividad)service.guardar(verificacion);
-		
-		certificaciones = service.getCertificaciones();
-		/*
-		certificacion.addActividad(divulgacion);
-		certificacion.addActividad(verificacion);
-		certificacion.addActividad(evaluacion);
-		certificacion.addActividad(convocatoria);
-		
-		//certificaciones.add(0, (Certificacion) service.guardar(certificacion));
-		certificaciones.add(0, certificacion);*/
+		certificacion = service.guardarCertificacion(certificacion, requisitos, unidades);
+		certificaciones.add(0,certificacion);
 	}
 	
 	public void onRowSelectCompetencia(SelectEvent event) {  

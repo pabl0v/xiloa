@@ -303,7 +303,7 @@ public class DaoInatecImpl implements IDaoInatec {
 		try
 		{
 			requisitos = jdbcTemplate.query(
-							SQL_SELECT_REQUISITOS_CERTIFICACION + " where ac.centroid='" + 3001 + "' and c.id= " + 1995 + " order by cr.descripcion",
+							SQL_SELECT_REQUISITOS_CERTIFICACION + " where ac.centroid='" + centroId + "' and c.id= " + cursoId + " order by cr.descripcion",
 							new RowMapper<Requisito>() {
 								public Requisito mapRow(ResultSet rs, int rowNum) throws SQLException {
 									Requisito requisito = new Requisito();
