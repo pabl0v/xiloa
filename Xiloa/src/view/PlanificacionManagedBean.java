@@ -99,9 +99,9 @@ public class PlanificacionManagedBean implements Serializable {
 		certificacion.setEstatus(estatus);
 		
 		List<Requisito> requisitos = service.getRequisitos(certificacion.getCursoId(), certificacion.getIfpId());
-		List<Unidad> unidades = service.getUnidades(certificacion.getCursoId(), certificacion.getIfpId());
+		//List<Unidad> unidades = service.getUnidades(certificacion.getCursoId(), certificacion.getIfpId());
 		
-		certificacion = service.guardarCertificacion(certificacion, requisitos, unidades);
+		certificacion = service.guardarCertificacion(certificacion, requisitos, new ArrayList<Unidad>());
 		certificaciones.add(0,certificacion);
 	}
 	
