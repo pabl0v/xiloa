@@ -17,6 +17,7 @@ import javax.faces.model.SelectItem;
 import model.Certificacion;
 import model.Contacto;
 import model.Evaluacion;
+import model.Laboral;
 import model.Rol;
 import model.Solicitud;
 import model.Unidad;
@@ -514,9 +515,10 @@ public class SolicitudesManagedBean implements Serializable {
 				u = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
 			} else {
 				u = null;
-			}
+			}			
 			
-			solicitante = new Contacto(u, //Usuario 
+			solicitante = new Contacto(u, //Usuario
+					                   null, //laborales
 									  r, //Rol
 									  1, //EntidadId
 									  this.getPrimerNombre().toUpperCase().trim(), 
@@ -536,13 +538,13 @@ public class SolicitudesManagedBean implements Serializable {
 									  null, // fechaNacimiento
 									  new Date(), // fechaRegistro 
 									  1, // nacionalidadId
+									  null, //departamentoId
+									  null, // municipioId
 									  "", // lugarNacimiento 
 									  false, // inatec 
 									  "", // usuarioInatec
 									  "", // funcion
-									  null,//idEmpleado
-									  null, //departamentoId
-									  null // municipioId
+									  null//idEmpleado									  
 									  );		
 
 			service.guardar(solicitante);

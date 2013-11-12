@@ -6,7 +6,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-       <link type="text/css" rel="stylesheet" href="../../resources/css/registro_solicitud.css"></link>
+       <link type="text/css" rel="stylesheet" href="../../resources/css/registro_evaluacion.css"></link>
     </h:head>
     <h:body>
     <div id="contenedor">
@@ -14,35 +14,29 @@
             <ui:insert name="header" >
                 <ui:include src="../../modulos/compartido/paginamaestra.xhtml" />
 	    	</ui:insert>
-	    	<script type="text/javascript" src="../../resources/scripts/registro_solicitud.js"></script>
+	    	<script type="text/javascript" src="../../resources/scripts/registro_evaluacion.js"></script>
 		</div>
        <h2>Solicitud # <a>#{evaluacionManagedBean.solicitudEval.id}</a></h2>
-       <h2>Datos Evaluacion:</h2>
+       <h2 style="color:#555;">Datos Evaluacion:</h2>
        <h:form id="formEvaluacion">
        		<p:messages id="msgEvaluacion" showDetail="true" autoUpdate="true" closable="true" />       		
-   			<div class="seccion_detalle">			    					
-				<p>Elemento de compentencia o realizacion profesional:</p>
-				<p:selectOneMenu styleClass="selectores" id="selector_unidadComp" value="#{evaluacionManagedBean.idSelectedUnidad}" >				
-					<f:selectItems value="#{evaluacionManagedBean.listUnidadCompentecia}" />
-					<p:ajax update="selector_instrumentoByUnidad" listener="#{evaluacionManagedBean.handleInstrumentosByUnidad}" />			        
-			    </p:selectOneMenu>	           	
-	           	<p>Tecnica o instrumento de evaluacion:</p>
-	            <p:selectOneMenu styleClass="selectores" id="selector_instrumentoByUnidad" value="#{evaluacionManagedBean.idSelectedInstrByUnd}" >				
-					<f:selectItems value="#{evaluacionManagedBean.listInstrumentoByUnidad}" />
-					<p:ajax update="dtGuias" listener="#{evaluacionManagedBean.handleGuiasByInstrumento}" /> 			        
-			    </p:selectOneMenu>	           	            	
-				<p:growl id="growlFechaEval" showDetail="true"/>
-				<p>Fecha:</p>					
-				<p:calendar id="popupBtnFechaEval" value="#{evaluacionManagedBean.fechaEvaluacion}" pattern="dd/mm/yyyy" showOn="button">
-					<p:ajax event="dateSelect" update="growlFechaEval" />
-				</p:calendar>					
-				<p>Aprobado:</p>		
-				<p:selectBooleanCheckbox id="aprobadoEval" value="#{evaluacionManagedBean.aprobado}"></p:selectBooleanCheckbox>          		
-          		<p>Observaciones:</p>	      
-          		<p:editor id="observacionReprobado" value="#{evaluacionManagedBean.observaciones}" height="150"/>	            	
-			</div>
-			<div class="seccion_detalle">
-				<h3>Agregue guia al Instrumento de evaluacion:</h3>
+   			<div class="seccion_detalle" style="width:94%">		
+   			
+   				<div style="display:inline-block;width:47%;">    					
+					<p>Elemento de compentencia o realizacion profesional:</p>
+					<p:selectOneMenu styleClass="selectores" id="selector_unidadComp" value="#{evaluacionManagedBean.idSelectedUnidad}" >				
+						<f:selectItems value="#{evaluacionManagedBean.listUnidadCompentecia}" />
+						<p:ajax update="selector_instrumentoByUnidad" listener="#{evaluacionManagedBean.handleInstrumentosByUnidad}" />			        
+				    </p:selectOneMenu>	          
+			    </div>
+			    <div style="display:inline-block;float:right;">    	
+		           	<p>Tecnica o instrumento de evaluacion:</p>
+		            <p:selectOneMenu styleClass="selectores" id="selector_instrumentoByUnidad" value="#{evaluacionManagedBean.idSelectedInstrByUnd}" >				
+						<f:selectItems value="#{evaluacionManagedBean.listInstrumentoByUnidad}" />
+						<p:ajax update="dtGuias" listener="#{evaluacionManagedBean.handleGuiasByInstrumento}" /> 			        
+				    </p:selectOneMenu>	           	            	
+			    </div>
+			    <h3>Agregue guia al Instrumento de evaluacion:</h3>
 	     		<p:dataTable id="dtGuias" emptyMessage="No hay datos para mostrar"  var="varGuia" value="#{evaluacionManagedBean.listGuiaByInstru}" 
 	     		              rowKey="#{varGuia.id}" selection="#{evaluacionManagedBean.selectedGuia}" selectionMode="multiple"
 	     		              paginator="true" rows="5" >  
@@ -50,13 +44,36 @@
 	                <p:column headerText="Respuesta"><h:outputText value="#{varGuia.respuesta}" /></p:column>  
 	                <p:column headerText="Puntaje"><h:outputText value="#{varGuia.puntaje}" /></p:column>  
 	            </p:dataTable>		        
-			</div>
-			<div class="seccion_detalle" style="background:none;height:50px;margin-top:-68px;border:none;text-align: right;">
+			    
+			    <div style="display:inline-block;margin-left:7px;">
+					<p:growl id="growlFechaEval" showDetail="true"/>
+					<p>Fecha:</p>					
+					<p:calendar id="popupBtnFechaEval" value="#{evaluacionManagedBean.fechaEvaluacion}" pattern="dd/mm/yyyy" showOn="button">
+						<p:ajax event="dateSelect" update="growlFechaEval" />
+					</p:calendar>					
+				</div>
+				<div style="display:inline-block;margin-left:7px;">
+					<p>Fecha:</p>					
+					<p:calendar id="popupBtnFechaEval32" value="#{evaluacionManagedBean.fechaEvaluacion}" pattern="dd/mm/yyyy" showOn="button">
+						<p:ajax event="dateSelect" update="growlFechaEval" />
+					</p:calendar>					
+				</div>	
+				<div style="display:inline-block;margin-left:7px;">
+					<p>Fecha:</p>					
+					<p:calendar id="popupBtnFechaEval432" value="#{evaluacionManagedBean.fechaEvaluacion}" pattern="dd/mm/yyyy" showOn="button">
+						<p:ajax event="dateSelect" update="growlFechaEval" />
+					</p:calendar>					
+				</div>		
+							
+          		<p>Observaciones:</p>	      
+          		<p:editor id="observacionReprobado" value="#{evaluacionManagedBean.observaciones}" height="150"/>	            	
+				<div style="margin-top:10px;">
 				<p:commandButton value="Cancelar" action="#{evaluacionManagedBean.cancelarRegistro}" >
 					<f:setPropertyActionListener value="#{evaluacionManagedBean.solicitudEval}" target="#{expedienteManagedBean.solicitudExp}" />
 				</p:commandButton>
-				<p:commandButton value="Aceptar" action="#{evaluacionManagedBean.guardarEvaluacion}" update=":formEvaluacion:msgEvaluacion" process="@form" />								
-		    </div>
+				<p:commandButton value="Aceptar" action="#{evaluacionManagedBean.guardarEvaluacion}" update=":formEvaluacion:msgEvaluacion" process="@form" />
+				</div>								
+			</div>
 		</h:form>		      
 	</div>  
 </h:body>

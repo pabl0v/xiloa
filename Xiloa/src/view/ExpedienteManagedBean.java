@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.ExternalContext;
@@ -94,6 +95,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	private List<Archivo> listPortafolioContacto;
 	
 	private boolean disableSolicitarCertificacion;
+	private boolean disablePortafolio;
 	
 	private List<SelectItem> listEvalBySolicitud;	
 	
@@ -114,6 +116,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		super();
 		
 		this.setDisableSolicitarCertificacion(true);
+		this.setDisablePortafolio(true);
 		
 		listDatosLaborales = new ArrayList<Laboral> ();
 		listDatosEstudios = new ArrayList<Laboral> ();
@@ -142,6 +145,18 @@ public class ExpedienteManagedBean implements Serializable  {
 	
 	
 	
+	public boolean isDisablePortafolio() {
+		return disablePortafolio;
+	}
+
+
+
+	public void setDisablePortafolio(boolean disablePortafolio) {
+		this.disablePortafolio = disablePortafolio;
+	}
+
+
+
 	public List<Archivo> getListPortafolioContacto() {
 		actualizaListaPortafolio (new Integer(2));
 		/*Contacto c = solicitudExp.getContacto();
@@ -604,7 +619,9 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.setPaisInstitucion(this.selectedLaboral.getPais());
 		this.setDescripcionCargo(this.selectedLaboral.getDescripcion());
 		
-		actualizaListaPortafolio (new Integer(1));
+		enabledDisableButton();
+		
+		actualizaListaPortafolio (new Integer(1));		
 		
 	}
 	
@@ -617,6 +634,14 @@ public class ExpedienteManagedBean implements Serializable  {
 	}	
 	
 	public void nuevoPortafolio (){
+		System.out.println("Agrega archivo de evidencia al dato laboral/academico: ");
+		
+		if (this.selectedArchivoId == null) {
+			
+			if (this.idSeletedLaboral != null) {
+				this.selectedLaboral = service.getLaboralById(this.idSeletedLaboral);
+			}
+		} 
 		
 	}
 			
@@ -648,7 +673,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		nombreCargoLaboral = this.nombreCargo.toUpperCase() + " /  " + this.nombreInstitucion.toUpperCase();
 		
 		if (this.idSeletedLaboral == null) {			
-			
+						
 			this.selectedLaboral = new Laboral (this.solicitudExp.getContacto(), // contacto, 
 									   this.tipoLaboral, // tipo, 
 									   nombreCargoLaboral.toUpperCase(), // nombre,
@@ -679,12 +704,20 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.selectedLaboral = (Laboral)service.guardar(this.selectedLaboral);
 		
 		if (this.selectedLaboral != null) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!"));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!"));			
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje: ", "Se genero un error al grabar los datos laborales / academicos. Favor revisar..."));
 		}
+		
+		enabledDisableButton();		
+	}
+	
+	public void enabledDisableButton() {
+		if (this.selectedLaboral == null) 
+			this.setDisablePortafolio(true);
+		else
+			this.setDisablePortafolio(false);
 			
-		limpiarCampos ();
 	}
 	
 	public void limpiarCampos (){
@@ -719,6 +752,12 @@ public class ExpedienteManagedBean implements Serializable  {
 	
 	public void guardarArchivo() {
 		if (archivoExp != null) {
+			//Asignando el estado inicial del Portafolio
+			String tipoMantenedorEstado = archivoExp.getTipoMantenedorEstado();
+			
+			archivoExp.setEstado(service.getMantenedorMinByTipo(tipoMantenedorEstado).toString());	
+			//archivoExp.setLaboral(selectedLaboral);
+			
 			archivoExp = (Archivo) service.guardar(archivoExp);
 			
 			if (archivoExp != null)

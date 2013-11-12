@@ -9,11 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -32,23 +30,19 @@ public class Archivo implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private final String tipoMantenedorEstado = new String("8");
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "archivo_id", nullable = false)
 	private Long id;
-	
-	/*
-	@NotNull
-	@OneToOne(mappedBy = "archivo")	
-	private Laboral laboral;
-	*/
-	
+			
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="laboral_id")
 	private Laboral laboral;
-		
+			
 	@NotNull
 	@Column(name = "archivo_nombre", nullable = false)	
 	private String nombre;
@@ -98,13 +92,21 @@ public class Archivo implements Serializable {
 	@Column(name = "archivo_estado", nullable = false)	
 	private String estado;
 	
+	@Column(name = "archivo_aprobado", nullable = true)	
+	private String aprobado;
+	
 	/*
 	@Lob()
 	@Column(name="archivo_fisico", nullable=false)
 	private byte[] archivoFisico;
 */
+	
 	public Long getId() {
 		return id;
+	}
+
+	public String getTipoMantenedorEstado() {
+		return tipoMantenedorEstado;
 	}
 
 	public void setId(Long id) {
@@ -224,11 +226,19 @@ public class Archivo implements Serializable {
 		this.estado = estado;
 	}
 
+		
+	public String getAprobado() {
+		return aprobado;
+	}
+
+	public void setAprobado(String aprobado) {
+		this.aprobado = aprobado;
+	}
+
 	public Archivo(Laboral laboral, String nombre, String descripcion,
 			String nombreReal, String ruta, String propietario, Date fecha,
 			String tipo, String size, String version, String icono,
-			String categoria,// byte [] archivoFisico, 
-			String estado) {
+			String categoria, String estado) {
 		super();
 		this.laboral = laboral;
 		this.nombre = nombre;
@@ -242,10 +252,9 @@ public class Archivo implements Serializable {
 		this.version = version;
 		this.icono = icono;
 		this.categoria = categoria;
-		//this.archivoFisico = archivoFisico;
 		this.estado = estado;
 	}
-	
+
 	public Archivo() {
 		super();		
 	}

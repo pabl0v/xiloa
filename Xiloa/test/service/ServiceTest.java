@@ -3,8 +3,10 @@ package service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import model.Contacto;
+import model.Laboral;
 import model.Mantenedor;
 import model.Perfil;
 import model.Rol;
@@ -27,7 +29,8 @@ public class ServiceTest {
 	private static Mantenedor mantenedor1, mantenedor2, mantenedor3, mantenedor4, mantenedor5, mantenedor6, 
 	               mantenedor7, mantenedor8, mantenedor9, mantenedor10, mantenedor11, mantenedor12,
 	               mantenedor13, mantenedor14, mantenedor15, mantenedor16, mantenedor17, mantenedor18, mantenedor19,
-	               mantenedor20, mantenedor21, mantenedor22, mantenedor23;
+	               mantenedor20, mantenedor21, mantenedor22, mantenedor23, mantenedor24, mantenedor25, mantenedor26; 
+	               	
 	private static Perfil perfil;
 	private static List<Perfil> perfiles;
 	private static Rol rolAdmin, rolSupervisor, rolVerificador, rolRegistrador, rolDocente, rolVisitante;
@@ -73,6 +76,10 @@ public class ServiceTest {
 		mantenedor22 = new Mantenedor("7","Estados Solicitud Certificacion","Convocado",new String("21"),new String("23"));
 		mantenedor23 = new Mantenedor("7","Estados Solicitud Certificacion","Asesorado",new String("22"),null);
 		
+		mantenedor24 = new Mantenedor("8","Estados Portafolio Evidencia","Valido",null,new String("25"));		
+		mantenedor25 = new Mantenedor("8","Estados Portafolio Evidencia","Registrado",new String("24"), new String("26"));
+		mantenedor26 = new Mantenedor("8","Estados Portafolio Evidencia","Verificado",new String("25"),null);		
+		
 		
 
 		service.guardar(mantenedor1);
@@ -98,6 +105,9 @@ public class ServiceTest {
 		service.guardar(mantenedor21);
 		service.guardar(mantenedor22);
 		service.guardar(mantenedor23);
+		service.guardar(mantenedor24);
+		service.guardar(mantenedor25);
+		service.guardar(mantenedor26);
 
 		//creando perfiles
 		
@@ -142,14 +152,13 @@ public class ServiceTest {
 		usuarioArauz = (Usuario)service.guardar(usuarioArauz);
 		usuarioLopez = (Usuario)service.guardar(usuarioLopez);
 		usuarioPerez = (Usuario)service.guardar(usuarioPerez);
-		usuarioRuiz = (Usuario)service.guardar(usuarioRuiz);		
-		
+		usuarioRuiz = (Usuario)service.guardar(usuarioRuiz);
+					
 		//creando contactos
-		
-		contactoLopez = new Contacto(usuarioLopez,null,1,"Norcecy",null,"Lopez",null,"Norcecy Lopez",1,"nlopez@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,"Managua",false,null,null,null, null, null);
-		contactoRuiz = new Contacto(usuarioRuiz,null,1,"Ana",null,"Ruiz",null,"Ana Ruiz",1,"aruiz@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,"Managua",false,null,null,null, null, null);
-		contactoPerez = new Contacto(usuarioPerez,null,1,"Luis",null,"Perez",null,"Luis Perez",1,"lperez@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,"Managua",false,null,null,null, null, null);
-		contactoArauz = new Contacto(usuarioArauz,null,1,"Luz",null,"Arauz",null,"Luz Arauz",1,"larauz@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,"Managua",false,null,null,null, null, null);
+		contactoLopez = new Contacto(usuarioLopez,null, null, 1,"Norcecy",null,"Lopez",null,"Norcecy Lopez",1,"nlopez@inatec.edu.ni",null,"00000000",null, 1, 1,"12345678901234","Managua",new Date(),new Date(),1,1,null, null, false,null,null,null);
+		contactoRuiz = new Contacto(usuarioRuiz,null,null, 1,"Ana",null,"Ruiz",null,"Ana Ruiz",1,"aruiz@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,1, null, null, false,null,null,null);
+		contactoPerez = new Contacto(usuarioPerez,null, null,1,"Luis",null,"Perez",null,"Luis Perez",1,"lperez@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,null,null, null, false,null,null,null);
+		contactoArauz = new Contacto(usuarioArauz,null,null, 1,"Luz",null,"Arauz",null,"Luz Arauz",1,"larauz@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,null,null, null, false,null,null,null);
 
 		contactoLopez = (Contacto)service.guardar(contactoLopez);
 		contactoRuiz = (Contacto)service.guardar(contactoRuiz);

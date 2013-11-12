@@ -1,14 +1,20 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -19,17 +25,25 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 @Entity(name="contactos")
-public class Contacto {
+public class Contacto implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@SequenceGenerator(name = "seq_contactos", sequenceName = "seq_contactos", allocationSize=1, initialValue= 1)
 	@GeneratedValue(strategy=GenerationType.AUTO, generator = "seq_contactos")
 	@Column(name = "contacto_id", nullable = false)	
-	private int id;
+	private Long id;
 	
 	@OneToOne
 	@JoinColumn(name="usuario_id")
 	private Usuario usuario;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="contacto", cascade = CascadeType.ALL)
+	private Set<Laboral> laborales;
 	
 	@ManyToOne
 	@JoinColumn(name="rol_id")
@@ -127,12 +141,25 @@ public class Contacto {
 	@Column(name = "id_empleado", nullable = true)
 	private Long idEmpleado;
 	
-	public int getId() {
+	
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Set<Laboral> getLaborales() {
+		return laborales;
+	}
+
+	public void setLaborales(Set<Laboral> laborales) {
+		this.laborales = laborales;
+	}
+
+	public void setNacionalidadId(Integer nacionalidadId) {
+		this.nacionalidadId = nacionalidadId;
 	}
 
 	public Usuario getUsuario() {
@@ -351,17 +378,21 @@ public class Contacto {
 		this.municipioId = municipioId;
 	}
 
-	public Contacto(Usuario usuario, Rol rol, int entidadId,
-			String primerNombre, String segundoNombre, String primerApellido,
-			String segundoApellido, String nombreCompleto, int sexo,
-			String correo1, String correo2, String telefono1, String telefono2,
-			int tipoContacto, int tipoIdentificacion,
-			String numeroIdentificacion, String direccionActual,
-			Date fechaNacimiento, Date fechaRegistro, int nacionalidadId,
-			String lugarNacimiento, boolean inatec, String usuarioInatec,
-			String funcion, Long idEmpleado, Integer departamentoId, Integer municipioId){
-		super();
+
+	
+	public Contacto(Usuario usuario, Set<Laboral> laborales, Rol rol,
+			int entidadId, String primerNombre, String segundoNombre,
+			String primerApellido, String segundoApellido,
+			String nombreCompleto, int sexo, String correo1, String correo2,
+			String telefono1, String telefono2, int tipoContacto,
+			int tipoIdentificacion, String numeroIdentificacion,
+			String direccionActual, Date fechaNacimiento, Date fechaRegistro,
+			Integer nacionalidadId, Integer departamentoId,
+			Integer municipioId, String lugarNacimiento, boolean inatec,
+			String usuarioInatec, String funcion, Long idEmpleado) {
+		super();		
 		this.usuario = usuario;
+		this.laborales = laborales;
 		this.rol = rol;
 		this.entidadId = entidadId;
 		this.primerNombre = primerNombre;
@@ -381,16 +412,18 @@ public class Contacto {
 		this.fechaNacimiento = fechaNacimiento;
 		this.fechaRegistro = fechaRegistro;
 		this.nacionalidadId = nacionalidadId;
+		this.departamentoId = departamentoId;
+		this.municipioId = municipioId;
 		this.lugarNacimiento = lugarNacimiento;
 		this.inatec = inatec;
 		this.usuarioInatec = usuarioInatec;
 		this.funcion = funcion;
-		this.idEmpleado = idEmpleado;		
-		this.departamentoId = departamentoId;
-		this.municipioId = municipioId;
+		this.idEmpleado = idEmpleado;
 	}
-	
+
 	public Contacto() {
-		super();		
+		super();
+		this.laborales = new HashSet<Laboral>();
+		
 	}
 }

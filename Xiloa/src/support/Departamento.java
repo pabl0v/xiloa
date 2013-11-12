@@ -1,8 +1,16 @@
 package support;
 
-public class Departamento {
-	Integer dpto_id;
-	String dpto_nombre;
+import java.io.Serializable;
+
+public class Departamento implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private Integer dpto_id;
+	private String dpto_nombre;
 	
 	public Integer getDpto_id() {
 		return dpto_id;

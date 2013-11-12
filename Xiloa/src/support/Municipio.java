@@ -1,9 +1,17 @@
 package support;
 
-public class Municipio {
-	Integer municipio_id;
-	Integer municipio_dpto_id;
-	String municipio_nombre;
+import java.io.Serializable;
+
+public class Municipio implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private Integer municipio_id;
+	private Integer municipio_dpto_id;
+	private String municipio_nombre;
 	
 	public Integer getMunicipio_id() {
 		return municipio_id;

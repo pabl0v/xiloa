@@ -2,7 +2,10 @@ package model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,7 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -45,7 +48,7 @@ public class Laboral implements Serializable {
 	
 	@NotNull
 	@Column(name = "laboral_tipo", nullable = false)
-	private int tipo;
+	private Integer tipo;
 	
 	@NotNull
 	@Column(name = "laboral_nombre", nullable = false)
@@ -85,12 +88,8 @@ public class Laboral implements Serializable {
 	@Column(name = "laboral_institucion_cargo", nullable = false)
 	private String cargo;
 	
-	
-	@NotNull
-	@OneToOne
-	@JoinColumn(name="laboral_file_id")
-	private Archivo archivo;
- 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="laboral", cascade = CascadeType.ALL)
+	private Set<Archivo> archivo;
 	
 	public Long getId() {
 		return id;
@@ -108,11 +107,11 @@ public class Laboral implements Serializable {
 		this.contacto = contacto;
 	}
 
-	public int getTipo() {
+	public Integer getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(int tipo) {
+	public void setTipo(Integer tipo) {
 		this.tipo = tipo;
 	}
 
@@ -187,20 +186,21 @@ public class Laboral implements Serializable {
 	public void setCargo(String cargo) {
 		this.cargo = cargo;
 	}
-	
-	public Archivo getArchivo() {
+			
+	public Set<Archivo> getArchivo() {
 		return archivo;
 	}
 
-	public void setArchivo(Archivo archivo) {
+	public void setArchivo(Set<Archivo> archivo) {
 		this.archivo = archivo;
 	}
-	
-	public Laboral(Contacto contacto, int tipo, String nombre,
+
+		
+	public Laboral(Contacto contacto, Integer tipo, String nombre,
 			String descripcion, String institucion, String pais,
 			Date fechaInicia, Date fechaFinaliza, String institucionDireccion,
-			String institucionTelefono, String cargo, Archivo archivo) {
-		super();
+			String institucionTelefono, String cargo, Set<Archivo> archivo) {
+		super();		
 		this.contacto = contacto;
 		this.tipo = tipo;
 		this.nombre = nombre;
@@ -214,8 +214,9 @@ public class Laboral implements Serializable {
 		this.cargo = cargo;
 		this.archivo = archivo;
 	}
-	
+
 	public Laboral() {
-		super();		
+		super();
+		this.archivo = new HashSet<Archivo>();
 	}
 }
