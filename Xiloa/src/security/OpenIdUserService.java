@@ -40,7 +40,7 @@ public class OpenIdUserService implements UserDetailsService, AuthenticationUser
 	
 	private String getUserData(OpenIDAuthenticationToken token, String data) {
 	    for (OpenIDAttribute attribute : token.getAttributes()) {
-	        if (attribute.getName().equals("data")) {
+	        if (attribute.getName().equals(data)) {
 	            return attribute.getValues().get(0);
 	        }
 	    }

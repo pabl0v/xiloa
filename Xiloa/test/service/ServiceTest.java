@@ -168,6 +168,7 @@ public class ServiceTest {
 		contactoLopez = (Contacto)service.guardar(contactoLopez);
 		contactoRuiz = (Contacto)service.guardar(contactoRuiz);
 		contactoPerez = (Contacto)service.guardar(contactoPerez);
-		contactoArauz = (Contacto)service.guardar(contactoArauz);		
+		contactoArauz = (Contacto)service.guardar(contactoArauz);
+		
 	}
 }
