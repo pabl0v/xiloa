@@ -123,10 +123,8 @@ public class Contacto implements Serializable {
 	
 	@Column(name = "municipio_id", nullable = true)		
 	private Integer municipioId;
-	
 
-	@NotNull
-	@Column(name = "lugar_nacimiento", nullable = false)	
+	@Column(name = "lugar_nacimiento", nullable = true)	
 	private String lugarNacimiento;
 	
 	@Column(name = "inatec", nullable = false)

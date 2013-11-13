@@ -39,7 +39,7 @@
         	<h2>Certificaciones de Competencias Laborales disponibles</h2>
 	        <p>Seleccione el nombre de la certificación para ver el detalle y registrar su solicitud</p>
         	<div id="contenedor_tabla_competencias">    
-	            <p:dataTable id="grid" var="certificacion" styleClass="tablaCompetencias" value="#{inicioManagedBean.certificaciones}" paginator="true" rows="10" 
+	            <p:dataTable id="grid" emptyMessage="Información no disponible" var="certificacion" styleClass="tablaCompetencias" value="#{inicioManagedBean.certificaciones}" paginator="true" rows="10" 
 	                paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
 	                rowsPerPageTemplate="5,10,15" rowKey="#{certificacion.id}" selection="#{inicioManagedBean.selectedCertificacion}" selectionMode="single">
 	     			<!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
