@@ -3,7 +3,9 @@ package view;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -44,6 +46,7 @@ public class EvaluacionManagedBean implements Serializable {
 	private Date        fechaEvaluacion;
 	private boolean     aprobado;
 	private String      observaciones;
+	private String      estado;
 	
 	private Evaluacion selectedEvaluacion;	
 	
@@ -51,8 +54,30 @@ public class EvaluacionManagedBean implements Serializable {
 	private List<Guia>  listGuiaByInstru;
 	
 	
-	private List<SelectItem> listUnidadCompentecia = new ArrayList<SelectItem> ();
-	private List<SelectItem> listInstrumentoByUnidad = new ArrayList<SelectItem> ();
+	private List<SelectItem> listUnidadCompentecia;
+	private List<SelectItem> listInstrumentoByUnidad;
+	
+	
+	
+	public EvaluacionManagedBean() {
+		super();
+		
+		listUnidadCompentecia = new ArrayList<SelectItem> ();
+		listInstrumentoByUnidad = new ArrayList<SelectItem> ();
+		
+		listGuiaByInstru = new ArrayList<Guia> ();
+		
+		aprobado = false;		
+		
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
 
 	public Evaluacion getSelectedEvaluacion() {
 		return selectedEvaluacion;
@@ -64,6 +89,7 @@ public class EvaluacionManagedBean implements Serializable {
 		this.setFechaEvaluacion(selectedEvaluacion.getFechaEvaluacion());
 		this.setObservaciones(selectedEvaluacion.getObservaciones());
 		this.setAprobado(selectedEvaluacion.isAprobado());
+		this.setEstado(selectedEvaluacion.getEstado());
 	}
 
 	public Solicitud getSolicitudEval() {		
@@ -229,18 +255,24 @@ public class EvaluacionManagedBean implements Serializable {
 		
 		//Se registra nueva evaluacion
 		if (selectedEvaluacion == null){
-			System.out.println("Nueva evaluacion");
+			System.out.println("Nueva evaluacion");			
 			eval = new Evaluacion (this.getSolicitudEval(), // solicitud 
 			   					   this.getFechaEvaluacion(), // fecha 
 								   this.getSelectedUnidad(), // unidad 
-								   null , // List<EvaluacionGuia> guias 
+								   null , // Set<EvaluacionGuia> guias 
 								   new Integer(0), // puntaje, 
 								   this.getObservaciones(), // observaciones 
 								   this.isAprobado() // aprobado
 								   );
+			String estadoTipo = eval.getTipoMantenedorEstado();
+			
+			eval.setEstado(service.getMantenedorMinByTipo(estadoTipo).toString());			
+			
 			eval = (Evaluacion) service.guardar(eval);
 			
 			if (eval != null) {
+				
+				Set<EvaluacionGuia> setEvalGuia = new HashSet<EvaluacionGuia> ();
 									
 				for (Guia dato : this.selectedGuia) {
 													
@@ -254,36 +286,30 @@ public class EvaluacionManagedBean implements Serializable {
 					detalleEvaGuia.setPk(pkDetalleGuia);
 					detalleEvaGuia.setPuntaje(new Integer(0));				
 					
-					detalleEvaGuia = (EvaluacionGuia) service.guardar(detalleEvaGuia);				
-				}
+					detalleEvaGuia = (EvaluacionGuia) service.guardar(detalleEvaGuia);
+					
+					setEvalGuia.add(detalleEvaGuia);
+				}			
+				
 			} else {
 				isError = true;
 			}			
-
-		} else { // Guarda los cambios en la edicion de la evaluacion
 			
-			System.out.println("Objeto evaluacion " + selectedEvaluacion.getId());			
-			
-			System.out.println("Guardando los cambios");
-			//System.out.println("Aprobado: " + this.aprobado);
-			System.out.println("Observaciones " + this.observaciones);			
+		} else { // Guarda los cambios en la edicion de la evaluacion			
+						
 			eval = selectedEvaluacion;
-			eval.setObservaciones(this.observaciones);
-			System.out.println("Tomando las observaciones segun el objeto actualizado: " + eval.getObservaciones());
-			
+			eval.setObservaciones(this.observaciones);			
 			eval.setAprobado(this.aprobado);			
 						
 			eval = (Evaluacion) service.guardar(eval);			
-			/*
-			if (eval == null){
-				isError = true;
-			}
-			*/
+			
+			if (eval == null)
+				isError = true;			
 			
 		}
 			
 		if (!isError){						
-	        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "La evaluacion ha sido registrada exitosamente. El número es: " + eval.getId()));		
+	        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "La evaluacion ha sido registrada exitosamente."));		
 			
 		}else {
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje", "Error al grabar la evaluacion. Favor revisar..."));
@@ -304,6 +330,7 @@ public class EvaluacionManagedBean implements Serializable {
 		this.aprobado = false;
 		this.fechaEvaluacion = null;
 		this.observaciones = null;
+		this.estado = null;
 	}
 	
 	public String registrar_evaluacion (Solicitud sol) {		

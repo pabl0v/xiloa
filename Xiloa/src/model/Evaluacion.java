@@ -1,9 +1,9 @@
 package model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,12 +34,14 @@ public class Evaluacion implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private final String tipoMantenedorEstado = new String("9");
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "evaluacion_id", nullable = false)
 	private Long id;
-
+	
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="evaluacion_solicitud_id")
@@ -55,8 +57,8 @@ public class Evaluacion implements Serializable {
 	@JoinColumn(name="evaluacion_unidad_id")
 	private Unidad unidad;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.evaluacion", cascade = CascadeType.ALL)
-	private List<EvaluacionGuia> guias;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.evaluacion")
+	private Set<EvaluacionGuia> guias;
 	
 	@NotNull
 	@Column(name = "evaluacion_puntaje", nullable = false)
@@ -68,6 +70,21 @@ public class Evaluacion implements Serializable {
 	@NotNull
 	@Column(name = "evaluacion_aprobado", nullable = false)
 	private boolean aprobado;
+	
+	@Column(name = "evaluacion_estado", nullable=false)
+	private String estado;
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public String getTipoMantenedorEstado() {
+		return tipoMantenedorEstado;
+	}
 
 	public Long getId() {
 		return id;
@@ -92,12 +109,12 @@ public class Evaluacion implements Serializable {
 	public void setFechaEvaluacion(Date fecha) {
 		this.fechaEvaluacion = fecha;
 	}
-	
-	public List<EvaluacionGuia> getGuias() {
+		
+	public Set<EvaluacionGuia> getGuias() {
 		return guias;
 	}
 
-	public void setGuias(List<EvaluacionGuia> guias) {
+	public void setGuias(Set<EvaluacionGuia> guias) {
 		this.guias = guias;
 	}
 
@@ -135,10 +152,10 @@ public class Evaluacion implements Serializable {
 
 	public Evaluacion() {
 		super();
-		this.guias = new ArrayList<EvaluacionGuia>();		
+		this.guias = new HashSet<EvaluacionGuia>();		
 	}
 
-	public Evaluacion(Solicitud solicitud, Date fecha, Unidad unidad, List<EvaluacionGuia> guias, Integer puntaje, String observaciones, boolean aprobado) {
+	public Evaluacion(Solicitud solicitud, Date fecha, Unidad unidad, Set<EvaluacionGuia> guias, Integer puntaje, String observaciones, boolean aprobado) {
 		super();		
 		this.solicitud = solicitud;
 		this.fechaEvaluacion = fecha;

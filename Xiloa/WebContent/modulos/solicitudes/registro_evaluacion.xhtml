@@ -53,16 +53,12 @@
 					</p:calendar>					
 				</div>
 				<div style="display:inline-block;margin-left:7px;">
-					<p>Fecha:</p>					
-					<p:calendar id="popupBtnFechaEval32" value="#{evaluacionManagedBean.fechaEvaluacion}" pattern="dd/mm/yyyy" showOn="button">
-						<p:ajax event="dateSelect" update="growlFechaEval" />
-					</p:calendar>					
+					<p>Aprobado:</p>					
+					<p:selectBooleanCheckbox id="aprobadoEval" value="#{evaluacionManagedBean.aprobado}" />					
 				</div>	
 				<div style="display:inline-block;margin-left:7px;">
-					<p>Fecha:</p>					
-					<p:calendar id="popupBtnFechaEval432" value="#{evaluacionManagedBean.fechaEvaluacion}" pattern="dd/mm/yyyy" showOn="button">
-						<p:ajax event="dateSelect" update="growlFechaEval" />
-					</p:calendar>					
+					<p>Estado:</p>					
+					<h:outputText value="#{evaluacionManagedBean.estado}" />					
 				</div>		
 							
           		<p>Observaciones:</p>	      
@@ -71,7 +67,7 @@
 				<p:commandButton value="Cancelar" action="#{evaluacionManagedBean.cancelarRegistro}" >
 					<f:setPropertyActionListener value="#{evaluacionManagedBean.solicitudEval}" target="#{expedienteManagedBean.solicitudExp}" />
 				</p:commandButton>
-				<p:commandButton value="Aceptar" action="#{evaluacionManagedBean.guardarEvaluacion}" update=":formEvaluacion:msgEvaluacion" process="@form" />
+				<p:commandButton value="Guardar" action="#{evaluacionManagedBean.guardarEvaluacion}" update=":formEvaluacion:msgEvaluacion" process="@form" />
 				</div>								
 			</div>
 		</h:form>		      

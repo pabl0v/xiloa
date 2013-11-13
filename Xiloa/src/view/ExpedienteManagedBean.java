@@ -65,6 +65,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	private List<Laboral> listDatosCertificaciones;
 	private List<Evaluacion> listEvaluaciones;
 	private List<BeanEvaluacion> listBeanEval;
+	private List<BeanEvaluacion> listBeanEvalFormacion;	
 	
 	private String telefonoInstitucion;	
 	private String descripcionCargo;
@@ -96,6 +97,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	
 	private boolean disableSolicitarCertificacion;
 	private boolean disablePortafolio;
+	private boolean disabledUploadFile;
 	
 	private List<SelectItem> listEvalBySolicitud;	
 	
@@ -117,6 +119,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		
 		this.setDisableSolicitarCertificacion(true);
 		this.setDisablePortafolio(true);
+		this.setDisabledUploadFile(true);
 		
 		listDatosLaborales = new ArrayList<Laboral> ();
 		listDatosEstudios = new ArrayList<Laboral> ();
@@ -124,6 +127,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		listDatosCertificaciones = new ArrayList<Laboral> ();
 		listEvaluaciones = new ArrayList<Evaluacion> ();
 		listBeanEval = new ArrayList<BeanEvaluacion> ();
+		listBeanEvalFormacion = new ArrayList<BeanEvaluacion> ();
 		listPortafolioContacto = new ArrayList<Archivo> ();
 		listPortafolioLaboral = new ArrayList<Archivo> ();
 		
@@ -143,8 +147,18 @@ public class ExpedienteManagedBean implements Serializable  {
 		nuevoLaboral = new Laboral();
 	}
 	
-	
-	
+    public boolean isDisabledUploadFile() {
+		return disabledUploadFile;
+	}
+
+
+
+	public void setDisabledUploadFile(boolean disabledUploadFile) {
+		this.disabledUploadFile = disabledUploadFile;
+	}
+
+
+
 	public boolean isDisablePortafolio() {
 		return disablePortafolio;
 	}
@@ -156,6 +170,13 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 
+	public List<BeanEvaluacion> getListBeanEvalFormacion() {
+		return listBeanEvalFormacion;
+	}
+
+	public void setListBeanEvalFormacion(List<BeanEvaluacion> listBeanEvalFormacion) {
+		this.listBeanEvalFormacion = listBeanEvalFormacion;
+	}
 
 	public List<Archivo> getListPortafolioContacto() {
 		actualizaListaPortafolio (new Integer(2));
@@ -166,7 +187,6 @@ public class ExpedienteManagedBean implements Serializable  {
 		*/
 		return listPortafolioContacto;
 	}
-
 
 
 	public void setListPortafolioContacto(List<Archivo> listPortafolioContacto) {
@@ -187,7 +207,7 @@ public class ExpedienteManagedBean implements Serializable  {
 
 
 
-	public List<Archivo> getListPortafolioLaboral() {
+	public List<Archivo> getListPortafolioLaboral() {		
 		return listPortafolioLaboral;
 	}
 
@@ -232,8 +252,6 @@ public class ExpedienteManagedBean implements Serializable  {
 	public void setPaisInstitucion(String paisInstitucion) {
 		this.paisInstitucion = paisInstitucion;
 	}
-
-
 
 	public Laboral getNuevoLaboral() {
 		return nuevoLaboral;
@@ -577,6 +595,14 @@ public class ExpedienteManagedBean implements Serializable  {
 		archivoExp = new Archivo();
 	}
 	
+	public void handleActivaUpload(){
+		if (archivoExp != null) {
+			if ((archivoExp.getNombre() != null) && (archivoExp.getTipo() != null) && (archivoExp.getVersion() != null) && (archivoExp.getDescripcion() != null)){
+				this.setDisabledUploadFile(false);
+			}
+		}
+	}
+	
 	public void handleMunicipios() {
 		
 		Contacto cExp = this.getSolicitudExp().getContacto();
@@ -621,30 +647,24 @@ public class ExpedienteManagedBean implements Serializable  {
 		
 		enabledDisableButton();
 		
-		actualizaListaPortafolio (new Integer(1));		
+		//actualizaListaPortafolio (new Integer(1));		
+		
+		Object [] objs =  new Object [] {this.selectedLaboral.getId()};
+		System.out.println("Ejecuta la consulta");
+		this.listPortafolioLaboral = service.getArchivoByParam ("Archivo.findByLaboralId", objs);
 		
 	}
 	
 	public void nuevoLaboral() {		
 		limpiarCampos();
+		
+		this.setPaisInstitucion(new String("Nicaragua"));
 	}
 	
 	public String RegistrarEditarEvaluacion() {		
 		return "/modulos/solicitudes/registro_evaluacion?faces-redirect=true";		
 	}	
-	
-	public void nuevoPortafolio (){
-		System.out.println("Agrega archivo de evidencia al dato laboral/academico: ");
-		
-		if (this.selectedArchivoId == null) {
-			
-			if (this.idSeletedLaboral != null) {
-				this.selectedLaboral = service.getLaboralById(this.idSeletedLaboral);
-			}
-		} 
-		
-	}
-			
+				
 	public void actualizarContacto() {
 		System.out.println("correo " + solicitudExp.getContacto().getCorreo1());
 		if (solicitudExp.getContacto().getDireccionActual() == null) {
@@ -733,6 +753,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.setDescripcionCargo(null);
 		this.setPaisInstitucion(null);
 		this.setTelefonoInstitucion(null);
+		this.listPortafolioLaboral = new ArrayList<Archivo> ();	
 			
 	}	
 	
@@ -749,14 +770,26 @@ public class ExpedienteManagedBean implements Serializable  {
 			listEvalBySolicitud.add(new SelectItem(dato.getId(), dato.getUnidad().getCompetenciaDescripcion()));
 		}
 	}
+
+	public void nuevoPortafolio (){
+		System.out.println("Agrega archivo de evidencia al dato laboral/academico: ");
+		
+		if (this.selectedArchivoId == null) {
+			
+			if (this.idSeletedLaboral != null) {
+				this.selectedLaboral = service.getLaboralById(this.idSeletedLaboral);
+				archivoExp.setLaboral(this.selectedLaboral);
+			}
+		} 
+		
+	}
 	
 	public void guardarArchivo() {
 		if (archivoExp != null) {
 			//Asignando el estado inicial del Portafolio
 			String tipoMantenedorEstado = archivoExp.getTipoMantenedorEstado();
 			
-			archivoExp.setEstado(service.getMantenedorMinByTipo(tipoMantenedorEstado).toString());	
-			//archivoExp.setLaboral(selectedLaboral);
+			archivoExp.setEstado(service.getMantenedorMinByTipo(tipoMantenedorEstado).toString());
 			
 			archivoExp = (Archivo) service.guardar(archivoExp);
 			
@@ -772,9 +805,12 @@ public class ExpedienteManagedBean implements Serializable  {
 	public void actualizaListaPortafolio (Integer tipo){
 		Object [] objs;
 		if (tipo == 1) {
+			System.out.println("Consulta el listado de Archivos por datos laborales");			
 			if (selectedLaboral != null) {			
+				System.out.println("Datos laborales " + selectedLaboral.getId());
 				 objs =  new Object [] {selectedLaboral.getId()};
-				this.setListPortafolioLaboral(service.getArchivoByParam ("Archivo.findByLaboralId", objs));
+				 System.out.println("Ejecuta la consulta");
+				 this.listPortafolioLaboral = service.getArchivoByParam ("Archivo.findByLaboralId", objs);				
 			}
 		} else {							
 				Contacto c = solicitudExp.getContacto();
@@ -784,10 +820,6 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 	
 	public void uploadFile(FileUploadEvent event){
-	//public void uploadFile(){
-		
-		//System.out.println("Nombre del archivo " + file.getFileName());
-		//System.out.println("Tamaño " + file.getSize());
 		
 		Date fechaAhora = new Date();
 		
@@ -801,16 +833,13 @@ public class ExpedienteManagedBean implements Serializable  {
 	    Usuario u = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
 	    String nombreFile;
 	    String nombrePropietario;
+	    Long   sizeArchivo;
 		try {
 			
-			File targetFolder = new File(directorio);			
+			//File targetFolder = new File(directorio);
 			
-			if (this.file == null) {								
-				this.file = event.getFile();				
-				
-			} /*else {		
-				archivoExp.setArchivoFisico(file.getContents());				
-			}*/
+			this.file = event.getFile();			
+	
 			nombreFile = file.getFileName();
 			/*
 			if (u.getContacto().getNombreCompleto() != null)
@@ -818,9 +847,11 @@ public class ExpedienteManagedBean implements Serializable  {
 			else
 				nombrePropietario = u.getContacto().getPrimerNombre() + " " + u.getContacto().getPrimerApellido();
 			*/
-			nombrePropietario = "admin";
+			nombrePropietario = u.getUsuarioAlias();
+			sizeArchivo = (file.getSize()) / 1024;
+			
 			archivoExp.setNombre(nombreFile);
-			archivoExp.setSize(String.valueOf(file.getSize()));
+			archivoExp.setSize(String.valueOf(sizeArchivo) + " KB");
 			//archivoExp.setArchivoFisico(file.getContents());
 			archivoExp.setFecha(fechaAhora);					
 			archivoExp.setNombreReal(nombreFile);
@@ -831,8 +862,8 @@ public class ExpedienteManagedBean implements Serializable  {
 			archivoExp.setIcono(nombreFile);
 			archivoExp.setVersion(nombreFile);
 			
-						
-			FileOutputStream fos = new FileOutputStream(String.format(directorio+"/%s",file.getFileName()));
+					
+			FileOutputStream fos = new FileOutputStream(String.format(directorio+"/%s",file.getFileName()));			
             fos.write(file.getContents());
             fos.flush();
             fos.close();
@@ -850,6 +881,7 @@ public class ExpedienteManagedBean implements Serializable  {
 			out.flush();
 			out.close();
 			*/
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		
