@@ -37,17 +37,17 @@
         <p:growl id="growl" showDetail="true"/>  
         <div class="contenedor_central">
         	<h2>Certificaciones de Competencias Laborales disponibles</h2>
-	        <p>Seleccione el nombre de la competencia para ver el detalle y solicitar la certificacion</p>
+	        <p>Seleccione el nombre de la certificación para ver el detalle y registrar su solicitud</p>
         	<div id="contenedor_tabla_competencias">    
-	            <p:dataTable id="grid" var="competencia" styleClass="tablaCompetencias" value="#{planificacionManagedBean.certificaciones}" paginator="true" rows="10" 
+	            <p:dataTable id="grid" var="certificacion" styleClass="tablaCompetencias" value="#{inicioManagedBean.certificaciones}" paginator="true" rows="10" 
 	                paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-	                rowsPerPageTemplate="5,10,15" rowKey="#{competencia.id}" selection="#{planificacionManagedBean.selectedCertificacion}" selectionMode="single">
+	                rowsPerPageTemplate="5,10,15" rowKey="#{certificacion.id}" selection="#{inicioManagedBean.selectedCertificacion}" selectionMode="single">
 	     			<!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
 	                <p:ajax event="rowSelect" update=":cursos:dialogo :cursos:growl" oncomplete="PF('modal_comp').show()" />
-	                <p:column style="display: none" headerText="Unidad de competencia"><h:outputText value="#{competencia.id}" /></p:column>  
-	                <p:column headerText="Unidad de competencia"><h:outputText value="#{competencia.nombre}" /></p:column>  
-	                <p:column headerText="Centro de Formacion"><h:outputText value="#{competencia.ifpNombre}" /></p:column>  
-	                <p:column headerText="Inicia recepcion de solicitud"><h:outputText value="#{competencia.divulgacionInicia}" /></p:column>  
+	                <p:column style="display: none" headerText="Unidad de competencia"><h:outputText value="#{certificacion.id}" /></p:column>  
+	                <p:column headerText="Certificación"><h:outputText value="#{certificacion.nombre}" /></p:column>  
+	                <p:column headerText="Centro de Formación"><h:outputText value="#{certificacion.ifpNombre}" /></p:column>  
+	                <p:column headerText="Inicio de Solicitudes"><h:outputText value="#{certificacion.divulgacionInicia}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>  
 	            </p:dataTable> 
             </div>
         </div>
@@ -55,30 +55,25 @@
 			<p:outputPanel id="dialogo">  
         	<div class="seccion_detalle">
       			<p>Nombre de la certificacion</p>
-      			<h:outputText value="#{planificacionManagedBean.selectedCertificacion.nombre}"></h:outputText>  		
+      			<h:outputText value="#{inicioManagedBean.selectedCertificacion.nombre}"></h:outputText>  		
           	</div>
           	<div class="seccion_detalle">
       			<p>Ultimo dia para solicitar evaluacion:</p>
-      			<h:outputText value="#{planificacionManagedBean.selectedCertificacion.inscripcionFinaliza}"></h:outputText>
+      			<h:outputText value="#{inicioManagedBean.selectedCertificacion.inscripcionFinaliza}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>
           	</div>
           	<div class="seccion_detalle">
       			<p>Direccion del Centro evaluador:</p>
-      			<h:outputText value="#{planificacionManagedBean.selectedCertificacion.ifpDireccion}"></h:outputText>  		
+      			<h:outputText value="#{inicioManagedBean.selectedCertificacion.ifpDireccion}"></h:outputText>  		
           	</div>
           	<div class="seccion_detalle">
       			<p>Requisitos para aplicar a la evaluacion:</p>
-      			<ul>
-      				<li>Formato de solicitud</li>
-      				<li>Copia de cedula</li>
-      				<li>2 fotos (Tamaño diploma)</li>
-      				<li>Experiencia de 3 años en panaderia</li>
-      				<li>Leer y escribir</li>
-      				<li>Mayor de 20 años de edad</li>
-      			</ul>  		
+				<p:dataList emptyMessage="Lista no disponible" value="#{inicioManagedBean.selectedCertificacion.requisitos}" var="requisito" type="ordered">  
+					<ul><li>#{requisito.descripcion}</li></ul>
+				</p:dataList>
           	</div>
           	<div class="seccion_detalle">
       			<p>Arancel:</p>
-      			<h:outputText value="#{planificacionManagedBean.selectedCertificacion.costo}"></h:outputText>  		
+      			C$ <h:outputText value="#{inicioManagedBean.selectedCertificacion.costoFormateado}"></h:outputText>  		
           	</div>
 	        <p:commandButton onclick="PF('modal_comp').hide()" value="Cancelar"/> 
 	        <p:commandButton onclick="PF('modal_solicitud').show()" value="Aplicar"/>

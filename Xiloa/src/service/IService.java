@@ -29,6 +29,8 @@ import model.Usuario;
 public interface IService {
 	
 	public List<Certificacion> getCertificaciones();
+	
+	public List<Certificacion> getCertificacionesActivas();
 		
 	public List<Mantenedor> getMantenedores();
 	

@@ -51,7 +51,7 @@ public class PlanificacionManagedBean implements Serializable {
 	public List<Certificacion> getCertificaciones(){
 		return certificaciones;
 	}
-	
+		
 	public List<UCompetencia> getCompetencias(){
 		return competencias;
 	}

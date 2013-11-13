@@ -284,3 +284,7 @@ footer p{
 .tablaCompetencias tbody tr:nth-child(1) td {
 	width: 15px;
 }
+
+.ui-datalist-content {
+border: none!important;
+}

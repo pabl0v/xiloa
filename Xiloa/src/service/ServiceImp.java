@@ -95,6 +95,11 @@ public class ServiceImp implements IService {
 	public List<Certificacion> getCertificaciones(){
 		return certificacionDao.findAllByNamedQuery("Certificacion.findAll");
 	}
+	
+	@Override
+	public List<Certificacion> getCertificacionesActivas(){
+		return certificacionDao.findAllByNamedQuery("Certificacion.findActivas");
+	}	
 		
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)

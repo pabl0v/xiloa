@@ -35,6 +35,7 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @Entity(name="certificaciones")
 @NamedQueries({
 	@NamedQuery(name="Certificacion.findAll", query="select c from certificaciones c order by c.id desc"),
+	@NamedQuery(name="Certificacion.findActivas", query="select c from certificaciones c where c.estatus.id=8 order by c.id desc"),
 	@NamedQuery(name="Certificacion.findByIfpId", query="select c from certificaciones c where c.ifpId=?1"),
 	@NamedQuery(name="Certificacion.findById", query="select c from certificaciones c where c.id=?1"),
 	@NamedQuery(name="Certificacion.findUnidadesByCert", query="select c.unidades from certificaciones c where c.id=?1")
