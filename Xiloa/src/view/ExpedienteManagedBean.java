@@ -38,6 +38,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.UploadedFile;
 
 import service.IService;
@@ -78,7 +79,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	private Integer tipoLaboral;
 	
 	private String estadoActual;
-	private String estadoSiguiente;
+	private String estadoSiguiente;	
 	
 	private Long idSeletedLaboral;
 	private List<SelectItem> listTipoDatosLaborales;
@@ -98,6 +99,10 @@ public class ExpedienteManagedBean implements Serializable  {
 	private boolean disableSolicitarCertificacion;
 	private boolean disablePortafolio;
 	private boolean disabledUploadFile;
+	private boolean indicaCVFull;
+	private boolean disabledBtnActualizaContacto;
+	private boolean disabledBtnAgregaLaborales;
+	private boolean disabledBtnAgregaEvaluacion;
 	
 	private List<SelectItem> listEvalBySolicitud;	
 	
@@ -120,6 +125,10 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.setDisableSolicitarCertificacion(true);
 		this.setDisablePortafolio(true);
 		this.setDisabledUploadFile(true);
+		this.setIndicaCVFull(false);
+		this.setDisabledBtnActualizaContacto(false);
+		this.setDisabledBtnAgregaLaborales(false);
+		this.setDisabledBtnAgregaEvaluacion(true);		
 		
 		listDatosLaborales = new ArrayList<Laboral> ();
 		listDatosEstudios = new ArrayList<Laboral> ();
@@ -147,7 +156,46 @@ public class ExpedienteManagedBean implements Serializable  {
 		nuevoLaboral = new Laboral();
 	}
 	
-    public boolean isDisabledUploadFile() {
+   
+	public boolean isDisabledBtnActualizaContacto() {
+		return disabledBtnActualizaContacto;
+	}
+
+
+	public void setDisabledBtnActualizaContacto(boolean disabledBtnActualizaContacto) {
+		this.disabledBtnActualizaContacto = disabledBtnActualizaContacto;
+	}
+
+
+	public boolean isDisabledBtnAgregaLaborales() {
+		return disabledBtnAgregaLaborales;
+	}
+
+
+	public void setDisabledBtnAgregaLaborales(boolean disabledBtnAgregaLaborales) {
+		this.disabledBtnAgregaLaborales = disabledBtnAgregaLaborales;
+	}
+
+
+	public boolean isDisabledBtnAgregaEvaluacion() {
+		return disabledBtnAgregaEvaluacion;
+	}
+
+
+	public void setDisabledBtnAgregaEvaluacion(boolean disabledBtnAgregaEvaluacion) {
+		this.disabledBtnAgregaEvaluacion = disabledBtnAgregaEvaluacion;
+	}
+
+
+	public boolean isIndicaCVFull() {
+		return indicaCVFull;
+	}
+
+	public void setIndicaCVFull(boolean indicaCVFull) {
+		this.indicaCVFull = indicaCVFull;
+	}
+
+	public boolean isDisabledUploadFile() {
 		return disabledUploadFile;
 	}
 
@@ -171,6 +219,7 @@ public class ExpedienteManagedBean implements Serializable  {
 
 
 	public List<BeanEvaluacion> getListBeanEvalFormacion() {
+		listBeanEvalFormacion = getListadoEvaluacionesByParam(this.solicitudExp, false);
 		return listBeanEvalFormacion;
 	}
 
@@ -340,7 +389,8 @@ public class ExpedienteManagedBean implements Serializable  {
 		}
 		
 		this.catalogoDepartamento = service.getDepartamentosByInatec();
-		
+		// habilita y desabilita los botones
+		//enabledDisableButton(1);
 		return solicitudExp;
 	}
 
@@ -394,23 +444,9 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 	public List<BeanEvaluacion> getListBeanEval() {		
-		List<BeanEvaluacion> listBeanEv = new ArrayList<BeanEvaluacion> ();
-		
-		List<Evaluacion> listEval = service.getEvaluaciones(this.solicitudExp);
-		for (Evaluacion e : listEval) {
-			List<Instrumento> listInstrumento = service.getIntrumentoByEvaluacion(e.getId());
-			for (Instrumento inst : listInstrumento) {				
-				listBeanEv.add(new BeanEvaluacion(this.solicitudExp, //Solicitud, 
-												  e, //	Evaluacion
-												  inst// Instrumento
-												  )
-							  );
-			}
-		}
-					
-		listBeanEval = listBeanEv;
+		listBeanEval = getListadoEvaluacionesByParam(this.solicitudExp, true);		
 		return listBeanEval;
-	}
+	}		
 
 	public void setListBeanEval(List<BeanEvaluacion> listBeanEval) {
 		this.listBeanEval = listBeanEval;
@@ -595,6 +631,31 @@ public class ExpedienteManagedBean implements Serializable  {
 		archivoExp = new Archivo();
 	}
 	
+	public List<BeanEvaluacion> getListadoEvaluacionesByParam(Solicitud sol, boolean todos) {		
+		List<BeanEvaluacion> listBeanEv = new ArrayList<BeanEvaluacion> ();		
+		
+		List<Evaluacion> listEval = service.getEvaluaciones(sol);
+		for (Evaluacion e : listEval) {
+			List<Instrumento> listInstrumento = service.getIntrumentoByEvaluacion(e.getId());
+			for (Instrumento inst : listInstrumento) {				
+				BeanEvaluacion bean = new BeanEvaluacion (sol, //Solicitud, 
+						  								  e, //	Evaluacion
+						  								  inst// Instrumento
+						  								  );
+				
+				if (todos) {
+					listBeanEv.add(bean);
+				} else {
+					if (! e.isAprobado()){
+						listBeanEv.add(bean);
+					} 
+				}	
+			}
+		}			
+		
+		return listBeanEv;
+	}
+	
 	public void handleActivaUpload(){
 		if (archivoExp != null) {
 			if ((archivoExp.getNombre() != null) && (archivoExp.getTipo() != null) && (archivoExp.getVersion() != null) && (archivoExp.getDescripcion() != null)){
@@ -645,7 +706,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.setPaisInstitucion(this.selectedLaboral.getPais());
 		this.setDescripcionCargo(this.selectedLaboral.getDescripcion());
 		
-		enabledDisableButton();
+		enabledDisableButton(2);
 		
 		//actualizaListaPortafolio (new Integer(1));		
 		
@@ -664,6 +725,27 @@ public class ExpedienteManagedBean implements Serializable  {
 	public String RegistrarEditarEvaluacion() {		
 		return "/modulos/solicitudes/registro_evaluacion?faces-redirect=true";		
 	}	
+	
+	public void solicitarCertificacion (){
+		Integer estadoActual = new Integer(this.getSolicitudExp().getEstatus());
+		String proxEstado = this.catalogoEstadosSolicitud.get(estadoActual).getProximo();
+		
+		this.solicitudExp.setEstatus(Integer.valueOf(proxEstado));
+		
+		Solicitud sol = (Solicitud) service.guardar(this.solicitudExp);
+		
+		if (sol != null){
+			this.setSolicitudExp(sol);
+			// habilita y desabilita los botones
+			enabledDisableButton(1);						
+			
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "La solicitud a sido registrada exitosamente !!"));
+		} else {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje: ", "Error al registrar la solicitud. Favor revisar..."));
+		}
+		
+		
+	}
 				
 	public void actualizarContacto() {
 		System.out.println("correo " + solicitudExp.getContacto().getCorreo1());
@@ -729,14 +811,31 @@ public class ExpedienteManagedBean implements Serializable  {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje: ", "Se genero un error al grabar los datos laborales / academicos. Favor revisar..."));
 		}
 		
-		enabledDisableButton();		
+		enabledDisableButton(2);		
 	}
 	
-	public void enabledDisableButton() {
-		if (this.selectedLaboral == null) 
-			this.setDisablePortafolio(true);
-		else
-			this.setDisablePortafolio(false);
+	public void enabledDisableButton(int opcion) {
+		switch(opcion) {
+			case 1:	{
+				Solicitud sol = this.getSolicitudExp();
+				Integer estadoInicial = service.getMantenedorMinByTipo(sol.getTipomantenedorestado());
+				boolean asignaDisable = estadoInicial.equals(new Integer (sol.getEstatus()));
+				
+				this.setDisabledBtnActualizaContacto(!asignaDisable);
+				this.setDisabledBtnAgregaLaborales(!asignaDisable);
+				this.setDisabledBtnAgregaEvaluacion(asignaDisable);
+				break;	
+			}
+			case 2: {
+				if (this.selectedLaboral == null) 
+					this.setDisablePortafolio(true);
+				else
+					this.setDisablePortafolio(false);
+				break;
+			}
+			default: 
+				break;			
+		}
 			
 	}
 	
@@ -823,7 +922,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		
 		Date fechaAhora = new Date();
 		
-		FacesMessage msg = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");  
+		FacesMessage msg = new FacesMessage("Proceso Exitoso !!!", event.getFile().getFileName() + " ha sido cargado al servidor.");  
 	    FacesContext.getCurrentInstance().addMessage(null, msg);  
 		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
 		
@@ -886,6 +985,52 @@ public class ExpedienteManagedBean implements Serializable  {
 			e.printStackTrace();
 		}		
 	        			
+	}
+	
+	public void validaRegistroCV (){
+		FacesMessage msg;
+		String       textMsg = "";
+		String       titulo = "";
+		
+		Contacto solicitante = this.solicitudExp.getContacto();
+		
+		if (this.isIndicaCVFull()) {
+			this.setDisableSolicitarCertificacion(false);		
+			
+			if (solicitante.getTelefono1() == null) {
+				textMsg = "Debe indicar el numero de telefono";					    
+				this.setDisableSolicitarCertificacion(true);
+			}
+			
+			if (solicitante.getDireccionActual() == null) {
+				textMsg = (textMsg.isEmpty()) ? "Debe indicar la direccion actual" : textMsg + ", la direccion actual";					    
+				this.setDisableSolicitarCertificacion(true);
+			} 
+			
+			if (solicitante.getDepartamentoId() == null) {
+				textMsg = (textMsg.isEmpty()) ? "Debe indicar el departamento" : textMsg + ", el departamento";			
+				this.setDisableSolicitarCertificacion(true);
+			}
+			
+			if (solicitante.getMunicipioId() == null) {
+				textMsg = (textMsg.isEmpty()) ? "Debe indicar el municipio." : textMsg + " y el municipio.";		
+				this.setDisableSolicitarCertificacion(true);
+			}
+			
+			if (this.isDisableSolicitarCertificacion())
+				titulo = "Informacion incompleta: ";
+			else{
+				titulo = "Informacion: ";
+				textMsg = "Puede proceder a registrar la solicitud";
+			}
+			
+			msg = new FacesMessage(titulo, textMsg);
+			
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		} else
+		{
+			this.setDisableSolicitarCertificacion(true);
+		}
 	}
 
 }
