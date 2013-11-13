@@ -15,6 +15,7 @@ public class BeanEvaluacion {
 	private Solicitud solicitudBeanEval;
 	private Evaluacion evaluacion;
 	private Instrumento instrumento;
+	private String      estadoEvaluacion;
 			
 	public Evaluacion getEvaluacion() {
 		return evaluacion;
@@ -38,12 +39,20 @@ public class BeanEvaluacion {
 	public void setSolicitudBeanEval(Solicitud solicitudBeanEval) {
 		this.solicitudBeanEval = solicitudBeanEval;
 	}
+	
+	public String getEstadoEvaluacion() {
+		return estadoEvaluacion;
+	}
+	public void setEstadoEvaluacion(String estadoEvaluacion) {
+		this.estadoEvaluacion = estadoEvaluacion;
+	}
 	public BeanEvaluacion(Solicitud solicitudBeanEval, Evaluacion evaluacion,
-			Instrumento instrumento) {
+			Instrumento instrumento, String estado) {
 		super();
 		this.solicitudBeanEval = solicitudBeanEval;
 		this.evaluacion = evaluacion;
 		this.instrumento = instrumento;
+		this.estadoEvaluacion = estado;
 	}
 	
 	

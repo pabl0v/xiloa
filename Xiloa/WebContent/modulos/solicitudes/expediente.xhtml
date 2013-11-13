@@ -181,7 +181,7 @@
                              <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{uC.evaluacion.unidad.competenciaDescripcion}" /></p:column>  
                              <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{uC.instrumento.nombre}" /></p:column>  
                              <!--  <p:column headerText="Requisito"><h:outputText value="#{uC.instrumento.nombre}" /></p:column> -->  
-                             <p:column headerText="Estado"><h:outputText value="#{uC.evaluacion.aprobado}" /></p:column>  
+                             <p:column headerText="Estado"><h:outputText value="#{uC.estadoEvaluacion}" /></p:column>  
                              <p:column headerText="Editar">
                              	<p:commandButton id="editarEvaluaciones" action="#{expedienteManagedBean.RegistrarEditarEvaluacion}"                         	            	          
                          	                	 icon="ui-icon-pencil" title="Editar">    	
@@ -220,7 +220,7 @@
                              <p:column headerText="Observacion"><h:outputText value="#{evaluaciones.evaluacion.observaciones}" /></p:column>  
                              <p:column headerText="Fecha"><h:outputText value="#{evaluaciones.evaluacion.fechaEvaluacion}" /></p:column>  
                              <p:column headerText="Aprobado"><p:selectBooleanCheckbox value="#{evaluaciones.evaluacion.aprobado}" /></p:column>  
-                             <p:column headerText="Estado"><h:outputText value="#{evaluaciones.evaluacion.estado}" /></p:column>
+                             <p:column headerText="Estado"><h:outputText value="#{evaluaciones.estadoEvaluacion}" /></p:column>
                              <p:column headerText="Editar">
                              	<p:commandButton id="editarEvaluacionesPlan" action="#{expedienteManagedBean.RegistrarEditarEvaluacion}"                         	                 	  
                          	                 	 icon="ui-icon-pencil" title="Editar">                         					
@@ -228,14 +228,7 @@
 									<f:setPropertyActionListener value="#{evaluaciones.evaluacion}" target="#{evaluacionManagedBean.selectedEvaluacion}" />
 									<f:setPropertyActionListener value="#{evaluaciones.instrumento}" target="#{evaluacionManagedBean.selectedInstrumento}" />                         			                         									  
 									<f:setPropertyActionListener value="#{evaluaciones.evaluacion.unidad}" target="#{evaluacionManagedBean.selectedUnidad}" />				  
-    							</p:commandButton>
-    							<p:commandButton id="editarEvaluacionesPlanForma" action="#{expedienteManagedBean.RegistrarEditarEvaluacion}" 
-                         	                 	 icon="ui-icon-pencil" title="Editar">                         				
-                         			<f:setPropertyActionListener value="#{formacion.solicitudBeanEval}" target="#{evaluacionManagedBean.solicitudEval}" />
-									<f:setPropertyActionListener value="#{formacion.evaluacion}" target="#{evaluacionManagedBean.selectedEvaluacion}" />
-									<f:setPropertyActionListener value="#{formacion.instrumento}" target="#{evaluacionManagedBean.selectedInstrumento}" />                         			                         									  
-									<f:setPropertyActionListener value="#{formacion.evaluacion.unidad}" target="#{evaluacionManagedBean.selectedUnidad}" />					  
-    							</p:commandButton>                        
+    							</p:commandButton>    							                   
                              </p:column>              
                         </p:dataTable>  
                     </p:tab>  
@@ -248,7 +241,7 @@
                              <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{formacion.instrumento.nombre}" /></p:column>                               
                              <p:column headerText="Observaciones"><h:outputText value="#{formacion.evaluacion.observaciones}" /></p:column>
                              <p:column headerText="Aprobado"><p:selectBooleanCheckbox value="#{formacion.evaluacion.aprobado}" /></p:column>  
-                             <p:column headerText="Estado"><h:outputText value="#{formacion.evaluacion.estado}" /></p:column>                              
+                             <p:column headerText="Estado"><h:outputText value="#{formacion.estadoEvaluacion}" /></p:column>                              
                              <p:column headerText="Editar">
                              	<p:commandButton id="editarEvaluacionesPlanForma" action="#{expedienteManagedBean.RegistrarEditarEvaluacion}" 
                          	                 	 icon="ui-icon-pencil" title="Editar">                         				

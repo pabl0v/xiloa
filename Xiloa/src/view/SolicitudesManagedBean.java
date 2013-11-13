@@ -628,7 +628,7 @@ public class SolicitudesManagedBean implements Serializable {
 		if (this.selectedAccionConvo == 1) {			
 			for (USolicitud obj : this.selectedUSolicitud){				
 				Solicitud sol = obj.getSolicitud();
-				sol.setEstatus(3);
+				sol.setEstatus(22); //22 es el estado Convocado
 				sol = (Solicitud)service.guardar(sol);
 				
 				if (sol != null){

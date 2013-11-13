@@ -108,6 +108,9 @@ public class ExpedienteManagedBean implements Serializable  {
 	
 	private Map<Integer, Mantenedor> catalogoTipoDatosLaborales;
 	private Map<Integer, Mantenedor> catalogoEstadosSolicitud;
+	private Map<Integer, Mantenedor> catalogoEstadosEvaluacion;
+	private Map<Integer, Mantenedor> catalogoEstadosPortafolio;
+	
 	
 	private Map<Integer, Departamento> catalogoDepartamento;
 	private Map<Integer, Municipio> catalogoMunicipiosByDepto;
@@ -146,6 +149,8 @@ public class ExpedienteManagedBean implements Serializable  {
 		
 		catalogoTipoDatosLaborales = new HashMap<Integer, Mantenedor>();
 		catalogoEstadosSolicitud = new HashMap<Integer, Mantenedor>();
+		catalogoEstadosEvaluacion = new HashMap<Integer, Mantenedor>();
+		catalogoEstadosPortafolio = new HashMap<Integer, Mantenedor> ();
 		
 		catalogoDepartamento = new HashMap<Integer, Departamento>();
 		catalogoMunicipiosByDepto = new HashMap<Integer, Municipio>();
@@ -157,7 +162,30 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 	
    
+	public Map<Integer, Mantenedor> getCatalogoEstadosEvaluacion() {
+		return catalogoEstadosEvaluacion;
+	}
+
+
+	public void setCatalogoEstadosEvaluacion(
+			Map<Integer, Mantenedor> catalogoEstadosEvaluacion) {
+		this.catalogoEstadosEvaluacion = catalogoEstadosEvaluacion;
+	}
+
+
+	public Map<Integer, Mantenedor> getCatalogoEstadosPortafolio() {
+		return catalogoEstadosPortafolio;
+	}
+
+
+	public void setCatalogoEstadosPortafolio(
+			Map<Integer, Mantenedor> catalogoEstadosPortafolio) {
+		this.catalogoEstadosPortafolio = catalogoEstadosPortafolio;
+	}
+
+
 	public boolean isDisabledBtnActualizaContacto() {
+		enabledDisableButton(1);
 		return disabledBtnActualizaContacto;
 	}
 
@@ -168,6 +196,7 @@ public class ExpedienteManagedBean implements Serializable  {
 
 
 	public boolean isDisabledBtnAgregaLaborales() {
+		enabledDisableButton(3);
 		return disabledBtnAgregaLaborales;
 	}
 
@@ -178,6 +207,7 @@ public class ExpedienteManagedBean implements Serializable  {
 
 
 	public boolean isDisabledBtnAgregaEvaluacion() {
+		enabledDisableButton(4);
 		return disabledBtnAgregaEvaluacion;
 	}
 
@@ -626,7 +656,18 @@ public class ExpedienteManagedBean implements Serializable  {
 		for (Mantenedor dato : listaCatalogo) {
 			this.catalogoTipoDatosLaborales.put(dato.getId(), dato);			
 			this.listTipoDatosLaborales.add(new SelectItem(dato.getId(), dato.getValor()));			
-		}		
+		}	
+		
+		//Obtiene el catalogo de Estados Evaluacion
+		listaCatalogo = service.getMantenedoresByTipo(new Integer(9));		
+		for (Mantenedor dato : listaCatalogo) {
+			this.catalogoEstadosEvaluacion.put(dato.getId(), dato);						
+		}
+		
+		listaCatalogo = service.getMantenedoresByTipo(new Integer(8));		
+		for (Mantenedor dato : listaCatalogo) {
+			this.catalogoEstadosPortafolio.put(dato.getId(), dato);						
+		}
 		
 		archivoExp = new Archivo();
 	}
@@ -635,12 +676,20 @@ public class ExpedienteManagedBean implements Serializable  {
 		List<BeanEvaluacion> listBeanEv = new ArrayList<BeanEvaluacion> ();		
 		
 		List<Evaluacion> listEval = service.getEvaluaciones(sol);
+		
+		String estadoEval;
+		
 		for (Evaluacion e : listEval) {
+			
+			estadoEval = catalogoEstadosEvaluacion.get(Integer.valueOf(e.getEstado())).getValor();
+			
+			
 			List<Instrumento> listInstrumento = service.getIntrumentoByEvaluacion(e.getId());
 			for (Instrumento inst : listInstrumento) {				
 				BeanEvaluacion bean = new BeanEvaluacion (sol, //Solicitud, 
 						  								  e, //	Evaluacion
-						  								  inst// Instrumento
+						  								  inst,// Instrumento
+						  								  estadoEval // EstadoEvaluacion
 						  								  );
 				
 				if (todos) {
@@ -737,7 +786,9 @@ public class ExpedienteManagedBean implements Serializable  {
 		if (sol != null){
 			this.setSolicitudExp(sol);
 			// habilita y desabilita los botones
-			enabledDisableButton(1);						
+			enabledDisableButton(1);
+			enabledDisableButton(3);
+			enabledDisableButton(4);
 			
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "La solicitud a sido registrada exitosamente !!"));
 		} else {
@@ -815,15 +866,14 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 	
 	public void enabledDisableButton(int opcion) {
+		
+		Solicitud sol = this.getSolicitudExp();
+		Integer estadoInicial = service.getMantenedorMinByTipo(sol.getTipomantenedorestado());
+		boolean asignaDisable = estadoInicial.equals(new Integer (sol.getEstatus()));
+		
 		switch(opcion) {
-			case 1:	{
-				Solicitud sol = this.getSolicitudExp();
-				Integer estadoInicial = service.getMantenedorMinByTipo(sol.getTipomantenedorestado());
-				boolean asignaDisable = estadoInicial.equals(new Integer (sol.getEstatus()));
-				
-				this.setDisabledBtnActualizaContacto(!asignaDisable);
-				this.setDisabledBtnAgregaLaborales(!asignaDisable);
-				this.setDisabledBtnAgregaEvaluacion(asignaDisable);
+			case 1:	{				
+				this.setDisabledBtnActualizaContacto(!asignaDisable);				
 				break;	
 			}
 			case 2: {
@@ -831,6 +881,14 @@ public class ExpedienteManagedBean implements Serializable  {
 					this.setDisablePortafolio(true);
 				else
 					this.setDisablePortafolio(false);
+				break;
+			}
+			case 3: {
+				this.setDisabledBtnAgregaLaborales(!asignaDisable);				
+				break;
+			}
+			case 4: {
+				this.setDisabledBtnAgregaEvaluacion(asignaDisable);
 				break;
 			}
 			default: 
