@@ -18,36 +18,10 @@
 		</div>
         <h2>Configuracion de Instrumentos - <h:outputText value="#{instrumentoManagedBean.nombreCertificacion}" /> </h2>
         <div id="contenedor_secciones">
-		            <div class="seccion_edicion" style="width: 93%;">
-		                <h:form styleClass="formulario_inline">
-		                    <p:commandButton value="Agregar guia" update=":guiaDialogo" action="#{instrumentoManagedBean.nuevaGuia}" onclick="PF('dlg1').show();"/> 
-		                </h:form>
-						<div class="seccion_interna">
-						<h:form id="guias">
-		                   <p:dataTable id="display" emptyMessage="No hay datos para mostrar"  var="guia" value="#{instrumentoManagedBean.selectedInstrumento.guias}" selection="#{instrumentoManagedBean.selectedGuia}" paginator="true" rows="10" rowKey="#{guia.id}" selectionMode="single">  
-		                        <p:column headerText="Pregunta"><h:outputText value="#{guia.pregunta}" /></p:column>  
-		                        <p:column headerText="Respuesta"><h:outputText value="#{guia.respuesta}" /></p:column>  
-		                        <p:column headerText="Puntaje"><h:outputText value="#{guia.puntaje}" /></p:column>  
-		                        <p:column headerText="Estado"><h:outputText value="#{guia.estatusLabel}" /></p:column>
-								<p:column headerText="Editar" style="width:4%">
-									<p:commandButton id="selectButton" action="#{instrumentoManagedBean.editarGuia(instrumentoManagedBean.selectedGuia)}" update=":guiaDialogo" icon="ui-icon-pencil" title="Editar" onclick="PF('dlg1').show();"/>  
-								</p:column>		                        
-		                    </p:dataTable>
-		                </h:form>
-		                </div>	
-		                <h:form>
-		               		<div class="contenedor_botones">
-		               			<h:commandButton style="float:right;" value="Cerrar" action="#{instrumentoManagedBean.aceptar}"/> 
-		               		</div>
-		                </h:form>	                
-		          </div>
-		          
-		         
-		          		          
-		          <div class="seccion_edicion" style="width: 93%;margin-top: 124px;">
+		          	<div class="seccion_edicion" style="width: 93%;margin-top: 20px;">
 		          		<h:form id="instrumentos">
 		          		<p:commandButton value="Agregar Instrumento" style="margin-bottom: 5px" update=":instrumentoDialogo" action="#{instrumentoManagedBean.nuevoInstrumento}" onclick="PF('dlg2').show();"/>
-						<p:dataTable id="instrumentosDataTable" emptyMessage="No hay datos para mostrar" var="var" value="#{instrumentoManagedBean.instrumentos}" selection="#{instrumentoManagedBean.selectedInstrumento}" paginator="true" rows="10" rowKey="#{var.id}" selectionMode="single">
+						<p:dataTable id="instrumentosDataTable" emptyMessage="No hay datos para mostrar" var="var" value="#{instrumentoManagedBean.instrumentos}" selection="#{instrumentoManagedBean.selectedInstrumento}" paginator="true" rows="3" rowKey="#{var.id}" selectionMode="single">
 							<p:ajax event="rowSelect" listener="#{instrumentoManagedBean.onRowSelect}" update=":guias:display"/>  
 							<p:ajax event="rowUnselect" listener="#{instrumentoManagedBean.onRowUnselect}" update=":guias:display"/>    
 							<f:facet name="header">
@@ -64,7 +38,30 @@
 							</p:column>
 						</p:dataTable>
 						</h:form>
-		          </div>
+		          	</div>
+		                <h:form>
+		               		<div class="contenedor_botones" style="width: 93%;">
+		               			<h:commandButton style="float:right;" value="Cerrar" action="#{instrumentoManagedBean.aceptar}"/> 
+		               		</div>
+		                </h:form>
+					<div class="seccion_edicion" style="width: 93%;">
+		                <h:form styleClass="formulario_inline">
+		                    <p:commandButton value="Agregar guia" update=":guiaDialogo" action="#{instrumentoManagedBean.nuevaGuia}" onclick="PF('dlg1').show();"/> 
+		                </h:form>
+						<div class="seccion_interna">
+						<h:form id="guias">
+		                   <p:dataTable id="display" emptyMessage="No hay datos para mostrar"  var="guia" value="#{instrumentoManagedBean.selectedInstrumento.guias}" selection="#{instrumentoManagedBean.selectedGuia}" paginator="true" rows="10" rowKey="#{guia.id}" selectionMode="single">  
+		                        <p:column headerText="Pregunta"><h:outputText value="#{guia.pregunta}" /></p:column>  
+		                        <p:column headerText="Respuesta"><h:outputText value="#{guia.respuesta}" /></p:column>  
+		                        <p:column headerText="Puntaje"><h:outputText value="#{guia.puntaje}" /></p:column>  
+		                        <p:column headerText="Estado"><h:outputText value="#{guia.estatusLabel}" /></p:column>
+								<p:column headerText="Editar" style="width:4%">
+									<p:commandButton id="selectButton" action="#{instrumentoManagedBean.editarGuia(instrumentoManagedBean.selectedGuia)}" update=":guiaDialogo" icon="ui-icon-pencil" title="Editar" onclick="PF('dlg1').show();"/>  
+								</p:column>		                        
+		                    </p:dataTable>
+		                </h:form>
+		                </div>	
+		          </div>		          
 		</div>
 	</div>
 

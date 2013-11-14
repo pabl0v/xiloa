@@ -64,8 +64,6 @@
 						</p:selectOneMenu>	
 						</div>
 					<div class="contenedor_botones">
-						
-						<h:commandButton id="prueba" value="Instrumentos" action="#{instrumentoManagedBean.configurarInstrumento(certificacionManagedBean.certificacion.id,certificacionManagedBean.certificacion.nombre)}"/> 
 						<h:commandButton value="Cancelar" onclick="$('#prueba').disabled=true;" action="#{certificacionManagedBean.cancelar}"/> 
 						<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardarEdicion}"/>
 					</div>

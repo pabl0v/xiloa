@@ -41,8 +41,14 @@
                         <p:column headerText="Evalua"><h:outputText value="#{certificacion.evaluador.nombreCompleto}" /></p:column>
                         <p:column headerText="Estatus"><h:outputText value="#{certificacion.estatus.valor}" /></p:column>               
                         <p:column style="width:4%">
-				            <p:commandButton id="selectButton" action="#{certificacionManagedBean.editarCertificacion(planificacionManagedBean.selectedCertificacion)}" icon="ui-icon-pencil" title="Editar"/>  
-				        </p:column> 
+							<p:commandButton id="editarButton" action="#{certificacionManagedBean.editarCertificacion(planificacionManagedBean.selectedCertificacion)}" icon="ui-icon-pencil" title="Editar"/>  
+				        </p:column>
+						<p:column style="width:4%">
+							<p:commandButton id="actividadesButton" action="#{instrumentoManagedBean.configurarInstrumento(planificacionManagedBean.selectedCertificacion.id,planificacionManagedBean.selectedCertificacion.nombre)}" icon="ui-icon-pencil" title="Actividades"/>  
+						</p:column>
+						<p:column style="width:4%">
+							<p:commandButton id="instrumentosButton" action="#{instrumentoManagedBean.configurarInstrumento(planificacionManagedBean.selectedCertificacion.id,planificacionManagedBean.selectedCertificacion.nombre)}" icon="ui-icon-pencil" title="Instrumentos"/>  
+						</p:column>
                 </p:dataTable>
             </h:form>
         </div>

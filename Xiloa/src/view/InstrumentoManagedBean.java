@@ -166,7 +166,7 @@ public class InstrumentoManagedBean implements Serializable {
 		selectedInstrumento = new Instrumento();
 		selectedTipoInstrumento = null;
 		selectedUnidad = null;
-		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
+		return "/modulos/planificacion/planificacion?faces-redirect=true";
 	}
 	
 	public void nuevaGuia(){
