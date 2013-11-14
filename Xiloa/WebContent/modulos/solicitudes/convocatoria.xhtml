@@ -18,7 +18,7 @@
 	    	 <script type="text/javascript" src="../../resources/scripts/solicitudes.js"></script>
 		</div>
 		
-        <h:form>
+        <h:form id="formConvocatoria">
         <div id="cabezera">
             <h2>Solicitudes Activas</h2>                  
             <div id="botones_filtro_contenedor">                 
@@ -47,30 +47,26 @@
 			    </p:selectOneMenu>			  
         </div>              
         <div id="contenedor_tabla_solicitudes">           
+        	<p:messages id="msgConvocatoria" showDetail="true" autoUpdate="true" closable="true" />
         	<p:dataTable id="dtSolicitud" widgetVar="dtSolicitudes" emptyMessage="No existen solicitudes activas" var="varSolicitudI" 
-        	             value="#{solicitudesManagedBean.listSolicitudI}" selectionMode="single"
-        	             selection="#{solicitudesManagedBean.selectedUSolicitud}" 
-        	             paginator="true" rows="12" rowKey="#{varSolicitudI}" >                                             	             
-	            <!--Las columnas de la tabla-->
-	            <p:ajax event="rowSelect" listener="#{solicitudesManagedBean.marcarConvocatoria}" />
+        	             value="#{solicitudesManagedBean.listSolicitudI}" 
+        	             selection="#{solicitudesManagedBean.selectedUSolicitud}"
+        	             paginator="true" rows="12" rowKey="#{varSolicitudI.solicitud.id}" >        	                                        	             
+	            <!--Las columnas de la tabla-->	            
                 <p:column id="centroColumn" headerText="Centro evaluador"><h:outputText value="#{varSolicitudI.solicitud.certificacion.ifpNombre}" /></p:column>                      
                 <p:column id="candidatoColumn" headerText="Nombre del candidato"><h:outputText value="#{varSolicitudI.solicitud.contacto.nombreCompleto}" /></p:column>  
                 <p:column id="certificacionColumn" headerText="Certificacion a evaluar"><h:outputText value="#{varSolicitudI.solicitud.certificacion.nombre}"/></p:column>  
                 <p:column id="fechaColumn" headerText="Fecha solicitud"><h:outputText value="#{varSolicitudI.solicitud.fechaRegistro}" /></p:column>               
                 <p:column id="evaluadorColumn" headerText="Evaluador"><h:outputText value="#{varSolicitudI.solicitud.contacto.correo1}" /></p:column>                
-                <p:column id="estadoColumn" headerText="Estado"><h:outputText value="#{varSolicitudI.solicitud.estatus}" /></p:column>
-                <p:column id="pasaConvocatoria" headerText="Convocatoria" >
-                	<p:selectBooleanCheckbox id="pasaConvo" value="#{varSolicitudI.esConvocatoria}">  
-        			      <p:ajax update="dtSolicitud" listener="#{solicitudesManagedBean.marcarConvocatoria}" />
-        			</p:selectBooleanCheckbox>                	  
-                </p:column>  
+                <p:column id="estadoColumn" headerText="Estado"><h:outputText value="#{varSolicitudI.solicitud.estatus.valor}" /></p:column>
+                <p:column id="selectConvo" selectionMode="multiple" style="width:2%" />                
             </p:dataTable>            
         </div>
         <div id="contenedor_exportar">
     		<p>Con seleccionado:</p>
 	    	<p:selectOneMenu styleClass="selectores" id="selector_accionConvocatoria" value="#{solicitudesManagedBean.selectedAccionConvo}" >
 	    		<f:selectItems value="#{solicitudesManagedBean.listAccionConvo}" />	    	    
-    			<p:ajax update="dtSolicitud"  listener="#{solicitudesManagedBean.handleConvocatoria}" />	    		            			        
+    			<p:ajax update=":formConvocatoria:dtSolicitud, :formConvocatoria:msgConvocatoria" process="@form" listener="#{solicitudesManagedBean.handleConvocatoria}" />	    		            			        
 	    	</p:selectOneMenu>    	
     	</div>
      </h:form>

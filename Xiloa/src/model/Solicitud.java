@@ -53,8 +53,10 @@ public class Solicitud implements Serializable {
 	@Column(name = "solicitud_ticket", nullable = false)
 	private String ticket;
 	
-	@Column(name = "solicitud_estatus", nullable = false)
-	private int estatus;
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name="solicitud_estatus")		
+	private Mantenedor estatus;
 	
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "fecha_registro", nullable = false)
@@ -119,11 +121,11 @@ public class Solicitud implements Serializable {
 		this.ticket = ticket;
 	}
 
-	public int getEstatus() {
+	public Mantenedor getEstatus() {
 		return estatus;
 	}
 
-	public void setEstatus(int estatus) {
+	public void setEstatus(Mantenedor estatus) {
 		this.estatus = estatus;
 	}
 
@@ -199,7 +201,7 @@ public class Solicitud implements Serializable {
 		this.evaluaciones = evaluaciones;
 	}	
 
-	public Solicitud(String nombre, String ticket, int estatus,
+	public Solicitud(String nombre, String ticket, Mantenedor estatus,
 			Date fechaRegistro, Date fechaMatricula, int experiencia,
 			String ocupacion, String oficio, int escolaridad,
 			Contacto contacto, Certificacion certificacion,

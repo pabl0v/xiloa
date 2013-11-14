@@ -83,11 +83,12 @@ public interface IService {
 	public List<Instrumento> getInstrumentoByUnidad (Long idUnidad);
 	public List<EvaluacionGuia> getEvaluacionGuiaByEvaluacionId(Long evaluacionId);
 	public List<Instrumento> getIntrumentoByEvaluacion(Long evaluacionId);
-	public Integer getMantenedorMinByTipo(String tipo);
+	public Mantenedor getMantenedorMinByTipo(String tipo);
 	public Mantenedor getMantenedorById(Integer idMantenedor);	
 	public List<Guia> getGuiaByParam(String namedString, Object [] parametros);
 	public List<Archivo> getArchivoByParam (String namedString, Object [] parametros);
 	public List<Bitacora> getBitacoras(Long actividadId);
 	public List<Requisito> getRequisitos(int cursoId, int centroId);
 	public List<Unidad> getUnidades(int cursoId, int centroId);
+	public Archivo getArchivoOneByParam (String namedString, Object [] parametros);
 }

@@ -22,7 +22,8 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @Entity(name="archivo")
 @NamedQueries({
 	@NamedQuery(name="Archivo.findByLaboralId", query="select a from archivo a where a.laboral.id=?1"),
-	@NamedQuery(name="Archivo.findByContactoId", query="select a from archivo a where a.laboral.contacto.id=?1")
+	@NamedQuery(name="Archivo.findByContactoId", query="select a from archivo a where a.laboral.contacto.id=?1"),
+	@NamedQuery(name="Archivo.findById", query="select a from archivo a where a.id=?1")
 })
 public class Archivo implements Serializable {
 
@@ -89,8 +90,9 @@ public class Archivo implements Serializable {
 	private String categoria;
 	
 	@NotNull
-	@Column(name = "archivo_estado", nullable = false)	
-	private String estado;
+	@ManyToOne
+	@JoinColumn(name="archivo_estado")		
+	private Mantenedor estado;
 	
 	@Column(name = "archivo_aprobado", nullable = true)	
 	private String aprobado;
@@ -218,11 +220,11 @@ public class Archivo implements Serializable {
 	}
 	*/
 
-	public String getEstado() {
+	public Mantenedor getEstado() {
 		return estado;
 	}
 
-	public void setEstado(String estado) {
+	public void setEstado(Mantenedor estado) {
 		this.estado = estado;
 	}
 
@@ -238,7 +240,7 @@ public class Archivo implements Serializable {
 	public Archivo(Laboral laboral, String nombre, String descripcion,
 			String nombreReal, String ruta, String propietario, Date fecha,
 			String tipo, String size, String version, String icono,
-			String categoria, String estado) {
+			String categoria, Mantenedor estado) {
 		super();
 		this.laboral = laboral;
 		this.nombre = nombre;

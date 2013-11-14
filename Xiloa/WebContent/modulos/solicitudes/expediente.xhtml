@@ -195,20 +195,48 @@
                     </p:tab>  
 
                     <p:tab id="tabPortafolio" title="Portafolio">                    	                    	
-                         <p:dataTable emptyMessage="No hay datos"  var="portafolioEvidencia" value="#{expedienteManagedBean.listPortafolioContacto}"
+                         <p:dataTable id="dtPortafolio" emptyMessage="No hay datos"  var="portafolioEvidencia" 
+                                      value="#{expedienteManagedBean.listPortafolioContacto}"
                                       selection="#{expedienteManagedBean.selectedArchivoId}" rowKey="#{portafolioEvidencia}" 
-                         			  selectionMode="single" paginator="true" rows="4" >  
+                         			  selectionMode="single" paginator="true" rows="4" >
+                         			 <!-- 
+                         			  rowEditListener="#{expedienteManagedBean.rowEditListenerPortafolio}"
+                 			 	      onRowEditUpdate=":formExpediente:msgExpediente"
+                 			 	        
+                         			  >
+                         			  -->  
                              <p:column headerText="Documento de soporte o evidencia"><h:outputText value="#{portafolioEvidencia.nombre}" /></p:column>  
                              <p:column headerText="Descripcion"><h:outputText value="#{portafolioEvidencia.descripcion}" /></p:column>  
                              <p:column headerText="Respaldo de"><h:outputText value="#{portafolioEvidencia.laboral.nombre}" /></p:column>  
-                             <p:column headerText="Estado"><h:outputText value="#{portafolioEvidencia.estado}" /></p:column>  
+                             <p:column headerText="Estado">
+                             	<h:outputText value="#{portafolioEvidencia.estado.valor}" />
+                             </p:column>
+                             	<!-- 
+                             	<p:cellEditor>  
+			                 		<f:facet name="output">
+                             			<h:outputText value="#{portafolioEvidencia.estado.valor}" />
+                             		 </f:facet>  
+			                 		 <f:facet name="input">			                 	
+			                 			<h:selectOneMenu id="selector_estadoPortafolio" value="#{portafolioEvidencia.estado.id}" >
+											<f:selectItems value="#{expedienteManagedBean.listEstadosPortafolio}" />											
+										</h:selectOneMenu>								
+			                 	</f:facet>  
+			             		</p:cellEditor>  
+			             		
+                             </p:column>
+                             <p:column headerText="Editar" styleClass="ui-editable-column-options" >    
+            					<p:rowEditor/>
+            				</p:column> 
+            					-->     
                              <p:column headerText="Editar">
-								<p:commandButton id="editarEvaluacionesPortafolio" action="#{expedienteManagedBean.editarLaboral}" 
-                         	    	             oncomplete="PF('dlgEval').show();" update=":formExpediente:modalLaborales"   
+								<p:commandButton id="editarEvaluacionesPortafolio" action="#{expedienteManagedBean.editarPortafolio}"
+                         	    	             oncomplete="PF('dlgPortafolio').show();" update=":formExpediente:modalPortafolio"   
                          	        	         icon="ui-icon-pencil" title="Editar">    	
-                         			<f:setPropertyActionListener value="#{portafolioEvidencia}" target="#{expedienteManagedBean.selectedLaboral}" />						  
+                         			<f:setPropertyActionListener value="#{portafolioEvidencia.laboral}" target="#{expedienteManagedBean.selectedLaboral}" />
+                         			<f:setPropertyActionListener value="#{portafolioEvidencia}" target="#{expedienteManagedBean.archivoExp}" />
+                         									  
     							</p:commandButton>                                                     
-                             </p:column>              
+                             </p:column>                                      
                         </p:dataTable>     
                     </p:tab>  
 

@@ -460,9 +460,9 @@ public class ServiceImp implements IService {
 	}
 	
 	@Override
-	public Integer getMantenedorMinByTipo(String tipo) {		
+	public Mantenedor getMantenedorMinByTipo(String tipo) {		
 		Object [] objs =  new Object [] {tipo};
-		return integerDao.findOneByNamedQueryParam("Mantenedor.findMinByTipo", objs);				
+		return mantenedorDao.findOneByNamedQueryParam("Mantenedor.findMinByTipo", objs);				
 	}
 
 	@Override
@@ -513,5 +513,10 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Unidad> getUnidades(int cursoId, int centroId) {
 		return null;
+	}
+	
+	@Override
+	public Archivo getArchivoOneByParam (String namedString, Object [] parametros){
+		return archivoDao.findOneByNamedQueryParam(namedString, parametros);
 	}
 }

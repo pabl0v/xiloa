@@ -83,6 +83,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	
 	private Long idSeletedLaboral;
 	private List<SelectItem> listTipoDatosLaborales;
+	private List<SelectItem> listEstadosPortafolio;
 	private Laboral selectedLaboral;
 	private Laboral nuevoLaboral;
 	
@@ -144,6 +145,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		listPortafolioLaboral = new ArrayList<Archivo> ();
 		
 		listTipoDatosLaborales = new ArrayList<SelectItem> ();
+		listEstadosPortafolio  = new ArrayList<SelectItem> ();
 		
 		listEvalBySolicitud = new ArrayList<SelectItem> ();	
 		
@@ -162,6 +164,16 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 	
    
+	public List<SelectItem> getListEstadosPortafolio() {
+		return listEstadosPortafolio;
+	}
+
+
+	public void setListEstadosPortafolio(List<SelectItem> listEstadosPortafolio) {
+		this.listEstadosPortafolio = listEstadosPortafolio;
+	}
+
+
 	public Map<Integer, Mantenedor> getCatalogoEstadosEvaluacion() {
 		return catalogoEstadosEvaluacion;
 	}
@@ -541,9 +553,8 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 	public String getEstadoSiguiente() {
-		Mantenedor estado = service.getMantenedorById(new Integer(this.getSolicitudExp().getEstatus()));		
-		String sigEstadoSolicitud = this.catalogoEstadosSolicitud.get(Integer.valueOf(estado.getProximo())).getValor();
-		estadoSiguiente = sigEstadoSolicitud;
+		Mantenedor estado = this.catalogoEstadosSolicitud.get(this.getSolicitudExp().getEstatus().getProximo());		
+		estadoSiguiente = estado.getValor();
 		return estadoSiguiente;
 	}
 
@@ -661,12 +672,15 @@ public class ExpedienteManagedBean implements Serializable  {
 		//Obtiene el catalogo de Estados Evaluacion
 		listaCatalogo = service.getMantenedoresByTipo(new Integer(9));		
 		for (Mantenedor dato : listaCatalogo) {
-			this.catalogoEstadosEvaluacion.put(dato.getId(), dato);						
+			this.catalogoEstadosEvaluacion.put(dato.getId(), dato);	
+			
 		}
 		
-		listaCatalogo = service.getMantenedoresByTipo(new Integer(8));		
+		listaCatalogo = service.getMantenedoresByTipo(new Integer(8));
+		listEstadosPortafolio = new ArrayList<SelectItem> ();
 		for (Mantenedor dato : listaCatalogo) {
-			this.catalogoEstadosPortafolio.put(dato.getId(), dato);						
+			this.catalogoEstadosPortafolio.put(dato.getId(), dato);
+			this.listEstadosPortafolio.add(new SelectItem(dato.getId(), dato.getValor()));
 		}
 		
 		archivoExp = new Archivo();
@@ -764,11 +778,17 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.listPortafolioLaboral = service.getArchivoByParam ("Archivo.findByLaboralId", objs);
 		
 	}
-	
+		
 	public void nuevoLaboral() {		
 		limpiarCampos();
 		
 		this.setPaisInstitucion(new String("Nicaragua"));
+	}
+	
+	public void rowEditListenerPortafolio(RowEditEvent event){
+		System.out.println("El estado seleccionado es: " + (String)event.getObject());
+		System.out.println("Archivo Seleccionado " + selectedArchivoId);
+		
 	}
 	
 	public String RegistrarEditarEvaluacion() {		
@@ -776,10 +796,10 @@ public class ExpedienteManagedBean implements Serializable  {
 	}	
 	
 	public void solicitarCertificacion (){
-		Integer estadoActual = new Integer(this.getSolicitudExp().getEstatus());
+		Integer estadoActual = new Integer(this.getSolicitudExp().getEstatus().getId());
 		String proxEstado = this.catalogoEstadosSolicitud.get(estadoActual).getProximo();
 		
-		this.solicitudExp.setEstatus(Integer.valueOf(proxEstado));
+		this.solicitudExp.setEstatus(this.catalogoEstadosSolicitud.get(proxEstado));
 		
 		Solicitud sol = (Solicitud) service.guardar(this.solicitudExp);
 		
@@ -868,8 +888,8 @@ public class ExpedienteManagedBean implements Serializable  {
 	public void enabledDisableButton(int opcion) {
 		
 		Solicitud sol = this.getSolicitudExp();
-		Integer estadoInicial = service.getMantenedorMinByTipo(sol.getTipomantenedorestado());
-		boolean asignaDisable = estadoInicial.equals(new Integer (sol.getEstatus()));
+		Mantenedor estadoInicial = service.getMantenedorMinByTipo(sol.getTipomantenedorestado());
+		boolean asignaDisable = estadoInicial.equals(sol.getEstatus());
 		
 		switch(opcion) {
 			case 1:	{				
@@ -946,7 +966,9 @@ public class ExpedienteManagedBean implements Serializable  {
 			//Asignando el estado inicial del Portafolio
 			String tipoMantenedorEstado = archivoExp.getTipoMantenedorEstado();
 			
-			archivoExp.setEstado(service.getMantenedorMinByTipo(tipoMantenedorEstado).toString());
+			Mantenedor primerEstado = service.getMantenedorMinByTipo(tipoMantenedorEstado);
+			
+			archivoExp.setEstado(primerEstado);			
 			
 			archivoExp = (Archivo) service.guardar(archivoExp);
 			
@@ -957,6 +979,17 @@ public class ExpedienteManagedBean implements Serializable  {
 		}
 		
 		
+	}
+	
+	public void editarPortafolio(){		
+		Object [] objs;
+		if (selectedArchivoId != null){
+			System.out.println("Archivo seleccionado " + selectedArchivoId);
+			objs =  new Object [] {selectedArchivoId};
+			this.archivoExp = service.getArchivoOneByParam("Archivo.findById", objs);
+			
+			this.selectedLaboral = archivoExp.getLaboral();
+		}
 	}
 	
 	public void actualizaListaPortafolio (Integer tipo){

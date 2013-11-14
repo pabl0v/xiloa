@@ -18,6 +18,7 @@ import model.Certificacion;
 import model.Contacto;
 import model.Evaluacion;
 import model.Laboral;
+import model.Mantenedor;
 import model.Rol;
 import model.Solicitud;
 import model.Unidad;
@@ -552,24 +553,24 @@ public class SolicitudesManagedBean implements Serializable {
 			
 			solicitante = service.getContactoByCedula(solicitante.getNumeroIdentificacion());
 		}		
-				 		
-		s = new Solicitud (c.getNombre(), //nombre
-				           "Ninguna", // ticket 
-				           1,    // estatus
-				           new Date(), // fechaRegistro
-				           new Date(), // fechaMatricula
-				           this.getExperiencia(), // experiencia
-				           this.getOcupacion(), // ocupacion 
-				           this.getOcupacion(), // oficio
-				           7, // escolaridad
-				           solicitante, // contacto
-				           c, // certificacion
-				           null // evaluaciones
-				           );
+		s = new Solicitud ();
 		
-		//Asignando el estado inicial de la solicitud
-		s.setEstatus(service.getMantenedorMinByTipo(s.getTipomantenedorestado()));
+		//Asignando el estado inicial de la solicitud	
+		Mantenedor estadoInicialSolicitud = service.getMantenedorMinByTipo(s.getTipomantenedorestado());
 		
+		s.setNombre(c.getNombre()); // Nombre
+		s.setTicket("Ninguna");
+		s.setEstatus(estadoInicialSolicitud);
+		s.setFechaRegistro(new Date());
+		s.setFechaMatricula(new Date());
+		s.setExperiencia(this.getExperiencia());
+		s.setOcupacion(this.getOcupacion());
+		s.setOficio(this.getOcupacion());
+		s.setEscolaridad(7);
+		s.setContacto(solicitante);
+		s.setCertificacion(c);
+		s.setEvaluaciones(null);
+			  
 		s = (Solicitud) service.guardar(s);
 		
 		s.setTicket(s.getId().toString());
@@ -628,7 +629,9 @@ public class SolicitudesManagedBean implements Serializable {
 		if (this.selectedAccionConvo == 1) {			
 			for (USolicitud obj : this.selectedUSolicitud){				
 				Solicitud sol = obj.getSolicitud();
-				sol.setEstatus(22); //22 es el estado Convocado
+				Integer idEstado = Integer.valueOf(sol.getEstatus().getProximo());
+				Mantenedor sigEstado = service.getMantenedorById(idEstado);
+				sol.setEstatus(sigEstado); //22 es el estado Convocado
 				sol = (Solicitud)service.guardar(sol);
 				
 				if (sol != null){
