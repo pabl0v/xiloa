@@ -53,6 +53,7 @@ public class SolicitudesManagedBean implements Serializable {
 	private String descEmpresaLabora;
 	private int    experiencia;
 	private String ocupacion;
+	private boolean indicaTrabaja;
 	
 	private Contacto userSolicitante;
 	private Certificacion certificacionSolicitante;
@@ -101,52 +102,16 @@ public class SolicitudesManagedBean implements Serializable {
 		
 		selectedBuscarByAll = null;
 		
+		this.setIndicaTrabaja(false);
+		
+	}
+	
+	public boolean isIndicaTrabaja() {
+		return indicaTrabaja;
 	}
 
-	public SolicitudesManagedBean(String primerNombre, String segundoNombre,
-			String primerApellido, String segundoApellido,
-			String numeroIdentificacion, String descEmpresaLabora,
-			int experiencia, String ocupacion, Contacto userSolicitante,
-			Certificacion certificacionSolicitante,
-			List<USolicitud> listSolicitudI, List<Solicitud> solicitudB,
-			List<SelectItem> listCentros, List<SelectItem> listCertificaciones,
-			List<SelectItem> listCentrosBySolicitud,
-			List<SelectItem> listCertByCentro,
-			List<SelectItem> listBuscarByAll, List<SelectItem> listAccionConvo,
-			Integer selectedIdIfp, Integer selectedIdIfpSolicitud,
-			Long selectedIdCertificacion, Long selectedIdCertByCentro,
-			String selectedBuscarByAll, String buscarByAllValue,
-			Integer selectedAccionConvo, boolean ck_convo,
-			Solicitud selectedSolicitud, USolicitud[] selectedUSolicitud) {
-		super();
-		this.primerNombre = primerNombre;
-		this.segundoNombre = segundoNombre;
-		this.primerApellido = primerApellido;
-		this.segundoApellido = segundoApellido;
-		this.numeroIdentificacion = numeroIdentificacion;
-		this.descEmpresaLabora = descEmpresaLabora;
-		this.experiencia = experiencia;
-		this.ocupacion = ocupacion;
-		this.userSolicitante = userSolicitante;
-		this.certificacionSolicitante = certificacionSolicitante;
-		this.listSolicitudI = listSolicitudI;
-		this.solicitudB = solicitudB;
-		this.listCentros = listCentros;
-		this.listCertificaciones = listCertificaciones;
-		this.listCentrosBySolicitud = listCentrosBySolicitud;
-		this.listCertByCentro = listCertByCentro;
-		this.listBuscarByAll = listBuscarByAll;
-		this.listAccionConvo = listAccionConvo;
-		this.selectedIdIfp = selectedIdIfp;
-		this.selectedIdIfpSolicitud = selectedIdIfpSolicitud;
-		this.selectedIdCertificacion = selectedIdCertificacion;
-		this.selectedIdCertByCentro = selectedIdCertByCentro;
-		this.selectedBuscarByAll = selectedBuscarByAll;
-		this.buscarByAllValue = buscarByAllValue;
-		this.selectedAccionConvo = selectedAccionConvo;
-		this.ck_convo = ck_convo;
-		this.selectedSolicitud = selectedSolicitud;
-		this.selectedUSolicitud = selectedUSolicitud;
+	public void setIndicaTrabaja(boolean indicaTrabaja) {
+		this.indicaTrabaja = indicaTrabaja;
 	}
 
 	public String getPrimerNombre() {
@@ -505,7 +470,8 @@ public class SolicitudesManagedBean implements Serializable {
 		
 		Solicitud     s;
 		Usuario       u;
-		Rol           r = service.getRolById(1);		
+		Rol           r = service.getRolById(1);	
+		
 		Certificacion c = service.getCertificacionById(this.getSelectedIdCertificacion());			
 		
 		Contacto solicitante = service.getContactoByCedula(this.getNumeroIdentificacion());
@@ -579,7 +545,7 @@ public class SolicitudesManagedBean implements Serializable {
 		
 		/* Por cada unidad de competencia se debe registrar el instrumento a utilizar en la evaluacion */
 		
-		Set<Unidad> setUnidades =  c.getUnidades();
+		//Set<Unidad> setUnidades =  c.getUnidades();
 		
 		/*
 		for(Unidad unidad : setUnidades){			

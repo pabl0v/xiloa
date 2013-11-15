@@ -227,7 +227,8 @@ public class ServiceImp implements IService {
 	
 	@Override
 	public Solicitud getSolicitudById(Long idSolicitud) {
-		return solicitudDao.findById(Solicitud.class, idSolicitud.intValue());		
+		Object [] objs =  new Object [] {idSolicitud};
+		return solicitudDao.findOneByNamedQueryParam("Solicitud.findById", objs);			
 	}
 	
 	@Override

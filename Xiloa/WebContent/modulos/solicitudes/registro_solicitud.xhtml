@@ -19,7 +19,7 @@
     
        <h2>Registro de solicitud de evaluacion:</h2>
        <h:form>       
-       		<p:growl id="growl" showDetail="true" sticky="true" />
+       		<p:messages id="msgRegEval" showDetail="true" autoUpdate="true" closable="true" />       		
    			<div class="seccion_detalle">
    			<div style="display:inline-block;">
 	   			<p style="display:inline-block;">Seleccione un centro:</p>
@@ -50,6 +50,8 @@
                 <p:inputMask id="numeroIdentificacion" value="#{solicitudesManagedBean.numeroIdentificacion}" mask="999-999999-9999a"/>                
          	</div>           
              <div class="seccion_detalle">
+		        <h:outputText value="Trabaja actualmente?: " />  
+		        <p:selectBooleanCheckbox id="ckTrabaja" value="#{solicitudesManagedBean.indicaTrabaja}" />		            
                 <h:outputLabel styleClass="estilo_label" for="descEmpresaLabora" value="Empresa donde labora actualmente:" />  
                 <p:inputText id="descEmpresaLabora" value="#{solicitudesManagedBean.descEmpresaLabora}" />  
                 <h:outputLabel styleClass="estilo_label" for="experiencia" value="Años ejerciendo la actividad:" />  
@@ -62,7 +64,7 @@
              </div>
              <div class="seccion_detalle" style="background:none;height:50px;margin-top:-68px;border:none;text-align: right;">
 	             <p:commandButton value="Cancelar" action="#{solicitudesManagedBean.cancelarEdicion}" /> 
-	             <p:commandButton value="Aplicar" action="#{solicitudesManagedBean.guardar}" update="growl" process="@form"  />
+	             <p:commandButton value="Aplicar" action="#{solicitudesManagedBean.guardar}" update="msgRegEval" process="@form"  />
              </div>    
            </h:form>  
 	</div>  

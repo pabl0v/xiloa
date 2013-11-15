@@ -18,6 +18,7 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
 
@@ -420,10 +421,25 @@ public class ExpedienteManagedBean implements Serializable  {
 			boolean disableSolicitarCertificacion) {
 		this.disableSolicitarCertificacion = disableSolicitarCertificacion;
 	}
+/*
+	public void listener(ActionEvent event){
+		System.out.println("Metodo listener del ExpedienteManagedBean");
+		
+	    Long idSolicitud = (Long) event.getComponent().getAttributes().get("solicitudExp");	    	
+		        
+        System.out.println("Obtiene el parametro idSolicicitud " + idSolicitud);
+        
+        Solicitud s = service.getSolicitudById(idSolicitud);
+        System.out.println("Despues de obtener el objeto solicitud " + s.getId());
+        
+        this.setSolicitudExp(s); 
+                
+        System.out.println("Despues de asignar a solicitudExp " + this.solicitudExp.getId());
 
-
-
-	public Solicitud getSolicitudExp() {
+	}
+*/
+	public Solicitud getSolicitudExp() {		  
+		
 		List<Mantenedor> listaEstadosSol = service.getMantenedoresByTipo(Integer.valueOf(this.solicitudExp.getTipomantenedorestado()));
 		
 		for (Mantenedor dato : listaEstadosSol) {
@@ -662,7 +678,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 	@PostConstruct
-	private void fillCatalogos(){
+	private void initBean(){        
 		List<Mantenedor> listaCatalogo = service.getMantenedoresByTipo(new Integer(5));		
 		for (Mantenedor dato : listaCatalogo) {
 			this.catalogoTipoDatosLaborales.put(dato.getId(), dato);			
@@ -1122,6 +1138,6 @@ public class ExpedienteManagedBean implements Serializable  {
 		{
 			this.setDisableSolicitarCertificacion(true);
 		}
-	}
-
+	}	
+	
 }
