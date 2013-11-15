@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 
 import model.Certificacion;
 import model.Contacto;
@@ -103,6 +104,12 @@ public class PlanificacionManagedBean implements Serializable {
 		
 		certificacion = service.guardarCertificacion(certificacion, requisitos, new ArrayList<Unidad>());
 		certificaciones.add(0,certificacion);
+	}
+	
+	public String configurarInstrumento(Certificacion certificacion){
+		//FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().put("idCertificacion", certificacion.getId().toString());
+		//FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().put("nombreCertificacion", certificacion.getNombre());
+		return "/modulos/planificacion/instrumentos?faces-redirect=true";
 	}
 	
 	public void onRowSelectCompetencia(SelectEvent event) {  

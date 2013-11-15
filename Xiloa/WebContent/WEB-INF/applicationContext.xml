@@ -48,7 +48,17 @@
 	
 	<tx:annotation-driven transaction-manager="transactionManagerInatec"/>
 	-->
-     
+	
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+		<property name="scopes">
+			<map>
+			<entry key="view">
+					<bean class="support.ViewScope" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	     
     <tx:annotation-driven/>    
     <context:annotation-config/>
         
