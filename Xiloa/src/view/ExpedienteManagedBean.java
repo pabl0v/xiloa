@@ -16,17 +16,19 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
 
 import model.Archivo;
 import model.Contacto;
 import model.Evaluacion;
-import model.EvaluacionGuia;
-import model.Guia;
 import model.Instrumento;
 import model.Laboral;
 import model.Mantenedor;
@@ -45,10 +47,11 @@ import org.primefaces.model.UploadedFile;
 import service.IService;
 import support.BeanEvaluacion;
 import support.Departamento;
+import support.FacesUtil;
 import support.Municipio;
 
 @Component
-@Scope(value="session")
+@Scope(value="request")
 public class ExpedienteManagedBean implements Serializable  {
 	
 	/**
@@ -60,6 +63,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	private IService service;	
 	
 	private Solicitud solicitudExp;
+	private Contacto contactoExp;
 	
 	private List<Laboral> listDatosLaborales;
 	private List<Laboral> listDatosEstudios;
@@ -161,14 +165,24 @@ public class ExpedienteManagedBean implements Serializable  {
 		listDeptos = new ArrayList<SelectItem> ();
 		listMunicipioByDptos = new ArrayList<SelectItem> ();
 		
-		nuevoLaboral = new Laboral();
+		nuevoLaboral = new Laboral();		
+		
 	}
 	
-   
+	
+	public Contacto getContactoExp() {
+		return contactoExp;
+	}
+
+
+	public void setContactoExp(Contacto contactoExp) {
+		this.contactoExp = contactoExp;
+	}
+
+
 	public List<SelectItem> getListEstadosPortafolio() {
 		return listEstadosPortafolio;
 	}
-
 
 	public void setListEstadosPortafolio(List<SelectItem> listEstadosPortafolio) {
 		this.listEstadosPortafolio = listEstadosPortafolio;
@@ -262,7 +276,9 @@ public class ExpedienteManagedBean implements Serializable  {
 
 
 	public List<BeanEvaluacion> getListBeanEvalFormacion() {
-		listBeanEvalFormacion = getListadoEvaluacionesByParam(this.solicitudExp, false);
+		if (this.solicitudExp != null){			
+			listBeanEvalFormacion = getListadoEvaluacionesByParam(this.solicitudExp, false);
+		}
 		return listBeanEvalFormacion;
 	}
 
@@ -271,12 +287,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 	public List<Archivo> getListPortafolioContacto() {
-		actualizaListaPortafolio (new Integer(2));
-		/*Contacto c = solicitudExp.getContacto();
-		Object [] objs;
-		objs =  new Object [] {c.getId()};
-		this.listPortafolioContacto = service.getArchivoByParam ("Archivo.findByContactoId", objs);
-		*/
+		actualizaListaPortafolio (new Integer(2));		
 		return listPortafolioContacto;
 	}
 
@@ -438,17 +449,7 @@ public class ExpedienteManagedBean implements Serializable  {
 
 	}
 */
-	public Solicitud getSolicitudExp() {		  
-		
-		List<Mantenedor> listaEstadosSol = service.getMantenedoresByTipo(Integer.valueOf(this.solicitudExp.getTipomantenedorestado()));
-		
-		for (Mantenedor dato : listaEstadosSol) {
-			this.catalogoEstadosSolicitud.put(dato.getId(), dato);						
-		}
-		
-		this.catalogoDepartamento = service.getDepartamentosByInatec();
-		// habilita y desabilita los botones
-		//enabledDisableButton(1);
+	public Solicitud getSolicitudExp() {		
 		return solicitudExp;
 	}
 
@@ -456,8 +457,10 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.solicitudExp = solicitudExp;
 	}
 
-	public List<Laboral> getListDatosLaborales() {		
-		this.listDatosLaborales = service.getListLaboralByTipo(new Integer(13), this.solicitudExp.getContacto());
+	public List<Laboral> getListDatosLaborales() {
+		if (this.solicitudExp != null){
+			this.listDatosLaborales = service.getListLaboralByTipo(new Integer(13), this.solicitudExp.getContacto());
+		}
 		return this.listDatosLaborales;
 	}
 
@@ -466,7 +469,9 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 	public List<Laboral> getListDatosEstudios() {
-		this.listDatosEstudios = service.getListLaboralByTipo(new Integer(14), this.solicitudExp.getContacto());
+		if (this.solicitudExp != null){
+			this.listDatosEstudios = service.getListLaboralByTipo(new Integer(14), this.solicitudExp.getContacto());
+		}
 		return listDatosEstudios;
 	}
 
@@ -475,7 +480,9 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 	public List<Laboral> getListDatosCalificacion() {
-		this.listDatosCalificacion = service.getListLaboralByTipo(new Integer(15), this.solicitudExp.getContacto());
+		if (this.solicitudExp != null){
+			this.listDatosCalificacion = service.getListLaboralByTipo(new Integer(15), this.solicitudExp.getContacto());
+		}
 		return listDatosCalificacion;
 	}
 
@@ -484,7 +491,9 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 	public List<Laboral> getListDatosCertificaciones() {
-		this.listDatosCertificaciones = service.getListLaboralByTipo(new Integer(16), this.solicitudExp.getContacto());
+		if (this.solicitudExp != null){
+			this.listDatosCertificaciones = service.getListLaboralByTipo(new Integer(16), this.solicitudExp.getContacto());
+		}
 		return listDatosCertificaciones;
 	}
 
@@ -493,7 +502,9 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 	public List<Evaluacion> getListEvaluaciones() {
-		listEvaluaciones = service.getEvaluaciones(this.solicitudExp);			
+		if (this.solicitudExp != null){
+			listEvaluaciones = service.getEvaluaciones(this.solicitudExp);
+		}
 		return listEvaluaciones;
 	}
 
@@ -501,8 +512,10 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.listEvaluaciones = listEvaluaciones;
 	}
 
-	public List<BeanEvaluacion> getListBeanEval() {		
-		listBeanEval = getListadoEvaluacionesByParam(this.solicitudExp, true);		
+	public List<BeanEvaluacion> getListBeanEval() {
+		if (this.solicitudExp != null){
+			listBeanEval = getListadoEvaluacionesByParam(this.solicitudExp, true);
+		}
 		return listBeanEval;
 	}		
 
@@ -559,8 +572,11 @@ public class ExpedienteManagedBean implements Serializable  {
 	}		
 		
 	public String getEstadoActual() {
-		String estadoSolicitud = this.catalogoEstadosSolicitud.get(this.solicitudExp.getEstatus()).getValor();
-		estadoActual = estadoSolicitud;
+		if (this.solicitudExp != null){
+			
+			Mantenedor estado = this.solicitudExp.getEstatus();
+			estadoActual = estado.getValor();			
+		}
 		return estadoActual;
 	}
 
@@ -569,8 +585,22 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 	public String getEstadoSiguiente() {
-		Mantenedor estado = this.catalogoEstadosSolicitud.get(this.getSolicitudExp().getEstatus().getProximo());		
-		estadoSiguiente = estado.getValor();
+		if (this.solicitudExp != null){
+			
+			Mantenedor estadoSolicitud = this.getSolicitudExp().getEstatus();
+			
+			if (estadoSolicitud.getProximo() != null){
+				
+				Mantenedor estado = service.getMantenedorById(Integer.valueOf(estadoSolicitud.getProximo()));
+				
+				if (estado != null)
+					estadoSiguiente = estado.getValor();
+				else
+					estadoSiguiente = estadoSolicitud.getValor();
+			} else 
+				estadoSiguiente = this.getSolicitudExp().getEstatus().getValor();
+				
+		}
 		return estadoSiguiente;
 	}
 
@@ -669,6 +699,13 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 	public Map<Integer, Mantenedor> getCatalogoEstadosSolicitud() {
+		
+		List<Mantenedor> listaEstadosSol = service.getMantenedoresByTipo(Integer.valueOf(this.solicitudExp.getTipomantenedorestado()));
+		
+		for (Mantenedor dato : listaEstadosSol) {
+			this.catalogoEstadosSolicitud.put(dato.getId(), dato);						
+		}	
+		
 		return catalogoEstadosSolicitud;
 	}
 
@@ -699,10 +736,31 @@ public class ExpedienteManagedBean implements Serializable  {
 			this.listEstadosPortafolio.add(new SelectItem(dato.getId(), dato.getValor()));
 		}
 		
+		this.catalogoDepartamento = service.getDepartamentosByInatec();
+		
 		archivoExp = new Archivo();
+		
+		
+		Solicitud  solicitud = (Solicitud)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("dbSolicitudesBean");
+		if (solicitud != null){
+			System.out.println("Toma el valor");
+			System.out.println("Valor del DashBoad " + solicitud);			
+			this.solicitudExp = solicitud;
+			
+			this.contactoExp = this.solicitudExp.getContacto();
+			
+			enabledDisableButton(1);
+			enabledDisableButton(3);
+			enabledDisableButton(4);
+			
+		}		
+		
+		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("dbSolicitudesBean",null);
+		
 	}
 	
-	public List<BeanEvaluacion> getListadoEvaluacionesByParam(Solicitud sol, boolean todos) {		
+	public List<BeanEvaluacion> getListadoEvaluacionesByParam(Solicitud sol, boolean todos) {
+		
 		List<BeanEvaluacion> listBeanEv = new ArrayList<BeanEvaluacion> ();		
 		
 		List<Evaluacion> listEval = service.getEvaluaciones(sol);
@@ -743,9 +801,13 @@ public class ExpedienteManagedBean implements Serializable  {
 		}
 	}
 	
-	public void handleMunicipios() {
-		
-		Contacto cExp = this.getSolicitudExp().getContacto();
+	public void handleMunicipios(ValueChangeEvent event) {
+		System.out.println("Entra a handleMunicipio");
+		Contacto cExp;
+		if (this.contactoExp == null)
+			cExp = this.getSolicitudExp().getContacto();
+		else
+			cExp = this.contactoExp;
 		
 		if (cExp != null) {
 			
@@ -903,9 +965,19 @@ public class ExpedienteManagedBean implements Serializable  {
 	
 	public void enabledDisableButton(int opcion) {
 		
+		boolean asignaDisable;
+		
 		Solicitud sol = this.getSolicitudExp();
-		Mantenedor estadoInicial = service.getMantenedorMinByTipo(sol.getTipomantenedorestado());
-		boolean asignaDisable = estadoInicial.equals(sol.getEstatus());
+		
+		if (sol == null)
+			asignaDisable = false;
+		else{
+		
+			Mantenedor estadoInicial = service.getMantenedorMinByTipo(sol.getTipomantenedorestado());
+		
+			asignaDisable = estadoInicial.equals(sol.getEstatus());
+		}
+		
 		
 		switch(opcion) {
 			case 1:	{				
@@ -1018,10 +1090,12 @@ public class ExpedienteManagedBean implements Serializable  {
 				 System.out.println("Ejecuta la consulta");
 				 this.listPortafolioLaboral = service.getArchivoByParam ("Archivo.findByLaboralId", objs);				
 			}
-		} else {							
-				Contacto c = solicitudExp.getContacto();
-				objs =  new Object [] {c.getId()};
-				this.listPortafolioContacto = service.getArchivoByParam ("Archivo.findByContactoId", objs);
+		} else {		
+				if (this.solicitudExp != null){
+					Contacto c = solicitudExp.getContacto();
+					objs =  new Object [] {c.getId()};
+					this.listPortafolioContacto = service.getArchivoByParam ("Archivo.findByContactoId", objs);
+				}
 		}
 	}
 	
@@ -1139,5 +1213,24 @@ public class ExpedienteManagedBean implements Serializable  {
 			this.setDisableSolicitarCertificacion(true);
 		}
 	}	
+	
+	public String inicializaParametros (ActionEvent event){
+		//Recibiendo el parametro del IdSolicitud que se va a editar en el Expediente.
+		System.out.println("ExpedienteManagedBean. Obtiendo los parametros ");
+		
+		System.out.println("IdSolicitud = " + FacesUtil.getActionAttribute(event, "idSolicitudExp"));
+		
+		Long idSolicitud = Long.valueOf(FacesUtil.getActionAttribute(event, "idSolicitudExp"));
+	
+		System.out.println("Ya convierte a Long " + idSolicitud);		
+		
+		this.solicitudExp = service.getSolicitudById(idSolicitud);
+		
+		System.out.println("Obtiene el objeto solicitud " + solicitudExp.getId());
+	
+		return "/modulos/solicitudes/expediente?faces-redirect=true";
+		
+	}
+	
 	
 }

@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,7 +41,12 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 	@NamedQuery(name="Certificacion.findById", query="select c from certificaciones c where c.id=?1"),
 	@NamedQuery(name="Certificacion.findUnidadesByCert", query="select c.unidades from certificaciones c where c.id=?1")
 })
-public class Certificacion {
+public class Certificacion implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

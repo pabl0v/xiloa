@@ -23,16 +23,11 @@
    			<div class="seccion_detalle">
    			<div style="display:inline-block;">   				
 	   			<p style="display:inline-block;">Centro de Capacitacion:</p>
-	       		<p:selectOneMenu id="selector_centro" styleClass="selector_status_estilo" value="#{solicitudesManagedBean.selectedIdIfp}" style="position: relative;top: 7px;margin-left: 5px;margin-right: 5px;">	       		  	       		  
-	       		  <f:selectItems value="#{solicitudesManagedBean.listCentros}"/>
-	       		   <p:ajax update="selector_certificacion"  listener="#{solicitudesManagedBean.handleCertificaciones}" />	       		  		  	       		  			                         
-			    </p:selectOneMenu>			    
+	       		<h:outputLabel styleClas="estilo_label" value="#{solicitudesManagedBean.certificacionSolicitante.ifpNombre}" />			    
 		    </div>
 		    <div style="display:inline-block;">		    	
 			    <p style="display:inline-block;">Certificacion:</p>
-	       		<p:selectOneMenu id="selector_certificacion" styleClass="selector_status_estilo" value="#{solicitudesManagedBean.selectedIdCertificacion}" style="position: relative;top: 7px;margin-left: 5px;margin-right: 5px;">	       			  
-			    	<f:selectItems value="#{solicitudesManagedBean.listCertificaciones}" />			                         
-			    </p:selectOneMenu>
+			    <h:outputLabel styleClas="estilo_label" value="#{solicitudesManagedBean.certificacionSolicitante.nombre}" />
 		    </div>
 		    <br/>
    			<br/>
@@ -61,8 +56,8 @@
              <div class="seccion_detalle" style="background:none;height:30px;margin-top:-68px;border:none;text-align: right;">
              </div>
              <div class="seccion_detalle" style="background:none;height:50px;margin-top:-68px;border:none;text-align: right;">
-	             <p:commandButton value="Cancelar" action="#{solicitudesManagedBean.cancelarEdicion}" disabled="#{solicitudesManagedBean.indicaUserExterno}" /> 
-	             <p:commandButton value="Aplicar" action="#{solicitudesManagedBean.guardar}" update="msgRegEval" process="@form"  />
+	             <p:commandButton value="Cancelar" action="#{solicitudesManagedBean.cancelarEdicion}" /> 
+	             <p:commandButton value="Aplicar" action="#{solicitudesManagedBean.guardarBySolicitante}" update="msgRegEval" />
              </div>    
            </h:form>  
 	</div>  

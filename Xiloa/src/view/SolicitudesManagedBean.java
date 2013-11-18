@@ -13,6 +13,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
 
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
 
 import model.Certificacion;
 import model.Contacto;
@@ -34,7 +35,7 @@ import support.Ifp;
 import support.USolicitud;
 
 @Component
-@Scope(value="session")
+@Scope(value="request")
 public class SolicitudesManagedBean implements Serializable {
 	
 	/**
@@ -58,54 +59,49 @@ public class SolicitudesManagedBean implements Serializable {
 	private Contacto userSolicitante;
 	private Certificacion certificacionSolicitante;
 			
-	private List<USolicitud> listSolicitudI;
-	private List<Solicitud> solicitudB;	
-			
+				
 	//Implementacion SelectItems
 	private List<SelectItem> listCentros;
 	private List<SelectItem> listCertificaciones;	
-	private List<SelectItem> listCentrosBySolicitud;
-	private List<SelectItem> listCertByCentro;
-	private List<SelectItem> listBuscarByAll;
-	private List<SelectItem> listAccionConvo;
-	private Integer selectedIdIfp;
-	private Integer selectedIdIfpSolicitud;
-	private Long selectedIdCertificacion;
-	private Long selectedIdCertByCentro;	
 	
-	private String selectedBuscarByAll;
-	private String buscarByAllValue;	
+	private Integer selectedIdIfp;		
+	private Long selectedIdCertificacion;		
+			
+	private Usuario usuarioSolicitante;
 	
-	private Integer selectedAccionConvo;
-	private boolean ck_convo;
-	private Solicitud selectedSolicitud;
-	private USolicitud [] selectedUSolicitud;
+	private boolean indicaUserExterno;
 	
 
 	
 	public SolicitudesManagedBean() {
 		
-		super();
-		
-		listSolicitudI = new ArrayList<USolicitud>();
-		solicitudB = new ArrayList<Solicitud> ();	
+		super();			
 				
 		listCentros = new ArrayList<SelectItem>();
 		listCertificaciones = new ArrayList<SelectItem>();	
-		listCentrosBySolicitud = new ArrayList<SelectItem>();
-		listCertByCentro = new ArrayList<SelectItem>();
-		listBuscarByAll = new ArrayList<SelectItem> ();
-		listAccionConvo = new ArrayList<SelectItem> ();
-		
-		selectedIdIfpSolicitud = null;		
-		selectedIdCertByCentro = null;	
-		
-		selectedBuscarByAll = null;
 		
 		this.setIndicaTrabaja(false);
+		this.setIndicaUserExterno(false);
+		
 		
 	}
 	
+	public boolean isIndicaUserExterno() {
+		return indicaUserExterno;
+	}
+
+	public void setIndicaUserExterno(boolean indicaUserExterno) {
+		this.indicaUserExterno = indicaUserExterno;
+	}
+
+	public Usuario getUsuarioSolicitante() {
+		return usuarioSolicitante;
+	}
+
+	public void setUsuarioSolicitante(Usuario usuarioSolicitante) {
+		this.usuarioSolicitante = usuarioSolicitante;
+	}
+
 	public boolean isIndicaTrabaja() {
 		return indicaTrabaja;
 	}
@@ -197,15 +193,7 @@ public class SolicitudesManagedBean implements Serializable {
 		this.selectedIdIfp = idIfp;
 	}
 	
-	public Integer getSelectedIdIfpSolicitud() {
-		return selectedIdIfpSolicitud;
-	}
-
-	public void setSelectedIdIfpSolicitud(Integer selectedIdIfpSolicitud) {
-		this.selectedIdIfpSolicitud = selectedIdIfpSolicitud;
-	}
-
-	public Long getSelectedIdCertificacion() {
+	public Long getSelectedIdCertificacion() {		
 		return selectedIdCertificacion;
 	}
 
@@ -213,22 +201,6 @@ public class SolicitudesManagedBean implements Serializable {
 		this.selectedIdCertificacion = idCertificacion;
 	}
 	
-	public Long getSelectedIdCertByCentro() {
-		return selectedIdCertByCentro;
-	}
-
-	public void setSelectedIdCertByCentro(Long selectedIdCertByCentro) {
-		this.selectedIdCertByCentro = selectedIdCertByCentro;
-	}	
-	
-	public String getSelectedBuscarByAll() {
-		return selectedBuscarByAll;
-	}
-
-	public void setSelectedBuscarByAll(String selectedBuscarByAll) {
-		this.selectedBuscarByAll = selectedBuscarByAll;
-	}
-
 	public List<SelectItem> getListCentros() {
 		return listCentros;
 	}
@@ -237,14 +209,6 @@ public class SolicitudesManagedBean implements Serializable {
 		this.listCentros = listCentros;
 	}
 		
-	public List<SelectItem> getListCentrosBySolicitud() {
-		return listCentrosBySolicitud;
-	}
-
-	public void setListCentrosBySolicitud(List<SelectItem> listCentrosBySolicitud) {
-		this.listCentrosBySolicitud = listCentrosBySolicitud;
-	}
-
 	public List<SelectItem> getListCertificaciones() {
 		return listCertificaciones;
 	}
@@ -253,38 +217,6 @@ public class SolicitudesManagedBean implements Serializable {
 		this.listCertificaciones = listCertificaciones;
 	}
 			
-	public List<SelectItem> getListCertByCentro() {
-		return listCertByCentro;
-	}
-
-	public void setListCertByCentro(List<SelectItem> listCertByCentro) {
-		this.listCertByCentro = listCertByCentro;
-	}	
-	
-	public List<SelectItem> getListBuscarByAll() {
-		return listBuscarByAll;
-	}
-
-	public void setListBuscarByAll(List<SelectItem> listBuscarByAll) {
-		this.listBuscarByAll = listBuscarByAll;
-	}	
-		
-	public List<SelectItem> getListAccionConvo() {
-		return listAccionConvo;
-	}
-
-	public void setListAccionConvo(List<SelectItem> listAccionConvo) {
-		this.listAccionConvo = listAccionConvo;
-	}
-
-	public String getBuscarByAllValue() {
-		return buscarByAllValue;
-	}
-
-	public void setBuscarByAllValue(String buscarByAllValue) {
-		this.buscarByAllValue = buscarByAllValue;
-	}
-	
 	public Contacto getUserSolicitante() {
 		return userSolicitante;
 	}
@@ -301,131 +233,45 @@ public class SolicitudesManagedBean implements Serializable {
 		this.certificacionSolicitante = certificacionSolicitante;
 	}
 
-	public List<Solicitud> getSolicitudB() {		
-		return this.solicitudB;
-	}
-	
-	public void setSolicitudB(List<Solicitud> solicitudB) {
-		this.solicitudB = solicitudB;
-	}	
-	
-	public List<USolicitud> getListSolicitudI() {		
-		listSolicitudI = service.getUSolicitudes();
-		return listSolicitudI;
-	}
-
-	public void setListSolicitudI(List<USolicitud> solicitudI) {
-		this.listSolicitudI = solicitudI;
-	}
-	
-	public Integer getSelectedAccionConvo() {
-		return selectedAccionConvo;
-	}
-
-	public void setSelectedAccionConvo(Integer selectedAccionConvo) {
-		this.selectedAccionConvo = selectedAccionConvo;
-	}
-	
-	public boolean isCk_convo() {
-		return ck_convo;
-	}
-
-	public void setCk_convo(boolean ck_convo) {
-		this.ck_convo = ck_convo;
-	}
-	
-	public Solicitud getSelectedSolicitud() {
-		return selectedSolicitud;
-	}
-
-	public void setSelectedSolicitud(Solicitud selectedSolicitud) {
-		this.selectedSolicitud = selectedSolicitud;
-	}	
-	
-	public USolicitud[] getSelectedUSolicitud() {
-		return selectedUSolicitud;
-	}
-
-	public void setSelectedUSolicitud(USolicitud[] selectedUSolicitud) {
-		this.selectedUSolicitud = selectedUSolicitud;
-	}
-
-	public void llenarListBuscarByAll () {
-		this.listBuscarByAll.add(new SelectItem(null, "Todos los campos"));
-		this.listBuscarByAll.add(new SelectItem("s.certificacion.ifpNombre", "Centro Evaluador"));
-		this.listBuscarByAll.add(new SelectItem("s.contacto.nombreCompleto", "Nombre del Candidato"));
-		this.listBuscarByAll.add(new SelectItem("s.certificacion.nombre", "Certificacion a Evaluar"));
-		this.listBuscarByAll.add(new SelectItem("s.fechaRegistro", "Fecha Solicitud"));
-		this.listBuscarByAll.add(new SelectItem("s.contacto.correo1", "Evaluador"));
-		this.listBuscarByAll.add(new SelectItem("s.estatus", "Estado"));		
-	}
-	
-	public void llenarListAccionConvo () {
-		this.listAccionConvo.add(new SelectItem(null, "Seleccione la accion"));
-		this.listAccionConvo.add(new SelectItem(new Integer(1), "Autorizar"));
-		this.listAccionConvo.add(new SelectItem(new Integer(2), "Exportar a Excel"));
-		this.listAccionConvo.add(new SelectItem(new Integer(3), "Exportar a PDF"));
-	}
-	
-	
-		
-   //Llenado de Centro
 	@PostConstruct
-	private void fillListCentro(){
-		List<Ifp> lista = service.getIfpByInatec();
-		this.listCentrosBySolicitud.add(new SelectItem(null, "Todos"));
+	private void initBean(){
+		List<Ifp> lista = service.getIfpByInatec();		
+		this.listCentros.add(new SelectItem(null,"Seleccione un Centro de Capacitacion"));
 		for (Ifp dato : lista) {
-			this.listCentros.add(new SelectItem(dato.getIfpId(),dato.getIfpNombre()));
-			this.listCentrosBySolicitud.add(new SelectItem(dato.getIfpId(),dato.getIfpNombre()));
+			this.listCentros.add(new SelectItem(dato.getIfpId(),dato.getIfpNombre()));			
 		}		
-		
-		llenarListBuscarByAll();
-		llenarListAccionConvo ();
-		handleCertByCentro();
+			
+		//Considerando si se tiene la certificacion seleccionada.
+		if (this.usuarioSolicitante == null){
+			Usuario usuarioExterno = (Usuario)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("UsuarioAplica");
+			
+			if (usuarioExterno != null) {
+				this.usuarioSolicitante = usuarioExterno;
+				this.setIndicaUserExterno(true);
+				//((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("UsuarioAplica",null);
+			}
+		}
+
+		if (this.certificacionSolicitante == null) {
+			Certificacion cert = (Certificacion)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("CertificacionSeleccionada");
+			if (cert != null) {
+				this.certificacionSolicitante = cert;
+				inicializaDatos ();
+				//((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("CertificacionSeleccionada",null);
+			}
+		}
+							
 	}
 	
 	public void handleCertificaciones() {				
-		List<Certificacion> certificacionList = service.getCertificacionesByIdIfp(this.getSelectedIdIfp());
-		listCertificaciones = new ArrayList<SelectItem>();
+		List<Certificacion> certificacionList = service.getCertificacionesByIdIfp(this.getSelectedIdIfp());		
+		this.listCertificaciones = new ArrayList<SelectItem>();		
+		this.listCertificaciones.add(new SelectItem(null,"Seleccione una certificacion"));
 		for (Certificacion dato : certificacionList) {
 			this.listCertificaciones.add(new SelectItem(dato.getId(),dato.getNombre()));
 		}			
 	}
-	
-	public void handleCertByCentro() {
-		List<Certificacion> certificacionList = service.getCertificacionesByIdIfp(this.getSelectedIdIfpSolicitud());
-		listCertByCentro = new ArrayList<SelectItem>();
-		this.listCertByCentro.add(new SelectItem(null,"Todas las Unidades"));
-		for (Certificacion dato : certificacionList) {
-			this.listCertByCentro.add(new SelectItem(dato.getId(),dato.getNombre()));
-		}
 		
-		this.solicitudB = service.getSolicitudesByParam(asignaParams ());		
-	}
-	
-	public void handleBuscar () {						
-		this.solicitudB = service.getSolicitudesByParam(asignaParams ());				
-	}
-	
-	public HashMap<String, Object> asignaParams () {
-		HashMap<String, Object> params = new HashMap<String, Object>();
-				
-		if (this.getSelectedIdIfpSolicitud() != null) {
-			params.put("s.certificacion.ifpId", this.getSelectedIdIfpSolicitud());
-		}
-		
-		if (this.selectedIdCertByCentro != null) {
-			params.put("s.certificacion.id", this.selectedIdCertByCentro);
-		}
-		
-		if (this.buscarByAllValue != null && this.selectedBuscarByAll != null) {			
-			params.put(this.selectedBuscarByAll, this.buscarByAllValue);
-		}
-		
-		return params;
-	}
-	
-	
 	
 	public String nuevaSolicitud(){
 		//Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
@@ -444,7 +290,7 @@ public class SolicitudesManagedBean implements Serializable {
 	}
 			
 	public void guardar(){
-		
+				
 		FacesContext context = FacesContext.getCurrentInstance();
 		
 		Solicitud sol = grabarSolicitud(new Integer(1));
@@ -459,6 +305,14 @@ public class SolicitudesManagedBean implements Serializable {
 	}
 	
 	public String guardarBySolicitante(){
+				
+		if (this.certificacionSolicitante != null){			
+			this.selectedIdIfp = certificacionSolicitante.getIfpId();		
+			this.selectedIdCertificacion = certificacionSolicitante.getId();
+			
+			System.out.println("Certificacion " + this.selectedIdCertificacion);
+		}
+		
 		Solicitud sol = grabarSolicitud(new Integer(2));
 		
 		System.out.println("La solicitud ha sido grabada " + sol.getId());
@@ -542,82 +396,43 @@ public class SolicitudesManagedBean implements Serializable {
 		s.setTicket(s.getId().toString());
 		
 		s = (Solicitud) service.guardar(s);
-		
-		/* Por cada unidad de competencia se debe registrar el instrumento a utilizar en la evaluacion */
-		
-		//Set<Unidad> setUnidades =  c.getUnidades();
-		
-		/*
-		for(Unidad unidad : setUnidades){			
-			Evaluacion e = new Evaluacion(s, //solicitud
-										  new Date(), // fecha
-										  unidad, // unidad
-										  0, // puntaje
-										  "",// observaciones
-										  false// aprobado
-										  );
-			
-			e = (Evaluacion) service.guardar(e);
-			
-		}
-		*/			   
-		
+				
 		return s;
 	}
 	
 	public void inicializaDatos (){
-		Usuario userConectado = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());	
 		
-		if (userConectado.getContacto() != null) {			
-			System.out.println("EXISTE EL CONTACTO");
-		    this.userSolicitante = userConectado.getContacto();
+		System.out.println("Entra a solicitudesManagedBean.inicializaDatos");
+		//Usuario userConectado = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());	
+		if (this.usuarioSolicitante != null){
 			
-			this.primerNombre = (this.userSolicitante.getPrimerNombre() == null) ? "" : this.userSolicitante.getPrimerNombre(); 
-			this.segundoNombre = (this.userSolicitante.getSegundoNombre() == null) ? "" : this.userSolicitante.getSegundoNombre();
-		    this.primerApellido = (this.userSolicitante.getPrimerApellido() == null) ? "" : this.userSolicitante.getPrimerApellido();
-		    this.segundoApellido = (this.userSolicitante.getSegundoApellido() == null) ? "" : this.userSolicitante.getSegundoApellido();
-		    this.numeroIdentificacion = (this.userSolicitante.getNumeroIdentificacion() == null) ? "" : this.userSolicitante.getNumeroIdentificacion();
-		}		
+		    System.out.println("Indica usuario Ext ");
+		    
+			if (this.usuarioSolicitante.getContacto() != null) {
+				Contacto c = this.usuarioSolicitante.getContacto();
+				System.out.println("EXISTE EL CONTACTO");
+			    this.userSolicitante = c;
+				
+				this.primerNombre = (this.userSolicitante.getPrimerNombre() == null) ? "" : this.userSolicitante.getPrimerNombre(); 
+				this.segundoNombre = (this.userSolicitante.getSegundoNombre() == null) ? "" : this.userSolicitante.getSegundoNombre();
+			    this.primerApellido = (this.userSolicitante.getPrimerApellido() == null) ? "" : this.userSolicitante.getPrimerApellido();
+			    this.segundoApellido = (this.userSolicitante.getSegundoApellido() == null) ? "" : this.userSolicitante.getSegundoApellido();
+			    this.numeroIdentificacion = (this.userSolicitante.getNumeroIdentificacion() == null) ? "" : this.userSolicitante.getNumeroIdentificacion();
+			}		
+		}
 		
-		this.certificacionSolicitante = service.getCertificacionById(this.getSelectedIdCertificacion());
+		//this.certificacionSolicitante = service.getCertificacionById(this.getSelectedIdCertificacion());
+		if (this.certificacionSolicitante != null){			
+			this.selectedIdIfp = certificacionSolicitante.getIfpId();			
+			this.selectedIdCertificacion = certificacionSolicitante.getId();
+			
+			System.out.println("Indica la certificacion: " + this.selectedIdCertificacion);
+		}
 				
 	    this.setDescEmpresaLabora("");
 		this.setExperiencia(new Integer(0));
 		this.setOcupacion("");		
-	}
-	
-	
-	public void handleConvocatoria() {
-		boolean isError = false;
-		FacesContext context = FacesContext.getCurrentInstance();
-		
-		// Cuando ha seleccionado la opcion Aplicar - Las solicitudes pasan a convocatoria		
-		if (this.selectedAccionConvo == 1) {			
-			for (USolicitud obj : this.selectedUSolicitud){				
-				Solicitud sol = obj.getSolicitud();
-				Integer idEstado = Integer.valueOf(sol.getEstatus().getProximo());
-				Mantenedor sigEstado = service.getMantenedorById(idEstado);
-				sol.setEstatus(sigEstado); //22 es el estado Convocado
-				sol = (Solicitud)service.guardar(sol);
-				
-				if (sol != null){
-					isError = false;
-				} else {
-					isError = true;
-				}
-			}
-			
-			if ( isError) {        
-				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje: ", "Error al pasar las solicitudes a Convocatoria. Favor revisar..."));
-			}else {
-				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "Proceso aplicado exitosamente."));
-			}
-			
-			this.selectedUSolicitud = null;
-			
-		}	
-		
-	}
+	}	
 
 	
 }

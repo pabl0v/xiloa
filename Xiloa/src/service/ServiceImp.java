@@ -263,6 +263,11 @@ public class ServiceImp implements IService {
 	}
 	
 	@Override
+	public List<Solicitud> getSolicitudesByNQParam(String nQuery, Object [] parametros){
+		return solicitudDao.findAllByNamedQueryParam(nQuery, parametros);
+	}
+	
+	@Override
 	public Contacto getContactoByCedula(String cedula) {
 		Contacto c = contactoDao.findOneByQuery("select c from contactos c where c.numeroIdentificacion = '" + cedula + "'");
 		return c;
@@ -465,6 +470,12 @@ public class ServiceImp implements IService {
 		Object [] objs =  new Object [] {tipo};
 		return mantenedorDao.findOneByNamedQueryParam("Mantenedor.findMinByTipo", objs);				
 	}
+	
+	@Override
+	public Mantenedor getMantenedorMaxByTipo(String tipo){		
+		Object [] objs =  new Object [] {tipo};
+		return mantenedorDao.findOneByNamedQueryParam("Mantenedor.findMaxByTipo", objs);				
+	}	
 
 	@Override
 	public Mantenedor getMantenedorById(Integer idMantenedor) {

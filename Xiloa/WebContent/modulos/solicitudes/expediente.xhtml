@@ -43,7 +43,8 @@
             <h:outputLabel styleClass="estilo_label" for="certificacionNombre" value="Solicitud para evaluar:" />            
             <h:outputText styleClass="estilo_span" id="certificacionNombre" value="#{expedienteManagedBean.solicitudExp.certificacion.nombre}" />
             <h:outputLabel styleClass="estilo_label" for="genero" value="Genero:" />  
-            <p:selectOneMenu id="genero" styleClass="selectores selector_genero" value="#{expedienteManagedBean.solicitudExp.contacto.sexo}" >  	       		  	       		  
+            <p:selectOneMenu id="genero" styleClass="selectores selector_genero" value="#{expedienteManagedBean.solicitudExp.contacto.sexo}" >
+                 <f:selectItem itemLabel="Indique el genero" itemValue="" /> 	       		  	       		  
 	       		 <f:selectItem itemLabel="Femenino" itemValue="0" />
 	       		 <f:selectItem itemLabel="Masculino" itemValue="1" />	        		       		  		  	       		  			                         
 			</p:selectOneMenu>
@@ -57,10 +58,12 @@
             <h:outputLabel styleClass="estilo_label" for="direccionActual" value="Direccion actual:" />  
             <p:inputText id="direccionActual" value="#{expedienteManagedBean.solicitudExp.contacto.direccionActual}" />
             <h:outputLabel styleClass="estilo_label" for="selector_departamento" value="Departamento:" />
-            <p:selectOneMenu id="selector_departamento" styleClass="selector_status_estilo" value="#{expedienteManagedBean.solicitudExp.contacto.departamentoId}" style="position: relative;top: 7px;margin-right: 5px;">  	       		  	       		  
+            <p:selectOneMenu id="selector_departamento" styleClass="selector_status_estilo" value="#{expedienteManagedBean.solicitudExp.contacto.departamentoId}" style="position: relative;top: 7px;margin-right: 5px;">
+				  <p:ajax event="change" process="@form"  
+				          listener="#{expedienteManagedBean.handleMunicipios}"
+				          update=":formExpediente:selector_municipio" />            	  	       		  	       		  
 	       		  <f:selectItem itemLabel="Seleccione un departamento" itemValue="" />
-	       		  <f:selectItems value="#{expedienteManagedBean.listDeptos}"/>
-	       		   <p:ajax update=":formExpediente:selector_municipio" listener="#{expedienteManagedBean.handleMunicipios}" process="@this" />	       		  		  	       		  			                         
+	       		  <f:selectItems value="#{expedienteManagedBean.listDeptos}"/>	       		   	       		  		  	       		  			                         
 			</p:selectOneMenu>			    
             <h:outputLabel styleClass="estilo_label" for="selector_municipio" value="Municipio:" />  
             <p:selectOneMenu id="selector_municipio" styleClass="selector_status_estilo" value="#{expedienteManagedBean.solicitudExp.contacto.municipioId}" style="position: relative;top: 7px;margin-right: 5px;">  	       		  	       		  

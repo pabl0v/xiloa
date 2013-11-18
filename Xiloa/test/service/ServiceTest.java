@@ -28,7 +28,7 @@ public class ServiceTest {
 	               mantenedor7, mantenedor8, mantenedor9, mantenedor10, mantenedor11, mantenedor12,
 	               mantenedor13, mantenedor14, mantenedor15, mantenedor16, mantenedor17, mantenedor18, mantenedor19,
 	               mantenedor20, mantenedor21, mantenedor22, mantenedor23, mantenedor24, mantenedor25, mantenedor26, 
-	               mantenedor27, mantenedor28; 
+	               mantenedor27, mantenedor28, mantenedor29; 
 	               	
 	private static Perfil perfil;
 	private static List<Perfil> perfiles;
@@ -73,13 +73,14 @@ public class ServiceTest {
 		mantenedor20 = new Mantenedor("7","Estados Solicitud Certificacion","Valido",null,new String("21"));		
 		mantenedor21 = new Mantenedor("7","Estados Solicitud Certificacion","Registrada",new String("20"), new String("22"));
 		mantenedor22 = new Mantenedor("7","Estados Solicitud Certificacion","Convocado",new String("21"),new String("23"));
-		mantenedor23 = new Mantenedor("7","Estados Solicitud Certificacion","Asesorado",new String("22"),null);
+		mantenedor23 = new Mantenedor("7","Estados Solicitud Certificacion","Asesorado",new String("22"),new String("24"));
+		mantenedor24 = new Mantenedor("7","Estados Solicitud Certificacion","Cerrada",new String("23"),null);
 		
-		mantenedor24 = new Mantenedor("8","Estados Portafolio Evidencia","Valido",null,new String("25"));		
-		mantenedor25 = new Mantenedor("8","Estados Portafolio Evidencia","Registrado",new String("24"), new String("26"));
-		mantenedor26 = new Mantenedor("8","Estados Portafolio Evidencia","Verificado",new String("25"),null);
-		mantenedor27 = new Mantenedor("9","Estados Evaluaciones","Registradas",null, new String("28"));
-		mantenedor28 = new Mantenedor("9","Estados Evaluaciones","Completadas",new String("27"),null);		
+		mantenedor25 = new Mantenedor("8","Estados Portafolio Evidencia","Valido",null,new String("26"));		
+		mantenedor26 = new Mantenedor("8","Estados Portafolio Evidencia","Registrado",new String("25"), new String("27"));
+		mantenedor27 = new Mantenedor("8","Estados Portafolio Evidencia","Verificado",new String("26"),null);
+		mantenedor28 = new Mantenedor("9","Estados Evaluaciones","Registradas",null, new String("29"));
+		mantenedor29 = new Mantenedor("9","Estados Evaluaciones","Completadas",new String("28"),null);		
 		
 		
 
@@ -111,6 +112,7 @@ public class ServiceTest {
 		service.guardar(mantenedor26);
 		service.guardar(mantenedor27);
 		service.guardar(mantenedor28);
+		service.guardar(mantenedor29);
 
 		//creando perfiles
 		

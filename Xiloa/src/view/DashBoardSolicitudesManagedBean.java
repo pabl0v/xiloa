@@ -6,10 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
 
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
 
 import model.Certificacion;
 import model.Mantenedor;
@@ -38,6 +40,8 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	private List<Solicitud> listaSolicitudes;
 	
 	private Solicitud selectedSolicitud;
+	
+	private Long selectedSolicitudId;
 	
 	private String selectedBuscarByAll;
 	private String buscarByAllValue;
@@ -84,6 +88,14 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		selectedBuscarByAll = null;	
 		
 	}	
+
+	public Long getSelectedSolicitudId() {
+		return selectedSolicitudId;
+	}
+
+	public void setSelectedSolicitudId(Long selectedSolicitudId) {
+		this.selectedSolicitudId = selectedSolicitudId;
+	}
 
 	public List<Solicitud> getFilterSolicitudes() {
 		return filterSolicitudes;
@@ -284,16 +296,13 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	
 	
 	
-	public String nuevaSolicitud(){
-		//Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-		//setSolicitudI(params.get("solicitudI"));			
+	public String nuevaSolicitud(){		
 	return "/modulos/solicitudes/registro_solicitud?faces-redirect=true";
 	}
 	
-	public String editaSolicitud(){
-		//Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-		//setSolicitudI(params.get("solicitudI"));			
-	return "/modulos/solicitudes/expediente?faces-redirect=true";
+	public String editaSolicitud(){	
+		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("dbSolicitudesBean",this.selectedSolicitud);
+		return "/modulos/solicitudes/expediente?faces-redirect=true";
 	}
 	
 	public String cancelarEdicion() {		

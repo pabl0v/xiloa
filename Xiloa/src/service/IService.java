@@ -67,6 +67,7 @@ public interface IService {
 	public List<USolicitud> getUSolicitudes ();
 	public List<Solicitud> getSolicitudes();
 	public List<Solicitud> getSolicitudesByParam(HashMap<String, Object> param);
+	public List<Solicitud> getSolicitudesByNQParam(String nQuery, Object [] parametros);
 	public Certificacion getCertificacionById(Long id);
 	public Contacto getContactoByCedula(String cedula);
 	public Object guardar(Object obj);	
@@ -84,6 +85,7 @@ public interface IService {
 	public List<EvaluacionGuia> getEvaluacionGuiaByEvaluacionId(Long evaluacionId);
 	public List<Instrumento> getIntrumentoByEvaluacion(Long evaluacionId);
 	public Mantenedor getMantenedorMinByTipo(String tipo);
+	public Mantenedor getMantenedorMaxByTipo(String tipo);
 	public Mantenedor getMantenedorById(Integer idMantenedor);	
 	public List<Guia> getGuiaByParam(String namedString, Object [] parametros);
 	public List<Archivo> getArchivoByParam (String namedString, Object [] parametros);

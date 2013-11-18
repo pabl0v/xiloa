@@ -13,8 +13,8 @@
 		<intercept-url pattern="/modulos/usuario/index*" access="permitAll" />
 		<intercept-url pattern="/modulos/usuario/**" access="isAuthenticated()" />		
 		<intercept-url pattern="/modulos/compartido/**" access="isAuthenticated()" />
-		<intercept-url pattern="/modulos/planificacion/**" access="hasAnyRole('admin','inatec')" />
-		<intercept-url pattern="/modulos/solicitudes/**" access="hasAnyRole('admin','inatec')"/>
+		<intercept-url pattern="/modulos/planificacion/**" access="hasAnyRole('admin','inatec')" />		
+		<intercept-url pattern="/modulos/solicitudes/**" access="isAuthenticated()"/>		
 		<intercept-url pattern="/login*" access="permitAll" />
 		<intercept-url pattern="/modulos/portafolio/**" access="isAuthenticated()" />
 		<access-denied-handler error-page="/modulos/usuario/403.xhtml"/>
