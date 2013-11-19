@@ -44,8 +44,7 @@
 							<p:commandButton id="editarButton" action="#{certificacionManagedBean.editarCertificacion(planificacionManagedBean.selectedCertificacion)}" icon="ui-icon-pencil" title="Editar"/>  
 				        </p:column>
 						<p:column style="width:4%">
-							<p:commandButton id="instrumentosButton" action="instrumentos" actionListener="#{instrumentoManagedBean.configurarInstrumento}" icon="ui-icon-pencil" title="instrumentos">
-								<f:attribute name="nombreCertificacion" value="#{planificacionManagedBean.selectedCertificacion.nombre}" />
+							<p:commandButton id="instrumentosButton" action="#{instrumentoManagedBean.configurarInstrumento(planificacionManagedBean.selectedCertificacion.id,planificacionManagedBean.selectedCertificacion.nombre)}" icon="ui-icon-pencil" title="instrumentos">
 							</p:commandButton>
 						</p:column>
                 </p:dataTable>

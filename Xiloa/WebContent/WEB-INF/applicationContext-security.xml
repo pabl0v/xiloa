@@ -18,29 +18,17 @@
 		<intercept-url pattern="/login*" access="permitAll" />
 		<intercept-url pattern="/modulos/portafolio/**" access="isAuthenticated()" />
 		<access-denied-handler error-page="/modulos/usuario/403.xhtml"/>
-		
-		<!--
-		<form-login
-			login-page="/login"
-			authentication-failure-url="/modulos/usuario/index.xhtml?error=1"
-			default-target-url="/modulos/planificacion/planificacion.xhtml" />
-		-->	
-		
+				
 		<openid-login
 				login-page="/modulos/usuario/index.xhtml" 
 				authentication-failure-url="/modulos/usuario/index.xhtml?error=true" 
 				default-target-url="/modulos/usuario/visitante.xhtml"
 				user-service-ref="openIdUserService">
-			<attribute-exchange identifier-match="https://www.google.com/.*">
+			<attribute-exchange>
 				<openid-attribute name="email" type="http://axschema.org/contact/email" required="true" count="1"/>
 				<openid-attribute name="firstname" type="http://axschema.org/namePerson/first" required="true"/>
 				<openid-attribute name="lastname" type="http://axschema.org/namePerson/last" required="true"/>
 			</attribute-exchange>
-			<attribute-exchange identifier-match=".*yahoo.com*">
-				<openid-attribute name="email" type="http://axschema.org/contact/email" required="true" count="1"/>
-				<openid-attribute name="firstname" type="http://axschema.org/namePerson/first" required="true"/>
-				<openid-attribute name="lastname" type="http://axschema.org/namePerson/last" required="true"/>
-			</attribute-exchange>			
 		</openid-login>
 
 		<logout
@@ -56,48 +44,5 @@
 		<authentication-provider ref = "customUserAuthenticationProvider">
 		</authentication-provider>
 	</authentication-manager>
-
-	<!--
-	<authentication-manager alias = "authenticationManager">
-		<authentication-provider user-service-ref = "customUserAuthenticationProvider">
-			<password-encoder ref hash="md5"/>
-		</authentication-provider>
-	</authentication-manager>
-	
-    <beans:bean id="encoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder">
-    </beans:bean>
-	
-	<authentication-manager alias = "authenticationManager">
-		<authentication-provider user-service-ref = "customUserAuthenticationProvider">
-			<password-encoder ref="encoder" />
-		</authentication-provider>
-	</authentication-manager>
-	-->
-
-	<!--autentication local
-	<authentication-manager alias = "authenticationManager">
-		<authentication-provider>
-			<password-encoder hash="sha"/>
-			<jdbc-user-service
-				data-source-ref="dataSource"
-				users-by-username-query = "select usuario_alias,usuario_pwd,usuario_estatus from usuarios where usuario_estatus = 'true' and usuario_alias = ?"
-				authorities-by-username-query =	"select u.usuario_alias,r.rol_nombre from usuarios u, roles r where u.rol_id = r.rol_id and r.rol_estatus = 'true' and u.usuario_estatus = 'true' and u.usuario_alias = ?"
-			/>
-		</authentication-provider>
-	</authentication-manager>
-	-->
-	
-	<!-- autenticacion para el inatec
-	<authentication-manager alias = "authenticationManager">
-		<authentication-provider>
-			<password-encoder hash="md5"/>
-			<jdbc-user-service
-				data-source-ref="inatecDataSource"
-				users-by-username-query = "select usuario,clave,true from admon.usuario where activo = 1 and usuario = ?"
-				authorities-by-username-query =	"select usuario,'admin' from admon.usuario where activo = 1 and usuario = ?"
-			/>
-		</authentication-provider>
-	</authentication-manager>
-	-->
 	
 </beans:beans>

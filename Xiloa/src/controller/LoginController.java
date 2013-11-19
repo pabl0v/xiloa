@@ -59,7 +59,7 @@ public class LoginController implements PhaseListener {
     	this.authenticationManager = authenticationManager;
     }
     	
-	public String login(){
+	public String login() {
 		CustomUsernamePasswordAuthenticationToken token = new CustomUsernamePasswordAuthenticationToken(username, password, inatec);
 		try{
 			Authentication authentication = authenticationManager.authenticate(token);
@@ -67,11 +67,10 @@ public class LoginController implements PhaseListener {
 			sContext.setAuthentication(authentication);
 			return "/modulos/planificacion/planificacion?faces-redirect=true";
 		} catch(AuthenticationException loginError){
-			@SuppressWarnings("unused")
 			FacesContext fContext = FacesContext.getCurrentInstance();
-			@SuppressWarnings("unused")
-			FacesMessage message = new FacesMessage("Invalid username/password. Reason " + loginError.getMessage());
-			return "index";
+			FacesMessage message = new FacesMessage("Autenticación fallida: " + loginError.getMessage());
+			fContext.addMessage(null, message);
+			return "/modulos/usuario/index.xhtml?error=1";
 		}
 	}
 	

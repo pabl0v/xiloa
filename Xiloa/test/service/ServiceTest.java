@@ -81,8 +81,6 @@ public class ServiceTest {
 		mantenedor27 = new Mantenedor("8","Estados Portafolio Evidencia","Verificado",new String("26"),null);
 		mantenedor28 = new Mantenedor("9","Estados Evaluaciones","Registradas",null, new String("29"));
 		mantenedor29 = new Mantenedor("9","Estados Evaluaciones","Completadas",new String("28"),null);		
-		
-		
 
 		service.guardar(mantenedor1);
 		service.guardar(mantenedor2);
@@ -147,11 +145,11 @@ public class ServiceTest {
 		
 		//creando usuarios
 		
-		usuarioAdmin = new Usuario(null,"admin","admin",rolAdmin,true);		
-		usuarioLopez = new Usuario(null,"nlopez","nlopez",rolAdmin,true);
-		usuarioRuiz = new Usuario(null,"aruiz","aruiz",rolAdmin,true);
-		usuarioPerez = new Usuario(null,"lperez","lperez",rolAdmin,true);
-		usuarioArauz = new Usuario(null,"larauz","larauz",rolAdmin,true);
+		usuarioAdmin = new Usuario(null,"admin","d033e22ae348aeb5660fc2140aec35850c4da997",rolAdmin,true);		
+		usuarioLopez = new Usuario(null,"nlopez","d033e22ae348aeb5660fc2140aec35850c4da997",rolAdmin,true);
+		usuarioRuiz = new Usuario(null,"aruiz","d033e22ae348aeb5660fc2140aec35850c4da997",rolAdmin,true);
+		usuarioPerez = new Usuario(null,"lperez","d033e22ae348aeb5660fc2140aec35850c4da997",rolAdmin,true);
+		usuarioArauz = new Usuario(null,"larauz","d033e22ae348aeb5660fc2140aec35850c4da997",rolAdmin,true);
 		
 		usuarioAdmin = (Usuario)service.guardar(usuarioAdmin);
 		usuarioArauz = (Usuario)service.guardar(usuarioArauz);

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.event.ActionEvent;
 
 import model.Guia;
 import model.Instrumento;
@@ -21,16 +20,18 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import service.IService;
-import support.FacesUtil;
 
 @Component
-@Scope(value="request")
+@Scope(value="session")
 public class InstrumentoManagedBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
 	private IService service;
+	
+	@Autowired
+	private transient UtilitariosManagedBean util;
 
 	private Long idCertificacion;
 	private String nombreCertificacion;
@@ -62,7 +63,8 @@ public class InstrumentoManagedBean implements Serializable {
 	
 	@PostConstruct
 	private void init(){
-		catalogoTiposInstrumento = service.getMapMantenedoresByTipo("6");
+		catalogoTiposInstrumento = util.getCatalogoTiposInstrumento();
+		//catalogoTiposInstrumento = service.getMapMantenedoresByTipo("6");
 	}
 	
 	public Long getIdCertificacion(){
@@ -147,6 +149,26 @@ public class InstrumentoManagedBean implements Serializable {
 		this.selectedUnidad = selectedUnidad;
 	}
 	
+	public String configurarInstrumento(Long idCertificacion, String nombreCertificacion){
+		
+		this.idCertificacion = idCertificacion;
+		this.nombreCertificacion = nombreCertificacion;
+		
+		System.out.println("configurarInstrumento id: "+idCertificacion);
+		System.out.println("configurarInstrumento nombre: "+nombreCertificacion);
+		
+		List<Unidad> unidades = service.getUnidadesByCertificacionId(idCertificacion);
+		for(int i=0; i<unidades.size(); i++)
+			this.catalogoUnidades.put(unidades.get(i).getId(), unidades.get(i));
+		this.instrumentos = service.getInstrumentosByCertificacionId(idCertificacion);
+		
+		System.out.println("configurarInstrumento unidades: "+unidades.size());
+		System.out.println("configurarInstrumento nombre: "+instrumentos.size());
+
+		return "/modulos/planificacion/instrumentos?faces-redirect=true";
+	}
+	
+	/*
 	public String configurarInstrumento(ActionEvent event){
 		this.idCertificacion = 2L;
 		this.nombreCertificacion = FacesUtil.getActionAttribute(event, "nombreCertificacion");
@@ -159,7 +181,7 @@ public class InstrumentoManagedBean implements Serializable {
 			this.catalogoUnidades.put(unidades.get(i).getId(), unidades.get(i));
 		this.instrumentos = service.getInstrumentosByCertificacionId(idCertificacion);
 		return "/modulos/planificacion/instrumentos?faces-redirect=true";
-	}	
+	}*/
 	
 	public void guardarInstrumento(Instrumento instrumento){
 		instrumento.setDescripcion(instrumento.getNombre());

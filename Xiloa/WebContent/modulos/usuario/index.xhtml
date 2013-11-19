@@ -33,8 +33,7 @@
 	            <p:inputText id="filtro_buscar"></p:inputText>
             </h:form>
         </div>
-        <h:form id="cursos">
-        <p:growl id="growl" showDetail="true"/>  
+        <h:form id="cursos">  
         <div class="contenedor_central">
         	<h2>Certificaciones de Competencias Laborales disponibles</h2>
 	        <p>Seleccione el nombre de la certificación para ver el detalle y registrar su solicitud</p>
@@ -43,7 +42,7 @@
 	                paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
 	                rowsPerPageTemplate="5,10,15" rowKey="#{certificacion.id}" selection="#{inicioManagedBean.selectedCertificacion}" selectionMode="single">
 	     			<!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
-	                <p:ajax event="rowSelect" update=":cursos:dialogo :cursos:growl" oncomplete="PF('modal_comp').show()" />
+	                <p:ajax event="rowSelect" update=":cursos:dialogo" oncomplete="PF('modal_comp').show()" />
 	                <p:column style="display: none" headerText="Unidad de competencia"><h:outputText value="#{certificacion.id}" /></p:column>  
 	                <p:column headerText="Certificación"><h:outputText value="#{certificacion.nombre}" /></p:column>  
 	                <p:column headerText="Centro de Formación"><h:outputText value="#{certificacion.ifpNombre}" /></p:column>  
@@ -89,7 +88,7 @@
           	     </h:form>
                  <h:form id="loginForm" prependId="false">
             	 <h:outputLabel for="username" value="Usuario:" />  
-				 <h:inputText id="username" required="true" requiredMessage="Escriba un nombre de usuario"  label="username" value="#{loginController.username}" />
+				 <h:inputText id="username" required="true" requiredMessage="El usuario es requerido"  label="username" value="#{loginController.username}" />
 			     <h:outputLabel for="password" value="Contraseña:" />  
 				 <h:inputSecret id="password" label="password" required="true" requiredMessage="La contraseña es requerida" value="#{loginController.password}" />  
 			     <h:commandButton styleClass="boton_verde" type="submit" id="login" value="Continuar" action="#{loginController.login}" />
