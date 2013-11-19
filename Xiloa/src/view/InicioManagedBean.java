@@ -34,6 +34,8 @@ public class InicioManagedBean implements Serializable {
 	private IService service;
 	private List<Certificacion> certificaciones;
 	private Certificacion selectedCertificacion;
+	private int tipoFiltro;
+	private String textoBuscar;
 
 	public InicioManagedBean(){
 		super();
@@ -42,7 +44,8 @@ public class InicioManagedBean implements Serializable {
 	
 	@PostConstruct
 	private void init(){
-		certificaciones = service.getCertificacionesActivas();
+		certificaciones = service.getCertificacionesActivas(null,null);
+		tipoFiltro = 0;
 	}
 
 	public List<Certificacion> getCertificaciones(){
@@ -57,6 +60,22 @@ public class InicioManagedBean implements Serializable {
 		this.selectedCertificacion = selectedCertificacion;
 	}
 	
+	public int getTipoFiltro() {
+		return tipoFiltro;
+	}
+
+	public void setTipoFiltro(int tipoFiltro) {
+		this.tipoFiltro = tipoFiltro;
+	}
+
+	public String getTextoBuscar() {
+		return textoBuscar;
+	}
+
+	public void setTextoBuscar(String textoBuscar) {
+		this.textoBuscar = textoBuscar;
+	}
+
 	public String indicaAplicar(){
 		
 		Usuario u = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -93,6 +112,12 @@ public class InicioManagedBean implements Serializable {
 		}
 		
 		return url;
-
+	}
+	
+	public void buscar(int filtro, String texto){
+		certificaciones = service.getCertificacionesActivas(filtro,texto);
+		System.out.println("filtro: "+filtro);
+		System.out.println("texto: "+texto);
+		System.out.println("buscar..."+certificaciones.size());
 	}
 }

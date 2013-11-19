@@ -24,13 +24,14 @@
         </header>
         <div id="barra_buscar">
             <p>Buscar por</p>
-            <h:form>
-	            <p:selectOneMenu id="selector_filtro" styleClass="selector_status_estilo" value="a">  
-		            <f:selectItem itemLabel="Nombre de la competencia a certificar:" itemValue="a" />
-		            <f:selectItem itemLabel="Centro donde esta disponible:" itemValue="a" />
-		            <f:selectItem itemLabel="Otro:" itemValue="a" />  
-		            </p:selectOneMenu>
-	            <p:inputText id="filtro_buscar"></p:inputText>
+            <h:form id="buscar">
+	            <p:selectOneMenu id="selector_filtro" styleClass="selector_status_estilo" value="#{inicioManagedBean.tipoFiltro}">  
+		            <f:selectItem itemLabel="Seleccione..." itemValue="" />
+		            <f:selectItem itemLabel="Nombre de la certificación:" itemValue="1" />
+		            <f:selectItem itemLabel="Centro donde está disponible:" itemValue="2" />
+		        </p:selectOneMenu>
+				<p:remoteCommand name="test" action="#{inicioManagedBean.buscar(inicioManagedBean.tipoFiltro,inicioManagedBean.textoBuscar)}" update=":cursos"/>
+				<p:inputText id="filtro_buscar" value="#{inicioManagedBean.textoBuscar}" onkeypress="if (event.keyCode == 13) { test(); return false; }"/>
             </h:form>
         </div>
         <h:form id="cursos">  
@@ -50,6 +51,7 @@
 	            </p:dataTable> 
             </div>
         </div>
+        
 		<p:dialog id="modal_info_competenciasid" styleClass="modal_info_competencias" header="Detalle:" widgetVar="modal_comp" width="550" height="500">
 			<p:outputPanel id="dialogo">  
         	<div class="seccion_detalle">
@@ -126,16 +128,16 @@
 	                        <div id="aqui_formulario"></div>
 	                        <div id="error">
 	                        	<p>Error de inicio de sesion!</p>
-	                        	<p>Verifique que su usuario y contraseña sean correctos.</p>
+	                        	<p>Verifique que su usuario y contraseÃ±a sean correctos.</p>
 	                        </div>
 	                    </h:form>
 	                    <div id="opciones_openid"></div>
 	                </p:tab>  
 	
-	                <p:tab id="tab2" titleStyleClass="llave" title="Olvido de contraseña">  
+	                <p:tab id="tab2" titleStyleClass="llave" title="Olvido de contraseÃ±a">  
 	                    <h:form>
-	                        <h2>¿Olvido su contraseña?</h2>
-	                        <p>Si olvido su contraseña, ingrese aqui su nombre de usuario y le enviaremos un correo que le permitira cambiar la contraseña</p>
+	                        <h2>Â¿Olvido su contraseña?</h2>
+	                        <p>Si olvido su contraseña, ingrese aqui su nombre de usuario y le enviaremos un correo que le permitira cambiar la contraseÃ±a</p>
 	                        <p style="font-weight:bold; display: inline-block; margin-right:10px;">Nombre de usuario:</p>
 	                        <p:inputText />
 	                        <br/>
@@ -198,10 +200,10 @@
       			<ul>
       				<li>Formato de solicitud</li>
       				<li>Copia de cedula</li>
-      				<li>2 fotos (Tamaño diploma)</li>
-      				<li>Experiencia de 3 años en panaderia</li>
+      				<li>2 fotos (TamaÃ±o diploma)</li>
+      				<li>Experiencia de 3 aÃ±os en panaderia</li>
       				<li>Leer y escribir</li>
-      				<li>Mayor de 20 años de edad</li>
+      				<li>Mayor de 20 aÃ±os de edad</li>
       			</ul>  		
           	</div>
           	<div class="seccion_detalle">

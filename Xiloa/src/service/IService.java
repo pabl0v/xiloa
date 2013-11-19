@@ -31,7 +31,7 @@ public interface IService {
 	
 	public List<Certificacion> getCertificaciones();
 	
-	public List<Certificacion> getCertificacionesActivas();
+	public List<Certificacion> getCertificacionesActivas(Integer parametro, String valor);
 		
 	public List<Mantenedor> getMantenedores();
 	

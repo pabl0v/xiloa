@@ -101,7 +101,13 @@ public class ServiceImp implements IService {
 	}
 	
 	@Override
-	public List<Certificacion> getCertificacionesActivas(){
+	public List<Certificacion> getCertificacionesActivas(Integer parametro, String valor){
+		if(parametro == null)
+			return certificacionDao.findAllByQuery("select c from certificaciones c where c.estatus.id=8 order by c.id desc");
+		if(parametro == 1)
+			return certificacionDao.findAllByQuery("select c from certificaciones c where c.estatus.id=8 and c.nombre like '%"+valor.toUpperCase()+"%'"+" order by c.id desc");
+		if(parametro == 2)
+			return certificacionDao.findAllByQuery("select c from certificaciones c where c.estatus.id=8 and c.ifpNombre like '%"+valor.toUpperCase()+"%'"+ " order by c.id desc");
 		return certificacionDao.findAllByNamedQuery("Certificacion.findActivas");
 	}	
 		
