@@ -63,8 +63,9 @@ public class Laboral implements Serializable {
 	private String institucion;
 	
 	@NotNull
-	@Column(name = "laboral_pais", nullable = false)
-	private String pais;
+	@ManyToOne
+	@JoinColumn(name="laboral_pais_id")
+	private Pais pais;
 	
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "laboral_fecha_inicia", nullable = false)
@@ -139,11 +140,11 @@ public class Laboral implements Serializable {
 		this.institucion = institucion;
 	}
 
-	public String getPais() {
+	public Pais getPais() {
 		return pais;
 	}
 
-	public void setPais(String pais) {
+	public void setPais(Pais pais) {
 		this.pais = pais;
 	}
 
@@ -197,7 +198,7 @@ public class Laboral implements Serializable {
 
 		
 	public Laboral(Contacto contacto, Integer tipo, String nombre,
-			String descripcion, String institucion, String pais,
+			String descripcion, String institucion, Pais pais,
 			Date fechaInicia, Date fechaFinaliza, String institucionDireccion,
 			String institucionTelefono, String cargo, Set<Archivo> archivo) {
 		super();		

@@ -72,13 +72,13 @@ public class Evaluacion implements Serializable {
 	private boolean aprobado;
 	
 	@Column(name = "evaluacion_estado", nullable=false)
-	private String estado;
+	private Mantenedor estado;
 
-	public String getEstado() {
+	public Mantenedor getEstado() {
 		return estado;
 	}
 
-	public void setEstado(String estado) {
+	public void setEstado(Mantenedor estado) {
 		this.estado = estado;
 	}
 

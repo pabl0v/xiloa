@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import service.IService;
 import model.Evaluacion;
 import model.Instrumento;
+import model.Mantenedor;
 import model.Solicitud;
 
 public class BeanEvaluacion {
@@ -12,10 +13,10 @@ public class BeanEvaluacion {
 	@Autowired
 	private IService service;
 	
-	private Solicitud solicitudBeanEval;
-	private Evaluacion evaluacion;
+	private Solicitud   solicitudBeanEval;
+	private Evaluacion  evaluacion;
 	private Instrumento instrumento;
-	private String      estadoEvaluacion;
+	private Mantenedor  estadoEvaluacion;
 			
 	public Evaluacion getEvaluacion() {
 		return evaluacion;
@@ -40,14 +41,14 @@ public class BeanEvaluacion {
 		this.solicitudBeanEval = solicitudBeanEval;
 	}
 	
-	public String getEstadoEvaluacion() {
+	public Mantenedor getEstadoEvaluacion() {
 		return estadoEvaluacion;
 	}
-	public void setEstadoEvaluacion(String estadoEvaluacion) {
+	public void setEstadoEvaluacion(Mantenedor estadoEvaluacion) {
 		this.estadoEvaluacion = estadoEvaluacion;
 	}
 	public BeanEvaluacion(Solicitud solicitudBeanEval, Evaluacion evaluacion,
-			Instrumento instrumento, String estado) {
+			Instrumento instrumento, Mantenedor estado) {
 		super();
 		this.solicitudBeanEval = solicitudBeanEval;
 		this.evaluacion = evaluacion;

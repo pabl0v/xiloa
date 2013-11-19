@@ -20,6 +20,7 @@ import model.Guia;
 import model.Instrumento;
 import model.Laboral;
 import model.Mantenedor;
+import model.Pais;
 import model.Requisito;
 import model.Rol;
 import model.Solicitud;
@@ -93,4 +94,6 @@ public interface IService {
 	public List<Requisito> getRequisitos(int cursoId, int centroId);
 	public List<Unidad> getUnidades(int cursoId, int centroId);
 	public Archivo getArchivoOneByParam (String namedString, Object [] parametros);
+	public List<Pais> getPaises ();
+	public Pais getPaisByNQParam(String namedString, Object [] param);
 }

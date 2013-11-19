@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,8 +18,13 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @NamedQueries ({
 	@NamedQuery (name="Guia.findByIdInstrumento", query="select g from guias g where g.instrumento.id=?1")
 })
-public class Guia {
+public class Guia implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "guia_id", nullable = false)

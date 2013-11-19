@@ -30,6 +30,7 @@ import model.Guia;
 import model.Instrumento;
 import model.Laboral;
 import model.Mantenedor;
+import model.Pais;
 import model.Perfil;
 import model.Requisito;
 import model.Rol;
@@ -90,6 +91,9 @@ public class ServiceImp implements IService {
 	
 	@Autowired
 	private IDao<Archivo> archivoDao;
+	
+	@Autowired
+	private IDao<Pais> paisDao;
 	
 	@Override
 	public List<Certificacion> getCertificaciones(){
@@ -338,6 +342,8 @@ public class ServiceImp implements IService {
 			return unidadDao.save((Unidad)objeto);
 		if(objeto instanceof Requisito)
 			return requisitoDao.save((Requisito)objeto);
+		if (objeto instanceof Pais)
+			return paisDao.save((Pais) objeto);
 		return null;
 	}
 	
@@ -530,5 +536,15 @@ public class ServiceImp implements IService {
 	@Override
 	public Archivo getArchivoOneByParam (String namedString, Object [] parametros){
 		return archivoDao.findOneByNamedQueryParam(namedString, parametros);
+	}
+	
+	@Override
+	public List<Pais> getPaises (){
+		return paisDao.findAll(Pais.class);
+	}
+	
+	@Override
+	public Pais getPaisByNQParam(String namedString, Object [] param){
+		return paisDao.findOneByNamedQueryParam(namedString, param);
 	}
 }

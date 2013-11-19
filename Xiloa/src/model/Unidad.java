@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -19,7 +20,12 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @NamedQueries ({
 	@NamedQuery(name="Unidad.findById", query="select u from unidades u where u.id=?1")
 })
-public class Unidad {
+public class Unidad implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

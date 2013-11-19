@@ -58,18 +58,20 @@
             <h:outputLabel styleClass="estilo_label" for="direccionActual" value="Direccion actual:" />  
             <p:inputText id="direccionActual" value="#{expedienteManagedBean.solicitudExp.contacto.direccionActual}" />
             <h:outputLabel styleClass="estilo_label" for="selector_departamento" value="Departamento:" />
-            <p:selectOneMenu id="selector_departamento" styleClass="selector_status_estilo" value="#{expedienteManagedBean.solicitudExp.contacto.departamentoId}" style="position: relative;top: 7px;margin-right: 5px;">
-				  <p:ajax event="change" process="@form"  
-				          listener="#{expedienteManagedBean.handleMunicipios}"
-				          update=":formExpediente:selector_municipio" />            	  	       		  	       		  
-	       		  <f:selectItem itemLabel="Seleccione un departamento" itemValue="" />
-	       		  <f:selectItems value="#{expedienteManagedBean.listDeptos}"/>	       		   	       		  		  	       		  			                         
+            <p:selectOneMenu id="selector_departamento" styleClass="selector_status_estilo" 
+                             value="#{expedienteManagedBean.solicitudExp.contacto.departamentoId}"                                                        
+                             style="position: relative;top: 7px;margin-right: 5px;" >
+				  <p:ajax listener="#{expedienteManagedBean.handleMunicipios}"
+				          update=":formExpediente:selector_municipio" />
+	       	<f:selectItems value="#{expedienteManagedBean.listDeptos}"/>	       		   	       		  		  	       		  			                         
 			</p:selectOneMenu>			    
             <h:outputLabel styleClass="estilo_label" for="selector_municipio" value="Municipio:" />  
-            <p:selectOneMenu id="selector_municipio" styleClass="selector_status_estilo" value="#{expedienteManagedBean.solicitudExp.contacto.municipioId}" style="position: relative;top: 7px;margin-right: 5px;">  	       		  	       		  
-	       		  <f:selectItem itemLabel="Seleccione un municipio" itemValue="" />
+          	<p:inputText id="selector_municipio" value="#{expedienteManagedBean.municipioIdSelected}"/>     
+          	<!-- <p:selectOneMenu id="selector_municipio" styleClass="selector_status_estilo"
+            				 value="#{expedienteManagedBean.municipioIdSelected}"                              
+                             style="position: relative;top: 7px;margin-right: 5px;">
 	       		  <f:selectItems value="#{expedienteManagedBean.listMunicipioByDptos}"/>	       		   	       		  		  	       		  			                         
-			</p:selectOneMenu>              
+			</p:selectOneMenu>-->     	
             <p:commandButton id="btnActualizaContacto" disabled="#{expedienteManagedBean.disabledBtnActualizaContacto}"
                              style="display:block;" value="Aplicar Cambios" 
                              update=":formExpediente:msgExpediente" 
@@ -184,7 +186,7 @@
                              <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{uC.evaluacion.unidad.competenciaDescripcion}" /></p:column>  
                              <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{uC.instrumento.nombre}" /></p:column>  
                              <!--  <p:column headerText="Requisito"><h:outputText value="#{uC.instrumento.nombre}" /></p:column> -->  
-                             <p:column headerText="Estado"><h:outputText value="#{uC.estadoEvaluacion}" /></p:column>  
+                             <p:column headerText="Estado"><h:outputText value="#{uC.estadoEvaluacion.nombre}" /></p:column>  
                              <p:column headerText="Editar">
                              	<p:commandButton id="editarEvaluaciones" action="#{expedienteManagedBean.RegistrarEditarEvaluacion}"                         	            	          
                          	                	 icon="ui-icon-pencil" title="Editar">    	
@@ -251,7 +253,7 @@
                              <p:column headerText="Observacion"><h:outputText value="#{evaluaciones.evaluacion.observaciones}" /></p:column>  
                              <p:column headerText="Fecha"><h:outputText value="#{evaluaciones.evaluacion.fechaEvaluacion}" /></p:column>  
                              <p:column headerText="Aprobado"><p:selectBooleanCheckbox value="#{evaluaciones.evaluacion.aprobado}" /></p:column>  
-                             <p:column headerText="Estado"><h:outputText value="#{evaluaciones.estadoEvaluacion}" /></p:column>
+                             <p:column headerText="Estado"><h:outputText value="#{evaluaciones.estadoEvaluacion.nombre}" /></p:column>
                              <p:column headerText="Editar">
                              	<p:commandButton id="editarEvaluacionesPlan" action="#{expedienteManagedBean.RegistrarEditarEvaluacion}"                         	                 	  
                          	                 	 icon="ui-icon-pencil" title="Editar">                         					
@@ -272,7 +274,7 @@
                              <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{formacion.instrumento.nombre}" /></p:column>                               
                              <p:column headerText="Observaciones"><h:outputText value="#{formacion.evaluacion.observaciones}" /></p:column>
                              <p:column headerText="Aprobado"><p:selectBooleanCheckbox value="#{formacion.evaluacion.aprobado}" /></p:column>  
-                             <p:column headerText="Estado"><h:outputText value="#{formacion.estadoEvaluacion}" /></p:column>                              
+                             <p:column headerText="Estado"><h:outputText value="#{formacion.estadoEvaluacion.nombre}" /></p:column>                              
                              <p:column headerText="Editar">
                              	<p:commandButton id="editarEvaluacionesPlanForma" action="#{expedienteManagedBean.RegistrarEditarEvaluacion}" 
                          	                 	 icon="ui-icon-pencil" title="Editar">                         				
@@ -301,8 +303,11 @@
 	            	<p:inputText id="nombreInstitucion" value="#{expedienteManagedBean.nombreInstitucion}" />	            	
 	            	<p>Telefono contacto:</p>	                  
 	            	<p:inputText id="telefonoInstitucion" value="#{expedienteManagedBean.telefonoInstitucion}" />										
-					<p>Pais:</p>	                  
-	            	<p:inputText id="paisInstitucion" value="#{expedienteManagedBean.paisInstitucion}" />
+					<p>Pais:</p>    	
+	            	<p:selectOneMenu id="selector_paisLaboral" styleClass="selectores bloque"  
+	            	                 value="#{expedienteManagedBean.paisIdLaboral}" >				
+						<f:selectItems value="#{expedienteManagedBean.listPaises}" />			        
+			    	</p:selectOneMenu>	            	
 					<p>Direccion de la institucion:</p>					  
             		<p:inputText id="institucionDireccion" value="#{expedienteManagedBean.institucionDireccion}" />
 				</div>				
@@ -330,20 +335,21 @@
 				<p:commandButton value="Cancelar" action="#{expedienteManagedBean.limpiarCampos}" 
 				                 oncomplete="PF('dlg1').hide();"/>
 				<p:commandButton value="Aceptar" action="#{expedienteManagedBean.guardarDatosLaborales}" oncomplete="PF('dlg1').hide();"
-								 update=":formExpediente:tabView_datosLaborales, :formExpediente:modalLaborales, :formExpediente:msgExpediente"	/>
+								 update=":formExpediente:tabView_datosLaborales, :formExpediente:msgExpediente"	/>
 				</div>
 				    
-				<p:dataTable emptyMessage="No hay datos"  var="portafolioLaboral" value="#{expedienteManagedBean.listPortafolioLaboral}"
+				<p:dataTable emptyMessage="No hay datos"  var="portafolioLaboral" 
+				             value="#{expedienteManagedBean.listPortafolioLaboral}"
                              selection="#{expedienteManagedBean.selectedArchivoId}" rowKey="#{portafolioLaboral.id}" 
-                 			 selectionMode="single" paginator="true" rows="3" style="margin-top:8px;">  
+                 			 selectionMode="single" paginator="true" rows="3" style="margin-top:8px;" >  
                              <f:facet name="header">  
 					            Portafolio de Evidencias  
 					         </f:facet> 
                              <p:column headerText="Documento de soporte o evidencia"><h:outputText value="#{portafolioLaboral.nombre}" /></p:column>  
                              <p:column headerText="Descripcion"><h:outputText value="#{portafolioLaboral.descripcion}" /></p:column>  
                              <p:column headerText="Respaldo de"><h:outputText value="#{portafolioLaboral.laboral.nombre}" /></p:column>  
-                             <p:column headerText="Estado"><h:outputText value="#{portafolioLaboral.estado}" /></p:column>                                   
-                        </p:dataTable>
+                             <p:column headerText="Estado"><h:outputText value="#{portafolioLaboral.estado.nombre}" /></p:column>                                   
+               </p:dataTable>
 		    </div>					
 		</p:dialog>    	
     	<!--  Fin Cuadro de dialogo emergente que registra datos laborales y académicos -->

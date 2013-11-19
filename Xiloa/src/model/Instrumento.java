@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +22,13 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 	@NamedQuery(name="Instrumento.findAllByUnidadId", query="select i from instrumentos i where i.unidad.id=?1"),
 	@NamedQuery(name="Instrumento.findById", query="select i from instrumentos i where i.id=?1")
 })
-public class Instrumento {
+public class Instrumento implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "instrumento_id", nullable = false)

@@ -9,6 +9,7 @@ import model.Mantenedor;
 import model.Perfil;
 import model.Rol;
 import model.Usuario;
+import model.Pais;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,7 +36,9 @@ public class ServiceTest {
 	private static Rol rolAdmin, rolSupervisor, rolVerificador, rolRegistrador, rolDocente, rolVisitante;
 	private static Usuario usuarioAdmin, usuarioLopez, usuarioPerez, usuarioRuiz, usuarioArauz;
 	private static Contacto contactoLopez, contactoRuiz, contactoPerez, contactoArauz;
-
+	
+	private static Pais pais1, pais2, pais3, pais4, pais5, pais6;
+	
 	@BeforeClass
 	public static void setUp() throws Exception {
 	}
@@ -167,6 +170,21 @@ public class ServiceTest {
 		contactoRuiz = (Contacto)service.guardar(contactoRuiz);
 		contactoPerez = (Contacto)service.guardar(contactoPerez);
 		contactoArauz = (Contacto)service.guardar(contactoArauz);
+	
+		//Creando valores iniciales de paises
+		pais1 = new Pais ("Nicaragua", "Nicaraguense");
+		pais2 = new Pais ("Costa Rica", "Costa Rica");
+		pais3 = new Pais ("El Salvador", "Salvadoreño"); 
+		pais4 = new Pais ("Panama", "Panameño"); 
+		pais5 = new Pais ("Honduras", "Hondureño"); 
+		pais6 = new Pais ("Guatemala", "Guatemalteco");
+		
+		pais1 = (Pais) service.guardar(pais1);
+		pais2 = (Pais) service.guardar(pais2);
+		pais3 = (Pais) service.guardar(pais3);
+		pais4 = (Pais) service.guardar(pais4);
+		pais5 = (Pais) service.guardar(pais5);
+		pais6 = (Pais) service.guardar(pais6);
 		
 	}
 }

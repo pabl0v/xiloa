@@ -23,6 +23,7 @@ import model.EvaluacionGuia;
 import model.EvaluacionGuiaId;
 import model.Guia;
 import model.Instrumento;
+import model.Mantenedor;
 import model.Solicitud;
 import model.Unidad;
 
@@ -46,7 +47,8 @@ public class EvaluacionManagedBean implements Serializable {
 	private Date        fechaEvaluacion;
 	private boolean     aprobado;
 	private String      observaciones;
-	private String      estado;
+	private Mantenedor  estado;
+	private int         estadoId;
 	
 	private Evaluacion selectedEvaluacion;	
 	
@@ -71,11 +73,19 @@ public class EvaluacionManagedBean implements Serializable {
 		
 	}
 
-	public String getEstado() {
+	public int getEstadoId() {
+		return estadoId;
+	}
+
+	public void setEstadoId(int estadoId) {
+		this.estadoId = estadoId;
+	}
+
+	public Mantenedor getEstado() {
 		return estado;
 	}
 
-	public void setEstado(String estado) {
+	public void setEstado(Mantenedor estado) {
 		this.estado = estado;
 	}
 
@@ -90,6 +100,7 @@ public class EvaluacionManagedBean implements Serializable {
 		this.setObservaciones(selectedEvaluacion.getObservaciones());
 		this.setAprobado(selectedEvaluacion.isAprobado());
 		this.setEstado(selectedEvaluacion.getEstado());
+		this.setEstadoId(selectedEvaluacion.getEstado().getId());
 	}
 
 	public Solicitud getSolicitudEval() {		
@@ -266,7 +277,7 @@ public class EvaluacionManagedBean implements Serializable {
 								   );
 			String estadoTipo = eval.getTipoMantenedorEstado();
 			
-			eval.setEstado(service.getMantenedorMinByTipo(estadoTipo).toString());			
+			eval.setEstado(service.getMantenedorMinByTipo(estadoTipo));			
 			
 			eval = (Evaluacion) service.guardar(eval);
 			

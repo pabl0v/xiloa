@@ -32,6 +32,7 @@ import model.Evaluacion;
 import model.Instrumento;
 import model.Laboral;
 import model.Mantenedor;
+import model.Pais;
 import model.Solicitud;
 import model.Usuario;
 
@@ -75,7 +76,8 @@ public class ExpedienteManagedBean implements Serializable  {
 	
 	private String telefonoInstitucion;	
 	private String descripcionCargo;
-	private String paisInstitucion;
+	private Pais paisInstitucion;
+	private Long paisIdLaboral;
 	private String nombreInstitucion;
 	private String nombreCargo;
 	private Date fechaDesde;
@@ -123,10 +125,15 @@ public class ExpedienteManagedBean implements Serializable  {
 	
 	private List<SelectItem> listDeptos;
 	private List<SelectItem> listMunicipioByDptos;
+	private List<SelectItem> listPaises;
 	
 	private List<Archivo> listPortafolioLaboral;
 	
 	private Long selectedArchivoId;
+	
+	private String municipioIdSelected;
+	
+	private Integer departamentoIdSelected;
 	
 	public ExpedienteManagedBean() {
 		super();
@@ -164,12 +171,49 @@ public class ExpedienteManagedBean implements Serializable  {
 		
 		listDeptos = new ArrayList<SelectItem> ();
 		listMunicipioByDptos = new ArrayList<SelectItem> ();
+		listPaises = new ArrayList<SelectItem> ();
 		
 		nuevoLaboral = new Laboral();		
 		
+	}	
+	
+	public Long getPaisIdLaboral() {
+		return paisIdLaboral;
 	}
+
+	public void setPaisIdLaboral(Long paisIdLaboral) {
+		this.paisIdLaboral = paisIdLaboral;
+	}
+
+	public List<SelectItem> getListPaises() {
+		return listPaises;
+	}
+
+	public void setListPaises(List<SelectItem> listPaises) {
+		this.listPaises = listPaises;
+	}
+
 	
-	
+
+
+	public String getMunicipioIdSelected() {
+		return municipioIdSelected;
+	}
+
+	public void setMunicipioIdSelected(String municipioIdSelected) {
+		this.municipioIdSelected = municipioIdSelected;
+	}
+
+	public Integer getDepartamentoIdSelected() {
+		return departamentoIdSelected;
+	}
+
+
+	public void setDepartamentoIdSelected(Integer departamentoIdSelected) {
+		this.departamentoIdSelected = departamentoIdSelected;
+	}
+
+
 	public Contacto getContactoExp() {
 		return contactoExp;
 	}
@@ -211,8 +255,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 
-	public boolean isDisabledBtnActualizaContacto() {
-		enabledDisableButton(1);
+	public boolean isDisabledBtnActualizaContacto() {		
 		return disabledBtnActualizaContacto;
 	}
 
@@ -222,8 +265,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 
-	public boolean isDisabledBtnAgregaLaborales() {
-		enabledDisableButton(3);
+	public boolean isDisabledBtnAgregaLaborales() {		
 		return disabledBtnAgregaLaborales;
 	}
 
@@ -233,8 +275,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 
-	public boolean isDisabledBtnAgregaEvaluacion() {
-		enabledDisableButton(4);
+	public boolean isDisabledBtnAgregaEvaluacion() {		
 		return disabledBtnAgregaEvaluacion;
 	}
 
@@ -346,13 +387,13 @@ public class ExpedienteManagedBean implements Serializable  {
 
 
 
-	public String getPaisInstitucion() {
+	public Pais getPaisInstitucion() {
 		return paisInstitucion;
 	}
 
 
 
-	public void setPaisInstitucion(String paisInstitucion) {
+	public void setPaisInstitucion(Pais paisInstitucion) {
 		this.paisInstitucion = paisInstitucion;
 	}
 
@@ -373,12 +414,12 @@ public class ExpedienteManagedBean implements Serializable  {
 			Iterator<Integer> claveSet = this.catalogoDepartamento.keySet().iterator();
 			
 			listDeptos = new ArrayList<SelectItem> ();
-		    
+			listDeptos.add(new SelectItem(null, "Seleccion un Departamento"));
 		    while(claveSet.hasNext()){		      
 		    	idValor = claveSet.next();
 		    	valor = this.catalogoDepartamento.get(idValor);
 		    	this.listDeptos.add(new SelectItem(idValor, valor.getDpto_nombre()));		    			        		        
-		    }
+		    }		    
 		}
 		
 		return listDeptos;
@@ -738,16 +779,37 @@ public class ExpedienteManagedBean implements Serializable  {
 		
 		this.catalogoDepartamento = service.getDepartamentosByInatec();
 		
+		List<Pais> paises = service.getPaises();
+		this.listPaises = new ArrayList<SelectItem> ();
+		this.listPaises.add(new SelectItem(null, "Seleccion un pais"));
+		for (Pais p : paises){
+			this.listPaises.add(new SelectItem(p.getId(), p.getNombre()));
+		}
+		
+		this.listMunicipioByDptos = new ArrayList<SelectItem>();
+		this.listMunicipioByDptos.add(new SelectItem(null, "Seleccion un Municipio"));
+		
 		archivoExp = new Archivo();
-		
-		
+				
+	}
+	
+	@Autowired
+	public void iniciaBeanExp (){
 		Solicitud  solicitud = (Solicitud)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("dbSolicitudesBean");
 		if (solicitud != null){
-			System.out.println("Toma el valor");
-			System.out.println("Valor del DashBoad " + solicitud);			
+						
 			this.solicitudExp = solicitud;
 			
 			this.contactoExp = this.solicitudExp.getContacto();
+			if (this.contactoExp.getMunicipioId() != null){
+				this.municipioIdSelected = String.valueOf(this.contactoExp.getMunicipioId());
+			} else
+				this.municipioIdSelected = null;
+			
+			if (this.contactoExp.getDepartamentoId() != null){
+				this.departamentoIdSelected = this.contactoExp.getDepartamentoId();
+			} else
+				this.departamentoIdSelected = null;
 			
 			enabledDisableButton(1);
 			enabledDisableButton(3);
@@ -755,8 +817,7 @@ public class ExpedienteManagedBean implements Serializable  {
 			
 		}		
 		
-		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("dbSolicitudesBean",null);
-		
+		//((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("dbSolicitudesBean",null);
 	}
 	
 	public List<BeanEvaluacion> getListadoEvaluacionesByParam(Solicitud sol, boolean todos) {
@@ -765,11 +826,11 @@ public class ExpedienteManagedBean implements Serializable  {
 		
 		List<Evaluacion> listEval = service.getEvaluaciones(sol);
 		
-		String estadoEval;
+		Mantenedor estadoEval;
 		
 		for (Evaluacion e : listEval) {
 			
-			estadoEval = catalogoEstadosEvaluacion.get(Integer.valueOf(e.getEstado())).getValor();
+			estadoEval = catalogoEstadosEvaluacion.get(e.getEstado().getId());
 			
 			
 			List<Instrumento> listInstrumento = service.getIntrumentoByEvaluacion(e.getId());
@@ -801,18 +862,18 @@ public class ExpedienteManagedBean implements Serializable  {
 		}
 	}
 	
-	public void handleMunicipios(ValueChangeEvent event) {
+	public void handleMunicipios() {
 		System.out.println("Entra a handleMunicipio");
 		Contacto cExp;
+		this.municipioIdSelected = "1";
+		
 		if (this.contactoExp == null)
 			cExp = this.getSolicitudExp().getContacto();
 		else
 			cExp = this.contactoExp;
 		
 		if (cExp != null) {
-			
-			System.out.println("Consulta la informacion del Departamento");
-			System.out.println("Departamento " + cExp.getDepartamentoId());
+						
 			this.catalogoMunicipiosByDepto = service.getMunicipioDptoByInatec(cExp.getDepartamentoId());
 			
 			if (this.catalogoMunicipiosByDepto.size() > 0 ) {
@@ -824,10 +885,12 @@ public class ExpedienteManagedBean implements Serializable  {
 				
 				this.listMunicipioByDptos = new ArrayList<SelectItem> ();
 				
+				this.listMunicipioByDptos.add(new SelectItem(null, "Seleccione un Municipio"));
+				
 			    while(claveSet.hasNext()){		      
 			    	idValor = claveSet.next();
 			    	valor = this.catalogoMunicipiosByDepto.get(idValor);
-			    	this.listMunicipioByDptos.add(new SelectItem(idValor, valor.getMunicipio_nombre()));			    			    			        		        
+			    	this.listMunicipioByDptos.add(new SelectItem(String.valueOf(valor.getMunicipio_id()), valor.getMunicipio_nombre()));			    			    			        		        
 			    }
 			}
 			
@@ -835,7 +898,8 @@ public class ExpedienteManagedBean implements Serializable  {
 		}
 	}
 	
-	public void editarLaboral(){		
+	public void editarLaboral(){
+				
 		this.setNombreInstitucion(this.selectedLaboral.getInstitucion());
 		this.setInstitucionDireccion(this.selectedLaboral.getInstitucionDireccion());
 		this.setTipoLaboral(this.selectedLaboral.getTipo());
@@ -847,20 +911,21 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.setPaisInstitucion(this.selectedLaboral.getPais());
 		this.setDescripcionCargo(this.selectedLaboral.getDescripcion());
 		
+		this.setPaisIdLaboral(this.selectedLaboral.getPais().getId());
+		
+		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("idSelectedLaboral",this.selectedLaboral.getId());
+		
 		enabledDisableButton(2);
 		
 		//actualizaListaPortafolio (new Integer(1));		
 		
-		Object [] objs =  new Object [] {this.selectedLaboral.getId()};
-		System.out.println("Ejecuta la consulta");
+		Object [] objs =  new Object [] {this.selectedLaboral.getId()};		
 		this.listPortafolioLaboral = service.getArchivoByParam ("Archivo.findByLaboralId", objs);
 		
 	}
 		
 	public void nuevoLaboral() {		
-		limpiarCampos();
-		
-		this.setPaisInstitucion(new String("Nicaragua"));
+		limpiarCampos();		
 	}
 	
 	public void rowEditListenerPortafolio(RowEditEvent event){
@@ -910,6 +975,11 @@ public class ExpedienteManagedBean implements Serializable  {
 		if (solicitudExp.getContacto().getTelefono1() == null) {
 			solicitudExp.getContacto().setTelefono1("");			
 		}
+		
+		if (this.municipioIdSelected != null){
+			this.solicitudExp.getContacto().setMunicipioId(Integer.parseInt(this.municipioIdSelected));
+		}
+		
 		Contacto contactoExp = (Contacto)service.guardar(solicitudExp.getContacto());
 		System.out.println("Despues de guardar " + contactoExp.getCorreo1());
 		  
@@ -919,18 +989,31 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 	public void guardarDatosLaborales() {
+		
+		System.out.println("Entra al metodo guardarDatosLaborales");
+		
 		String nombreCargoLaboral;
+		
+		this.idSeletedLaboral = (Long)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("idSelectedLaboral");
+		
+		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("idSelectedLaboral",null);
 		
 		nombreCargoLaboral = this.nombreCargo.toUpperCase() + " /  " + this.nombreInstitucion.toUpperCase();
 		
-		if (this.idSeletedLaboral == null) {			
+		if (this.idSeletedLaboral == null) {
+			
+			if (this.paisIdLaboral != null){
+				Object [] objs =  new Object [] {this.paisIdLaboral};
+				paisInstitucion = service.getPaisByNQParam("Pais.findById", objs);
+			} 
+				
 						
 			this.selectedLaboral = new Laboral (this.solicitudExp.getContacto(), // contacto, 
 									   this.tipoLaboral, // tipo, 
 									   nombreCargoLaboral.toUpperCase(), // nombre,
 									   this.descripcionCargo, // descripcion, 
 									   this.nombreInstitucion.toUpperCase(), // institucion, 
-									   this.paisInstitucion.toUpperCase(), // pais,
+									   this.paisInstitucion, // pais,
 									   this.fechaDesde, // fechaInicia, 
 									   this.fechaHasta, // fechaFinaliza, 
 									   this.institucionDireccion.toUpperCase(), // institucionDireccion,
@@ -950,7 +1033,7 @@ public class ExpedienteManagedBean implements Serializable  {
 			this.selectedLaboral.setDescripcion(this.descripcionCargo.toUpperCase());
 			this.selectedLaboral.setNombre(nombreCargoLaboral.toUpperCase());
 			this.selectedLaboral.setInstitucionTelefono(this.telefonoInstitucion.toUpperCase());
-			this.selectedLaboral.setPais(this.paisInstitucion.toUpperCase());			
+			this.selectedLaboral.setPais(this.paisInstitucion);			
 		}
 		this.selectedLaboral = (Laboral)service.guardar(this.selectedLaboral);
 		
@@ -965,23 +1048,29 @@ public class ExpedienteManagedBean implements Serializable  {
 	
 	public void enabledDisableButton(int opcion) {
 		
-		boolean asignaDisable;
-		
 		Solicitud sol = this.getSolicitudExp();
 		
-		if (sol == null)
-			asignaDisable = false;
-		else{
+		Integer estadoSolicitud;
 		
-			Mantenedor estadoInicial = service.getMantenedorMinByTipo(sol.getTipomantenedorestado());
+		Integer estadoInicial;
 		
-			asignaDisable = estadoInicial.equals(sol.getEstatus());
+		if (sol != null){		
+			estadoInicial = service.getMantenedorMinByTipo(sol.getTipomantenedorestado()).getId();
+			estadoSolicitud = sol.getEstatus().getId();
+		} else{
+			estadoInicial = null;
+			estadoSolicitud = null;
 		}
 		
 		
 		switch(opcion) {
 			case 1:	{				
-				this.setDisabledBtnActualizaContacto(!asignaDisable);				
+				if ((sol == null) || (estadoInicial == estadoSolicitud)){
+					this.setDisabledBtnActualizaContacto(false);
+				} else {				
+				    this.setDisabledBtnActualizaContacto(true);					
+				}
+				
 				break;	
 			}
 			case 2: {
@@ -992,11 +1081,20 @@ public class ExpedienteManagedBean implements Serializable  {
 				break;
 			}
 			case 3: {
-				this.setDisabledBtnAgregaLaborales(!asignaDisable);				
+				if ((sol == null) || (estadoInicial == estadoSolicitud)){
+					this.setDisabledBtnAgregaLaborales(false);
+				} else {				
+					this.setDisabledBtnAgregaLaborales(true);					
+				}
+								
 				break;
 			}
 			case 4: {
-				this.setDisabledBtnAgregaEvaluacion(asignaDisable);
+				if ((sol == null) || (estadoInicial == estadoSolicitud)){
+					this.setDisabledBtnAgregaEvaluacion(true);
+				} else {				
+					this.setDisabledBtnAgregaEvaluacion(false);					
+				}				
 				break;
 			}
 			default: 
@@ -1006,8 +1104,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 	
 	public void limpiarCampos (){
-		System.out.println("Metodo Limpiar Campos");
-		
+				
 		this.setSelectedLaboral(null);
 		this.setNombreCargo(null);	
 		this.setNombreInstitucion(null);
@@ -1018,7 +1115,9 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.setDescripcionCargo(null);
 		this.setPaisInstitucion(null);
 		this.setTelefonoInstitucion(null);
-		this.listPortafolioLaboral = new ArrayList<Archivo> ();	
+		this.listPortafolioLaboral = new ArrayList<Archivo> ();
+		
+		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("idSelectedLaboral",null);
 			
 	}	
 	

@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,8 +18,14 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 @Entity(name = "usuarios")
-public class Usuario {
+public class Usuario implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+
 	@Id
 	@SequenceGenerator(name = "seq_usuarios", sequenceName = "seq_usuarios", allocationSize=1, initialValue= 1)
 	@GeneratedValue(strategy=GenerationType.AUTO, generator = "seq_usuarios")

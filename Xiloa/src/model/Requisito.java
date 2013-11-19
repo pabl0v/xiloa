@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,8 +13,13 @@ import javax.persistence.ManyToOne;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 @Entity(name="requisitos")
-public class Requisito {
+public class Requisito implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "requisito_id", nullable = false)
