@@ -9,10 +9,11 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
-
 @Entity(name = "evaluacion_guia")
+@Table(name = "evaluacion_guia", schema = "sccl")
 @AssociationOverrides({
 	@AssociationOverride(name = "pk.evaluacion", joinColumns = @JoinColumn(name = "evaluacion_id")),
 	@AssociationOverride(name = "pk.guia", joinColumns = @JoinColumn(name = "guia_id"))})
@@ -23,9 +24,6 @@ import javax.persistence.Transient;
 			})
 public class EvaluacionGuia implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	@EmbeddedId

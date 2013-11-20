@@ -10,21 +10,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import org.springmodules.validation.bean.conf.loader.annotation.handler.Length;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 @Entity(name = "usuarios")
+@Table(name = "usuarios", schema = "sccl")
+@NamedQueries({
+	@NamedQuery(name="Usuario.findByLogin", query="Select u from usuarios u where u.usuarioEstatus='true' and u.usuarioAlias=?1")
+})
 public class Usuario implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
 
 	@Id
 	@SequenceGenerator(name = "seq_usuarios", sequenceName = "seq_usuarios", allocationSize=1, initialValue= 1)

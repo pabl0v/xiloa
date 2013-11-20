@@ -103,11 +103,15 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Certificacion> getCertificacionesActivas(Integer parametro, String valor){
 		if(parametro == null)
-			return certificacionDao.findAllByQuery("select c from certificaciones c where c.estatus.id=8 order by c.id desc");
-		if(parametro == 1)
-			return certificacionDao.findAllByQuery("select c from certificaciones c where c.estatus.id=8 and c.nombre like '%"+valor.toUpperCase()+"%'"+" order by c.id desc");
-		if(parametro == 2)
-			return certificacionDao.findAllByQuery("select c from certificaciones c where c.estatus.id=8 and c.ifpNombre like '%"+valor.toUpperCase()+"%'"+ " order by c.id desc");
+			return certificacionDao.findAllByNamedQuery("Certificacion.findActivas");
+		if(parametro == 1){
+			Object [] objs =  new Object [] {"%"+valor.toUpperCase()+"%"};
+			return certificacionDao.findAllByNamedQueryParam("Certificacion.findAllByNombre",objs);
+		}
+		if(parametro == 2){
+			Object [] objs =  new Object [] {"%"+valor.toUpperCase()+"%"};
+			return certificacionDao.findAllByNamedQueryParam("Certificacion.findAllByCentro",objs);
+		}
 		return certificacionDao.findAllByNamedQuery("Certificacion.findActivas");
 	}	
 		
@@ -170,11 +174,13 @@ public class ServiceImp implements IService {
 	
 	@Override
 	public List<Contacto> getContactosInatec() {
-		return contactoDao.findAllByQuery("Select c from contactos c where c.inatec='true' and c.rol.idRolInatec in (213,214,215,216)");
+		return contactoDao.findAllByNamedQuery("Contacto.findInvolucradosInatec");
 	}
 
 	@Override
 	public Usuario getUsuarioLocal(String usuario) {
+		//Object [] objs =  new Object [] {usuario};
+		//return usuarioDao.findOneByNamedQueryParam("Usuario.findByLogin", objs);
 		return usuarioDao.findOneByQuery("Select u from usuarios u where u.usuarioEstatus='true' and u.usuarioAlias="+"'"+usuario+"'");
 	}
 	
@@ -186,10 +192,12 @@ public class ServiceImp implements IService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void RegistrarUsuarioOpenId(String login, String nombre, String apellido, String email, String rol) {
+		//Object [] objs =  new Object [] {rol};
 		Usuario usuario = new Usuario(null, //contacto 
 				                      login, //usuarioAlias
 				                      "", //usuarioPwd
-				                      rolDao.findOneByQuery("Select r from roles r where r.estatus='true' and r.nombre="+"'"+rol+"'"), //rol 
+				                      rolDao.findOneByQuery("Select r from roles r where r.estatus='true' and r.nombre="+"'"+rol+"'"), //rol
+				                      //rolDao.findOneByNamedQueryParam("Rol.findByNombre", objs),
 				                      true // usuarioEstatus
 				                      );		
 		usuarioDao.save(usuario);
@@ -219,15 +227,11 @@ public class ServiceImp implements IService {
 			List<Solicitud> Sols = solicitudDao.findAll(Solicitud.class);
 			List<USolicitud> uSols = new ArrayList<USolicitud>();;
 			
-			for(int i = 0; i<Sols.size(); i++){
-				
+			for(int i = 0; i<Sols.size(); i++){				
 				USolicitud uSolicitud = new USolicitud (Sols.get(i), false);
-				
 				uSols.add(uSolicitud);			
 			}
-			
 			return uSols;
-			
 	}
 	
 	@Override
@@ -279,8 +283,8 @@ public class ServiceImp implements IService {
 	
 	@Override
 	public Contacto getContactoByCedula(String cedula) {
-		Contacto c = contactoDao.findOneByQuery("select c from contactos c where c.numeroIdentificacion = '" + cedula + "'");
-		return c;
+		Object [] objs =  new Object [] {cedula};
+		return contactoDao.findOneByNamedQueryParam("Contacto.findByCedulaId", objs);		
 	}	
 
 	@Override
@@ -291,13 +295,11 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Mantenedor> getMantenedorActividades() {
 		return this.getMantenedoresByTipo(new Integer(1));
-		//return mantenedorDao.findAllByQuery("Select m from mantenedores m where m.tipo='1' order by 1");
 	}
 
 	@Override
 	public List<Mantenedor> getMantenedorEstatusCertificacion() {
 		return this.getMantenedoresByTipo(new Integer(3));
-		//return mantenedorDao.findAllByQuery("Select m from mantenedores m where m.tipo='3' order by 1");
 	}
 	
 	@Override
@@ -375,9 +377,9 @@ public class ServiceImp implements IService {
 	}
 
 	@Override
-	public List<Actividad> getActividades(Long certificacionId) {		
-		return actividadDao.findAllByQuery("Select a from actividades a where a.certificacion.id="+certificacionId);
-		//return actividadDao.findAllByQuery("Select a from actividades a");
+	public List<Actividad> getActividades(Long certificacionId) {
+		Object [] objs =  new Object [] {certificacionId};
+		return actividadDao.findAllByNamedQueryParam("Actividad.findByCertificacionId", objs);
 	}
 
 	@Override
@@ -449,8 +451,8 @@ public class ServiceImp implements IService {
 
 	@Override
 	public List<Instrumento> getInstrumentosByCertificacionId(Long certificacionId) {
-		String query = "select i from instrumentos i where i.unidad in (select u from unidades u where u.certificacion.id="+certificacionId+")";
-		return instrumentoDao.findAllByQuery(query);
+		Object [] objs =  new Object [] {certificacionId};
+		return instrumentoDao.findAllByNamedQueryParam("Instrumento.findAllByCertificacionId", objs);
 	}
 	
 	@Override

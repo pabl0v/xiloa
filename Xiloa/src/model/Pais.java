@@ -8,20 +8,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
-@Entity(name="pais")
+@Entity(name = "paises")
+@Table(name = "paises", schema = "sccl")
 @NamedQueries ({
-	@NamedQuery(name="Pais.findById", query="select p from pais p where p.id=?1")
+	@NamedQuery(name="Pais.findById", query="select p from paises p where p.id=?1")
 })
 public class Pais implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id

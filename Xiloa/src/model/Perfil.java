@@ -1,17 +1,23 @@
 package model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
-@Entity(name="perfiles")
-public class Perfil {
+@Entity(name = "perfiles")
+@Table(name = "perfiles", schema = "sccl")
+public class Perfil implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@SequenceGenerator(name = "seq_perfiles", sequenceName = "seq_perfiles", allocationSize=1, initialValue= 1)
 	@GeneratedValue(strategy=GenerationType.AUTO, generator = "seq_perfiles")

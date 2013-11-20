@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -19,7 +20,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
-@Entity(name="archivo")
+@Entity(name = "archivo")
+@Table(name = "archivo", schema = "sccl")
 @NamedQueries({
 	@NamedQuery(name="Archivo.findByLaboralId", query="select a from archivo a where a.laboral.id=?1"),
 	@NamedQuery(name="Archivo.findByContactoId", query="select a from archivo a where a.laboral.contacto.id=?1"),
@@ -27,9 +29,6 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 })
 public class Archivo implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	private final String tipoMantenedorEstado = new String("8");

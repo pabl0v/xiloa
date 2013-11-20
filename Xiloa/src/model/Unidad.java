@@ -13,18 +13,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
-@Entity(name="unidades")
+@Entity(name = "unidades")
+@Table(name = "unidades", schema = "sccl")
 @NamedQueries ({
 	@NamedQuery(name="Unidad.findById", query="select u from unidades u where u.id=?1")
 })
 public class Unidad implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id

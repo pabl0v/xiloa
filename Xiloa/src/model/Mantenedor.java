@@ -9,8 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
-@Entity(name="mantenedores")
+@Entity(name = "mantenedores")
+@Table(name = "mantenedores", schema = "sccl")
 @NamedQueries({
 	@NamedQuery(name="Mantenedor.findMinByTipo", query="select min(m) from mantenedores m where m.tipo = ?1"),
 	@NamedQuery(name="Mantenedor.findByTipo", query="select m from mantenedores m where m.tipo = ?1 order by 1"),
@@ -18,9 +20,6 @@ import javax.persistence.NamedQuery;
 })
 public class Mantenedor implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id

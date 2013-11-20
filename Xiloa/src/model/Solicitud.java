@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -21,7 +22,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
-@Entity(name="solicitudes")
+@Entity(name = "solicitudes")
+@Table(name = "solicitudes", schema = "sccl")
 @NamedQueries ({	
 	@NamedQuery(name="Solicitud.findById", query="select s from solicitudes s where s.id=?1"),
 	@NamedQuery(name="Solicitud.findByIdIfp", query="select s from solicitudes s where s.certificacion.ifpId=?1"),
@@ -36,9 +38,6 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 })
 public class Solicitud implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	private final String tipoMantenedorEstado = new String("7");

@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -10,13 +11,22 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 @Entity(name = "roles")
-public class Rol {
+@Table(name = "roles", schema = "sccl")
+@NamedQueries({
+	@NamedQuery(name="Rol.findByNombre", query="select r from roles r where r.estatus='true' and r.nombre=?1")
+})
+public class Rol implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@SequenceGenerator(name = "seq_roles", sequenceName = "seq_roles", allocationSize=1, initialValue= 1)

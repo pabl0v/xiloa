@@ -14,19 +14,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
-@Entity(name="instrumentos")
+@Entity(name = "instrumentos")
+@Table(name = "instrumentos", schema = "sccl")
 @NamedQueries({
 	@NamedQuery(name="Instrumento.findAllByUnidadId", query="select i from instrumentos i where i.unidad.id=?1"),
-	@NamedQuery(name="Instrumento.findById", query="select i from instrumentos i where i.id=?1")
+	@NamedQuery(name="Instrumento.findById", query="select i from instrumentos i where i.id=?1"),
+	@NamedQuery(name="Instrumento.findAllByCertificacionId", query="select i from instrumentos i where i.unidad in (select u from unidades u where u.certificacion.id=?1)")
 })
 public class Instrumento implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id

@@ -26,6 +26,7 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -33,19 +34,19 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
-@Entity(name="certificaciones")
+@Entity(name = "certificaciones")
+@Table(name = "certificaciones", schema = "sccl")
 @NamedQueries({
 	@NamedQuery(name="Certificacion.findAll", query="select c from certificaciones c order by c.id desc"),
 	@NamedQuery(name="Certificacion.findActivas", query="select c from certificaciones c where c.estatus.id=8 order by c.id desc"),
 	@NamedQuery(name="Certificacion.findByIfpId", query="select c from certificaciones c where c.ifpId=?1"),
 	@NamedQuery(name="Certificacion.findById", query="select c from certificaciones c where c.id=?1"),
-	@NamedQuery(name="Certificacion.findUnidadesByCert", query="select c.unidades from certificaciones c where c.id=?1")
+	@NamedQuery(name="Certificacion.findUnidadesByCert", query="select c.unidades from certificaciones c where c.id=?1"),
+	@NamedQuery(name="Certificacion.findAllByNombre", query="select c from certificaciones c where c.estatus.id=8 and c.nombre like ?1 order by c.id desc"),
+	@NamedQuery(name="Certificacion.findAllByCentro", query="select c from certificaciones c where c.estatus.id=8 and c.ifpNombre like ?1 order by c.id desc")
 })
 public class Certificacion implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id
