@@ -4,7 +4,9 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags">
+
     <h:head>
        <link type="text/css" rel="stylesheet" href="../../resources/css/edicion_actividad.css"></link>
     </h:head>
@@ -93,7 +95,7 @@
         
         <div id="tab_contenedor">    
                         <h:form id="form_bitacoras">
-							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.agregarBitacora}" update=":form_bitacora" onclick="PF('dlg2').show();">
+							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.agregarBitacora}" update=":form_bitacora" onclick="PF('dlg2').show();" rendered="#{sec:areAnyGranted('inatec')}">
 							</p:commandButton>
                             <p:dataTable id="bitacorasDataTable" var="bitacora" value="#{actividadManagedBean.bitacoras}">
                                 <p:column headerText="Fecha Evento"><h:outputText value="#{bitacora.fechaEvento}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>  

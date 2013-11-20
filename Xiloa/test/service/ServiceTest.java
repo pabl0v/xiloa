@@ -69,9 +69,9 @@ public class ServiceTest {
 		mantenedor15 = new Mantenedor("5","Tipos Datos Laborales","Calificaciones",null,null);
 		mantenedor16 = new Mantenedor("5","Tipos Datos Laborales","Certificaciones",null,null);
 		
-		mantenedor17 = new Mantenedor("6","Tipos de Instrumento","Prueba Diagnóstica",null,null);
+		mantenedor17 = new Mantenedor("6","Tipos de Instrumento","Prueba Diagnostica",null,null);
 		mantenedor18 = new Mantenedor("6","Tipos de Instrumento","Prueba Objetiva",null,null);
-		mantenedor19 = new Mantenedor("6","Tipos de Instrumento","Prueba de Desempleño",null,null);	
+		mantenedor19 = new Mantenedor("6","Tipos de Instrumento","Prueba de DesempleÃ±o",null,null);	
 		
 		mantenedor20 = new Mantenedor("7","Estados Solicitud Certificacion","Valido",null,new String("21"));		
 		mantenedor21 = new Mantenedor("7","Estados Solicitud Certificacion","Registrada",new String("20"), new String("22"));
@@ -174,9 +174,9 @@ public class ServiceTest {
 		//Creando valores iniciales de paises
 		pais1 = new Pais ("Nicaragua", "Nicaraguense");
 		pais2 = new Pais ("Costa Rica", "Costa Rica");
-		pais3 = new Pais ("El Salvador", "Salvadoreño"); 
-		pais4 = new Pais ("Panama", "Panameño"); 
-		pais5 = new Pais ("Honduras", "Hondureño"); 
+		pais3 = new Pais ("El Salvador", "SalvadoreÃ±o"); 
+		pais4 = new Pais ("Panama", "PanameÃ±o"); 
+		pais5 = new Pais ("Honduras", "HondureÃ±o"); 
 		pais6 = new Pais ("Guatemala", "Guatemalteco");
 		
 		pais1 = (Pais) service.guardar(pais1);
