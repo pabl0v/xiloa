@@ -95,7 +95,7 @@
         
         <div id="tab_contenedor">    
                         <h:form id="form_bitacoras">
-							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.agregarBitacora}" update=":form_bitacora" onclick="PF('dlg2').show();" rendered="#{sec:areAnyGranted('inatec')}">
+							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.agregarBitacora}" update=":form_bitacora" onclick="PF('dlg2').show();" rendered="#{sec:areAnyGranted('admin,inatec')}">
 							</p:commandButton>
                             <p:dataTable id="bitacorasDataTable" var="bitacora" value="#{actividadManagedBean.bitacoras}">
                                 <p:column headerText="Fecha Evento"><h:outputText value="#{bitacora.fechaEvento}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>  
