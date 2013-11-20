@@ -179,7 +179,7 @@ public class ServiceImp implements IService {
 
 	@Override
 	public Usuario getUsuarioLocal(String usuario) {
-		//Object [] objs =  new Object [] {usuario};
+		//Object [] objs =  new Object [] {"'"+usuario+"'"};
 		//return usuarioDao.findOneByNamedQueryParam("Usuario.findByLogin", objs);
 		return usuarioDao.findOneByQuery("Select u from usuarios u where u.usuarioEstatus='true' and u.usuarioAlias="+"'"+usuario+"'");
 	}
