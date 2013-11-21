@@ -242,4 +242,8 @@ public class InstrumentoManagedBean implements Serializable {
   
     public void onRowUnselect(UnselectEvent event) {
     }
+    
+    public String getCompetenciaDescripcion(Long codigo){
+    	return util.getCompetenciaDescripcion(codigo);
+    }
 }

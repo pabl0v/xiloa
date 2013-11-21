@@ -29,9 +29,13 @@ import model.Usuario;
 
 public interface IService {
 	
+	public Map<Long, String> getCatalogoUnidades();
+	
 	public List<Certificacion> getCertificaciones();
 	
 	public List<Certificacion> getCertificacionesActivas(Integer parametro, String valor);
+	
+	public Map<Long, String> getUnidadesByEstructuraId(Integer estructura);
 		
 	public List<Mantenedor> getMantenedores();
 	

@@ -33,6 +33,7 @@ public class UtilitariosManagedBean implements Serializable {
 	private Map<Integer, Mantenedor> catalogoEstatusActividad; 
 	private Map<Integer, Mantenedor> catalogoTiposInstrumento;
 	private Map<Integer, Mantenedor> catalogoTiposDatosLaborales;
+	private Map<Long, String> catalogoUnidades;
 
 	public UtilitariosManagedBean(){
 		super();
@@ -42,6 +43,7 @@ public class UtilitariosManagedBean implements Serializable {
 		catalogoEstatusActividad = new HashMap<Integer, Mantenedor>();
 		catalogoTiposInstrumento = new HashMap<Integer, Mantenedor>();
 		catalogoTiposDatosLaborales = new HashMap<Integer, Mantenedor>();
+		catalogoUnidades = new HashMap<Long, String>();
 	}
 	
 	@PostConstruct
@@ -71,6 +73,7 @@ public class UtilitariosManagedBean implements Serializable {
 			}
 		}
 		
+		catalogoUnidades = servicio.getCatalogoUnidades();
 		usuario = SecurityContextHolder.getContext().getAuthentication().getName();
 	}
 	
@@ -96,5 +99,13 @@ public class UtilitariosManagedBean implements Serializable {
 
 	public Map<Integer, Mantenedor> getCatalogoTiposDatosLaborales(){
 		return catalogoTiposDatosLaborales;
+	}
+	
+	public Map<Long, String> getCatalogoUnidades(){
+		return catalogoUnidades;
+	}
+	
+	public String getCompetenciaDescripcion(Long codigo){
+		return catalogoUnidades.get(codigo);
 	}
 }

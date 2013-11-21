@@ -61,7 +61,9 @@ public class ExpedienteManagedBean implements Serializable  {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private IService service;	
+	private IService service;
+	@Autowired
+	private UtilitariosManagedBean utilitarios;
 	
 	private Solicitud solicitudExp;
 	private Contacto contactoExp;
@@ -1132,6 +1134,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		listEvalBySolicitud.add(new SelectItem(null, "Seleccione la evaluacion"));
 		for (Evaluacion dato : listE) {
 			listEvalBySolicitud.add(new SelectItem(dato.getId(), dato.getUnidad().getCompetenciaDescripcion()));
+			//listEvalBySolicitud.add(new SelectItem(dato.getId(), utilitarios.getCompetenciaDescripcion(dato.getUnidad().getCodigo())));
 		}
 	}
 

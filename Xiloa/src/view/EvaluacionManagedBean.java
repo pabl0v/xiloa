@@ -38,6 +38,8 @@ public class EvaluacionManagedBean implements Serializable {
 
 	@Autowired
 	private IService service;
+	@Autowired
+	private UtilitariosManagedBean utilitarios;
 	
 	private Solicitud   solicitudEval;
 	private Long        idSelectedUnidad;
@@ -244,6 +246,7 @@ public class EvaluacionManagedBean implements Serializable {
 			
 			for(Unidad unidad : setUnidades){
 				this.listUnidadCompentecia.add(new SelectItem(unidad.getId(), unidad.getCompetenciaDescripcion()));			
+				//this.listUnidadCompentecia.add(new SelectItem(unidad.getId(), utilitarios.getCompetenciaDescripcion(unidad.getCodigo())));
 			}
 			
 			this.listInstrumentoByUnidad = new ArrayList<SelectItem>();

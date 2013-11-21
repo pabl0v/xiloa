@@ -131,7 +131,7 @@ public class ServiceImp implements IService {
 			unidadDao.save(unidades.get(i));
 		}
 		
-		unidadDao.save(new Unidad(certificacion,"001","UC1",null,true));
+		//unidadDao.save(new Unidad(certificacion,"001","UC1",null,true));
 		
 		Mantenedor estado = getMapMantenedoresByTipo("4").get(10);				//estatus pendiente
 		Map<Integer, Mantenedor> actividades = getMapMantenedoresByTipo("1");	//actualizar
@@ -554,5 +554,15 @@ public class ServiceImp implements IService {
 	@Override
 	public Pais getPaisByNQParam(String namedString, Object [] param){
 		return paisDao.findOneByNamedQueryParam(namedString, param);
+	}
+
+	@Override
+	public Map<Long, String> getUnidadesByEstructuraId(Integer estructura) {
+		return inatecDao.getUnidadesByEstructuraId(estructura);
+	}
+
+	@Override
+	public Map<Long, String> getCatalogoUnidades() {
+		return inatecDao.getCatalogoUnidades();
 	}
 }

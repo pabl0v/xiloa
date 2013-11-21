@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.List;
+import java.util.Map;
 
 import model.Contacto;
 import model.Requisito;
@@ -15,6 +16,8 @@ public interface IDaoInatec {
 	public int getIdRol(String usuario);
 	public void agregarRol();
 	public List<UCompetencia> getCertificacionesSinPlanificar();
+	public Map<Long, String> getCatalogoUnidades();
+	public Map<Long, String> getUnidadesByEstructuraId(Integer estructura); 
 	public Usuario getUsuario(String username);
 	public List<Contacto> getContactosInatec();
 	public Contacto generarContacto(String usuario);	

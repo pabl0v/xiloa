@@ -18,12 +18,18 @@
 	</bean>
 	
 	<!-- Inatec database datasource -->
+	<!--  
 	<bean name = "inatecDataSource" id="inatecDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName" value="jdbc/inatec" />
 	</bean>
 	
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<constructor-arg ref="inatecDataSource"/>
+	</bean>
+	 -->
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg ref="dataSource"/>
 	</bean>
 
 	<!-- Entity Manager -->

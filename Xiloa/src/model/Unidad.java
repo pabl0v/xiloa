@@ -25,32 +25,27 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 public class Unidad implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "unidad_id", nullable = false)
 	private Long id;
 	
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name="certificacion_id")
-	private Certificacion certificacion;
-	
-	@NotNull
 	@Column(name = "unidad_codigo", nullable = false)
-	private String competenciaCodigo;
-
+	private Long codigo;
+	
 	@NotNull
 	@Column(name = "unidad_descripcion", nullable = false)	
 	private String competenciaDescripcion;
 	
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name="certificacion_id")
+	private Certificacion certificacion;
+		
 	@OneToMany(mappedBy="unidad")
 	private List<Instrumento> instrumentos;
-	
-	@NotNull
-	@Column(name = "unidad_estatus", nullable = false)	
-	private boolean estatus;
-
+		
 	public Long getId() {
 		return id;
 	}
@@ -59,20 +54,12 @@ public class Unidad implements Serializable {
 		this.id = id;
 	}
 
-	public Certificacion getCertificacion() {
-		return certificacion;
+	public Long getCodigo() {
+		return codigo;
 	}
 
-	public void setCertificacion(Certificacion certificacion) {
-		this.certificacion = certificacion;
-	}
-
-	public String getCompetenciaCodigo() {
-		return competenciaCodigo;
-	}
-
-	public void setCompetenciaCodigo(String competenciaCodigo) {
-		this.competenciaCodigo = competenciaCodigo;
+	public void setCodigo(Long codigo) {
+		this.codigo = codigo;
 	}
 
 	public String getCompetenciaDescripcion() {
@@ -83,6 +70,14 @@ public class Unidad implements Serializable {
 		this.competenciaDescripcion = competenciaDescripcion;
 	}
 
+	public Certificacion getCertificacion() {
+		return certificacion;
+	}
+
+	public void setCertificacion(Certificacion certificacion) {
+		this.certificacion = certificacion;
+	}
+		
 	public List<Instrumento> getInstrumentos() {
 		return instrumentos;
 	}
@@ -95,24 +90,15 @@ public class Unidad implements Serializable {
 		this.instrumentos.add(instrumento);
 	}
 
-	public Unidad(Certificacion certificacion, String competenciaCodigo, String competenciaDescripcion, List<Instrumento> instrumentos, boolean estatus) {
+	public Unidad(Long codigo, String descripcion, Certificacion certificacion, List<Instrumento> instrumentos) {
 		super();
+		this.codigo = codigo;
+		this.competenciaDescripcion = descripcion;
 		this.certificacion = certificacion;
-		this.competenciaCodigo = competenciaCodigo;
-		this.competenciaDescripcion = competenciaDescripcion;
 		this.instrumentos = instrumentos;
-		this.estatus = estatus;
 	}
 	
 	public Unidad() {
 		super();		
-	}
-
-	public boolean isEstatus() {
-		return estatus;
-	}
-
-	public void setEstatus(boolean estatus) {
-		this.estatus = estatus;
 	}
 }

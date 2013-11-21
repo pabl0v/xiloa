@@ -3,7 +3,9 @@ package dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import model.Contacto;
 import model.Requisito;
@@ -26,7 +28,7 @@ import support.UCompetencia;
 @Repository
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class DaoInatecImpl implements IDaoInatec {
-
+	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
@@ -78,28 +80,48 @@ public class DaoInatecImpl implements IDaoInatec {
 			+ "and u.usuario=?";
 
 	private static final String SQL_CERTIFICACIONES_SIN_PLANIFICAR = 
-			"select "
-			+"ci.centroid as id_centro,"
-			+"ci.nombre as nombre,"
-			+"ci.alias as nombre_corto,"
-			+"ci.direccion as direccion,"
-			+"o.id_acuerdo_deta as acreditacion,"
-			+"cc.id_curso id_curso,"
-			+"c.descripcion as nombre_curso,"
-			+"o.costo_normal as costo, "
-			+"o.grupo as grupo_clase,"
-			+"o.cupo as disponibilidad, "
-			+"o.finicio as fecha_inicio, "
-			+"o.ffin as fecha_fin "
-			+"from " 
-			+"registro_cobranza.rg_oferta o "
-			+"inner join sac.acuerdos_detalles a on (a.id=o.id_acuerdo_deta) "
-			+"inner join registro_cobranza.cu_curso_clasificacion cc on (cc.id=a.id_curso_clasificacion) "
-			+"inner join registro_cobranza.cu_cat_curso c on (c.id=cc.id_curso) "
-			+"inner join public.centros_inatec ci on (ci.centroid=cast(o.id_centro as varchar)) " 
-			+"where "
-			+"c.id_tipo_evento=4 "
-			+"order by c.descripcion";
+		"select "+
+			"forma.id as estructura_id, "+
+			"ci.centroid as id_centro, "+
+			"ci.nombre as nombre, "+
+			"ci.alias as nombre_corto, "+
+			"ci.direccion as direccion, "+
+			"o.id_acuerdo_deta as acreditacion, "+
+			"cc.id_curso as id_curso, "+
+			"c.descripcion as nombre_curso, "+
+			"o.costo_normal as costo, "+
+			"o.grupo as grupo_clase, "+
+			"o.cupo as disponibilidad, "+
+			"o.finicio as fecha_inicio, "+
+			"o.ffin as fecha_fin "+
+		"from "+
+			"registro_cobranza.rg_oferta o "+
+			"inner join sac.acuerdos_detalles a on (a.id=o.id_acuerdo_deta) "+
+			"inner join registro_cobranza.cu_curso_clasificacion cc on (cc.id=a.id_curso_clasificacion) "+
+			"inner join registro_cobranza.cu_estructura_formativa forma on forma.id=cc.id_estructura_formativa "+
+			"inner join registro_cobranza.cu_cat_curso c on (c.id=cc.id_curso) "+
+			"inner join public.centros_inatec ci on (ci.centroid=cast(o.id_centro as varchar)) "+
+		"where "+
+			"forma.id_tipo_estructura in (3,5) "+ 
+			"and o.activo=1 "+ 
+			"and forma.id_tipo_acreditacion=1 "+ 
+			"and forma.nivel_cualificacion='2' "+
+			"--and o.id_centro='4020' "+ 
+		"order by "+
+			"c.descripcion";
+	
+	private static final String SQL_SELECT_UNIDADES_COMPETENCIA = 
+		"select	distinct "+
+			"catuc.id as codigo, "+
+			"catuc.descripcion as descripcion "+
+		"from "+
+			"registro_cobranza.cu_estructura_formativa ef "+
+			"inner join registro_cobranza.cu_estructura_modulo em on (ef.id=em.id_estructura_formativa) "+
+			"inner join registro_cobranza.cu_cat_curso cc on (cc.id=ef.id_curso) "+
+			"inner join registro_cobranza.cu_cat_curso mm on (mm.id=em.id_curso) "+
+			"inner join registro_cobranza.cu_cat_tipo_modulo tm on (tm.id=em.id_tipo_modulo) "+
+			"inner join registro_cobranza.cu_cat_tipo_calificacion tc on (tc.id=em.id_tipo_calificacion) "+
+			"left join registro_cobranza.cu_cat_uc catuc on catuc.id=em.id_uc ";
 	
 	private static final String SQL_SELECT_IFP_INATEC = "select ci.centroid as id_centro, " +
 														       "ci.nombre as nombre " +
@@ -176,6 +198,7 @@ public class DaoInatecImpl implements IDaoInatec {
 		        new RowMapper<UCompetencia>() {
 		            public UCompetencia mapRow(ResultSet rs, int rowNum) throws SQLException {
 		                UCompetencia certificacion = new UCompetencia();
+		                certificacion.setEsructuraId(rs.getInt("estructura_id"));
 		                certificacion.setGrupo(rs.getString("grupo_clase"));
 		                certificacion.setIdCentro(rs.getInt("id_centro"));
 		                certificacion.setNombreCentro(rs.getString("nombre"));
@@ -191,10 +214,19 @@ public class DaoInatecImpl implements IDaoInatec {
 		        });
 		return certificaciones;
 	}
+	
+	@Override
+	public Map<Long, String> getUnidadesByEstructuraId(Integer estructura) {		
+		Map<Long, String> unidades = new HashMap<Long, String>();
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(SQL_SELECT_UNIDADES_COMPETENCIA + " where catuc.id is not null and ef.id="+estructura);
+		for(Map<String, Object> row : rows){
+			unidades.put((Long)row.get("codigo"), (String)row.get("descripcion"));
+		}
+		return unidades;
+	}
 
 	@Override
 	public List<Contacto> getContactosInatec() {
-		
 		return null;
 	}
 
@@ -319,5 +351,15 @@ public class DaoInatecImpl implements IDaoInatec {
 			return null;
 		}
 		return requisitos;
+	}
+
+	@Override
+	public Map<Long, String> getCatalogoUnidades() {
+		Map<Long, String> unidades = new HashMap<Long, String>();
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList("select u.id as codigo, u.descripcion as descripcion from registro_cobranza.cu_cat_uc u");
+		for(Map<String, Object> row : rows){
+			unidades.put((Long)row.get("codigo"), (String)row.get("descripcion"));
+		}
+		return unidades;
 	}
 }

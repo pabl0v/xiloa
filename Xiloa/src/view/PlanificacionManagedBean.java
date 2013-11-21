@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.context.FacesContext;
 
 import model.Certificacion;
 import model.Contacto;
@@ -32,6 +32,8 @@ public class PlanificacionManagedBean implements Serializable {
 	
 	@Autowired
 	private IService service;
+	@Autowired
+	private UtilitariosManagedBean utilitarios;
 	private List<Certificacion> certificaciones;
 	private List<UCompetencia> competencias;
 	private UCompetencia selectedCompetencia;
@@ -79,6 +81,7 @@ public class PlanificacionManagedBean implements Serializable {
 		Usuario creador = service.getUsuarioLocal("admin");						//actualizar
 		
 		Certificacion certificacion = new Certificacion();
+		certificacion.setEstructuraId(competencia.getEsructuraId());
 		certificacion.setCursoId(competencia.getIdUCompetencia());
 		certificacion.setNombre(competencia.getNombreUCompetencia());
 		certificacion.setDescripcion(competencia.getNombreUCompetencia());
@@ -100,9 +103,17 @@ public class PlanificacionManagedBean implements Serializable {
 		certificacion.setEstatus(estatus);
 		
 		List<Requisito> requisitos = service.getRequisitos(certificacion.getCursoId(), certificacion.getIfpId());
-		//List<Unidad> unidades = service.getUnidades(certificacion.getCursoId(), certificacion.getIfpId());
+		Map<Long, String> codigos = service.getUnidadesByEstructuraId(certificacion.getEstructuraId());
+		List<Unidad> unidades = new ArrayList<Unidad>();
 		
-		certificacion = service.guardarCertificacion(certificacion, requisitos, new ArrayList<Unidad>());
+		for (Long key : codigos.keySet()) {
+			String value = codigos.get(key);
+			System.out.println("codigo: "+key);
+			System.out.println("valor: "+value);
+		    unidades.add(new Unidad(key, value, certificacion, null));
+		}
+				
+		certificacion = service.guardarCertificacion(certificacion, requisitos, unidades);
 		certificaciones.add(0,certificacion);
 	}
 	
