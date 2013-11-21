@@ -59,7 +59,7 @@ public class DaoInatecImpl implements IDaoInatec {
 			+"on u.usuario=us.usuario "
 			+"and u.activo=1 "
 			+"and us.activo=1 "
-			+"and us.id_sistema=40 "
+			+"and us.id_sistema=41 "
 			+"inner join "
 			+"admon.roles r "
 			+"on us.id_rol=r.id_rol "
@@ -275,7 +275,7 @@ public class DaoInatecImpl implements IDaoInatec {
 		int id = 0;
 		try
 		{
-			id = jdbcTemplate.queryForInt("select u.id_rol from admon.usuarios_sistemas u where u.id_sistema = 40 and u.usuario="+"'"+usuario+"'");
+			id = jdbcTemplate.queryForInt("select u.id_rol from admon.usuarios_sistemas u where u.id_sistema = 41 and u.usuario="+"'"+usuario+"'");
 		}
 		catch(EmptyResultDataAccessException e)
 		{
