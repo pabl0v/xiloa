@@ -101,3 +101,10 @@
 #contenedor_exportar p{
 	display: inline-block;
 }
+#selector_centrosBySolicitud {
+	width: 250px;
+}
+
+#selector_certificacionByCentro{
+	width: 250px;
+}
