@@ -25,7 +25,11 @@ h2 {
     display: inline-block;
     margin-bottom: 19px;
 }
-
+.estilo_label{
+    width: 54%;
+    display: inline-block;
+    margin-bottom: 19px;
+}
 .selector_centroEstilo {
 	width:170px!important;
 }

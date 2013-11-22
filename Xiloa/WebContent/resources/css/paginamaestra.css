@@ -146,6 +146,17 @@ html {
 .icono_gear{
     background: url("../../resources/imagenes/gear.png") no-repeat center;
 }
+.icono_ejecuciones {
+	background: url("../../resources/imagenes/ejecuciones.png") no-repeat center;
+}
+.icono_mantenedores {
+	background: url("../../resources/imagenes/mantenedores.png") no-repeat center;
+}
+.icono_reportes {
+	background: url("../../resources/imagenes/reportes.png") no-repeat center;
+}
+
+
 .icono_x{
     background: url("../../resources/imagenes/x.png") no-repeat center;
     width: 83px;

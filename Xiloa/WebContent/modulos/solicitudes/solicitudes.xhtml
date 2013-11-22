@@ -27,27 +27,32 @@
                 <div class="botones_filtro" onclick="window.location='/Xiloa/modulos/solicitudes/convocatoria.xhtml'">
                 	<p class="icono_folder">Convocatoria</p>
                 </div>            
+                <div class="botones_filtro"><p class="icono_exportar">Exportar</p></div>
             </div>
        </div>
         <h:form>
         <div id="contenedor_filtro">            
-	            <p>Buscar:</p>
+	            <p style="margin-left:5px">Buscar:</p>
 	            <p:selectOneMenu styleClass="selectores" id="selector_buscarByAll" value="#{dashBoardSolicitudesManagedBean.selectedBuscarByAll}">
 	            	<f:selectItems value="#{dashBoardSolicitudesManagedBean.listBuscarByAll}"/>	            			        
 			    </p:selectOneMenu>
 		        <p:inputText style="margin-right:10px;" id="filtro_buscarByAll" value="#{dashBoardSolicitudesManagedBean.buscarByAllValue}">
 		        	<p:ajax event="keyup" update="dtSolicitud" listener="#{dashBoardSolicitudesManagedBean.handleBuscar}" process="@form" />
 		        </p:inputText>
-	            <p>Centro evaluador:</p>
-	            <p:selectOneMenu styleClass="selectores" id="selector_centrosBySolicitud" value="#{dashBoardSolicitudesManagedBean.selectedIdIfpSolicitud}" >			        
-			        <f:selectItems value="#{dashBoardSolicitudesManagedBean.listCentrosBySolicitud}"/>
-			        <p:ajax update="selector_certificacionByCentro, dtSolicitud"  listener="#{dashBoardSolicitudesManagedBean.handleCertByCentro}" />
-			    </p:selectOneMenu>
-			    <p>Certificaciones:</p>
-	            <p:selectOneMenu styleClass="selectores" id="selector_certificacionByCentro" value="#{dashBoardSolicitudesManagedBean.selectedIdCertByCentro}" >			        
-			        <f:selectItems value="#{dashBoardSolicitudesManagedBean.listCertByCentro}" />
-			        <p:ajax update="dtSolicitud" listener="#{dashBoardSolicitudesManagedBean.handleBuscar}" />  
-			    </p:selectOneMenu>			  
+		        <span style="display:inline-block;">
+		            <p>Centro evaluador:</p>
+		            <p:selectOneMenu styleClass="selectores selector_centrosBySolicitudEstilo" id="selector_centrosBySolicitud" value="#{dashBoardSolicitudesManagedBean.selectedIdIfpSolicitud}" >			        
+				        <f:selectItems value="#{dashBoardSolicitudesManagedBean.listCentrosBySolicitud}"/>
+				        <p:ajax update="selector_certificacionByCentro, dtSolicitud"  listener="#{dashBoardSolicitudesManagedBean.handleCertByCentro}" />
+				    </p:selectOneMenu>
+			    </span>
+			    <span style="display:inline-block; margin-left:5px">
+				    <p>Certificaciones:</p>
+		            <p:selectOneMenu styleClass="selectores selector_certificacionByCentroEstilo" id="selector_certificacionByCentro" value="#{dashBoardSolicitudesManagedBean.selectedIdCertByCentro}" >			        
+				        <f:selectItems value="#{dashBoardSolicitudesManagedBean.listCertByCentro}" />
+				        <p:ajax update="dtSolicitud" listener="#{dashBoardSolicitudesManagedBean.handleBuscar}" />  
+				    </p:selectOneMenu>	
+			    </span>		  
         </div>              
         <div id="contenedor_tabla_solicitudes">           
         	<p:dataTable id="dtSolicitud" widgetVar="dtSolicitudes" emptyMessage="No existen solicitudes activas" 

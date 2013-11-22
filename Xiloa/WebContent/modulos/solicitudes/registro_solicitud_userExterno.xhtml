@@ -6,7 +6,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-       <link type="text/css" rel="stylesheet" href="../../resources/css/registro_solicitud.css"></link>
+       <link type="text/css" rel="stylesheet" href="../../resources/css/registro_solicitud_externo.css"></link>
     </h:head>
     <h:body>
     <div id="contenedor">
@@ -19,17 +19,16 @@
     
        <h2>Registro de solicitud de evaluacion:</h2>
        <h:form>       
-       		<p:messages id="msgRegEval" showDetail="true" autoUpdate="true" closable="true" />       		
-   			<div class="seccion_detalle">
-   			<div style="display:inline-block;">   				
-	   			<p style="display:inline-block;">Centro de Capacitacion:</p>
-	       		<h:outputLabel styleClas="estilo_label" value="#{solicitudesManagedBean.certificacionSolicitante.ifpNombre}" />			    
-		    </div>
-		    <div style="display:inline-block;">		    	
-			    <p style="display:inline-block;">Certificacion:</p>
-			    <h:outputLabel styleClas="estilo_label" value="#{solicitudesManagedBean.certificacionSolicitante.nombre}" />
-		    </div>
-		    <p>Datos Personales </p>
+       		<p:messages id="msgRegEval" showDetail="true" autoUpdate="true" closable="true" />     
+       		<div style="margin: 29px;margin-bottom: -55px;font-size: 15px;">
+	       		<h:outputLabel styleClass="estilo_label" style="margin-bottom:5px;font-weight:bold;" value="Centro de Capacitacion:" />
+		        <h:outputLabel styleClas="estilo_label" style="display:block;margin-bottom:5px;" value="#{solicitudesManagedBean.certificacionSolicitante.ifpNombre}" />			    
+				    	
+				<h:outputLabel styleClass="estilo_label" style="margin-bottom:5px;font-weight:bold;" value="Certificacion:" />
+				<h:outputLabel styleClas="estilo_label" style="display:block;margin-bottom:5px;" value="#{solicitudesManagedBean.certificacionSolicitante.nombre}" />
+			</div>  		
+   			<div class="seccion_detalle">  
+		    <p style="font-weight:bold;font-size:14px;">Datos Personales </p>
 		    <br/>
    			<br/>   			
                 <h:outputLabel styleClass="estilo_label" for="primerNombre" value="Primer nombre (*):" /> 
@@ -44,18 +43,20 @@
                 <p:inputMask id="numeroIdentificacion" value="#{solicitudesManagedBean.numeroIdentificacion}" mask="999-999999-9999a"/>                
          	</div>           
              <div class="seccion_detalle">
-                <p>Informacion Laboral / Academica</p>
+                <p style="font-weight:bold;font-size:14px;">Informacion Laboral / Academica</p>
 		        <h:outputText value="Trabaja actualmente? (*): " />		        
-		        <p:selectBooleanCheckbox id="ckTrabaja" value="#{solicitudesManagedBean.indicaTrabaja}" />		            
+		        <p:selectBooleanCheckbox id="ckTrabaja" value="#{solicitudesManagedBean.indicaTrabaja}" style="position:relative; top: 3px;margin-left:2px;" />
+		        <br></br>	
+		        <br></br>		            
                 <h:outputLabel styleClass="estilo_label" for="descEmpresaLabora" value="Empresa donde labora actualmente:" />  
                 <p:inputText id="descEmpresaLabora" value="#{solicitudesManagedBean.descEmpresaLabora}" />  
                 <h:outputLabel styleClass="estilo_label" for="experiencia" value="Años ejerciendo la actividad:" />  
                 <p:inputText id="experiencia" value="#{solicitudesManagedBean.experiencia}" />  
                 <h:outputLabel styleClass="estilo_label" value="Descripcion de la ocupacion actual:" /> 
-                <p:editor id="ocupacion" value="#{solicitudesManagedBean.ocupacion}" height="150"/>				
+                <p:editor id="ocupacion" value="#{solicitudesManagedBean.ocupacion}" height="120"/>				
              </div>             
-             <div class="seccion_detalle" style="background:none;height:30px;margin-top:-68px;border:none;text-align: right;">
-             		<p> Nota: Todos los campos con asteriscos (*) son obligatorios.</p>
+             <div class="seccion_detalle" style="background:none;height:30px;margin-top:-68px;border:none;">
+             		<p style="font-weight:bold;"> Nota: Todos los campos con asteriscos (*) son obligatorios.</p>
              </div>
              <div class="seccion_detalle" style="background:none;height:50px;margin-top:-68px;border:none;text-align: right;">
 	             <p:commandButton value="Cancelar" action="#{solicitudesManagedBean.cancelarEdicion}" /> 

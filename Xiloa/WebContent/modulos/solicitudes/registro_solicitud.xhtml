@@ -21,21 +21,20 @@
        <h:form>       
        		<p:messages id="msgRegEval" showDetail="true" autoUpdate="true" closable="true" />       		
    			<div class="seccion_detalle">
-   			<div style="display:inline-block;">   				
-	   			<p style="display:inline-block;">Centro de Capacitacion (*):</p>
-	       		<p:selectOneMenu id="selector_centro" styleClass="selector_status_estilo" value="#{solicitudesManagedBean.selectedIdIfp}" style="position: relative;top: 7px;margin-left: 5px;margin-right: 5px;">	       		  	       		  
+   						
+	   			<h:outputLabel styleClass="estilo_label" for="primerNombre" value="Centro de Capacitacion (*):" /> 
+	       		<p:selectOneMenu id="selector_centro" styleClass="selector_status_estilo selector_centroEstilo" value="#{solicitudesManagedBean.selectedIdIfp}" style="position: relative;top: 7px;margin-right: 5px;">	       		  	       		  
 	       		  <f:selectItems value="#{solicitudesManagedBean.listCentros}"/>
 	       		   <p:ajax update="selector_certificacion"  listener="#{solicitudesManagedBean.handleCertificaciones}" />	       		  		  	       		  			                         
 			    </p:selectOneMenu>			    
-		    </div>
-		    <div style="display:inline-block;">		    	
-			    <p style="display:inline-block;">Certificacion (*):</p>
-	       		<p:selectOneMenu id="selector_certificacion" styleClass="selector_status_estilo" value="#{solicitudesManagedBean.selectedIdCertificacion}" style="position: relative;top: 7px;margin-left: 5px;margin-right: 5px;">	       			  
+		
+		    	
+			   <h:outputLabel styleClass="estilo_label" for="primerNombre" value="Centro de Certificacion (*):" /> 
+	       		<p:selectOneMenu id="selector_certificacion" styleClass="selector_status_estilo selector_certificacionEstilo" value="#{solicitudesManagedBean.selectedIdCertificacion}" style="position: relative;top: 7px;margin-right: 5px;">	       			  
 			    	<f:selectItems value="#{solicitudesManagedBean.listCertificaciones}" />			                         
 			    </p:selectOneMenu>
-		    </div>
-		    <br/>
-   			<br/>
+		
+		
                 <h:outputLabel styleClass="estilo_label" for="primerNombre" value="Primer nombre (*):" /> 
                 <p:inputText id="primerNombre" value="#{solicitudesManagedBean.primerNombre}"  />  
                 <h:outputLabel styleClass="estilo_label" for="segundoNombre" value="Segundo nombre:" />  
@@ -49,7 +48,9 @@
          	</div>           
              <div class="seccion_detalle">
 		        <h:outputText value="Trabaja actualmente? (*): " />  
-		        <p:selectBooleanCheckbox id="ckTrabaja" value="#{solicitudesManagedBean.indicaTrabaja}" />		            
+		        <p:selectBooleanCheckbox id="ckTrabaja" value="#{solicitudesManagedBean.indicaTrabaja}" style="position:relative; top: 3px;margin-left:2px;"/>	
+		        <br></br>        
+				<br></br>     
                 <h:outputLabel styleClass="estilo_label" for="descEmpresaLabora" value="Empresa donde labora actualmente:" />  
                 <p:inputText id="descEmpresaLabora" value="#{solicitudesManagedBean.descEmpresaLabora}" />  
                 <h:outputLabel styleClass="estilo_label" for="experiencia" value="Años ejerciendo la actividad:" />  
@@ -57,7 +58,7 @@
                 <h:outputLabel styleClass="estilo_label" value="Descripcion de la ocupacion actual:" /> 
                 <p:editor id="ocupacion" value="#{solicitudesManagedBean.ocupacion}" height="150"/>				
              </div>             
-             <div class="seccion_detalle" style="background:none;height:30px;margin-top:-68px;border:none;text-align: right;">
+             <div class="seccion_detalle" style="background:none;height:30px;margin-top:-68px;border:none;font-weight: bold;">
              	<p> Nota: Todos los campos con asteriscos (*) son obligatorios.</p>
              </div>
              <div class="seccion_detalle" style="background:none;height:50px;margin-top:-68px;border:none;text-align: right;">
