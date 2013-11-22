@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version='1.0'?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
@@ -19,7 +19,7 @@
     <h:body>
         <div id="contenedor"> 
         <header id="barra_login">
-            <h1>Sistema de gestion de Certificacion de competencias laborales</h1>
+            <h1>Sistema de gestión de Certificación de competencias laborales</h1>
             <p>No ha ingresado</p>
         </header>
         <div id="barra_buscar">
@@ -55,19 +55,19 @@
 		<p:dialog id="modal_info_competenciasid" styleClass="modal_info_competencias" header="Detalle:" widgetVar="modal_comp" width="550" height="500">
 			<p:outputPanel id="dialogo">  
         	<div class="seccion_detalle">
-      			<p>Nombre de la certificacion</p>
+      			<p>Nombre de la certificación</p>
       			<h:outputText value="#{inicioManagedBean.selectedCertificacion.nombre}"></h:outputText>  		
           	</div>
           	<div class="seccion_detalle">
-      			<p>Ultimo dia para solicitar evaluacion:</p>
+      			<p>Ultimo dia para solicitar evaluación:</p>
       			<h:outputText value="#{inicioManagedBean.selectedCertificacion.inscripcionFinaliza}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>
           	</div>
           	<div class="seccion_detalle">
-      			<p>Direccion del Centro evaluador:</p>
+      			<p>Dirección del Centro evaluador:</p>
       			<h:outputText value="#{inicioManagedBean.selectedCertificacion.ifpDireccion}"></h:outputText>  		
           	</div>
           	<div class="seccion_detalle">
-      			<p>Requisitos para aplicar a la evaluacion:</p>
+      			<p>Requisitos para aplicar a la evaluación:</p>
 				<p:dataList emptyMessage="Lista no disponible" value="#{inicioManagedBean.selectedCertificacion.requisitos}" var="requisito" type="ordered">  
 					<ul><li>#{requisito.descripcion}</li></ul>
 				</p:dataList>
