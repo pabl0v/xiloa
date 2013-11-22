@@ -47,8 +47,7 @@ public class Archivo implements Serializable {
 	@Column(name = "archivo_nombre", nullable = false)	
 	private String nombre;
 
-	@NotNull
-	@Column(name = "archivo_descripcion", nullable = false)	
+	@Column(name = "archivo_descripcion", nullable = true)	
 	private String descripcion;
 	
 	@NotNull
@@ -95,13 +94,7 @@ public class Archivo implements Serializable {
 	
 	@Column(name = "archivo_aprobado", nullable = true)	
 	private String aprobado;
-	
-	/*
-	@Lob()
-	@Column(name="archivo_fisico", nullable=false)
-	private byte[] archivoFisico;
-*/
-	
+			
 	public Long getId() {
 		return id;
 	}

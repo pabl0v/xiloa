@@ -17,13 +17,15 @@
 	    	<script type="text/javascript" src="../../resources/scripts/expediente.js"></script>
 		</div>
 		<h:form id="formExpediente" enctype="multipart/form-data" >
-    	<h2 style="display:inline-block;">Expediente: <a>#{expedienteManagedBean.solicitudExp.id}</a></h2>
-    	
-
-    		<p:commandButton id="solicitaCert" style="display:inline-block;" value="Solicitar Certificacion"  
-    		                 action="#{expedienteManagedBean.solicitarCertificacion}" 
-    		                 disabled="#{expedienteManagedBean.disableSolicitarCertificacion}" />
+    	<h2 style="display:inline-block;">Expediente: <a>#{expedienteManagedBean.solicitudExp.id}</a></h2>    		
     		                 
+    		<p:splitButton id="solicitaCert" action="#{expedienteManagedBean.solicitarCertificacion}" 
+    					   update=":formExpediente:msgExpediente"
+    					   value="Solicitar Certificacion"  title="Enviar Solicitud"
+    					   disabled="#{expedienteManagedBean.disableSolicitarCertificacion}"
+    					   icon="ui-icon-pencil" style="display:inline-block;" >    			 
+           </p:splitButton> 
+    			    		                 
     		<a>Curriculo Completo:</a> 
     		<p:selectBooleanCheckbox value="#{expedienteManagedBean.indicaCVFull}" >
     			<p:ajax update=":formExpediente:solicitaCert, :formExpediente:msgExpediente" listener="#{expedienteManagedBean.validaRegistroCV}"/> 
@@ -43,10 +45,8 @@
             <h:outputLabel styleClass="estilo_label" for="certificacionNombre" value="Solicitud para evaluar:" />            
             <h:outputText styleClass="estilo_span" id="certificacionNombre" value="#{expedienteManagedBean.solicitudExp.certificacion.nombre}" />
             <h:outputLabel styleClass="estilo_label" for="genero" value="Genero:" />  
-            <p:selectOneMenu id="genero" styleClass="selectores selector_genero" value="#{expedienteManagedBean.solicitudExp.contacto.sexo}" >
-                 <f:selectItem itemLabel="Indique el genero" itemValue="" /> 	       		  	       		  
-	       		 <f:selectItem itemLabel="Femenino" itemValue="0" />
-	       		 <f:selectItem itemLabel="Masculino" itemValue="1" />	        		       		  		  	       		  			                         
+            <p:selectOneMenu id="genero" styleClass="selectores selector_genero" value="#{expedienteManagedBean.solicitudExp.contacto.sexo}" >                 
+	       		 <f:selectItems value="#{expedienteManagedBean.listGenero}"/>  			                         
 			</p:selectOneMenu>
             <!--  <p:inputText id="genero" value="#{expedienteManagedBean.solicitudExp.contacto.sexo}" /> -->            
             <h:outputLabel styleClass="estilo_label" for="telefono" value="Telefono:" />  
@@ -65,13 +65,12 @@
 				          update=":formExpediente:selector_municipio" />
 	       	<f:selectItems value="#{expedienteManagedBean.listDeptos}"/>	       		   	       		  		  	       		  			                         
 			</p:selectOneMenu>			    
-            <h:outputLabel styleClass="estilo_label" for="selector_municipio" value="Municipio:" />  
-          	<p:inputText id="selector_municipio" value="#{expedienteManagedBean.municipioIdSelected}"/>     
-          	<!-- <p:selectOneMenu id="selector_municipio" styleClass="selector_status_estilo"
-            				 value="#{expedienteManagedBean.municipioIdSelected}"                              
+            <h:outputLabel styleClass="estilo_label" for="selector_municipio" value="Municipio:" />          	     
+          	<p:selectOneMenu id="selector_municipio" styleClass="selector_status_estilo"
+            				 value="#{expedienteManagedBean.solicitudExp.contacto.municipioId}"                              
                              style="position: relative;top: 7px;margin-right: 5px;">
 	       		  <f:selectItems value="#{expedienteManagedBean.listMunicipioByDptos}"/>	       		   	       		  		  	       		  			                         
-			</p:selectOneMenu>-->     	
+			</p:selectOneMenu>     	
             <p:commandButton id="btnActualizaContacto" disabled="#{expedienteManagedBean.disabledBtnActualizaContacto}"
                              style="display:block;" value="Aplicar Cambios" 
                              update=":formExpediente:msgExpediente" 
@@ -104,12 +103,18 @@
                          <p:column headerText="Desde"><h:outputText value="#{datosLaborales.fechaInicia}" pattern="dd/mm/yyyy" /></p:column>  
                          <p:column headerText="Hasta"><h:outputText value="#{datosLaborales.fechaFinaliza}" pattern="dd/mm/yyyy" /></p:column>  
                          <p:column headerText="Direccion"><h:outputText value="#{datosLaborales.institucionDireccion}" /></p:column>                         
-                         <p:column >
-                         	<p:commandButton id="editarExperiencia" action="#{expedienteManagedBean.editarLaboral}" 
-                         	                 oncomplete="PF('dlg1').show();" update=":formExpediente:modalLaborales" 
-                         	                 icon="ui-icon-pencil" title="Editar" >    	
-                         		<f:setPropertyActionListener value="#{datosLaborales}" target="#{expedienteManagedBean.selectedLaboral}" />						  
-    						</p:commandButton>                             	
+                         <p:column headerText="Editar Registro" >                         	    
+    						<p:splitButton action="#{expedienteManagedBean.editarLaboral}" 
+    						               update=":formExpediente:modalLaborales" oncomplete="PF('dlg1').show();" 
+    						               icon="ui-icon-pencil" >
+    						     <f:setPropertyActionListener value="#{datosLaborales}" target="#{expedienteManagedBean.selectedLaboral}" />           	        	         
+        						<p:menuitem value="Subir Archivo" action="#{expedienteManagedBean.nuevoPortafolio}"
+        									oncomplete="PF('dlgPortafolio').show()"
+        									update=":formExpediente:modalPortafolio" 
+        						            icon="ui-icon-arrowrefresh-1-w" >
+        						      <f:setPropertyActionListener value="#{datosLaborales}" target="#{expedienteManagedBean.selectedLaboral}" />
+        						</p:menuitem>
+    						</p:splitButton>                          	
                          </p:column>                                         
                     </p:dataTable>    
                </p:tab>  
@@ -123,12 +128,19 @@
                         <p:column headerText="Desde"><h:outputText value="#{datosEstudios.fechaInicia}" /></p:column>  
                         <p:column headerText="Hasta"><h:outputText value="#{datosEstudios.fechaFinaliza}" /></p:column>  
                         <p:column headerText="Direccion"><h:outputText value="#{datosEstudios.institucionDireccion}" /></p:column>  
-                        <p:column headerText="Editar">
-                        	<p:commandButton id="editarEstudios" action="#{expedienteManagedBean.editarLaboral}" 
-                         	                 oncomplete="PF('dlg1').show();" update=":formExpediente:modalLaborales"   
-                         	                 icon="ui-icon-pencil" title="Editar">    	
-                         		<f:setPropertyActionListener value="#{datosEstudios}" target="#{expedienteManagedBean.selectedLaboral}" />						  
-    						</p:commandButton></p:column>  
+                        <p:column headerText="Editar Registro">
+	                        <p:splitButton action="#{expedienteManagedBean.editarLaboral}" 
+	    						           update=":formExpediente:modalLaborales" oncomplete="PF('dlg1').show();" 
+	    						           icon="ui-icon-pencil" title="Editar" >
+	    						<f:setPropertyActionListener value="#{datosEstudios}" target="#{expedienteManagedBean.selectedLaboral}" />           	        	         
+	        					<p:menuitem value="Subir Archivo" action="#{expedienteManagedBean.nuevoPortafolio}"
+	        					      		oncomplete="PF('dlgPortafolio').show()"
+	        								update=":formExpediente:modalPortafolio" 
+	        						        icon="ui-icon-arrowrefresh-1-w" >
+	        				        <f:setPropertyActionListener value="#{datosEstudios}" target="#{expedienteManagedBean.selectedLaboral}" />
+	        					</p:menuitem>
+	    					</p:splitButton>
+                        </p:column>  
                    </p:dataTable>       
                </p:tab>  
 
@@ -141,12 +153,18 @@
                         <p:column headerText="Desde"><h:outputText value="#{datosCalificacion.fechaInicia}" /></p:column>  
                         <p:column headerText="Hasta"><h:outputText value="#{datosCalificacion.fechaFinaliza}" /></p:column>  
                         <p:column headerText="Direccion"><h:outputText value="#{datosCalificacion.institucionDireccion}" /></p:column>  
-                        <p:column headerText="Editar">
-                        	<p:commandButton id="editarCalificacion" action="#{expedienteManagedBean.editarLaboral}" 
-                         	                 oncomplete="PF('dlg1').show();" update=":formExpediente:modalLaborales"   
-                         	                 icon="ui-icon-pencil" title="Editar">    	
-                         		<f:setPropertyActionListener value="#{datosCalificacion}" target="#{expedienteManagedBean.selectedLaboral}" />						  
-    						</p:commandButton>
+                        <p:column headerText="Editar Registro">
+                            <p:splitButton action="#{expedienteManagedBean.editarLaboral}" 
+	    						           update=":formExpediente:modalLaborales" oncomplete="PF('dlg1').show();" 
+	    						           icon="ui-icon-pencil" title="Editar" >
+	    						<f:setPropertyActionListener value="#{datosCalificacion}" target="#{expedienteManagedBean.selectedLaboral}" />           	        	         
+	        					<p:menuitem value="Subir Archivo" action="#{expedienteManagedBean.nuevoPortafolio}"
+	        					      		oncomplete="PF('dlgPortafolio').show()"
+	        								update=":formExpediente:modalPortafolio" 
+	        						        icon="ui-icon-arrowrefresh-1-w" >
+	        				        <f:setPropertyActionListener value="#{datosCalificacion}" target="#{expedienteManagedBean.selectedLaboral}" />
+	        					</p:menuitem>
+	    					</p:splitButton>                        	
 						</p:column>  
                    </p:dataTable>    
                </p:tab>  
@@ -160,12 +178,18 @@
                         <p:column headerText="Desde"><h:outputText value="#{datosCertificacion.fechaInicia}" /></p:column>  
                         <p:column headerText="Hasta"><h:outputText value="#{datosCertificacion.fechaFinaliza}" /></p:column>  
                         <p:column headerText="Direccion"><h:outputText value="#{datosCertificacion.institucionDireccion}" /></p:column>  
-                        <p:column headerText="Editar">
-							<p:commandButton id="editarCertificacion" action="#{expedienteManagedBean.editarLaboral}" 
-                         	                 oncomplete="PF('dlg1').show();" update=":formExpediente:modalLaborales"   
-                         	                 icon="ui-icon-pencil" title="Editar">    	
-                         		<f:setPropertyActionListener value="#{datosCertificacion}" target="#{expedienteManagedBean.selectedLaboral}" />						  
-    						</p:commandButton>                        
+                        <p:column headerText="Editar Registro">
+                        	<p:splitButton action="#{expedienteManagedBean.editarLaboral}" 
+	    						           update=":formExpediente:modalLaborales" oncomplete="PF('dlg1').show();" 
+	    						           icon="ui-icon-pencil" title="Editar" >
+	    						<f:setPropertyActionListener value="#{datosCertificacion}" target="#{expedienteManagedBean.selectedLaboral}" />           	        	         
+	        					<p:menuitem value="Subir Archivo" action="#{expedienteManagedBean.nuevoPortafolio}"
+	        					      		oncomplete="PF('dlgPortafolio').show()"
+	        								update=":formExpediente:modalPortafolio" 
+	        						        icon="ui-icon-arrowrefresh-1-w" >
+	        				        <f:setPropertyActionListener value="#{datosCertificacion}" target="#{expedienteManagedBean.selectedLaboral}" />
+	        					</p:menuitem>
+	    					</p:splitButton>							                        
 						</p:column>  
                    </p:dataTable>    
                </p:tab>  
@@ -202,49 +226,33 @@
                     <p:tab id="tabPortafolio" title="Portafolio">                    	                    	
                          <p:dataTable id="dtPortafolio" emptyMessage="No hay datos"  var="portafolioEvidencia" 
                                       value="#{expedienteManagedBean.listPortafolioContacto}"
-                                      selection="#{expedienteManagedBean.selectedArchivoId}" rowKey="#{portafolioEvidencia}" 
+                                      selection="#{expedienteManagedBean.selectedArchivoId}" rowKey="#{portafolioEvidencia}"                 			 		   
                          			  selectionMode="single" paginator="true" rows="4" >
-                         			 <!-- 
-                         			  rowEditListener="#{expedienteManagedBean.rowEditListenerPortafolio}"
-                 			 	      onRowEditUpdate=":formExpediente:msgExpediente"
-                 			 	        
-                         			  >
-                         			  -->  
+                         			   
                              <p:column headerText="Documento de soporte o evidencia"><h:outputText value="#{portafolioEvidencia.nombre}" /></p:column>  
                              <p:column headerText="Descripcion"><h:outputText value="#{portafolioEvidencia.descripcion}" /></p:column>  
                              <p:column headerText="Respaldo de"><h:outputText value="#{portafolioEvidencia.laboral.nombre}" /></p:column>  
-                             <p:column headerText="Estado">
-                             	<h:outputText value="#{portafolioEvidencia.estado.valor}" />
-                             </p:column>
-                             	<!-- 
-                             	<p:cellEditor>  
-			                 		<f:facet name="output">
-                             			<h:outputText value="#{portafolioEvidencia.estado.valor}" />
-                             		 </f:facet>  
-			                 		 <f:facet name="input">			                 	
-			                 			<h:selectOneMenu id="selector_estadoPortafolio" value="#{portafolioEvidencia.estado.id}" >
-											<f:selectItems value="#{expedienteManagedBean.listEstadosPortafolio}" />											
-										</h:selectOneMenu>								
-			                 	</f:facet>  
-			             		</p:cellEditor>  
-			             		
-                             </p:column>
-                             <p:column headerText="Editar" styleClass="ui-editable-column-options" >    
-            					<p:rowEditor/>
-            				</p:column> 
-            					-->     
-                             <p:column headerText="Editar">
-								<p:commandButton id="editarEvaluacionesPortafolio" action="#{expedienteManagedBean.editarPortafolio}"
-                         	    	             oncomplete="PF('dlgPortafolio').show();" update=":formExpediente:modalPortafolio"   
-                         	        	         icon="ui-icon-pencil" title="Editar">    	
-                         			<f:setPropertyActionListener value="#{portafolioEvidencia.laboral}" target="#{expedienteManagedBean.selectedLaboral}" />
-                         			<f:setPropertyActionListener value="#{portafolioEvidencia}" target="#{expedienteManagedBean.archivoExp}" />
-                         									  
-    							</p:commandButton>                                                     
+                             <p:column headerText="Estado">                             	
+	                             <h:outputText value="#{portafolioEvidencia.estado.valor}" /> / <h:outputText value="#{portafolioEvidencia.aprobado}" /> 	                             
+                             </p:column>                                 
+                             <p:column headerText="Indica Verificado">
+                             	<p:splitButton id="splitEditPortafolio" value="Aprobado" 
+                             	               action="#{expedienteManagedBean.aprobarPortafolio}" update="dtPortafolio" 
+                             	               icon="ui-icon-arrowrefresh-1-w">							          
+                             	     	<f:setPropertyActionListener value="#{portafolioEvidencia.laboral}" target="#{expedienteManagedBean.selectedLaboral}" />
+                         				<f:setPropertyActionListener value="#{portafolioEvidencia}" target="#{expedienteManagedBean.archivoExp}" />
+                         				<f:setPropertyActionListener value="Aprobado" target="#{expedienteManagedBean.archivoExp.aprobado}" />
+							        <p:menuitem id="mnuSplitEditPortafolio" value="No Aprobado" 
+							                   action="#{expedienteManagedBean.aprobarPortafolio}" update="dtPortafolio" 
+							                   icon="ui-icon-close">
+							        	<f:setPropertyActionListener value="#{portafolioEvidencia.laboral}" target="#{expedienteManagedBean.selectedLaboral}" />
+                         				<f:setPropertyActionListener value="#{portafolioEvidencia}" target="#{expedienteManagedBean.archivoExp}" />
+                         				<f:setPropertyActionListener value="No Aprobado" target="#{expedienteManagedBean.archivoExp.aprobado}" />
+                         			</p:menuitem>             						        
+							    </p:splitButton>                                							     							                                                    
                              </p:column>                                      
                         </p:dataTable>     
                     </p:tab>  
-
                     <p:tab id="tab3" title="Plan de evaluacion">                    	  
                          <p:dataTable emptyMessage="No hay datos"  var="evaluaciones" value="#{expedienteManagedBean.listBeanEval}"
                                       selection="#{expedienteManagedBean.selectedBeanEvaluacion}" rowKey="#{evaluaciones}" 
@@ -288,7 +296,7 @@
                     </p:tab>  
                 </p:tabView>    		
     	</div>
-    	
+    	    	     	
     	<!-- Cuadro de dialogo emergente que registra datos laborales y académicos -->    	    	
     	<p:dialog id="modalLaborales" styleClass="estilo_dialogoLaborales" header="Agregar Datos Laborales y Academicos:" widgetVar="dlg1" 
     	          modal="true" resizable="false" width="720" height="540" showEffect="clip" hideEffect="clip" >
@@ -326,29 +334,27 @@
 					<p:calendar value="#{expedienteManagedBean.fechaHasta}" pattern="dd/mm/yyyy" id="popupButtonCal2" showOn="button">
 						<p:ajax event="dateSelect" update="growlFechaHasta" />
 					</p:calendar>
-				</div>				
-				<p:commandButton id="editarPortafolio" action="#{expedienteManagedBean.nuevoPortafolio}" 
-           	    	             oncomplete="PF('dlgPortafolio').show();" update=":formExpediente:modalPortafolio"   
-           	        	         value="Agregar Portafolio de Evidencias"  
-           	        	         disabled="#{expedienteManagedBean.disablePortafolio}"/>    	    							
+				</div>				    	    							
 				<div style="float:right;">
 				<p:commandButton value="Cancelar" action="#{expedienteManagedBean.limpiarCampos}" 
-				                 oncomplete="PF('dlg1').hide();"/>
+				                 oncomplete="PF('dlg1').hide();" />
 				<p:commandButton value="Aceptar" action="#{expedienteManagedBean.guardarDatosLaborales}" oncomplete="PF('dlg1').hide();"
 								 update=":formExpediente:tabView_datosLaborales, :formExpediente:msgExpediente"	/>
 				</div>
 				    
-				<p:dataTable emptyMessage="No hay datos"  var="portafolioLaboral" 
-				             value="#{expedienteManagedBean.listPortafolioLaboral}"
-                             selection="#{expedienteManagedBean.selectedArchivoId}" rowKey="#{portafolioLaboral.id}" 
-                 			 selectionMode="single" paginator="true" rows="3" style="margin-top:8px;" >  
+				<p:dataTable id="dtPortafolioLaboral" emptyMessage="No hay datos"  var="varPortafolioLaboral" 
+				             value="#{expedienteManagedBean.listPortafolioLaboral}"				             
+						     selection="#{expedienteManagedBean.selectedArchivoId}"
+							 selectionMode="single"
+                             rowKey="#{varPortafolioLaboral}" 
+                 			  paginator="true" rows="3" style="margin-top:8px;" >  
                              <f:facet name="header">  
 					            Portafolio de Evidencias  
 					         </f:facet> 
-                             <p:column headerText="Documento de soporte o evidencia"><h:outputText value="#{portafolioLaboral.nombre}" /></p:column>  
-                             <p:column headerText="Descripcion"><h:outputText value="#{portafolioLaboral.descripcion}" /></p:column>  
-                             <p:column headerText="Respaldo de"><h:outputText value="#{portafolioLaboral.laboral.nombre}" /></p:column>  
-                             <p:column headerText="Estado"><h:outputText value="#{portafolioLaboral.estado.nombre}" /></p:column>                                   
+                             <p:column headerText="Documento de soporte o evidencia"><h:outputText value="#{varPortafolioLaboral.nombre}" /></p:column>  
+                             <p:column headerText="Descripcion"><h:outputText value="#{varPortafolioLaboral.descripcion}" /></p:column>  
+                             <p:column headerText="Respaldo de"><h:outputText value="#{varPortafolioLaboral.laboral.nombre}" /></p:column>  
+                             <p:column headerText="Estado"><h:outputText value="#{varPortafolioLaboral.estado.valor}" /></p:column>                                   
                </p:dataTable>
 		    </div>					
 		</p:dialog>    	
@@ -365,28 +371,29 @@
 			    <p style="margin-left: 4px;font-weight:bold;">#{expedienteManagedBean.selectedLaboral.nombre} </p>	    
 			    <div class="dialogoPortafolio_secciones" >
 			    	<p>Nombre del Archivo:</p>  
-	            	<p:inputText id="nombreArchivo" value="#{expedienteManagedBean.archivoExp.nombre}" />
+	            	<p:inputText id="nombreArchivo" value="#{expedienteManagedBean.nombreArchivoExp}" />
 	            	<p>Tipo Archivo:</p>
-	                <p:selectOneMenu id="tipoArchivo" value="#{expedienteManagedBean.archivoExp.tipo}">  
+	                <p:selectOneMenu id="tipoArchivo" value="#{expedienteManagedBean.tipoArchivoExp}">  
                 		<f:selectItem itemLabel="Formato PDF" itemValue="PDF" />
                 		<f:selectItem itemLabel="Imagen jpeg" itemValue="JPEG" />
             		</p:selectOneMenu>             
 					<p>Version:</p>	                  
-	            	<p:inputText id="versionArchivo" value="#{expedienteManagedBean.archivoExp.version}" />	            	           	 
+	            	<p:inputText id="versionArchivo" value="#{expedienteManagedBean.versionArchivoExp}" />	            	           	 
 					<p>Descripcion:</p>	                  
-	            	<p:inputText id="descripcionArchivo" value="#{expedienteManagedBean.archivoExp.descripcion}" />
+	            	<p:inputText id="descripcionArchivo" value="#{expedienteManagedBean.descripcionArchivoExp}" />
 	            	<p:fileUpload id="fileEvidencia" fileUploadListener="#{expedienteManagedBean.uploadFile}" 
 	            	 			  mode="advanced" dragDropSupport="false"  auto="true" sizeLimit="2097152"  
 	            	              allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|PDF)$/" fileLimit="1"	            	              
-	            	              update=":formExpediente:messages, :formExpediente:sizeArchivo" />
-					<p:growl id="messages" showDetail="true"/>	   
-	            	<p>Tamaño del Archivo:</p>  
-					<h:outputText styleClass="estilo_span" id="sizeArchivo" value="#{expedienteManagedBean.archivoExp.size}" />
+	            	              update=":formExpediente:messages, :formExpediente:nombreRealArchivo, :formExpediente:sizeArchivo" />
+					<p:growl id="messages" showDetail="true"/>	            	
+					<p>Archivo (Nombre Real):</p>  
+					<h:outputText styleClass="estilo_span" id="nombreRealArchivo" value="#{expedienteManagedBean.nombreRealArchivoExp}" />
+					<p>Tamaño del Archivo:</p>  
+					<h:outputText styleClass="estilo_span" id="sizeArchivo" value="#{expedienteManagedBean.sizeArchivoExp}" />
 				</div>				
-				<p:commandButton value="Cancelar" onclick="PF('dlgPortafolio').hide();"/>
-				<p:commandButton value="Guardar" action="#{expedienteManagedBean.guardarArchivo}"  
-				                 oncomplete="PF('dlgPortafolio').hide();"
-				                 update=":formExpediente:modalLaborales" />												
+				<p:commandButton value="Cancelar" action="#{expedienteManagedBean.cancelaPortafolio}" onclick="PF('dlgPortafolio').hide();"/>
+				<p:commandButton value="Guardar" action="#{expedienteManagedBean.guardarArchivo}"   
+				                 oncomplete="PF('dlgPortafolio').hide();" />												
 		    </div>					
 		</p:dialog>
 		

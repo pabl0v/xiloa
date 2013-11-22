@@ -3,6 +3,7 @@ package dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -81,15 +82,21 @@ public class DaoImpl<T extends Object> implements IDao<T>{
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public T findOneByNamedQueryParam(String namedQuery, Object [] params){
-		T result;
-		Query q = em.createNamedQuery(namedQuery);
-		int i = 1;
+	public T findOneByNamedQueryParam(String namedQuery, Object [] params){			
+		Query q;
+		int i;
+		q = em.createNamedQuery(namedQuery);
+		i = 1;
 		for (Object obj :  params) {
 			q.setParameter(i++, obj);
-		}		
-		result = (T) q.getSingleResult();
-		return result;
+		}
+		
+		try{			
+			return (T) q.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+			
 	}
 	
 	@Override
@@ -101,7 +108,12 @@ public class DaoImpl<T extends Object> implements IDao<T>{
 		for (Object obj :  params) {
 			q.setParameter(i++, obj);
 		}
-		result = q.getResultList(); 
+		
+		try {
+			result = q.getResultList();			
+		} catch (NoResultException e) {
+			result = null;
+		}		
 		return result;
 	}
 	
@@ -110,7 +122,12 @@ public class DaoImpl<T extends Object> implements IDao<T>{
 	public List<T> findAllByNamedQuery(String named){
 		List<T> result;
 		Query q = em.createNamedQuery(named);
-		result = q.getResultList(); 
+		
+		try {
+			result = q.getResultList();			
+		} catch (NoResultException e) {
+			result = null;
+		}		
 		return result;
 	}
 }

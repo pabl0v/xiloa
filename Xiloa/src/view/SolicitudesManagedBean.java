@@ -31,6 +31,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import service.IService;
+import support.FacesUtil;
 import support.Ifp;
 import support.USolicitud;
 
@@ -70,9 +71,7 @@ public class SolicitudesManagedBean implements Serializable {
 	private Usuario usuarioSolicitante;
 	
 	private boolean indicaUserExterno;
-	
-
-	
+			
 	public SolicitudesManagedBean() {
 		
 		super();			
@@ -240,6 +239,9 @@ public class SolicitudesManagedBean implements Serializable {
 		for (Ifp dato : lista) {
 			this.listCentros.add(new SelectItem(dato.getIfpId(),dato.getIfpNombre()));			
 		}		
+		
+		this.listCertificaciones = new ArrayList<SelectItem>();		
+		this.listCertificaciones.add(new SelectItem(null,"Seleccione una certificacion"));
 			
 		//Considerando si se tiene la certificacion seleccionada.
 		if (this.usuarioSolicitante == null){
@@ -313,91 +315,145 @@ public class SolicitudesManagedBean implements Serializable {
 			System.out.println("Certificacion " + this.selectedIdCertificacion);
 		}
 		
-		Solicitud sol = grabarSolicitud(new Integer(2));
+		Solicitud sol = grabarSolicitud(new Integer(2));		
 		
-		System.out.println("La solicitud ha sido grabada " + sol.getId());
-		return "/modulos/solicitudes/solicitudes?faces-redirect=true";
-		
+		if (sol != null) {
+			
+			System.out.println("La solicitud ha sido grabada " + sol.getId());
+			
+			((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("dbSolicitudesBean",sol);
+			
+			return "/modulos/solicitudes/expediente?faces-redirect=true";
+		} else 
+			return null;
 	}
 	
 	public Solicitud grabarSolicitud(Integer tipoGrabar){
 		
-		Solicitud     s;
-		Usuario       u;
-		Rol           r = service.getRolById(1);	
-		
-		Certificacion c = service.getCertificacionById(this.getSelectedIdCertificacion());			
-		
-		Contacto solicitante = service.getContactoByCedula(this.getNumeroIdentificacion());
-		
-		if (solicitante == null ) {
-			
-			if (tipoGrabar == 2) {
-				u = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
-			} else {
-				u = null;
-			}			
-			
-			solicitante = new Contacto(u, //Usuario
-					                   null, //laborales
-									  r, //Rol
-									  1, //EntidadId
-									  this.getPrimerNombre().toUpperCase().trim(), 
-									  this.getSegundoNombre().toUpperCase().trim(), 
-									  this.getPrimerApellido().toUpperCase().trim(),
-									  this.getSegundoApellido().toUpperCase().trim(), 
-									  this.getNombreCompleto().toUpperCase().trim(), // NombreCompleto 
-									  0, //Sexo
-									  "", // correo1 
-									  "", //correo2 
-									  "", //telefono1 
-									  "", //telefono2
-									  1, // tipoContacto
-									  1, // tipoIdentificacion
-									  this.getNumeroIdentificacion().toUpperCase().trim(), 
-									  "" , // direccionActual
-									  null, // fechaNacimiento
-									  new Date(), // fechaRegistro 
-									  1, // nacionalidadId
-									  null, //departamentoId
-									  null, // municipioId
-									  "", // lugarNacimiento 
-									  false, // inatec 
-									  "", // usuarioInatec
-									  "", // funcion
-									  null//idEmpleado									  
-									  );		
-
-			service.guardar(solicitante);
-			
-			
-			solicitante = service.getContactoByCedula(solicitante.getNumeroIdentificacion());
-		}		
-		s = new Solicitud ();
-		
-		//Asignando el estado inicial de la solicitud	
-		Mantenedor estadoInicialSolicitud = service.getMantenedorMinByTipo(s.getTipomantenedorestado());
-		
-		s.setNombre(c.getNombre()); // Nombre
-		s.setTicket("Ninguna");
-		s.setEstatus(estadoInicialSolicitud);
-		s.setFechaRegistro(new Date());
-		s.setFechaMatricula(new Date());
-		s.setExperiencia(this.getExperiencia());
-		s.setOcupacion(this.getOcupacion());
-		s.setOficio(this.getOcupacion());
-		s.setEscolaridad(7);
-		s.setContacto(solicitante);
-		s.setCertificacion(c);
-		s.setEvaluaciones(null);
-			  
-		s = (Solicitud) service.guardar(s);
-		
-		s.setTicket(s.getId().toString());
-		
-		s = (Solicitud) service.guardar(s);
+		Solicitud 		s 		= null;
+		Usuario   		u 		= null;
+		Rol       		r 		= null;		
+		Certificacion 	c 		= null;		
+		FacesMessage 	msg 	= null;
+		String    		mensaje = "";
+		String    		titulo  = "";
+		boolean   		isError = false;
+		Contacto 		solicitante = null;		
+		Mantenedor 		estadoInicialSolicitud = null;
 				
-		return s;
+		//Validaciones
+		if (this.getPrimerNombre() == null){
+			mensaje = "Debe indicar el primer nombre. ";
+			titulo = "Informacion incompleta: ";
+			isError = true;
+		} else if (this.getPrimerApellido() == null){
+			mensaje = "Debe indicar el primer Apellido. ";
+			titulo = "Informacion incompleta: ";
+			isError = true;
+		} else if (this.getNumeroIdentificacion() == null){
+			mensaje = "Debe indicar el numero de cedula. ";
+			titulo = "Informacion incompleta: ";
+			isError = true;
+		} else {
+			
+			try{
+				
+				c = service.getCertificacionById(this.getSelectedIdCertificacion());
+				
+				System.out.println("Identificacion " + this.getNumeroIdentificacion());
+					
+				solicitante = service.getContactoByCedula(this.getNumeroIdentificacion());
+					
+				if (solicitante == null){
+					
+					if (tipoGrabar == 2) {
+						u = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
+						r = service.getRolById(u.getRol().getId());
+					} else {
+						u = null;
+						r = service.getRolById(new Integer(6)); // Rol visitante
+					}			
+					System.out.println("Procede a grabar el contacto");
+					
+					solicitante = new Contacto(u, //Usuario
+							                   null, //laborales
+											  r, //Rol
+											  1, //EntidadId
+											  this.getPrimerNombre().toUpperCase().trim(), 
+											  this.getSegundoNombre().toUpperCase().trim(), 
+											  this.getPrimerApellido().toUpperCase().trim(),
+											  this.getSegundoApellido().toUpperCase().trim(), 
+											  this.getNombreCompleto().toUpperCase().trim(), // NombreCompleto 
+											  0, //Sexo
+											  "", // correo1 
+											  "", //correo2 
+											  "", //telefono1 
+											  "", //telefono2
+											  1, // tipoContacto
+											  1, // tipoIdentificacion
+											  this.getNumeroIdentificacion().toUpperCase().trim(), 
+											  "" , // direccionActual
+											  null, // fechaNacimiento
+											  new Date(), // fechaRegistro 
+											  1, // nacionalidadId
+											  null, //departamentoId
+											  null, // municipioId
+											  "", // lugarNacimiento 
+											  false, // inatec 
+											  "", // usuarioInatec
+											  "", // funcion
+											  null//idEmpleado									  
+											  );		
+		
+					solicitante = (Contacto)service.guardar(solicitante);
+					
+				}
+				
+			} catch (Exception e) {
+				
+				mensaje = "Se generó un error al confirmar la certificacion. Favor comuníquese con Gerencia de Informatica - INATEC.";
+				titulo = "Error al grabar el contacto: ";
+				isError = true;
+				
+				e.printStackTrace();		
+				
+			}	
+					
+			if (solicitante != null) {
+				s = new Solicitud ();
+				
+				//Asignando el estado inicial de la solicitud	
+				estadoInicialSolicitud = service.getMantenedorMinByTipo(s.getTipomantenedorestado());
+				
+				s.setNombre(c.getNombre()); // Nombre
+				s.setTicket("Ninguna");
+				s.setEstatus(estadoInicialSolicitud);
+				s.setFechaRegistro(new Date());
+				s.setFechaMatricula(new Date());
+				s.setExperiencia(this.getExperiencia());
+				s.setOcupacion(this.getOcupacion());
+				s.setOficio(this.getOcupacion());
+				s.setEscolaridad(7);
+				s.setContacto(solicitante);
+				s.setCertificacion(c);
+				s.setEvaluaciones(null);
+					  
+				s = (Solicitud) service.guardar(s);
+				
+				s.setTicket(s.getId().toString());
+				
+				s = (Solicitud) service.guardar(s);				
+			}
+			
+		} 
+		
+		if (isError) {			
+			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, titulo, mensaje);			
+			FacesContext.getCurrentInstance().addMessage(null, msg);			
+			return null;
+		} else{
+			return s;
+		}
 	}
 	
 	public void inicializaDatos (){
