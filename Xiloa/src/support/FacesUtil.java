@@ -1,5 +1,6 @@
 package support;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
@@ -23,5 +24,11 @@ public class FacesUtil {
     
     public static void setApplicationMapValue(String key, Object value) {
     	FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().put(key, value);
+    }
+    
+    public static void getMensaje(String titulo, String texto){
+    	FacesMessage msg = new FacesMessage(titulo, texto);
+		
+		FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 }

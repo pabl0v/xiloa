@@ -61,9 +61,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private IService service;
-	@Autowired
-	private UtilitariosManagedBean utilitarios;
+	private IService service;	
 	
 	private Solicitud solicitudExp;
 	private Contacto contactoExp;
@@ -128,6 +126,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	private List<SelectItem> listDeptos;
 	private List<SelectItem> listMunicipioByDptos;
 	private List<SelectItem> listPaises;
+	private List<SelectItem> listGenero;
 	
 	private List<Archivo> listPortafolioLaboral;
 	
@@ -136,6 +135,13 @@ public class ExpedienteManagedBean implements Serializable  {
 	private String municipioIdSelected;
 	
 	private Integer departamentoIdSelected;
+	
+	private String nombreArchivoExp;
+	private String versionArchivoExp;
+	private String tipoArchivoExp;
+	private String descripcionArchivoExp;
+	private String nombreRealArchivoExp;
+	private String sizeArchivoExp;
 	
 	public ExpedienteManagedBean() {
 		super();
@@ -174,11 +180,76 @@ public class ExpedienteManagedBean implements Serializable  {
 		listDeptos = new ArrayList<SelectItem> ();
 		listMunicipioByDptos = new ArrayList<SelectItem> ();
 		listPaises = new ArrayList<SelectItem> ();
+		listGenero = new ArrayList<SelectItem> ();
 		
 		nuevoLaboral = new Laboral();		
 		
 	}	
 	
+	public IService getService() {
+		return service;
+	}
+
+	public void setService(IService service) {
+		this.service = service;
+	}
+
+	public String getNombreRealArchivoExp() {
+		return nombreRealArchivoExp;
+	}
+
+	public void setNombreRealArchivoExp(String nombreRealArchivoExp) {
+		this.nombreRealArchivoExp = nombreRealArchivoExp;
+	}
+
+	public String getSizeArchivoExp() {
+		return sizeArchivoExp;
+	}
+
+	public void setSizeArchivoExp(String sizeArchivoExp) {
+		this.sizeArchivoExp = sizeArchivoExp;
+	}
+
+	public String getNombreArchivoExp() {
+		return nombreArchivoExp;
+	}
+
+	public void setNombreArchivoExp(String nombreArchivoExp) {
+		this.nombreArchivoExp = nombreArchivoExp;
+	}
+
+	public String getVersionArchivoExp() {
+		return versionArchivoExp;
+	}
+
+	public void setVersionArchivoExp(String versionArchivoExp) {
+		this.versionArchivoExp = versionArchivoExp;
+	}
+
+	public String getTipoArchivoExp() {
+		return tipoArchivoExp;
+	}
+
+	public void setTipoArchivoExp(String tipoArchivoExp) {
+		this.tipoArchivoExp = tipoArchivoExp;
+	}
+
+	public String getDescripcionArchivoExp() {
+		return descripcionArchivoExp;
+	}
+
+	public void setDescripcionArchivoExp(String descripcionArchivoExp) {
+		this.descripcionArchivoExp = descripcionArchivoExp;
+	}
+
+	public List<SelectItem> getListGenero() {
+		return listGenero;
+	}
+
+	public void setListGenero(List<SelectItem> listGenero) {
+		this.listGenero = listGenero;
+	}
+
 	public Long getPaisIdLaboral() {
 		return paisIdLaboral;
 	}
@@ -194,9 +265,6 @@ public class ExpedienteManagedBean implements Serializable  {
 	public void setListPaises(List<SelectItem> listPaises) {
 		this.listPaises = listPaises;
 	}
-
-	
-
 
 	public String getMunicipioIdSelected() {
 		return municipioIdSelected;
@@ -475,23 +543,7 @@ public class ExpedienteManagedBean implements Serializable  {
 			boolean disableSolicitarCertificacion) {
 		this.disableSolicitarCertificacion = disableSolicitarCertificacion;
 	}
-/*
-	public void listener(ActionEvent event){
-		System.out.println("Metodo listener del ExpedienteManagedBean");
-		
-	    Long idSolicitud = (Long) event.getComponent().getAttributes().get("solicitudExp");	    	
-		        
-        System.out.println("Obtiene el parametro idSolicicitud " + idSolicitud);
-        
-        Solicitud s = service.getSolicitudById(idSolicitud);
-        System.out.println("Despues de obtener el objeto solicitud " + s.getId());
-        
-        this.setSolicitudExp(s); 
-                
-        System.out.println("Despues de asignar a solicitudExp " + this.solicitudExp.getId());
 
-	}
-*/
 	public Solicitud getSolicitudExp() {		
 		return solicitudExp;
 	}
@@ -741,14 +793,18 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.evalIdByArchivoExp = evalIdByArchivoExp;
 	}
 
-	public Map<Integer, Mantenedor> getCatalogoEstadosSolicitud() {
+	public Map<Integer, Mantenedor> getCatalogoEstadosSolicitud() {		
+		//Llenando el catalogo de Estados Solicitudes
+		Integer tipoEstadoSolicitud;
+		tipoEstadoSolicitud = Integer.valueOf(this.solicitudExp.getTipomantenedorestado());
 		
-		List<Mantenedor> listaEstadosSol = service.getMantenedoresByTipo(Integer.valueOf(this.solicitudExp.getTipomantenedorestado()));
+		List<Mantenedor> listaEstadosSol = service.getMantenedoresByTipo(tipoEstadoSolicitud);
+		
+		this.catalogoEstadosSolicitud = new HashMap<Integer, Mantenedor>();
 		
 		for (Mantenedor dato : listaEstadosSol) {
 			this.catalogoEstadosSolicitud.put(dato.getId(), dato);						
-		}	
-		
+		}
 		return catalogoEstadosSolicitud;
 	}
 
@@ -788,8 +844,12 @@ public class ExpedienteManagedBean implements Serializable  {
 			this.listPaises.add(new SelectItem(p.getId(), p.getNombre()));
 		}
 		
-		this.listMunicipioByDptos = new ArrayList<SelectItem>();
-		this.listMunicipioByDptos.add(new SelectItem(null, "Seleccion un Municipio"));
+		listGenero = new ArrayList<SelectItem> ();
+		
+		listGenero.add(new SelectItem(null, "Indique el Genero"));
+		listGenero.add(new SelectItem(0, "Femenino"));
+		listGenero.add(new SelectItem(1, "Masculino"));
+		
 		
 		archivoExp = new Archivo();
 				
@@ -797,21 +857,29 @@ public class ExpedienteManagedBean implements Serializable  {
 	
 	@Autowired
 	public void iniciaBeanExp (){
+		
 		Solicitud  solicitud = (Solicitud)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("dbSolicitudesBean");
-		if (solicitud != null){
+		
+		if (solicitud != null){		
 						
 			this.solicitudExp = solicitud;
 			
+						
 			this.contactoExp = this.solicitudExp.getContacto();
 			if (this.contactoExp.getMunicipioId() != null){
-				this.municipioIdSelected = String.valueOf(this.contactoExp.getMunicipioId());
+				this.municipioIdSelected = String.valueOf(this.contactoExp.getMunicipioId());				
 			} else
 				this.municipioIdSelected = null;
 			
 			if (this.contactoExp.getDepartamentoId() != null){
 				this.departamentoIdSelected = this.contactoExp.getDepartamentoId();
-			} else
+				handleMunicipios();
+			} else{
 				this.departamentoIdSelected = null;
+				
+				this.listMunicipioByDptos = new ArrayList<SelectItem>();
+				this.listMunicipioByDptos.add(new SelectItem(null, "Seleccion un Municipio"));
+			}
 			
 			enabledDisableButton(1);
 			enabledDisableButton(3);
@@ -876,7 +944,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		
 		if (cExp != null) {
 						
-			this.catalogoMunicipiosByDepto = service.getMunicipioDptoByInatec(cExp.getDepartamentoId());
+			this.catalogoMunicipiosByDepto = service.getMunicipioDptoByInatec(cExp.getDepartamentoId());			
 			
 			if (this.catalogoMunicipiosByDepto.size() > 0 ) {
 				
@@ -889,10 +957,13 @@ public class ExpedienteManagedBean implements Serializable  {
 				
 				this.listMunicipioByDptos.add(new SelectItem(null, "Seleccione un Municipio"));
 				
-			    while(claveSet.hasNext()){		      
+			    while(claveSet.hasNext()){
+			    	System.out.println("Crea la lista de Municipios");			    	
 			    	idValor = claveSet.next();
 			    	valor = this.catalogoMunicipiosByDepto.get(idValor);
-			    	this.listMunicipioByDptos.add(new SelectItem(String.valueOf(valor.getMunicipio_id()), valor.getMunicipio_nombre()));			    			    			        		        
+			    	System.out.println("IdMunicipio: " + valor.getMunicipio_id());
+			    	System.out.println("Descripcion " + valor.getMunicipio_nombre());
+			    	this.listMunicipioByDptos.add(new SelectItem(valor.getMunicipio_id(), valor.getMunicipio_nombre()));			    			    			        		        
 			    }
 			}
 			
@@ -912,18 +983,17 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.setTelefonoInstitucion(this.selectedLaboral.getInstitucionTelefono());
 		this.setPaisInstitucion(this.selectedLaboral.getPais());
 		this.setDescripcionCargo(this.selectedLaboral.getDescripcion());
-		
-		this.setPaisIdLaboral(this.selectedLaboral.getPais().getId());
+		if (this.selectedLaboral.getPais() != null)
+			this.setPaisIdLaboral(this.selectedLaboral.getPais().getId());
+		else
+			this.setPaisIdLaboral(null);
 		
 		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("idSelectedLaboral",this.selectedLaboral.getId());
 		
-		enabledDisableButton(2);
+		//enabledDisableButton(2);
 		
-		//actualizaListaPortafolio (new Integer(1));		
-		
-		Object [] objs =  new Object [] {this.selectedLaboral.getId()};		
-		this.listPortafolioLaboral = service.getArchivoByParam ("Archivo.findByLaboralId", objs);
-		
+		actualizaListaPortafolio (new Integer(1));		
+				
 	}
 		
 	public void nuevoLaboral() {		
@@ -941,10 +1011,15 @@ public class ExpedienteManagedBean implements Serializable  {
 	}	
 	
 	public void solicitarCertificacion (){
-		Integer estadoActual = new Integer(this.getSolicitudExp().getEstatus().getId());
-		String proxEstado = this.catalogoEstadosSolicitud.get(estadoActual).getProximo();
 		
-		this.solicitudExp.setEstatus(this.catalogoEstadosSolicitud.get(proxEstado));
+		//Integer estadoActual = new Integer(this.getSolicitudExp().getEstatus().getId());
+		Mantenedor estadoActual = this.getSolicitudExp().getEstatus();
+		Integer proxEstado = Integer.valueOf(estadoActual.getProximo()); //this.catalogoEstadosSolicitud.get(estadoActual).getProximo();
+		
+		Mantenedor proximoEstado = this.getCatalogoEstadosSolicitud().get(proxEstado);
+		
+		if (proxEstado != null)
+			this.solicitudExp.setEstatus(proximoEstado);		
 		
 		Solicitud sol = (Solicitud) service.guardar(this.solicitudExp);
 		
@@ -965,28 +1040,26 @@ public class ExpedienteManagedBean implements Serializable  {
 				
 	public void actualizarContacto() {
 		System.out.println("correo " + solicitudExp.getContacto().getCorreo1());
+		
 		if (solicitudExp.getContacto().getDireccionActual() == null) {
 			solicitudExp.getContacto().setDireccionActual("");			
 		}
 		if (solicitudExp.getContacto().getCorreo1() == null) {
 			solicitudExp.getContacto().setCorreo1("");			
-		}
-		if (solicitudExp.getContacto().getDireccionActual() == null) {
-			solicitudExp.getContacto().setDireccionActual("");			
-		}
+		}		
 		if (solicitudExp.getContacto().getTelefono1() == null) {
 			solicitudExp.getContacto().setTelefono1("");			
 		}
-		
-		if (this.municipioIdSelected != null){
-			this.solicitudExp.getContacto().setMunicipioId(Integer.parseInt(this.municipioIdSelected));
+		if (solicitudExp.getContacto().getTelefono2() == null) {
+			solicitudExp.getContacto().setTelefono2("");			
 		}
 		
 		Contacto contactoExp = (Contacto)service.guardar(solicitudExp.getContacto());
-		System.out.println("Despues de guardar " + contactoExp.getCorreo1());
-		  
-	    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!"));
-	        
+		
+		if (contactoExp != null)
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!"));
+		else
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje: ", "Error al actualizar los datos del contacto..."));
 	      
 	}
 
@@ -1134,51 +1207,97 @@ public class ExpedienteManagedBean implements Serializable  {
 		listEvalBySolicitud.add(new SelectItem(null, "Seleccione la evaluacion"));
 		for (Evaluacion dato : listE) {
 			listEvalBySolicitud.add(new SelectItem(dato.getId(), dato.getUnidad().getCompetenciaDescripcion()));
-			//listEvalBySolicitud.add(new SelectItem(dato.getId(), utilitarios.getCompetenciaDescripcion(dato.getUnidad().getCodigo())));
 		}
 	}
 
 	public void nuevoPortafolio (){
 		System.out.println("Agrega archivo de evidencia al dato laboral/academico: ");
 		
-		if (this.selectedArchivoId == null) {
+		if (this.selectedLaboral == null)
 			
-			if (this.idSeletedLaboral != null) {
+			this.idSeletedLaboral = (Long)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("idSelectedLaboral");
+		else
+			this.idSeletedLaboral = this.selectedLaboral.getId();		
+			
+		if (this.idSeletedLaboral != null) {
+			
+			if (this.selectedLaboral == null)
+				
 				this.selectedLaboral = service.getLaboralById(this.idSeletedLaboral);
-				archivoExp.setLaboral(this.selectedLaboral);
-			}
-		} 
+			
+				((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("selectedLaboral",this.selectedLaboral);
+			
+		}
+		 
 		
 	}
 	
 	public void guardarArchivo() {
+		
+		this.archivoExp = (Archivo)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("archivoExp");
+		
 		if (archivoExp != null) {
-			//Asignando el estado inicial del Portafolio
-			String tipoMantenedorEstado = archivoExp.getTipoMantenedorEstado();
+			//Asignando valores de pantalla
 			
-			Mantenedor primerEstado = service.getMantenedorMinByTipo(tipoMantenedorEstado);
-			
-			archivoExp.setEstado(primerEstado);			
-			
+			archivoExp.setNombre(this.getNombreArchivoExp());
+			archivoExp.setVersion(this.getVersionArchivoExp());
+			archivoExp.setDescripcion(this.getDescripcionArchivoExp());
+						
 			archivoExp = (Archivo) service.guardar(archivoExp);
 			
-			if (archivoExp != null)
+			if (archivoExp != null){
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!"));
-			else
+				((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("archivoExp",null);
+				((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("selectedLaboral",null);
+				((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("idSelectedLaboral",null);				
+			}else{
 				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje: ", "Error al grabar el archivo. Favor revisar..."));
-		}
+			}
+		}		
 		
+	}
+	
+	public void cancelaPortafolio (){
 		
+		this.setNombreArchivoExp(null);
+		this.setDescripcionArchivoExp(null);
+		this.setVersionArchivoExp(null);
+		this.setTipoArchivoExp(null);
+		this.setNombreRealArchivoExp(null);
+		this.setSizeArchivoExp(null);
+		
+		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("archivoExp",null);
+		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("selectedLaboral",null);
+		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("idSelectedLaboral",null);
 	}
 	
 	public void editarPortafolio(){		
 		Object [] objs;
-		if (selectedArchivoId != null){
-			System.out.println("Archivo seleccionado " + selectedArchivoId);
+		if (selectedArchivoId != null){			
 			objs =  new Object [] {selectedArchivoId};
 			this.archivoExp = service.getArchivoOneByParam("Archivo.findById", objs);
 			
 			this.selectedLaboral = archivoExp.getLaboral();
+		}
+	}
+	
+	public void aprobarPortafolio(){
+		System.out.println("selectedLaboral " + selectedLaboral);
+		System.out.println("archivoExp "+ archivoExp);
+		System.out.println("Indica Aprobado: "+ archivoExp.getAprobado());
+		
+		Mantenedor estadoArchivo = archivoExp.getEstado();
+		
+		Integer  proxEstado = Integer.valueOf(estadoArchivo.getProximo());
+		
+		if (proxEstado != null){
+			archivoExp.setEstado(this.catalogoEstadosPortafolio.get(proxEstado));
+		}
+				
+		archivoExp = (Archivo) service.guardar(archivoExp);
+		
+		if (archivoExp != null){
+			
 		}
 	}
 	
@@ -1204,69 +1323,102 @@ public class ExpedienteManagedBean implements Serializable  {
 	public void uploadFile(FileUploadEvent event){
 		
 		Date fechaAhora = new Date();
+		String tituloMsg = "";
+		String mensaje = "";
+		boolean isError = false;
 		
-		FacesMessage msg = new FacesMessage("Proceso Exitoso !!!", event.getFile().getFileName() + " ha sido cargado al servidor.");  
-	    FacesContext.getCurrentInstance().addMessage(null, msg);  
+		FacesMessage msg;   
+	    
 		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
 		
-	    String directorio = ec.getRealPath("/portafolio");
-	    
-	    System.out.println("Valor Directorio " + directorio);
+	    String directorio = ec.getRealPath("/portafolio");	    
 	    Usuario u = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
 	    String nombreFile;
 	    String nombrePropietario;
 	    Long   sizeArchivo;
+	    int    pos;
+	    String extension;
+	    	    	    
 		try {
-			
-			//File targetFolder = new File(directorio);
-			
+		
 			this.file = event.getFile();			
 	
-			nombreFile = file.getFileName();
-			/*
-			if (u.getContacto().getNombreCompleto() != null)
-				nombrePropietario = u.getContacto().getNombreCompleto();
-			else
-				nombrePropietario = u.getContacto().getPrimerNombre() + " " + u.getContacto().getPrimerApellido();
-			*/
-			nombrePropietario = u.getUsuarioAlias();
-			sizeArchivo = (file.getSize()) / 1024;
+			nombreFile = file.getFileName().trim();
 			
-			archivoExp.setNombre(nombreFile);
-			archivoExp.setSize(String.valueOf(sizeArchivo) + " KB");
-			//archivoExp.setArchivoFisico(file.getContents());
-			archivoExp.setFecha(fechaAhora);					
-			archivoExp.setNombreReal(nombreFile);
-			archivoExp.setRuta(nombreFile);
-			archivoExp.setPropietario(nombrePropietario);
-			archivoExp.setTipo(nombreFile);
-			archivoExp.setCategoria(nombreFile);
-			archivoExp.setIcono(nombreFile);
-			archivoExp.setVersion(nombreFile);
+			this.nombreRealArchivoExp = nombreFile;
 			
-					
-			FileOutputStream fos = new FileOutputStream(String.format(directorio+"/%s",file.getFileName()));			
-            fos.write(file.getContents());
-            fos.flush();
-            fos.close();
-			/*
-			InputStream inputStream = file.getInputstream(); 
-			//OutputStream out = new FileOutputStream(new File(targetFolder,event.getFile().getFileName()));
-			OutputStream out = new FileOutputStream(new File(targetFolder,file.getFileName()));
-			int read = 0;
-			byte[] bytes = new byte[1024];
+			pos=nombreFile.indexOf(".");
 			
-			while ((read = inputStream.read(bytes)) != -1) {
-				out.write(bytes, 0, read);			
+			extension = nombreFile.substring(pos); 
+			
+			if ((this.nombreRealArchivoExp.toLowerCase().endsWith(".pdf")) || (this.nombreRealArchivoExp.toLowerCase().endsWith(".png"))){
+							
+				nombrePropietario = u.getUsuarioAlias();
+				
+				sizeArchivo = (file.getSize()) / 1024; // El tamaño del archivo en KB
+				
+				this.sizeArchivoExp = String.valueOf(sizeArchivo) + " KB";
+				
+				archivoExp.setNombre(nombreFile);
+				archivoExp.setSize(this.sizeArchivoExp);			
+				archivoExp.setFecha(fechaAhora);					
+				archivoExp.setNombreReal(this.nombreRealArchivoExp);
+				archivoExp.setRuta(String.format(directorio+"/%s",nombreFile));
+				archivoExp.setPropietario(nombrePropietario);
+				archivoExp.setTipo(extension);
+				archivoExp.setCategoria(extension);
+				archivoExp.setIcono(nombreFile);
+				archivoExp.setVersion("1");
+				archivoExp.setDescripcion(this.nombreRealArchivoExp);
+																	
+				FileOutputStream fos = new FileOutputStream(String.format(directorio+"/%s",file.getFileName()));			
+	            fos.write(file.getContents());
+	            fos.flush();
+	            fos.close();            
+	            
+	            String tipoMantenedorEstado = archivoExp.getTipoMantenedorEstado();
+				
+				Mantenedor primerEstado = service.getMantenedorMinByTipo(tipoMantenedorEstado);
+				
+				archivoExp.setEstado(primerEstado);
+				
+				this.selectedLaboral = (Laboral)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("selectedLaboral");
+				
+				archivoExp.setLaboral(this.selectedLaboral);
+				
+				archivoExp = (Archivo) service.guardar(archivoExp);
+				
+				if (archivoExp != null){		            
+					mensaje = nombreFile + " ha sido cargado al servidor.";
+					isError = false;
+					((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("archivoExp",this.archivoExp);
+				}else {
+					isError = true;
+				}
+				
+				
+	            
+			} else {
+				 mensaje = nombreFile + "Unicamente se permite subir archivo PDF y PNG. Favor revisar...." + nombreFile.toLowerCase();
+				 isError = true;
 			}
-			inputStream.close();
-			out.flush();
-			out.close();
-			*/
-			
+	
 		} catch (IOException e) {
+			isError = true;
 			e.printStackTrace();
 		}		
+		
+	
+		if (isError){
+			tituloMsg = "Proceso Incompleto: ";
+			mensaje = (mensaje.isEmpty()) ? "Se genero un error al subir el archivo. Favor revisar...." : mensaje;
+		} else {
+			tituloMsg = "Proceso Exitoso !!!";
+		}
+		
+		msg = new FacesMessage(tituloMsg, mensaje);
+		
+		FacesContext.getCurrentInstance().addMessage(null, msg);  
 	        			
 	}
 	
@@ -1297,6 +1449,11 @@ public class ExpedienteManagedBean implements Serializable  {
 			
 			if (solicitante.getMunicipioId() == null) {
 				textMsg = (textMsg.isEmpty()) ? "Debe indicar el municipio." : textMsg + " y el municipio.";		
+				this.setDisableSolicitarCertificacion(true);
+			}
+			
+			if (this.getListDatosLaborales().size() == 0) {
+				textMsg = (textMsg.isEmpty()) ? "Debe indicar los datos Laborales / Academicos." : ". Debe indicar los datos Laborales / Academicos.";
 				this.setDisableSolicitarCertificacion(true);
 			}
 			
@@ -1333,6 +1490,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		return "/modulos/solicitudes/expediente?faces-redirect=true";
 		
 	}
-	
+		
+
 	
 }
