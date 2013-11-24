@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,14 +21,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import service.IService;
+import support.UsuarioExterno;
 
 @Component
 @Scope(value="request")
 public class InicioManagedBean implements Serializable {	
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
@@ -36,10 +35,12 @@ public class InicioManagedBean implements Serializable {
 	private Certificacion selectedCertificacion;
 	private int tipoFiltro;
 	private String textoBuscar;
+	private UsuarioExterno usuarioExterno;
 
 	public InicioManagedBean(){
 		super();
 		certificaciones = new ArrayList<Certificacion>();
+		usuarioExterno = new UsuarioExterno();
 	}
 	
 	@PostConstruct
@@ -119,5 +120,30 @@ public class InicioManagedBean implements Serializable {
 		System.out.println("filtro: "+filtro);
 		System.out.println("texto: "+texto);
 		System.out.println("buscar..."+certificaciones.size());
+	}
+	
+	public UsuarioExterno getUsuarioExterno() {
+		return usuarioExterno;
+	}
+
+	public void setUsuarioExterno(UsuarioExterno nuevoUsuario) {
+		this.usuarioExterno = nuevoUsuario;
+	}
+
+	public void registrarUsuarioExterno(UsuarioExterno usuario){
+		this.usuarioExterno = usuario;
+		FacesContext fContext = FacesContext.getCurrentInstance();
+		try
+		{
+			service.registrarUsuarioExterno(usuarioExterno);
+		}
+		catch(Exception excepcion)
+		{
+			FacesMessage message = new FacesMessage("Creación de usuario fallida: " + excepcion.getMessage());
+			fContext.addMessage(null, message);	
+		}
+		this.usuarioExterno = new UsuarioExterno();
+		FacesMessage message = new FacesMessage("Usuario creado exitosamente");
+		fContext.addMessage(null, message);
 	}
 }

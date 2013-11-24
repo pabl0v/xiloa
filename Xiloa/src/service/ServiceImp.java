@@ -14,9 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import support.Departamento;
 import support.Ifp;
+import support.JavaEmailSender;
 import support.Municipio;
+import support.PasswordGenerator;
 import support.USolicitud;
 import support.UCompetencia;
+import support.UsuarioExterno;
 import dao.IDao;
 import dao.IDaoInatec;
 import model.Actividad;
@@ -564,5 +567,23 @@ public class ServiceImp implements IService {
 	@Override
 	public Map<Long, String> getCatalogoUnidades() {
 		return inatecDao.getCatalogoUnidades();
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void registrarUsuarioExterno(UsuarioExterno usuario) {
+		Usuario user = new Usuario();
+		JavaEmailSender emailSender =  new JavaEmailSender();
+		
+		user.setContacto(null);
+		user.setUsuarioAlias(usuario.getUsuario());
+		user.setUsuarioEstatus(true);
+		String password = PasswordGenerator.randomPassword(8);
+		String encoded = PasswordGenerator.encodedPassword(password);
+		emailSender.createAndSendEmail(usuario.getEmail1(), "Creacion de cuenta...", "Su usuario y contraseña son: "+usuario.getUsuario()+"/"+password);
+		System.out.println("Password: "+password+"md5: "+encoded);
+		user.setUsuarioPwd(encoded);
+		user.setRol(rolDao.findById(Rol.class, 6));
+		usuarioDao.save(user);
 	}
 }

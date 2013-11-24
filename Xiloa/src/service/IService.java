@@ -9,6 +9,7 @@ import support.Ifp;
 import support.Municipio;
 import support.UCompetencia;
 import support.USolicitud;
+import support.UsuarioExterno;
 import model.Actividad;
 import model.Archivo;
 import model.Bitacora;
@@ -28,6 +29,8 @@ import model.Unidad;
 import model.Usuario;
 
 public interface IService {
+	
+	public void registrarUsuarioExterno(UsuarioExterno usuario);
 	
 	public Map<Long, String> getCatalogoUnidades();
 	

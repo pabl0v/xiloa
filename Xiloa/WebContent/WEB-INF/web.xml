@@ -41,6 +41,15 @@
 	<context-param>
 		<param-name>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
 		<param-value>true</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
+		<param-value>6LcTweoSAAAAALmFRuVWYzTsVFlb8r23_Fd4ka_H</param-value>
+	</context-param>
+	<context-param>
+		<param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
+		<param-value>6LcTweoSAAAAABfZxFVm31iyzKtGlOBsUMg8S2yF</param-value>
 	</context-param>	
  
 	<!-- Welcome page -->

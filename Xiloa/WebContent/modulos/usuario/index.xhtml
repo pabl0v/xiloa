@@ -121,13 +121,13 @@
 	            <p:tabView id="tabView">  
 	                <p:tab id="tab1" titleStyleClass="user" title="Ingresar">  
 	                    <h:form id="loginForm" prependId="false">
-	                        <h3>Bienvenido al Sistema de gestion de Certificaciones de Competencias Laborales del INATEC</h3>
+	                        <h3>Bienvenido al Sistema de gestión de Certificaciones de Competencias Laborales del INATEC</h3>
 	                        <p>Escriba su nombre de usuario y contraseña abajo y pulse en "continuar" para acceder al sistema</p>
-	                        <p>Si aun no se registra, use la opcion de "Registrar Nueva Cuenta" para hacerlo</p>
+	                        <p>Si aun no se registra, use la opción de "Registrar Nueva Cuenta" para hacerlo</p>
 	                        <h2>Ingrese con una cuenta registrada</h2>
 	                        <div id="aqui_formulario"></div>
 	                        <div id="error">
-	                        	<p>Error de inicio de sesion!</p>
+	                        	<p>Error de inicio de sesión!</p>
 	                        	<p>Verifique que su usuario y contraseña sean correctos.</p>
 	                        </div>
 	                    </h:form>
@@ -136,8 +136,8 @@
 	
 	                <p:tab id="tab2" titleStyleClass="llave" title="Olvido de contraseña">  
 	                    <h:form>
-	                        <h2>¿Olvido su contraseña?</h2>
-	                        <p>Si olvido su contraseña, ingrese aqui su nombre de usuario y le enviaremos un correo que le permitira cambiar la contraseña</p>
+	                        <h2>¿Olvidó su contraseña?</h2>
+	                        <p>Si olvidó su contraseña, ingrese aquí su nombre de usuario y le enviaremos un correo que le permitira cambiar la contraseña</p>
 	                        <p style="font-weight:bold; display: inline-block; margin-right:10px;">Nombre de usuario:</p>
 	                        <p:inputText />
 	                        <br/>
@@ -148,83 +148,48 @@
 	                <p:tab id="tab3" titleStyleClass="nuevo" title="Registrar nueva cuenta">  
 	                    <h:form id="formulario">
 	                    	<h2>Registrar una nueva cuenta</h2>
-	                    	<p>Para registrarse, complete la informacion inferior por favor.</p>
-	                    	<p>(La informacion obligatoria esta marcada con un asterisco: *)</p>
+	                    	<p>Para registrarse, complete la información inferior por favor.</p>
+	                    	<p>(La información obligatoria esta marcada con un asterisco: *)</p>
+	                    	<h:panelGroup id="updateFormAllValuesButNotCaptcha">
 	                     	<div class="seccion_nuevousuario">
 		                        <h:outputLabel for="primernombre" value="*Nombre de usuario:" />  
-		                        <p:inputText id="primernombre" required="true" requiredMessage="Surname is required." value="#{personBean.firstname}" />
+		                        <p:inputText id="primernombre" required="true" requiredMessage="El usuario es requerido." value="#{inicioManagedBean.usuarioExterno.usuario}" />
 	                        </div>  
 	                        <div class="seccion_nuevousuario">
-		                        <h:outputLabel for="nombremostrar" value="*Nombre a mostrar:" />  
-		                        <p:inputText id="nombremostrar" value="#{personBean.surname}" required="true" requiredMessage="Surname is required."/>
+		                        <h:outputLabel for="nombre" value="*Nombre:" />  
+		                        <p:inputText id="nombre" value="#{inicioManagedBean.usuarioExterno.nombre}" required="true" requiredMessage="El nombre es requerido."/>
 	                        </div>
 	                        <div class="seccion_nuevousuario">  
-		                        <h:outputLabel for="nombrereal" value="*Nombre real:" />  
-		                        <p:inputText id="nombrereal" value="#{personBean.firstname}" />
-	                        </div>
-	                        <p style="margin-left:13px;">El "nombre de pantalla" es el que se muestra a los demas.</p>
-	                        <div class="seccion_nuevousuario">  
-		                        <h:outputLabel for="correo" value="*Direccion de correo:" />  
-		                        <p:inputText id="correo" value="#{personBean.firstname}" />
+		                        <h:outputLabel for="apellido" value="*Apellido:" />  
+		                        <p:inputText id="apellido" value="#{inicioManagedBean.usuarioExterno.apellido}" required="true" requiredMessage="El apellido es requerido."/>
 	                        </div>
 	                        <div class="seccion_nuevousuario">  
-		                        <h:outputLabel for="confirmcorreo" value="*Confirmacion direccion de correo:" />  
-		                        <p:inputText id="confirmcorreo" value="#{personBean.firstname}" />
+		                        <h:outputLabel for="correo" value="*Dirección de correo:" />  
+		                        <p:inputText id="correo" value="#{inicioManagedBean.usuarioExterno.email1}" />
 	                        </div>
-	                        <div class="seccion_nuevousuario"> 
-		                        <h:outputLabel value="*Comprobacion de seguridad:" />  
-		                        <img src="http://www.opencaptcha.com/img/1546546465465j.jpgx"></img>
-	                        </div>  
-	                        <p:commandButton process="@all" update="formulario" styleClass="boton_verde" value="Registrar"  actionListener="#{personBean.savePerson}" />
+	                        <div class="seccion_nuevousuario">  
+		                        <h:outputLabel for="confirmcorreo" value="*Confirmación direccion de correo:" />  
+		                        <p:inputText id="confirmcorreo" value="#{inicioManagedBean.usuarioExterno.email2}" />
+	                        </div>
+	                        </h:panelGroup>
+	                        <div class="seccion_nuevousuario">
+								<p:captcha id="captcha" language="es" theme="clean" validatorMessage="El código digitado es incorreto!" requiredMessage="Debe ingresar el código" label="Captcha"/>
+							</div>
+	                        <p:commandButton process="@all" update="updateFormAllValuesButNotCaptcha" styleClass="boton_verde" value="Registrar" onerror="Recaptcha.reload()" action="#{inicioManagedBean.registrarUsuarioExterno(inicioManagedBean.usuarioExterno)}" />
 	                   </h:form>
 	                </p:tab>  
 	            </p:tabView>     
            </div>
         </div>
-        <!-- 
-        <p:dialog id="modal_info_competencias" header="Detalle:" widgetVar="modal_comp" width="550" height="500">  
-        	<div class="seccion_detalle">
-      			<p>Nombre de la certificacion</p>
-      			<h:outputText value="Auxiliar en contabilidad"></h:outputText>  		
-          	</div>
-          	<div class="seccion_detalle">
-      			<p>Ultimo dia para solicitar evaluacion:</p>
-      			<h:outputText value="2013/01/22"></h:outputText>  		
-          	</div>
-          	<div class="seccion_detalle">
-      			<p>Direccion del Centro evaluador:</p>
-      			<h:outputText value="Centro Juvenil Don Bosco. Villa Don Bosco, MAnagua, Telfono: +50500000000, email: info@donbosco.com.ni"></h:outputText>  		
-          	</div>
-          	<div class="seccion_detalle">
-      			<p>Requisitos para aplicar a la evaluacion:</p>
-      			<ul>
-      				<li>Formato de solicitud</li>
-      				<li>Copia de cedula</li>
-      				<li>2 fotos (TamaÃ±o diploma)</li>
-      				<li>Experiencia de 3 aÃ±os en panaderia</li>
-      				<li>Leer y escribir</li>
-      				<li>Mayor de 20 aÃ±os de edad</li>
-      			</ul>  		
-          	</div>
-          	<div class="seccion_detalle">
-      			<p>Arancel:</p>
-      			<h:outputText value="C$ 200.00"></h:outputText>  		
-          	</div>
-          	<h:form>
-	          	<p:commandButton onclick="PF('modal_comp').hide()" value="Cancelar"/> 
-	            <p:commandButton onclick="PF('modal_solicitud').show()" value="Aplicar"/>
-            </h:form>
-    	</p:dialog>
-    	-->  
-        
+
         <p:dialog id="modal_solicitud_competencia" header="" widgetVar="modal_solicitud" modal="true" width="480" height="240">
           <h:form>
-		  <p style="font-size:16px;padding:10px;font-weight:bold;">Para poder aplicar a una certificacion debe de estar registrado o autenticado.<br/><br/>Si aun no tiene una cuenta, pulse <a style="cursor:pointer;color:blue;" onclick="$('.ui-tabs-nav').children('li').eq(2).click();PF('modal_solicitud').hide();PF('modal_comp').hide();">aqui</a> para registar su usuario en el <a>Sistema de Certificaciones Laborales del INATEC</a></p>         
+		  <p style="font-size:16px;padding:10px;font-weight:bold;">Para poder aplicar a una certificación debe de estar registrado o autenticado.<br/><br/>Si aún no tiene una cuenta, pulse <a style="cursor:pointer;color:blue;" onclick="$('.ui-tabs-nav').children('li').eq(2).click();PF('modal_solicitud').hide();PF('modal_comp').hide();">aqui</a> para registar su usuario en el <a>Sistema de Certificaciones Laborales del INATEC</a></p>         
           <p:commandButton onclick="PF('modal_solicitud').hide();PF('modal_comp').hide();" value="Cerrar" style="text-align:center;"/>
           </h:form>
         </p:dialog>   
         <footer>
-            <p>2013 &#174;Derechos reservados por INATEC --  Sistema de gestion de Certificaciones Laborales del INATEC</p>
+            <p>2013 &#174;Derechos reservados por INATEC --  Sistema de gestión de Certificaciones Laborales del INATEC</p>
         </footer>
         </div>
     </h:body>
