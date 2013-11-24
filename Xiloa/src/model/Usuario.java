@@ -36,7 +36,7 @@ public class Usuario implements Serializable {
 	private Long id;
 	
 	
-	@OneToOne(fetch=FetchType.LAZY, mappedBy="usuario")
+	@OneToOne(fetch=FetchType.EAGER, mappedBy="usuario")
 	private Contacto contacto;
 	
 	@NotBlank
@@ -55,6 +55,10 @@ public class Usuario implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="rol_id")		
 	private Rol rol;
+	
+	@NotNull
+	@Column(name = "usuario_cambiar_pwd", nullable = false)	
+	private boolean cambiarPwd = false;
 	
 	@NotNull
 	@Column(name = "usuario_estatus", nullable = false)
@@ -100,6 +104,14 @@ public class Usuario implements Serializable {
 		this.rol = rol;
 	}
 
+	public boolean isCambiarPwd() {
+		return cambiarPwd;
+	}
+
+	public void setCambiarPwd(boolean cambiarPwd) {
+		this.cambiarPwd = cambiarPwd;
+	}
+
 	public boolean isUsuarioEstatus() {
 		return usuarioEstatus;
 	}
@@ -108,18 +120,17 @@ public class Usuario implements Serializable {
 		this.usuarioEstatus = usuarioEstatus;
 	}
 
-	public Usuario(Contacto contacto, String usuarioAlias, String usuarioPwd,
-			Rol rol, boolean usuarioEstatus) {
+	public Usuario(Contacto contacto, String usuarioAlias, String usuarioPwd, Rol rol, boolean cambiarPwd, boolean usuarioEstatus) {
 		super();
 		this.contacto = contacto;
 		this.usuarioAlias = usuarioAlias;
 		this.usuarioPwd = usuarioPwd;
 		this.rol = rol;
+		this.cambiarPwd = cambiarPwd;
 		this.usuarioEstatus = usuarioEstatus;
 	}
 	
 	public Usuario() {
 		super();		
-	}
-	
+	}	
 }

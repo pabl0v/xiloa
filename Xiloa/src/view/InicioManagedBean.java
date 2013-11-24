@@ -36,6 +36,7 @@ public class InicioManagedBean implements Serializable {
 	private int tipoFiltro;
 	private String textoBuscar;
 	private UsuarioExterno usuarioExterno;
+	private String usuarioReset;
 
 	public InicioManagedBean(){
 		super();
@@ -130,20 +131,55 @@ public class InicioManagedBean implements Serializable {
 		this.usuarioExterno = nuevoUsuario;
 	}
 
+	public String getUsuarioReset() {
+		return usuarioReset;
+	}
+
+	public void setUsuarioReset(String usuarioReset) {
+		this.usuarioReset = usuarioReset;
+	}
+
 	public void registrarUsuarioExterno(UsuarioExterno usuario){
 		this.usuarioExterno = usuario;
 		FacesContext fContext = FacesContext.getCurrentInstance();
+		
+		if(!usuario.getEmail1().equals(usuario.getEmail2()))
+		{
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Creación de usuario fallida: La dirección de correo y su confirmación no coinciden", null);
+			fContext.addMessage(null, message);
+			return;			
+		}
+		
 		try
 		{
 			service.registrarUsuarioExterno(usuarioExterno);
 		}
 		catch(Exception excepcion)
 		{
-			FacesMessage message = new FacesMessage("Creación de usuario fallida: " + excepcion.getMessage());
-			fContext.addMessage(null, message);	
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Creación de usuario fallida: "+excepcion.getMessage(), null);
+			fContext.addMessage(null, message);
+			return;
 		}
 		this.usuarioExterno = new UsuarioExterno();
 		FacesMessage message = new FacesMessage("Usuario creado exitosamente");
+		fContext.addMessage(null, message);
+	}
+	
+	public void resetearPassword(String usuario){
+		this.usuarioReset = usuario;
+		FacesContext fContext = FacesContext.getCurrentInstance();
+		try
+		{
+			service.resetPassword(usuario);
+		}
+		catch(Exception excepcion)
+		{
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Generación de contraseña fallida: "+excepcion.getMessage(), null);
+			fContext.addMessage(null, message);
+			return;
+		}
+		this.usuarioReset = null;
+		FacesMessage message = new FacesMessage("Contraseña generada exitosamente");
 		fContext.addMessage(null, message);
 	}
 }

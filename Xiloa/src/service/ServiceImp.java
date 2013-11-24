@@ -3,6 +3,7 @@ package service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -194,16 +195,40 @@ public class ServiceImp implements IService {
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void RegistrarUsuarioOpenId(String login, String nombre, String apellido, String email, String rol) {
-		//Object [] objs =  new Object [] {rol};
-		Usuario usuario = new Usuario(null, //contacto 
-				                      login, //usuarioAlias
-				                      "", //usuarioPwd
-				                      rolDao.findOneByQuery("Select r from roles r where r.estatus='true' and r.nombre="+"'"+rol+"'"), //rol
-				                      //rolDao.findOneByNamedQueryParam("Rol.findByNombre", objs),
-				                      true // usuarioEstatus
-				                      );		
-		usuarioDao.save(usuario);
+	public void RegistrarUsuarioOpenId(String login, String nombre, String apellido, String email) {
+		
+		Usuario user = usuarioDao.save(new Usuario(null, login, "", rolDao.findById(Rol.class, 6), false, true));
+		
+		//registrando el contacto
+		contactoDao.save(new Contacto(
+				user, 
+				new HashSet<Laboral>(), 
+				user.getRol(), 
+				0, 
+				nombre,
+				null,
+				apellido,
+				null,
+				nombre+" "+apellido, 
+				0,
+				email, 
+				null, 
+				"N/D", 
+				null, 
+				0, 
+				0, 
+				"N/D", 
+				"N/D",
+				null, 
+				new Date(), 
+				1, 
+				null, 
+				null, 
+				null, 
+				false, 
+				null, 
+				null,  
+				null));
 	}
 
 	@Override
@@ -572,8 +597,11 @@ public class ServiceImp implements IService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void registrarUsuarioExterno(UsuarioExterno usuario) {
+		
 		Usuario user = new Usuario();
 		JavaEmailSender emailSender =  new JavaEmailSender();
+		
+		//registrando el usuario
 		
 		user.setContacto(null);
 		user.setUsuarioAlias(usuario.getUsuario());
@@ -581,9 +609,55 @@ public class ServiceImp implements IService {
 		String password = PasswordGenerator.randomPassword(8);
 		String encoded = PasswordGenerator.encodedPassword(password);
 		emailSender.createAndSendEmail(usuario.getEmail1(), "Creacion de cuenta...", "Su usuario y contraseña son: "+usuario.getUsuario()+"/"+password);
-		System.out.println("Password: "+password+"md5: "+encoded);
 		user.setUsuarioPwd(encoded);
 		user.setRol(rolDao.findById(Rol.class, 6));
-		usuarioDao.save(user);
+		user = usuarioDao.save(user);
+		
+		//registrando el contacto
+		contactoDao.save(new Contacto(
+				user, 
+				new HashSet<Laboral>(), 
+				user.getRol(), 
+				0, 
+				usuario.getNombre(),
+				null,
+				usuario.getApellido(),
+				null,
+				usuario.getNombre()+" "+usuario.getApellido(), 
+				0,
+				usuario.getEmail1(), 
+				null, 
+				"N/D", 
+				null, 
+				0, 
+				0, 
+				"N/D", 
+				"N/D",
+				null, 
+				new Date(), 
+				1,	//nacionalidad 
+				null, 
+				null, 
+				null, 
+				false, 
+				null, 
+				null,  
+				null));
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void resetPassword(String usuario) {
+		Usuario user = usuarioDao.findOneByNamedQueryParam("Usuario.findByLogin", new Object[] {usuario});
+		JavaEmailSender emailSender =  new JavaEmailSender();
+		
+		if(user != null){
+			String password = PasswordGenerator.randomPassword(8);
+			String encoded = PasswordGenerator.encodedPassword(password);
+			user.setCambiarPwd(true);
+			user.setUsuarioPwd(encoded);
+			usuarioDao.save(user);
+			emailSender.createAndSendEmail(user.getContacto().getCorreo1(), "Nueva contraseña...", "Su usuario y nueva contraseña son: "+usuario+"/"+password);
+		}
 	}
 }

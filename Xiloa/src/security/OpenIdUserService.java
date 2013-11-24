@@ -21,16 +21,15 @@ public class OpenIdUserService implements UserDetailsService, AuthenticationUser
 
 	@Override
 	public UserDetails loadUserDetails(OpenIDAuthenticationToken token) {
-		String openId = token.getIdentityUrl();
-
+		String email = getUserData(token, "email");
 		try
 		{
-			return localUserService.loadUserByUsername(openId);
+			return localUserService.loadUserByUsername(email);
 		}
-		catch(UsernameNotFoundException e1){}
+		catch(UsernameNotFoundException e){}
 		
-		service.RegistrarUsuarioOpenId(openId, getUserData(token, "firstname"), getUserData(token, "lastname"), getUserData(token, "email"), "visitante");
-		return localUserService.loadUserByUsername(openId);
+		service.RegistrarUsuarioOpenId(email, getUserData(token, "firstname"), getUserData(token, "lastname"), email);
+		return localUserService.loadUserByUsername(email);
 	}
 
 	@Override

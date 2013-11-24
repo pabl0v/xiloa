@@ -30,6 +30,8 @@ import model.Usuario;
 
 public interface IService {
 	
+	public void resetPassword(String usuario);
+	
 	public void registrarUsuarioExterno(UsuarioExterno usuario);
 	
 	public Map<Long, String> getCatalogoUnidades();
@@ -71,7 +73,7 @@ public interface IService {
 	public List<Contacto> getContactosInatec();
 	public Usuario getUsuarioLocal(String usuario);
 	public Usuario getUsuarioInatec(String usuario);	
-	public void RegistrarUsuarioOpenId(String login, String nombre, String apellido, String email, String rol);
+	public void RegistrarUsuarioOpenId(String login, String nombre, String apellido, String email);
 	public List<USolicitud> getUSolicitudes ();
 	public List<Solicitud> getSolicitudes();
 	public List<Solicitud> getSolicitudesByParam(HashMap<String, Object> param);

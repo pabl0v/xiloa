@@ -148,11 +148,11 @@ public class ServiceTest {
 		
 		//creando usuarios
 		
-		usuarioAdmin = new Usuario(null,"admin","d033e22ae348aeb5660fc2140aec35850c4da997",rolAdmin,true);		
-		usuarioLopez = new Usuario(null,"nlopez","d033e22ae348aeb5660fc2140aec35850c4da997",rolAdmin,true);
-		usuarioRuiz = new Usuario(null,"aruiz","d033e22ae348aeb5660fc2140aec35850c4da997",rolAdmin,true);
-		usuarioPerez = new Usuario(null,"lperez","d033e22ae348aeb5660fc2140aec35850c4da997",rolAdmin,true);
-		usuarioArauz = new Usuario(null,"larauz","d033e22ae348aeb5660fc2140aec35850c4da997",rolAdmin,true);
+		usuarioAdmin = new Usuario(null,"admin","d033e22ae348aeb5660fc2140aec35850c4da997",rolAdmin,false,true);		
+		usuarioLopez = new Usuario(null,"nlopez","d033e22ae348aeb5660fc2140aec35850c4da997",rolAdmin,false,true);
+		usuarioRuiz = new Usuario(null,"aruiz","d033e22ae348aeb5660fc2140aec35850c4da997",rolAdmin,false,true);
+		usuarioPerez = new Usuario(null,"lperez","d033e22ae348aeb5660fc2140aec35850c4da997",rolAdmin,false,true);
+		usuarioArauz = new Usuario(null,"larauz","d033e22ae348aeb5660fc2140aec35850c4da997",rolAdmin,false,true);
 		
 		usuarioAdmin = (Usuario)service.guardar(usuarioAdmin);
 		usuarioArauz = (Usuario)service.guardar(usuarioArauz);

@@ -65,10 +65,10 @@ public class LoginController implements PhaseListener {
 			Authentication authentication = authenticationManager.authenticate(token);
 			SecurityContext sContext = SecurityContextHolder.getContext();
 			sContext.setAuthentication(authentication);
-			return "/modulos/planificacion/planificacion?faces-redirect=true";
+			return "/modulos/solicitudes/solicitudes?faces-redirect=true";
 		} catch(AuthenticationException loginError){
 			FacesContext fContext = FacesContext.getCurrentInstance();
-			FacesMessage message = new FacesMessage("Autenticación fallida: " + loginError.getMessage());
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Autenticación fallida: " + loginError.getMessage(), null);
 			fContext.addMessage(null, message);
 			return "/modulos/usuario/index.xhtml?error=1";
 		}

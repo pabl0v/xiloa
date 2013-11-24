@@ -139,9 +139,9 @@
 	                        <h2>¿Olvidó su contraseña?</h2>
 	                        <p>Si olvidó su contraseña, ingrese aquí su nombre de usuario y le enviaremos un correo que le permitira cambiar la contraseña</p>
 	                        <p style="font-weight:bold; display: inline-block; margin-right:10px;">Nombre de usuario:</p>
-	                        <p:inputText />
+	                        <p:inputText id="usuarioReset" required="true" requiredMessage="El usuario es requerido." value="#{inicioManagedBean.usuarioReset}" />
 	                        <br/>
-	                        <p:commandButton styleClass="boton_verde" value="Enviar correo" />
+							<p:commandButton process="@all" styleClass="boton_verde" value="Enviar correo" action="#{inicioManagedBean.resetearPassword(inicioManagedBean.usuarioReset)}" />	                        
 	                    </h:form>
 	                </p:tab>  
 	
@@ -165,15 +165,19 @@
 	                        </div>
 	                        <div class="seccion_nuevousuario">  
 		                        <h:outputLabel for="correo" value="*Dirección de correo:" />  
-		                        <p:inputText id="correo" value="#{inicioManagedBean.usuarioExterno.email1}" />
+		                        <p:inputText id="correo" validatorMessage="Dirección de correo invalida" requiredMessage="Ingrese su dirección de correo" value="#{inicioManagedBean.usuarioExterno.email1}">
+									<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+		                        </p:inputText>
 	                        </div>
 	                        <div class="seccion_nuevousuario">  
 		                        <h:outputLabel for="confirmcorreo" value="*Confirmación direccion de correo:" />  
-		                        <p:inputText id="confirmcorreo" value="#{inicioManagedBean.usuarioExterno.email2}" />
+		                        <p:inputText id="confirmcorreo" validatorMessage="Confirmación de dirección de correo invalida" requiredMessage="Ingrese la confirmación de su dirección de correo" value="#{inicioManagedBean.usuarioExterno.email2}">
+									<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+		                        </p:inputText>
 	                        </div>
 	                        </h:panelGroup>
 	                        <div class="seccion_nuevousuario">
-								<p:captcha id="captcha" language="es" theme="clean" validatorMessage="El código digitado es incorreto!" requiredMessage="Debe ingresar el código" label="Captcha"/>
+								<p:captcha id="captcha" language="es" theme="clean" validatorMessage="El código de seguridad es incorreto!" requiredMessage="Debe ingresar el código de seguridad" label="Captcha"/>
 							</div>
 	                        <p:commandButton process="@all" update="updateFormAllValuesButNotCaptcha" styleClass="boton_verde" value="Registrar" onerror="Recaptcha.reload()" action="#{inicioManagedBean.registrarUsuarioExterno(inicioManagedBean.usuarioExterno)}" />
 	                   </h:form>

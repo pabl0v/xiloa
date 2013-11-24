@@ -28,6 +28,15 @@
 				<openid-attribute name="email" type="http://axschema.org/contact/email" required="true" count="1"/>
 				<openid-attribute name="firstname" type="http://axschema.org/namePerson/first" required="true"/>
 				<openid-attribute name="lastname" type="http://axschema.org/namePerson/last" required="true"/>
+				<!-- 
+				<openid-attribute name="email" type="http://openid.net/schema/contact/internet/email" required="true" count="1"/>
+				<openid-attribute name="firstname" type="http://openid.net/schema/namePerson/first" required="true"/>
+				<openid-attribute name="lastname" type="http://openid.net/schema/namePerson/last" required="true"/>				
+				<openid-attribute name="gender" type="http://openid.net/schema/gender" required="true"/>
+				<openid-attribute name="year" type="http://openid.net/schema/birthDate/birthYear" required="true"/>
+				<openid-attribute name="month" type="http://openid.net/schema/birthDate/birthMonth" required="true"/>
+				<openid-attribute name="day" type="http://openid.net/schema/birthDate/birthday" required="true"/>
+				 -->				
 			</attribute-exchange>
 		</openid-login>
 
