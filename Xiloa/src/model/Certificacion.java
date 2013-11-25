@@ -176,7 +176,7 @@ public class Certificacion implements Serializable {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable
 	(
-			name = "pinvolucrados",
+			name = "sccl.pinvolucrados",
 			joinColumns = @JoinColumn(name = "certificacion_id", unique = false),
 			inverseJoinColumns = @JoinColumn(name = "contacto_id", unique = false)
 	)

@@ -100,7 +100,7 @@ public class Actividad implements Serializable {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable
 	(
-			name = "ainvolucrados",
+			name = "sccl.ainvolucrados",
 			joinColumns = @JoinColumn(name = "actividad_id", unique = false),
 			inverseJoinColumns = @JoinColumn(name = "contacto_id", unique = false)
 	)

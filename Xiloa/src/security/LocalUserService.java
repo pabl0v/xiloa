@@ -25,6 +25,7 @@ public class LocalUserService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
 		usuario = service.getUsuarioLocal(login);
+		usuario = service.registrarAcceso(usuario);
 		if(usuario == null)
 			throw new UsernameNotFoundException("Usuario no existe.");
 		else

@@ -150,6 +150,13 @@ public class InicioManagedBean implements Serializable {
 			return;			
 		}
 		
+		if(service.existeUsuario(usuario.getUsuario()))
+		{
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Creación de usuario fallida: El usuario ya existe", null);
+			fContext.addMessage(null, message);
+			return;			
+		}
+		
 		try
 		{
 			service.registrarUsuarioExterno(usuarioExterno);
@@ -160,6 +167,7 @@ public class InicioManagedBean implements Serializable {
 			fContext.addMessage(null, message);
 			return;
 		}
+		
 		this.usuarioExterno = new UsuarioExterno();
 		FacesMessage message = new FacesMessage("Usuario creado exitosamente");
 		fContext.addMessage(null, message);

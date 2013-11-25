@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
@@ -19,9 +18,8 @@ public class Perfil implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "seq_perfiles", sequenceName = "seq_perfiles", allocationSize=1, initialValue= 1)
-	@GeneratedValue(strategy=GenerationType.AUTO, generator = "seq_perfiles")
-	@Column(name = "perfil_id", nullable = false)	
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "perfil_id", nullable = false)
 	private Long id;
 	
 	@Column(name = "perfil_nombre", nullable = false)	
@@ -111,8 +109,7 @@ public class Perfil implements Serializable {
 		this.habilitado = habilitado;
 	}
 
-	public Perfil(String nombre, String descripcion, String permiso,
-			String modulo, String seccion, boolean permitido, boolean habilitado) {
+	public Perfil(String nombre, String descripcion, String permiso, String modulo, String seccion, boolean permitido, boolean habilitado) {
 		super();
 		this.nombre = nombre;
 		this.descripcion = descripcion;
@@ -126,5 +123,4 @@ public class Perfil implements Serializable {
 	public Perfil() {
 		super();		
 	}
-	
 }

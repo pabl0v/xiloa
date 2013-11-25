@@ -183,9 +183,7 @@ public class ServiceImp implements IService {
 
 	@Override
 	public Usuario getUsuarioLocal(String usuario) {
-		//Object [] objs =  new Object [] {"'"+usuario+"'"};
-		//return usuarioDao.findOneByNamedQueryParam("Usuario.findByLogin", objs);
-		return usuarioDao.findOneByQuery("Select u from usuarios u where u.usuarioEstatus='true' and u.usuarioAlias="+"'"+usuario+"'");
+		return usuarioDao.findOneByNamedQueryParam("Usuario.findByLogin", new Object[] {usuario});
 	}
 	
 	@Override
@@ -204,27 +202,27 @@ public class ServiceImp implements IService {
 				user, 
 				new HashSet<Laboral>(), 
 				user.getRol(), 
-				0, 
+				null, 
 				nombre,
 				null,
 				apellido,
 				null,
 				nombre+" "+apellido, 
-				0,
+				null,
 				email, 
 				null, 
 				"N/D", 
 				null, 
-				0, 
-				0, 
+				null, 
+				null, 
 				"N/D", 
 				"N/D",
 				null, 
 				new Date(), 
-				1, 
 				null, 
 				null, 
 				null, 
+				"N/D", 
 				false, 
 				null, 
 				null,  
@@ -606,9 +604,10 @@ public class ServiceImp implements IService {
 		user.setContacto(null);
 		user.setUsuarioAlias(usuario.getUsuario());
 		user.setUsuarioEstatus(true);
+		user.setFechaRegistro(new Date());
+		user.setCambiarPwd(true);
 		String password = PasswordGenerator.randomPassword(8);
 		String encoded = PasswordGenerator.encodedPassword(password);
-		emailSender.createAndSendEmail(usuario.getEmail1(), "Creacion de cuenta...", "Su usuario y contraseña son: "+usuario.getUsuario()+"/"+password);
 		user.setUsuarioPwd(encoded);
 		user.setRol(rolDao.findById(Rol.class, 6));
 		user = usuarioDao.save(user);
@@ -618,31 +617,32 @@ public class ServiceImp implements IService {
 				user, 
 				new HashSet<Laboral>(), 
 				user.getRol(), 
-				0, 
+				null, 
 				usuario.getNombre(),
 				null,
 				usuario.getApellido(),
 				null,
 				usuario.getNombre()+" "+usuario.getApellido(), 
-				0,
+				null,
 				usuario.getEmail1(), 
 				null, 
 				"N/D", 
 				null, 
-				0, 
-				0, 
+				null, 
+				null, 
 				"N/D", 
 				"N/D",
 				null, 
 				new Date(), 
-				1,	//nacionalidad 
+				null,	//nacionalidad 
 				null, 
 				null, 
-				null, 
+				"N/D", 
 				false, 
 				null, 
 				null,  
 				null));
+		emailSender.createAndSendEmail(usuario.getEmail1(), "Creacion de cuenta...", "Su usuario y contraseña son: "+usuario.getUsuario()+"/"+password);
 	}
 
 	@Override
@@ -659,5 +659,24 @@ public class ServiceImp implements IService {
 			usuarioDao.save(user);
 			emailSender.createAndSendEmail(user.getContacto().getCorreo1(), "Nueva contraseña...", "Su usuario y nueva contraseña son: "+usuario+"/"+password);
 		}
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public Usuario registrarAcceso(Usuario usuario) {
+		if(usuario != null){
+			usuario.setFechaUltimoAcceso(new Date());
+			return usuarioDao.save(usuario);
+		}
+		return null;
+	}
+
+	@Override
+	public boolean existeUsuario(String usuario) {
+		Usuario user = usuarioDao.findOneByNamedQueryParam("Usuario.findByLogin", new Object[] {usuario});
+		if(user != null)
+			return true;
+		else
+			return false;
 	}
 }

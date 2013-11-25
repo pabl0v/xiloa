@@ -18,7 +18,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -38,8 +37,7 @@ public class Contacto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "seq_contactos", sequenceName = "seq_contactos", allocationSize=1, initialValue= 1)
-	@GeneratedValue(strategy=GenerationType.AUTO, generator = "seq_contactos")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "contacto_id", nullable = false)	
 	private Long id;
 	
@@ -54,9 +52,8 @@ public class Contacto implements Serializable {
 	@JoinColumn(name="rol_id")
 	private Rol rol;
 	
-	@NotNull
-	@Column(name = "entidad_id", nullable = false)	
-	private int entidadId;
+	@Column(name = "entidad_id", nullable = true)	
+	private Integer entidadId;
 	
 	@NotNull
 	@Column(name = "primer_nombre", nullable = false)
@@ -75,9 +72,8 @@ public class Contacto implements Serializable {
 	@Column(name = "nombre_completo", nullable = true)
 	private String nombreCompleto;
 
-	@NotNull
-	@Column(name = "sexo_id", nullable = false)
-	private int sexo;
+	@Column(name = "sexo_id", nullable = true)
+	private Integer sexo;
 	
 	@NotNull
 	@Column(name = "correo1", nullable = false)
@@ -93,13 +89,11 @@ public class Contacto implements Serializable {
 	@Column(name = "telefono2", nullable = true)	
 	private String telefono2;
 
-	@NotNull
-	@Column(name = "tipo_contacto", nullable = false)		
-	private int tipoContacto;
+	@Column(name = "tipo_contacto", nullable = true)		
+	private Integer tipoContacto;
 	
-	@NotNull
-	@Column(name = "tipo_identificacion", nullable = false)	
-	private int tipoIdentificacion;
+	@Column(name = "tipo_identificacion", nullable = true)	
+	private Integer tipoIdentificacion;
 	
 	@NotNull
 	@Column(name = "numero_identificacion", nullable = false)
@@ -119,8 +113,7 @@ public class Contacto implements Serializable {
 	@Temporal(TemporalType.DATE)	
 	private Date fechaRegistro;
 	
-	@NotNull
-	@Column(name = "nacionalidad_id", nullable = false)		
+	@Column(name = "nacionalidad_id", nullable = true)		
 	private Integer nacionalidadId;
 	
 	@Column(name = "departamento_id", nullable = true)		
@@ -144,7 +137,6 @@ public class Contacto implements Serializable {
 	@Column(name = "id_empleado", nullable = true)
 	private Long idEmpleado;
 	
-	
 	public Long getId() {
 		return id;
 	}
@@ -159,10 +151,6 @@ public class Contacto implements Serializable {
 
 	public void setLaborales(Set<Laboral> laborales) {
 		this.laborales = laborales;
-	}
-
-	public void setNacionalidadId(Integer nacionalidadId) {
-		this.nacionalidadId = nacionalidadId;
 	}
 
 	public Usuario getUsuario() {
@@ -181,11 +169,11 @@ public class Contacto implements Serializable {
 		this.rol = rol;
 	}
 
-	public int getEntidadId() {
+	public Integer getEntidadId() {
 		return entidadId;
 	}
 
-	public void setEntidadId(int entidadId) {
+	public void setEntidadId(Integer entidadId) {
 		this.entidadId = entidadId;
 	}
 
@@ -229,11 +217,11 @@ public class Contacto implements Serializable {
 		this.nombreCompleto = nombreCompleto;
 	}
 
-	public int getSexo() {
+	public Integer getSexo() {
 		return sexo;
 	}
 
-	public void setSexo(int sexo) {
+	public void setSexo(Integer sexo) {
 		this.sexo = sexo;
 	}
 
@@ -269,19 +257,19 @@ public class Contacto implements Serializable {
 		this.telefono2 = telefono2;
 	}
 
-	public int getTipoContacto() {
+	public Integer getTipoContacto() {
 		return tipoContacto;
 	}
 
-	public void setTipoContacto(int tipoContacto) {
+	public void setTipoContacto(Integer tipoContacto) {
 		this.tipoContacto = tipoContacto;
 	}
 
-	public int getTipoIdentificacion() {
+	public Integer getTipoIdentificacion() {
 		return tipoIdentificacion;
 	}
 
-	public void setTipoIdentificacion(int tipoIdentificacion) {
+	public void setTipoIdentificacion(Integer tipoIdentificacion) {
 		this.tipoIdentificacion = tipoIdentificacion;
 	}
 
@@ -321,7 +309,7 @@ public class Contacto implements Serializable {
 		return nacionalidadId;
 	}
 
-	public void setNacionalidadId(int nacionalidadId) {
+	public void setNacionalidadId(Integer nacionalidadId) {
 		this.nacionalidadId = nacionalidadId;
 	}
 
@@ -381,14 +369,12 @@ public class Contacto implements Serializable {
 		this.municipioId = municipioId;
 	}
 
-
-	
 	public Contacto(Usuario usuario, Set<Laboral> laborales, Rol rol,
-			int entidadId, String primerNombre, String segundoNombre,
+			Integer entidadId, String primerNombre, String segundoNombre,
 			String primerApellido, String segundoApellido,
-			String nombreCompleto, int sexo, String correo1, String correo2,
-			String telefono1, String telefono2, int tipoContacto,
-			int tipoIdentificacion, String numeroIdentificacion,
+			String nombreCompleto, Integer sexo, String correo1, String correo2,
+			String telefono1, String telefono2, Integer tipoContacto,
+			Integer tipoIdentificacion, String numeroIdentificacion,
 			String direccionActual, Date fechaNacimiento, Date fechaRegistro,
 			Integer nacionalidadId, Integer departamentoId,
 			Integer municipioId, String lugarNacimiento, boolean inatec,
@@ -427,6 +413,5 @@ public class Contacto implements Serializable {
 	public Contacto() {
 		super();
 		this.laborales = new HashSet<Laboral>();
-		
 	}
 }

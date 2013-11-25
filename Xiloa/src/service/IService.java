@@ -30,6 +30,10 @@ import model.Usuario;
 
 public interface IService {
 	
+	public boolean existeUsuario(String usuario);
+	
+	public Usuario registrarAcceso(Usuario usuario); 
+	
 	public void resetPassword(String usuario);
 	
 	public void registrarUsuarioExterno(UsuarioExterno usuario);
