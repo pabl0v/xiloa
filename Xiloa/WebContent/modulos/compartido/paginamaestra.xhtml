@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags">
 	 <!--Se declara un UI composition para despues agregar esto a las demas paginas
 	 y asi no repetir codigo.-->
      <ui:composition>  
@@ -14,11 +15,21 @@
         <link type="text/css" rel="stylesheet" href="../../resources/css/paginamaestra.css"></link>             
         <div id="barra_navegacion" class="mini">
             <h1>Sistema de <a>Certificacion</a></h1>
-            <div id="boton_planificacion"  onclick="window.location='/Xiloa/modulos/planificacion/planificacion.xhtml';"  class="botones_navegacion"><p class="icono_calendario">Planificacion</p></div>
-            <div id="boton_solicitudes" onclick="window.location='/Xiloa/modulos/solicitudes/solicitudes.xhtml';" class="botones_navegacion"><p class="icono_flechas">Solicitudes</p></div>
-            <div id="boton_ejecuciones" onclick="window.location='/Xiloa/modulos/solicitudes/solicitudes.xhtml';" class="botones_navegacion"><p class="icono_ejecuciones">Ejecuciones</p></div>
-            <div id="boton_mantenedores" onclick="window.location='/Xiloa/modulos/solicitudes/solicitudes.xhtml';" class="botones_navegacion"><p class="icono_mantenedores">Mantenedores</p></div>
-            <div id="boton_reportes" onclick="window.location='/Xiloa/modulos/solicitudes/solicitudes.xhtml';" class="botones_navegacion"><p class="icono_reportes">Reportes</p></div>
+			<sec:authorize ifAnyGranted="admin, inatec">
+            	<div id="boton_planificacion"  onclick="window.location='/Xiloa/modulos/planificacion/planificacion.xhtml';"  class="botones_navegacion"><p class="icono_calendario">Planificacion</p></div>				
+			</sec:authorize>
+			<sec:authorize ifAnyGranted="admin, inatec, visitante">
+            	<div id="boton_solicitudes" onclick="window.location='/Xiloa/modulos/solicitudes/solicitudes.xhtml';" class="botones_navegacion"><p class="icono_flechas">Solicitudes</p></div>
+            </sec:authorize>
+            <sec:authorize ifAnyGranted="admin, inatec">
+            	<div id="boton_ejecuciones" onclick="window.location='/Xiloa/modulos/solicitudes/solicitudes.xhtml';" class="botones_navegacion"><p class="icono_ejecuciones">Ejecuciones</p></div>
+            </sec:authorize>
+            <sec:authorize ifAnyGranted="admin">
+            	<div id="boton_mantenedores" onclick="window.location='/Xiloa/modulos/solicitudes/solicitudes.xhtml';" class="botones_navegacion"><p class="icono_mantenedores">Mantenedores</p></div>
+            </sec:authorize>
+            <sec:authorize ifAnyGranted="admin, inatec">
+            	<div id="boton_reportes" onclick="window.location='/Xiloa/modulos/solicitudes/solicitudes.xhtml';" class="botones_navegacion"><p class="icono_reportes">Reportes</p></div>
+            </sec:authorize>
             <ul id="breadcrumbs" class="estilo_breadcrumbs">
                 <li>Inicio</li>
                 <li>Planificacion</li>
