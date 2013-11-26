@@ -114,4 +114,5 @@ public interface IService {
 	public Archivo getArchivoOneByParam (String namedString, Object [] parametros);
 	public List<Pais> getPaises ();
 	public Pais getPaisByNQParam(String namedString, Object [] param);
+	public boolean portafolioVerificado(Contacto contacto, String tipoEstadoPortafolio);
 }

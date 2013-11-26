@@ -687,4 +687,46 @@ public class ServiceImp implements IService {
 	public List<Rol> getRoles() {
 		return rolDao.findAll(Rol.class);
 	}
+
+	@Override
+	public boolean portafolioVerificado(Contacto contacto, String tipoEstadoPortafolio){
+		
+		int 	   contador = 0;
+		Mantenedor estadoArchivo = null;
+		Mantenedor estadoVerificado = null;
+		Integer    proxEstado = null;
+		
+		List<Archivo> portafolio = new ArrayList<Archivo> ();
+		
+		portafolio = archivoDao.findAllByNamedQueryParam("Archivo.findByContactoId", new Object[] {contacto.getId()});
+		
+		estadoVerificado = this.getMantenedorMaxByTipo(tipoEstadoPortafolio);
+		
+		for (Archivo dato : portafolio) {
+			estadoArchivo = dato.getEstado();
+			proxEstado = Integer.valueOf(estadoArchivo.getProximo());
+			
+			if (estadoArchivo.getId() != estadoVerificado.getId()){
+				if (dato.getAprobado().toUpperCase().trim().equals("APROBADO")){
+					if (proxEstado.intValue() == estadoVerificado.getId()){						
+						dato.setEstado(estadoVerificado);
+						dato = (Archivo) this.guardar(dato);
+						
+						if (dato == null){
+							contador += 1;
+						}
+					} else
+						contador += 1;
+				} else
+					contador += 1;
+			}		
+			
+		}
+		
+		
+		if (contador == 0)
+			return true;
+		else
+			return false;			
+	}
 }

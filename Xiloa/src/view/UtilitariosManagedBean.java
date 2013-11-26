@@ -39,6 +39,7 @@ public class UtilitariosManagedBean implements Serializable {
 	private Map<Long, Item> catalogoUnidades;
 	private List<Usuario> usuarios;
 	private List<Rol> roles;
+	private Map<Integer, Mantenedor> catalogoGenero;
 
 	public UtilitariosManagedBean(){
 		super();
@@ -51,6 +52,7 @@ public class UtilitariosManagedBean implements Serializable {
 		catalogoUnidades = new HashMap<Long, Item>();
 		usuarios = new ArrayList<Usuario>();
 		roles = new ArrayList<Rol>();
+		catalogoGenero = new HashMap<Integer, Mantenedor> ();
 	}
 	
 	@PostConstruct
@@ -80,10 +82,18 @@ public class UtilitariosManagedBean implements Serializable {
 				case 18:
 				case 19: catalogoTiposInstrumento.put(mantenedor.getId(), mantenedor); break;
 			}
+			
+			if (Integer.valueOf(mantenedor.getTipo()) == new Integer(10))  {
+				catalogoGenero.put(mantenedor.getId(), mantenedor);
+			}
 		}
 		
 		catalogoUnidades = servicio.getCatalogoUnidades();
 		usuario = SecurityContextHolder.getContext().getAuthentication().getName();
+	}
+	
+	public Map<Integer, Mantenedor> getCatalogoGenero() {
+		return catalogoGenero;
 	}
 	
 	public List<Mantenedor> getMantenedores(){

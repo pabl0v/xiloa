@@ -40,7 +40,14 @@
 	            <p:selectOneMenu styleClass="selectores" id="selector_certificacionByCentro" value="#{dashBoardSolicitudesManagedBean.selectedIdCertByCentro}" >			        
 			        <f:selectItems value="#{dashBoardSolicitudesManagedBean.listCertByCentro}" />
 			        <p:ajax update="dtSolicitud" listener="#{dashBoardSolicitudesManagedBean.handleBuscar}" />  
-			    </p:selectOneMenu>			  
+			    </p:selectOneMenu>		
+			    <br/>
+			    <br/>
+			    <p:commandButton id="aplicarSeguimiento" value="Aplicar Seguimiento"
+			                     action="#{dashBoardSolicitudesManagedBean.handleConvocatoria}" 	            	                             				     
+	           	                 icon="ui-icon-disk" title="Aplicar Seguimiento"
+	           	                 update=":formConvocatoria:dtSolicitud, :formConvocatoria:msgConvocatoria"  />   	           		 
+			    	  
         </div>              
         <div id="contenedor_tabla_solicitudes">           
         	<p:messages id="msgConvocatoria" showDetail="true" autoUpdate="true" closable="true" />
@@ -48,14 +55,14 @@
         	             value="#{dashBoardSolicitudesManagedBean.listaSolicitudes}" 
         	             selection="#{dashBoardSolicitudesManagedBean.selectedListSolicitud}"
         	             paginator="true" rows="12" rowKey="#{varSolicitudI.id}" >        	                                        	             
-	            <!--Las columnas de la tabla-->	            
-                <p:column id="centroColumn" headerText="Centro evaluador"><h:outputText value="#{varSolicitudI.certificacion.ifpNombre}" /></p:column>                      
-                <p:column id="candidatoColumn" headerText="Nombre del candidato"><h:outputText value="#{varSolicitudI.contacto.nombreCompleto}" /></p:column>  
-                <p:column id="certificacionColumn" headerText="Certificacion a evaluar"><h:outputText value="#{varSolicitudI.certificacion.nombre}"/></p:column>  
-                <p:column id="fechaColumn" headerText="Fecha solicitud"><h:outputText value="#{varSolicitudI.fechaRegistro}" /></p:column>               
-                <p:column id="evaluadorColumn" headerText="Evaluador"><h:outputText value="#{varSolicitudI.contacto.correo1}" /></p:column>                
-                <p:column id="estadoColumn" headerText="Estado"><h:outputText value="#{varSolicitudI.estatus.valor}" /></p:column>
-                <p:column id="selectConvo" selectionMode="multiple" style="width:2%" />                
+	            <!--Las columnas de la tabla-->	                
+                <p:column id="centroColumn" headerText="Centro evaluador" exportable="true"><h:outputText value="#{varSolicitudI.certificacion.ifpNombre}" /></p:column>                      
+                <p:column id="candidatoColumn" headerText="Nombre del candidato" exportable="true"><h:outputText value="#{varSolicitudI.contacto.nombreCompleto}" /></p:column>  
+                <p:column id="certificacionColumn" headerText="Certificacion a evaluar" exportable="true"><h:outputText value="#{varSolicitudI.certificacion.nombre}"/></p:column>  
+                <p:column id="fechaColumn" headerText="Fecha solicitud" exportable="true"><h:outputText value="#{varSolicitudI.fechaRegistro}" /></p:column>               
+                <p:column id="evaluadorColumn" headerText="Evaluador" exportable="true"><h:outputText value="#{varSolicitudI.contacto.correo1}" /></p:column>                
+                <p:column id="estadoColumn" headerText="Estado" exportable="true"><h:outputText value="#{varSolicitudI.estatus.valor}" /></p:column>
+                <p:column id="selectConvo" selectionMode="multiple" style="width:2%" exportable="false" />                
             </p:dataTable>            
         </div>
         <div id="contenedor_exportar">

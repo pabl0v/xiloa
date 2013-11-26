@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -354,7 +355,13 @@ public class EvaluacionManagedBean implements Serializable {
 	}
 	
 	public String cancelarRegistro () {
+		String urlDestino = "";
+		
 		resetValores ();
-		return "/modulos/solicitudes/expediente?faces-redirect=true";
+		urlDestino = "/modulos/solicitudes/expediente_evaluacion?faces-redirect=true";
+		
+		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("dbSolicitudesBean",this.getSolicitudEval());
+		
+		return urlDestino;
 	}
 }

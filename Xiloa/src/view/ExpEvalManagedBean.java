@@ -1,7 +1,11 @@
 package view;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,11 +13,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.UploadedFile;
@@ -44,14 +53,17 @@ import support.Municipio;
 
 @Component
 @Scope(value="request")
-public class ExpedienteManagedBean implements Serializable  {
+public class ExpEvalManagedBean implements Serializable  {
 	
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private IService service;
+	private IService service;	
 	@Autowired
-	private transient UtilitariosManagedBean util;
+	private UtilitariosManagedBean utilitarios;
 	
 	private Solicitud solicitudExp;
 	private Contacto contactoExp;
@@ -75,8 +87,8 @@ public class ExpedienteManagedBean implements Serializable  {
 	private String institucionDireccion;
 	private Integer tipoLaboral;
 	
-	private String estadoActual;
-	private String estadoSiguiente;	
+	private Mantenedor estadoActual;
+	private Mantenedor estadoSiguiente;	
 	
 	private Long idSeletedLaboral;
 	private List<SelectItem> listTipoDatosLaborales;
@@ -112,6 +124,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	
 	private Map<Integer, Departamento> catalogoDepartamento;
 	private Map<Integer, Municipio> catalogoMunicipiosByDepto;
+	private Map<Integer, Mantenedor> catalogoGenero;
 	
 	private List<SelectItem> listDeptos;
 	private List<SelectItem> listMunicipioByDptos;
@@ -133,7 +146,19 @@ public class ExpedienteManagedBean implements Serializable  {
 	private String nombreRealArchivoExp;
 	private String sizeArchivoExp;
 	
-	public ExpedienteManagedBean() {
+	private boolean disabledConvocar;
+	private boolean disabledAsesorar;
+	private boolean disabledCerrar;
+	
+	private Mantenedor generoContacto;
+	
+	private Municipio municipioContacto;
+	
+	private Departamento deptoContacto;
+	
+	private String tipoEstadosPortafolio;
+	
+	public ExpEvalManagedBean() {
 		super();
 		
 		this.setDisableSolicitarCertificacion(true);
@@ -166,23 +191,97 @@ public class ExpedienteManagedBean implements Serializable  {
 		
 		catalogoDepartamento = new HashMap<Integer, Departamento>();
 		catalogoMunicipiosByDepto = new HashMap<Integer, Municipio>();
+		catalogoGenero = new HashMap<Integer, Mantenedor> ();
 		
 		listDeptos = new ArrayList<SelectItem> ();
 		listMunicipioByDptos = new ArrayList<SelectItem> ();
 		listPaises = new ArrayList<SelectItem> ();
 		listGenero = new ArrayList<SelectItem> ();
-		
+				
 		nuevoLaboral = new Laboral();		
 		
 	}	
 	
-	public IService getService() {
-		return service;
+
+	public Map<Integer, Mantenedor> getCatalogoGenero() {
+		return catalogoGenero;
 	}
 
-	public void setService(IService service) {
-		this.service = service;
+
+	public void setCatalogoGenero(Map<Integer, Mantenedor> catalogoGenero) {
+		this.catalogoGenero = catalogoGenero;
 	}
+
+
+	public String getTipoEstadosPortafolio() {
+		return tipoEstadosPortafolio;
+	}
+
+
+	public void setTipoEstadosPortafolio(String tipoEstadosPortafolio) {
+		this.tipoEstadosPortafolio = tipoEstadosPortafolio;
+	}
+
+
+	public Municipio getMunicipioContacto() {
+		return municipioContacto;
+	}
+
+
+	public void setMunicipioContacto(Municipio municipioContacto) {
+		this.municipioContacto = municipioContacto;
+	}
+
+
+	public Departamento getDeptoContacto() {
+		return deptoContacto;
+	}
+
+
+	public void setDeptoContacto(Departamento deptoContacto) {
+		this.deptoContacto = deptoContacto;
+	}
+
+
+	public Mantenedor getGeneroContacto() {
+		return generoContacto;
+	}
+
+
+	public void setGeneroContacto(Mantenedor generoContacto) {
+		this.generoContacto = generoContacto;
+	}
+
+
+	public boolean isDisabledConvocar() {
+		return disabledConvocar;
+	}
+
+
+	public void setDisabledConvocar(boolean disabledConvocar) {
+		this.disabledConvocar = disabledConvocar;
+	}
+
+
+	public boolean isDisabledAsesorar() {
+		return disabledAsesorar;
+	}
+
+
+	public void setDisabledAsesorar(boolean disabledAsesorar) {
+		this.disabledAsesorar = disabledAsesorar;
+	}
+
+
+	public boolean isDisabledCerrar() {
+		return disabledCerrar;
+	}
+
+
+	public void setDisabledCerrar(boolean disabledCerrar) {
+		this.disabledCerrar = disabledCerrar;
+	}
+
 
 	public String getNombreRealArchivoExp() {
 		return nombreRealArchivoExp;
@@ -656,40 +755,39 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.tipoLaboral = tipoLaboral;
 	}		
 		
-	public String getEstadoActual() {
-		if (this.solicitudExp != null){
-			
-			Mantenedor estado = this.solicitudExp.getEstatus();
-			estadoActual = estado.getValor();			
+	public Mantenedor getEstadoActual() {
+		if (this.solicitudExp != null){				
+			estadoActual = this.solicitudExp.getEstatus();
 		}
 		return estadoActual;
 	}
 
-	public void setEstadoActual(String estadoActual) {
+	public void setEstadoActual(Mantenedor estadoActual) {
 		this.estadoActual = estadoActual;
 	}
 
-	public String getEstadoSiguiente() {
+	public Mantenedor getEstadoSiguiente() {
+		Integer    proxKey = null;
+		Mantenedor actualEstado = null;
+		Mantenedor proximoEstado = null;
+				
 		if (this.solicitudExp != null){
 			
-			Mantenedor estadoSolicitud = this.getSolicitudExp().getEstatus();
+			actualEstado = this.getSolicitudExp().getEstatus();
 			
-			if (estadoSolicitud.getProximo() != null){
-				
-				Mantenedor estado = service.getMantenedorById(Integer.valueOf(estadoSolicitud.getProximo()));
-				
-				if (estado != null)
-					estadoSiguiente = estado.getValor();
-				else
-					estadoSiguiente = estadoSolicitud.getValor();
-			} else 
-				estadoSiguiente = this.getSolicitudExp().getEstatus().getValor();
-				
+			proxKey = Integer.valueOf(actualEstado.getProximo());
+			
+			if (proxKey != null){				
+				proximoEstado = this.catalogoEstadosSolicitud.get(proxKey);				
+				estadoSiguiente = (proximoEstado == null) ? actualEstado : proximoEstado;								
+			} else {
+				estadoSiguiente = actualEstado;
+			}				
 		}
 		return estadoSiguiente;
 	}
 
-	public void setEstadoSiguiente(String estadoSiguiente) {
+	public void setEstadoSiguiente(Mantenedor estadoSiguiente) {
 		this.estadoSiguiente = estadoSiguiente;
 	}
 	
@@ -783,18 +881,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.evalIdByArchivoExp = evalIdByArchivoExp;
 	}
 
-	public Map<Integer, Mantenedor> getCatalogoEstadosSolicitud() {		
-		//Llenando el catalogo de Estados Solicitudes
-		Integer tipoEstadoSolicitud;
-		tipoEstadoSolicitud = Integer.valueOf(this.solicitudExp.getTipomantenedorestado());
-		
-		List<Mantenedor> listaEstadosSol = service.getMantenedoresByTipo(tipoEstadoSolicitud);
-		
-		this.catalogoEstadosSolicitud = new HashMap<Integer, Mantenedor>();
-		
-		for (Mantenedor dato : listaEstadosSol) {
-			this.catalogoEstadosSolicitud.put(dato.getId(), dato);						
-		}
+	public Map<Integer, Mantenedor> getCatalogoEstadosSolicitud() {			
 		return catalogoEstadosSolicitud;
 	}
 
@@ -825,6 +912,9 @@ public class ExpedienteManagedBean implements Serializable  {
 			this.listEstadosPortafolio.add(new SelectItem(dato.getId(), dato.getValor()));
 		}
 		
+		//Llenando el catalogo de Departamentos
+		this.catalogoDepartamento = new HashMap<Integer, Departamento>();
+		
 		this.catalogoDepartamento = service.getDepartamentosByInatec();
 		
 		List<Pais> paises = service.getPaises();
@@ -834,7 +924,9 @@ public class ExpedienteManagedBean implements Serializable  {
 			this.listPaises.add(new SelectItem(p.getId(), p.getNombre()));
 		}
 		
+		//Catalogo Genero
 		listGenero = new ArrayList<SelectItem> ();
+		this.catalogoGenero = new HashMap<Integer, Mantenedor> ();
 		
 		listGenero.add(new SelectItem(null, "Indique el Genero"));
 		
@@ -842,39 +934,74 @@ public class ExpedienteManagedBean implements Serializable  {
 		listaGenero = service.getMantenedoresByTipo(new Integer(10));
 		for (Mantenedor dato : listaGenero){
 			listGenero.add(new SelectItem(dato.getId(), dato.getValor()));
+			this.catalogoGenero.put(new Integer(dato.getId()), dato);
 		}		
-		
+				
 		archivoExp = new Archivo();
 				
 	}
 	
 	@Autowired
-	public void iniciaBeanExp (){
+	public void iniciaBeanExpEval (){
 		
 		Solicitud  solicitud = (Solicitud)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("dbSolicitudesBean");
+		Map<Integer, Mantenedor> catEstadosSolicitud = null;
+		Integer tipoEstadoSolicitud = null;
+		List<Mantenedor> listaEstadosSol = null;
 		
 		if (solicitud != null){		
 						
 			this.solicitudExp = solicitud;
-			
-						
+									
 			this.contactoExp = this.solicitudExp.getContacto();
-			if (this.contactoExp.getMunicipioId() != null){
-				this.municipioIdSelected = String.valueOf(this.contactoExp.getMunicipioId());				
-			} else
-				this.municipioIdSelected = null;
 			
-			if (this.contactoExp.getDepartamentoId() != null){
-				this.departamentoIdSelected = this.contactoExp.getDepartamentoId();
-				handleMunicipios();
-			} else{
-				this.departamentoIdSelected = null;
+			if (this.contactoExp != null){
 				
-				this.listMunicipioByDptos = new ArrayList<SelectItem>();
-				this.listMunicipioByDptos.add(new SelectItem(null, "Seleccion un Municipio"));
+				if (this.contactoExp.getSexo() != null) 
+					this.generoContacto =  this.catalogoGenero.get(this.contactoExp.getSexo());
+				else 
+					this.generoContacto = null; 
+				 
+				if (this.contactoExp.getDepartamentoId() != null){
+					this.departamentoIdSelected = this.contactoExp.getDepartamentoId();					
+					handleMunicipios();					
+					this.setDeptoContacto(this.catalogoDepartamento.get(this.contactoExp.getDepartamentoId()));					
+				} else{
+					this.setDeptoContacto(null);
+					
+					this.departamentoIdSelected = null;					
+					this.listMunicipioByDptos = new ArrayList<SelectItem>();
+					this.listMunicipioByDptos.add(new SelectItem(null, "Seleccion un Municipio"));
+				}
+				
+				if (this.contactoExp.getMunicipioId() != null){
+					this.municipioIdSelected = String.valueOf(this.contactoExp.getMunicipioId());
+					this.setMunicipioContacto(this.catalogoMunicipiosByDepto.get(this.contactoExp.getMunicipioId()));					
+				} else {
+					this.setMunicipioContacto(null);
+					this.municipioIdSelected = null;					
+				}
+								
 			}
+					
+			//Llenando el catalogo de Estados Solicitudes			
+			tipoEstadoSolicitud = Integer.valueOf(this.solicitudExp.getTipomantenedorestado());
+			
+			listaEstadosSol = service.getMantenedoresByTipo(tipoEstadoSolicitud);
+			
+			catEstadosSolicitud = new HashMap<Integer, Mantenedor>();
+			
+			for (Mantenedor dato : listaEstadosSol) {
+				catEstadosSolicitud.put(new Integer(dato.getId()), dato);						
+			}
+						
+			this.setCatalogoEstadosSolicitud(catEstadosSolicitud);
+									
+			//Estado Actual
+			this.setEstadoActual(this.solicitudExp.getEstatus());
 			
 			enabledDisableButton(1);
+			enabledDisableButton(2);
 			enabledDisableButton(3);
 			enabledDisableButton(4);
 			
@@ -1118,51 +1245,75 @@ public class ExpedienteManagedBean implements Serializable  {
 		
 		Solicitud sol = this.getSolicitudExp();
 		
-		Integer estadoSolicitud;
+		Integer inicialKey, convocaKey, asesoraKey, siguienteKey, evaluarKey;
 		
-		Integer estadoInicial;
+		Mantenedor inicialEstado, convocaEstado, asesoraEstado, siguienteEstado, evaluarEstado;				
 		
 		if (sol != null){		
-			estadoInicial = service.getMantenedorMinByTipo(sol.getTipomantenedorestado()).getId();
-			estadoSolicitud = sol.getEstatus().getId();
+			
+			inicialEstado = service.getMantenedorMinByTipo(sol.getTipomantenedorestado());
+			inicialKey = inicialEstado.getId();
+			
+			convocaKey = Integer.valueOf(inicialEstado.getProximo());
+			
+			convocaEstado = this.getCatalogoEstadosSolicitud().get(convocaKey);
+			
+			asesoraKey = Integer.valueOf(convocaEstado.getProximo());
+			
+			asesoraEstado = this.getCatalogoEstadosSolicitud().get(asesoraKey);
+			
+			evaluarEstado = sol.getEstatus();
+			
+			evaluarKey = evaluarEstado.getId();
+			
+			siguienteKey = Integer.valueOf(evaluarEstado.getProximo());
+			
+			siguienteEstado = (siguienteKey == null) ? null : this.getCatalogoEstadosSolicitud().get(siguienteKey);
+			
 		} else{
-			estadoInicial = null;
-			estadoSolicitud = null;
+			inicialEstado = null;
+			inicialKey = null;			
+			convocaKey = null;			
+			convocaEstado = null;			
+			asesoraKey = null;			
+			asesoraEstado = null;			
+			evaluarEstado = null;			
+			evaluarKey = null;			
+			siguienteKey = null;			
+			siguienteEstado = null;
 		}
-		
-		
-		switch(opcion) {
-			case 1:	{				
-				if ((sol == null) || (estadoInicial == estadoSolicitud)){
-					this.setDisabledBtnActualizaContacto(false);
-				} else {				
-				    this.setDisabledBtnActualizaContacto(true);					
-				}
 				
+		switch(opcion) {
+		   //Boton Convocar
+			case 1:	{				
+				if ((evaluarKey == convocaKey) && (evaluarKey != null))
+					this.setDisabledConvocar(false);
+				else
+					this.setDisabledConvocar(true);
 				break;	
 			}
+			//Boton Asesorar
 			case 2: {
-				if (this.selectedLaboral == null) 
-					this.setDisablePortafolio(true);
+				if ((evaluarKey == asesoraKey) && (evaluarKey != null))
+					this.setDisabledAsesorar(false);
 				else
-					this.setDisablePortafolio(false);
+					this.setDisabledAsesorar(true);
 				break;
 			}
+			//Boton Inscripcion
 			case 3: {
-				if ((sol == null) || (estadoInicial == estadoSolicitud)){
-					this.setDisabledBtnAgregaLaborales(false);
-				} else {				
-					this.setDisabledBtnAgregaLaborales(true);					
-				}
-								
+				if ((evaluarKey == Integer.valueOf(asesoraEstado.getProximo())) && (evaluarKey != null))
+					this.setDisabledCerrar(false);
+				else
+					this.setDisabledCerrar(true);				
 				break;
 			}
+			//Boton Agregar Evaluacion
 			case 4: {
-				if ((sol == null) || (estadoInicial == estadoSolicitud)){
+				if ((evaluarKey == Integer.valueOf(asesoraEstado.getProximo())) && (evaluarKey != null))
+					this.setDisabledBtnAgregaEvaluacion(false);
+				else
 					this.setDisabledBtnAgregaEvaluacion(true);
-				} else {				
-					this.setDisabledBtnAgregaEvaluacion(false);					
-				}				
 				break;
 			}
 			default: 
@@ -1199,8 +1350,8 @@ public class ExpedienteManagedBean implements Serializable  {
 		System.out.println("Obtiene el listado de las evaluaciones");
 		listEvalBySolicitud.add(new SelectItem(null, "Seleccione la evaluacion"));
 		for (Evaluacion dato : listE) {
+			listEvalBySolicitud.add(new SelectItem(dato.getUnidad(), utilitarios.getCompetenciaDescripcion(dato.getUnidad())));
 			//listEvalBySolicitud.add(new SelectItem(dato.getId(), dato.getUnidad().getCompetenciaDescripcion()));
-			listEvalBySolicitud.add(new SelectItem(dato.getId(), util.getCompetenciaDescripcion(dato.getUnidad())));
 		}
 	}
 
@@ -1484,7 +1635,96 @@ public class ExpedienteManagedBean implements Serializable  {
 		return "/modulos/solicitudes/expediente?faces-redirect=true";
 		
 	}
+	
+	public void convocarCertificacion(){
+		Contacto solicitante = null;
+		boolean pasaConvocatoria = false;
+		String  titulo = "";
+		String  textoMsg = "";
+		FacesMessage msg = null;
+		boolean isError = false;
 		
+		if (this.solicitudExp != null){
+			solicitante = this.solicitudExp.getContacto();		
+			
+			pasaConvocatoria = service.portafolioVerificado(solicitante, new String("8"));			
+		}
+		
+		System.out.println("Se cambia el estado");
+		
+		if (pasaConvocatoria == true){
+			System.out.println("Nuevo estado " + this.getEstadoSiguiente().getValor());
+			
+			this.solicitudExp.setEstatus(this.getEstadoSiguiente());
+			
+			this.solicitudExp = (Solicitud) service.guardar(this.solicitudExp);
+			
+			if (this.solicitudExp != null){
+				titulo = "SCCL - Proceso exitoso: ";
+				textoMsg = "La solicitud ha pasado a convocatoria.";
+				isError = false;
+			} else {
+				titulo = "SCCL - Error: ";
+				textoMsg = "Se generó un error al aplicar los cambios. Favor comuníquese al Departamento de Tecnología del INATEC.";
+				isError = true;
+			}				
+		} else {
+			titulo = "SCCL - Error: ";
+			textoMsg = "No puede ser convocado por que existen archivos del portafolio que deben ser revisado.";
+			isError = true;
+		}
+		
+		if (isError == true)
+			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, titulo, textoMsg);
+		else
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, titulo, textoMsg);
+				
+		FacesContext.getCurrentInstance().addMessage(null, msg);  
+		
+	}
+	
+	
+	public void asesorarCertificacion (){
+		String  titulo = "";
+		String  textoMsg = "";
+		FacesMessage msg = null;
+		boolean isError = false;
+		
+	
+		if (this.solicitudExp != null){
+			System.out.println("Nuevo estado " + this.getEstadoSiguiente().getValor());
+			
+			this.solicitudExp.setEstatus(this.getEstadoSiguiente());
+			
+			this.solicitudExp = (Solicitud) service.guardar(this.solicitudExp);
+			
+			if (this.solicitudExp != null){
+				titulo = "SCCL - Proceso exitoso: ";
+				textoMsg = "La solicitud ha pasado a asesorado.";
+				isError = false;
+			} else {
+				titulo = "SCCL - Error: ";
+				textoMsg = "Se generó un error al aplicar los cambios. Favor comuníquese al Departamento de Tecnología del INATEC.";
+				isError = true;
+			}				
+		} else {
+			titulo = "SCCL - Error: ";
+			textoMsg = "Se generó un error al obtener los datos del proceso de certificacion. Favor comuníquese al Departamento de Tecnología del INATEC.";
+			isError = true;
+		}
+		
+		if (isError == true)
+			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, titulo, textoMsg);
+		else
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, titulo, textoMsg);
+				
+		FacesContext.getCurrentInstance().addMessage(null, msg);  
+
+	}	
+	
+	public void inscripcionCertificacion (){
+		
+	}
 
 	
 }

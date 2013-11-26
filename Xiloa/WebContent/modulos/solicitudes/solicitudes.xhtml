@@ -16,8 +16,7 @@
                 <ui:include src="../../modulos/compartido/paginamaestra.xhtml" />
 	    	</ui:insert>
 	    	 <script type="text/javascript" src="../../resources/scripts/solicitudes.js"></script>
-		</div>		
-        
+		</div>	        
         <div id="cabezera">
             <h2>Solicitudes Activas</h2>                  
             <div id="botones_filtro_contenedor">                 
@@ -25,12 +24,12 @@
                 	<p class="icono_nuevo">Nueva solicitud</p>
                 </div>  
                 <div class="botones_filtro" onclick="window.location='/Xiloa/modulos/solicitudes/convocatoria.xhtml'">
-                	<p class="icono_folder">Convocatoria</p>
+                	<p class="icono_folder">Seguimiento</p>
                 </div>            
-                <div class="botones_filtro"><p class="icono_exportar">Exportar</p></div>
+                <div class="botones_filtro"><p class="icono_exportar">Exportar</p></div>                
             </div>
        </div>
-        <h:form>
+        <h:form>	        
         <div id="contenedor_filtro">            
 	            <p style="margin-left:5px">Buscar:</p>
 	            <p:selectOneMenu styleClass="selectores" id="selector_buscarByAll" value="#{dashBoardSolicitudesManagedBean.selectedBuscarByAll}">
@@ -52,7 +51,13 @@
 				        <f:selectItems value="#{dashBoardSolicitudesManagedBean.listCertByCentro}" />
 				        <p:ajax update="dtSolicitud" listener="#{dashBoardSolicitudesManagedBean.handleBuscar}" />  
 				    </p:selectOneMenu>	
-			    </span>		  
+			    </span>
+			    <!-- 
+			    <h:commandLink>  
+            		<h:outputText value="Exportar a Excel" />   
+            		<p:dataExporter type="xls" target="dtSolicitud" fileName="ReporteSolicitudes" />           		
+        		</h:commandLink>
+        		 -->  		  
         </div>              
         <div id="contenedor_tabla_solicitudes">           
         	<p:dataTable id="dtSolicitud" widgetVar="dtSolicitudes" emptyMessage="No existen solicitudes activas" 
@@ -62,13 +67,13 @@
         	             paginator="true" rows="12"  >        	      
         		        		                               
 	            <!--Las columnas de la tabla-->
-                <p:column id="centroColumn" headerText="Centro evaluador"><h:outputText value="#{varSolicitudI.certificacion.ifpNombre}" /></p:column>                      
-                <p:column id="candidatoColumn" headerText="Nombre del candidato"><h:outputText value="#{varSolicitudI.contacto.nombreCompleto}" /></p:column>  
-                <p:column id="certificacionColumn" headerText="Certificacion a evaluar"><h:outputText value="#{varSolicitudI.certificacion.nombre}"/></p:column>  
-                <p:column id="fechaColumn" headerText="Fecha solicitud"><h:outputText value="#{varSolicitudI.fechaRegistro}" /></p:column>               
-                <p:column id="evaluadorColumn" headerText="Evaluador"><h:outputText value="#{varSolicitudI.contacto.correo1}" /></p:column>                
-                <p:column id="estadoColumn" headerText="Estado"><h:outputText value="#{varSolicitudI.estatus.valor}" /></p:column>                
-                <p:column style="width:4%">  
+                <p:column id="centroColumn" headerText="Centro evaluador" exportable="true"><h:outputText value="#{varSolicitudI.certificacion.ifpNombre}" /></p:column>                      
+                <p:column id="candidatoColumn" headerText="Nombre del candidato" exportable="true"><h:outputText value="#{varSolicitudI.contacto.nombreCompleto}" /></p:column>  
+                <p:column id="certificacionColumn" headerText="Certificacion a evaluar" exportable="true"><h:outputText value="#{varSolicitudI.certificacion.nombre}"/></p:column>  
+                <p:column id="fechaColumn" headerText="Fecha solicitud" exportable="true"><h:outputText value="#{varSolicitudI.fechaRegistro}" /></p:column>               
+                <p:column id="evaluadorColumn" headerText="Evaluador" exportable="true"><h:outputText value="#{varSolicitudI.contacto.correo1}" /></p:column>                
+                <p:column id="estadoColumn" headerText="Estado" exportable="true"><h:outputText value="#{varSolicitudI.estatus.valor}" /></p:column>                
+                <p:column style="width:4%" exportable="false">  
 	            	<p:commandButton id="selectButton" action="#{dashBoardSolicitudesManagedBean.editaSolicitud}" 	            	                             				     
 	            	                 icon="ui-icon-pencil" title="Editar Solicitud" >
 	   	            	<f:setPropertyActionListener value="#{varSolicitudI}" target="#{dashBoardSolicitudesManagedBean.selectedSolicitud}" />
@@ -78,12 +83,12 @@
             </p:dataTable>            
         </div>
         <div id="contenedor_exportar">
-    		<p>Con seleccionado:</p>
-	    	<p:selectOneMenu styleClass="selectores" id="selector_accionConvocatoria" value="#{dashBoardSolicitudesManagedBean.selectedAccionConvo}">
-    			<f:selectItem itemLabel="Autorizar" itemValue="1" />  
-    			<f:selectItem itemLabel="Exportar a Excel" itemValue="2" />  
-    			<f:selectItem itemLabel="Exportar a PDF" itemValue="3" />	    		            			        
-	    	</p:selectOneMenu>    	
+    		<p>Con seleccionado:</p>    		
+        	<p:splitButton value="Convocar" icon="ui-icon-disk">           		   
+       			<p:menuitem value="Asesorar" icon="ui-icon-arrowrefresh-1-w" />
+       			<p:separator />  
+       			<p:menuitem value="Listo para inscripcion" icon="ui-icon-star" />       			  
+   			</p:splitButton> 	
     	</div>
      </h:form>
     </div>        

@@ -22,18 +22,21 @@
        		<p:messages id="msgRegEval" showDetail="true" autoUpdate="true" closable="true" />       		
    			<div class="seccion_detalle">
    						
-	   			<h:outputLabel styleClass="estilo_label" for="primerNombre" value="Centro de Capacitacion (*):" /> 
+	   			<h:outputLabel styleClass="estilo_label" value="Centro de Capacitacion (*):" /> 
 	       		<p:selectOneMenu id="selector_centro" styleClass="selector_status_estilo selector_centroEstilo" value="#{solicitudesManagedBean.selectedIdIfp}" style="position: relative;top: 7px;margin-right: 5px;">	       		  	       		  
 	       		  <f:selectItems value="#{solicitudesManagedBean.listCentros}"/>
 	       		   <p:ajax update="selector_certificacion"  listener="#{solicitudesManagedBean.handleCertificaciones}" />	       		  		  	       		  			                         
 			    </p:selectOneMenu>			    
-		
-		    	
-			   <h:outputLabel styleClass="estilo_label" for="primerNombre" value="Centro de Certificacion (*):" /> 
-	       		<p:selectOneMenu id="selector_certificacion" styleClass="selector_status_estilo selector_certificacionEstilo" value="#{solicitudesManagedBean.selectedIdCertificacion}" style="position: relative;top: 7px;margin-right: 5px;">	       			  
-			    	<f:selectItems value="#{solicitudesManagedBean.listCertificaciones}" />			                         
-			    </p:selectOneMenu>
-		
+			    	
+			   <h:outputLabel styleClass="estilo_label" value="Centro de Certificacion (*):" />
+			   <p:selectOneMenu id="selector_certificacion" styleClass="selector_status_estilo selector_certificacionEstilo" 
+			                    value="#{solicitudesManagedBean.selectedIdCertificacion}" 
+			                    style="position: relative;top: 7px;margin-right: 5px;" >  
+							<f:selectItem itemLabel="Seleccione..." itemValue="" />
+							<f:selectItems value="#{solicitudesManagedBean.listCertificaciones1}" var="verCert" 
+							               itemLabel="#{varCert.nombre}" itemValue="#{varCert.id}" />
+						</p:selectOneMenu>	 
+	       		
 		
                 <h:outputLabel styleClass="estilo_label" for="primerNombre" value="Primer nombre (*):" /> 
                 <p:inputText id="primerNombre" value="#{solicitudesManagedBean.primerNombre}"  />  

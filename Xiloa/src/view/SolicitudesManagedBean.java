@@ -55,6 +55,7 @@ public class SolicitudesManagedBean implements Serializable {
 	//Implementacion SelectItems
 	private List<SelectItem> listCentros;
 	private List<SelectItem> listCertificaciones;	
+	private List<Certificacion> listCertificaciones1;
 	
 	private Integer selectedIdIfp;		
 	private Long selectedIdCertificacion;		
@@ -69,6 +70,7 @@ public class SolicitudesManagedBean implements Serializable {
 				
 		listCentros = new ArrayList<SelectItem>();
 		listCertificaciones = new ArrayList<SelectItem>();	
+		listCertificaciones1 = new ArrayList<Certificacion> ();
 		
 		this.setIndicaTrabaja(false);
 		this.setIndicaUserExterno(false);
@@ -76,6 +78,14 @@ public class SolicitudesManagedBean implements Serializable {
 		
 	}
 	
+	public List<Certificacion> getListCertificaciones1() {
+		return listCertificaciones1;
+	}
+
+	public void setListCertificaciones1(List<Certificacion> listCertificaciones1) {
+		this.listCertificaciones1 = listCertificaciones1;
+	}
+
 	public boolean isIndicaUserExterno() {
 		return indicaUserExterno;
 	}
@@ -257,11 +267,14 @@ public class SolicitudesManagedBean implements Serializable {
 	}
 	
 	public void handleCertificaciones() {				
-		List<Certificacion> certificacionList = service.getCertificacionesByIdIfp(this.getSelectedIdIfp());		
+		List<Certificacion> certificacionList = service.getCertificacionesByIdIfp(this.getSelectedIdIfp());	
+		this.listCertificaciones1 = new ArrayList<Certificacion> ();
+		
 		this.listCertificaciones = new ArrayList<SelectItem>();		
 		this.listCertificaciones.add(new SelectItem(null,"Seleccione una certificacion"));
 		for (Certificacion dato : certificacionList) {
 			this.listCertificaciones.add(new SelectItem(dato.getId(),dato.getNombre()));
+			this.listCertificaciones1.add(dato);
 		}			
 	}
 		
@@ -329,7 +342,10 @@ public class SolicitudesManagedBean implements Serializable {
 		String    		mensaje = "";
 		String    		titulo  = "";
 		boolean   		isError = false;
-		Contacto 		solicitante = null;		
+		Contacto 		solicitante      = null;
+		Contacto 		contactoByUser   = null;
+		Contacto 		contactoByCedula = null;
+		
 		Mantenedor 		estadoInicialSolicitud = null;
 				
 		//Validaciones
@@ -351,42 +367,49 @@ public class SolicitudesManagedBean implements Serializable {
 				
 				c = service.getCertificacionById(this.getSelectedIdCertificacion());
 				
+				
+								
+				if (tipoGrabar == 2) {
+					u = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
+					r = service.getRolById(u.getRol().getId());
+					
+					if (u.getContacto() != null) 
+						contactoByUser = u.getContacto();					
+				} else {
+					u = null;
+					r = service.getRolById(new Integer(6)); // Rol visitante
+				}			
+				
+				contactoByCedula = service.getContactoByCedula(this.getNumeroIdentificacion());
+				
 				System.out.println("Identificacion " + this.getNumeroIdentificacion());
-					
-				solicitante = service.getContactoByCedula(this.getNumeroIdentificacion());
-					
-				if (solicitante == null){
-					
-					if (tipoGrabar == 2) {
-						u = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
-						r = service.getRolById(u.getRol().getId());
-					} else {
-						u = null;
-						r = service.getRolById(new Integer(6)); // Rol visitante
-					}			
+				
+				//Nuevo Contacto
+				if ((contactoByUser == null) && (contactoByCedula == null)) {
+										
 					System.out.println("Procede a grabar el contacto");
 					
 					solicitante = new Contacto(u, //Usuario
 							                   null, //laborales
 											  r, //Rol
-											  1, //EntidadId
+											  null, //EntidadId
 											  this.getPrimerNombre().toUpperCase().trim(), 
 											  this.getSegundoNombre().toUpperCase().trim(), 
 											  this.getPrimerApellido().toUpperCase().trim(),
 											  this.getSegundoApellido().toUpperCase().trim(), 
 											  this.getNombreCompleto().toUpperCase().trim(), // NombreCompleto 
-											  0, //Sexo
+											  null, //Sexo
 											  "", // correo1 
 											  "", //correo2 
 											  "", //telefono1 
 											  "", //telefono2
-											  1, // tipoContacto
-											  1, // tipoIdentificacion
+											  null, // tipoContacto
+											  null, // tipoIdentificacion
 											  this.getNumeroIdentificacion().toUpperCase().trim(), 
 											  "" , // direccionActual
 											  null, // fechaNacimiento
 											  new Date(), // fechaRegistro 
-											  1, // nacionalidadId
+											  null, // nacionalidadId
 											  null, //departamentoId
 											  null, // municipioId
 											  "", // lugarNacimiento 
@@ -398,7 +421,19 @@ public class SolicitudesManagedBean implements Serializable {
 		
 					solicitante = (Contacto)service.guardar(solicitante);
 					
+				} else {
+				 //Actualiza los datos del contacto
+					solicitante = (contactoByUser == null) ? contactoByCedula : contactoByUser;
+					
+					if (contactoByCedula == null){
+						solicitante.setNumeroIdentificacion(this.getNumeroIdentificacion().toUpperCase().trim());
+						
+						solicitante = (Contacto)service.guardar(solicitante);
+					}
+					
+					
 				}
+					
 				
 			} catch (Exception e) {
 				

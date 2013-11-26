@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
 
@@ -237,10 +236,13 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	}
 	
 	public void llenarListAccionConvo () {
+		this.listAccionConvo = new ArrayList<SelectItem> ();
 		this.listAccionConvo.add(new SelectItem(null, "Seleccione la accion"));
-		this.listAccionConvo.add(new SelectItem(new Integer(1), "Autorizar"));
-		this.listAccionConvo.add(new SelectItem(new Integer(2), "Exportar a Excel"));
-		this.listAccionConvo.add(new SelectItem(new Integer(3), "Exportar a PDF"));
+		this.listAccionConvo.add(new SelectItem(new Integer(1), "Convocar"));
+		this.listAccionConvo.add(new SelectItem(new Integer(2), "Asesorado"));
+		this.listAccionConvo.add(new SelectItem(new Integer(3), "Listos para inscripcion"));
+		this.listAccionConvo.add(new SelectItem(new Integer(4), "Exportar a Excel"));
+		this.listAccionConvo.add(new SelectItem(new Integer(5), "Exportar a PDF"));
 	}
 	
 	
@@ -300,9 +302,29 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	return "/modulos/solicitudes/registro_solicitud?faces-redirect=true";
 	}
 	
-	public String editaSolicitud(){	
+	public String editaSolicitud(){
+		String urlDestino = null;
+		Mantenedor estadoActualSolicitud = null;
+		
+		Integer inicialEstadoKey = null;
+		Mantenedor estadoInicial = null;
+		
 		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("dbSolicitudesBean",this.selectedSolicitud);
-		return "/modulos/solicitudes/expediente?faces-redirect=true";
+		
+		estadoActualSolicitud = this.selectedSolicitud.getEstatus();
+		
+		if (estadoActualSolicitud != null) {
+			estadoInicial = service.getMantenedorMinByTipo(estadoActualSolicitud.getTipo());
+			
+			inicialEstadoKey = estadoInicial.getId();
+			
+			if (estadoActualSolicitud.getId() == inicialEstadoKey.intValue())
+				urlDestino = "/modulos/solicitudes/expediente?faces-redirect=true";
+			else 
+				urlDestino = "/modulos/solicitudes/expediente_evaluacion?faces-redirect=true";
+		} 	
+		
+		return urlDestino;
 	}
 	
 	public String cancelarEdicion() {		
@@ -313,7 +335,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		boolean isError = false;
 		FacesContext context = FacesContext.getCurrentInstance();
 		
-		// Cuando ha seleccionado la opcion Aplicar - Las solicitudes pasan a convocatoria		
+		// Cuando ha seleccionado la opcion Convocar - Las solicitudes pasan a convocatoria		
 		if (this.selectedAccionConvo == 1) {			
 			for (Solicitud sol : this.selectedListSolicitud){				
 				
@@ -340,6 +362,6 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		}	
 		
 	}
-
+	
 	
 }
