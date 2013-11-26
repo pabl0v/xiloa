@@ -13,7 +13,6 @@ import model.Certificacion;
 import model.Contacto;
 import model.Mantenedor;
 import model.Requisito;
-import model.Unidad;
 import model.Usuario;
 
 import org.primefaces.event.SelectEvent;
@@ -92,7 +91,7 @@ public class PlanificacionManagedBean implements Serializable {
 		certificacion.setIfpId(competencia.getIdCentro());
 		certificacion.setIfpNombre(competencia.getNombreCentro());
 		certificacion.setIfpDireccion(competencia.getDireccion());
-		certificacion.setUnidades(new HashSet<Unidad>());
+		certificacion.setUnidades(new HashSet<Long>());
 		certificacion.setInvolucrados(new Contacto[] {});
 		certificacion.setDivulgacionInicia(new Date());
 		certificacion.setDivulgacionFinaliza(new Date());
@@ -104,16 +103,10 @@ public class PlanificacionManagedBean implements Serializable {
 		
 		List<Requisito> requisitos = service.getRequisitos(certificacion.getCursoId(), certificacion.getIfpId());
 		Map<Long, String> codigos = service.getUnidadesByEstructuraId(certificacion.getEstructuraId());
-		List<Unidad> unidades = new ArrayList<Unidad>();
 		
-		for (Long key : codigos.keySet()) {
-			String value = codigos.get(key);
-			System.out.println("codigo: "+key);
-			System.out.println("valor: "+value);
-		    unidades.add(new Unidad(key, value, certificacion, null));
-		}
+		certificacion.setUnidades(new HashSet<Long>(codigos.keySet()));
 				
-		certificacion = service.guardarCertificacion(certificacion, requisitos, unidades);
+		certificacion = service.guardarCertificacion(certificacion, requisitos);
 		certificaciones.add(0,certificacion);
 	}
 	

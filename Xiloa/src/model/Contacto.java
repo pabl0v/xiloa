@@ -30,6 +30,7 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @Table(name = "contactos", schema = "sccl")
 @NamedQueries({
 	@NamedQuery(name="Contacto.findByCedulaId", query="select c from contactos c where c.numeroIdentificacion =?1"),
+	@NamedQuery(name="Contacto.findByLogin", query="select c from contactos c where c.usuario.usuarioAlias =?1"),
 	@NamedQuery(name="Contacto.findInvolucradosInatec", query="Select c from contactos c where c.inatec='true' and c.rol.idRolInatec in (213,214,215,216)")
 })
 public class Contacto implements Serializable {

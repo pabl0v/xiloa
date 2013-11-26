@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import support.Departamento;
 import support.Ifp;
+import support.Item;
 import support.Municipio;
 import support.UCompetencia;
 
@@ -354,11 +355,11 @@ public class DaoInatecImpl implements IDaoInatec {
 	}
 
 	@Override
-	public Map<Long, String> getCatalogoUnidades() {
-		Map<Long, String> unidades = new HashMap<Long, String>();
+	public Map<Long, Item> getCatalogoUnidades() {
+		Map<Long, Item> unidades = new HashMap<Long, Item>();
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList("select u.id as codigo, u.descripcion as descripcion from registro_cobranza.cu_cat_uc u");
 		for(Map<String, Object> row : rows){
-			unidades.put((Long)row.get("codigo"), (String)row.get("descripcion"));
+			unidades.put((Long)row.get("codigo"), new Item((Long)row.get("codigo"),(String)row.get("descripcion")));
 		}
 		return unidades;
 	}

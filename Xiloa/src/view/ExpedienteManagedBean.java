@@ -1,11 +1,7 @@
 package view;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,15 +9,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.UploadedFile;
@@ -55,13 +46,12 @@ import support.Municipio;
 @Scope(value="request")
 public class ExpedienteManagedBean implements Serializable  {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private IService service;	
+	private IService service;
+	@Autowired
+	private transient UtilitariosManagedBean util;
 	
 	private Solicitud solicitudExp;
 	private Contacto contactoExp;
@@ -1206,7 +1196,8 @@ public class ExpedienteManagedBean implements Serializable  {
 		System.out.println("Obtiene el listado de las evaluaciones");
 		listEvalBySolicitud.add(new SelectItem(null, "Seleccione la evaluacion"));
 		for (Evaluacion dato : listE) {
-			listEvalBySolicitud.add(new SelectItem(dato.getId(), dato.getUnidad().getCompetenciaDescripcion()));
+			//listEvalBySolicitud.add(new SelectItem(dato.getId(), dato.getUnidad().getCompetenciaDescripcion()));
+			listEvalBySolicitud.add(new SelectItem(dato.getId(), util.getCompetenciaDescripcion(dato.getUnidad())));
 		}
 	}
 

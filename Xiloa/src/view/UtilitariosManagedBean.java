@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import model.Mantenedor;
+import model.Rol;
+import model.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -16,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import service.IService;
+import support.Item;
 
 @Component
 @Scope(value="session")
@@ -33,7 +36,9 @@ public class UtilitariosManagedBean implements Serializable {
 	private Map<Integer, Mantenedor> catalogoEstatusActividad; 
 	private Map<Integer, Mantenedor> catalogoTiposInstrumento;
 	private Map<Integer, Mantenedor> catalogoTiposDatosLaborales;
-	private Map<Long, String> catalogoUnidades;
+	private Map<Long, Item> catalogoUnidades;
+	private List<Usuario> usuarios;
+	private List<Rol> roles;
 
 	public UtilitariosManagedBean(){
 		super();
@@ -43,12 +48,16 @@ public class UtilitariosManagedBean implements Serializable {
 		catalogoEstatusActividad = new HashMap<Integer, Mantenedor>();
 		catalogoTiposInstrumento = new HashMap<Integer, Mantenedor>();
 		catalogoTiposDatosLaborales = new HashMap<Integer, Mantenedor>();
-		catalogoUnidades = new HashMap<Long, String>();
+		catalogoUnidades = new HashMap<Long, Item>();
+		usuarios = new ArrayList<Usuario>();
+		roles = new ArrayList<Rol>();
 	}
 	
 	@PostConstruct
 	public void init(){
 		mantenedores = servicio.getMantenedores();
+		usuarios = servicio.getUsuarios();
+		roles = servicio.getRoles();
 		
 		for(int i=0; i<mantenedores.size(); i++){
 			Mantenedor mantenedor = mantenedores.get(i);
@@ -77,6 +86,10 @@ public class UtilitariosManagedBean implements Serializable {
 		usuario = SecurityContextHolder.getContext().getAuthentication().getName();
 	}
 	
+	public List<Mantenedor> getMantenedores(){
+		return this.mantenedores;
+	}
+	
 	public String getUsuario(){
 		return usuario;
 	}
@@ -101,11 +114,19 @@ public class UtilitariosManagedBean implements Serializable {
 		return catalogoTiposDatosLaborales;
 	}
 	
-	public Map<Long, String> getCatalogoUnidades(){
+	public Map<Long, Item> getCatalogoUnidades(){
 		return catalogoUnidades;
 	}
 	
 	public String getCompetenciaDescripcion(Long codigo){
-		return catalogoUnidades.get(codigo);
+		return catalogoUnidades.get(codigo).getDescripcion();
+	}
+
+	public List<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	public List<Rol> getRoles() {
+		return roles;
 	}
 }

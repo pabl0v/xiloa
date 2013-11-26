@@ -11,7 +11,7 @@ import javax.annotation.PostConstruct;
 import model.Guia;
 import model.Instrumento;
 import model.Mantenedor;
-import model.Unidad;
+import support.Item;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
@@ -42,7 +42,7 @@ public class InstrumentoManagedBean implements Serializable {
 	private List<Instrumento> instrumentos;	
 	private Map<Integer,Mantenedor> catalogoTiposInstrumento;
 	private Integer selectedTipoInstrumento;
-	private Map<Long,Unidad> catalogoUnidades;
+	private Map<Long,Item> catalogoUnidades;
 	private Long selectedUnidad;
 
 	public InstrumentoManagedBean(){
@@ -57,7 +57,7 @@ public class InstrumentoManagedBean implements Serializable {
 		selectedGuia.equals(true);
 		catalogoTiposInstrumento = new HashMap<Integer, Mantenedor>();
 		selectedTipoInstrumento = null;
-		catalogoUnidades = new HashMap<Long, Unidad>();
+		catalogoUnidades = new HashMap<Long, Item>();
 		selectedUnidad = null;
 	}
 	
@@ -65,6 +65,7 @@ public class InstrumentoManagedBean implements Serializable {
 	private void init(){
 		catalogoTiposInstrumento = util.getCatalogoTiposInstrumento();
 		//catalogoTiposInstrumento = service.getMapMantenedoresByTipo("6");
+		configurarInstrumento();
 	}
 	
 	public Long getIdCertificacion(){
@@ -137,8 +138,8 @@ public class InstrumentoManagedBean implements Serializable {
 		this.selectedTipoInstrumento = selectedTipoInstrumento;
 	}
 
-	public List<Unidad> getCatalogoUnidades() {
-		return new ArrayList<Unidad>(catalogoUnidades.values());
+	public List<Item> getCatalogoUnidades() {
+		return new ArrayList<Item>(catalogoUnidades.values());
 	}
 
 	public Long getSelectedUnidad() {
@@ -153,42 +154,34 @@ public class InstrumentoManagedBean implements Serializable {
 		
 		this.idCertificacion = idCertificacion;
 		this.nombreCertificacion = nombreCertificacion;
-		
-		System.out.println("configurarInstrumento id: "+idCertificacion);
-		System.out.println("configurarInstrumento nombre: "+nombreCertificacion);
-		
-		List<Unidad> unidades = service.getUnidadesByCertificacionId(idCertificacion);
+			
+		List<Long> unidades = service.getUnidadesByCertificacionId(idCertificacion);
 		for(int i=0; i<unidades.size(); i++)
-			this.catalogoUnidades.put(unidades.get(i).getId(), unidades.get(i));
+			this.catalogoUnidades.put(unidades.get(i), new Item(unidades.get(i),util.getCompetenciaDescripcion(unidades.get(i))));
 		this.instrumentos = service.getInstrumentosByCertificacionId(idCertificacion);
-		
-		System.out.println("configurarInstrumento unidades: "+unidades.size());
-		System.out.println("configurarInstrumento nombre: "+instrumentos.size());
 
 		return "/modulos/planificacion/instrumentos?faces-redirect=true";
 	}
 	
-	/*
-	public String configurarInstrumento(ActionEvent event){
-		this.idCertificacion = 2L;
-		this.nombreCertificacion = FacesUtil.getActionAttribute(event, "nombreCertificacion");
+	public String configurarInstrumento(){
 		
-		System.out.println("configurarInstrumento id: "+idCertificacion);
-		System.out.println("configurarInstrumento nombre: "+nombreCertificacion);
+		this.idCertificacion = null;
+		this.nombreCertificacion = "";
 		
-		List<Unidad> unidades = service.getUnidadesByCertificacionId(idCertificacion);
-		for(int i=0; i<unidades.size(); i++)
-			this.catalogoUnidades.put(unidades.get(i).getId(), unidades.get(i));
-		this.instrumentos = service.getInstrumentosByCertificacionId(idCertificacion);
+		this.catalogoUnidades = service.getCatalogoUnidades();
+		this.instrumentos = service.getInstrumentos();
+
 		return "/modulos/planificacion/instrumentos?faces-redirect=true";
-	}*/
-	
+	}
+		
 	public void guardarInstrumento(Instrumento instrumento){
 		instrumento.setDescripcion(instrumento.getNombre());
 		instrumento.setTipo(catalogoTiposInstrumento.get(selectedTipoInstrumento));
-		instrumento.setUnidad(catalogoUnidades.get(selectedUnidad));
-		setSelectedInstrumento((Instrumento) service.guardar(instrumento));
-		this.instrumentos = service.getInstrumentosByCertificacionId(idCertificacion);
+		instrumento.setUnidad(selectedUnidad);
+		Instrumento i = (Instrumento) service.guardar(instrumento);
+		instrumentos.add(i);
+		setSelectedInstrumento(i);
+		//this.instrumentos = service.getInstrumentosByCertificacionId(idCertificacion);
 	}
 		
 	public void nuevoInstrumento(){
@@ -201,7 +194,7 @@ public class InstrumentoManagedBean implements Serializable {
 	public void editarInstrumento(Instrumento instrumento){
 		this.setInstrumento(instrumento);
 		setSelectedTipoInstrumento(instrumento.getTipo().getId());
-		setSelectedUnidad(instrumento.getUnidad().getId());
+		setSelectedUnidad(catalogoUnidades.get(instrumento.getUnidad()).getId());
 	}
 
 	public String aceptar(){
@@ -237,7 +230,7 @@ public class InstrumentoManagedBean implements Serializable {
 	public void onRowSelect(SelectEvent event) {
 		setSelectedInstrumento((Instrumento) event.getObject());
 		setSelectedTipoInstrumento(selectedInstrumento.getTipo().getId());
-		setSelectedUnidad(selectedInstrumento.getUnidad().getId());
+		setSelectedUnidad(catalogoUnidades.get(selectedInstrumento.getUnidad()).getId());
     }
   
     public void onRowUnselect(UnselectEvent event) {

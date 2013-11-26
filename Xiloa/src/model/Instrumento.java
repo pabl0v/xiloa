@@ -21,9 +21,11 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @Entity(name = "instrumentos")
 @Table(name = "instrumentos", schema = "sccl")
 @NamedQueries({
-	@NamedQuery(name="Instrumento.findAllByUnidadId", query="select i from instrumentos i where i.unidad.id=?1"),
+	@NamedQuery(name="Instrumento.findAll", query="select i from instrumentos i"),
+	@NamedQuery(name="Instrumento.findAllByUnidadId", query="select i from instrumentos i where i.unidad=?1"),
 	@NamedQuery(name="Instrumento.findById", query="select i from instrumentos i where i.id=?1"),
-	@NamedQuery(name="Instrumento.findAllByCertificacionId", query="select i from instrumentos i where i.unidad in (select u from unidades u where u.certificacion.id=?1)")
+	@NamedQuery(name="Instrumento.findAllByCertificacionId", query="select i from instrumentos i, certificaciones c where i.unidad member of c.unidades and c.id=?1")
+	//@NamedQuery(name="Instrumento.findAllByCertificacionId", query="select i from instrumentos i where i.unidad in (select c.unidades from certificaciones c where c.id=?1)")
 })
 public class Instrumento implements Serializable {
 	
@@ -35,9 +37,8 @@ public class Instrumento implements Serializable {
 	private Long id;
 	
 	@NotNull
-	@ManyToOne
-	@JoinColumn(name="instrumento_unidad")
-	private Unidad unidad;
+	@Column(name="instrumento_unidad_id", nullable = false)
+	private Long unidad;
 	
 	@NotNull
 	@Column(name = "instrumento_codigo", nullable = false)	
@@ -75,11 +76,11 @@ public class Instrumento implements Serializable {
 		this.id = id;
 	}
 
-	public Unidad getUnidad() {
+	public Long getUnidad() {
 		return unidad;
 	}
 
-	public void setUnidad(Unidad unidad) {
+	public void setUnidad(Long unidad) {
 		this.unidad = unidad;
 	}
 
@@ -156,7 +157,7 @@ public class Instrumento implements Serializable {
 		this.guias = new ArrayList<Guia>();
 	}
 	
-	public Instrumento(Unidad unidad, String codigo, Mantenedor tipo, String nombre, String descripcion, Integer puntajeMinimo, List<Guia> guias, boolean estatus){
+	public Instrumento(Long unidad, String codigo, Mantenedor tipo, String nombre, String descripcion, Integer puntajeMinimo, List<Guia> guias, boolean estatus){
 		super();
 		
 		this.unidad = unidad;

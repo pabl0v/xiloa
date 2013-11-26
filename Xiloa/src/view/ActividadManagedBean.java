@@ -32,6 +32,7 @@ public class ActividadManagedBean implements Serializable {
 	private IService service;
 
 	private Certificacion certificacion;
+	@SuppressWarnings("unused")
 	private Integer indiceActividad;
 	private Integer selectedTipoActividad;
 	private Map<Integer,Mantenedor> catalogoTiposActividad;
@@ -123,7 +124,7 @@ public class ActividadManagedBean implements Serializable {
 		System.out.println("guardarBitacora: "+actividad.getId()+bitacora.getObservaciones());
 		bitacora.setActividad(actividad);
 		bitacora.setFechaRegistro(new Date());
-		bitacora.setUsuario(contactos.get(0));
+		bitacora.setUsuario(service.getContactoByLogin("admin"));
 		service.guardar(bitacora);
 		this.bitacora = new Bitacora();
 	}
@@ -161,6 +162,16 @@ public class ActividadManagedBean implements Serializable {
 		this.indiceActividad = certificacion.getActividades().indexOf(actividad);
 		this.selectedEstatusActividad = actividad.getEstado().getId();
 		return "/modulos/planificacion/edicion_actividad?faces-redirect=true";
+	}
+	
+	public String ejecuciones(Actividad actividad){
+		System.out.println("Ejecuciones...");
+		
+		this.actividad = actividad;
+		this.certificacion = actividad.getCertificacion();
+		this.indiceActividad = certificacion.getActividades().indexOf(actividad);
+		this.selectedEstatusActividad = actividad.getEstado().getId();
+		return "/modulos/planificacion/bitacoras?faces-redirect=true";
 	}
 		
 	public String cancelar(){

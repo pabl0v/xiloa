@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import service.IService;
-
 import model.Certificacion;
 import model.Evaluacion;
 import model.EvaluacionGuia;
@@ -25,15 +24,11 @@ import model.Guia;
 import model.Instrumento;
 import model.Mantenedor;
 import model.Solicitud;
-import model.Unidad;
 
 @Component
 @Scope(value="session")
 public class EvaluacionManagedBean implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
@@ -44,7 +39,7 @@ public class EvaluacionManagedBean implements Serializable {
 	private Solicitud   solicitudEval;
 	private Long        idSelectedUnidad;
 	private Long        idSelectedInstrByUnd;
-	private Unidad      selectedUnidad;
+	private Long      	selectedUnidad;
 	private Instrumento selectedInstrumento;
 	private Date        fechaEvaluacion;
 	private boolean     aprobado;
@@ -97,7 +92,7 @@ public class EvaluacionManagedBean implements Serializable {
 
 	public void setSelectedEvaluacion(Evaluacion selectedEvaluacion) {
 		this.selectedEvaluacion = selectedEvaluacion;
-		this.setIdSelectedUnidad(this.selectedEvaluacion.getUnidad().getId());
+		this.setIdSelectedUnidad(this.selectedEvaluacion.getUnidad());
 		this.setFechaEvaluacion(selectedEvaluacion.getFechaEvaluacion());
 		this.setObservaciones(selectedEvaluacion.getObservaciones());
 		this.setAprobado(selectedEvaluacion.isAprobado());
@@ -122,11 +117,11 @@ public class EvaluacionManagedBean implements Serializable {
 		this.listUnidadCompentecia = listUnidadCompentecia;
 	}
 	
-	public Unidad getSelectedUnidad() {
+	public Long getSelectedUnidad() {
 		return selectedUnidad;
 	}
 
-	public void setSelectedUnidad(Unidad selectedUnidad) {
+	public void setSelectedUnidad(Long selectedUnidad) {
 		this.selectedUnidad = selectedUnidad;
 	}
 
@@ -216,9 +211,11 @@ public class EvaluacionManagedBean implements Serializable {
 		List<Instrumento> listInstru;
 		
 		if (this.idSelectedUnidad != null) {
-			selectedUnidad = service.getUnidadById(this.idSelectedUnidad);
+			//selectedUnidad = service.getUnidadById(this.idSelectedUnidad);
+			selectedUnidad = this.idSelectedUnidad;
 			
-			listInstru = service.getInstrumentoByUnidad(selectedUnidad.getId());
+			//listInstru = service.getInstrumentoByUnidad(selectedUnidad.getId());
+			listInstru = service.getInstrumentoByUnidad(selectedUnidad);
 			this.listInstrumentoByUnidad = new ArrayList<SelectItem>();
 			this.listInstrumentoByUnidad.add(new SelectItem(null, "Seleccione el instrumento"));
 			for (Instrumento dato : listInstru){
@@ -238,14 +235,14 @@ public class EvaluacionManagedBean implements Serializable {
 		if (solicitudEval != null){
 			Certificacion c = this.solicitudEval.getCertificacion();
 			
-			List<Unidad> setUnidades =  service.getUnidadesByCertificacionId(c.getId());				
+			List<Long> setUnidades =  service.getUnidadesByCertificacionId(c.getId());
 						
 			this.listUnidadCompentecia = new ArrayList<SelectItem>();
 			
 			this.listUnidadCompentecia.add(new SelectItem(null, "Seleccione la unidad de competencia"));
 			
-			for(Unidad unidad : setUnidades){
-				this.listUnidadCompentecia.add(new SelectItem(unidad.getId(), unidad.getCompetenciaDescripcion()));			
+			for(Long unidad : setUnidades){
+				this.listUnidadCompentecia.add(new SelectItem(unidad, utilitarios.getCompetenciaDescripcion(unidad)));			
 				//this.listUnidadCompentecia.add(new SelectItem(unidad.getId(), utilitarios.getCompetenciaDescripcion(unidad.getCodigo())));
 			}
 			
@@ -360,5 +357,4 @@ public class EvaluacionManagedBean implements Serializable {
 		resetValores ();
 		return "/modulos/solicitudes/expediente?faces-redirect=true";
 	}
-
 }

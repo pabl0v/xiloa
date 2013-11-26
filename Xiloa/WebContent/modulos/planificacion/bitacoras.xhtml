@@ -1,0 +1,52 @@
+<?xml version='1.0' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+	  xmlns:sec="http://www.springframework.org/security/tags">
+    <h:head>
+    	<link type="text/css" rel="stylesheet" href="../../resources/css/planificacion.css"></link>
+    </h:head>
+    <h:body>
+     <div id="contenedor">
+    	<div id="header">
+            <ui:insert name="header" >
+                <ui:include src="../../modulos/compartido/paginamaestra.xhtml" />
+	    	</ui:insert>
+	        <script type="text/javascript" src="../../resources/scripts/planificacion.js"></script>
+		</div>
+        <div id="cabezera">
+            <h2>Ejecución de actividades</h2>                  
+        </div>
+        
+		<div id="contenedor_secciones">
+        <div class="seccion_edicion" style="width: 93%;margin-top:15px">
+                        <h:form id="form_bitacoras">
+							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.agregarBitacora}" update=":form_bitacora" onclick="PF('dlg2').show();" >
+							</p:commandButton>
+                            <p:dataTable id="bitacorasDataTable" var="bitacora" value="#{actividadManagedBean.bitacoras}">
+                                <p:column headerText="Fecha Evento"><h:outputText value="#{bitacora.fechaEvento}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>  
+                                <p:column headerText="Observaciones"><h:outputText value="#{bitacora.observaciones}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>                             
+								<p:column headerText="Fecha Registro"><h:outputText value="#{bitacora.fechaRegistro}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>
+                                <p:column headerText="Usuario"><h:outputText value="#{bitacora.usuario.nombreCompleto}" /></p:column>
+                            </p:dataTable> 
+                        </h:form>    
+		</div>	
+		</div>      
+    </div>
+
+       <p:dialog id="modalBitacora" styleClass="modal_agregar_bitacora" header="Agregar bitacora" widgetVar="dlg2" modal="true" width="450" height="380" resizable="false">  
+         <h:form id="form_bitacora" >
+             <h3>Bitácora</h3>  
+			 <p>Fecha del Evento:</p> 
+			 <p:calendar value="#{actividadManagedBean.bitacora.fechaEvento}" id="fecha_evento" showOn="button" pattern="dd/MM/yyyy"/>
+             <h3>Descripción del evento</h3>
+             <p:inputTextarea rows="12" cols="65" value="#{actividadManagedBean.bitacora.observaciones}" queryDelay="750" minQueryLength="4" />
+             <h:commandButton styleClass="botones" value="Cancelar" onclick="PF('dlg2').hide();"/>
+			 <h:commandButton styleClass="botones" value="Aceptar" action="#{actividadManagedBean.guardarBitacora(actividadManagedBean.bitacora)}" update=":form_bitacoras:bitacorasDataTable, :form_bitacora" oncomplete="PF('dlg2').hide();"/>
+         </h:form>
+    </p:dialog>
+</h:body>
+</html>

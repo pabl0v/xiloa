@@ -27,10 +27,7 @@
 				   
 					<h:outputLabel value="Listas" />  
 					<p>Listas que se presentan a lo largo del sistema y que podrian cambiar sus valores en algun momento.</p>
-					
-					<h:outputLabel value="Municipios" />  
-					<p>Municipios de Nicaragua</p>
-					    
+										    
 					<h:outputLabel value="Estados de la planificacion" />  
 					<p>Estados posibles del proceso de planificacion</p>
 					    
@@ -45,26 +42,27 @@
 		<div id="contenedor_panel_mantenedores" class="contenedor_paneles">
 			<p:tabView id="tabView1">  
 	            <p:tab id="tab1" title="Mantenedores">  
-	                   <p:dataTable emptyMessage="No hay datos para mostrar"  var="divulgacion" value="#{tableBean.carsSmall}">  
-	                      <p:column headerText="Nombre"><h:outputText value="#{car.model}" /></p:column>  
-	                      <p:column headerText="Valor"><h:outputText value="#{car.year}" /></p:column>  
-	                      <p:column headerText="Descripcion"><h:outputText value="#{car.manufacturer}" /></p:column>                 
+	                   <p:dataTable emptyMessage="No hay datos para mostrar"  var="mantenedor" value="#{utilitariosManagedBean.mantenedores}">  
+	                      <p:column headerText="Tipo"><h:outputText value="#{mantenedor.tipo}" /></p:column>
+						  <p:column headerText="Nombre"><h:outputText value="#{mantenedor.etiqueta}" /></p:column>
+	                      <p:column headerText="Valor"><h:outputText value="#{mantenedor.valor}" /></p:column>                   
 	                   </p:dataTable>    
 	            </p:tab>  
 	
 	            <p:tab id="tab2" title="Usuarios">  
-	                   <p:dataTable emptyMessage="No hay datos para mostrar"  var="divulgacion" value="#{tableBean.carsSmall}">  
-	                      <p:column headerText="Nombre"><h:outputText value="#{car.model}" /></p:column>  
-	                      <p:column headerText="Valor"><h:outputText value="#{car.year}" /></p:column>  
-	                      <p:column headerText="Descripcion"><h:outputText value="#{car.manufacturer}" /></p:column>                 
+	                   <p:dataTable emptyMessage="No hay datos para mostrar"  var="usuario" value="#{utilitariosManagedBean.usuarios}">  
+	                      <p:column headerText="Login"><h:outputText value="#{usuario.usuarioAlias}" /></p:column>  
+	                      <p:column headerText="Nombre completo"><h:outputText value="#{usuario.contacto.nombreCompleto}" /></p:column>  
+	                      <p:column headerText="Rol"><h:outputText value="#{usuario.rol.nombre}" /></p:column>                 
+	                      <p:column headerText="Ultimo acceso"><h:outputText value="#{usuario.fechaUltimoAcceso}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>
+	                      <p:column headerText="Activo"><h:outputText value="#{usuario.usuarioEstatus}" /></p:column>
 	                   </p:dataTable>         
 	            </p:tab>  
 	
-	            <p:tab id="tab3" title="Perfiles">  
-	                    <p:dataTable emptyMessage="No hay datos para mostrar"  var="divulgacion" value="#{tableBean.carsSmall}">  
-	                      <p:column headerText="Nombre"><h:outputText value="#{car.model}" /></p:column>  
-	                      <p:column headerText="Valor"><h:outputText value="#{car.year}" /></p:column>  
-	                      <p:column headerText="Descripcion"><h:outputText value="#{car.manufacturer}" /></p:column>                 
+	            <p:tab id="tab3" title="Roles">  
+	                    <p:dataTable emptyMessage="No hay datos para mostrar"  var="rol" value="#{utilitariosManagedBean.roles}">  
+	                      <p:column headerText="Nombre"><h:outputText value="#{rol.nombre}" /></p:column>  
+	                      <p:column headerText="Descripcion"><h:outputText value="#{rol.descripcion}" /></p:column>                   
 	                   </p:dataTable>    
 	            </p:tab> 
 	       </p:tabView>  

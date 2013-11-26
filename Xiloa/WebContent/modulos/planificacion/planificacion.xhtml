@@ -59,8 +59,7 @@
                         <p:column headerText="Registrado"><h:outputText value="#{certificacion.fechaRegistro}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>  
                         <p:column headerText="Centro de Formacion"><h:outputText value="#{certificacion.ifpNombre}" /></p:column>  
                         <p:column headerText="Certificacion"><h:outputText value="#{certificacion.nombre}"/></p:column>
-                        <p:column headerText="Disponible"><h:outputText value="#{certificacion.disponibilidad}" /></p:column>               
-                        <p:column headerText="Solicitudes"><h:outputText value="0" /></p:column>                
+                        <p:column headerText="Disponible"><h:outputText value="#{certificacion.disponibilidad}" /></p:column>                
                         <p:column headerText="Coordinador"><h:outputText value="#{certificacion.coordinador.nombreCompleto}" /></p:column>                
                         <p:column headerText="Evalua"><h:outputText value="#{certificacion.evaluador.nombreCompleto}" /></p:column>
                         <p:column headerText="Estatus"><h:outputText value="#{certificacion.estatus.valor}" /></p:column>               

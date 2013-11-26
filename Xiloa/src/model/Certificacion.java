@@ -11,7 +11,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,6 +31,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -41,7 +44,7 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 	@NamedQuery(name="Certificacion.findActivas", query="select c from certificaciones c where c.estatus.id=8 order by c.id desc"),
 	@NamedQuery(name="Certificacion.findByIfpId", query="select c from certificaciones c where c.ifpId=?1"),
 	@NamedQuery(name="Certificacion.findById", query="select c from certificaciones c where c.id=?1"),
-	@NamedQuery(name="Certificacion.findUnidadesByCert", query="select c.unidades from certificaciones c where c.id=?1"),
+	//@NamedQuery(name="Certificacion.findUnidadesByCert", query="select c.unidades from certificaciones c where c.id=?1"),
 	@NamedQuery(name="Certificacion.findAllByNombre", query="select c from certificaciones c where c.estatus.id=8 and c.nombre like ?1 order by c.id desc"),
 	@NamedQuery(name="Certificacion.findAllByCentro", query="select c from certificaciones c where c.estatus.id=8 and c.ifpNombre like ?1 order by c.id desc")
 })
@@ -65,15 +68,7 @@ public class Certificacion implements Serializable {
 	
 	@Column(name = "certificacion_descripcion", nullable = false)
 	private String descripcion;
-	
-	/*
-	@Column(name = "certificacion_codigo_competencia", nullable = false)
-	private String codigoCompetencia;
-	
-	@Column(name = "certificacion_nombre_competencia", nullable = false)
-	private String nombreCompetencia;
-	*/
-	
+		
 	@Column(name = "certificacion_disponibilidad", nullable = false)
 	private int disponibilidad;
 	
@@ -160,8 +155,15 @@ public class Certificacion implements Serializable {
 	@Column(name = "certificacion_nivel_competencia", nullable = true)
 	private int nivelCompetencia;
 	
-	@OneToMany(mappedBy="certificacion")
-	private Set<Unidad> unidades;
+	@NotNull
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(
+			name="sccl.certificacion_unidades",
+	        joinColumns=@JoinColumn(name="certificacion_id"),
+	        uniqueConstraints = @UniqueConstraint(columnNames = {"certificacion_id", "unidad_id"})
+	)
+	@Column(name="unidad_id", nullable = false)
+	private Set<Long> unidades;
 	
 	@OneToMany(mappedBy = "certificacion",fetch = FetchType.EAGER)
 	private List<Requisito> requisitos;
@@ -194,7 +196,7 @@ public class Certificacion implements Serializable {
 	public Certificacion(){
 		super();
 		this.requisitos = new ArrayList<Requisito>();
-		this.unidades = new HashSet<Unidad>();
+		this.unidades = new HashSet<Long>();
 		this.disponibilidad = 0;
 		this.actividades = new HashMap<Integer,Actividad>();
 		this.solicitudes = new ArrayList<Solicitud>();
@@ -240,23 +242,6 @@ public class Certificacion implements Serializable {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-
-	/*
-	public String getCodigoCompetencia() {
-		return codigoCompetencia;
-	}
-
-	public void setCodigoCompetencia(String codigoCompetencia) {
-		this.codigoCompetencia = codigoCompetencia;
-	}
-
-	public String getNombreCompetencia() {
-		return nombreCompetencia;
-	}
-
-	public void setNombreCompetencia(String nombreCompetencia) {
-		this.nombreCompetencia = nombreCompetencia;
-	}*/
 
 	public int getDisponibilidad() {
 		return disponibilidad;
@@ -433,28 +418,21 @@ public class Certificacion implements Serializable {
 		this.requisitos = requisitos;
 	}
 
-	public Set<Unidad> getUnidades() {
+	public Set<Long> getUnidades() {
 		return unidades;
 	}
 
-	public void setUnidades(Set<Unidad> unidades) {
+	public void setUnidades(Set<Long> unidades) {
 		this.unidades = unidades;
 	}
 	
-	public void addUnidad(Unidad unidad){
+	public void addUnidad(Long unidad){
 		this.unidades.add(unidad);
 	}
 
 	public List<Actividad> getActividades() {
 		return new ArrayList<Actividad>(actividades.values());
 	}
-
-	/*
-	public void setActividades(Actividad[] actividades) {
-		for(int i=0; i<actividades.length; i++){
-			this.actividades.add(actividades[i]);
-		}
-	}*/
 	
 	public void addActividad(Actividad actividad){
 		Integer indice;
@@ -466,11 +444,6 @@ public class Certificacion implements Serializable {
 		this.actividades.put(indice, actividad);
 	}
 	
-	/*
-	public void setActividades(List<Actividad> actividades) {
-		this.actividades = actividades;
-	}*/
-
 	public List<Solicitud> getSolicitudes() {
 		return solicitudes;
 	}
@@ -478,11 +451,6 @@ public class Certificacion implements Serializable {
 	public void setSolicitudes(List<Solicitud> solicitudes) {
 		this.solicitudes = solicitudes;
 	}
-
-	/*
-	public Map<Integer, Contacto> getInvolucrados() {
-		return involucrados;
-	}*/
 	
 	public List<Contacto> getInvolucrados() {
 		return new ArrayList<Contacto>(involucrados.values());
@@ -498,8 +466,6 @@ public class Certificacion implements Serializable {
 							int cursoId,
 							String nombre, 
 							String descripcion,
-							//String codigoCompetencia,
-							//String nombreCompetencia,
 							int disponibilidad,
 							Date inicia,
 							Date finaliza, 
@@ -507,18 +473,12 @@ public class Certificacion implements Serializable {
 							String ifpDireccion, 
 							String ifpNombre,
 							Usuario programador, 
-							//Date divulgacionInicia,
-							//Date divulgacionFinaliza, 
-							//Date inscripcionFinaliza,
-							//Date convocatoriaInicia, 
-							//Date evaluacionInicia, 
 							Usuario creador,
 							Mantenedor estatus, 
 							String referencial, 
 							int nivelCompetencia,
 							List<Requisito> requisitos, 
-							Set<Unidad> unidades,
-							//List<Actividad> actividades, 
+							Set<Long> unidades, 
 							List<Solicitud> solicitudes,
 							Map<Integer, Contacto> involucrados) {
 		super();
@@ -526,8 +486,6 @@ public class Certificacion implements Serializable {
 		this.cursoId = cursoId;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
-		//this.codigoCompetencia = codigoCompetencia;
-		//this.nombreCompetencia = nombreCompetencia;
 		this.disponibilidad = disponibilidad;
 		this.inicia = inicia;
 		this.finaliza = finaliza;
@@ -535,18 +493,12 @@ public class Certificacion implements Serializable {
 		this.ifpDireccion = ifpDireccion;
 		this.ifpNombre = ifpNombre;
 		this.programador = programador;
-		//this.divulgacionInicia = divulgacionInicia;
-		//this.divulgacionFinaliza = divulgacionFinaliza;
-		//this.inscripcionFinaliza = inscripcionFinaliza;
-		//this.convocatoriaInicia = convocatoriaInicia;
-		//this.evaluacionInicia = evaluacionInicia;
 		this.creador = creador;
 		this.estatus = estatus;
 		this.referencial = referencial;
 		this.nivelCompetencia = nivelCompetencia;
 		this.requisitos = requisitos;
 		this.unidades = unidades;
-		//this.actividades = actividades;
 		this.solicitudes = solicitudes;
 		this.involucrados = involucrados;
 	}

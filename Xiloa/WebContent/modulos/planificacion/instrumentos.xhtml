@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version='1.0' ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
@@ -16,7 +16,7 @@
 		    </ui:insert>
 		    <script type="text/javascript" src="../../resources/scripts/instrumentos.js"></script>
 		</div>
-        <h2>Configuracion de Instrumentos - <h:outputText value="#{instrumentoManagedBean.nombreCertificacion}" /> </h2>
+        <h2>Configuración de Instrumentos - <h:outputText value="#{instrumentoManagedBean.nombreCertificacion}" /> </h2>
         <div id="contenedor_secciones">
         
          <div class="seccion_edicion" style="width: 93%;">
@@ -29,8 +29,8 @@
 								Instrumentos existentes
 							</f:facet>
 							<p:column headerText="Instrumento"><h:outputText value="#{var.tipo.valor}" /></p:column>
-							<p:column headerText="Unidad de Competencia"><h:outputText value="#{var.unidad.competenciaDescripcion}" /></p:column>
-							<p:column headerText="Codigo"><h:outputText value="#{var.codigo}" /></p:column>  
+							<p:column headerText="Unidad de Competencia"><h:outputText value="#{instrumentoManagedBean.getCompetenciaDescripcion(var.unidad)}" /></p:column>
+							<p:column headerText="Código"><h:outputText value="#{var.codigo}" /></p:column>  
 							<p:column headerText="Nombre"><h:outputText value="#{var.nombre}" /></p:column>  
 							<p:column headerText="Puntaje Minimo"><h:outputText value="#{var.puntajeMinimo}" /></p:column>  
 							<p:column headerText="Estado"><h:outputText value="#{var.estatusLabel}" /></p:column>
@@ -43,7 +43,7 @@
         
 		            <div class="seccion_edicion" style="width: 93%;margin-top:15px">
 		                <h:form styleClass="formulario_inline">
-		                    <p:commandButton value="Agregar guia" update=":guiaDialogo" action="#{instrumentoManagedBean.nuevaGuia}" onclick="PF('dlg1').show();"/> 
+		                    <p:commandButton value="Agregar guía" update=":guiaDialogo" action="#{instrumentoManagedBean.nuevaGuia}" onclick="PF('dlg1').show();"/> 
 		                </h:form>
 						<div class="seccion_interna">
 						<h:form id="guias">
@@ -57,15 +57,8 @@
 								</p:column>		                        
 		                    </p:dataTable>
 		                </h:form>
-		                </div>	
-		                <h:form>
-		               		<div class="contenedor_botones">
-		               			<h:commandButton style="float:right;" value="Cerrar" action="#{instrumentoManagedBean.aceptar}"/> 
-		               		</div>
-		                </h:form>	                
+		                </div>
 		          </div>
-		          	          		          
-		         
 		</div>
 	</div>
 
@@ -107,7 +100,7 @@
             <h:outputLabel styleClass="estilo_label" value="Unidad:" />
 			<p:selectOneMenu id="selector_estatus2" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedUnidad}" >  
 				<f:selectItem itemLabel="Seleccione..." itemValue="" />
-				<f:selectItems value="#{instrumentoManagedBean.catalogoUnidades}" var="unidad" itemLabel="#{unidad.competenciaDescripcion}" itemValue="#{unidad.id}" />
+				<f:selectItems value="#{instrumentoManagedBean.catalogoUnidades}" var="unidad" itemLabel="#{unidad.descripcion}" itemValue="#{unidad.id}" />
 			</p:selectOneMenu>
             <br/> 
             <h:outputLabel styleClass="estilo_label" value="Codigo:" />

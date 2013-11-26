@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import support.Departamento;
 import support.Ifp;
+import support.Item;
 import support.JavaEmailSender;
 import support.Municipio;
 import support.PasswordGenerator;
@@ -39,7 +40,6 @@ import model.Perfil;
 import model.Requisito;
 import model.Rol;
 import model.Solicitud;
-import model.Unidad;
 import model.Usuario;
 
 @Service
@@ -66,8 +66,6 @@ public class ServiceImp implements IService {
 	private IDao<Actividad> actividadDao;
 	@Autowired	
 	private IDao<Perfil> perfilDao;
-	@Autowired	
-	private IDao<Unidad> unidadDao;
 	@Autowired	
 	private IDao<Guia> guiaDao;
 	@Autowired	
@@ -121,7 +119,7 @@ public class ServiceImp implements IService {
 		
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public Certificacion guardarCertificacion(Certificacion certificacion, List<Requisito> requisitos, List<Unidad> unidades) {
+	public Certificacion guardarCertificacion(Certificacion certificacion, List<Requisito> requisitos) {
 		
 		certificacion = certificacionDao.save(certificacion);
 		
@@ -129,14 +127,7 @@ public class ServiceImp implements IService {
 			requisitos.get(i).setCertificacion(certificacion);
 			requisitoDao.save(requisitos.get(i));
 		}
-		
-		for(int i=0; i<unidades.size(); i++){
-			unidades.get(i).setCertificacion(certificacion);
-			unidadDao.save(unidades.get(i));
-		}
-		
-		//unidadDao.save(new Unidad(certificacion,"001","UC1",null,true));
-		
+				
 		Mantenedor estado = getMapMantenedoresByTipo("4").get(10);				//estatus pendiente
 		Map<Integer, Mantenedor> actividades = getMapMantenedoresByTipo("1");	//actualizar
 		Usuario creador = getUsuarioLocal("admin");								//actualizar
@@ -372,8 +363,6 @@ public class ServiceImp implements IService {
 			return actividadDao.save((Actividad)objeto);
 		if(objeto instanceof Bitacora)
 			return bitacoraDao.save((Bitacora)objeto);
-		if(objeto instanceof Unidad)
-			return unidadDao.save((Unidad)objeto);
 		if(objeto instanceof Requisito)
 			return requisitoDao.save((Requisito)objeto);
 		if (objeto instanceof Pais)
@@ -404,8 +393,10 @@ public class ServiceImp implements IService {
 
 	@Override
 	public List<Actividad> getActividades(Long certificacionId) {
-		Object [] objs =  new Object [] {certificacionId};
-		return actividadDao.findAllByNamedQueryParam("Actividad.findByCertificacionId", objs);
+		if(certificacionId != null)
+			return actividadDao.findAllByNamedQueryParam("Actividad.findByCertificacionId", new Object[] {certificacionId});
+		else
+			return actividadDao.findAll(Actividad.class);
 	}
 
 	@Override
@@ -451,11 +442,12 @@ public class ServiceImp implements IService {
 		return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllBySolicitudId", objs);		
 	}
 	
+	/*
 	@Override
 	public Unidad getUnidadById(Long idUnidad){
 		Object [] objs =  new Object [] {idUnidad};
 		return unidadDao.findOneByNamedQueryParam("Unidad.findById", objs);
-	}
+	}*/
 	
 	@Override
 	public Instrumento getInstrumentoById(Long idInstrumento){
@@ -470,9 +462,10 @@ public class ServiceImp implements IService {
 	}	
 
 	@Override
-	public List<Unidad> getUnidadesByCertificacionId(Long certificacionId) {
-		Object [] objs =  new Object [] {certificacionId};
-		return unidadDao.findAllByNamedQueryParam("Certificacion.findUnidadesByCert", objs);		
+	public List<Long> getUnidadesByCertificacionId(Long certificacionId) {
+		Certificacion certificacion = (Certificacion) certificacionDao.findOneByQuery("select c from certificaciones c where c.id="+certificacionId);
+		return new ArrayList<Long>(certificacion.getUnidades());
+		//return longDao.findAllByNamedQueryParam("Certificacion.findUnidadesByCert", new Object[] {certificacionId});		
 	}
 
 	@Override
@@ -563,7 +556,7 @@ public class ServiceImp implements IService {
 	}
 
 	@Override
-	public List<Unidad> getUnidades(int cursoId, int centroId) {
+	public List<Long> getUnidades() {
 		return null;
 	}
 	
@@ -588,7 +581,7 @@ public class ServiceImp implements IService {
 	}
 
 	@Override
-	public Map<Long, String> getCatalogoUnidades() {
+	public Map<Long, Item> getCatalogoUnidades() {
 		return inatecDao.getCatalogoUnidades();
 	}
 
@@ -678,5 +671,20 @@ public class ServiceImp implements IService {
 			return true;
 		else
 			return false;
+	}
+
+	@Override
+	public List<Instrumento> getInstrumentos() {
+		return instrumentoDao.findAllByNamedQuery("Instrumento.findAll");
+	}
+
+	@Override
+	public Contacto getContactoByLogin(String login) {
+		return contactoDao.findOneByNamedQueryParam("Contacto.findByLogin", new Object[] {login});
+	}
+
+	@Override
+	public List<Rol> getRoles() {
+		return rolDao.findAll(Rol.class);
 	}
 }

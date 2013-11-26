@@ -3,26 +3,19 @@ package view;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
-
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
 
 import model.Certificacion;
 import model.Contacto;
-import model.Evaluacion;
-import model.Laboral;
 import model.Mantenedor;
 import model.Rol;
 import model.Solicitud;
-import model.Unidad;
 import model.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import service.IService;
-import support.FacesUtil;
 import support.Ifp;
-import support.USolicitud;
 
 @Component
 @Scope(value="request")

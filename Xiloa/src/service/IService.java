@@ -6,6 +6,7 @@ import java.util.Map;
 
 import support.Departamento;
 import support.Ifp;
+import support.Item;
 import support.Municipio;
 import support.UCompetencia;
 import support.USolicitud;
@@ -25,10 +26,15 @@ import model.Pais;
 import model.Requisito;
 import model.Rol;
 import model.Solicitud;
-import model.Unidad;
 import model.Usuario;
 
 public interface IService {
+	
+	public List<Rol> getRoles();
+	
+	public Contacto getContactoByLogin(String login);
+	
+	public List<Instrumento> getInstrumentos();
 	
 	public boolean existeUsuario(String usuario);
 	
@@ -38,7 +44,7 @@ public interface IService {
 	
 	public void registrarUsuarioExterno(UsuarioExterno usuario);
 	
-	public Map<Long, String> getCatalogoUnidades();
+	public Map<Long, Item> getCatalogoUnidades();
 	
 	public List<Certificacion> getCertificaciones();
 	
@@ -68,7 +74,7 @@ public interface IService {
 	
 	public boolean isNuevoContactoInatec(String usuario);
 	
-	public Certificacion guardarCertificacion(Certificacion certificacion, List<Requisito> requisitos, List<Unidad> unidades);
+	public Certificacion guardarCertificacion(Certificacion certificacion, List<Requisito> requisitos);
 	public List<Requisito> getRequisitos(int certificacionId);
 	public void updateRequisito(Requisito requisito);
 	public List<Usuario> getUsuarios();
@@ -91,9 +97,8 @@ public interface IService {
 	public Laboral getLaboralById(Long idLaboral);
 	public List<Evaluacion> getEvaluaciones(Solicitud solicitud);
 	public Solicitud getSolicitudById(Long idSolicitud);
-	public List<Unidad> getUnidadesByCertificacionId(Long certificacionId);
-	public List<Instrumento> getInstrumentosByCertificacionId(Long certificacionId);	
-	public Unidad getUnidadById(Long idUnidad);
+	public List<Long> getUnidadesByCertificacionId(Long certificacionId);
+	public List<Instrumento> getInstrumentosByCertificacionId(Long certificacionId);
 	public Instrumento getInstrumentoById(Long idInstrumento);
 	public List<Instrumento> getInstrumentoByUnidad (Long idUnidad);
 	public List<EvaluacionGuia> getEvaluacionGuiaByEvaluacionId(Long evaluacionId);
@@ -105,7 +110,7 @@ public interface IService {
 	public List<Archivo> getArchivoByParam (String namedString, Object [] parametros);
 	public List<Bitacora> getBitacoras(Long actividadId);
 	public List<Requisito> getRequisitos(int cursoId, int centroId);
-	public List<Unidad> getUnidades(int cursoId, int centroId);
+	public List<Long> getUnidades();
 	public Archivo getArchivoOneByParam (String namedString, Object [] parametros);
 	public List<Pais> getPaises ();
 	public Pais getPaisByNQParam(String namedString, Object [] param);

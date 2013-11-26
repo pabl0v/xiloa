@@ -51,9 +51,8 @@ public class Evaluacion implements Serializable {
 	private Date fechaEvaluacion;
 	
 	@NotNull
-	@ManyToOne
-	@JoinColumn(name="evaluacion_unidad_id")
-	private Unidad unidad;
+	@Column(name = "evaluacion_unidad_id", nullable = false)
+	private Long unidad;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.evaluacion")
 	private Set<EvaluacionGuia> guias;
@@ -124,11 +123,11 @@ public class Evaluacion implements Serializable {
 		this.puntaje = puntaje;
 	}
 
-	public Unidad getUnidad() {
+	public Long getUnidad() {
 		return unidad;
 	}
 
-	public void setUnidad(Unidad unidad) {
+	public void setUnidad(Long unidad) {
 		this.unidad = unidad;
 	}
 	
@@ -153,7 +152,7 @@ public class Evaluacion implements Serializable {
 		this.guias = new HashSet<EvaluacionGuia>();		
 	}
 
-	public Evaluacion(Solicitud solicitud, Date fecha, Unidad unidad, Set<EvaluacionGuia> guias, Integer puntaje, String observaciones, boolean aprobado) {
+	public Evaluacion(Solicitud solicitud, Date fecha, Long unidad, Set<EvaluacionGuia> guias, Integer puntaje, String observaciones, boolean aprobado) {
 		super();		
 		this.solicitud = solicitud;
 		this.fechaEvaluacion = fecha;

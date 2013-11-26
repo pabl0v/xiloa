@@ -8,6 +8,7 @@ import model.Requisito;
 import model.Usuario;
 import support.Departamento;
 import support.Ifp;
+import support.Item;
 import support.Municipio;
 import support.UCompetencia;
 
@@ -16,7 +17,7 @@ public interface IDaoInatec {
 	public int getIdRol(String usuario);
 	public void agregarRol();
 	public List<UCompetencia> getCertificacionesSinPlanificar();
-	public Map<Long, String> getCatalogoUnidades();
+	public Map<Long, Item> getCatalogoUnidades();
 	public Map<Long, String> getUnidadesByEstructuraId(Integer estructura); 
 	public Usuario getUsuario(String username);
 	public List<Contacto> getContactosInatec();
