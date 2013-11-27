@@ -17,6 +17,7 @@ public class BeanEvaluacion {
 	private Evaluacion  evaluacion;
 	private Instrumento instrumento;
 	private Mantenedor  estadoEvaluacion;
+	private String      unidadCompetenciaDescripcion;
 			
 	public Evaluacion getEvaluacion() {
 		return evaluacion;
@@ -47,13 +48,21 @@ public class BeanEvaluacion {
 	public void setEstadoEvaluacion(Mantenedor estadoEvaluacion) {
 		this.estadoEvaluacion = estadoEvaluacion;
 	}
+	
+	public String getUnidadCompetenciaDescripcion() {
+		return unidadCompetenciaDescripcion;
+	}
+	public void setUnidadCompetenciaDescripcion(String unidadCompetenciaDescripcion) {
+		this.unidadCompetenciaDescripcion = unidadCompetenciaDescripcion;
+	}
 	public BeanEvaluacion(Solicitud solicitudBeanEval, Evaluacion evaluacion,
-			Instrumento instrumento, Mantenedor estado) {
+			Instrumento instrumento, Mantenedor estado, String unidadCompetenciaDescripcion) {
 		super();
 		this.solicitudBeanEval = solicitudBeanEval;
 		this.evaluacion = evaluacion;
 		this.instrumento = instrumento;
 		this.estadoEvaluacion = estado;
+		this.unidadCompetenciaDescripcion = unidadCompetenciaDescripcion;
 	}
 	
 	

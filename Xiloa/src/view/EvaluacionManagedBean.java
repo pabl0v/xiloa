@@ -46,6 +46,7 @@ public class EvaluacionManagedBean implements Serializable {
 	private boolean     aprobado;
 	private String      observaciones;
 	private Mantenedor  estado;
+	private List<Mantenedor> listaEstados;
 	private int         estadoId;
 	
 	private Evaluacion selectedEvaluacion;	
@@ -69,6 +70,15 @@ public class EvaluacionManagedBean implements Serializable {
 		
 		aprobado = false;		
 		
+		listaEstados = new ArrayList<Mantenedor>();
+	}
+
+	public List<Mantenedor> getListaEstados() {
+		return listaEstados;
+	}
+
+	public void setListaEstados(List<Mantenedor> listaEstados) {
+		this.listaEstados = listaEstados;
 	}
 
 	public int getEstadoId() {

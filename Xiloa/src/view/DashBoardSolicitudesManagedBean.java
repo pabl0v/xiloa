@@ -13,6 +13,8 @@ import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
 
 import model.Certificacion;
+import model.Contacto;
+import model.Evaluacion;
 import model.Mantenedor;
 import model.Solicitud;
 
@@ -244,9 +246,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		this.listAccionConvo.add(new SelectItem(new Integer(4), "Exportar a Excel"));
 		this.listAccionConvo.add(new SelectItem(new Integer(5), "Exportar a PDF"));
 	}
-	
-	
-		
+			
    //Llenado de Centro
 	@PostConstruct
 	private void initBeanDBSolicitudes(){
@@ -269,12 +269,12 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 			this.listCertByCentro.add(new SelectItem(dato.getId(),dato.getNombre()));
 		}
 		
-		this.listaSolicitudes = service.getSolicitudesByParam(asignaParams ());
+		this.listaSolicitudes = filtraSolicitudes(); // service.getSolicitudesByParam(asignaParams ());
 		this.filterSolicitudes = this.listaSolicitudes;
 	}
 	
 	public void handleBuscar () {						
-		this.listaSolicitudes = service.getSolicitudesByParam(asignaParams ());
+		this.listaSolicitudes = filtraSolicitudes(); //service.getSolicitudesByParam(asignaParams ());
 		this.filterSolicitudes = this.listaSolicitudes;
 	}
 	
@@ -296,10 +296,93 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		return params;
 	}
 	
-	
-	
+	public List<Solicitud> filtraSolicitudes(){
+		List<Solicitud> lista = new ArrayList<Solicitud> ();
+		List<Solicitud> listaFiltrada = new ArrayList<Solicitud> ();
+		Mantenedor inicialEstado = null;
+		Mantenedor ultimoEstado = null;
+		Mantenedor estadoSolicitud = null;		
+		Integer    prxEstadoKey;
+		Integer    anteriorEvaluarKey;
+		
+		Contacto solicitante = null;
+		boolean enlistar = false;
+		
+		Integer tipoFiltro = null;
+		
+		tipoFiltro = (Integer)obtieneParametroSession("tipoFiltro");
+		
+		if (tipoFiltro == null)
+			tipoFiltro = new Integer(0);
+		
+		lista = service.getSolicitudesByParam(asignaParams ());
+		
+		for (Solicitud dato : lista) {
+			solicitante = dato.getContacto();		
+			estadoSolicitud = dato.getEstatus();
+			
+			inicialEstado = (inicialEstado == null) ? service.getMantenedorMinByTipo(dato.getTipomantenedorestado()) : inicialEstado;
+			ultimoEstado = (ultimoEstado == null) ? service.getMantenedorMaxByTipo(dato.getTipomantenedorestado()) : ultimoEstado;
+			
+			prxEstadoKey = Integer.valueOf(inicialEstado.getProximo());
+			if (estadoSolicitud.getAnterior() != null)
+				anteriorEvaluarKey = Integer.valueOf(estadoSolicitud.getAnterior());
+			else
+				anteriorEvaluarKey = null;
+			
+			switch(tipoFiltro){
+				case 1:{ //Pasa a Estado Convocado
+					if (estadoSolicitud.getId() == prxEstadoKey.intValue()) 
+						enlistar = service.portafolioVerificado(solicitante, new String("8"));
+					else
+						enlistar = false;
+					break;
+				}
+				case 2:{ //Pasa a Asesorado
+					if ((anteriorEvaluarKey == prxEstadoKey) && (anteriorEvaluarKey != null))
+						enlistar = true;
+					else
+						enlistar = false;
+					
+					break;
+				}
+				case 3: { //Pasa a Listo para Inscripcion					
+				
+					int contador = 0;
+					
+					if ((estadoSolicitud.getId() == Integer.valueOf(ultimoEstado.getAnterior()).intValue()) && (ultimoEstado.getAnterior() != null)){
+						List<Evaluacion> listaEval = service.getEvaluaciones(dato);
+						
+						if (listaEval.size() == 0)
+							contador += 1;
+						for (Evaluacion eval : listaEval){
+							if (eval.isAprobado() != true)
+								contador += 1;
+						}						
+					}else
+						contador += 1;
+						
+					if (contador == 0)
+						enlistar = true;
+					else
+						enlistar = false;
+				}
+				default:{
+					enlistar = true;
+					break;
+				}
+			}			
+								
+			if (enlistar == true)
+				listaFiltrada.add(dato);
+		}
+		
+		return listaFiltrada;
+		
+	}
+		
 	public String nuevaSolicitud(){		
-	return "/modulos/solicitudes/registro_solicitud?faces-redirect=true";
+		return "/modulos/solicitudes/registro_solicitud?faces-redirect=true";
 	}
 	
 	public String editaSolicitud(){
@@ -309,7 +392,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		Integer inicialEstadoKey = null;
 		Mantenedor estadoInicial = null;
 		
-		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("dbSolicitudesBean",this.selectedSolicitud);
+		asignarParamBySession("dbSolicitudesBean", this.selectedSolicitud);		
 		
 		estadoActualSolicitud = this.selectedSolicitud.getEstatus();
 		
@@ -331,37 +414,69 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		return "/modulos/solicitudes/solicitudes?faces-redirect=true";				
 	}
 			
-	public void handleConvocatoria() {
+	public String handleConvocatoria() {
 		boolean isError = false;
-		FacesContext context = FacesContext.getCurrentInstance();
+		String titulo = "";
+		String texto = "";
 		
-		// Cuando ha seleccionado la opcion Convocar - Las solicitudes pasan a convocatoria		
-		if (this.selectedAccionConvo == 1) {			
-			for (Solicitud sol : this.selectedListSolicitud){				
+		for (Solicitud sol : this.selectedListSolicitud){				
 				
-				Integer idEstado = Integer.valueOf(sol.getEstatus().getProximo());
-				Mantenedor sigEstado = service.getMantenedorById(idEstado);
-				sol.setEstatus(sigEstado); //22 es el estado Convocado
-				sol = (Solicitud)service.guardar(sol);
-				
-				if (sol != null){
-					isError = false;
-				} else {
-					isError = true;
-				}
+			Integer idEstado = Integer.valueOf(sol.getEstatus().getProximo());
+			Mantenedor sigEstado = service.getMantenedorById(idEstado);
+			sol.setEstatus(sigEstado); //22 es el estado Convocado
+			sol = (Solicitud)service.guardar(sol);
+			
+			if (sol != null){
+				isError = false;
+			} else {
+				isError = true;
+				break;
 			}
-			
-			if ( isError) {        
-				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje: ", "Error al pasar las solicitudes a Convocatoria. Favor revisar..."));
-			}else {
-				context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "Proceso aplicado exitosamente."));
-			}
-			
-			this.selectedListSolicitud = null;
-			
-		}	
+		}			
+		
+		texto = (isError == true) ? "Error al pasar las solicitudes a Convocatoria. Favor revisar..." : "Proceso aplicado exitosamente.";
+		
+		titulo = "SCCL - Mensaje: ";
+		this.selectedListSolicitud = null;
+		
+		asignarParamBySession("tipoFiltro", null);
+		
+		imprimirMensaje(titulo, texto, isError);
+		return "/modulos/solicitudes/solicitudes?faces-redirect=true";
+		
 		
 	}
 	
+	public void indicarConvocar(){
+		asignarParamBySession("tipoFiltro", new Integer(1));
+	}
+	
+	public void indicarAsesorar(){
+		asignarParamBySession("tipoFiltro", new Integer(2));
+	}
+	
+	public void indicarInscribir(){
+		asignarParamBySession("tipoFiltro", new Integer(3));
+	}
+	
+	public void asignarParamBySession(String nombre, Object valor){		
+		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute(nombre,valor);		
+	}
+	
+	public Object obtieneParametroSession(String nombre){
+		return ((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute(nombre);
+	}
+	
+	public void imprimirMensaje(String titulo, String texto, boolean isError){
+		FacesContext context = FacesContext.getCurrentInstance();
+		FacesMessage msg = null;
+		
+		if (isError == true)
+			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, titulo, texto);			
+		else
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, titulo, texto);
+		
+		context.addMessage(null, msg);		
+	}
 	
 }

@@ -62,7 +62,8 @@
         		</h:commandLink>
         		 -->  		  
         </div>              
-        <div id="contenedor_tabla_solicitudes">           
+        <div id="contenedor_tabla_solicitudes">     
+        	<p:messages id="msgConvocatoria" showDetail="true" autoUpdate="true" closable="true" />        	      
         	<p:dataTable id="dtSolicitud" widgetVar="dtSolicitudes" emptyMessage="No existen solicitudes activas" 
         	             var="varSolicitudI" value="#{dashBoardSolicitudesManagedBean.listaSolicitudes}" 
         	             selectionMode="single" rowKey="#{varSolicitudI.id}"
@@ -87,10 +88,13 @@
         </div>
         <div id="contenedor_exportar">
     		<p>Con seleccionado:</p>    		
-        	<p:splitButton value="Convocar" icon="ui-icon-disk">           		   
-       			<p:menuitem value="Asesorar" icon="ui-icon-arrowrefresh-1-w" />
+        	<p:splitButton value="Convocar" icon="ui-icon-disk"
+        	               action="#{dashBoardSolicitudesManagedBean.indicarConvocar}"  >           		   
+       			<p:menuitem value="Asesorar" icon="ui-icon-arrowrefresh-1-w"
+       			            action="#{dashBoardSolicitudesManagedBean.indicarAsesorar}" />
        			<p:separator />  
-       			<p:menuitem value="Listo para inscripcion" icon="ui-icon-star" />       			  
+       			<p:menuitem value="Listo para inscripcion" icon="ui-icon-star"
+       			            action="#{dashBoardSolicitudesManagedBean.indicarInscribir}" />       			  
    			</p:splitButton> 	
     	</div>
      </h:form>

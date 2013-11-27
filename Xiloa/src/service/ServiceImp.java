@@ -707,17 +707,20 @@ public class ServiceImp implements IService {
 			proxEstado = Integer.valueOf(estadoArchivo.getProximo());
 			
 			if (estadoArchivo.getId() != estadoVerificado.getId()){
-				if (dato.getAprobado().toUpperCase().trim().equals("APROBADO")){
-					if (proxEstado.intValue() == estadoVerificado.getId()){						
-						dato.setEstado(estadoVerificado);
-						dato = (Archivo) this.guardar(dato);
-						
-						if (dato == null){
+				if (dato.getAprobado() != null) {
+					if (dato.getAprobado().toUpperCase().trim().equals("APROBADO")){
+						if (proxEstado.intValue() == estadoVerificado.getId()){						
+							dato.setEstado(estadoVerificado);
+							dato = (Archivo) this.guardar(dato);
+							
+							if (dato == null){
+								contador += 1;
+							}
+						} else
 							contador += 1;
-						}
 					} else
 						contador += 1;
-				} else
+				} else 
 					contador += 1;
 			}		
 			

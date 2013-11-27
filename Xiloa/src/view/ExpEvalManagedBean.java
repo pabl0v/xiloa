@@ -1017,18 +1017,21 @@ public class ExpEvalManagedBean implements Serializable  {
 		List<Evaluacion> listEval = service.getEvaluaciones(sol);
 		
 		Mantenedor estadoEval;
+		String     unidadDescripcion = "";
 		
 		for (Evaluacion e : listEval) {
 			
 			estadoEval = catalogoEstadosEvaluacion.get(e.getEstado().getId());
 			
-			
+			unidadDescripcion = this.utilitarios.getCompetenciaDescripcion(e.getUnidad());
+					
 			List<Instrumento> listInstrumento = service.getIntrumentoByEvaluacion(e.getId());
 			for (Instrumento inst : listInstrumento) {				
 				BeanEvaluacion bean = new BeanEvaluacion (sol, //Solicitud, 
 						  								  e, //	Evaluacion
 						  								  inst,// Instrumento
-						  								  estadoEval // EstadoEvaluacion
+						  								  estadoEval, // EstadoEvaluacion
+						  								  unidadDescripcion // UnidadCompentenciaDescripcion
 						  								  );
 				
 				if (todos) {
