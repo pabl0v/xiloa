@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -66,7 +67,7 @@ public class Usuario implements Serializable {
 	
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "usuario_fecha_ultimo_acceso", nullable = true)
-	@Temporal(TemporalType.DATE)	
+	@Temporal(TemporalType.TIMESTAMP)	
 	private Date fechaUltimoAcceso;
 	
 	@NotNull
@@ -130,7 +131,7 @@ public class Usuario implements Serializable {
 	}
 
 	public void setFechaUltimoAcceso(Date fechaUltimoAcceso) {
-		this.fechaUltimoAcceso = fechaUltimoAcceso;
+		this.fechaUltimoAcceso = new Timestamp(fechaUltimoAcceso.getTime());
 	}
 
 	public boolean isCambiarPwd() {
@@ -155,7 +156,7 @@ public class Usuario implements Serializable {
 		this.usuarioAlias = usuarioAlias;
 		this.usuarioPwd = usuarioPwd;
 		this.rol = rol;
-		this.fechaRegistro = new Date();
+		this.fechaRegistro = new Timestamp(new Date().getTime());
 		this.cambiarPwd = cambiarPwd;
 		this.usuarioEstatus = usuarioEstatus;
 	}

@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags">
     <h:head>
 	<link type="text/css" rel="stylesheet" href="../../resources/css/solicitudes.css"></link>
     </h:head>
@@ -18,7 +19,8 @@
 	    	 <script type="text/javascript" src="../../resources/scripts/solicitudes.js"></script>
 		</div>	        
         <div id="cabezera">
-            <h2>Solicitudes Activas</h2>                  
+            <h2>Solicitudes Activas</h2>
+            <sec:authorize ifAnyGranted="admin, inatec">                  
             <div id="botones_filtro_contenedor">                 
                 <div class="botones_filtro" onclick="window.location='/Xiloa/modulos/solicitudes/registro_solicitud.xhtml'" >
                 	<p class="icono_nuevo">Nueva solicitud</p>
@@ -28,6 +30,7 @@
                 </div>            
                 <div class="botones_filtro"><p class="icono_exportar">Exportar</p></div>                
             </div>
+            </sec:authorize>
        </div>
         <h:form>	        
         <div id="contenedor_filtro">            

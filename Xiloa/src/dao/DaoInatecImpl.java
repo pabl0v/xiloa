@@ -357,7 +357,7 @@ public class DaoInatecImpl implements IDaoInatec {
 	@Override
 	public Map<Long, Item> getCatalogoUnidades() {
 		Map<Long, Item> unidades = new HashMap<Long, Item>();
-		List<Map<String, Object>> rows = jdbcTemplate.queryForList("select u.id as codigo, u.descripcion as descripcion from registro_cobranza.cu_cat_uc u");
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList("select u.id as codigo, u.descripcion as descripcion from registro_cobranza.cu_cat_uc u where u.id in (select unidad_id from sccl.certificacion_unidades group by unidad_id)");
 		for(Map<String, Object> row : rows){
 			unidades.put((Long)row.get("codigo"), new Item((Long)row.get("codigo"),(String)row.get("descripcion")));
 		}

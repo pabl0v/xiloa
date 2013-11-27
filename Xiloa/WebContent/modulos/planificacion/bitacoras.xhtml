@@ -7,7 +7,7 @@
       xmlns:p="http://primefaces.org/ui"
 	  xmlns:sec="http://www.springframework.org/security/tags">
     <h:head>
-    	<link type="text/css" rel="stylesheet" href="../../resources/css/planificacion.css"></link>
+    	<link type="text/css" rel="stylesheet" href="../../resources/css/bitacoras.css"></link>
     </h:head>
     <h:body>
      <div id="contenedor">
@@ -15,30 +15,33 @@
             <ui:insert name="header" >
                 <ui:include src="../../modulos/compartido/paginamaestra.xhtml" />
 	    	</ui:insert>
-	        <script type="text/javascript" src="../../resources/scripts/planificacion.js"></script>
+	        <script type="text/javascript" src="../../resources/scripts/bitacoras.js"></script>
 		</div>
-        <div id="cabezera">
+        <div id="cabezera" style="margin-left: 25px;">
             <h2>Ejecución de actividades</h2>                  
         </div>
         
 		<div id="contenedor_secciones">
-        <div class="seccion_edicion" style="width: 93%;margin-top:15px">
-                        <h:form id="form_bitacoras">
-							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.agregarBitacora}" update=":form_bitacora" onclick="PF('dlg2').show();" >
-							</p:commandButton>
-                            <p:dataTable id="bitacorasDataTable" var="bitacora" value="#{actividadManagedBean.bitacoras}">
-                                <p:column headerText="Fecha Evento"><h:outputText value="#{bitacora.fechaEvento}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>  
-                                <p:column headerText="Observaciones"><h:outputText value="#{bitacora.observaciones}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>                             
-								<p:column headerText="Fecha Registro"><h:outputText value="#{bitacora.fechaRegistro}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>
-                                <p:column headerText="Usuario"><h:outputText value="#{bitacora.usuario.nombreCompleto}" /></p:column>
-                            </p:dataTable> 
-                        </h:form>    
-		</div>	
-		</div>      
+	        <div class="seccion_edicion" style="width: 93%;margin-top:15px;margin-left: 35px;">
+	             <h:form id="form_bitacoras">
+					<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.agregarBitacora}" update=":form_bitacora" onclick="PF('dlg2').show();" >
+					</p:commandButton>
+	                <p:dataTable id="bitacorasDataTable" var="bitacora" value="#{actividadManagedBean.bitacoras}">
+	                     <p:column headerText="Fecha Evento"><h:outputText value="#{bitacora.fechaEvento}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>  
+	                     <p:column headerText="Observaciones"><h:outputText value="#{bitacora.observaciones}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>                             
+						 <p:column headerText="Fecha Registro"><h:outputText value="#{bitacora.fechaRegistro}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>
+	                     <p:column headerText="Usuario"><h:outputText value="#{bitacora.usuario.nombreCompleto}" /></p:column>
+	                </p:dataTable> 
+	                <h:commandButton class="botones" style="float:right;" value="Cerrar" action="#{actividadManagedBean.cerrar}"/> 	
+	            </h:form>    
+			</div>
+			
+		</div>
+
     </div>
 
        <p:dialog id="modalBitacora" styleClass="modal_agregar_bitacora" header="Agregar bitacora" widgetVar="dlg2" modal="true" width="450" height="380" resizable="false">  
-         <h:form id="form_bitacora" >
+         <h:form id="form_bitacora" class="form_bitacora_estilo" >
              <h3>Bitácora</h3>  
 			 <p>Fecha del Evento:</p> 
 			 <p:calendar value="#{actividadManagedBean.bitacora.fechaEvento}" id="fecha_evento" showOn="button" pattern="dd/MM/yyyy"/>

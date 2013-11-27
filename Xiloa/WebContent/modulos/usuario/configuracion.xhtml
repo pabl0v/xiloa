@@ -54,7 +54,7 @@
 	                      <p:column headerText="Login"><h:outputText value="#{usuario.usuarioAlias}" /></p:column>  
 	                      <p:column headerText="Nombre completo"><h:outputText value="#{usuario.contacto.nombreCompleto}" /></p:column>  
 	                      <p:column headerText="Rol"><h:outputText value="#{usuario.rol.nombre}" /></p:column>                 
-	                      <p:column headerText="Ultimo acceso"><h:outputText value="#{usuario.fechaUltimoAcceso}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>
+	                      <p:column headerText="Ultimo acceso"><h:outputText value="#{usuario.fechaUltimoAcceso}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText></p:column>
 	                      <p:column headerText="Activo"><h:outputText value="#{usuario.usuarioEstatus}" /></p:column>
 	                   </p:dataTable>         
 	            </p:tab>  

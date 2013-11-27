@@ -179,6 +179,11 @@ public class ActividadManagedBean implements Serializable {
 		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
 	}
 	
+	public String cerrar(){
+		actividad = new Actividad();
+		return "/modulos/planificacion/ejecuciones?faces-redirect=true";
+	}
+	
 	public void selectedActividadListener(SelectEvent event){
 		this.actividad = (Actividad)event.getObject();
 	}
@@ -187,5 +192,5 @@ public class ActividadManagedBean implements Serializable {
 		actividad.setEstado(catalogoEstatusActividad.get(selectedEstatusActividad));
 		actividad = (Actividad)service.guardar(actividad);
 		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
-	}
+	}	
 }
