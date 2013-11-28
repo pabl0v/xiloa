@@ -37,18 +37,18 @@ public class DaoInatecImpl implements IDaoInatec {
 			"select "
 			+"u.usuario as usuarioInatec, "
 			+"u.id_centro as entidadId, "
-			+"'Usuario Inatec' as primerNombre, "
-			+"'Usuario Inatec' as primerApellido, "
+			+"'' as primerNombre, "
+			+"'' as primerApellido, "
 			+"u.nombre_completo as nombreCompleto, "
-			+"1 as sexo, "
+			+"null as sexo, "
 			+"u.correo as correo1, "
 			+"'N/D' as telefono1, "
-			+"1 as tipoContacto, "
-			+"1 as tipoIdentificacion, "
+			+"null as tipoContacto, "
+			+"null as tipoIdentificacion, "
 			+"'N/D' as numeroIdentificacion, "
 			+"'N/D' as direccionActual, "
 			+"now() as fechaRegistro, "
-			+"1 as nacionalidadId, "
+			+"null as nacionalidadId, "
 			+"'N/D' as lugarNacimiento, "
 			+"true as inatec, "
 			+"r.descripcion_rol as funcion, "
@@ -246,15 +246,15 @@ public class DaoInatecImpl implements IDaoInatec {
 				          c.setPrimerNombre(rs.getString("primerNombre"));
 				          c.setPrimerApellido(rs.getString("primerApellido"));
 				          c.setNombreCompleto(rs.getString("nombreCompleto"));
-				          c.setSexo(rs.getInt("sexo"));
+				          c.setSexo(null);
 				          c.setCorreo1(rs.getString("correo1"));
 				          c.setTelefono1(rs.getString("telefono1"));
-				          c.setTipoContacto(rs.getInt("tipoContacto"));
-				          c.setTipoIdentificacion(rs.getInt("tipoIdentificacion"));
+				          c.setTipoContacto(null);
+				          c.setTipoIdentificacion(null);
 				          c.setNumeroIdentificacion(rs.getString("numeroIdentificacion"));
 				          c.setDireccionActual(rs.getString("direccionActual"));
 				          c.setFechaRegistro(rs.getDate("fechaRegistro"));
-				          c.setNacionalidadId(rs.getInt("nacionalidadId"));
+				          c.setNacionalidadId(null);
 				          c.setLugarNacimiento(rs.getString("lugarNacimiento"));
 				          c.setInatec(rs.getBoolean("inatec"));
 				          c.setFuncion(rs.getString("funcion"));

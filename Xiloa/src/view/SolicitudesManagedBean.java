@@ -27,10 +27,9 @@ import org.springframework.stereotype.Component;
 
 import service.IService;
 import support.Ifp;
-import support.Item;
 
 @Component
-@Scope(value="request")
+@Scope(value="view")
 public class SolicitudesManagedBean implements Serializable {
 	
 	/**
@@ -59,8 +58,8 @@ public class SolicitudesManagedBean implements Serializable {
 	private List<SelectItem> listCentros;
 	private List<SelectItem> listCertificaciones;	
 	private List<Certificacion> listCertificaciones1;
-	private Map<Integer, Item> centros;
-	private Map<Long, Item> certificaciones;
+	private Map<Integer, SelectItem> centros;
+	private Map<Long, SelectItem> certificaciones;
 	
 	private Integer selectedIdIfp;		
 	private Long selectedIdCertificacion;		
@@ -77,8 +76,8 @@ public class SolicitudesManagedBean implements Serializable {
 		listCertificaciones = new ArrayList<SelectItem>();	
 		listCertificaciones1 = new ArrayList<Certificacion> ();
 		
-		centros = new HashMap<Integer, Item>();
-		certificaciones = new HashMap<Long, Item>();
+		centros = new HashMap<Integer, SelectItem>();
+		certificaciones = new HashMap<Long, SelectItem>();
 		
 		this.setIndicaTrabaja(false);
 		this.setIndicaUserExterno(false);
@@ -206,7 +205,7 @@ public class SolicitudesManagedBean implements Serializable {
 		for (Certificacion dato : certificacionList) {
 			this.listCertificaciones.add(new SelectItem(dato.getId(),dato.getNombre()));
 			this.listCertificaciones1.add(dato);
-			certificaciones.put(dato.getId(), new Item(dato.getId(),dato.getNombre()));
+			certificaciones.put(dato.getId(), new SelectItem(dato.getId(),dato.getNombre()));
 		}
 	}
 	
@@ -258,7 +257,7 @@ public class SolicitudesManagedBean implements Serializable {
 		for (Ifp dato : lista) {
 			this.listCentros.add(new SelectItem(dato.getIfpId(),dato.getIfpNombre()));
 			String id = String.valueOf(dato.getIfpId());
-			centros.put(dato.getIfpId(), new Item(Long.parseLong(id),dato.getIfpNombre()));
+			centros.put(dato.getIfpId(), new SelectItem(Long.parseLong(id),dato.getIfpNombre()));
 		}
 		
 		this.listCertificaciones = new ArrayList<SelectItem>();		
@@ -295,7 +294,7 @@ public class SolicitudesManagedBean implements Serializable {
 		for (Certificacion dato : certificacionList) {
 			this.listCertificaciones.add(new SelectItem(dato.getId(),dato.getNombre()));
 			this.listCertificaciones1.add(dato);
-			certificaciones.put(dato.getId(), new Item(dato.getId(),dato.getNombre()));
+			certificaciones.put(dato.getId(), new SelectItem(dato.getId(),dato.getNombre()));
 		}
 	}
 		
@@ -537,11 +536,11 @@ public class SolicitudesManagedBean implements Serializable {
 		this.setOcupacion("");		
 	}
 
-	public List<Item> getCentros() {
-		return new ArrayList<Item>(centros.values());
+	public List<SelectItem> getCentros() {
+		return new ArrayList<SelectItem>(centros.values());
 	}
 
-	public List<Item> getCertificaciones() {
-		return new ArrayList<Item>(certificaciones.values());
+	public List<SelectItem> getCertificaciones() {
+		return new ArrayList<SelectItem>(certificaciones.values());
 	}
 }

@@ -30,6 +30,8 @@ public class ActividadManagedBean implements Serializable {
 
 	@Autowired
 	private IService service;
+	@Autowired
+	private UtilitariosManagedBean utilitarios;
 
 	private Certificacion certificacion;
 	@SuppressWarnings("unused")
@@ -124,7 +126,7 @@ public class ActividadManagedBean implements Serializable {
 		System.out.println("guardarBitacora: "+actividad.getId()+bitacora.getObservaciones());
 		bitacora.setActividad(actividad);
 		bitacora.setFechaRegistro(new Date());
-		bitacora.setUsuario(service.getContactoByLogin("admin"));
+		bitacora.setUsuario(service.getContactoByLogin(utilitarios.getUsuario()));
 		service.guardar(bitacora);
 		this.bitacora = new Bitacora();
 	}

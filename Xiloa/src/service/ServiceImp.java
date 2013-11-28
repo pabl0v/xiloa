@@ -347,8 +347,10 @@ public class ServiceImp implements IService {
 		if(objeto instanceof Rol)
 			return rolDao.save((Rol)objeto);
 		if(objeto instanceof Contacto){
-			String nombreCompleto = ((Contacto) objeto).getPrimerNombre()+" "+((Contacto)objeto).getPrimerApellido();
-			((Contacto)objeto).setNombreCompleto(nombreCompleto);
+			if(((Contacto)objeto).getNombreCompleto() == null){
+				String nombreCompleto = ((Contacto) objeto).getPrimerNombre()+" "+((Contacto)objeto).getPrimerApellido();
+				((Contacto)objeto).setNombreCompleto(nombreCompleto);
+			}
 			return contactoDao.save((Contacto)objeto);
 		}
 		if(objeto instanceof Usuario)
