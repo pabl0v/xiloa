@@ -17,7 +17,7 @@
 	    	<script type="text/javascript" src="../../resources/scripts/registro_evaluacion.js"></script>
 		</div>
        <h2>Solicitud # <a>#{evaluacionManagedBean.solicitudEval.id}</a></h2>
-       <h2 style="color:#555;">Datos Evaluacion:</h2>
+       <h2 style="color:#555;">Datos Evaluacion: #{evaluacionManagedBean.selectedInstrumento.tipo.valor}</h2>
        <h:form id="formEvaluacion">
        		<p:messages id="msgEvaluacion" showDetail="true" autoUpdate="true" closable="true" />       		
    			<div class="seccion_detalle" style="width:94%">		
@@ -31,7 +31,8 @@
 			    </div>
 			    <div style="display:inline-block;float:right;">    	
 		           	<p>Tecnica o instrumento de evaluacion:</p>
-		            <p:selectOneMenu styleClass="selectores" id="selector_instrumentoByUnidad" value="#{evaluacionManagedBean.idSelectedInstrByUnd}" >				
+		            <p:selectOneMenu styleClass="selectores" id="selector_instrumentoByUnidad" 
+		                             value="#{evaluacionManagedBean.idSelectedInstrByUnd}" >				
 						<f:selectItems value="#{evaluacionManagedBean.listInstrumentoByUnidad}" />
 						<p:ajax update="dtGuias" listener="#{evaluacionManagedBean.handleGuiasByInstrumento}" /> 			        
 				    </p:selectOneMenu>	           	            	

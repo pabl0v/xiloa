@@ -3,6 +3,7 @@ package support;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.http.HttpServletRequest;
 
 public class FacesUtil {
 	
@@ -26,9 +27,23 @@ public class FacesUtil {
     	FacesContext.getCurrentInstance().getExternalContext().getApplicationMap().put(key, value);
     }
     
-    public static void getMensaje(String titulo, String texto){
-    	FacesMessage msg = new FacesMessage(titulo, texto);
-		
-		FacesContext.getCurrentInstance().addMessage(null, msg);
+    public static void getMensaje(String titulo, String texto, boolean isError){
+    	FacesContext context = FacesContext.getCurrentInstance();
+    	FacesMessage msg = null;
+    	
+		if (isError == true)
+			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, titulo, texto);
+		else
+			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, titulo, texto);
+    	
+		context.addMessage(null, msg);
     }
+    
+    public static void setParamBySession(String nombre, Object valor){		
+		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute(nombre,valor);		
+	}
+	
+	public static Object getParametroSession(String nombre){
+		return ((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute(nombre);
+	}
 }

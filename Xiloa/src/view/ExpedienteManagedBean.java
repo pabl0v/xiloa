@@ -845,14 +845,25 @@ public class ExpedienteManagedBean implements Serializable  {
 		}		
 		
 		archivoExp = new Archivo();
+		
+		//Inicializa el Contacto por el Usuario
+		
+		Usuario userName = null;
+		
+		userName = service.getUsuarioLocal(util.getUsuario());
+		if (userName.getContacto() != null)
+			this.setContactoExp(userName.getContacto());
+		
+		
+				
 				
 	}
 	
 	@Autowired
 	public void iniciaBeanExp (){
 		
-		Solicitud  solicitud = (Solicitud)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("dbSolicitudesBean");
-		
+		Solicitud  solicitud = (Solicitud)FacesUtil.getParametroSession("dbSolicitudesBean");
+						
 		if (solicitud != null){		
 						
 			this.solicitudExp = solicitud;
@@ -873,11 +884,7 @@ public class ExpedienteManagedBean implements Serializable  {
 				this.listMunicipioByDptos = new ArrayList<SelectItem>();
 				this.listMunicipioByDptos.add(new SelectItem(null, "Seleccion un Municipio"));
 			}
-			
-			enabledDisableButton(1);
-			enabledDisableButton(3);
-			enabledDisableButton(4);
-			
+						
 		}		
 		
 		//((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("dbSolicitudesBean",null);
@@ -982,8 +989,8 @@ public class ExpedienteManagedBean implements Serializable  {
 		else
 			this.setPaisIdLaboral(null);
 		
-		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("idSelectedLaboral",this.selectedLaboral.getId());
-		
+		FacesUtil.setParamBySession("idSelectedLaboral", this.selectedLaboral.getId());
+				
 		//enabledDisableButton(2);
 		
 		actualizaListaPortafolio (new Integer(1));		
@@ -1063,10 +1070,9 @@ public class ExpedienteManagedBean implements Serializable  {
 		
 		String nombreCargoLaboral;
 		
-		this.idSeletedLaboral = (Long)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("idSelectedLaboral");
-		
-		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("idSelectedLaboral",null);
-		
+		this.idSeletedLaboral = (Long)FacesUtil.getParametroSession("idSelectedLaboral");
+		FacesUtil.setParamBySession("idSelectedLaboral", null);		
+				
 		nombreCargoLaboral = this.nombreCargo.toUpperCase() + " /  " + this.nombreInstitucion.toUpperCase();
 		
 		if (this.idSeletedLaboral == null) {
@@ -1186,8 +1192,8 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.setTelefonoInstitucion(null);
 		this.listPortafolioLaboral = new ArrayList<Archivo> ();
 		
-		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("idSelectedLaboral",null);
-			
+		FacesUtil.setParamBySession("idSelectedLaboral", null);
+					
 	}	
 	
 	
@@ -1208,20 +1214,17 @@ public class ExpedienteManagedBean implements Serializable  {
 	public void nuevoPortafolio (){
 		System.out.println("Agrega archivo de evidencia al dato laboral/academico: ");
 		
-		if (this.selectedLaboral == null)
-			
-			this.idSeletedLaboral = (Long)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("idSelectedLaboral");
+		if (this.selectedLaboral == null)			
+			this.idSeletedLaboral = (Long)FacesUtil.getParametroSession("idSelectedLaboral");			
 		else
 			this.idSeletedLaboral = this.selectedLaboral.getId();		
 			
 		if (this.idSeletedLaboral != null) {
 			
-			if (this.selectedLaboral == null)
-				
+			if (this.selectedLaboral == null)				
 				this.selectedLaboral = service.getLaboralById(this.idSeletedLaboral);
 			
-				((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("selectedLaboral",this.selectedLaboral);
-			
+			FacesUtil.setParamBySession("selectedLaboral", this.selectedLaboral);			
 		}
 		 
 		
@@ -1229,8 +1232,8 @@ public class ExpedienteManagedBean implements Serializable  {
 	
 	public void guardarArchivo() {
 		
-		this.archivoExp = (Archivo)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("archivoExp");
-		
+		this.archivoExp = (Archivo)FacesUtil.getParametroSession("archivoExp");
+						
 		if (archivoExp != null) {
 			//Asignando valores de pantalla
 			
@@ -1240,13 +1243,13 @@ public class ExpedienteManagedBean implements Serializable  {
 						
 			archivoExp = (Archivo) service.guardar(archivoExp);
 			
-			if (archivoExp != null){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!"));
-				((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("archivoExp",null);
-				((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("selectedLaboral",null);
-				((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("idSelectedLaboral",null);				
+			if (archivoExp != null){				
+				FacesUtil.getMensaje("SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!", false);
+				FacesUtil.setParamBySession("archivoExp", null);
+				FacesUtil.setParamBySession("selectedLaboral", null);
+				FacesUtil.setParamBySession("idSelectedLaboral", null);								
 			}else{
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje: ", "Error al grabar el archivo. Favor revisar..."));
+				FacesUtil.getMensaje("SCCL - Mensaje: ", "Error al grabar el archivo. Favor revisar...", true);				
 			}
 		}		
 		
@@ -1261,9 +1264,9 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.setNombreRealArchivoExp(null);
 		this.setSizeArchivoExp(null);
 		
-		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("archivoExp",null);
-		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("selectedLaboral",null);
-		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("idSelectedLaboral",null);
+		FacesUtil.setParamBySession("archivoExp", null);
+		FacesUtil.setParamBySession("selectedLaboral", null);
+		FacesUtil.setParamBySession("idSelectedLaboral", null);		
 	}
 	
 	public void editarPortafolio(){		
@@ -1377,8 +1380,8 @@ public class ExpedienteManagedBean implements Serializable  {
 				
 				archivoExp.setEstado(primerEstado);
 				
-				this.selectedLaboral = (Laboral)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("selectedLaboral");
-				
+				this.selectedLaboral = (Laboral)FacesUtil.getParametroSession("selectedLaboral");
+										
 				archivoExp.setLaboral(this.selectedLaboral);
 				
 				archivoExp = (Archivo) service.guardar(archivoExp);
@@ -1386,7 +1389,7 @@ public class ExpedienteManagedBean implements Serializable  {
 				if (archivoExp != null){		            
 					mensaje = nombreFile + " ha sido cargado al servidor.";
 					isError = false;
-					((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("archivoExp",this.archivoExp);
+					FacesUtil.setParamBySession("archivoExp", "archivoExp");					
 				}else {
 					isError = true;
 				}

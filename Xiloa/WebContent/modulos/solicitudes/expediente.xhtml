@@ -17,7 +17,7 @@
 	    	<script type="text/javascript" src="../../resources/scripts/expediente.js"></script>
 		</div>
 		<h:form id="formExpediente" enctype="multipart/form-data" >
-    	<h2 style="display:inline-block;">Expediente: <a>#{expedienteManagedBean.solicitudExp.id}</a></h2>    		
+    	<h2 style="display:inline-block;">Expediente Participante</h2>    		
     		
     		<p:commandButton id="enviarSolicitud" value="Enviar Solicitud" title="Solicitar Certificacion" 
     		                 icon="ui-icon-star" style="display:inline-block;"
@@ -25,7 +25,7 @@
     					     update=":formExpediente:msgExpediente"    					        					       
              				/>    		
     	<div>
-    	<p:messages id="msgExpediente" showDetail="true" autoUpdate="true" closable="true" />
+    		<p:messages id="msgExpediente" showDetail="true" autoUpdate="true" closable="true" />
     	</div>
     	
     	<h3>Datos del solicitante/Candidato</h3>
@@ -69,15 +69,7 @@
                              action="#{expedienteManagedBean.actualizarContacto}" />          
     	</div>    	
     	<div class="barra_azul">  
-    		<p style="padding: 7px;font-weight:bold;">Trayectoria profesional y academica:</p>  		
-    		<div>  
-	    		<h:outputLabel styleClass="estilo_label" value="Estatus actual:" />
-	    		#{expedienteManagedBean.estadoActual}	           	
-	        </div>
-	        <div>	        
-            	<h:outputLabel styleClass="estilo_label" value="Siguiente Estatus:" />
-            	  #{expedienteManagedBean.estadoSiguiente}           		
-           	</div>
+    		<p style="padding: 7px;font-weight:bold;">Trayectoria profesional y academica:</p>    		
            	<div>
            		<p:commandButton id="btnAgregaLaborales" disabled="#{expedienteManagedBean.disabledBtnAgregaLaborales}"
            		                 action="#{expedienteManagedBean.nuevoLaboral}" value="Agregar"
@@ -187,7 +179,19 @@
                </p:tab>  
            </p:tabView>  		
     	</div>
-   	    	     	
+   	    <div id="contenedor_tab_planes" class="seccion_expediente" style="width:98%">
+	   	    <p:dataTable emptyMessage="No hay datos"  var="dtEvaluaciones" value="#{expedienteManagedBean.listBeanEvalFormacion}"
+                         selection="#{expedienteManagedBean.selectedBeanEvaluacion}" rowKey="#{dtEvaluaciones}" 
+             			 selectionMode="single" paginator="true" rows="4" >   
+             	 <f:facet name="header">Detalle de Evaluaciones</f:facet>                        	 
+                 <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{dtEvaluaciones.unidadCompetenciaDescripcion}" /></p:column>  
+                 <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{dtEvaluaciones.instrumento.nombre} [ #{dtEvaluaciones.instrumento.tipo.valor} ]" /></p:column>                               
+                 <p:column headerText="Observaciones"><h:outputText value="#{dtEvaluaciones.evaluacion.observaciones}" /></p:column>                                  
+                 <p:column headerText="Fecha"><h:outputText value="#{dtEvaluaciones.evaluacion.fechaEvaluacion}" /></p:column>
+                 <p:column headerText="Aprobado"><p:selectBooleanCheckbox value="#{dtEvaluaciones.evaluacion.aprobado}" /></p:column>    
+                 <p:column headerText="Estado"><h:outputText value="#{dtEvaluaciones.estadoEvaluacion.valor}" /></p:column>
+	         </p:dataTable>
+   	    </div>    	
     	<!-- Cuadro de dialogo emergente que registra datos laborales y académicos -->    	    	
     	<p:dialog id="modalLaborales" styleClass="estilo_dialogoLaborales" header="Agregar Datos Laborales y Academicos:" widgetVar="dlg1" 
     	          modal="true" resizable="false" width="720" height="540" showEffect="clip" hideEffect="clip" >

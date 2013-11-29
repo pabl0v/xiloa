@@ -35,11 +35,14 @@ public class UtilitariosManagedBean implements Serializable {
 	private Map<Integer, Mantenedor> catalogoTiposActividad;
 	private Map<Integer, Mantenedor> catalogoEstatusActividad; 
 	private Map<Integer, Mantenedor> catalogoTiposInstrumento;
-	private Map<Integer, Mantenedor> catalogoTiposDatosLaborales;
+	private Map<Integer, Mantenedor> catalogoTiposDatosLaborales;	
 	private Map<Long, Item> catalogoUnidades;
 	private List<Usuario> usuarios;
 	private List<Rol> roles;
 	private Map<Integer, Mantenedor> catalogoGenero;
+	private Map<Integer, Mantenedor> catalogoEstadoSolicitud;
+	private Map<Integer, Mantenedor> catalogoPortafolio;
+	private Map<Integer, Mantenedor> catalogoEstadosEvaluacion;
 
 	public UtilitariosManagedBean(){
 		super();
@@ -53,6 +56,9 @@ public class UtilitariosManagedBean implements Serializable {
 		usuarios = new ArrayList<Usuario>();
 		roles = new ArrayList<Rol>();
 		catalogoGenero = new HashMap<Integer, Mantenedor> ();
+		catalogoEstadoSolicitud = new HashMap<Integer, Mantenedor>();
+		catalogoPortafolio = new HashMap<Integer, Mantenedor>();
+		catalogoEstadosEvaluacion = new HashMap<Integer, Mantenedor>();
 	}
 	
 	@PostConstruct
@@ -60,6 +66,7 @@ public class UtilitariosManagedBean implements Serializable {
 		mantenedores = servicio.getMantenedores();
 		usuarios = servicio.getUsuarios();
 		roles = servicio.getRoles();
+		int tipoMantenedor = 0;
 		
 		for(int i=0; i<mantenedores.size(); i++){
 			Mantenedor mantenedor = mantenedores.get(i);
@@ -83,15 +90,40 @@ public class UtilitariosManagedBean implements Serializable {
 				case 19: catalogoTiposInstrumento.put(mantenedor.getId(), mantenedor); break;
 			}
 			
-			if (Integer.valueOf(mantenedor.getTipo()) == new Integer(10))  {
-				catalogoGenero.put(mantenedor.getId(), mantenedor);
+			tipoMantenedor = Integer.valueOf(mantenedor.getTipo()).intValue();
+			switch (tipoMantenedor){
+				case 1:		
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+				case 6:
+				case 7: catalogoEstadoSolicitud.put(mantenedor.getId(), mantenedor); break;
+				case 8: catalogoPortafolio.put(mantenedor.getId(), mantenedor); break;
+				case 9: catalogoEstadosEvaluacion.put(mantenedor.getId(), mantenedor); break;
+				case 10: catalogoGenero.put(mantenedor.getId(), mantenedor); break;
+					
+					
 			}
+			
 		}
 		
 		catalogoUnidades = servicio.getCatalogoUnidades();
 		usuario = SecurityContextHolder.getContext().getAuthentication().getName();
 	}
 	
+	public Map<Integer, Mantenedor> getCatalogoEstadosEvaluacion() {
+		return catalogoEstadosEvaluacion;
+	}
+
+	public Map<Integer, Mantenedor> getCatalogoPortafolio() {
+		return catalogoPortafolio;
+	}
+	
+	public Map<Integer, Mantenedor> getCatalogoEstadoSolicitud() {
+		return catalogoEstadoSolicitud;
+	}
+
 	public Map<Integer, Mantenedor> getCatalogoGenero() {
 		return catalogoGenero;
 	}

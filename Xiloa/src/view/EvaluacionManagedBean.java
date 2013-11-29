@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import service.IService;
+import support.FacesUtil;
 import model.Certificacion;
 import model.Evaluacion;
 import model.EvaluacionGuia;
@@ -27,7 +29,7 @@ import model.Mantenedor;
 import model.Solicitud;
 
 @Component
-@Scope(value="session")
+@Scope(value="view")
 public class EvaluacionManagedBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -97,18 +99,21 @@ public class EvaluacionManagedBean implements Serializable {
 		this.estado = estado;
 	}
 
-	public Evaluacion getSelectedEvaluacion() {
+	public Evaluacion getSelectedEvaluacion() {		
 		return selectedEvaluacion;
 	}
 
-	public void setSelectedEvaluacion(Evaluacion selectedEvaluacion) {
-		this.selectedEvaluacion = selectedEvaluacion;
-		this.setIdSelectedUnidad(this.selectedEvaluacion.getUnidad());
-		this.setFechaEvaluacion(selectedEvaluacion.getFechaEvaluacion());
-		this.setObservaciones(selectedEvaluacion.getObservaciones());
-		this.setAprobado(selectedEvaluacion.isAprobado());
-		this.setEstado(selectedEvaluacion.getEstado());
-		this.setEstadoId(selectedEvaluacion.getEstado().getId());
+	public void setSelectedEvaluacion(Evaluacion selectedEvaluacion) {		
+		this.selectedEvaluacion = selectedEvaluacion;		
+		if (this.selectedEvaluacion != null){
+			this.setIdSelectedUnidad(this.selectedEvaluacion.getUnidad());
+			this.setSelectedUnidad(this.selectedEvaluacion.getUnidad());
+			this.setFechaEvaluacion(selectedEvaluacion.getFechaEvaluacion());
+			this.setObservaciones(selectedEvaluacion.getObservaciones());
+			this.setAprobado(selectedEvaluacion.isAprobado());
+			this.setEstado(selectedEvaluacion.getEstado());
+			this.setEstadoId(selectedEvaluacion.getEstado().getId());
+		}
 	}
 
 	public Solicitud getSolicitudEval() {		
@@ -116,8 +121,8 @@ public class EvaluacionManagedBean implements Serializable {
 	}
 
 	public void setSolicitudEval(Solicitud solicitudEval) {		
-		this.solicitudEval = solicitudEval;		
-		inicializaSelectItems();
+		this.solicitudEval = solicitudEval;			
+		inicializaSelectItems(); //Inicializa SelecItems
 	}	
 	
 	public List<SelectItem> getListUnidadCompentecia() {
@@ -142,14 +147,16 @@ public class EvaluacionManagedBean implements Serializable {
 
 	public void setSelectedInstrumento(Instrumento selectedInstrumento) {
 		this.selectedInstrumento = selectedInstrumento;
-		this.setIdSelectedInstrByUnd(this.selectedInstrumento.getId());
-		Object [] objs =  new Object [] {this.selectedEvaluacion.getId(), this.selectedInstrumento.getId()};
-		List<Guia> guiasEvalInst = service.getGuiaByParam("EvaluacionGuia.findGuiasByEvalAndInstrumento", objs);
+		if (this.selectedInstrumento != null){
+			this.setIdSelectedInstrByUnd(this.selectedInstrumento.getId());
+			Object [] objs =  new Object [] {this.selectedEvaluacion.getId(), this.selectedInstrumento.getId()};
+			List<Guia> guiasEvalInst = service.getGuiaByParam("EvaluacionGuia.findGuiasByEvalAndInstrumento", objs);
 		
-		selectedGuia = new Guia [guiasEvalInst.size()];
-		int i=0;
-		for (Guia dato : guiasEvalInst) {
-			selectedGuia[i++] = dato;
+			selectedGuia = new Guia [guiasEvalInst.size()];
+			int i=0;
+			for (Guia dato : guiasEvalInst) {
+				selectedGuia[i++] = dato;
+			}
 		}
 	}
 
@@ -216,6 +223,50 @@ public class EvaluacionManagedBean implements Serializable {
 	public void setObservaciones(String observaciones) {
 		this.observaciones = observaciones;
 	}
+	
+	@PostConstruct
+	private void initBeanEvaluacion(){
+		Solicitud sol = null;
+		Evaluacion eval = null;
+		Long unidadSelected = null;
+		Instrumento instrumentoSel = null;
+		
+		//Recibiendo los parametros
+		
+		sol = (Solicitud)FacesUtil.getParametroSession("solicitudEval");
+		
+		if (sol != null)
+			this.setSolicitudEval(sol);
+		else
+			this.setSolicitudEval(null);
+					
+		eval = (Evaluacion)FacesUtil.getParametroSession("selectedEvaluacion");
+		
+		if (eval != null){
+			this.setSelectedEvaluacion(eval);						
+		}else
+			this.setSelectedEvaluacion(null);
+		
+		unidadSelected = (Long) FacesUtil.getParametroSession("selectedUnidad");
+		if (unidadSelected != null){
+			this.setSelectedUnidad(unidadSelected);
+			this.setIdSelectedUnidad(unidadSelected);	
+			handleInstrumentosByUnidad ();
+		}else{
+			this.setSelectedUnidad(null);
+			this.setIdSelectedUnidad(null);
+		}
+		
+		instrumentoSel = (Instrumento)FacesUtil.getParametroSession("selectedInstrumento");
+		if (instrumentoSel != null){
+			Object [] objs =  new Object [] {instrumentoSel.getId()};
+			listGuiaByInstru = service.getGuiaByParam("Guia.findByIdInstrumento", objs);
+			
+			this.setSelectedInstrumento(instrumentoSel);
+		}else
+			this.setSelectedInstrumento(null);
+				
+	}
 
 	public void handleInstrumentosByUnidad () {
 		
@@ -223,7 +274,7 @@ public class EvaluacionManagedBean implements Serializable {
 		
 		if (this.idSelectedUnidad != null) {
 			//selectedUnidad = service.getUnidadById(this.idSelectedUnidad);
-			selectedUnidad = this.idSelectedUnidad;
+			selectedUnidad = (selectedUnidad != this.idSelectedUnidad) ? this.idSelectedUnidad : selectedUnidad;
 			
 			//listInstru = service.getInstrumentoByUnidad(selectedUnidad.getId());
 			listInstru = service.getInstrumentoByUnidad(selectedUnidad);
@@ -237,7 +288,20 @@ public class EvaluacionManagedBean implements Serializable {
 	}
 	
 	public void handleGuiasByInstrumento(){		
-		selectedInstrumento = service.getInstrumentoById(idSelectedInstrByUnd);
+		Instrumento inst = null;
+		Long  selectedInstrumentoId = null;
+		
+		if (idSelectedInstrByUnd != null)
+			inst = service.getInstrumentoById(idSelectedInstrByUnd);
+		
+		if (this.selectedInstrumento == null){
+			selectedInstrumento = inst;
+			selectedInstrumentoId = inst.getId();
+		}
+		
+		if (inst.getId() != selectedInstrumentoId)
+			selectedInstrumento = inst;
+		
 		Object [] objs =  new Object [] {selectedInstrumento.getId()};
 		listGuiaByInstru = service.getGuiaByParam("Guia.findByIdInstrumento", objs);						
 	}
@@ -256,7 +320,7 @@ public class EvaluacionManagedBean implements Serializable {
 				this.listUnidadCompentecia.add(new SelectItem(unidad, utilitarios.getCompetenciaDescripcion(unidad)));			
 				//this.listUnidadCompentecia.add(new SelectItem(unidad.getId(), utilitarios.getCompetenciaDescripcion(unidad.getCodigo())));
 			}
-			
+								
 			this.listInstrumentoByUnidad = new ArrayList<SelectItem>();
 			this.listInstrumentoByUnidad.add(new SelectItem(null, "Seleccione el instrumento"));
 		} else {
@@ -318,10 +382,22 @@ public class EvaluacionManagedBean implements Serializable {
 			}			
 			
 		} else { // Guarda los cambios en la edicion de la evaluacion			
-						
+			Mantenedor estadoEval = null;		
+			Mantenedor sigEstado = null;
 			eval = selectedEvaluacion;
 			eval.setObservaciones(this.observaciones);			
-			eval.setAprobado(this.aprobado);			
+			eval.setAprobado(this.aprobado);
+			
+			estadoEval = eval.getEstado();
+			if (this.aprobado == true){
+				if (estadoEval.getProximo() != null){
+					sigEstado = service.getMantenedorById(Integer.valueOf(estadoEval.getProximo()));
+					
+					if (sigEstado != null)
+						eval.setEstado(sigEstado);
+				}
+					
+			}
 						
 			eval = (Evaluacion) service.guardar(eval);			
 			
@@ -369,9 +445,8 @@ public class EvaluacionManagedBean implements Serializable {
 		
 		resetValores ();
 		urlDestino = "/modulos/solicitudes/expediente_evaluacion?faces-redirect=true";
-		
-		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("dbSolicitudesBean",this.getSolicitudEval());
-		
+		FacesUtil.setParamBySession("dbSolicitudesBean", this.getSolicitudEval());
+				
 		return urlDestino;
 	}
 }

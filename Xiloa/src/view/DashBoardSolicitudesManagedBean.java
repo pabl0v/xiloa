@@ -4,17 +4,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.context.FacesContext;
-import javax.faces.application.FacesMessage;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.servlet.http.HttpServletRequest;
 
 import model.Certificacion;
 import model.Contacto;
 import model.Evaluacion;
+import model.Laboral;
 import model.Mantenedor;
 import model.Solicitud;
 
@@ -24,7 +25,7 @@ import org.springframework.stereotype.Component;
 
 import service.IService;
 import support.Ifp;
-import support.USolicitud;
+import support.FacesUtil;
 
 @Component
 @Scope(value="request")
@@ -37,6 +38,9 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 
 	@Autowired
 	private IService service;
+	
+	@Autowired
+	private UtilitariosManagedBean util;
 	
 	private List<Solicitud> listaSolicitudes;
 	
@@ -69,8 +73,9 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	
 	private List<Solicitud> filterSolicitudes;
 	
-
+	private Mantenedor estadoInicialSolicitud;
 	
+			
 	public DashBoardSolicitudesManagedBean() {
 		
 		super();	
@@ -87,8 +92,19 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		selectedIdCertByCentro = null;	
 		
 		selectedBuscarByAll = null;	
-		
+					
 	}	
+
+	
+	public Mantenedor getEstadoInicialSolicitud() {
+		return estadoInicialSolicitud;
+	}
+
+
+	public void setEstadoInicialSolicitud(Mantenedor estadoInicialSolicitud) {
+		this.estadoInicialSolicitud = estadoInicialSolicitud;
+	}
+
 
 	public Long getSelectedSolicitudId() {
 		return selectedSolicitudId;
@@ -255,10 +271,13 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		for (Ifp dato : lista) {	
 			this.listCentrosBySolicitud.add(new SelectItem(dato.getIfpId(),dato.getIfpNombre()));
 		}		
-		
+					
 		llenarListBuscarByAll();
 		llenarListAccionConvo ();
 		handleCertByCentro();
+		
+		//Asigna el estado inicial de la Solicitud
+		this.estadoInicialSolicitud = service.getMantenedorMinByTipo(new String("7"));
 	}
 	
 	public void handleCertByCentro() {
@@ -310,7 +329,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		
 		Integer tipoFiltro = null;
 		
-		tipoFiltro = (Integer)obtieneParametroSession("tipoFiltro");
+		tipoFiltro = (Integer)FacesUtil.getParametroSession("tipoFiltro");
 		
 		if (tipoFiltro == null)
 			tipoFiltro = new Integer(0);
@@ -392,7 +411,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		Integer inicialEstadoKey = null;
 		Mantenedor estadoInicial = null;
 		
-		asignarParamBySession("dbSolicitudesBean", this.selectedSolicitud);		
+		FacesUtil.setParamBySession("dbSolicitudesBean", this.selectedSolicitud);		
 		
 		estadoActualSolicitud = this.selectedSolicitud.getEstatus();
 		
@@ -439,44 +458,117 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		titulo = "SCCL - Mensaje: ";
 		this.selectedListSolicitud = null;
 		
-		asignarParamBySession("tipoFiltro", null);
+		FacesUtil.setParamBySession("tipoFiltro", null);
 		
-		imprimirMensaje(titulo, texto, isError);
+		FacesUtil.getMensaje(titulo, texto, isError);
+		
 		return "/modulos/solicitudes/solicitudes?faces-redirect=true";
 		
 		
 	}
 	
 	public void indicarConvocar(){
-		asignarParamBySession("tipoFiltro", new Integer(1));
+		FacesUtil.setParamBySession("tipoFiltro", new Integer(1));
 	}
 	
 	public void indicarAsesorar(){
-		asignarParamBySession("tipoFiltro", new Integer(2));
+		FacesUtil.setParamBySession("tipoFiltro", new Integer(2));
 	}
 	
 	public void indicarInscribir(){
-		asignarParamBySession("tipoFiltro", new Integer(3));
+		FacesUtil.setParamBySession("tipoFiltro", new Integer(3));
 	}
 	
-	public void asignarParamBySession(String nombre, Object valor){		
-		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute(nombre,valor);		
-	}
-	
-	public Object obtieneParametroSession(String nombre){
-		return ((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute(nombre);
-	}
-	
-	public void imprimirMensaje(String titulo, String texto, boolean isError){
-		FacesContext context = FacesContext.getCurrentInstance();
-		FacesMessage msg = null;
+	public void solicitarCertificacion (){
 		
-		if (isError == true)
-			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, titulo, texto);			
-		else
-			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, titulo, texto);
+		Mantenedor estadoActual = null;				
+		Integer    proxEstado = null; 
+		Solicitud  solicitudExp = null;
+		Mantenedor inicialEstado = null;
 		
-		context.addMessage(null, msg);		
+		Mantenedor proximoEstado = null;
+		
+		solicitudExp = this.getSelectedSolicitud();
+		
+		if (solicitudExp != null) {
+			
+			if (validaRegistroCV (solicitudExp)){
+			
+				estadoActual = this.getSelectedSolicitud().getEstatus();
+				
+				inicialEstado = this.getEstadoInicialSolicitud();
+				
+				if (inicialEstado.getId() == estadoActual.getId()){
+					
+					proxEstado = Integer.valueOf(estadoActual.getProximo());
+											
+					if (proxEstado != null){
+						proximoEstado = util.getCatalogoEstadoSolicitud().get(proxEstado);
+						solicitudExp.setEstatus(proximoEstado);
+						
+						Solicitud sol = (Solicitud) service.guardar(solicitudExp);
+						
+						if (sol != null)		
+							FacesUtil.getMensaje("SCCL - Mensaje: ", "La solicitud a sido registrada exitosamente !!", false);				
+						else				
+							FacesUtil.getMensaje("SCCL - Mensaje: ", "Error al registrar la solicitud. Favor revisar...", false);
+					}				
+					
+				}
+			}
+			
+		}
+		
+		
 	}
+	
+	public boolean validaRegistroCV (Solicitud solicitud){
+		String        textMsg = "";
+		String        titulo = "";
+		boolean       isValido = true;
+		List<Laboral> listDatosLaborales;
+		
+		Contacto solicitante = solicitud.getContacto();
+		
+		if (solicitante.getTelefono1() == null) {
+			textMsg = "Debe indicar el numero de telefono";
+			isValido = false;
+		}
+			
+		if (solicitante.getDireccionActual() == null) {
+			textMsg = (textMsg.isEmpty()) ? "Debe indicar la direccion actual" : textMsg + ", la direccion actual";					    
+			isValido = false;
+		} 
+			
+		if (solicitante.getDepartamentoId() == null) {
+			textMsg = (textMsg.isEmpty()) ? "Debe indicar el departamento" : textMsg + ", el departamento";			
+			isValido = false;
+		}
+			
+		if (solicitante.getMunicipioId() == null) {
+			textMsg = (textMsg.isEmpty()) ? "Debe indicar el municipio." : textMsg + " y el municipio.";		
+			isValido = false;
+		}
+		
+		listDatosLaborales = service.getListLaboralByTipo(new Integer(13), solicitante);
+		
+		if (listDatosLaborales.size() == 0) {
+			textMsg = (textMsg.isEmpty()) ? "Debe indicar los datos Laborales / Academicos." : ". Debe indicar los datos Laborales / Academicos.";
+			isValido = false;
+		}
+			
+		if (isValido == false){
+			titulo = "Informacion incompleta: ";
+			FacesUtil.getMensaje(titulo, textMsg, true);
+		}else{
+			titulo = "Informacion: ";
+			textMsg = "Puede proceder a registrar la solicitud";
+			FacesUtil.getMensaje(titulo, textMsg, false);
+		}		
+		
+		return isValido;
+		
+	}
+		
 	
 }

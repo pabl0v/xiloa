@@ -944,7 +944,7 @@ public class ExpEvalManagedBean implements Serializable  {
 	@Autowired
 	public void iniciaBeanExpEval (){
 		
-		Solicitud  solicitud = (Solicitud)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("dbSolicitudesBean");
+		Solicitud  solicitud = (Solicitud)FacesUtil.getParametroSession("dbSolicitudesBean");				
 		Map<Integer, Mantenedor> catEstadosSolicitud = null;
 		Integer tipoEstadoSolicitud = null;
 		List<Mantenedor> listaEstadosSol = null;
@@ -1110,8 +1110,8 @@ public class ExpEvalManagedBean implements Serializable  {
 			this.setPaisIdLaboral(this.selectedLaboral.getPais().getId());
 		else
 			this.setPaisIdLaboral(null);
-		
-		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("idSelectedLaboral",this.selectedLaboral.getId());
+
+		FacesUtil.setParamBySession("idSelectedLaboral", this.selectedLaboral.getId());		
 		
 		//enabledDisableButton(2);
 		
@@ -1129,7 +1129,34 @@ public class ExpEvalManagedBean implements Serializable  {
 		
 	}
 	
-	public String RegistrarEditarEvaluacion() {		
+	public String editarEvaluacion(BeanEvaluacion beanEval) {		
+		Evaluacion eval = null;
+		
+		this.setSelectedBeanEvaluacion(beanEval);
+		
+		FacesUtil.setParamBySession("solicitudEval", this.selectedBeanEvaluacion.getSolicitudBeanEval());		
+		FacesUtil.setParamBySession("selectedInstrumento", this.selectedBeanEvaluacion.getInstrumento());
+		
+		eval = this.selectedBeanEvaluacion.getEvaluacion();
+		
+		if (eval != null){
+			FacesUtil.setParamBySession("selectedEvaluacion", eval);					
+			FacesUtil.setParamBySession("selectedUnidad", eval.getUnidad());
+		} else {
+			FacesUtil.setParamBySession("selectedEvaluacion", null);
+			FacesUtil.setParamBySession("selectedUnidad", null);
+		}
+		
+		return "/modulos/solicitudes/registro_evaluacion?faces-redirect=true";		
+	}	
+	
+	public String registrarEvaluacion() {		
+				
+		FacesUtil.setParamBySession("solicitudEval", this.solicitudExp);		
+		FacesUtil.setParamBySession("selectedInstrumento", null);		
+		FacesUtil.setParamBySession("selectedEvaluacion", null);
+		FacesUtil.setParamBySession("selectedUnidad", null);
+				
 		return "/modulos/solicitudes/registro_evaluacion?faces-redirect=true";		
 	}	
 	
@@ -1192,9 +1219,9 @@ public class ExpEvalManagedBean implements Serializable  {
 		
 		String nombreCargoLaboral;
 		
-		this.idSeletedLaboral = (Long)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("idSelectedLaboral");
+		this.idSeletedLaboral = (Long)FacesUtil.getParametroSession("idSelectedLaboral");				
 		
-		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("idSelectedLaboral",null);
+		FacesUtil.setParamBySession("idSelectedLaboral", null);
 		
 		nombreCargoLaboral = this.nombreCargo.toUpperCase() + " /  " + this.nombreInstitucion.toUpperCase();
 		
@@ -1339,8 +1366,8 @@ public class ExpEvalManagedBean implements Serializable  {
 		this.setTelefonoInstitucion(null);
 		this.listPortafolioLaboral = new ArrayList<Archivo> ();
 		
-		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("idSelectedLaboral",null);
-			
+		FacesUtil.setParamBySession("idSelectedLaboral", null);
+					
 	}	
 	
 	
@@ -1361,9 +1388,8 @@ public class ExpEvalManagedBean implements Serializable  {
 	public void nuevoPortafolio (){
 		System.out.println("Agrega archivo de evidencia al dato laboral/academico: ");
 		
-		if (this.selectedLaboral == null)
-			
-			this.idSeletedLaboral = (Long)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("idSelectedLaboral");
+		if (this.selectedLaboral == null)			
+			this.idSeletedLaboral = (Long)FacesUtil.getParametroSession("idSelectedLaboral");			
 		else
 			this.idSeletedLaboral = this.selectedLaboral.getId();		
 			
@@ -1372,8 +1398,7 @@ public class ExpEvalManagedBean implements Serializable  {
 			if (this.selectedLaboral == null)
 				
 				this.selectedLaboral = service.getLaboralById(this.idSeletedLaboral);
-			
-				((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("selectedLaboral",this.selectedLaboral);
+				FacesUtil.setParamBySession("selectedLaboral", this.selectedLaboral);				
 			
 		}
 		 
@@ -1382,8 +1407,8 @@ public class ExpEvalManagedBean implements Serializable  {
 	
 	public void guardarArchivo() {
 		
-		this.archivoExp = (Archivo)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("archivoExp");
-		
+		this.archivoExp = (Archivo)FacesUtil.getParametroSession("archivoExp");			
+				
 		if (archivoExp != null) {
 			//Asignando valores de pantalla
 			
@@ -1394,12 +1419,12 @@ public class ExpEvalManagedBean implements Serializable  {
 			archivoExp = (Archivo) service.guardar(archivoExp);
 			
 			if (archivoExp != null){
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!"));
-				((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("archivoExp",null);
-				((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("selectedLaboral",null);
-				((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("idSelectedLaboral",null);				
+				FacesUtil.getMensaje("SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!", false);
+				FacesUtil.setParamBySession("archivoExp", null);
+				FacesUtil.setParamBySession("selectedLaboral", null);
+				FacesUtil.setParamBySession("idSelectedLaboral", null);		
 			}else{
-				FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje: ", "Error al grabar el archivo. Favor revisar..."));
+				FacesUtil.getMensaje("SCCL - Mensaje: ", "Error al grabar el archivo. Favor revisar...", true);				
 			}
 		}		
 		
@@ -1414,9 +1439,10 @@ public class ExpEvalManagedBean implements Serializable  {
 		this.setNombreRealArchivoExp(null);
 		this.setSizeArchivoExp(null);
 		
-		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("archivoExp",null);
-		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("selectedLaboral",null);
-		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("idSelectedLaboral",null);
+		FacesUtil.setParamBySession("archivoExp", null);
+		FacesUtil.setParamBySession("selectedLaboral", null);
+		FacesUtil.setParamBySession("idSelectedLaboral", null);		
+		
 	}
 	
 	public void editarPortafolio(){		
@@ -1474,9 +1500,7 @@ public class ExpEvalManagedBean implements Serializable  {
 		String tituloMsg = "";
 		String mensaje = "";
 		boolean isError = false;
-		
-		FacesMessage msg;   
-	    
+					    
 		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
 		
 	    String directorio = ec.getRealPath("/portafolio");	    
@@ -1530,8 +1554,8 @@ public class ExpEvalManagedBean implements Serializable  {
 				
 				archivoExp.setEstado(primerEstado);
 				
-				this.selectedLaboral = (Laboral)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("selectedLaboral");
-				
+				this.selectedLaboral = (Laboral)FacesUtil.getParametroSession("selectedLaboral");
+										
 				archivoExp.setLaboral(this.selectedLaboral);
 				
 				archivoExp = (Archivo) service.guardar(archivoExp);
@@ -1539,7 +1563,7 @@ public class ExpEvalManagedBean implements Serializable  {
 				if (archivoExp != null){		            
 					mensaje = nombreFile + " ha sido cargado al servidor.";
 					isError = false;
-					((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("archivoExp",this.archivoExp);
+					FacesUtil.setParamBySession("archivoExp", this.archivoExp);					
 				}else {
 					isError = true;
 				}
@@ -1564,16 +1588,14 @@ public class ExpEvalManagedBean implements Serializable  {
 			tituloMsg = "Proceso Exitoso !!!";
 		}
 		
-		msg = new FacesMessage(tituloMsg, mensaje);
-		
-		FacesContext.getCurrentInstance().addMessage(null, msg);  
-	        			
+		FacesUtil.getMensaje(tituloMsg, mensaje, isError);
+			        			
 	}
 	
 	public void validaRegistroCV (){
-		FacesMessage msg;
 		String       textMsg = "";
 		String       titulo = "";
+		boolean      isError = false;
 		
 		Contacto solicitante = this.solicitudExp.getContacto();
 		
@@ -1605,16 +1627,16 @@ public class ExpEvalManagedBean implements Serializable  {
 				this.setDisableSolicitarCertificacion(true);
 			}
 			
-			if (this.isDisableSolicitarCertificacion())
+			if (this.isDisableSolicitarCertificacion()){
 				titulo = "Informacion incompleta: ";
-			else{
+				isError = true;
+			}else{
+				isError = false;
 				titulo = "Informacion: ";
 				textMsg = "Puede proceder a registrar la solicitud";
 			}
-			
-			msg = new FacesMessage(titulo, textMsg);
-			
-			FacesContext.getCurrentInstance().addMessage(null, msg);
+						
+			FacesUtil.getMensaje(titulo, textMsg, isError);
 		} else
 		{
 			this.setDisableSolicitarCertificacion(true);
@@ -1644,7 +1666,6 @@ public class ExpEvalManagedBean implements Serializable  {
 		boolean pasaConvocatoria = false;
 		String  titulo = "";
 		String  textoMsg = "";
-		FacesMessage msg = null;
 		boolean isError = false;
 		
 		if (this.solicitudExp != null){
@@ -1676,13 +1697,8 @@ public class ExpEvalManagedBean implements Serializable  {
 			textoMsg = "No puede ser convocado por que existen archivos del portafolio que deben ser revisado.";
 			isError = true;
 		}
-		
-		if (isError == true)
-			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, titulo, textoMsg);
-		else
-			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, titulo, textoMsg);
 				
-		FacesContext.getCurrentInstance().addMessage(null, msg);  
+		FacesUtil.getMensaje(titulo, textoMsg, isError);	  
 		
 	}
 	
@@ -1716,13 +1732,8 @@ public class ExpEvalManagedBean implements Serializable  {
 			isError = true;
 		}
 		
-		if (isError == true)
-			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, titulo, textoMsg);
-		else
-			msg = new FacesMessage(FacesMessage.SEVERITY_INFO, titulo, textoMsg);
-				
-		FacesContext.getCurrentInstance().addMessage(null, msg);  
-
+		FacesUtil.getMensaje(titulo, textoMsg, isError);
+		
 	}	
 	
 	public void inscripcionCertificacion (){

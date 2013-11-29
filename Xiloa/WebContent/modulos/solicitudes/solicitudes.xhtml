@@ -75,28 +75,41 @@
                 <p:column id="candidatoColumn" headerText="Nombre del candidato" exportable="true"><h:outputText value="#{varSolicitudI.contacto.nombreCompleto}" /></p:column>  
                 <p:column id="certificacionColumn" headerText="Certificacion a evaluar" exportable="true"><h:outputText value="#{varSolicitudI.certificacion.nombre}"/></p:column>  
                 <p:column id="fechaColumn" headerText="Fecha solicitud" exportable="true"><h:outputText value="#{varSolicitudI.fechaRegistro}" /></p:column>               
-                <p:column id="evaluadorColumn" headerText="Evaluador" exportable="true"><h:outputText value="#{varSolicitudI.contacto.correo1}" /></p:column>                
+                <p:column id="evaluadorColumn" headerText="Evaluador" exportable="true"><h:outputText value="#{varSolicitudI.certificacion.getEvaluador().nombreCompleto} [ #{varSolicitudI.certificacion.getEvaluador().correo1} ]" /></p:column>                
                 <p:column id="estadoColumn" headerText="Estado" exportable="true"><h:outputText value="#{varSolicitudI.estatus.valor}" /></p:column>                
                 <p:column style="width:4%" exportable="false">  
+                <sec:authorize ifAnyGranted="admin, inatec">  
 	            	<p:commandButton id="selectButton" action="#{dashBoardSolicitudesManagedBean.editaSolicitud}" 	            	                             				     
 	            	                 icon="ui-icon-pencil" title="Editar Solicitud" >
 	   	            	<f:setPropertyActionListener value="#{varSolicitudI}" target="#{dashBoardSolicitudesManagedBean.selectedSolicitud}" />
-	            	</p:commandButton>	            	  
+	            	</p:commandButton>	     
+	            </sec:authorize>  
+	            <sec:authorize ifAnyGranted="visitante">       	 
+		            <p:commandButton id="enviarSolicitud" value="Enviar" title="Solicitar Certificacion" 
+	    		                 icon="ui-icon-star" style="display:inline-block;"
+	    		                 actionListener="#{dashBoardSolicitudesManagedBean.solicitarCertificacion}" 
+	    					     update="dtSolicitud" disabled="#{Integer.valueOf(dashBoardSolicitudesManagedBean.estadoInicialSolicitud.proximo) != varSolicitudI.id }"    					        					       
+	             				>
+            				<f:setPropertyActionListener value="#{varSolicitudI}" target="#{dashBoardSolicitudesManagedBean.selectedSolicitud}" />
+	                 </p:commandButton>  
+             	</sec:authorize>
     			</p:column>
     			  
             </p:dataTable>            
         </div>
-        <div id="contenedor_exportar">
-    		<p>Con seleccionado:</p>    		
-        	<p:splitButton value="Convocar" icon="ui-icon-disk"
-        	               action="#{dashBoardSolicitudesManagedBean.indicarConvocar}"  >           		   
-       			<p:menuitem value="Asesorar" icon="ui-icon-arrowrefresh-1-w"
-       			            action="#{dashBoardSolicitudesManagedBean.indicarAsesorar}" />
-       			<p:separator />  
-       			<p:menuitem value="Listo para inscripcion" icon="ui-icon-star"
-       			            action="#{dashBoardSolicitudesManagedBean.indicarInscribir}" />       			  
-   			</p:splitButton> 	
-    	</div>
+        <sec:authorize ifAnyGranted="admin, inatec">  
+	        <div id="contenedor_exportar">
+	    		<p>Con seleccionado:</p>    		
+	        	<p:splitButton value="Convocar" icon="ui-icon-disk"
+	        	               action="#{dashBoardSolicitudesManagedBean.indicarConvocar}"  >           		   
+	       			<p:menuitem value="Asesorar" icon="ui-icon-arrowrefresh-1-w"
+	       			            action="#{dashBoardSolicitudesManagedBean.indicarAsesorar}" />
+	       			<p:separator />  
+	       			<p:menuitem value="Listo para inscripcion" icon="ui-icon-star"
+	       			            action="#{dashBoardSolicitudesManagedBean.indicarInscribir}" />       			  
+	   			</p:splitButton> 	
+	    	</div>
+    	</sec:authorize>
      </h:form>
     </div>        
     
