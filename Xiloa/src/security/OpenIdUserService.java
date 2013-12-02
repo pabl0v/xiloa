@@ -23,7 +23,17 @@ public class OpenIdUserService implements UserDetailsService, AuthenticationUser
 	@Override
 	public UserDetails loadUserDetails(OpenIDAuthenticationToken token) {
 		String email = getUserData(token, "email");
-		Usuario usuario = null;
+		
+		Usuario usuario = service.getUsuarioLocal(email);
+		
+		if(usuario == null)
+		{
+			service.RegistrarUsuarioOpenId(email, getUserData(token, "firstname"), getUserData(token, "lastname"), email);
+			usuario = service.getUsuarioLocal(email);
+		}
+		
+		return new User(usuario.getUsuarioAlias(), "", service.getAuthoritiesInatecByRolId(usuario.getRol().getIdRolInatec()));
+		/*
 		try
 		{
 			usuario = service.getUsuarioLocal(email);
@@ -33,6 +43,7 @@ public class OpenIdUserService implements UserDetailsService, AuthenticationUser
 		
 		service.RegistrarUsuarioOpenId(email, getUserData(token, "firstname"), getUserData(token, "lastname"), email);
 		return new User(usuario.getUsuarioAlias(), "", service.getAuthoritiesInatecByRolId(usuario.getRol().getIdRolInatec()));
+		*/
 	}
 
 	@Override
