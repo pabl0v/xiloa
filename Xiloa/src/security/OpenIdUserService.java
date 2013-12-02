@@ -32,18 +32,8 @@ public class OpenIdUserService implements UserDetailsService, AuthenticationUser
 			usuario = service.getUsuarioLocal(email);
 		}
 		
+		service.registrarAcceso(usuario);
 		return new User(usuario.getUsuarioAlias(), "", service.getAuthoritiesInatecByRolId(usuario.getRol().getIdRolInatec()));
-		/*
-		try
-		{
-			usuario = service.getUsuarioLocal(email);
-			return new User(usuario.getUsuarioAlias(), "", service.getAuthoritiesInatecByRolId(usuario.getRol().getIdRolInatec()));
-		}
-		catch(UsernameNotFoundException e){}
-		
-		service.RegistrarUsuarioOpenId(email, getUserData(token, "firstname"), getUserData(token, "lastname"), email);
-		return new User(usuario.getUsuarioAlias(), "", service.getAuthoritiesInatecByRolId(usuario.getRol().getIdRolInatec()));
-		*/
 	}
 
 	@Override
