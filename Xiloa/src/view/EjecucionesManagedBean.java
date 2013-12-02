@@ -10,11 +10,13 @@ import javax.annotation.PostConstruct;
 
 import model.Actividad;
 import model.Bitacora;
+import model.Contacto;
 import model.Mantenedor;
 
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import service.IService;
@@ -27,6 +29,8 @@ public class EjecucionesManagedBean implements Serializable {
 
 	@Autowired
 	private IService service;
+	@Autowired
+	private UtilitariosManagedBean utilitarios;
 
 	private List<Actividad> actividades;
 	private List<Actividad> filteredActividades;
@@ -90,7 +94,8 @@ public class EjecucionesManagedBean implements Serializable {
 	public void guardarBitacora(Bitacora bitacora) {
 		bitacora.setActividad(selectedActividad);
 		bitacora.setFechaRegistro(new Date());
-		bitacora.setUsuario(service.getContactoByLogin("admin"));		//actualizar
+		//bitacora.setUsuario(service.getContactoByLogin("admin"));		//actualizar
+		bitacora.setUsuario((Contacto)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 		service.guardar(bitacora);
 		this.bitacora = new Bitacora();
 	}

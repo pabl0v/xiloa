@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version='1.0' ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
@@ -20,10 +20,10 @@
 		</div>
         
         <div id="cabezera">
-            <h2>Planificacion Actual</h2>                  
+            <h2>Planificación Actual</h2>
             <div id="botones_filtro_contenedor">
-                <div class="botones_filtro" onclick="PF('dlg2').show();"><p class="icono_nuevo">Nuevo</p></div>
-                <div class="botones_filtro"><p class="icono_buscar">Busqueda</p></div>
+                <div class="botones_filtro" onclick="PF('dlg2').show();"><p class="icono_nuevo">Nueva</p></div>
+                <div class="botones_filtro"><p class="icono_buscar">Búsqueda</p></div>
                 <div class="botones_filtro"><p class="icono_exportar">Exportar</p></div>
             </div>
         </div>
@@ -63,10 +63,10 @@
                         <p:column headerText="Coordinador"><h:outputText value="#{certificacion.coordinador.nombreCompleto}" /></p:column>                
                         <p:column headerText="Evalua"><h:outputText value="#{certificacion.evaluador.nombreCompleto}" /></p:column>
                         <p:column headerText="Estatus"><h:outputText value="#{certificacion.estatus.valor}" /></p:column>               
-                        <p:column style="width:4%">
+                        <p:column style="width:4%" rendered="#{sec:areAnyGranted('ROLE_RIGHT_EDITAR_PLANIFICACIONES')}">
 							<p:commandButton id="editarButton" action="#{certificacionManagedBean.editarCertificacion(planificacionManagedBean.selectedCertificacion)}" icon="ui-icon-pencil" title="Editar"/>  
 				        </p:column>
-						<p:column style="width:4%" rendered="#{sec:areAnyGranted('admin,inatec')}">
+						<p:column style="width:4%" rendered="#{sec:areAnyGranted('ROLE_RIGHT_CONFIGURAR_INSTRUMENTOS')}">
 							<p:commandButton id="instrumentosButton" action="#{instrumentoManagedBean.configurarInstrumento(planificacionManagedBean.selectedCertificacion.id,planificacionManagedBean.selectedCertificacion.nombre)}" icon="ui-icon-pencil" title="instrumentos">
 							</p:commandButton>
 						</p:column>
@@ -75,13 +75,13 @@
         </div>
     </div>
 
-    <p:dialog id="modalDialog" header="Seleccione la unidad de competencia a planificar:" widgetVar="dlg2" modal="true" width="740" height="480">  
+    <p:dialog id="modalDialog" header="Seleccione la Unidad de Competencia a Planificar:" widgetVar="dlg2" modal="true" width="740" height="480">  
          <h:form>  
              <div id="contenedor_tabla_unidadcomp">
                 <p:dataTable emptyMessage="No hay datos para mostrar" var="competencia" value="#{planificacionManagedBean.competencias}" selection="#{planificacionManagedBean.selectedCompetencia}" rowKey="#{competencia.grupo}" selectionMode="single"  paginator="true" rows="11" >
                     <p:column style="display:none;" headerText="idCentro"><h:outputText value="#{competencia.grupo}" /></p:column>
-                    <p:column headerText="Centro de Formacion Profesional"><h:outputText value="#{competencia.nombreCentro}" /></p:column>  
-                    <p:column headerText="Modulo"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  
+                    <p:column headerText="Centro de Formación Profesional"><h:outputText value="#{competencia.nombreCentro}" /></p:column>  
+                    <p:column headerText="Curso"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  
                     <p:column headerText="Disponibilidad"><h:outputText value="#{competencia.disponibilidad}"/></p:column>  
                 </p:dataTable>
              </div>

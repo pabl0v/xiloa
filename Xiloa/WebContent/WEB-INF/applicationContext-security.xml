@@ -13,7 +13,7 @@
 		<intercept-url pattern="/modulos/usuario/index*" access="permitAll" />
 		<intercept-url pattern="/modulos/usuario/**" access="isAuthenticated()" />		
 		<intercept-url pattern="/modulos/compartido/**" access="isAuthenticated()" />
-		<intercept-url pattern="/modulos/planificacion/**" access="hasAnyRole('admin','inatec')" />		
+		<intercept-url pattern="/modulos/planificacion/**" access="isAuthenticated()" />		
 		<intercept-url pattern="/modulos/solicitudes/**" access="isAuthenticated()"/>		
 		<intercept-url pattern="/login*" access="permitAll" />
 		<intercept-url pattern="/modulos/portafolio/**" access="isAuthenticated()" />
@@ -40,12 +40,10 @@
 			</attribute-exchange>
 		</openid-login>
 
-		<logout
-			invalidate-session="true"
-			logout-success-url="/modulos/usuario/index.xhtml"
-		/>
-		<session-management session-authentication-error-url="/modulos/usuario/index.xhtml?error=sesionAbierta">
-			<concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />
+		<logout invalidate-session="true" logout-success-url="/modulos/usuario/index.xhtml"/>
+
+		<session-management invalid-session-url="/modulos/usuario/index.xhtml">
+			<concurrency-control max-sessions="1" expired-url="/modulos/usuario/index.xhtml" error-if-maximum-exceeded="true" />
 		</session-management>
 	</http>
 	

@@ -19,11 +19,17 @@ public class JavaEmailSender {
 	final String USER_NAME = "sccl.inatec@gmail.com";
 	final String PASSSWORD = "sccl2013";
 	final String FROM_ADDRESS = "sccl.inatec@gmail.com";
- 
+	final private String HOST = "smtp.gmail.com";
+	final private String PORT = "587";
+	
+	public JavaEmailSender(){
+		super();
+	}
+	 
 	public void createAndSendEmail(String emailAddressTo, String msgSubject, String msgText) {
 		this.emailAddressTo = emailAddressTo;
 		this.msgSubject = msgSubject;
-		this.msgText = msgText;
+		this.msgText = msgText;	
 		sendEmailMessage();
 	}
 
@@ -32,8 +38,8 @@ public class JavaEmailSender {
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.port", "587");
+		props.put("mail.smtp.host", HOST);
+		props.put("mail.smtp.port", PORT);
   
 		Session session = Session.getInstance(props,
 				new javax.mail.Authenticator() {
@@ -55,16 +61,4 @@ public class JavaEmailSender {
 			throw new RuntimeException(e);
 		}
 	}
-
-	public void setEmailAddressTo(String emailAddressTo) {
-		this.emailAddressTo = emailAddressTo;
-	}
-
-	public void setSubject(String subject) {
-		this.msgSubject = subject;
-	}
-
-	public void setMessageText(String msgText) {
-		this.msgText = msgText;
-	} 
 }

@@ -1,7 +1,10 @@
 package security;
 
+import model.Usuario;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,21 +18,21 @@ import service.IService;
 public class OpenIdUserService implements UserDetailsService, AuthenticationUserDetailsService<OpenIDAuthenticationToken> {
 
 	@Autowired
-	private LocalUserService localUserService;
-	@Autowired
 	private IService service;
 
 	@Override
 	public UserDetails loadUserDetails(OpenIDAuthenticationToken token) {
 		String email = getUserData(token, "email");
+		Usuario usuario = null;
 		try
 		{
-			return localUserService.loadUserByUsername(email);
+			usuario = service.getUsuarioLocal(email);
+			return new User(usuario.getUsuarioAlias(), "", service.getAuthoritiesInatecByRolId(usuario.getRol().getIdRolInatec()));
 		}
 		catch(UsernameNotFoundException e){}
 		
 		service.RegistrarUsuarioOpenId(email, getUserData(token, "firstname"), getUserData(token, "lastname"), email);
-		return localUserService.loadUserByUsername(email);
+		return new User(usuario.getUsuarioAlias(), "", service.getAuthoritiesInatecByRolId(usuario.getRol().getIdRolInatec()));
 	}
 
 	@Override

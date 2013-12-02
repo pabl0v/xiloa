@@ -1,11 +1,13 @@
 package dao;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import model.Contacto;
 import model.Requisito;
 import model.Usuario;
+import security.Authority;
 import support.Departamento;
 import support.Ifp;
 import support.Item;
@@ -14,8 +16,8 @@ import support.UCompetencia;
 
 public interface IDaoInatec {
 
-	public int getIdRol(String usuario);
-	public void agregarRol();
+	public Collection<Authority> getAuthorities(Integer rolId);
+	public Integer getIdRol(String usuario);
 	public List<UCompetencia> getCertificacionesSinPlanificar();
 	public Map<Long, Item> getCatalogoUnidades();
 	public Map<Long, String> getUnidadesByEstructuraId(Integer estructura); 

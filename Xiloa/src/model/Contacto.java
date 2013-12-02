@@ -31,6 +31,7 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @NamedQueries({
 	@NamedQuery(name="Contacto.findByCedulaId", query="select c from contactos c where c.numeroIdentificacion =?1"),
 	@NamedQuery(name="Contacto.findByLogin", query="select c from contactos c where c.usuario.usuarioAlias =?1"),
+	@NamedQuery(name="Contacto.findByLoginInatec", query="select c from contactos c where c.inatec = 'true' and c.usuarioInatec =?1"),
 	@NamedQuery(name="Contacto.findInvolucradosInatec", query="Select c from contactos c where c.inatec='true' and c.rol.idRolInatec in (213,214,215,216)")
 })
 public class Contacto implements Serializable {
@@ -129,7 +130,7 @@ public class Contacto implements Serializable {
 	@Column(name = "inatec", nullable = false)
 	private boolean inatec = false;
 	
-	@Column(name = "usuario_inatec", nullable = true)
+	@Column(name = "usuario_inatec", unique = true, nullable = true)
 	private String usuarioInatec;
 	
 	@Column(name = "funcion", nullable = true)

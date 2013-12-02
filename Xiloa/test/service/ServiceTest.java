@@ -29,13 +29,13 @@ public class ServiceTest {
 	               mantenedor7, mantenedor8, mantenedor9, mantenedor10, mantenedor11, mantenedor12,
 	               mantenedor13, mantenedor14, mantenedor15, mantenedor16, mantenedor17, mantenedor18, mantenedor19,
 	               mantenedor20, mantenedor21, mantenedor22, mantenedor23, mantenedor24, mantenedor25, mantenedor26, 
-	               mantenedor27, mantenedor28, mantenedor29, mantenedor30, mantenedor31; 
+	               mantenedor27, mantenedor28, mantenedor29, mantenedor30, mantenedor31, mantenedor32, mantenedor33, mantenedor34, mantenedor35; 
 	               	
 	private static Perfil perfil;
 	private static List<Perfil> perfiles;
 	private static Rol rolAdmin, rolSupervisor, rolVerificador, rolRegistrador, rolDocente, rolVisitante;
 	private static Usuario usuarioAdmin, usuarioLopez, usuarioPerez, usuarioRuiz, usuarioArauz;
-	private static Contacto contactoLopez, contactoRuiz, contactoPerez, contactoArauz;
+	private static Contacto contactoLopez, contactoRuiz, contactoPerez, contactoArauz, contactoAdmin;
 	
 	private static Pais pais1, pais2, pais3, pais4, pais5, pais6;
 	
@@ -71,7 +71,7 @@ public class ServiceTest {
 		
 		mantenedor17 = new Mantenedor("6","Tipos de Instrumento","Prueba Diagnostica",null,null);
 		mantenedor18 = new Mantenedor("6","Tipos de Instrumento","Prueba Objetiva",null,null);
-		mantenedor19 = new Mantenedor("6","Tipos de Instrumento","Prueba de DesempleÃ±o",null,null);	
+		mantenedor19 = new Mantenedor("6","Tipos de Instrumento","Prueba de Desempleño",null,null);	
 		
 		mantenedor20 = new Mantenedor("7","Estados Solicitud Certificacion","Valido",null,new String("21"));		
 		mantenedor21 = new Mantenedor("7","Estados Solicitud Certificacion","Registrada",new String("20"), new String("22"));
@@ -86,6 +86,11 @@ public class ServiceTest {
 		mantenedor29 = new Mantenedor("9","Estados Evaluaciones","Completadas",new String("28"),null);
 		mantenedor30 = new Mantenedor("10","Genero","Femenino",null, null);
 		mantenedor31 = new Mantenedor("10","Genero","Masculino",null,null);	
+		
+		mantenedor32 = new Mantenedor("11","Email del administrador","sccl.inatec@gmail.com",null,null);
+		mantenedor33 = new Mantenedor("11","Password del email del administrador","sccl2013",null,null);
+		mantenedor34 = new Mantenedor("11","Host del servidor de correo","smtp.gmail.com",null,null);
+		mantenedor35 = new Mantenedor("11","Puerto del servidor de correo","587",null,null);
 
 		service.guardar(mantenedor1);
 		service.guardar(mantenedor2);
@@ -118,6 +123,10 @@ public class ServiceTest {
 		service.guardar(mantenedor29);
 		service.guardar(mantenedor30);
 		service.guardar(mantenedor31);
+		service.guardar(mantenedor32);
+		service.guardar(mantenedor33);
+		service.guardar(mantenedor34);
+		service.guardar(mantenedor35);
 
 		//creando perfiles
 		
@@ -125,12 +134,12 @@ public class ServiceTest {
 		
 		//creando roles
 						
-		rolAdmin = new Rol("admin","admin",null,null,true);
 		rolSupervisor = new Rol("supervisor","supervisor",213,null,true);
 		rolVerificador = new Rol("verificador","Verificador",214,null,true);
 		rolDocente = new Rol("tecnico_docente","Tecnico Docente",215,null,true);
 		rolRegistrador = new Rol("registro_academico","Registro Academico",216,null,true);
-		rolVisitante = new Rol("visitante","Visitante",null,null,true);
+		rolVisitante = new Rol("visitante","Visitante",217,null,true);
+		rolAdmin = new Rol("admin","admin",218,null,true);
 		
 		perfil = (Perfil)service.guardar(perfil);
 		perfiles = new ArrayList<Perfil>();
@@ -165,6 +174,7 @@ public class ServiceTest {
 		usuarioRuiz = (Usuario)service.guardar(usuarioRuiz);
 					
 		//creando contactos
+		contactoAdmin = new Contacto(usuarioAdmin,null, null, 1,"Admin",null,"Admin",null,"Administrador",1,"nlopez@inatec.edu.ni",null,"00000000",null, 1, 1,"12345678901234","Managua",new Date(),new Date(),1,1,null, null, false,null,null,null);
 		contactoLopez = new Contacto(usuarioLopez,null, null, 1,"Norcecy",null,"Lopez",null,"Norcecy Lopez",1,"nlopez@inatec.edu.ni",null,"00000000",null, 1, 1,"12345678901234","Managua",new Date(),new Date(),1,1,null, null, false,null,null,null);
 		contactoRuiz = new Contacto(usuarioRuiz,null,null, 1,"Ana",null,"Ruiz",null,"Ana Ruiz",1,"aruiz@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,1, null, null, false,null,null,null);
 		contactoPerez = new Contacto(usuarioPerez,null, null,1,"Luis",null,"Perez",null,"Luis Perez",1,"lperez@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,null,null, null, false,null,null,null);
@@ -174,13 +184,14 @@ public class ServiceTest {
 		contactoRuiz = (Contacto)service.guardar(contactoRuiz);
 		contactoPerez = (Contacto)service.guardar(contactoPerez);
 		contactoArauz = (Contacto)service.guardar(contactoArauz);
+		contactoAdmin = (Contacto)service.guardar(contactoAdmin);
 	
 		//Creando valores iniciales de paises
 		pais1 = new Pais ("Nicaragua", "Nicaraguense");
 		pais2 = new Pais ("Costa Rica", "Costa Rica");
-		pais3 = new Pais ("El Salvador", "SalvadoreÃ±o"); 
-		pais4 = new Pais ("Panama", "PanameÃ±o"); 
-		pais5 = new Pais ("Honduras", "HondureÃ±o"); 
+		pais3 = new Pais ("El Salvador", "Salvadoreño"); 
+		pais4 = new Pais ("Panama", "Panameñ"); 
+		pais5 = new Pais ("Honduras", "Hondureño"); 
 		pais6 = new Pais ("Guatemala", "Guatemalteco");
 		
 		pais1 = (Pais) service.guardar(pais1);
@@ -189,6 +200,5 @@ public class ServiceTest {
 		pais4 = (Pais) service.guardar(pais4);
 		pais5 = (Pais) service.guardar(pais5);
 		pais6 = (Pais) service.guardar(pais6);
-		
 	}
 }

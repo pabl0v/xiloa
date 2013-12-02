@@ -1,6 +1,7 @@
 package service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import security.Authority;
 import support.Departamento;
 import support.Ifp;
 import support.Item;
@@ -681,7 +683,7 @@ public class ServiceImp implements IService {
 	}
 
 	@Override
-	public Contacto getContactoByLogin(String login) {
+	public Contacto getContactoLocalByLogin(String login) {
 		return contactoDao.findOneByNamedQueryParam("Contacto.findByLogin", new Object[] {login});
 	}
 
@@ -733,5 +735,29 @@ public class ServiceImp implements IService {
 			return true;
 		else
 			return false;			
+	}
+
+	@Override
+	public Collection<Authority> getAuthoritiesInatecByLogin(String usuario) {
+		return inatecDao.getAuthorities(inatecDao.getIdRol(usuario));
+	}
+	
+	@Override
+	public Collection<Authority> getAuthoritiesInatecByRolId(Integer rolId) {
+		return inatecDao.getAuthorities(rolId);
+	}
+
+	@Override
+	public Contacto getContactoInatecByLogin(String login) {
+		return contactoDao.findOneByNamedQueryParam("Contacto.findByLoginInatec", new Object[] {login});
+	}
+
+	@Override
+	public Contacto getContactoByLogin(String login) {
+		Contacto contacto = contactoDao.findOneByNamedQueryParam("Contacto.findByLoginInatec", new Object[] {login});
+		if(contacto != null)
+			return contacto;
+		else
+			return 	contactoDao.findOneByNamedQueryParam("Contacto.findByLogin", new Object[] {login});
 	}
 }

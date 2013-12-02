@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version='1.0' ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
@@ -14,35 +14,35 @@
         <link type="text/css" rel="stylesheet" href="../../resources/css/reset.css"></link>
         <link type="text/css" rel="stylesheet" href="../../resources/css/paginamaestra.css"></link>             
         <div id="barra_navegacion" class="mini">
-            <h1>Sistema <a>CCL</a></h1>
-			<sec:authorize ifAnyGranted="admin, inatec">
-            	<div id="boton_planificacion"  onclick="window.location='/Xiloa/modulos/planificacion/planificacion.xhtml';"  class="botones_navegacion"><p class="icono_calendario">Planificacion</p></div>				
+            <h1>Sistema de <a>CCL</a></h1>
+			<sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_PLANIFICACIONES">
+            	<div id="boton_planificacion"  onclick="window.location='/Xiloa/modulos/planificacion/planificacion.xhtml';"  class="botones_navegacion"><p class="icono_calendario">Planificaciones</p></div>				
 			</sec:authorize>
-			<sec:authorize ifAnyGranted="admin, inatec, visitante">
+			<sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_SOLICITUDES">
             	<div id="boton_solicitudes" onclick="window.location='/Xiloa/modulos/solicitudes/solicitudes.xhtml';" class="botones_navegacion"><p class="icono_flechas">Solicitudes</p></div>
             </sec:authorize>
             <sec:authorize ifAnyGranted="visitante">
             	<div id="boton_participante" onclick="window.location='/Xiloa/modulos/solicitudes/expediente.xhtml';" class="botones_navegacion"><p class="icono_flechas">Participante</p></div>
             </sec:authorize>
-            <sec:authorize ifAnyGranted="admin, inatec">
+            <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_EJECUCUIONES">
             	<div id="boton_ejecuciones" onclick="window.location='/Xiloa/modulos/planificacion/ejecuciones.xhtml';" class="botones_navegacion"><p class="icono_ejecuciones">Ejecuciones</p></div>
             </sec:authorize>
-            <sec:authorize ifAnyGranted="admin">
+            <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_INSTRUMENTOS">
             	<div id="boton_instrumentos" onclick="window.location='/Xiloa/modulos/planificacion/instrumentos.xhtml';" class="botones_navegacion"><p class="icono_mantenedores">Instrumentos</p></div>
             </sec:authorize>
-            <sec:authorize ifAnyGranted="admin, inatec">
+            <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_REPORTES">
             	<div id="boton_reportes" onclick="window.location='/Xiloa/modulos/planificacion/reportes.xhtml';" class="botones_navegacion"><p class="icono_reportes">Reportes</p></div>
             </sec:authorize>
             <ul id="breadcrumbs" class="estilo_breadcrumbs">
                 <li>Inicio</li>
-                <li>Planificacion</li>
-                <li>Editando planificacion de unidad</li>
+                <li>Planificación</li>
+                <li>Editando planificación</li>
             </ul>
             <div id="opciones_usuario">
                 <div id="informacion_usuario">
                   <h:form>
                     <p id="usuario"><h:outputText value="#{loginController.loggedUser}" /></p>
-                    <sec:authorize ifAnyGranted="admin">
+                    <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_CONFIGURACION">
                     	<div class="botones_navegacion" onclick="window.location='/Xiloa/modulos/usuario/configuracion.xhtml';"><p class="icono_gear">Config</p></div>
                     </sec:authorize>                   
                     <div class="botones_navegacion" ><a class="icono_x" href="#{request.contextPath}/j_spring_security_logout">Salir</a></div>

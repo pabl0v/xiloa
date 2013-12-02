@@ -18,6 +18,7 @@ import model.Mantenedor;
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import service.IService;
@@ -30,8 +31,6 @@ public class ActividadManagedBean implements Serializable {
 
 	@Autowired
 	private IService service;
-	@Autowired
-	private UtilitariosManagedBean utilitarios;
 
 	private Certificacion certificacion;
 	@SuppressWarnings("unused")
@@ -42,6 +41,7 @@ public class ActividadManagedBean implements Serializable {
 	private Map<Integer,Mantenedor> catalogoEstatusActividad;
 	private Actividad actividad;
 	private Bitacora bitacora;
+	private Contacto contacto;
 	
 	private List<Contacto> contactos;
 	private Contacto[] selectedContactos;
@@ -55,13 +55,14 @@ public class ActividadManagedBean implements Serializable {
 		catalogoTiposActividad = new HashMap<Integer,Mantenedor>();
 		catalogoEstatusActividad = new HashMap<Integer,Mantenedor>();
 		bitacora = new Bitacora();
+		contacto = new Contacto();
 	}
 
 	@PostConstruct
 	private void init(){
 		catalogoTiposActividad = service.getMapMantenedoresByTipo("1");
 		catalogoEstatusActividad = service.getMapMantenedoresByTipo("4");
-		//usuario = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
+		contacto = service.getContactoByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
 		contactos = service.getContactosInatec();
 	}
 	
@@ -123,10 +124,9 @@ public class ActividadManagedBean implements Serializable {
 	}
 
 	public void guardarBitacora(Bitacora bitacora) {
-		System.out.println("guardarBitacora: "+actividad.getId()+bitacora.getObservaciones());
 		bitacora.setActividad(actividad);
 		bitacora.setFechaRegistro(new Date());
-		bitacora.setUsuario(service.getContactoByLogin(utilitarios.getUsuario()));
+		bitacora.setUsuario(contacto);
 		service.guardar(bitacora);
 		this.bitacora = new Bitacora();
 	}
@@ -136,21 +136,14 @@ public class ActividadManagedBean implements Serializable {
 	}
 
 	public void setCatalogoTiposActividad(Map<Integer, Mantenedor> catalogoTiposActividad) {
-		System.out.println("ActividadManagedBean setCatalogoTiposActividad : "+catalogoTiposActividad.size());
 		this.catalogoTiposActividad = catalogoTiposActividad;
 	}
 	
 	public List<Mantenedor> getCatalogoTiposActividad() {
 		return new ArrayList<Mantenedor>(catalogoTiposActividad.values());
 	}
-	
-	/*
-	public Map<Integer, Mantenedor> getCatalogoTiposActividad() {
-		return catalogoTiposActividad;
-	}*/
-	
+		
 	public void setCatalogoEstatusActividad(Map<Integer, Mantenedor> catalogoEstatusActividad) {
-		System.out.println("ActividadManagedBean setCatalogoEstatusActividad : "+catalogoEstatusActividad.size());
 		this.catalogoEstatusActividad = catalogoEstatusActividad;
 	}
 
@@ -167,8 +160,6 @@ public class ActividadManagedBean implements Serializable {
 	}
 	
 	public String ejecuciones(Actividad actividad){
-		System.out.println("Ejecuciones...");
-		
 		this.actividad = actividad;
 		this.certificacion = actividad.getCertificacion();
 		this.indiceActividad = certificacion.getActividades().indexOf(actividad);
@@ -194,5 +185,9 @@ public class ActividadManagedBean implements Serializable {
 		actividad.setEstado(catalogoEstatusActividad.get(selectedEstatusActividad));
 		actividad = (Actividad)service.guardar(actividad);
 		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
-	}	
+	}
+	
+	public Contacto getContacto(){
+		return contacto;
+	}
 }

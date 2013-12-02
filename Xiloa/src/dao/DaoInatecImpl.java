@@ -3,6 +3,7 @@ package dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import security.Authority;
 import support.Departamento;
 import support.Ifp;
 import support.Item;
@@ -153,6 +155,33 @@ public class DaoInatecImpl implements IDaoInatec {
 				+"inner join registro_cobranza.cu_estructura_requisito er on (er.id_estructura_formativa=ef.id) " 
 				+"inner join registro_cobranza.cu_cat_requisito cr on (cr.id=er.id_requisito) "; 
 	
+	private static final String SQL_SELECT_ROL_USUARIO =
+		"select "
+			+"r.id_rol as id "
+		+"from	"
+			+"admon.roles r, "
+			+"admon.usuarios_sistemas us "
+		+"where	us.id_rol = r.id_rol "
+			+"and r.id_sistema = us.id_sistema "
+			+"and r.id_sistema = 41 "
+			+"and r.activo = 1 "
+			+"and us.activo = 1 "
+			+"and exists (select 1 from admon.usuario x where x.usuario=us.usuario and x.activo=1) "
+			+"and exists (select 1 from admon.sistemas y where y.id_sistema=us.id_sistema and y.activo=1) "
+			+"and us.usuario = ?";
+	
+	private static final String SQL_SELECT_PERMISOS_ROL =
+			"select "
+				+"r.opciones as opciones "
+			+"from	"
+				+"admon.roles r, "
+				+"admon.sistemas s "
+			+"where r.id_sistema = s.id_sistema "
+				+"and s.id_sistema = 41 "
+				+"and r.activo = 1 "
+				+"and s.activo = 1 "
+				+"and r.id_rol = ?";
+		
 	public Usuario getUsuario(String usuario) {
 		Usuario user = null;
 		try
@@ -183,13 +212,6 @@ public class DaoInatecImpl implements IDaoInatec {
 		rol.setEstatus(true);		
 		user.setRol(rol);
 		return user;
-	}
-	
-	@Override
-	public void agregarRol(){
-		jdbcTemplate.update(
-		        "insert into admon.roles (id_rol,descripcion_rol,id_sistema,activo,usuario_grabacion,usuario_actualizacion,opciones) values (?,?,?,?,?,?,?)",
-		        213, "Cenicsa",1,1,"tatiana","tatiana","54,63");
 	}
 
 	@Override
@@ -272,17 +294,26 @@ public class DaoInatecImpl implements IDaoInatec {
 	}
 
 	@Override
-	public int getIdRol(String usuario) {
-		int id = 0;
+	public Integer getIdRol(String usuario) {	
+		Integer rolId = null;
+		
 		try
-		{
-			id = jdbcTemplate.queryForInt("select u.id_rol from admon.usuarios_sistemas u where u.id_sistema = 41 and u.usuario="+"'"+usuario+"'");
+		{			
+			rolId = jdbcTemplate.queryForObject(
+					SQL_SELECT_ROL_USUARIO, 
+					new RowMapper<Integer>() {
+				        public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				          return rs.getInt("id");
+				        }
+				      },
+					usuario);
 		}
 		catch(EmptyResultDataAccessException e)
 		{
-			return 0;
+			return null;
 		}
-		return id;
+
+		return rolId;	
 	}
 	
 	@Override
@@ -362,5 +393,45 @@ public class DaoInatecImpl implements IDaoInatec {
 			unidades.put((Long)row.get("codigo"), new Item((Long)row.get("codigo"),(String)row.get("descripcion")));
 		}
 		return unidades;
+	}
+
+	@Override
+	public Collection<Authority> getAuthorities(Integer rolId) {
+		
+		String rights = null;
+		try
+		{
+			rights = jdbcTemplate.queryForObject(
+					SQL_SELECT_PERMISOS_ROL, 
+					new RowMapper<String>() {
+				        public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+				          return rs.getString("opciones");
+				        }
+				      },
+					rolId);
+		}
+		catch(EmptyResultDataAccessException e)
+		{
+			return null;
+		} 
+
+		rights = "(" + rights + ")";
+		
+		List<Authority> authorities = new ArrayList<Authority>();
+		try
+		{
+			authorities = jdbcTemplate.query("select m.id as id, m.texto as texto from admon.menu m where m.id in " + rights,
+							new RowMapper<Authority>() {
+								public Authority mapRow(ResultSet rs, int rowNum) throws SQLException {
+									Authority authority = new Authority(rs.getString("texto"));
+									return authority;
+								}
+							});
+		}
+		catch(EmptyResultDataAccessException e)
+		{
+			return null;
+		}
+		return authorities;
 	}
 }

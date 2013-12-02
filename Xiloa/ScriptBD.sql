@@ -1,351 +1,3 @@
---mantenedor de actividades
-
-insert into mantenedores(
-mantenedor_id,
-mantenedor_etiqueta,
-mantenedor_tipo,
-mantenedor_valor)
-select
-1,
-'Tipo Actividad',
-1,
-'Divulgacion'
-union
-select
-2,
-'Tipo Actividad',
-1,
-'Verificacion'
-union
-select
-3,
-'Tipo Actividad',
-1,
-'Evaluacion'
-union
-select
-4,
-'Tipo Actividad',
-1,
-'Convocatoria'
-union
-select
-5,
-'Involucrados',
-2,
-'Creador'
-union
-select
-6,
-'Involucrados',
-2,
-'Ejecutor'
-union
-select
-7,
-'Estatus Certificacion',
-3,
-'Pendiente'
-union
-select
-8,
-'Estatus Certificacion',
-3,
-'Activo'
-union
-select
-9,
-'Estatus Certificacion',
-3,
-'Anulado'
-union
-select
-10,
-'Estatus Actividad',
-4,
-'Pendiente'
-union
-select
-11,
-'Estatus Actividad',
-4,
-'Activo'
-union
-select
-12,
-'Estatus Actividad',
-4,
-'Anulado'
-
-/*union
-select
-7,
-'Involucrados',
-2,
-'Supervisor'
-union
-select
-8,
-'Involucrados',
-2,
-'Registro Academico'
-union
-select
-9,
-'Involucrados',
-2,
-'Docente Tecnico'
-union
-select
-10,
-'Involucrados',
-2,
-'Verificador'
-union
-*/
-
---registrando usuario administrador
-
-insert into perfiles(perfil_id,perfil_descripcion,perfil_habilitado,perfil_modulo,perfil_nombre,perfil_permiso,perfil_permitido,perfil_seccion)
-values(1,'admin',true,'all','admin','all',true,'all');
-
-insert into roles(rol_id,rol_descripcion,rol_nombre,rol_estatus)
-values(1,'admin','admin',true);
-
-insert into perfiles_roles(rol_id,perfil_id)
-values(1,1);
-
-insert into usuarios(usuario_id,usuario_alias,usuario_pwd,usuario_estatus,rol_id)
-values(1,'admin','admin',true,1);
-
---otros usuarios y roles
-
-insert into roles(rol_id,rol_descripcion,rol_nombre,id_rol_inatec,rol_estatus)
-values(2,'Supervisor','supervisor',213,true);
-
-insert into roles(rol_id,rol_descripcion,rol_nombre,id_rol_inatec,rol_estatus)
-values(3,'Verificador','verificador',214,true);
-
-insert into roles(rol_id,rol_descripcion,rol_nombre,id_rol_inatec,rol_estatus)
-values(4,'Tecnico Docente','tecnico_docente',215,true);
-
-insert into roles(rol_id,rol_descripcion,rol_nombre,id_rol_inatec,rol_estatus)
-values(5,'Registro Academico','registro_academico',216,true);
-
-insert into roles(rol_id,rol_descripcion,rol_nombre,rol_estatus)
-values(6,'Visitante','visitante',true);
-
-insert into perfiles_roles(rol_id,perfil_id)
-values(2,1);
-
-insert into perfiles_roles(rol_id,perfil_id)
-values(3,1);
-
-insert into perfiles_roles(rol_id,perfil_id)
-values(4,1);
-
-insert into perfiles_roles(rol_id,perfil_id)
-values(5,1);
-
-insert into perfiles_roles(rol_id,perfil_id)
-values(6,1);
-
-insert into usuarios(usuario_id,usuario_alias,usuario_pwd,usuario_estatus,rol_id)
-values(2,'nlopez','nlopez',true,1);
-
-insert into usuarios(usuario_id,usuario_alias,usuario_pwd,usuario_estatus,rol_id)
-values(3,'aruiz','aruiz',true,1);
-
-insert into usuarios(usuario_id,usuario_alias,usuario_pwd,usuario_estatus,rol_id)
-values(4,'lperez','lperez',true,1);
-
-insert into usuarios(usuario_id,usuario_alias,usuario_pwd,usuario_estatus,rol_id)
-values(5,'larauz','larauz',true,1);
-
---registrando usuarios con roles varios para prueba
-
-insert into contactos(
-contacto_id,
-correo1,
-correo2,
-direccion_actual,
-entidad_id,
-fecha_registro,
-lugar_nacimiento,
-nacionalidad_id,
-numero_identificacion,
-primer_apellido,
-primer_nombre,
-segundo_apellido,
-segundo_nombre,
-sexo_id,
-telefono1,
-telefono2,
-tipo_contacto,
-tipo_identificacion,
-inatec,
-rol_id,
-usuario_id)
-select
-1,
-'nleon@inactec.edu.ni',
-null,
-'Managua',
-1,
-now(),
-'Managua',
-1,
-'00000000000000',
-'Lopez',
-'Norcecy',
-null,
-null,
-2,
-'12345678',
-null,
-1,
-0,
-false,
-1,
-2;
-
-insert into contactos(
-contacto_id,
-correo1,
-correo2,
-direccion_actual,
-entidad_id,
-fecha_registro,
-lugar_nacimiento,
-nacionalidad_id,
-numero_identificacion,
-primer_apellido,
-primer_nombre,
-segundo_apellido,
-segundo_nombre,
-sexo_id,
-telefono1,
-telefono2,
-tipo_contacto,
-tipo_identificacion,
-inatec,
-rol_id,
-usuario_id)
-select
-2,
-'aruiz@inactec.edu.ni',
-null,
-'Managua',
-1,
-now(),
-'Managua',
-1,
-'00000000000000',
-'Ruiz',
-'Ana',
-null,
-null,
-2,
-'12345678',
-null,
-1,
-0,
-false,
-1,
-3;
-
-insert into contactos(
-contacto_id,
-correo1,
-correo2,
-direccion_actual,
-entidad_id,
-fecha_registro,
-lugar_nacimiento,
-nacionalidad_id,
-numero_identificacion,
-primer_apellido,
-primer_nombre,
-segundo_apellido,
-segundo_nombre,
-sexo_id,
-telefono1,
-telefono2,
-tipo_contacto,
-tipo_identificacion,
-inatec,
-rol_id,
-usuario_id)
-select
-3,
-'lperez@inactec.edu.ni',
-null,
-'Managua',
-1,
-now(),
-'Managua',
-1,
-'00000000000000',
-'Perez',
-'Luis',
-null,
-null,
-2,
-'12345678',
-null,
-1,
-0,
-false,
-1,
-4;
-
-insert into contactos(
-contacto_id,
-correo1,
-correo2,
-direccion_actual,
-entidad_id,
-fecha_registro,
-lugar_nacimiento,
-nacionalidad_id,
-numero_identificacion,
-primer_apellido,
-primer_nombre,
-segundo_apellido,
-segundo_nombre,
-sexo_id,
-telefono1,
-telefono2,
-tipo_contacto,
-tipo_identificacion,
-inatec,
-rol_id,
-usuario_id)
-select
-5,
-'lruiz@inactec.edu.ni',
-null,
-'Managua',
-1,
-now(),
-'Managua',
-1,
-'00000000000000',
-'Arauz',
-'Luz',
-null,
-null,
-2,
-'12345678',
-null,
-1,
-0,
-false,
-1,
-5;
-
-alter sequence seq_usuarios start with 6;
-
 --script para BD Inatec
 
 --registrando el sistema
@@ -360,7 +12,7 @@ fecha_grabacion,
 usuario_actualizacion,
 alias)
 select
-40 id_sistema,
+41 id_sistema,
 'Sistema de Certificacion de Competencias Laborales' as nombre_sistema,
 'SCCL' as siglas,
 1 as activo,
@@ -369,8 +21,67 @@ select
 null as usuario_actualizacion,
 null as alias;
 
+--creando los roles
+
+insert into admon.roles(
+id_rol,
+descripcion_rol,
+id_sistema,
+activo,
+usuario_grabacion,
+fecha_grabacion)
+select
+213 as id_rol,
+'Supervisor' as descripcion_rol,
+41 as id_sistema,
+1 as activo,
+'admon' as usuario_grabacion,
+now() as fecha_grabacion
+union
+select
+214 as id_rol,
+'Verificador' as descripcion_rol,
+41 as id_sistema,
+1 as activo,
+'admon' as usuario_grabacion,
+now() as fecha_grabacion
+union
+select
+215 as id_rol,
+'Tecnico Docente' as descripcion_rol,
+41 as id_sistema,
+1 as activo,
+'admon' as usuario_grabacion,
+now() as fecha_grabacion
+union
+select
+216 as id_rol,
+'Registro Academico' as descripcion_rol,
+41 as id_sistema,
+1 as activo,
+'admon' as usuario_grabacion,
+now() as fecha_grabacion
+union
+select
+217 as id_rol,
+'Visitante' as descripcion_rol,
+41 as id_sistema,
+1 as activo,
+'admon' as usuario_grabacion,
+now() as fecha_grabacion
+union
+select
+218 as id_rol,
+'Administrador' as descripcion_rol,
+41 as id_sistema,
+1 as activo,
+'admon' as usuario_grabacion,
+now() as fecha_grabacion;
+
+--registrando usuario administrador
+
 --creando una cuenta administrador para el sistema
-/*
+
 insert into admon.usuario(
 usuario,
 id_empleado,
@@ -391,59 +102,18 @@ select
 'admin',
 null as id_empleado,
 1000 as id_centro,
-'admin' as clave,
+'21232f297a57a5a743894a0e4a801fc3' as clave,
 'admin' as clave_anterior,
 'Administrador SCCL' as nombre_completo,
 'Administrador SCCL' as cargo_usuario,
 1 as tipo_usuario,
-null as correo,
+'admin@test.com' as correo,
 0 as contador_intentos,
 1 as activo,
 now() as fecha_cambio_clave,
 'admin' as usuario_grabacion,
 now() as fecha_grabacion,
 1 as estado
-*/
---creando los roles
-
-insert into admon.roles(
-id_rol,
-descripcion_rol,
-id_sistema,
-activo,
-usuario_grabacion,
-fecha_grabacion)
-select
-213 as id_rol,
-'Supervisor' as descripcion_rol,
-40 as id_sistema,
-1 as activo,
-'admon' as usuario_grabacion,
-now() as fecha_grabacion
-union
-select
-214 as id_rol,
-'Verificador' as descripcion_rol,
-40 as id_sistema,
-1 as activo,
-'admon' as usuario_grabacion,
-now() as fecha_grabacion
-union
-select
-215 as id_rol,
-'Tecnico Docente' as descripcion_rol,
-40 as id_sistema,
-1 as activo,
-'admon' as usuario_grabacion,
-now() as fecha_grabacion
-union
-select
-216 as id_rol,
-'Registro Academico' as descripcion_rol,
-40 as id_sistema,
-1 as activo,
-'admon' as usuario_grabacion,
-now() as fecha_grabacion;
 
 --asignando roles a los usuarios inatec
 
@@ -458,7 +128,7 @@ activo,
 usuario_grabacion,
 fecha_grabacion)
 select
-40 as id_sistema,
+41 as id_sistema,
 id_empleado as id_empleado,
 usuario as usuario,
 213 as id_rol,
@@ -469,7 +139,7 @@ from admon.usuario
 where usuario='djanson'
 union
 select
-40 as id_sistema,
+41 as id_sistema,
 id_empleado as id_empleado,
 usuario as usuario,
 214 as id_rol,
@@ -480,7 +150,7 @@ from admon.usuario
 where usuario='cromero'
 union
 select
-40 as id_sistema,
+41 as id_sistema,
 id_empleado as id_empleado,
 usuario as usuario,
 215 as id_rol,
@@ -489,3 +159,53 @@ usuario as usuario,
 now() as fecha_grabacion
 from admon.usuario
 where usuario='ccantarero';
+union
+select
+41 as id_sistema,
+id_empleado as id_empleado,
+usuario as usuario,
+218 as id_rol,
+1 as activo,
+'admin' as usuario_grabacion,
+now() as fecha_grabacion
+from admon.usuario
+where usuario='admin';
+
+--configurando los permisos de cada rol
+
+insert into admon.menu(id,id_sistema,parent_id,texto,href,title,posicion,fecha_grabacion)
+select 1610,41,0,'ROLE_RIGHT_MENU_PLANIFICACIONES','compartido/paginamaestra.xhtml','Menu planificaciones',0,NOW()
+union
+select 1611,41,0,'ROLE_RIGHT_CREAR_PLANIFICACIONES','planificacion/planificacion.xhtml','Crear planificaciones',1,NOW()
+union
+select 1612,41,0,'ROLE_RIGHT_EDITAR_PLANIFICACIONES','planificacion/edicion_planificacion.xhtml','Editar planificaciones',1,NOW()
+union
+select 1613,41,0,'ROLE_RIGHT_MENU_EJECUCUIONES','compartido/paginamaestra.xhtml','Menu ejecuciones',0,NOW()
+union
+select 1614,41,0,'ROLE_RIGHT_AGREGAR_BITACORAS','planificacion/bitacoras.xhtml','Agregar bitacoras',1,NOW()
+union
+select 1615,41,0,'ROLE_RIGHT_VER_BITACORAS','planificacion/ejecuciones.xhtml','Ver bitacoras',1,NOW()
+union
+select 1616,41,0,'ROLE_RIGHT_MENU_INSTRUMENTOS','compartido/paginamaestra.xhtml','Menu instrumentos',0,NOW()
+union
+select 1617,41,0,'ROLE_RIGHT_CONFIGURAR_INSTRUMENTOS','planificaccion/instrumentos.xhtml','Configurar instrumentos',1,NOW()
+union
+select 1618,41,0,'ROLE_RIGHT_MENU_SOLICITUDES','compartido/paginamaestra.xhtml','Menu solicitudes',0,NOW()
+union
+select 1619,41,0,'ROLE_RIGHT_CREAR_SOLICITUDES','compartido/solicitudes.xhtml','Crear solicitudes',1,NOW()
+union
+select 1620,41,0,'ROLE_RIGHT_MENU_CONFIGURACION','compartido/paginamaestra.xhtml','Menu configuracion',0,NOW()
+union
+select 1621,41,0,'ROLE_RIGHT_CONFIGURAR_MANTENEDORES','usuario/configuracion.xhtml','Configurar mantenedores',1,NOW()
+union
+select 1622,41,0,'ROLE_RIGHT_AGREGAR_EVALUACIONES','solicitudes/registro_evaluacion.xhtml','Agregar evaluaciones',1,NOW()
+union
+select 1623,41,0,'ROLE_RIGHT_EDITAR_PORTAFOLIO','solicitudes/registro_solicitud.xhtml','Editar portafolio',1,NOW()
+union
+select 1624,41,0,'ROLE_RIGHT_VER_PORTAFOLIO','solicitudes/registro_solicitud.xhtml','Ver portafolio',1,NOW()
+union
+select 1625,41,0,'ROLE_RIGHT_MENU_REPORTES','planificacion/reportes.xhtml','Reportes',1,NOW()
+
+update admon.roles set opciones='1610,1611,1612,1613,1614,1615,1616,1617,1618,1619,1620,1621,1622,1623,1624,1625' where id_rol=215
+update admon.roles set opciones='1610,1611,1612,1613,1614,1615,1616,1617,1618,1619,1620,1621,1622,1623,1624,1625' where id_rol=218
+update admon.roles set opciones='1610,1611,1612,1613,1614,1615,1616,1617,1618,1619,1620,1621,1622,1623,1624,1625' where id_rol=217

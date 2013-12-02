@@ -43,6 +43,10 @@ public class UtilitariosManagedBean implements Serializable {
 	private Map<Integer, Mantenedor> catalogoEstadoSolicitud;
 	private Map<Integer, Mantenedor> catalogoPortafolio;
 	private Map<Integer, Mantenedor> catalogoEstadosEvaluacion;
+	private String emailAdministrador;
+	private String passwordEmailAdministrador;
+	private String hostEmailAdministrador;
+	private String puertoEmailAdministrador;
 
 	public UtilitariosManagedBean(){
 		super();
@@ -88,6 +92,10 @@ public class UtilitariosManagedBean implements Serializable {
 				case 17:
 				case 18:
 				case 19: catalogoTiposInstrumento.put(mantenedor.getId(), mantenedor); break;
+				case 32: emailAdministrador = mantenedor.getValor();
+				case 33: passwordEmailAdministrador = mantenedor.getValor();
+				case 34: hostEmailAdministrador = mantenedor.getValor();
+				case 35: puertoEmailAdministrador = mantenedor.getValor();
 			}
 			
 			tipoMantenedor = Integer.valueOf(mantenedor.getTipo()).intValue();
@@ -102,8 +110,6 @@ public class UtilitariosManagedBean implements Serializable {
 				case 8: catalogoPortafolio.put(mantenedor.getId(), mantenedor); break;
 				case 9: catalogoEstadosEvaluacion.put(mantenedor.getId(), mantenedor); break;
 				case 10: catalogoGenero.put(mantenedor.getId(), mantenedor); break;
-					
-					
 			}
 			
 		}
@@ -170,5 +176,21 @@ public class UtilitariosManagedBean implements Serializable {
 
 	public List<Rol> getRoles() {
 		return roles;
+	}
+	
+	public String getEmailAdministrador(){
+		return emailAdministrador;
+	}
+	
+	public String getPasswordEmailAdministrador(){
+		return passwordEmailAdministrador;
+	}
+	
+	public String getHostEmailAdministrador(){
+		return hostEmailAdministrador;
+	}
+	
+	public String getPuertoEmailAdministrador(){
+		return puertoEmailAdministrador;
 	}
 }

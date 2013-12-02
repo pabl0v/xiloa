@@ -65,6 +65,7 @@ public class LoginController implements PhaseListener {
 			Authentication authentication = authenticationManager.authenticate(token);
 			SecurityContext sContext = SecurityContextHolder.getContext();
 			sContext.setAuthentication(authentication);
+			password = "";
 			return "/modulos/solicitudes/solicitudes?faces-redirect=true";
 		} catch(AuthenticationException loginError){
 			FacesContext fContext = FacesContext.getCurrentInstance();
@@ -76,7 +77,6 @@ public class LoginController implements PhaseListener {
 	
 	public String doLogin() throws ServletException, IOException {
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-
 		RequestDispatcher dispatcher = ((ServletRequest) context.getRequest()).getRequestDispatcher("/j_spring_security_check");
 		dispatcher.forward((ServletRequest) context.getRequest(),(ServletResponse) context.getResponse());
 		FacesContext.getCurrentInstance().responseComplete();
@@ -85,7 +85,6 @@ public class LoginController implements PhaseListener {
 	
 	public String openIdAuth() throws ServletException, IOException {
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-		
 		RequestDispatcher dispatcher = ((ServletRequest) context.getRequest()).getRequestDispatcher("/j_spring_openid_security_check");
 		dispatcher.forward((ServletRequest) context.getRequest(),(ServletResponse)context.getResponse());
 	    FacesContext.getCurrentInstance().responseComplete();	    
@@ -93,11 +92,10 @@ public class LoginController implements PhaseListener {
 	}
 	
 	public void logout() throws ServletException, IOException {
-    	//SecurityContextHolder.getContext().setAuthentication(null);
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-
 		RequestDispatcher dispatcher = ((ServletRequest) context.getRequest()).getRequestDispatcher("/j_spring_security_logout");
 		dispatcher.forward((ServletRequest) context.getRequest(),(ServletResponse) context.getResponse());
+    	SecurityContextHolder.getContext().setAuthentication(null);
 		FacesContext.getCurrentInstance().responseComplete();
 	}
 	
@@ -119,19 +117,19 @@ public class LoginController implements PhaseListener {
 	public PhaseId getPhaseId() {
 		return PhaseId.RENDER_RESPONSE;
 	}
-
-	public String getUsername() {
+	
+	public String getUsername(){
 		return username;
 	}
 	 
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	 
-	public String getPassword() {
+	
+	public String getPassword(){
 		return password;
 	}
-	 
+	 	 
 	public void setPassword(String password) {
 		this.password = password;
 	}

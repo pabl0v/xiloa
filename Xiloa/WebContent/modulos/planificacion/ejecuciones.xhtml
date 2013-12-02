@@ -52,7 +52,7 @@
                         <p:column headerText="Tipo Actividad"><h:outputText value="#{ejecucion.tipo.valor}" /></p:column>    
                         <p:column headerText="Fecha programada"><h:outputText value="#{ejecucion.fechaInicial}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>                
                         <p:column headerText="Estatus"><h:outputText value="#{ejecucion.estado.valor}" /></p:column>               
-						<p:column style="width:4%" rendered="#{sec:areAnyGranted('admin,inatec')}">
+						<p:column style="width:4%" rendered="#{sec:areAnyGranted('ROLE_RIGHT_AGREGAR_BITACORAS')}">
 							<p:commandButton id="editarButton" action="#{actividadManagedBean.ejecuciones(ejecucionesManagedBean.selectedActividad)}" icon="ui-icon-pencil" title="Editar">
 							</p:commandButton>
 						</p:column>

@@ -1,9 +1,11 @@
 package service;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import security.Authority;
 import support.Departamento;
 import support.Ifp;
 import support.Item;
@@ -30,9 +32,17 @@ import model.Usuario;
 
 public interface IService {
 	
-	public List<Rol> getRoles();
-	
 	public Contacto getContactoByLogin(String login);
+	
+	public Contacto getContactoLocalByLogin(String login);
+	
+	public Contacto getContactoInatecByLogin(String login);
+	
+	public Collection<Authority> getAuthoritiesInatecByRolId(Integer rolId);
+	
+	public Collection<Authority> getAuthoritiesInatecByLogin(String login);
+	
+	public List<Rol> getRoles();
 	
 	public List<Instrumento> getInstrumentos();
 	

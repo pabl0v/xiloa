@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 import service.IService;
 
 @Component
-@Scope(value="session")
+@Scope(value="view")
 public class InstrumentoManagedBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
