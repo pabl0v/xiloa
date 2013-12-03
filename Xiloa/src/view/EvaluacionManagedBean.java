@@ -410,10 +410,10 @@ public class EvaluacionManagedBean implements Serializable {
 				Mantenedor tipoInstrumento = dato.getTipo();
 				if (isInicial == true){
 					if (tipoInstrumento.getId() != diagnostico.getId())
-						this.listInstrumentoByUnidad.add(new SelectItem(dato.getId(), dato.getDescripcion() + " - " + tipoInstrumento.getValor()));					
+						this.listInstrumentoByUnidad.add(new SelectItem(dato.getId(), dato.getNombre() + " - " + tipoInstrumento.getValor()));					
 				} else{
 					if (tipoInstrumento.getId() == diagnostico.getId())
-						this.listInstrumentoByUnidad.add(new SelectItem(dato.getId(), dato.getDescripcion() + " - " + tipoInstrumento.getValor()));
+						this.listInstrumentoByUnidad.add(new SelectItem(dato.getId(), dato.getNombre() + " - " + tipoInstrumento.getValor()));
 				}
 			}
 			
@@ -572,11 +572,21 @@ public class EvaluacionManagedBean implements Serializable {
 	public void saveEvalGuia(){
 		this.selectedEvaluacionGuia = (this.selectedEvaluacionGuia == null) ? (EvaluacionGuia) FacesUtil.getParametroSession("selectedEvaluacionGuia") : this.selectedEvaluacionGuia;
 		FacesUtil.setParamBySession("selectedEvaluacionGuia", null);
+		Integer   sumaPuntaje = new Integer(0);
 		if (this.selectedEvaluacionGuia != null) {			
 			this.selectedEvaluacionGuia.setPuntaje(this.puntajeGuia);
 			this.selectedEvaluacionGuia.setAprobado(this.aprobadoGuia);
 						
-			this.selectedEvaluacionGuia = (EvaluacionGuia) service.guardar(this.selectedEvaluacionGuia);			
+			this.selectedEvaluacionGuia = (EvaluacionGuia) service.guardar(this.selectedEvaluacionGuia);
+			
+			if (this.selectedEvaluacionGuia != null){
+				for (EvaluacionGuia eG : listaEvaluacionGuia) {
+					sumaPuntaje += (eG.getPuntaje() == null) ? 0 : eG.getPuntaje();
+				}
+				
+				selectedEvaluacion.setPuntaje(sumaPuntaje);
+				selectedEvaluacion = (Evaluacion) service.guardar(selectedEvaluacion);
+			}
 		}
 		
 	}

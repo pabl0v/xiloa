@@ -55,13 +55,13 @@
 				</div>
 				<div style="display:inline-block;margin-left:7px;">
 					<p>Puntaje:</p>  
-	            	<p:inputText id="puntajeEval" value="#{evaluacionManagedBean.puntajeEval}" />
+	            	<h:outputText id="puntajeEval" value="#{evaluacionManagedBean.puntajeEval}" />
 	            </div>
 				<div style="display:inline-block;margin-left:7px;">
 					<h:outputText value="Resultado Evaluacion: " />  
-				        <p:selectOneRadio id="optAprobado" value="#{evaluacionManagedBean.aprobado}">  
-				            <f:selectItems value="#{evaluacionManagedBean.listaAprobados}"  />				              				             
-				        </p:selectOneRadio>							
+				    <p:selectOneRadio id="optAprobado" value="#{evaluacionManagedBean.aprobado}">  
+				         <f:selectItems value="#{evaluacionManagedBean.listaAprobados}"  />				              				             
+				    </p:selectOneRadio>							
 				</div>	
 				<div style="display:inline-block;margin-left:7px;">
 					<p>Estado:</p>					
@@ -108,8 +108,10 @@
 	            	<h:outputText styleClass="estilo_span" id="respuestaGuia" value="#{evaluacionManagedBean.respuestaGuia}" />
 	            	<p>Puntaje:</p>  
 	            	<p:inputText id="puntajeGuia" value="#{evaluacionManagedBean.puntajeGuia}" />
-	            	<p>Aprobado:</p>					
-					<p:selectBooleanCheckbox id="aprobadoEvalGuia" value="#{evaluacionManagedBean.aprobadoGuia}" />	
+	            	<h:outputText value="Resultado Evaluacion por Guia: " />  
+				    <p:selectOneRadio id="optAprobadoGuia" value="#{evaluacionManagedBean.aprobadoGuia}">  
+				         <f:selectItems value="#{evaluacionManagedBean.listaAprobados}"  />				              				             
+				    </p:selectOneRadio>						
 					<p:commandButton value="Cancelar" action="#{evaluacionManagedBean.cancelEdicionEvalGuia}" onclick="PF('dlgEvalGuias').hide();"/>
 					<p:commandButton value="Guardar" action="#{evaluacionManagedBean.saveEvalGuia}" oncomplete="PF('dlgEvalGuias').hide();" update="dtGuiasEval" />												
 			    </div>					
