@@ -20,7 +20,7 @@
 		</div>	        
         <div id="cabezera">
             <h2>Solicitudes Activas</h2>
-            <sec:authorize ifAnyGranted="admin, inatec">                  
+            <sec:authorize ifAnyGranted="ROLE_RIGHT_EDITAR_PORTAFOLIO">                  
             <div id="botones_filtro_contenedor">                 
                 <div class="botones_filtro" onclick="window.location='/Xiloa/modulos/solicitudes/registro_solicitud.xhtml'" >
                 	<p class="icono_nuevo">Nueva solicitud</p>
@@ -32,27 +32,27 @@
             </div>
             </sec:authorize>
        </div>
-        <h:form>	        
+        <h:form id="formSolicitudes">	        
         <div id="contenedor_filtro">            
 	            <p style="margin-left:5px">Buscar:</p>
 	            <p:selectOneMenu styleClass="selectores" id="selector_buscarByAll" value="#{dashBoardSolicitudesManagedBean.selectedBuscarByAll}">
 	            	<f:selectItems value="#{dashBoardSolicitudesManagedBean.listBuscarByAll}"/>	            			        
 			    </p:selectOneMenu>
 		        <p:inputText style="margin-right:10px;" id="filtro_buscarByAll" value="#{dashBoardSolicitudesManagedBean.buscarByAllValue}">
-		        	<p:ajax event="keyup" update="dtSolicitud" listener="#{dashBoardSolicitudesManagedBean.handleBuscar}" process="@form" />
+		        	<p:ajax event="keyup" update=":formSolicitudes:dtSolicitud" listener="#{dashBoardSolicitudesManagedBean.handleBuscar}" process="@form" />
 		        </p:inputText>
 		        <span style="display:inline-block;">
 		            <p>Centro evaluador:</p>
 		            <p:selectOneMenu styleClass="selectores selector_centrosBySolicitudEstilo" id="selector_centrosBySolicitud" value="#{dashBoardSolicitudesManagedBean.selectedIdIfpSolicitud}" >			        
 				        <f:selectItems value="#{dashBoardSolicitudesManagedBean.listCentrosBySolicitud}"/>
-				        <p:ajax update="selector_certificacionByCentro, dtSolicitud"  listener="#{dashBoardSolicitudesManagedBean.handleCertByCentro}" />
+				        <p:ajax update=":formSolicitudes:selector_certificacionByCentro, :formSolicitudes:dtSolicitud"  listener="#{dashBoardSolicitudesManagedBean.handleCertByCentro}" />
 				    </p:selectOneMenu>
 			    </span>
 			    <span style="display:inline-block; margin-left:5px">
 				    <p>Certificaciones:</p>
 		            <p:selectOneMenu styleClass="selectores selector_certificacionByCentroEstilo" id="selector_certificacionByCentro" value="#{dashBoardSolicitudesManagedBean.selectedIdCertByCentro}" >			        
 				        <f:selectItems value="#{dashBoardSolicitudesManagedBean.listCertByCentro}" />
-				        <p:ajax update="dtSolicitud" listener="#{dashBoardSolicitudesManagedBean.handleBuscar}" />  
+				        <p:ajax update=":formSolicitudes:dtSolicitud" listener="#{dashBoardSolicitudesManagedBean.handleBuscar}" />  
 				    </p:selectOneMenu>	
 			    </span>
 			    <!-- 
@@ -60,7 +60,13 @@
             		<h:outputText value="Exportar a Excel" />   
             		<p:dataExporter type="xls" target="dtSolicitud" fileName="ReporteSolicitudes" />           		
         		</h:commandLink>
-        		 -->  		  
+        		 -->  		
+        		 <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_PARTICIPANTE">       	 
+		            <p:commandButton id="btnEnviarSolicitud" value="Enviar" title="Solicitar Certificacion" 
+	    		                 icon="ui-icon-star" style="display:inline-block;"
+	    		                 action="#{dashBoardSolicitudesManagedBean.solicitarCertificacion}" 
+	    					     update=":formSolicitudes:dtSolicitud" disabled="#{dashBoardSolicitudesManagedBean.disableEnviarSolicitud}" />
+             	</sec:authorize>  
         </div>              
         <div id="contenedor_tabla_solicitudes">     
         	<p:messages id="msgConvocatoria" showDetail="true" autoUpdate="true" closable="true" />        	      
@@ -68,36 +74,29 @@
         	             var="varSolicitudI" value="#{dashBoardSolicitudesManagedBean.listaSolicitudes}" 
         	             selectionMode="single" rowKey="#{varSolicitudI.id}"
         	             selection="#{dashBoardSolicitudesManagedBean.selectedSolicitud}"         	              
-        	             paginator="true" rows="12"  >        	      
-        		        		                               
+        	             paginator="true" rows="12"  >     
+        	    <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_PARTICIPANTE">     	      
+	        		<p:ajax event="rowSelect" listener="#{dashBoardSolicitudesManagedBean.onRowSelectDtSolicitudes}" update=":formSolicitudes:btnEnviarSolicitud" />  
+					<p:ajax event="rowUnselect" listener="#{dashBoardSolicitudesManagedBean.onRowUnSelectDtSolicitudes}" update=":formSolicitudes:btnEnviarSolicitud" />       		                               
+				</sec:authorize>
 	            <!--Las columnas de la tabla-->
                 <p:column id="centroColumn" headerText="Centro evaluador" exportable="true"><h:outputText value="#{varSolicitudI.certificacion.ifpNombre}" /></p:column>                      
                 <p:column id="candidatoColumn" headerText="Nombre del candidato" exportable="true"><h:outputText value="#{varSolicitudI.contacto.nombreCompleto}" /></p:column>  
                 <p:column id="certificacionColumn" headerText="Certificacion a evaluar" exportable="true"><h:outputText value="#{varSolicitudI.certificacion.nombre}"/></p:column>  
                 <p:column id="fechaColumn" headerText="Fecha solicitud" exportable="true"><h:outputText value="#{varSolicitudI.fechaRegistro}" /></p:column>               
                 <p:column id="evaluadorColumn" headerText="Evaluador" exportable="true"><h:outputText value="#{varSolicitudI.certificacion.getEvaluador().nombreCompleto} [ #{varSolicitudI.certificacion.getEvaluador().correo1} ]" /></p:column>                
-                <p:column id="estadoColumn" headerText="Estado" exportable="true"><h:outputText value="#{varSolicitudI.estatus.valor}" /></p:column>                
-                <p:column style="width:4%" exportable="false">  
-                <sec:authorize ifAnyGranted="admin, inatec">  
-	            	<p:commandButton id="selectButton" action="#{dashBoardSolicitudesManagedBean.editaSolicitud}" 	            	                             				     
-	            	                 icon="ui-icon-pencil" title="Editar Solicitud" >
-	   	            	<f:setPropertyActionListener value="#{varSolicitudI}" target="#{dashBoardSolicitudesManagedBean.selectedSolicitud}" />
-	            	</p:commandButton>	     
-	            </sec:authorize>  
-	            <sec:authorize ifAnyGranted="visitante">       	 
-		            <p:commandButton id="enviarSolicitud" value="Enviar" title="Solicitar Certificacion" 
-	    		                 icon="ui-icon-star" style="display:inline-block;"
-	    		                 actionListener="#{dashBoardSolicitudesManagedBean.solicitarCertificacion}" 
-	    					     update="dtSolicitud" disabled="#{Integer.valueOf(dashBoardSolicitudesManagedBean.estadoInicialSolicitud.proximo) != varSolicitudI.id }"    					        					       
-	             				>
-            				<f:setPropertyActionListener value="#{varSolicitudI}" target="#{dashBoardSolicitudesManagedBean.selectedSolicitud}" />
-	                 </p:commandButton>  
-             	</sec:authorize>
-    			</p:column>
-    			  
+                <p:column id="estadoColumn" headerText="Estado" exportable="true"><h:outputText value="#{varSolicitudI.estatus.valor}" /></p:column>
+                <sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO">                
+	                <p:column style="width:4%" exportable="false">                  
+		            	<p:commandButton id="selectButton" action="#{dashBoardSolicitudesManagedBean.editaSolicitud}" 	            	                             				     
+		            	                 icon="ui-icon-pencil" title="Editar Solicitud" >
+		   	            	<f:setPropertyActionListener value="#{varSolicitudI}" target="#{dashBoardSolicitudesManagedBean.selectedSolicitud}" />
+		            	</p:commandButton>		            	           
+	    			</p:column>
+    			</sec:authorize>  
             </p:dataTable>            
         </div>
-        <sec:authorize ifAnyGranted="admin, inatec">  
+        <sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_SEGUIMIENTO">  
 	        <div id="contenedor_exportar">
 	    		<p>Con seleccionado:</p>    		
 	        	<p:splitButton value="Convocar" icon="ui-icon-disk"

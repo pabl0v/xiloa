@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import model.Mantenedor;
+import model.Pais;
 import model.Rol;
 import model.Usuario;
 
@@ -18,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import service.IService;
+import support.Departamento;
 import support.Item;
 
 @Component
@@ -47,6 +49,8 @@ public class UtilitariosManagedBean implements Serializable {
 	private String passwordEmailAdministrador;
 	private String hostEmailAdministrador;
 	private String puertoEmailAdministrador;
+	private Map<Long, Pais> catalogoPaises;
+	private Map<Integer, Departamento> catalogoDepartamentos;
 
 	public UtilitariosManagedBean(){
 		super();
@@ -63,6 +67,8 @@ public class UtilitariosManagedBean implements Serializable {
 		catalogoEstadoSolicitud = new HashMap<Integer, Mantenedor>();
 		catalogoPortafolio = new HashMap<Integer, Mantenedor>();
 		catalogoEstadosEvaluacion = new HashMap<Integer, Mantenedor>();
+		catalogoPaises = new HashMap<Long, Pais>();
+		catalogoDepartamentos = new HashMap<Integer, Departamento>();
 	}
 	
 	@PostConstruct
@@ -116,8 +122,25 @@ public class UtilitariosManagedBean implements Serializable {
 		
 		catalogoUnidades = servicio.getCatalogoUnidades();
 		usuario = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+	    List<Pais> listaPaises = new ArrayList<Pais> ();
+	    listaPaises = servicio.getPaises();
+	    
+	    for (Pais p : listaPaises) {
+	    	this.catalogoPaises.put(p.getId(), p);
+	    }		 
+		
+		this.catalogoDepartamentos = servicio.getDepartamentosByInatec();
 	}
 	
+	public Map<Long, Pais> getCatalogoPaises() {
+		return catalogoPaises;
+	}
+
+	public Map<Integer, Departamento> getCatalogoDepartamentos() {
+		return catalogoDepartamentos;
+	}
+
 	public Map<Integer, Mantenedor> getCatalogoEstadosEvaluacion() {
 		return catalogoEstadosEvaluacion;
 	}

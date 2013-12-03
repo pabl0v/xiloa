@@ -11,7 +11,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -55,12 +54,22 @@ public class EvaluacionManagedBean implements Serializable {
 	
 	private Guia []     selectedGuia;
 	private List<Guia>  listGuiaByInstru;
+	private List<EvaluacionGuia> listaEvaluacionGuia;
 	
-	
+	private EvaluacionGuia selectedEvaluacionGuia;
+		
 	private List<SelectItem> listUnidadCompentecia;
 	private List<SelectItem> listInstrumentoByUnidad;
 	
-	
+	private String preguntaGuia;
+	private String respuestaGuia;
+	private Integer puntajeGuia;
+	private boolean disableAgregaGuias;
+	private Mantenedor solicitudAsesorado;
+	private boolean aprobadoGuia;
+	private Integer puntajeEval;
+	private Integer puntajeMinEval;
+	private List<SelectItem> listaAprobados;
 	
 	public EvaluacionManagedBean() {
 		super();
@@ -73,6 +82,100 @@ public class EvaluacionManagedBean implements Serializable {
 		aprobado = false;		
 		
 		listaEstados = new ArrayList<Mantenedor>();
+		
+		listaEvaluacionGuia = new ArrayList<EvaluacionGuia> ();
+		disableAgregaGuias = true;
+		listaAprobados = new ArrayList<SelectItem> ();
+	}
+
+	public List<SelectItem> getListaAprobados() {		
+		return listaAprobados;
+	}
+
+	public void setListaAprobados(List<SelectItem> listaAprobados) {
+		this.listaAprobados = listaAprobados;
+	}
+
+	public Integer getPuntajeMinEval() {
+		return puntajeMinEval;
+	}
+
+	public void setPuntajeMinEval(Integer puntajeMinEval) {
+		this.puntajeMinEval = puntajeMinEval;
+	}
+
+	public Integer getPuntajeEval() {
+		return puntajeEval;
+	}
+
+	public void setPuntajeEval(Integer puntajeEval) {
+		this.puntajeEval = puntajeEval;
+	}
+
+	public boolean isAprobadoGuia() {
+		return aprobadoGuia;
+	}
+
+	public void setAprobadoGuia(boolean aprobadoGuia) {
+		this.aprobadoGuia = aprobadoGuia;
+	}
+
+	public Mantenedor getSolicitudAsesorado() {
+		return solicitudAsesorado;
+	}
+
+	public void setSolicitudAsesorado(Mantenedor solicitudAsesorado) {
+		this.solicitudAsesorado = solicitudAsesorado;
+	}
+
+	public boolean isDisableAgregaGuias() {
+		return disableAgregaGuias;
+	}
+
+	public void setDisableAgregaGuias(boolean disableAgregaGuias) {
+		this.disableAgregaGuias = disableAgregaGuias;
+	}
+
+	public String getPreguntaGuia() {
+		return preguntaGuia;
+	}
+
+	public void setPreguntaGuia(String preguntaGuia) {
+		this.preguntaGuia = preguntaGuia;
+	}
+
+	public String getRespuestaGuia() {
+		return respuestaGuia;
+	}
+
+	public void setRespuestaGuia(String respuestaGuia) {
+		this.respuestaGuia = respuestaGuia;
+	}
+
+	public Integer getPuntajeGuia() {
+		return puntajeGuia;
+	}
+
+	public void setPuntajeGuia(Integer puntajeGuia) {
+		this.puntajeGuia = puntajeGuia;
+	}
+
+	public EvaluacionGuia getSelectedEvaluacionGuia() {
+		return selectedEvaluacionGuia;
+	}
+
+	public void setSelectedEvaluacionGuia(EvaluacionGuia selectedEvaluacionGuia) {
+		this.selectedEvaluacionGuia = selectedEvaluacionGuia;
+	}
+
+	public List<EvaluacionGuia> getListaEvaluacionGuia() {
+		if (this.getSelectedEvaluacion() != null)
+			this.listaEvaluacionGuia = service.getEvaluacionGuiaByEvaluacionId(this.selectedEvaluacion.getId());
+		return listaEvaluacionGuia;
+	}
+
+	public void setListaEvaluacionGuia(List<EvaluacionGuia> listaEvaluacionGuia) {
+		this.listaEvaluacionGuia = listaEvaluacionGuia;
 	}
 
 	public List<Mantenedor> getListaEstados() {
@@ -113,6 +216,7 @@ public class EvaluacionManagedBean implements Serializable {
 			this.setAprobado(selectedEvaluacion.isAprobado());
 			this.setEstado(selectedEvaluacion.getEstado());
 			this.setEstadoId(selectedEvaluacion.getEstado().getId());
+			this.setPuntajeEval(selectedEvaluacion.getPuntaje());
 		}
 	}
 
@@ -148,6 +252,7 @@ public class EvaluacionManagedBean implements Serializable {
 	public void setSelectedInstrumento(Instrumento selectedInstrumento) {
 		this.selectedInstrumento = selectedInstrumento;
 		if (this.selectedInstrumento != null){
+			this.puntajeMinEval = selectedInstrumento.getPuntajeMinimo();
 			this.setIdSelectedInstrByUnd(this.selectedInstrumento.getId());
 			Object [] objs =  new Object [] {this.selectedEvaluacion.getId(), this.selectedInstrumento.getId()};
 			List<Guia> guiasEvalInst = service.getGuiaByParam("EvaluacionGuia.findGuiasByEvalAndInstrumento", objs);
@@ -157,6 +262,7 @@ public class EvaluacionManagedBean implements Serializable {
 			for (Guia dato : guiasEvalInst) {
 				selectedGuia[i++] = dato;
 			}
+					
 		}
 	}
 
@@ -235,15 +341,27 @@ public class EvaluacionManagedBean implements Serializable {
 		
 		sol = (Solicitud)FacesUtil.getParametroSession("solicitudEval");
 		
-		if (sol != null)
+		if (sol != null){
 			this.setSolicitudEval(sol);
-		else
+			Mantenedor estadoInicialSolicitud = service.getMantenedorMinByTipo(sol.getTipomantenedorestado());
+			Mantenedor segEstado = utilitarios.getCatalogoEstadoSolicitud().get(Integer.valueOf(estadoInicialSolicitud.getProximo()));
+			
+			if (segEstado != null) {
+				Mantenedor estadoConvocado = utilitarios.getCatalogoEstadoSolicitud().get(Integer.valueOf(segEstado.getProximo()));
+				
+				if (estadoConvocado != null)
+					this.solicitudAsesorado = utilitarios.getCatalogoEstadoSolicitud().get(Integer.valueOf(segEstado.getProximo()));
+			}
+			
+			
+		}else
 			this.setSolicitudEval(null);
 					
 		eval = (Evaluacion)FacesUtil.getParametroSession("selectedEvaluacion");
 		
 		if (eval != null){
-			this.setSelectedEvaluacion(eval);						
+			this.setSelectedEvaluacion(eval);	
+			this.disableAgregaGuias = false;
 		}else
 			this.setSelectedEvaluacion(null);
 		
@@ -265,23 +383,38 @@ public class EvaluacionManagedBean implements Serializable {
 			this.setSelectedInstrumento(instrumentoSel);
 		}else
 			this.setSelectedInstrumento(null);
-				
+			
+		listaAprobados = new ArrayList<SelectItem> ();
+		listaAprobados.add(new SelectItem(true, "Aprobado"));
+		listaAprobados.add(new SelectItem(false, "No Aprobado"));
 	}
 
 	public void handleInstrumentosByUnidad () {
 		
 		List<Instrumento> listInstru;
 		
-		if (this.idSelectedUnidad != null) {
-			//selectedUnidad = service.getUnidadById(this.idSelectedUnidad);
+		Mantenedor estadoActualSolicitud = this.solicitudEval.getEstatus();
+		Mantenedor diagnostico = service.getMantenedorMinByTipo(new String("6"));
+		boolean    isInicial = false;
+		
+		if (this.solicitudAsesorado.getId() == estadoActualSolicitud.getId())
+			isInicial = true;
+				
+		if (this.idSelectedUnidad != null) {			
 			selectedUnidad = (selectedUnidad != this.idSelectedUnidad) ? this.idSelectedUnidad : selectedUnidad;
 			
-			//listInstru = service.getInstrumentoByUnidad(selectedUnidad.getId());
 			listInstru = service.getInstrumentoByUnidad(selectedUnidad);
 			this.listInstrumentoByUnidad = new ArrayList<SelectItem>();
 			this.listInstrumentoByUnidad.add(new SelectItem(null, "Seleccione el instrumento"));
 			for (Instrumento dato : listInstru){
-				this.listInstrumentoByUnidad.add(new SelectItem(dato.getId(), dato.getDescripcion()));
+				Mantenedor tipoInstrumento = dato.getTipo();
+				if (isInicial == true){
+					if (tipoInstrumento.getId() != diagnostico.getId())
+						this.listInstrumentoByUnidad.add(new SelectItem(dato.getId(), dato.getDescripcion() + " - " + tipoInstrumento.getValor()));					
+				} else{
+					if (tipoInstrumento.getId() == diagnostico.getId())
+						this.listInstrumentoByUnidad.add(new SelectItem(dato.getId(), dato.getDescripcion() + " - " + tipoInstrumento.getValor()));
+				}
 			}
 			
 		}
@@ -301,7 +434,7 @@ public class EvaluacionManagedBean implements Serializable {
 		
 		if (inst.getId() != selectedInstrumentoId)
 			selectedInstrumento = inst;
-		
+			
 		Object [] objs =  new Object [] {selectedInstrumento.getId()};
 		listGuiaByInstru = service.getGuiaByParam("Guia.findByIdInstrumento", objs);						
 	}
@@ -330,23 +463,20 @@ public class EvaluacionManagedBean implements Serializable {
 	}
 	
 	public void guardarEvaluacion() {
-		
-		FacesContext context = FacesContext.getCurrentInstance();
-		
-		Evaluacion eval;	
-		
+				
+		Evaluacion eval;			
 		boolean isError = false;
-		
-		System.out.println("Metodo GuardarEvaluacion");		
+		String  mensaje = "";
 		
 		//Se registra nueva evaluacion
 		if (selectedEvaluacion == null){
-			System.out.println("Nueva evaluacion");			
+		
+			this.puntajeEval = new Integer(0);
 			eval = new Evaluacion (this.getSolicitudEval(), // solicitud 
 			   					   this.getFechaEvaluacion(), // fecha 
 								   this.getSelectedUnidad(), // unidad 
 								   null , // Set<EvaluacionGuia> guias 
-								   new Integer(0), // puntaje, 
+								   this.puntajeEval, // puntaje, 
 								   this.getObservaciones(), // observaciones 
 								   this.isAprobado() // aprobado
 								   );
@@ -357,14 +487,16 @@ public class EvaluacionManagedBean implements Serializable {
 			eval = (Evaluacion) service.guardar(eval);
 			
 			if (eval != null) {
+				this.disableAgregaGuias = false;
+				this.selectedEvaluacion = eval;
 				
 				Set<EvaluacionGuia> setEvalGuia = new HashSet<EvaluacionGuia> ();
-									
+				
 				for (Guia dato : this.selectedGuia) {
 													
 					EvaluacionGuiaId pkDetalleGuia = new EvaluacionGuiaId();
 					
-					pkDetalleGuia.setEvaluacion(eval);
+					pkDetalleGuia.setEvaluacion(this.selectedEvaluacion);
 					pkDetalleGuia.setGuia(dato);
 					
 					EvaluacionGuia detalleEvaGuia = new EvaluacionGuia();
@@ -374,46 +506,126 @@ public class EvaluacionManagedBean implements Serializable {
 					
 					detalleEvaGuia = (EvaluacionGuia) service.guardar(detalleEvaGuia);
 					
-					setEvalGuia.add(detalleEvaGuia);
-				}			
-				
+					if (detalleEvaGuia == null){
+						isError = true;
+						mensaje = "Error al registrar el detalle de la evaluacion. Favor revisar...";
+					}else
+						setEvalGuia.add(detalleEvaGuia);
+				}
+				mensaje = "La evaluacion ha sido registrada exitosamente.";
 			} else {
 				isError = true;
+				this.disableAgregaGuias = true;
+				mensaje = "Error al grabar la evaluacion. Favor revisar...";
 			}			
 			
 		} else { // Guarda los cambios en la edicion de la evaluacion			
 			Mantenedor estadoEval = null;		
 			Mantenedor sigEstado = null;
-			eval = selectedEvaluacion;
-			eval.setObservaciones(this.observaciones);			
-			eval.setAprobado(this.aprobado);
 			
+			eval = selectedEvaluacion;
 			estadoEval = eval.getEstado();
+			
 			if (this.aprobado == true){
-				if (estadoEval.getProximo() != null){
-					sigEstado = service.getMantenedorById(Integer.valueOf(estadoEval.getProximo()));
+				if (this.puntajeEval == null){
+					isError = true;
+					mensaje = "Debe indicar el puntaje a nivel de la evaluacion";
+				} else if (this.puntajeEval == 0){
+					isError = true;
+					mensaje = "Error, el puntaje a nivel de la evaluacion es cero y se indica que esta APROBADO. Favor revisar...";
+				} else if (this.puntajeEval < this.puntajeMinEval){
+					isError = true;
+					mensaje = "Error, el puntaje a nivel de la evaluacion es menor al puntaje minimo configurado al instrumento. Favor revisar...";
+				} else {
+					eval.setPuntaje(this.puntajeEval);
 					
-					if (sigEstado != null)
-						eval.setEstado(sigEstado);
+					if (estadoEval.getProximo() != null){
+						sigEstado = service.getMantenedorById(Integer.valueOf(estadoEval.getProximo()));
+						
+						if (sigEstado != null)
+							eval.setEstado(sigEstado);
+					}
+				}
+			}
+			
+			if (isError == false){
+				eval.setObservaciones(this.observaciones);			
+				eval.setAprobado(this.aprobado);
+										
+				eval = (Evaluacion) service.guardar(eval);			
+				
+				if (eval == null){
+					isError = true;
+					mensaje = "Error al actualizar la evaluacion. Favor revisar...";
+				} else {					
+					mensaje = "Proceso completado exitosamente. La evaluacion ha sido actualizada !!!!";
 				}
 					
-			}
-						
-			eval = (Evaluacion) service.guardar(eval);			
+			}						
 			
-			if (eval == null)
-				isError = true;			
-			
-		}
-			
-		if (!isError){						
-	        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "La evaluacion ha sido registrada exitosamente."));		
-			
-		}else {
-			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje", "Error al grabar la evaluacion. Favor revisar..."));
 		}
 		
+		FacesUtil.getMensaje("SCCL - Mensaje: ", mensaje, isError);				
+		
 	}	
+	
+	public void saveEvalGuia(){
+		this.selectedEvaluacionGuia = (this.selectedEvaluacionGuia == null) ? (EvaluacionGuia) FacesUtil.getParametroSession("selectedEvaluacionGuia") : this.selectedEvaluacionGuia;
+		FacesUtil.setParamBySession("selectedEvaluacionGuia", null);
+		if (this.selectedEvaluacionGuia != null) {			
+			this.selectedEvaluacionGuia.setPuntaje(this.puntajeGuia);
+			this.selectedEvaluacionGuia.setAprobado(this.aprobadoGuia);
+						
+			this.selectedEvaluacionGuia = (EvaluacionGuia) service.guardar(this.selectedEvaluacionGuia);			
+		}
+		
+	}
+	
+	public void editaGuia(){
+		FacesUtil.setParamBySession("selectedEvaluacionGuia", this.selectedEvaluacionGuia);	
+		if (this.selectedEvaluacionGuia != null){			
+			this.preguntaGuia = this.selectedEvaluacionGuia.getPk().getGuia().getPregunta();
+			this.respuestaGuia = this.selectedEvaluacionGuia.getPk().getGuia().getRespuesta();
+			this.puntajeGuia = this.selectedEvaluacionGuia.getPuntaje();			
+		} else {
+			this.preguntaGuia = null;
+			this.respuestaGuia = null;
+			this.puntajeGuia = 0;
+		}
+		
+	}
+	
+	public void agregaGuias (){
+		if (this.selectedEvaluacion != null) {
+			Set<EvaluacionGuia> setEvalGuia = new HashSet<EvaluacionGuia> ();
+			
+			for (Guia dato : this.selectedGuia) {
+												
+				EvaluacionGuiaId pkDetalleGuia = new EvaluacionGuiaId();
+				
+				pkDetalleGuia.setEvaluacion(this.selectedEvaluacion);
+				pkDetalleGuia.setGuia(dato);
+				
+				EvaluacionGuia detalleEvaGuia = new EvaluacionGuia();
+				
+				detalleEvaGuia.setPk(pkDetalleGuia);
+				detalleEvaGuia.setPuntaje(new Integer(0));				
+				
+				detalleEvaGuia = (EvaluacionGuia) service.guardar(detalleEvaGuia);
+				
+				setEvalGuia.add(detalleEvaGuia);
+			}	
+				
+		}
+				
+	}
+	
+	public void cancelEdicionEvalGuia(){
+		FacesUtil.setParamBySession("selectedEvaluacionGuia", null);
+		this.preguntaGuia = null;
+		this.respuestaGuia = null;
+		this.puntajeGuia = 0;
+	}
 	
 	public void resetValores () {
 		this.selectedEvaluacion = null;

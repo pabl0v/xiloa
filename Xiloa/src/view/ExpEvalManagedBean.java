@@ -62,6 +62,7 @@ public class ExpEvalManagedBean implements Serializable  {
 
 	@Autowired
 	private IService service;	
+	
 	@Autowired
 	private UtilitariosManagedBean utilitarios;
 	
@@ -118,7 +119,6 @@ public class ExpEvalManagedBean implements Serializable  {
 	
 	private Map<Integer, Mantenedor> catalogoTipoDatosLaborales;
 	private Map<Integer, Mantenedor> catalogoEstadosSolicitud;
-	private Map<Integer, Mantenedor> catalogoEstadosEvaluacion;
 	private Map<Integer, Mantenedor> catalogoEstadosPortafolio;
 	
 	
@@ -186,7 +186,6 @@ public class ExpEvalManagedBean implements Serializable  {
 		
 		catalogoTipoDatosLaborales = new HashMap<Integer, Mantenedor>();
 		catalogoEstadosSolicitud = new HashMap<Integer, Mantenedor>();
-		catalogoEstadosEvaluacion = new HashMap<Integer, Mantenedor>();
 		catalogoEstadosPortafolio = new HashMap<Integer, Mantenedor> ();
 		
 		catalogoDepartamento = new HashMap<Integer, Departamento>();
@@ -389,17 +388,6 @@ public class ExpEvalManagedBean implements Serializable  {
 
 	public void setListEstadosPortafolio(List<SelectItem> listEstadosPortafolio) {
 		this.listEstadosPortafolio = listEstadosPortafolio;
-	}
-
-
-	public Map<Integer, Mantenedor> getCatalogoEstadosEvaluacion() {
-		return catalogoEstadosEvaluacion;
-	}
-
-
-	public void setCatalogoEstadosEvaluacion(
-			Map<Integer, Mantenedor> catalogoEstadosEvaluacion) {
-		this.catalogoEstadosEvaluacion = catalogoEstadosEvaluacion;
 	}
 
 
@@ -897,14 +885,7 @@ public class ExpEvalManagedBean implements Serializable  {
 			this.catalogoTipoDatosLaborales.put(dato.getId(), dato);			
 			this.listTipoDatosLaborales.add(new SelectItem(dato.getId(), dato.getValor()));			
 		}	
-		
-		//Obtiene el catalogo de Estados Evaluacion
-		listaCatalogo = service.getMantenedoresByTipo(new Integer(9));		
-		for (Mantenedor dato : listaCatalogo) {
-			this.catalogoEstadosEvaluacion.put(dato.getId(), dato);	
-			
-		}
-		
+				
 		listaCatalogo = service.getMantenedoresByTipo(new Integer(8));
 		listEstadosPortafolio = new ArrayList<SelectItem> ();
 		for (Mantenedor dato : listaCatalogo) {
@@ -1021,7 +1002,7 @@ public class ExpEvalManagedBean implements Serializable  {
 		
 		for (Evaluacion e : listEval) {
 			
-			estadoEval = catalogoEstadosEvaluacion.get(e.getEstado().getId());
+			estadoEval = e.getEstado(); 
 			
 			unidadDescripcion = this.utilitarios.getCompetenciaDescripcion(e.getUnidad());
 					
@@ -1034,10 +1015,10 @@ public class ExpEvalManagedBean implements Serializable  {
 						  								  unidadDescripcion // UnidadCompentenciaDescripcion
 						  								  );
 				
-				if (todos) {
+				if (todos == true) {
 					listBeanEv.add(bean);
 				} else {
-					if (! e.isAprobado()){
+					if (e.isAprobado() == false){
 						listBeanEv.add(bean);
 					} 
 				}	
@@ -1705,8 +1686,7 @@ public class ExpEvalManagedBean implements Serializable  {
 	
 	public void asesorarCertificacion (){
 		String  titulo = "";
-		String  textoMsg = "";
-		FacesMessage msg = null;
+		String  textoMsg = "";	
 		boolean isError = false;
 		
 	

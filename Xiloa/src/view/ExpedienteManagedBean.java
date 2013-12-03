@@ -16,7 +16,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
-import javax.servlet.http.HttpServletRequest;
 
 import model.Archivo;
 import model.Contacto;
@@ -50,6 +49,7 @@ public class ExpedienteManagedBean implements Serializable  {
 
 	@Autowired
 	private IService service;
+	
 	@Autowired
 	private UtilitariosManagedBean util;
 	
@@ -105,18 +105,14 @@ public class ExpedienteManagedBean implements Serializable  {
 	private List<SelectItem> listEvalBySolicitud;	
 	
 	private Map<Integer, Mantenedor> catalogoTipoDatosLaborales;
-	private Map<Integer, Mantenedor> catalogoEstadosSolicitud;
-	private Map<Integer, Mantenedor> catalogoEstadosEvaluacion;
-	private Map<Integer, Mantenedor> catalogoEstadosPortafolio;
-	
-	
-	private Map<Integer, Departamento> catalogoDepartamento;
+			
 	private Map<Integer, Municipio> catalogoMunicipiosByDepto;
 	
 	private List<SelectItem> listDeptos;
 	private List<SelectItem> listMunicipioByDptos;
 	private List<SelectItem> listPaises;
 	private List<SelectItem> listGenero;
+	private List<SelectItem> listNacionalidades;
 	
 	private List<Archivo> listPortafolioLaboral;
 	
@@ -160,11 +156,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		listEvalBySolicitud = new ArrayList<SelectItem> ();	
 		
 		catalogoTipoDatosLaborales = new HashMap<Integer, Mantenedor>();
-		catalogoEstadosSolicitud = new HashMap<Integer, Mantenedor>();
-		catalogoEstadosEvaluacion = new HashMap<Integer, Mantenedor>();
-		catalogoEstadosPortafolio = new HashMap<Integer, Mantenedor> ();
-		
-		catalogoDepartamento = new HashMap<Integer, Departamento>();
+						
 		catalogoMunicipiosByDepto = new HashMap<Integer, Municipio>();
 		
 		listDeptos = new ArrayList<SelectItem> ();
@@ -174,14 +166,16 @@ public class ExpedienteManagedBean implements Serializable  {
 		
 		nuevoLaboral = new Laboral();		
 		
+		listNacionalidades = new ArrayList<SelectItem>();
+		
 	}	
-	
-	public IService getService() {
-		return service;
+		
+	public List<SelectItem> getListNacionalidades() {
+		return listNacionalidades;
 	}
 
-	public void setService(IService service) {
-		this.service = service;
+	public void setListNacionalidades(List<SelectItem> listNacionalidades) {
+		this.listNacionalidades = listNacionalidades;
 	}
 
 	public String getNombreRealArchivoExp() {
@@ -273,16 +267,13 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.departamentoIdSelected = departamentoIdSelected;
 	}
 
-
-	public Contacto getContactoExp() {
+	public Contacto getContactoExp() {		
 		return contactoExp;
 	}
-
 
 	public void setContactoExp(Contacto contactoExp) {
 		this.contactoExp = contactoExp;
 	}
-
 
 	public List<SelectItem> getListEstadosPortafolio() {
 		return listEstadosPortafolio;
@@ -290,28 +281,6 @@ public class ExpedienteManagedBean implements Serializable  {
 
 	public void setListEstadosPortafolio(List<SelectItem> listEstadosPortafolio) {
 		this.listEstadosPortafolio = listEstadosPortafolio;
-	}
-
-
-	public Map<Integer, Mantenedor> getCatalogoEstadosEvaluacion() {
-		return catalogoEstadosEvaluacion;
-	}
-
-
-	public void setCatalogoEstadosEvaluacion(
-			Map<Integer, Mantenedor> catalogoEstadosEvaluacion) {
-		this.catalogoEstadosEvaluacion = catalogoEstadosEvaluacion;
-	}
-
-
-	public Map<Integer, Mantenedor> getCatalogoEstadosPortafolio() {
-		return catalogoEstadosPortafolio;
-	}
-
-
-	public void setCatalogoEstadosPortafolio(
-			Map<Integer, Mantenedor> catalogoEstadosPortafolio) {
-		this.catalogoEstadosPortafolio = catalogoEstadosPortafolio;
 	}
 
 
@@ -357,19 +326,13 @@ public class ExpedienteManagedBean implements Serializable  {
 		return disabledUploadFile;
 	}
 
-
-
 	public void setDisabledUploadFile(boolean disabledUploadFile) {
 		this.disabledUploadFile = disabledUploadFile;
 	}
 
-
-
 	public boolean isDisablePortafolio() {
 		return disablePortafolio;
 	}
-
-
 
 	public void setDisablePortafolio(boolean disablePortafolio) {
 		this.disablePortafolio = disablePortafolio;
@@ -396,7 +359,6 @@ public class ExpedienteManagedBean implements Serializable  {
 	public void setListPortafolioContacto(List<Archivo> listPortafolioContacto) {
 		this.listPortafolioContacto = listPortafolioContacto;
 	}
-
 
 
 	public Long getSelectedArchivoId() {
@@ -465,23 +427,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.nuevoLaboral = nuevoLaboral;
 	}
 
-	public List<SelectItem> getListDeptos() {
-		if (this.catalogoDepartamento.size() > 0 ) {
-			
-			Integer idValor;
-			Departamento valor;
-			
-			Iterator<Integer> claveSet = this.catalogoDepartamento.keySet().iterator();
-			
-			listDeptos = new ArrayList<SelectItem> ();
-			listDeptos.add(new SelectItem(null, "Seleccion un Departamento"));
-		    while(claveSet.hasNext()){		      
-		    	idValor = claveSet.next();
-		    	valor = this.catalogoDepartamento.get(idValor);
-		    	this.listDeptos.add(new SelectItem(idValor, valor.getDpto_nombre()));		    			        		        
-		    }		    
-		}
-		
+	public List<SelectItem> getListDeptos() {		
 		return listDeptos;
 	}
 
@@ -501,18 +447,6 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 
-	public Map<Integer, Departamento> getCatalogoDepartamento() {		
-		return this.catalogoDepartamento;
-	}
-
-
-
-	public void setCatalogoDepartamento(Map<Integer, Departamento> catalogoDepartamento) {
-		this.catalogoDepartamento = catalogoDepartamento;
-	}
-
-
-
 	public Map<Integer, Municipio> getCatalogoMunicipiosByDepto() {
 		return catalogoMunicipiosByDepto;
 	}
@@ -529,8 +463,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		return disableSolicitarCertificacion;
 	}
 
-	public void setDisableSolicitarCertificacion(
-			boolean disableSolicitarCertificacion) {
+	public void setDisableSolicitarCertificacion(boolean disableSolicitarCertificacion) {
 		this.disableSolicitarCertificacion = disableSolicitarCertificacion;
 	}
 
@@ -542,10 +475,9 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.solicitudExp = solicitudExp;
 	}
 
-	public List<Laboral> getListDatosLaborales() {
-		if (this.solicitudExp != null){
-			this.listDatosLaborales = service.getListLaboralByTipo(new Integer(13), this.solicitudExp.getContacto());
-		}
+	public List<Laboral> getListDatosLaborales() {		
+		this.listDatosLaborales = (this.getContactoExp() != null) ? service.getListLaboralByTipo(new Integer(13), this.getContactoExp()) : this.listDatosLaborales;
+		
 		return this.listDatosLaborales;
 	}
 
@@ -783,26 +715,6 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.evalIdByArchivoExp = evalIdByArchivoExp;
 	}
 
-	public Map<Integer, Mantenedor> getCatalogoEstadosSolicitud() {		
-		//Llenando el catalogo de Estados Solicitudes
-		Integer tipoEstadoSolicitud;
-		tipoEstadoSolicitud = Integer.valueOf(this.solicitudExp.getTipomantenedorestado());
-		
-		List<Mantenedor> listaEstadosSol = service.getMantenedoresByTipo(tipoEstadoSolicitud);
-		
-		this.catalogoEstadosSolicitud = new HashMap<Integer, Mantenedor>();
-		
-		for (Mantenedor dato : listaEstadosSol) {
-			this.catalogoEstadosSolicitud.put(dato.getId(), dato);						
-		}
-		return catalogoEstadosSolicitud;
-	}
-
-	public void setCatalogoEstadosSolicitud(
-			Map<Integer, Mantenedor> catalogoEstadosSolicitud) {
-		this.catalogoEstadosSolicitud = catalogoEstadosSolicitud;
-	}
-
 	@PostConstruct
 	private void initBean(){        
 		List<Mantenedor> listaCatalogo = service.getMantenedoresByTipo(new Integer(5));		
@@ -811,51 +723,39 @@ public class ExpedienteManagedBean implements Serializable  {
 			this.listTipoDatosLaborales.add(new SelectItem(dato.getId(), dato.getValor()));			
 		}	
 		
-		//Obtiene el catalogo de Estados Evaluacion
-		listaCatalogo = service.getMantenedoresByTipo(new Integer(9));		
-		for (Mantenedor dato : listaCatalogo) {
-			this.catalogoEstadosEvaluacion.put(dato.getId(), dato);	
+		//Obtiene el catalogo de los Departamentos					
+		listDeptos = new ArrayList<SelectItem> ();
+		listDeptos.add(new SelectItem(null, "Seleccione un Departamento"));
+		
+		if (util.getCatalogoDepartamentos().size() > 0 ) {			
+			List<Departamento> listaDeptos = new ArrayList<Departamento> (util.getCatalogoDepartamentos().values());
 			
+			for (Departamento dpto : listaDeptos) 
+				this.listDeptos.add(new SelectItem(dpto.getDpto_id(), dpto.getDpto_nombre()));		       
 		}
-		
-		listaCatalogo = service.getMantenedoresByTipo(new Integer(8));
-		listEstadosPortafolio = new ArrayList<SelectItem> ();
-		for (Mantenedor dato : listaCatalogo) {
-			this.catalogoEstadosPortafolio.put(dato.getId(), dato);
-			this.listEstadosPortafolio.add(new SelectItem(dato.getId(), dato.getValor()));
-		}
-		
-		this.catalogoDepartamento = service.getDepartamentosByInatec();
-		
-		List<Pais> paises = service.getPaises();
+			
+		//Obtiene el catalogo de los Paises
+		List<Pais> paises = new ArrayList<Pais>(this.util.getCatalogoPaises().values()); //service.getPaises();
 		this.listPaises = new ArrayList<SelectItem> ();
-		this.listPaises.add(new SelectItem(null, "Seleccion un pais"));
+		this.listNacionalidades = new ArrayList<SelectItem> ();
+		this.listPaises.add(new SelectItem(null, "Seleccione un pais"));
+		this.listNacionalidades.add(new SelectItem(null, "Indique la nacionalidad"));
 		for (Pais p : paises){
 			this.listPaises.add(new SelectItem(p.getId(), p.getNombre()));
+			this.listNacionalidades.add(new SelectItem(p.getId(), p.getNacionalidad()));
 		}
 		
-		listGenero = new ArrayList<SelectItem> ();
-		
+		//Genero
+		listGenero = new ArrayList<SelectItem> ();		
 		listGenero.add(new SelectItem(null, "Indique el Genero"));
 		
-		List<Mantenedor> listaGenero = new ArrayList<Mantenedor> ();
-		listaGenero = service.getMantenedoresByTipo(new Integer(10));
+		List<Mantenedor> listaGenero = new ArrayList<Mantenedor> (this.util.getCatalogoGenero().values());		
 		for (Mantenedor dato : listaGenero){
 			listGenero.add(new SelectItem(dato.getId(), dato.getValor()));
 		}		
 		
 		archivoExp = new Archivo();
-		
-		//Inicializa el Contacto por el Usuario
-		
-		Usuario userName = null;
-		
-		userName = service.getUsuarioLocal(util.getUsuario());
-		if (userName.getContacto() != null)
-			this.setContactoExp(userName.getContacto());
-		
-		
-				
+					
 				
 	}
 	
@@ -864,30 +764,33 @@ public class ExpedienteManagedBean implements Serializable  {
 		
 		Solicitud  solicitud = (Solicitud)FacesUtil.getParametroSession("dbSolicitudesBean");
 						
-		if (solicitud != null){		
-						
+		if (solicitud == null){
+			//Inicializa el Contacto por el Usuario
+			this.solicitudExp = null;
+			Usuario userName = null;
+			
+			userName = service.getUsuarioLocal(util.getUsuario());
+			if (userName.getContacto() != null)
+				this.setContactoExp(userName.getContacto());		
+		} else{
 			this.solicitudExp = solicitud;
-			
-						
 			this.contactoExp = this.solicitudExp.getContacto();
-			if (this.contactoExp.getMunicipioId() != null){
-				this.municipioIdSelected = String.valueOf(this.contactoExp.getMunicipioId());				
-			} else
-				this.municipioIdSelected = null;
-			
-			if (this.contactoExp.getDepartamentoId() != null){
-				this.departamentoIdSelected = this.contactoExp.getDepartamentoId();
-				handleMunicipios();
-			} else{
-				this.departamentoIdSelected = null;
-				
-				this.listMunicipioByDptos = new ArrayList<SelectItem>();
-				this.listMunicipioByDptos.add(new SelectItem(null, "Seleccion un Municipio"));
-			}
-						
-		}		
+		}
 		
-		//((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("dbSolicitudesBean",null);
+		if (this.contactoExp.getMunicipioId() != null){
+			this.municipioIdSelected = String.valueOf(this.contactoExp.getMunicipioId());				
+		} else
+			this.municipioIdSelected = null;
+			
+		if (this.contactoExp.getDepartamentoId() != null){
+			this.departamentoIdSelected = this.contactoExp.getDepartamentoId();
+			handleMunicipios();
+		} else{
+			this.departamentoIdSelected = null;				
+			this.listMunicipioByDptos = new ArrayList<SelectItem>();
+			this.listMunicipioByDptos.add(new SelectItem(null, "Seleccion un Municipio"));
+		}
+		
 	}
 	
 	public List<BeanEvaluacion> getListadoEvaluacionesByParam(Solicitud sol, boolean todos) {
@@ -900,7 +803,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		String     unidadDescripcion = "";
 		for (Evaluacion e : listEval) {
 			
-			estadoEval = catalogoEstadosEvaluacion.get(e.getEstado().getId());
+			estadoEval = this.util.getCatalogoEstadosEvaluacion().get(e.getEstado().getId());
 			
 			unidadDescripcion = this.util.getCompetenciaDescripcion(e.getUnidad());
 			List<Instrumento> listInstrumento = service.getIntrumentoByEvaluacion(e.getId());
@@ -939,7 +842,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.municipioIdSelected = "1";
 		
 		if (this.contactoExp == null)
-			cExp = this.getSolicitudExp().getContacto();
+			cExp = (this.getSolicitudExp().getContacto() != null ) ? this.getSolicitudExp().getContacto() : null;
 		else
 			cExp = this.contactoExp;
 		
@@ -1012,55 +915,60 @@ public class ExpedienteManagedBean implements Serializable  {
 	}	
 	
 	public void solicitarCertificacion (){
+		Integer    proxEstado = null;
+		Mantenedor estadoActual = null;		 		
+		Mantenedor proximoEstado = null;
 		
-		//Integer estadoActual = new Integer(this.getSolicitudExp().getEstatus().getId());
-		Mantenedor estadoActual = this.getSolicitudExp().getEstatus();
-		Integer proxEstado = Integer.valueOf(estadoActual.getProximo()); //this.catalogoEstadosSolicitud.get(estadoActual).getProximo();
-		
-		Mantenedor proximoEstado = this.getCatalogoEstadosSolicitud().get(proxEstado);
-		
-		if (proxEstado != null)
-			this.solicitudExp.setEstatus(proximoEstado);		
-		
-		Solicitud sol = (Solicitud) service.guardar(this.solicitudExp);
-		
-		if (sol != null){
-			this.setSolicitudExp(sol);
-			// habilita y desabilita los botones
-			enabledDisableButton(1);
-			enabledDisableButton(3);
-			enabledDisableButton(4);
+		if (this.getSolicitudExp() != null){
 			
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "La solicitud a sido registrada exitosamente !!"));
-		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje: ", "Error al registrar la solicitud. Favor revisar..."));
-		}
-		
+			estadoActual = this.getSolicitudExp().getEstatus();
+			proxEstado = Integer.valueOf(estadoActual.getProximo()); 
+			
+			if (proxEstado != null){
+				proximoEstado = this.util.getCatalogoEstadoSolicitud().get(proxEstado);
+				this.solicitudExp.setEstatus(proximoEstado);		
+			
+				Solicitud sol = (Solicitud) service.guardar(this.solicitudExp);
+			
+				if (sol != null){
+					this.setSolicitudExp(sol);
+					// habilita y desabilita los botones
+					enabledDisableButton(1);
+					enabledDisableButton(3);
+					enabledDisableButton(4);
+					
+					FacesUtil.getMensaje("SCCL - Mensaje: ", "La solicitud a sido registrada exitosamente !!", false);					
+				} else {
+					FacesUtil.getMensaje("SCCL - Mensaje: ", "Error al registrar la solicitud. Favor revisar...", true);					
+				}
+			}
+		}		
 		
 	}
 				
 	public void actualizarContacto() {
-		System.out.println("correo " + solicitudExp.getContacto().getCorreo1());
-		
-		if (solicitudExp.getContacto().getDireccionActual() == null) {
-			solicitudExp.getContacto().setDireccionActual("");			
+		if (this.getContactoExp() != null){
+			if (this.getContactoExp().getDireccionActual() == null) {
+				this.getContactoExp().setDireccionActual("");			
+			}
+			if (this.getContactoExp().getCorreo1() == null) {
+				this.getContactoExp().setCorreo1("");			
+			}		
+			if (this.getContactoExp().getTelefono1() == null) {
+				this.getContactoExp().setTelefono1("");			
+			}
+			if (this.getContactoExp().getTelefono2() == null) {
+				this.getContactoExp().setTelefono2("");			
+			}
+			
+			Contacto contacto = (Contacto)service.guardar(this.getContactoExp());
+			
+			if (contacto != null)
+				FacesUtil.getMensaje("SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!", false);				
+			else
+				FacesUtil.getMensaje("SCCL - Mensaje: ", "Error al actualizar los datos del contacto...", true);					
 		}
-		if (solicitudExp.getContacto().getCorreo1() == null) {
-			solicitudExp.getContacto().setCorreo1("");			
-		}		
-		if (solicitudExp.getContacto().getTelefono1() == null) {
-			solicitudExp.getContacto().setTelefono1("");			
-		}
-		if (solicitudExp.getContacto().getTelefono2() == null) {
-			solicitudExp.getContacto().setTelefono2("");			
-		}
 		
-		Contacto contactoExp = (Contacto)service.guardar(solicitudExp.getContacto());
-		
-		if (contactoExp != null)
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!"));
-		else
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje: ", "Error al actualizar los datos del contacto..."));
 	      
 	}
 
@@ -1075,15 +983,10 @@ public class ExpedienteManagedBean implements Serializable  {
 				
 		nombreCargoLaboral = this.nombreCargo.toUpperCase() + " /  " + this.nombreInstitucion.toUpperCase();
 		
-		if (this.idSeletedLaboral == null) {
-			
-			if (this.paisIdLaboral != null){
-				Object [] objs =  new Object [] {this.paisIdLaboral};
-				paisInstitucion = service.getPaisByNQParam("Pais.findById", objs);
-			} 
-				
-						
-			this.selectedLaboral = new Laboral (this.solicitudExp.getContacto(), // contacto, 
+		if (this.idSeletedLaboral == null) {			
+			paisInstitucion = (this.paisIdLaboral != null) ? this.util.getCatalogoPaises().get(this.paisIdLaboral) : null;				
+									
+			this.selectedLaboral = new Laboral (this.getContactoExp(), // contacto, 
 									   this.tipoLaboral, // tipo, 
 									   nombreCargoLaboral.toUpperCase(), // nombre,
 									   this.descripcionCargo, // descripcion, 
@@ -1112,12 +1015,11 @@ public class ExpedienteManagedBean implements Serializable  {
 		}
 		this.selectedLaboral = (Laboral)service.guardar(this.selectedLaboral);
 		
-		if (this.selectedLaboral != null) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!"));			
-		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje: ", "Se genero un error al grabar los datos laborales / academicos. Favor revisar..."));
-		}
-		
+		if (this.selectedLaboral != null) 
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!", false);						
+		else 
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "Se genero un error al grabar los datos laborales / academicos. Favor revisar...", true);			
+				
 		enabledDisableButton(2);		
 	}
 	
@@ -1289,7 +1191,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		Integer  proxEstado = Integer.valueOf(estadoArchivo.getProximo());
 		
 		if (proxEstado != null){
-			archivoExp.setEstado(this.catalogoEstadosPortafolio.get(proxEstado));
+			archivoExp.setEstado(this.util.getCatalogoPortafolio().get(proxEstado));
 		}
 				
 		archivoExp = (Archivo) service.guardar(archivoExp);
@@ -1425,7 +1327,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		String       textMsg = "";
 		String       titulo = "";
 		
-		Contacto solicitante = this.solicitudExp.getContacto();
+		Contacto solicitante = this.getContactoExp();
 		
 		if (this.isIndicaCVFull()) {
 			this.setDisableSolicitarCertificacion(false);		

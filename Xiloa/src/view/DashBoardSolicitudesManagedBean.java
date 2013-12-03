@@ -15,10 +15,13 @@ import javax.faces.model.SelectItem;
 import model.Certificacion;
 import model.Contacto;
 import model.Evaluacion;
+import model.Instrumento;
 import model.Laboral;
 import model.Mantenedor;
 import model.Solicitud;
 
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -28,7 +31,7 @@ import support.Ifp;
 import support.FacesUtil;
 
 @Component
-@Scope(value="request")
+@Scope(value="view")
 public class DashBoardSolicitudesManagedBean implements Serializable {
 	
 	/**
@@ -75,6 +78,8 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	
 	private Mantenedor estadoInicialSolicitud;
 	
+	private boolean disableEnviarSolicitud;
+	
 			
 	public DashBoardSolicitudesManagedBean() {
 		
@@ -92,10 +97,22 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		selectedIdCertByCentro = null;	
 		
 		selectedBuscarByAll = null;	
+		
+		disableEnviarSolicitud = true;
 					
 	}	
 
 	
+	public boolean isDisableEnviarSolicitud() {
+		return disableEnviarSolicitud;
+	}
+
+
+	public void setDisableEnviarSolicitud(boolean disableEnviarSolicitud) {
+		this.disableEnviarSolicitud = disableEnviarSolicitud;
+	}
+
+
 	public Mantenedor getEstadoInicialSolicitud() {
 		return estadoInicialSolicitud;
 	}
@@ -517,7 +534,8 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 				}
 			}
 			
-		}
+		} else
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe seleccionar una solicitud.", true);
 		
 		
 	}
@@ -569,6 +587,22 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		return isValido;
 		
 	}
+	
+	public void onRowSelectDtSolicitudes(SelectEvent event) {
+		this.setSelectedSolicitud((Solicitud) event.getObject());
+		
+		Mantenedor estadoActual = this.getSelectedSolicitud().getEstatus();
+		
+		if (estadoActual.getId() == this.getEstadoInicialSolicitud().getId())
+			this.setDisableEnviarSolicitud(false);
+		else
+			this.setDisableEnviarSolicitud(true);
+		
+    }
+  
+    public void onRowUnSelectDtSolicitudes(UnselectEvent event) {
+    	this.setDisableEnviarSolicitud(true);
+    }
 		
 	
 }

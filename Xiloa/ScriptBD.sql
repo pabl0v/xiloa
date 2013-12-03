@@ -205,7 +205,15 @@ union
 select 1624,41,0,'ROLE_RIGHT_VER_PORTAFOLIO','solicitudes/registro_solicitud.xhtml','Ver portafolio',1,NOW()
 union
 select 1625,41,0,'ROLE_RIGHT_MENU_REPORTES','planificacion/reportes.xhtml','Reportes',1,NOW()
+union
+select 1626,41,0,'ROLE_RIGHT_MENU_PARTICIPANTE','solicitudes/expediente.xhtml','Participante',1,NOW()
+union
+select 1627,41,0,'ROLE_RIGHT_EDITA_EXPEDIENTE','solicitudes/expediente_evaluacion.xhtml','Edita Expediente',1,NOW()
+union
+select 1628,41,0,'ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO','solicitudes/expediente.xhtml','Expediente',1,NOW()
+union
+select 1629,41,0,'ROLE_RIGHT_EDITA_SEGUIMIENTO','solicitudes/convocatoria.xhtml','Seguimiento',1,NOW()
 
-update admon.roles set opciones='1610,1611,1612,1613,1614,1615,1616,1617,1618,1619,1620,1621,1622,1623,1624,1625' where id_rol=215
-update admon.roles set opciones='1610,1611,1612,1613,1614,1615,1616,1617,1618,1619,1620,1621,1622,1623,1624,1625' where id_rol=218
-update admon.roles set opciones='1610,1611,1612,1613,1614,1615,1616,1617,1618,1619,1620,1621,1622,1623,1624,1625' where id_rol=217
+update admon.roles set opciones='1610,1611,1612,1613,1614,1615,1616,1617,1618,1619,1620,1621,1622,1623,1624,1625,1627,1628,1629' where id_rol=215
+update admon.roles set opciones='1610,1611,1612,1613,1614,1615,1616,1617,1618,1619,1620,1621,1622,1623,1624,1625,1627,1628,1629' where id_rol=218
+update admon.roles set opciones='1610,1611,1612,1613,1614,1615,1616,1617,1618,1619,1620,1621,1622,1623,1624,1625,1625' where id_rol=217

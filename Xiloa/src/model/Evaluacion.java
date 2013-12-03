@@ -64,13 +64,14 @@ public class Evaluacion implements Serializable {
 	@Column(name = "evaluacion_observaciones", nullable = false)
 	private String observaciones;
 			
-	@NotNull
-	@Column(name = "evaluacion_aprobado", nullable = false)
+	@Column(name = "evaluacion_aprobado", nullable = true)
 	private boolean aprobado;
 	
-	@Column(name = "evaluacion_estado", nullable=false)
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name="evaluacion_estado", nullable=false)	
 	private Mantenedor estado;
-
+	
 	public Mantenedor getEstado() {
 		return estado;
 	}

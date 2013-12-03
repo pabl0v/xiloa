@@ -21,7 +21,7 @@
 			<sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_SOLICITUDES">
             	<div id="boton_solicitudes" onclick="window.location='/Xiloa/modulos/solicitudes/solicitudes.xhtml';" class="botones_navegacion"><p class="icono_flechas">Solicitudes</p></div>
             </sec:authorize>
-            <sec:authorize ifAnyGranted="visitante">
+            <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_PARTICIPANTE">
             	<div id="boton_participante" onclick="window.location='/Xiloa/modulos/solicitudes/expediente.xhtml';" class="botones_navegacion"><p class="icono_flechas">Participante</p></div>
             </sec:authorize>
             <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_EJECUCUIONES">

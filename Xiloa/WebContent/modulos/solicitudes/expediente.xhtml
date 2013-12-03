@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags" >
     <h:head>
        <link type="text/css" rel="stylesheet" href="../../resources/css/expediente.css"></link>
     </h:head>
@@ -18,40 +19,52 @@
 		</div>
 		<h:form id="formExpediente" enctype="multipart/form-data" >
     	<h2 style="display:inline-block;">Expediente Participante</h2>    		
-    		
-    		<p:commandButton id="enviarSolicitud" value="Enviar Solicitud" title="Solicitar Certificacion" 
-    		                 icon="ui-icon-star" style="display:inline-block;"
-    		                 actionListener="#{expedienteManagedBean.solicitarCertificacion}" 
-    					     update=":formExpediente:msgExpediente"    					        					       
-             				/>    		
+    		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO"> 
+    			<p:commandButton id="enviarSolicitud" value="Enviar Solicitud" title="Solicitar Certificacion" 
+	    		                 icon="ui-icon-star" style="display:inline-block;"
+	    		                 actionListener="#{expedienteManagedBean.solicitarCertificacion}" 
+	    					     update=":formExpediente:msgExpediente"    					        					       
+	             				/>
+	             				  
+	       		<h:outputLabel styleClass="estilo_label" for="certificacionNombre" value="Solicitud para evaluar:" />            
+	        	<h:outputText styleClass="estilo_span" id="certificacionNombre" value="#{expedienteManagedBean.solicitudExp.certificacion.nombre}" />
+            </sec:authorize>				  		
     	<div>
     		<p:messages id="msgExpediente" showDetail="true" autoUpdate="true" closable="true" />
-    	</div>
-    	
+    	</div>    	
     	<h3>Datos del solicitante/Candidato</h3>
     	<div id="seccion_datossolicitante" class="seccion_expediente" style="padding:10px;">   		 	  
     		<h:outputLabel styleClass="estilo_label" for="nombreCandidato" value="Nombre del candidato:" />
-    		<h:outputText styleClass="estilo_span" id="nombreCandidato" value="#{expedienteManagedBean.solicitudExp.contacto.nombreCompleto}" />            
+    		<h:outputText styleClass="estilo_span" id="nombreCandidato" value="#{expedienteManagedBean.contactoExp.nombreCompleto}" />            
             <h:outputLabel styleClass="estilo_label" for="numeroIdentificacion" value="Numero de identificacion:" />
-            <h:outputText styleClass="estilo_span" id="numeroIdentificacion" value="#{expedienteManagedBean.solicitudExp.contacto.numeroIdentificacion}" />            
-            <h:outputLabel styleClass="estilo_label" for="certificacionNombre" value="Solicitud para evaluar:" />            
-            <h:outputText styleClass="estilo_span" id="certificacionNombre" value="#{expedienteManagedBean.solicitudExp.certificacion.nombre}" />
+            <h:outputText styleClass="estilo_span" id="numeroIdentificacion" value="#{expedienteManagedBean.contactoExp.numeroIdentificacion}" />
+            <h:outputLabel styleClass="estilo_label" for="fechaNacimiento" value="Fecha de nacimiento:" />
+            <p:calendar value="#{expedienteManagedBean.contactoExp.fechaNacimiento}" pattern="dd/mm/yyyy" 
+                        id="fechaNacimiento" showOn="button">
+						<p:ajax event="dateSelect" update="growlFechaNacimiento" />
+			</p:calendar>				
+			<p:growl id="growlFechaNacimiento" showDetail="true"/>
             <h:outputLabel styleClass="estilo_label" for="genero" value="Genero:" />  
-            <p:selectOneMenu id="genero" styleClass="selectores selector_genero" value="#{expedienteManagedBean.solicitudExp.contacto.sexo}" >                 
+            <p:selectOneMenu id="genero" styleClass="selectores selector_genero" value="#{expedienteManagedBean.contactoExp.sexo}" >                 
 	       		 <f:selectItems value="#{expedienteManagedBean.listGenero}"/>  			                         
 			</p:selectOneMenu>
-            <!--  <p:inputText id="genero" value="#{expedienteManagedBean.solicitudExp.contacto.sexo}" /> -->            
             <h:outputLabel styleClass="estilo_label" for="telefono" value="Telefono:" />  
-            <p:inputText id="telefono" value="#{expedienteManagedBean.solicitudExp.contacto.telefono1}" />
+            <p:inputText id="telefono" value="#{expedienteManagedBean.contactoExp.telefono1}" />
             <h:outputLabel styleClass="estilo_label" for="celular" value="Celular:" />  
-            <p:inputText id="celular" value="#{expedienteManagedBean.solicitudExp.contacto.telefono2}" />
+            <p:inputText id="celular" value="#{expedienteManagedBean.contactoExp.telefono2}" />
             <h:outputLabel styleClass="estilo_label" for="email1" value="Correo electronico:" />  
-            <p:inputText id="email1" value="#{expedienteManagedBean.solicitudExp.contacto.correo1}" />
+            <p:inputText id="email1" value="#{expedienteManagedBean.contactoExp.correo1}" />
             <h:outputLabel styleClass="estilo_label" for="direccionActual" value="Direccion actual:" />  
-            <p:inputText id="direccionActual" value="#{expedienteManagedBean.solicitudExp.contacto.direccionActual}" />
+            <p:inputText id="direccionActual" value="#{expedienteManagedBean.contactoExp.direccionActual}" />
+            <h:outputLabel styleClass="estilo_label" for="selector_nacionalidad" value="Nacionalidad:" />          	     
+          	<p:selectOneMenu id="selector_nacionalidad" styleClass="selector_status_estilo"
+            				 value="#{expedienteManagedBean.contactoExp.nacionalidadId}"                              
+                             style="position: relative;top: 7px;margin-right: 5px;">
+	       		  <f:selectItems value="#{expedienteManagedBean.listNacionalidades}"/>	       		   	       		  		  	       		  			                         
+			</p:selectOneMenu>                 
             <h:outputLabel styleClass="estilo_label" for="selector_departamento" value="Departamento:" />
             <p:selectOneMenu id="selector_departamento" styleClass="selector_status_estilo" 
-                             value="#{expedienteManagedBean.solicitudExp.contacto.departamentoId}"                                                        
+                             value="#{expedienteManagedBean.contactoExp.departamentoId}"                                                        
                              style="position: relative;top: 7px;margin-right: 5px;" >
 				  <p:ajax listener="#{expedienteManagedBean.handleMunicipios}"
 				          update=":formExpediente:selector_municipio" />
@@ -59,7 +72,7 @@
 			</p:selectOneMenu>			    
             <h:outputLabel styleClass="estilo_label" for="selector_municipio" value="Municipio:" />          	     
           	<p:selectOneMenu id="selector_municipio" styleClass="selector_status_estilo"
-            				 value="#{expedienteManagedBean.solicitudExp.contacto.municipioId}"                              
+            				 value="#{expedienteManagedBean.contactoExp.municipioId}"                              
                              style="position: relative;top: 7px;margin-right: 5px;">
 	       		  <f:selectItems value="#{expedienteManagedBean.listMunicipioByDptos}"/>	       		   	       		  		  	       		  			                         
 			</p:selectOneMenu>     	
@@ -69,6 +82,16 @@
                              action="#{expedienteManagedBean.actualizarContacto}" />          
     	</div>    	
     	<div class="barra_azul">  
+    		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO">  
+	    		<div>  
+		    		<h:outputLabel styleClass="estilo_label" value="Estatus actual:" />
+		    		#{expEvalManagedBean.estadoActual.valor}	           	
+		        </div>
+		        <div>	        
+	            	<h:outputLabel styleClass="estilo_label" value="Siguiente Estatus:" />
+	            	  #{expEvalManagedBean.estadoSiguiente.valor}           		
+	           	</div>   
+           	</sec:authorize>
     		<p style="padding: 7px;font-weight:bold;">Trayectoria profesional y academica:</p>    		
            	<div>
            		<p:commandButton id="btnAgregaLaborales" disabled="#{expedienteManagedBean.disabledBtnAgregaLaborales}"
@@ -268,7 +291,7 @@
 	            	<p>Tipo Archivo:</p>
 	                <p:selectOneMenu id="tipoArchivo" value="#{expedienteManagedBean.tipoArchivoExp}">  
                 		<f:selectItem itemLabel="Formato PDF" itemValue="PDF" />
-                		<f:selectItem itemLabel="Imagen jpeg" itemValue="JPEG" />
+                		<f:selectItem itemLabel="Imagen jpeg |gif |png" itemValue="JPEG" />
             		</p:selectOneMenu>             
 					<p>Version:</p>	                  
 	            	<p:inputText id="versionArchivo" value="#{expedienteManagedBean.versionArchivoExp}" />	            	           	 

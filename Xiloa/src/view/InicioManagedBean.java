@@ -21,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import service.IService;
+import support.FacesUtil;
 import support.UsuarioExterno;
 
 @Component
@@ -83,9 +84,9 @@ public class InicioManagedBean implements Serializable {
 		Usuario u = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
 		
 		//Asigna valores que indican el Centro y la Certificacion que quieren aplicar
-		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("CertificacionSeleccionada",this.selectedCertificacion);
-		((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("UsuarioAplica",u);
-		
+		FacesUtil.setParamBySession("CertificacionSeleccionada", this.selectedCertificacion);
+		FacesUtil.setParamBySession("UsuarioAplica", u);	
+				
 		//Validando que no existan solicitudes Activas del usuario conectado
 		Contacto contacto = u.getContacto();
 		

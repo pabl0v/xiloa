@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -28,8 +29,21 @@ public class EvaluacionGuia implements Serializable {
 	
 	@EmbeddedId
 	private EvaluacionGuiaId pk;
+	
+	@Column(name = "puntaje", nullable = true)	
 	private Integer puntaje;
 	
+	@Column(name = "aprobado", nullable = true)	
+	private boolean aprobado;
+	
+	public boolean isAprobado() {
+		return aprobado;
+	}
+
+	public void setAprobado(boolean aprobado) {
+		this.aprobado = aprobado;
+	}
+
 	public EvaluacionGuiaId getPk() {
 		return pk;
 	}
