@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ import model.Certificacion;
 import model.Contacto;
 import model.Evaluacion;
 import model.EvaluacionGuia;
+import model.EvaluacionGuiaId;
 import model.Guia;
 import model.Instrumento;
 import model.Laboral;
@@ -759,5 +761,72 @@ public class ServiceImp implements IService {
 			return contacto;
 		else
 			return 	contactoDao.findOneByNamedQueryParam("Contacto.findByLogin", new Object[] {login});
+	}
+	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public Evaluacion guardarEvaluacion(Evaluacion eval, Guia [] guias) {		
+		Evaluacion evaluacion = null;
+		Integer    puntajeGuia = new Integer (0);
+		Set<EvaluacionGuia> setEvalGuia = null;
+		
+		//Se registra nueva evaluacion
+		if (eval != null){				
+			evaluacion = evaluacionDao.save(eval);
+				
+			if (evaluacion != null) {
+				setEvalGuia = new HashSet<EvaluacionGuia> ();
+					
+				for (Guia g : guias) {
+													
+					EvaluacionGuiaId pkDetalleGuia = new EvaluacionGuiaId();
+					
+					pkDetalleGuia.setEvaluacion(evaluacion);
+					pkDetalleGuia.setGuia(g);
+					
+					EvaluacionGuia detalleEvaGuia = new EvaluacionGuia();
+					
+					detalleEvaGuia.setPk(pkDetalleGuia);
+					detalleEvaGuia.setPuntaje(puntajeGuia);		
+					detalleEvaGuia.setAprobado(false);
+					
+					detalleEvaGuia = evaluacionGuiaDao.save(detalleEvaGuia);						
+					
+					setEvalGuia.add(detalleEvaGuia);
+				}
+			}			
+				
+		}
+		return evaluacion;		
+	}
+	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public EvaluacionGuia updateEvaluacionGuia(EvaluacionGuia evalGuia){				
+		Integer   			 sumaPuntaje = new Integer(0);
+		Evaluacion 			 evaluacion = null;
+		List<EvaluacionGuia> listaEvalGuia = null;
+		EvaluacionGuia       detalleEvaluacion = null;
+				
+		if (evalGuia != null) {			
+			detalleEvaluacion = evaluacionGuiaDao.save(evalGuia);
+			
+			if (detalleEvaluacion != null){
+				evaluacion = detalleEvaluacion.getPk().getEvaluacion();
+				
+				listaEvalGuia = this.getEvaluacionGuiaByEvaluacionId(evaluacion.getId());
+				
+				for (EvaluacionGuia eG : listaEvalGuia) {
+					sumaPuntaje += (eG.getPuntaje() == null) ? 0 : eG.getPuntaje();
+				}
+				
+				evaluacion.setPuntaje(sumaPuntaje);
+				
+				evaluacion = evaluacionDao.save(evaluacion);
+						
+			}
+		}
+		
+		return detalleEvaluacion;
 	}
 }

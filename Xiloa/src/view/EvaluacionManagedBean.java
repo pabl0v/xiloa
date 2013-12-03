@@ -484,38 +484,13 @@ public class EvaluacionManagedBean implements Serializable {
 			
 			eval.setEstado(service.getMantenedorMinByTipo(estadoTipo));			
 			
-			eval = (Evaluacion) service.guardar(eval);
+			eval = service.guardarEvaluacion(eval, this.selectedGuia);					
 			
 			if (eval != null) {
-				this.disableAgregaGuias = false;
-				this.selectedEvaluacion = eval;
-				
-				Set<EvaluacionGuia> setEvalGuia = new HashSet<EvaluacionGuia> ();
-				
-				for (Guia dato : this.selectedGuia) {
-													
-					EvaluacionGuiaId pkDetalleGuia = new EvaluacionGuiaId();
-					
-					pkDetalleGuia.setEvaluacion(this.selectedEvaluacion);
-					pkDetalleGuia.setGuia(dato);
-					
-					EvaluacionGuia detalleEvaGuia = new EvaluacionGuia();
-					
-					detalleEvaGuia.setPk(pkDetalleGuia);
-					detalleEvaGuia.setPuntaje(new Integer(0));				
-					
-					detalleEvaGuia = (EvaluacionGuia) service.guardar(detalleEvaGuia);
-					
-					if (detalleEvaGuia == null){
-						isError = true;
-						mensaje = "Error al registrar el detalle de la evaluacion. Favor revisar...";
-					}else
-						setEvalGuia.add(detalleEvaGuia);
-				}
+				this.selectedEvaluacion = eval;							
 				mensaje = "La evaluacion ha sido registrada exitosamente.";
 			} else {
-				isError = true;
-				this.disableAgregaGuias = true;
+				isError = true;				
 				mensaje = "Error al grabar la evaluacion. Favor revisar...";
 			}			
 			
@@ -525,19 +500,16 @@ public class EvaluacionManagedBean implements Serializable {
 			
 			eval = selectedEvaluacion;
 			estadoEval = eval.getEstado();
+			Integer  puntajeEvaluacion = eval.getPuntaje();
 			
 			if (this.aprobado == true){
-				if (this.puntajeEval == null){
-					isError = true;
-					mensaje = "Debe indicar el puntaje a nivel de la evaluacion";
-				} else if (this.puntajeEval == 0){
+				if (puntajeEvaluacion == 0){
 					isError = true;
 					mensaje = "Error, el puntaje a nivel de la evaluacion es cero y se indica que esta APROBADO. Favor revisar...";
-				} else if (this.puntajeEval < this.puntajeMinEval){
+				} else if (puntajeEvaluacion < this.puntajeMinEval){
 					isError = true;
 					mensaje = "Error, el puntaje a nivel de la evaluacion es menor al puntaje minimo configurado al instrumento. Favor revisar...";
 				} else {
-					eval.setPuntaje(this.puntajeEval);
 					
 					if (estadoEval.getProximo() != null){
 						sigEstado = service.getMantenedorById(Integer.valueOf(estadoEval.getProximo()));
@@ -572,21 +544,13 @@ public class EvaluacionManagedBean implements Serializable {
 	public void saveEvalGuia(){
 		this.selectedEvaluacionGuia = (this.selectedEvaluacionGuia == null) ? (EvaluacionGuia) FacesUtil.getParametroSession("selectedEvaluacionGuia") : this.selectedEvaluacionGuia;
 		FacesUtil.setParamBySession("selectedEvaluacionGuia", null);
-		Integer   sumaPuntaje = new Integer(0);
+		
 		if (this.selectedEvaluacionGuia != null) {			
 			this.selectedEvaluacionGuia.setPuntaje(this.puntajeGuia);
 			this.selectedEvaluacionGuia.setAprobado(this.aprobadoGuia);
 						
-			this.selectedEvaluacionGuia = (EvaluacionGuia) service.guardar(this.selectedEvaluacionGuia);
+			this.selectedEvaluacionGuia = service.updateEvaluacionGuia(this.selectedEvaluacionGuia);							
 			
-			if (this.selectedEvaluacionGuia != null){
-				for (EvaluacionGuia eG : listaEvaluacionGuia) {
-					sumaPuntaje += (eG.getPuntaje() == null) ? 0 : eG.getPuntaje();
-				}
-				
-				selectedEvaluacion.setPuntaje(sumaPuntaje);
-				selectedEvaluacion = (Evaluacion) service.guardar(selectedEvaluacion);
-			}
 		}
 		
 	}

@@ -125,4 +125,6 @@ public interface IService {
 	public List<Pais> getPaises ();
 	public Pais getPaisByNQParam(String namedString, Object [] param);
 	public boolean portafolioVerificado(Contacto contacto, String tipoEstadoPortafolio);
+	public Evaluacion guardarEvaluacion(Evaluacion eval, Guia [] guias);
+	public EvaluacionGuia updateEvaluacionGuia(EvaluacionGuia evalGuia);
 }
