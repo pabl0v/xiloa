@@ -383,25 +383,8 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 					break;
 				}
 				case 3: { //Pasa a Listo para Inscripcion					
-				
-					int contador = 0;
-					
-					if ((estadoSolicitud.getId() == Integer.valueOf(ultimoEstado.getAnterior()).intValue()) && (ultimoEstado.getAnterior() != null)){
-						List<Evaluacion> listaEval = service.getEvaluaciones(dato);
-						
-						if (listaEval.size() == 0)
-							contador += 1;
-						for (Evaluacion eval : listaEval){
-							if (eval.isAprobado() != true)
-								contador += 1;
-						}						
-					}else
-						contador += 1;
-						
-					if (contador == 0)
-						enlistar = true;
-					else
-						enlistar = false;
+					enlistar = service.validaListoInscripcion(dato);
+					break;
 				}
 				default:{
 					enlistar = true;

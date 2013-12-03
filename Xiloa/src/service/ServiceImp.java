@@ -830,4 +830,37 @@ public class ServiceImp implements IService {
 		
 		return detalleEvaluacion;
 	}
+	
+	@Override
+	public boolean validaListoInscripcion(Solicitud solicitud){
+		String     tipoMantenedor = null;
+		String     proximoEstado  = null;
+		boolean    pasa = true;
+		Mantenedor ultimoEstado = null;
+		Mantenedor estadoActual = null;
+		
+		tipoMantenedor = solicitud.getTipomantenedorestado();
+		estadoActual  = solicitud.getEstatus();
+		proximoEstado = estadoActual.getProximo();
+		
+		ultimoEstado = getMantenedorMaxByTipo(tipoMantenedor);
+			
+		if ( (proximoEstado != null) && (ultimoEstado != null) && (proximoEstado == ultimoEstado.getAnterior())){
+			List<Evaluacion> listaEval = getEvaluaciones(solicitud);
+			
+			if (listaEval.size() == 0)
+				pasa = false;
+			else {
+				for (Evaluacion eval : listaEval){
+					if (eval.isAprobado() != true){
+						pasa = false;
+						break;
+					}
+				}						
+			}
+		} else
+			pasa = false;		
+		
+		return pasa;
+	}
 }

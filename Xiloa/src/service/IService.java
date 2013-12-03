@@ -127,4 +127,5 @@ public interface IService {
 	public boolean portafolioVerificado(Contacto contacto, String tipoEstadoPortafolio);
 	public Evaluacion guardarEvaluacion(Evaluacion eval, Guia [] guias);
 	public EvaluacionGuia updateEvaluacionGuia(EvaluacionGuia evalGuia);
+	public boolean validaListoInscripcion(Solicitud solicitud);
 }
