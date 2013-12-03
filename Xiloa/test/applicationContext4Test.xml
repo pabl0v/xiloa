@@ -84,4 +84,6 @@
     <context:component-scan base-package="controller" />
     <context:component-scan base-package="view" />
     <context:component-scan base-package="security" />
+    <context:component-scan base-package="support" />
+    <context:component-scan base-package="audit" />
 </beans>
