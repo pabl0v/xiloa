@@ -19,39 +19,15 @@
 		</div>
         <div id="cabezera">
             <h2>Ejecuciones</h2>                  
-        </div>
-       <div id="contenedor_filtro">            
-	            <p style="margin-left:5px">Buscar:</p>
-	            <p:selectOneMenu styleClass="selectores" id="selector_buscarByAll" value="#{dashBoardSolicitudesManagedBean.selectedBuscarByAll}">
-	            	<f:selectItems value="#{dashBoardSolicitudesManagedBean.listBuscarByAll}"/>	            			        
-			    </p:selectOneMenu>
-		        <p:inputText style="margin-right:10px;" id="filtro_buscarByAll" value="#{dashBoardSolicitudesManagedBean.buscarByAllValue}">
-		        	<p:ajax event="keyup" update="" listener="#{dashBoardSolicitudesManagedBean.handleBuscar}" process="" />
-		        </p:inputText>
-		        <span style="display:inline-block;">
-					<p>Tipo de Atividad:</p>
-		            <p:selectOneMenu styleClass="selectores selector_centrosBySolicitudEstilo" id="selector_actividades" value="#{ejecucionesManagedBean.selectedTipoActividad}" >			        
-						<f:selectItem itemLabel="Todos los Tipos" itemValue="" />
-						<f:selectItems value="#{ejecucionesManagedBean.catalogoTiposActividad}" var="tipo" itemLabel="#{tipo.valor}" itemValue="#{tipo.id}" />
-				    </p:selectOneMenu>
-			    </span>
-			    <span style="display:inline-block; margin-left:5px">
-					<p>Competencia:</p>
-		            <p:selectOneMenu styleClass="selectores selector_certificacionByCentroEstilo" id="selector_certificacionByCentro" value="#{dashBoardSolicitudesManagedBean.selectedIdCertByCentro}" >			        
-				        <f:selectItems value="#{dashBoardSolicitudesManagedBean.listCertByCentro}" />
-				        <p:ajax update="" listener="#{dashBoardSolicitudesManagedBean.handleBuscar}" />  
-				    </p:selectOneMenu>	
-			    </span>		  
-        </div>             
-      
+        </div>      
         <div id="contenedor_tabla_ejecuciones" style="margin-top:10px;">
             <h:form id="form">  
-                <p:dataTable id="ejecuciones" widgetVar="ejecucionesTable" emptyMessage="No hay datos para mostrar" var="ejecucion" value="#{ejecucionesManagedBean.actividades}" selection="#{ejecucionesManagedBean.selectedActividad}" paginator="true" rows="12" rowKey="#{ejecucion.id}" selectionMode="single">
+                <p:dataTable id="ejecuciones" widgetVar="ejecucionesTable" emptyMessage="No hay datos para mostrar" var="ejecucion" value="#{ejecucionesManagedBean.actividades}" selection="#{ejecucionesManagedBean.selectedActividad}" paginator="true" rows="10" rowKey="#{ejecucion.id}" selectionMode="single">
                         <!--Las columnas de la tabla-->
-                        <p:column headerText="Certificación"><h:outputText value="#{ejecucion.certificacion.nombre}"/></p:column>                     
-                        <p:column headerText="Tipo Actividad"><h:outputText value="#{ejecucion.tipo.valor}" /></p:column>    
+                        <p:column filterBy="#{ejecucion.certificacion.nombre}" headerText="Certificación"><h:outputText value="#{ejecucion.certificacion.nombre}"/></p:column>
+                        <p:column filterBy="#{ejecucion.tipo.valor}" headerText="Tipo Actividad" footerText="extact" filterOptions="#{ejecucionesManagedBean.tiposActividad}" filterMatchMode="exact"><h:outputText value="#{ejecucion.tipo.valor}" /></p:column>    
                         <p:column headerText="Fecha programada"><h:outputText value="#{ejecucion.fechaInicial}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>                
-                        <p:column headerText="Estatus"><h:outputText value="#{ejecucion.estado.valor}" /></p:column>               
+                        <p:column filterBy="#{ejecucion.estado.valor}" headerText="Estatus" footerText="extact" filterOptions="#{ejecucionesManagedBean.estatusActividad}" filterMatchMode="exact"><h:outputText value="#{ejecucion.estado.valor}" /></p:column>
 						<p:column style="width:4%" rendered="#{sec:areAnyGranted('ROLE_RIGHT_AGREGAR_BITACORAS')}">
 							<p:commandButton id="editarButton" action="#{actividadManagedBean.ejecuciones(ejecucionesManagedBean.selectedActividad)}" icon="ui-icon-pencil" title="Editar">
 							</p:commandButton>

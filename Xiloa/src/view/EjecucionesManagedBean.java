@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.model.SelectItem;
 
 import model.Actividad;
 import model.Bitacora;
@@ -45,14 +46,14 @@ public class EjecucionesManagedBean implements Serializable {
 		super();
 		selectedActividad = new Actividad();
 		bitacora = new Bitacora();
-		actividades = new ArrayList<Actividad>();
+		actividades = new ArrayList<Actividad>(); 
 	}
 
 	@PostConstruct
 	private void init(){
 		actividades = service.getActividades(null);
 		catalogoTiposActividad = service.getMapMantenedoresByTipo("1");
-		catalogoEstatusActividad = service.getMapMantenedoresByTipo("4");
+		catalogoEstatusActividad = service.getMapMantenedoresByTipo("4");  
 	}
 
 	public void reset(){
@@ -94,7 +95,6 @@ public class EjecucionesManagedBean implements Serializable {
 	public void guardarBitacora(Bitacora bitacora) {
 		bitacora.setActividad(selectedActividad);
 		bitacora.setFechaRegistro(new Date());
-		//bitacora.setUsuario(service.getContactoByLogin("admin"));		//actualizar
 		bitacora.setUsuario((Contacto)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 		service.guardar(bitacora);
 		this.bitacora = new Bitacora();
@@ -102,6 +102,28 @@ public class EjecucionesManagedBean implements Serializable {
 	
 	public List<Mantenedor> getCatalogoTiposActividad() {
 		return new ArrayList<Mantenedor>(catalogoTiposActividad.values());
+	}
+	
+	public SelectItem[] getTiposActividad(){
+
+		List<Mantenedor> actividadesList = getCatalogoTiposActividad();
+		SelectItem opciones[] = new SelectItem[actividadesList.size() + 1];
+
+		opciones[0] = new SelectItem("", "Seleccione");
+		for(int i = 0; i<actividadesList.size(); i++)
+			opciones[i + 1] = new SelectItem(actividadesList.get(i).getValor(), actividadesList.get(i).getValor());
+		return opciones;
+	}
+	
+	public SelectItem[] getEstatusActividad(){
+
+		List<Mantenedor> estatusList = getCatalogoEstatusActividad();
+		SelectItem opciones[] = new SelectItem[catalogoEstatusActividad.size() + 1];
+
+		opciones[0] = new SelectItem("", "Seleccione");
+		for(int i = 0; i<estatusList.size(); i++)
+			opciones[i + 1] = new SelectItem(estatusList.get(i).getValor(), estatusList.get(i).getValor());
+		return opciones;
 	}
 
 	public Integer getSelectedTipoActividad() {

@@ -74,16 +74,16 @@
 		<h:panelGrid id="modal1" columns="2" cellpadding="4">
 		<h:form id="guiaDialogo">
 		  	<h:outputLabel styleClass="estilo_label" value="Pregunta:" />  
-            <p:inputText id="codigo1" value="#{instrumentoManagedBean.guia.pregunta}" />
+            <p:inputText id="codigo1" value="#{instrumentoManagedBean.guia.pregunta}" required="true" requiredMessage="La pregunta es requerida"/>
             <br/>	
             <h:outputLabel styleClass="estilo_label" value="Respuesta:" />
-            <p:inputText id="codigo2" value="#{instrumentoManagedBean.guia.respuesta}" />
+            <p:inputText id="codigo2" value="#{instrumentoManagedBean.guia.respuesta}" required="true" requiredMessage="La respuesta es requerida"/>
             <br/>	
             <h:outputLabel styleClass="estilo_label" value="Puntaje:" />
-            <p:inputText id="codigo3" value="#{instrumentoManagedBean.guia.puntaje}" />
+            <p:inputText id="codigo3" value="#{instrumentoManagedBean.guia.puntaje}" required="true" requiredMessage="El puntaje es requerido"/>
             <br/>
             <h:outputLabel styleClass="estilo_label" value="Activo:" />
-			<p:selectBooleanCheckbox value="#{instrumentoManagedBean.guia.estatus}" />
+			<p:selectBooleanCheckbox value="#{instrumentoManagedBean.guia.estatus}" required="true" requiredMessage="El estado es requerido"/>
 			<br/>	
 			<div class="contenedor_botones" style="margin-top:32px;">			
 	            <h:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/> 
@@ -114,18 +114,18 @@
             <p:selectBooleanCheckbox value="#{instrumentoManagedBean.instrumento.cualitativo}" />
             <br/> 
             <h:outputLabel styleClass="estilo_label" value="Codigo:" />
-            <p:inputText id="codigo4" value="#{instrumentoManagedBean.instrumento.codigo}" />
+            <p:inputText id="codigo4" value="#{instrumentoManagedBean.instrumento.codigo}" required="true" requiredMessage="El código es requerido" />
             <br/>
             <h:outputLabel styleClass="estilo_label" value="Nombre:" />
-			<p:inputText id="codigo5" value="#{instrumentoManagedBean.instrumento.nombre}" />
+			<p:inputText id="codigo5" value="#{instrumentoManagedBean.instrumento.nombre}" required="true" requiredMessage="El nombre es requerido" />
 			<br/>
             <h:outputLabel styleClass="estilo_label" value="Puntaje Mínimo:" />
-			<p:inputText id="codigo6" value="#{instrumentoManagedBean.instrumento.puntajeMinimo}" />
+			<p:inputText id="codigo6" value="#{instrumentoManagedBean.instrumento.puntajeMinimo}" required="true" requiredMessage="El puntaje mínimo es requerido" />
             <h:outputLabel styleClass="estilo_label" value="Puntaje Máximo:" />
-			<p:inputText id="codigo7" value="#{instrumentoManagedBean.instrumento.puntajeMaximo}" />
+			<p:inputText id="codigo7" value="#{instrumentoManagedBean.instrumento.puntajeMaximo}" required="true" requiredMessage="El puntaje máximo es requerido" />
 			<br/>
             <h:outputLabel styleClass="estilo_label" value="Activo:" />
-			<p:selectBooleanCheckbox value="#{instrumentoManagedBean.instrumento.estatus}" />
+			<p:selectBooleanCheckbox value="#{instrumentoManagedBean.instrumento.estatus}" required="true" requiredMessage="El estado es requerido" />
 			<br/>
 			<div class="contenedor_botones" style="margin-top:32px;">		
 	            <h:commandButton value="Cancelar" onclick="PF('dlg2').hide();"/> 
