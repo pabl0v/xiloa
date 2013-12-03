@@ -12,6 +12,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -25,12 +26,12 @@ public class JavaEmailSender {
 	private String msgSubject = new String();
 	private String msgText = new String();
 
-	private String USER_NAME;
-	private String PASSWORD;
-	private String FROM_ADDRESS;
-	private String HOST;
-	private String PORT;
-	private String RESPONSIBLE;
+	private String USER_NAME = null;
+	private String PASSWORD = null;
+	private String FROM_ADDRESS = null;
+	private String HOST = null;
+	private String PORT = null;
+	private String RESPONSIBLE = null;
 	
 	public JavaEmailSender(){
 		super();
@@ -38,12 +39,52 @@ public class JavaEmailSender {
 	
 	@PostConstruct
 	private void init(){
-		USER_NAME = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(32)}, String.class);
+		try
+		{
+			USER_NAME = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(32)}, String.class);
+		}
+		catch(EmptyResultDataAccessException e)
+		{
+			USER_NAME = null;
+		}
+
 		FROM_ADDRESS = USER_NAME;
-		PASSWORD = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(33)}, String.class);
-		HOST = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(34)}, String.class);
-		PORT = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(35)}, String.class);
-		RESPONSIBLE = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(36)}, String.class);
+
+		try
+		{		
+			PASSWORD = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(33)}, String.class);
+		}
+		catch(EmptyResultDataAccessException e)
+		{
+			PASSWORD = null;
+		}
+
+		try
+		{		
+			HOST = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(34)}, String.class);
+		}
+		catch(EmptyResultDataAccessException e)
+		{
+			HOST = null;
+		}
+
+		try
+		{		
+			PORT = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(35)}, String.class);
+		}
+		catch(EmptyResultDataAccessException e)
+		{
+			PORT = null;
+		}
+		
+		try
+		{
+			RESPONSIBLE = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(36)}, String.class);
+		}
+		catch(EmptyResultDataAccessException e)
+		{
+			RESPONSIBLE = null;
+		}
 	}
 	 
 	public synchronized void createAndSendEmail(String emailAddressTo, String msgSubject, String msgText) {
