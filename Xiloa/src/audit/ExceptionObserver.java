@@ -8,6 +8,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import support.JavaEmailSender;
@@ -16,6 +17,8 @@ import support.JavaEmailSender;
 @Component
 public class ExceptionObserver {
 	
+	@Autowired
+	private JavaEmailSender email;
 	private static Log logger = LogFactory.getLog(ExceptionObserver.class);
 
 	/*
@@ -24,15 +27,13 @@ public class ExceptionObserver {
 	
 	@AfterThrowing(pointcut = "execution(* service.*.*(..))", throwing = "e")
 	public void myAfterThrowing(JoinPoint joinPoint, Throwable e) {
-		
-		JavaEmailSender mail = new JavaEmailSender();
 
 		Signature signature = joinPoint.getSignature();
 		//String methodName = signature.getName();
 		String stuff = signature.toString();
 		String arguments = Arrays.toString(joinPoint.getArgs());
 		
-		mail.createAndSendEmail("dnchavez@hotmail.com", "SCCL - Excepción en tiempo de ejecución", "Clase: " + stuff + "\n\n Argumentos: " + arguments + "\n\n Mensaje de error: "+e.getMessage());
+		email.createAndSendEmailResponsible("SCCL - Excepción en tiempo de ejecución", "Clase: " + stuff + "\n\n Argumentos: " + arguments + "\n\n Mensaje de error: "+e.getMessage());
 		
 		logger.info("Se capturó una excepción en el método: "
 				+ stuff + " con los siguientes argumentos "

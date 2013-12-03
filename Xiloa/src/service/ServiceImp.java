@@ -101,6 +101,9 @@ public class ServiceImp implements IService {
 	@Autowired
 	private IDao<Pais> paisDao;
 	
+	@Autowired
+	private JavaEmailSender email;
+	
 	@Override
 	public List<Certificacion> getCertificaciones(){
 		return certificacionDao.findAllByNamedQuery("Certificacion.findAll");
@@ -596,7 +599,6 @@ public class ServiceImp implements IService {
 	public void registrarUsuarioExterno(UsuarioExterno usuario) {
 		
 		Usuario user = new Usuario();
-		JavaEmailSender emailSender =  new JavaEmailSender();
 		
 		//registrando el usuario
 		
@@ -641,14 +643,13 @@ public class ServiceImp implements IService {
 				null, 
 				null,  
 				null));
-		emailSender.createAndSendEmail(usuario.getEmail1(), "Creacion de cuenta...", "Su usuario y contraseña son: "+usuario.getUsuario()+"/"+password);
+		email.createAndSendEmail(usuario.getEmail1(), "Creacion de cuenta...", "Su usuario y contraseña son: "+usuario.getUsuario()+"/"+password);
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void resetPassword(String usuario) {
 		Usuario user = usuarioDao.findOneByNamedQueryParam("Usuario.findByLogin", new Object[] {usuario});
-		JavaEmailSender emailSender =  new JavaEmailSender();
 		
 		if(user != null){
 			String password = PasswordGenerator.randomPassword(8);
@@ -656,7 +657,7 @@ public class ServiceImp implements IService {
 			user.setCambiarPwd(true);
 			user.setUsuarioPwd(encoded);
 			usuarioDao.save(user);
-			emailSender.createAndSendEmail(user.getContacto().getCorreo1(), "Nueva contraseña...", "Su usuario y nueva contraseña son: "+usuario+"/"+password);
+			email.createAndSendEmail(user.getContacto().getCorreo1(), "Nueva contraseña...", "Su usuario y nueva contraseña son: "+usuario+"/"+password);
 		}
 	}
 

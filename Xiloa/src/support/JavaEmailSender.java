@@ -2,6 +2,7 @@ package support;
 
 import java.util.Properties;
 
+import javax.annotation.PostConstruct;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -10,24 +11,50 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
+
+@Component
 public class JavaEmailSender {
-	 
+
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+	
 	private String emailAddressTo = new String();
 	private String msgSubject = new String();
 	private String msgText = new String();
 
-	final String USER_NAME = "sccl.inatec@gmail.com";
-	final String PASSSWORD = "sccl2013";
-	final String FROM_ADDRESS = "sccl.inatec@gmail.com";
-	final private String HOST = "smtp.gmail.com";
-	final private String PORT = "587";
+	private String USER_NAME;
+	private String PASSWORD;
+	private String FROM_ADDRESS;
+	private String HOST;
+	private String PORT;
+	private String RESPONSIBLE;
 	
 	public JavaEmailSender(){
 		super();
 	}
+	
+	@PostConstruct
+	private void init(){
+		USER_NAME = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(32)}, String.class);
+		FROM_ADDRESS = USER_NAME;
+		PASSWORD = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(33)}, String.class);
+		HOST = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(34)}, String.class);
+		PORT = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(35)}, String.class);
+		RESPONSIBLE = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(36)}, String.class);
+	}
 	 
-	public void createAndSendEmail(String emailAddressTo, String msgSubject, String msgText) {
+	public synchronized void createAndSendEmail(String emailAddressTo, String msgSubject, String msgText) {
 		this.emailAddressTo = emailAddressTo;
+		this.msgSubject = msgSubject;
+		this.msgText = msgText;	
+		sendEmailMessage();
+	}
+	
+	public synchronized void createAndSendEmailResponsible(String msgSubject, String msgText) {
+		this.emailAddressTo = RESPONSIBLE;
 		this.msgSubject = msgSubject;
 		this.msgText = msgText;	
 		sendEmailMessage();
@@ -44,7 +71,7 @@ public class JavaEmailSender {
 		Session session = Session.getInstance(props,
 				new javax.mail.Authenticator() {
 				protected PasswordAuthentication getPasswordAuthentication() {
-					return new PasswordAuthentication(USER_NAME, PASSSWORD);
+					return new PasswordAuthentication(USER_NAME, PASSWORD);
 				}
 		});
 
