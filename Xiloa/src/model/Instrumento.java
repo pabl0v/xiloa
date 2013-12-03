@@ -21,11 +21,10 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @Entity(name = "instrumentos")
 @Table(name = "instrumentos", schema = "sccl")
 @NamedQueries({
-	@NamedQuery(name="Instrumento.findAll", query="select i from instrumentos i"),
-	@NamedQuery(name="Instrumento.findAllByUnidadId", query="select i from instrumentos i where i.unidad=?1"),
+	@NamedQuery(name="Instrumento.findAll", query="select i from instrumentos i order by 1 desc"),
+	@NamedQuery(name="Instrumento.findAllByUnidadId", query="select i from instrumentos i where i.unidad=?1 order by 1 desc"),
 	@NamedQuery(name="Instrumento.findById", query="select i from instrumentos i where i.id=?1"),
 	@NamedQuery(name="Instrumento.findAllByCertificacionId", query="select i from instrumentos i, certificaciones c where i.unidad member of c.unidades and c.id=?1")
-	//@NamedQuery(name="Instrumento.findAllByCertificacionId", query="select i from instrumentos i where i.unidad in (select c.unidades from certificaciones c where c.id=?1)")
 })
 public class Instrumento implements Serializable {
 	
@@ -48,21 +47,27 @@ public class Instrumento implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="instrumento_tipo")
 	private Mantenedor tipo;
+	
+	@NotNull
+	@Column(name = "instrumento_cualitativo", nullable = false)	
+	private boolean cualitativo;
 		
 	@NotNull
 	@Column(name = "instrumento_nombre", nullable = false)	
 	private String nombre;
-	
-	@NotNull
-	@Column(name = "instrumento_descripcion", nullable = false)	
-	private String descripcion;
-	
-	@NotNull
-	@Column(name = "instrumento_puntaje_minimo", nullable = false)	
+		
+	@Column(name = "instrumento_puntaje_minimo", nullable = true)	
 	private Integer puntajeMinimo;
+	
+	@Column(name = "instrumento_puntaje_maximo", nullable = true)	
+	private Integer puntajeMaximo;
 	
 	@OneToMany(mappedBy="instrumento")
 	private List<Guia> guias;
+
+	@NotNull
+	@Column(name = "instrumento_entidad_id", nullable = false)	
+	private Integer entidadId;
 
 	@NotNull
 	@Column(name = "instrumento_estatus", nullable = false)	
@@ -100,20 +105,20 @@ public class Instrumento implements Serializable {
 		this.tipo = tipo;
 	}
 
+	public boolean isCualitativo() {
+		return cualitativo;
+	}
+
+	public void setCualitativo(boolean cualitativo) {
+		this.cualitativo = cualitativo;
+	}
+
 	public String getNombre() {
 		return nombre;
 	}
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
-
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
 	}
 
 	public List<Guia> getGuias() {
@@ -129,12 +134,28 @@ public class Instrumento implements Serializable {
 		this.guias.add(guia);
 	}
 
+	public Integer getEntidadId() {
+		return entidadId;
+	}
+
+	public void setEntidadId(Integer entidadId) {
+		this.entidadId = entidadId;
+	}
+
 	public Integer getPuntajeMinimo() {
 		return puntajeMinimo;
 	}
 
 	public void setPuntajeMinimo(Integer puntajeMinimo) {
 		this.puntajeMinimo = puntajeMinimo;
+	}
+
+	public Integer getPuntajeMaximo() {
+		return puntajeMaximo;
+	}
+
+	public void setPuntajeMaximo(Integer puntajeMaximo) {
+		this.puntajeMaximo = puntajeMaximo;
 	}
 
 	public boolean getEstatus() {
@@ -147,6 +168,13 @@ public class Instrumento implements Serializable {
 		else
 			return "Inactivo";
 	}
+	
+	public String getCualitativoLabel(){
+		if(cualitativo)
+			return "Si";
+		else
+			return "No";
+	}
 
 	public void setEstatus(boolean estatus) {
 		this.estatus = estatus;
@@ -157,16 +185,18 @@ public class Instrumento implements Serializable {
 		this.guias = new ArrayList<Guia>();
 	}
 	
-	public Instrumento(Long unidad, String codigo, Mantenedor tipo, String nombre, String descripcion, Integer puntajeMinimo, List<Guia> guias, boolean estatus){
+	public Instrumento(Long unidad, String codigo, Mantenedor tipo, boolean cualitativo, String nombre, Integer puntajeMinimo, Integer puntajeMaximo, List<Guia> guias, Integer entidadId, boolean estatus){
 		super();
 		
 		this.unidad = unidad;
 		this.codigo = codigo;
 		this.tipo = tipo;
+		this.cualitativo = cualitativo;
 		this.nombre = nombre;
-		this.descripcion = descripcion;
 		this.puntajeMinimo = puntajeMinimo;
+		this.puntajeMaximo = puntajeMaximo;
 		this.guias = guias;
+		this.entidadId = entidadId;
 		this.estatus = estatus;
 	}
 }

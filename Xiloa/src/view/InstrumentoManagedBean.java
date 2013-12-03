@@ -175,7 +175,6 @@ public class InstrumentoManagedBean implements Serializable {
 	}
 		
 	public void guardarInstrumento(Instrumento instrumento){
-		instrumento.setDescripcion(instrumento.getNombre());
 		instrumento.setTipo(catalogoTiposInstrumento.get(selectedTipoInstrumento));
 		instrumento.setUnidad(selectedUnidad);
 		Instrumento i = (Instrumento) service.guardar(instrumento);

@@ -37,13 +37,12 @@ public class Guia implements Serializable {
 	@Column(name = "guia_pregunta", nullable = false)	
 	private String pregunta;
 	
-	@NotNull
 	@Column(name = "guia_respuesta", nullable = false)	
 	private String respuesta;
-	
+
 	@NotNull
 	@Column(name = "guia_puntaje", nullable = false)	
-	private int puntaje;
+	private Integer puntaje;
 
 	@NotNull
 	@Column(name = "guia_estatus", nullable = false)
@@ -80,12 +79,12 @@ public class Guia implements Serializable {
 	public void setRespuesta(String respuesta) {
 		this.respuesta = respuesta;
 	}
-	
-	public int getPuntaje() {
+			
+	public Integer getPuntaje() {
 		return puntaje;
 	}
 	
-	public void setPuntaje(int puntaje) {
+	public void setPuntaje(Integer puntaje) {
 		this.puntaje = puntaje;
 	}
 	
@@ -108,11 +107,11 @@ public class Guia implements Serializable {
 		super();
 	}
 	
-	public Guia(Instrumento instrumento, String pregunta, String respuesta, int puntaje, boolean estatus){
+	public Guia(Instrumento instrumento, String pregunta, String respuesta, Integer puntaje, boolean estatus){
 		this.instrumento = instrumento;
 		this.pregunta = pregunta;
 		this.respuesta = respuesta;
 		this.puntaje = puntaje;
 		this.estatus = estatus;
-	}
+	}	
 }
