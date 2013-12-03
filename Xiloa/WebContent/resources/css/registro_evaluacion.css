@@ -45,3 +45,13 @@ html {
     display: inline-block;
     margin-bottom: 19px;
 }
+
+.estilo_modalPortafolio {	
+	background: #e6eef9!important;
+}
+.estilo_modalPortafolio div p {	
+	font-weight: bold;
+}
+#modal_detalleGuias div {
+	margin: 10px 0;
+}

@@ -99,22 +99,30 @@
 			
 		<!-- Emergente Asigna Puntaje de Aprobado -->
 		<p:dialog id="editaEvaluacionGuia" widgetVar="dlgEvalGuias"  styleClass="estilo_modalPortafolio" 
-			          header="Detalle Evaluacion" modal="true" resizable="false" width="540" height="250" 
+			          header="Detalle Evaluacion" modal="true" resizable="false" width="540" height="280" 
 			          showEffect="clip" hideEffect="clip" >
-	    	   <div id="modal_detalleGuias">	
-	    	   		<p>Pregunta:</p>  
-	            	<h:outputText styleClass="estilo_span" id="preguntaGuia" value="#{evaluacionManagedBean.preguntaGuia}" />						
-	            	<p>Respuesta:</p>  
-	            	<h:outputText styleClass="estilo_span" id="respuestaGuia" value="#{evaluacionManagedBean.respuestaGuia}" />
-	            	<p>Puntaje:</p>  
-	            	<p:inputText id="puntajeGuia" value="#{evaluacionManagedBean.puntajeGuia}" />
-	            	<h:outputText value="Resultado Evaluacion por Guia: " />  
-				    <p:selectOneRadio id="optAprobadoGuia" value="#{evaluacionManagedBean.aprobadoGuia}">  
-				         <f:selectItems value="#{evaluacionManagedBean.listaAprobados}"  />				              				             
-				    </p:selectOneRadio>						
-					<p:commandButton value="Cancelar" action="#{evaluacionManagedBean.cancelEdicionEvalGuia}" onclick="PF('dlgEvalGuias').hide();"/>
-					<p:commandButton value="Guardar" action="#{evaluacionManagedBean.saveEvalGuia}" oncomplete="PF('dlgEvalGuias').hide();" 
-					                 update=":formEvaluacion:dtGuiasEval, :formEvaluacion:puntajeEval, :formEvaluacion:msgEvaluacion" />												
+	    	        <div id="modal_detalleGuias">	
+	    	        	<div>
+			    	   		<p>Pregunta:</p>  
+			            	<h:outputText styleClass="estilo_span" id="preguntaGuia" value="#{evaluacionManagedBean.preguntaGuia}" />	
+		            	</div>
+		            	<div>					
+			            	<p>Respuesta:</p>  
+			            	<h:outputText styleClass="estilo_span" id="respuestaGuia" value="#{evaluacionManagedBean.respuestaGuia}" />
+		            	</div>
+		            	<div>	
+			            	<p>Puntaje:</p>  
+			            	<p:inputText id="puntajeGuia" value="#{evaluacionManagedBean.puntajeGuia}" />
+		            	</div>
+		            	<div>
+			            	<h:outputText value="Resultado Evaluacion por Guia: " />  
+						    <p:selectOneRadio id="optAprobadoGuia" value="#{evaluacionManagedBean.aprobadoGuia}">  
+						         <f:selectItems value="#{evaluacionManagedBean.listaAprobados}"  />				              				             
+						    </p:selectOneRadio>		
+					    </div>				
+						<p:commandButton value="Cancelar" action="#{evaluacionManagedBean.cancelEdicionEvalGuia}" onclick="PF('dlgEvalGuias').hide();"/>
+						<p:commandButton value="Guardar" action="#{evaluacionManagedBean.saveEvalGuia}" oncomplete="PF('dlgEvalGuias').hide();" 
+						                 update=":formEvaluacion:dtGuiasEval, :formEvaluacion:puntajeEval, :formEvaluacion:msgEvaluacion" />												
 			    </div>					
 		</p:dialog>
 		</h:form>		      

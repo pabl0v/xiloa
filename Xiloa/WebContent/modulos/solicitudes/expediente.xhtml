@@ -24,10 +24,7 @@
 	    		                 icon="ui-icon-star" style="display:inline-block;"
 	    		                 actionListener="#{expedienteManagedBean.solicitarCertificacion}" 
 	    					     update=":formExpediente:msgExpediente"    					        					       
-	             				/>
-	             				  
-	       		<h:outputLabel styleClass="estilo_label" for="certificacionNombre" value="Solicitud para evaluar:" />            
-	        	<h:outputText styleClass="estilo_span" id="certificacionNombre" value="#{expedienteManagedBean.solicitudExp.certificacion.nombre}" />
+	             				/>       		
             </sec:authorize>				  		
     	<div>
     		<p:messages id="msgExpediente" showDetail="true" autoUpdate="true" closable="true" />
@@ -83,6 +80,10 @@
     	</div>    	
     	<div class="barra_azul">  
     		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO">  
+    			<div>
+	    			<h:outputLabel styleClass="estilo_label" for="certificacionNombre" value="Solicitud para evaluar:" />            
+		        	<h:outputText styleClass="estilo_span" id="certificacionNombre" value="#{expedienteManagedBean.solicitudExp.certificacion.nombre}" />
+    			</div>
 	    		<div>  
 		    		<h:outputLabel styleClass="estilo_label" value="Estatus actual:" />
 		    		#{expEvalManagedBean.estadoActual.valor}	           	
@@ -91,15 +92,15 @@
 	            	<h:outputLabel styleClass="estilo_label" value="Siguiente Estatus:" />
 	            	  #{expEvalManagedBean.estadoSiguiente.valor}           		
 	           	</div>   
-           	</sec:authorize>
+           	</sec:authorize>   		       
+    	</div>	
+    	<div id="contenedor_datos_lab" class="seccion_expediente">
     		<p style="padding: 7px;font-weight:bold;">Trayectoria profesional y academica:</p>    		
-           	<div>
+           	<div style="margin-bottom: 16px;">
            		<p:commandButton id="btnAgregaLaborales" disabled="#{expedienteManagedBean.disabledBtnAgregaLaborales}"
            		                 action="#{expedienteManagedBean.nuevoLaboral}" value="Agregar"
            		                 oncomplete="PF('dlg1').show();"  process="@form" update=":formExpediente:modalLaborales" />
-           	</div>              
-    	</div>	
-    	<div id="contenedor_datos_lab" class="seccion_expediente">	    					
+           	</div>       	    					
     		<p:tabView id="tabView_datosLaborales">    			   
             	<p:tab id="tab1" title="Experiencia">                    	  
                 	<p:dataTable emptyMessage="No hay datos para mostrar" var="datosLaborales" 
@@ -229,12 +230,12 @@
 	            	<p:inputText id="nombreInstitucion" value="#{expedienteManagedBean.nombreInstitucion}" />	            	
 	            	<p>Telefono contacto:</p>	                  
 	            	<p:inputText id="telefonoInstitucion" value="#{expedienteManagedBean.telefonoInstitucion}" />										
-					<p>Pais:</p>    	
-	            	<p:selectOneMenu id="selector_paisLaboral" styleClass="selectores bloque"  
+					<p style="display:inline-block;width: 75px;">Pais:</p>    	
+	            	<p:selectOneMenu id="selector_paisLaboral" styleClass="selectores bloque inlinebloque"  
 	            	                 value="#{expedienteManagedBean.paisIdLaboral}" >				
 						<f:selectItems value="#{expedienteManagedBean.listPaises}" />			        
 			    	</p:selectOneMenu>	            	
-					<p>Direccion de la institucion:</p>					  
+					<p style="margin-top: 30px;">Direccion de la institucion:</p>					  
             		<p:inputText id="institucionDireccion" value="#{expedienteManagedBean.institucionDireccion}" />
 				</div>				
 				<div class="dialogoLaborales_secciones" >
@@ -253,7 +254,7 @@
 						<p:ajax event="dateSelect" update="growlFechaHasta" />
 					</p:calendar>
 				</div>				    	    							
-				<div style="float:right;">
+				<div style="position: absolute;top: 55px;right: 55px;">
 					<p:commandButton value="Cancelar" action="#{expedienteManagedBean.limpiarCampos}" oncomplete="PF('dlg1').hide();" />
 					<p:commandButton value="Aceptar" action="#{expedienteManagedBean.guardarDatosLaborales}" oncomplete="PF('dlg1').hide();"
 									 update=":formExpediente:tabView_datosLaborales, :formExpediente:msgExpediente"	/>
