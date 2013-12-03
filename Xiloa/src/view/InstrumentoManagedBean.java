@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import model.Contacto;
 import model.Guia;
 import model.Instrumento;
 import model.Mantenedor;
@@ -17,6 +18,7 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import service.IService;
@@ -44,6 +46,7 @@ public class InstrumentoManagedBean implements Serializable {
 	private Integer selectedTipoInstrumento;
 	private Map<Long,Item> catalogoUnidades;
 	private Long selectedUnidad;
+	private Contacto contacto;
 
 	public InstrumentoManagedBean(){
 		super();
@@ -59,11 +62,13 @@ public class InstrumentoManagedBean implements Serializable {
 		selectedTipoInstrumento = null;
 		catalogoUnidades = new HashMap<Long, Item>();
 		selectedUnidad = null;
+		contacto = new Contacto();
 	}
 	
 	@PostConstruct
 	private void init(){
 		catalogoTiposInstrumento = util.getCatalogoTiposInstrumento();
+		contacto = service.getContactoByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
 		//catalogoTiposInstrumento = service.getMapMantenedoresByTipo("6");
 		configurarInstrumento();
 	}
@@ -177,6 +182,7 @@ public class InstrumentoManagedBean implements Serializable {
 	public void guardarInstrumento(Instrumento instrumento){
 		instrumento.setTipo(catalogoTiposInstrumento.get(selectedTipoInstrumento));
 		instrumento.setUnidad(selectedUnidad);
+		instrumento.setEntidadId(contacto.getEntidadId());
 		Instrumento i = (Instrumento) service.guardar(instrumento);
 		instrumentos.add(i);
 		setSelectedInstrumento(i);
