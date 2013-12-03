@@ -68,14 +68,7 @@
                 <p:column id="estadoColumn" headerText="Estado" exportable="true"><h:outputText value="#{varSolicitudI.estatus.valor}" /></p:column>
                 <p:column id="selectConvo" selectionMode="multiple" style="width:2%" exportable="false" />                
             </p:dataTable>            
-        </div>
-        <div id="contenedor_exportar">
-    		<p>Con seleccionado:</p>
-	    	<p:selectOneMenu styleClass="selectores" id="selector_accionConvocatoria" value="#{dashBoardSolicitudesManagedBean.selectedAccionConvo}" >
-	    		<f:selectItems value="#{dashBoardSolicitudesManagedBean.listAccionConvo}" />	    	    
-    			<p:ajax update=":formConvocatoria:dtSolicitud, :formConvocatoria:msgConvocatoria" process="@form" listener="#{dashBoardSolicitudesManagedBean.handleConvocatoria}" />	    		            			        
-	    	</p:selectOneMenu>    	
-    	</div>
+        </div>        
      </h:form>
     </div>    
 </h:body>

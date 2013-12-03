@@ -29,7 +29,8 @@ public class ServiceTest {
 	               mantenedor7, mantenedor8, mantenedor9, mantenedor10, mantenedor11, mantenedor12,
 	               mantenedor13, mantenedor14, mantenedor15, mantenedor16, mantenedor17, mantenedor18, mantenedor19,
 	               mantenedor20, mantenedor21, mantenedor22, mantenedor23, mantenedor24, mantenedor25, mantenedor26, 
-	               mantenedor27, mantenedor28, mantenedor29, mantenedor30, mantenedor31, mantenedor32, mantenedor33, mantenedor34, mantenedor35, mantenedor36; 
+	               mantenedor27, mantenedor28, mantenedor29, mantenedor30, mantenedor31, mantenedor32, mantenedor33, 
+	               mantenedor34, mantenedor35, mantenedor36, mantenedor37; 
 	               	
 	private static Perfil perfil;
 	private static List<Perfil> perfiles;
@@ -77,7 +78,7 @@ public class ServiceTest {
 		mantenedor21 = new Mantenedor("7","Estados Solicitud Certificacion","Registrada",new String("20"), new String("22"));
 		mantenedor22 = new Mantenedor("7","Estados Solicitud Certificacion","Convocado",new String("21"),new String("23"));
 		mantenedor23 = new Mantenedor("7","Estados Solicitud Certificacion","Asesorado",new String("22"),new String("24"));
-		mantenedor24 = new Mantenedor("7","Estados Solicitud Certificacion","Cerrada",new String("23"),null);
+		mantenedor24 = new Mantenedor("7","Estados Solicitud Certificacion","Inscrito",new String("23"),new String("37"));
 		
 		mantenedor25 = new Mantenedor("8","Estados Portafolio Evidencia","Valido",null,new String("26"));		
 		mantenedor26 = new Mantenedor("8","Estados Portafolio Evidencia","Registrado",new String("25"), new String("27"));
@@ -92,6 +93,8 @@ public class ServiceTest {
 		mantenedor34 = new Mantenedor("11","Host del servidor de correo","smtp.gmail.com",null,null);
 		mantenedor35 = new Mantenedor("11","Puerto del servidor de correo","587",null,null);
 		mantenedor36 = new Mantenedor("11","Email del encargado de incidencias","dnchavez@hotmail.com",null,null);
+		
+		mantenedor37 = new Mantenedor("7","Estados Solicitud Certificacion","Concluido",new String("24"),null);
 
 		service.guardar(mantenedor1);
 		service.guardar(mantenedor2);
@@ -129,6 +132,7 @@ public class ServiceTest {
 		service.guardar(mantenedor34);
 		service.guardar(mantenedor35);
 		service.guardar(mantenedor36);
+		service.guardar(mantenedor37);
 
 		//creando perfiles
 		

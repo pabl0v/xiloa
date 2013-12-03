@@ -12,6 +12,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -70,6 +71,7 @@ public class EvaluacionManagedBean implements Serializable {
 	private Integer puntajeEval;
 	private Integer puntajeMinEval;
 	private List<SelectItem> listaAprobados;
+	private Integer puntajeMaxEval;
 	
 	public EvaluacionManagedBean() {
 		super();
@@ -86,6 +88,14 @@ public class EvaluacionManagedBean implements Serializable {
 		listaEvaluacionGuia = new ArrayList<EvaluacionGuia> ();
 		disableAgregaGuias = true;
 		listaAprobados = new ArrayList<SelectItem> ();
+	}
+
+	public Integer getPuntajeMaxEval() {
+		return puntajeMaxEval;
+	}
+
+	public void setPuntajeMaxEval(Integer puntajeMaxEval) {
+		this.puntajeMaxEval = puntajeMaxEval;
 	}
 
 	public List<SelectItem> getListaAprobados() {		
@@ -253,6 +263,7 @@ public class EvaluacionManagedBean implements Serializable {
 		this.selectedInstrumento = selectedInstrumento;
 		if (this.selectedInstrumento != null){
 			this.puntajeMinEval = selectedInstrumento.getPuntajeMinimo();
+			this.puntajeMaxEval = selectedInstrumento.getPuntajeMaximo();
 			this.setIdSelectedInstrByUnd(this.selectedInstrumento.getId());
 			Object [] objs =  new Object [] {this.selectedEvaluacion.getId(), this.selectedInstrumento.getId()};
 			List<Guia> guiasEvalInst = service.getGuiaByParam("EvaluacionGuia.findGuiasByEvalAndInstrumento", objs);
@@ -430,6 +441,8 @@ public class EvaluacionManagedBean implements Serializable {
 		if (this.selectedInstrumento == null){
 			selectedInstrumento = inst;
 			selectedInstrumentoId = inst.getId();
+			puntajeMaxEval = selectedInstrumento.getPuntajeMaximo();
+			puntajeMinEval = selectedInstrumento.getPuntajeMinimo();
 		}
 		
 		if (inst.getId() != selectedInstrumentoId)
@@ -467,32 +480,48 @@ public class EvaluacionManagedBean implements Serializable {
 		Evaluacion eval;			
 		boolean isError = false;
 		String  mensaje = "";
+		Integer sumaPuntajeGuia = new Integer(0);
 		
 		//Se registra nueva evaluacion
 		if (selectedEvaluacion == null){
-		
-			this.puntajeEval = new Integer(0);
-			eval = new Evaluacion (this.getSolicitudEval(), // solicitud 
-			   					   this.getFechaEvaluacion(), // fecha 
-								   this.getSelectedUnidad(), // unidad 
-								   null , // Set<EvaluacionGuia> guias 
-								   this.puntajeEval, // puntaje, 
-								   this.getObservaciones(), // observaciones 
-								   this.isAprobado() // aprobado
-								   );
-			String estadoTipo = eval.getTipoMantenedorEstado();
 			
-			eval.setEstado(service.getMantenedorMinByTipo(estadoTipo));			
-			
-			eval = service.guardarEvaluacion(eval, this.selectedGuia);					
-			
-			if (eval != null) {
-				this.selectedEvaluacion = eval;							
-				mensaje = "La evaluacion ha sido registrada exitosamente.";
+			if (this.selectedGuia.length == 0){
+				isError = true;
+				mensaje = "Debe indicar el detalle de la Evaluacion. (Agregar Guias). Favor revisar...";
 			} else {
-				isError = true;				
-				mensaje = "Error al grabar la evaluacion. Favor revisar...";
-			}			
+				sumaPuntajeGuia = sumaPuntajeGuia(this.selectedGuia);				
+								
+				if (sumaPuntajeGuia < this.puntajeMinEval){
+					isError = true;
+					mensaje = "El detalle indicado (Guias), segun su puntaje, es menor al mínimo permitido. Favor revisar...";
+				} else if (sumaPuntajeGuia > this.puntajeMaxEval){
+					isError = true;
+					mensaje = "El detalle indicado (Guias), segun su puntaje, es mayor al máximo permitido. Favor revisar...";
+				} else {
+					this.puntajeEval = new Integer(0);
+					eval = new Evaluacion (this.getSolicitudEval(), // solicitud 
+					   					   this.getFechaEvaluacion(), // fecha 
+										   this.getSelectedUnidad(), // unidad 
+										   null , // Set<EvaluacionGuia> guias 
+										   this.puntajeEval, // puntaje, 
+										   this.getObservaciones(), // observaciones 
+										   this.isAprobado() // aprobado
+										   );
+					String estadoTipo = eval.getTipoMantenedorEstado();
+					
+					eval.setEstado(service.getMantenedorMinByTipo(estadoTipo));			
+					
+					eval = service.guardarEvaluacion(eval, this.selectedGuia);					
+					
+					if (eval != null) {
+						this.selectedEvaluacion = eval;							
+						mensaje = "La evaluacion ha sido registrada exitosamente.";
+					} else {
+						isError = true;				
+						mensaje = "Error al grabar la evaluacion. Favor revisar...";
+					}
+				}				
+			}						
 			
 		} else { // Guarda los cambios en la edicion de la evaluacion			
 			Mantenedor estadoEval = null;		
@@ -544,12 +573,25 @@ public class EvaluacionManagedBean implements Serializable {
 	public void saveEvalGuia(){
 		this.selectedEvaluacionGuia = (this.selectedEvaluacionGuia == null) ? (EvaluacionGuia) FacesUtil.getParametroSession("selectedEvaluacionGuia") : this.selectedEvaluacionGuia;
 		FacesUtil.setParamBySession("selectedEvaluacionGuia", null);
+		Integer   puntajeByGuia = new Integer(0);
 		
-		if (this.selectedEvaluacionGuia != null) {			
-			this.selectedEvaluacionGuia.setPuntaje(this.puntajeGuia);
-			this.selectedEvaluacionGuia.setAprobado(this.aprobadoGuia);
-						
-			this.selectedEvaluacionGuia = service.updateEvaluacionGuia(this.selectedEvaluacionGuia);							
+		if (this.selectedEvaluacionGuia != null) {	
+			
+			puntajeByGuia = selectedEvaluacionGuia.getPk().getGuia().getPuntaje();
+			
+			if (this.puntajeGuia > puntajeByGuia){
+				FacesUtil.getMensaje("SCCL - Mensaje", "El puntaje indicado es mayor al puntaje maximo permitido por detalle. Favor revisar...", true);
+			} else {
+				this.selectedEvaluacionGuia.setPuntaje(this.puntajeGuia);
+				this.selectedEvaluacionGuia.setAprobado(this.aprobadoGuia);
+							
+				this.selectedEvaluacionGuia = service.updateEvaluacionGuia(this.selectedEvaluacionGuia);	
+				
+				if (this.selectedEvaluacion != null)
+					this.puntajeEval = this.selectedEvaluacion.getPuntaje();
+			}
+			
+			
 			
 		}
 		
@@ -634,5 +676,25 @@ public class EvaluacionManagedBean implements Serializable {
 		FacesUtil.setParamBySession("dbSolicitudesBean", this.getSolicitudEval());
 				
 		return urlDestino;
+	}
+	
+	public Integer sumaPuntajeGuia(Guia [] guias){
+		Integer sumaPuntaje = new Integer(0);
+		
+		for (Guia g : guias)
+			sumaPuntaje += g.getPuntaje();
+		
+		return sumaPuntaje;
+	}
+	
+	public void onRowSelectDtGuias(SelectEvent event){
+		Integer suma = new Integer(0);
+		
+		suma = sumaPuntajeGuia(this.selectedGuia);
+		
+		if (suma > this.getPuntajeMaxEval())
+			FacesUtil.getMensaje("SCCL - Mensaje", "Favor revisar, ha excedido el puntaje maximo permitido...", true);
+			
+				
 	}
 }

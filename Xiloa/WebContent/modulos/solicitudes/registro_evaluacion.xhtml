@@ -20,8 +20,7 @@
        <h2 style="color:#555;">Datos Evaluacion: #{evaluacionManagedBean.selectedInstrumento.tipo.valor}</h2>
        <h:form id="formEvaluacion">
        		<p:messages id="msgEvaluacion" showDetail="true" autoUpdate="true" closable="true" />       		
-   			<div class="seccion_detalle" style="width:94%">		
-   			
+   			<div class="seccion_detalle" style="width:94%">   				
    				<div style="display:inline-block;width:47%;">    					
 					<p>Elemento de compentencia o realizacion profesional:</p>
 					<p:selectOneMenu styleClass="selectores" id="selector_unidadComp" value="#{evaluacionManagedBean.idSelectedUnidad}" >				
@@ -37,10 +36,11 @@
 						<p:ajax update="dtGuias" listener="#{evaluacionManagedBean.handleGuiasByInstrumento}" /> 			        
 				    </p:selectOneMenu>	           	            	
 			    </div>
-			    <h3>Agregue el detalle Evaluacion:</h3>
+			    <h3>Agregue detalle Evaluacion:</h3>
 			         <p:dataTable id="dtGuias" emptyMessage="No hay datos para mostrar"  var="varGuia" value="#{evaluacionManagedBean.listGuiaByInstru}" 
 	     		              rowKey="#{varGuia.id}" selection="#{evaluacionManagedBean.selectedGuia}" selectionMode="multiple"
 	     		              paginator="true" rows="5" >  
+	     		        <p:ajax event="rowSelect" listener="#{evaluacionManagedBean.onRowSelectDtGuias}" update=":formEvaluacion:msgEvaluacion" />
 		             	<p:column headerText="Pregunta"><h:outputText value="#{varGuia.pregunta}" /></p:column>  
 		                <p:column headerText="Respuesta"><h:outputText value="#{varGuia.respuesta}" /></p:column>  
 		                <p:column headerText="Puntaje"><h:outputText value="#{varGuia.puntaje}" /></p:column>  
@@ -52,7 +52,11 @@
 					<p:calendar id="popupBtnFechaEval" value="#{evaluacionManagedBean.fechaEvaluacion}" pattern="dd/mm/yyyy" showOn="button">
 						<p:ajax event="dateSelect" update="growlFechaEval" />
 					</p:calendar>					
-				</div>
+				</div>					
+				<div style="display:inline-block;margin-left:7px;">
+					<p>Estado:</p>					
+					<h:outputText value="#{evaluacionManagedBean.estado.valor}" />					
+				</div>	
 				<div style="display:inline-block;margin-left:7px;">
 					<p>Puntaje:</p>  
 	            	<h:outputText id="puntajeEval" value="#{evaluacionManagedBean.puntajeEval}" />
@@ -62,11 +66,7 @@
 				    <p:selectOneRadio id="optAprobado" value="#{evaluacionManagedBean.aprobado}">  
 				         <f:selectItems value="#{evaluacionManagedBean.listaAprobados}"  />				              				             
 				    </p:selectOneRadio>							
-				</div>	
-				<div style="display:inline-block;margin-left:7px;">
-					<p>Estado:</p>					
-					<h:outputText value="#{evaluacionManagedBean.estado.valor}" />					
-				</div>		
+				</div>
 							
           		<p>Observaciones:</p>	      
           		<p:editor id="observacionReprobado" value="#{evaluacionManagedBean.observaciones}" height="150"/>	            	
@@ -81,7 +81,7 @@
 					<p:dataTable id="dtGuiasEval" emptyMessage="No hay datos para mostrar"  var="evalGuia" value="#{evaluacionManagedBean.listaEvaluacionGuia}" 
 		     		              rowKey="#{evalGuia.pk}" selection="#{evaluacionManagedBean.selectedEvaluacionGuia}" selectionMode="single"
 		     		              paginator="true" rows="5" >  
-		     		     <f:facet name="header">  
+		     		    <f:facet name="header">  
             				Guias por Instrumento en la Evaluacion  
         				</f:facet> 
 		             	<p:column headerText="Pregunta"><h:outputText value="#{evalGuia.pk.guia.pregunta}" /></p:column>  
@@ -113,7 +113,8 @@
 				         <f:selectItems value="#{evaluacionManagedBean.listaAprobados}"  />				              				             
 				    </p:selectOneRadio>						
 					<p:commandButton value="Cancelar" action="#{evaluacionManagedBean.cancelEdicionEvalGuia}" onclick="PF('dlgEvalGuias').hide();"/>
-					<p:commandButton value="Guardar" action="#{evaluacionManagedBean.saveEvalGuia}" oncomplete="PF('dlgEvalGuias').hide();" update="dtGuiasEval" />												
+					<p:commandButton value="Guardar" action="#{evaluacionManagedBean.saveEvalGuia}" oncomplete="PF('dlgEvalGuias').hide();" 
+					                 update=":formEvaluacion:dtGuiasEval, :formEvaluacion:puntajeEval, :formEvaluacion:msgEvaluacion" />												
 			    </div>					
 		</p:dialog>
 		</h:form>		      
