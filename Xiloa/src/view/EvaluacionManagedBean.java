@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.primefaces.event.SelectEvent;
@@ -69,9 +67,9 @@ public class EvaluacionManagedBean implements Serializable {
 	private Mantenedor solicitudAsesorado;
 	private boolean aprobadoGuia;
 	private Integer puntajeEval;
-	private Integer puntajeMinEval;
+	private Float puntajeMinEval;
 	private List<SelectItem> listaAprobados;
-	private Integer puntajeMaxEval;
+	private Float puntajeMaxEval;
 	
 	public EvaluacionManagedBean() {
 		super();
@@ -90,11 +88,11 @@ public class EvaluacionManagedBean implements Serializable {
 		listaAprobados = new ArrayList<SelectItem> ();
 	}
 
-	public Integer getPuntajeMaxEval() {
+	public Float getPuntajeMaxEval() {
 		return puntajeMaxEval;
 	}
 
-	public void setPuntajeMaxEval(Integer puntajeMaxEval) {
+	public void setPuntajeMaxEval(Float puntajeMaxEval) {
 		this.puntajeMaxEval = puntajeMaxEval;
 	}
 
@@ -106,11 +104,11 @@ public class EvaluacionManagedBean implements Serializable {
 		this.listaAprobados = listaAprobados;
 	}
 
-	public Integer getPuntajeMinEval() {
+	public Float getPuntajeMinEval() {
 		return puntajeMinEval;
 	}
 
-	public void setPuntajeMinEval(Integer puntajeMinEval) {
+	public void setPuntajeMinEval(Float puntajeMinEval) {
 		this.puntajeMinEval = puntajeMinEval;
 	}
 
@@ -480,7 +478,7 @@ public class EvaluacionManagedBean implements Serializable {
 		Evaluacion eval;			
 		boolean isError = false;
 		String  mensaje = "";
-		Integer sumaPuntajeGuia = new Integer(0);
+		Float sumaPuntajeGuia = new Float(0);
 		
 		//Se registra nueva evaluacion
 		if (selectedEvaluacion == null){
@@ -573,7 +571,7 @@ public class EvaluacionManagedBean implements Serializable {
 	public void saveEvalGuia(){
 		this.selectedEvaluacionGuia = (this.selectedEvaluacionGuia == null) ? (EvaluacionGuia) FacesUtil.getParametroSession("selectedEvaluacionGuia") : this.selectedEvaluacionGuia;
 		FacesUtil.setParamBySession("selectedEvaluacionGuia", null);
-		Integer   puntajeByGuia = new Integer(0);
+		Float   puntajeByGuia = new Float(0);
 		
 		if (this.selectedEvaluacionGuia != null) {	
 			
@@ -678,8 +676,8 @@ public class EvaluacionManagedBean implements Serializable {
 		return urlDestino;
 	}
 	
-	public Integer sumaPuntajeGuia(Guia [] guias){
-		Integer sumaPuntaje = new Integer(0);
+	public Float sumaPuntajeGuia(Guia [] guias){
+		Float sumaPuntaje = new Float(0);
 		
 		for (Guia g : guias)
 			sumaPuntaje += g.getPuntaje();
@@ -688,7 +686,7 @@ public class EvaluacionManagedBean implements Serializable {
 	}
 	
 	public void onRowSelectDtGuias(SelectEvent event){
-		Integer suma = new Integer(0);
+		Float suma = new Float(0);
 		
 		suma = sumaPuntajeGuia(this.selectedGuia);
 		

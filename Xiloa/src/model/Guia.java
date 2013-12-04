@@ -41,8 +41,8 @@ public class Guia implements Serializable {
 	private String respuesta;
 
 	@NotNull
-	@Column(name = "guia_puntaje", nullable = false)	
-	private Integer puntaje;
+	@Column(name = "guia_puntaje", nullable = false, precision=10, scale=2)	
+	private Float puntaje;
 
 	@NotNull
 	@Column(name = "guia_estatus", nullable = false)
@@ -80,11 +80,11 @@ public class Guia implements Serializable {
 		this.respuesta = respuesta;
 	}
 			
-	public Integer getPuntaje() {
+	public Float getPuntaje() {
 		return puntaje;
 	}
 	
-	public void setPuntaje(Integer puntaje) {
+	public void setPuntaje(Float puntaje) {
 		this.puntaje = puntaje;
 	}
 	
@@ -107,7 +107,7 @@ public class Guia implements Serializable {
 		super();
 	}
 	
-	public Guia(Instrumento instrumento, String pregunta, String respuesta, Integer puntaje, boolean estatus){
+	public Guia(Instrumento instrumento, String pregunta, String respuesta, Float puntaje, boolean estatus){
 		this.instrumento = instrumento;
 		this.pregunta = pregunta;
 		this.respuesta = respuesta;

@@ -56,11 +56,17 @@ public class Instrumento implements Serializable {
 	@Column(name = "instrumento_nombre", nullable = false)	
 	private String nombre;
 		
-	@Column(name = "instrumento_puntaje_minimo", nullable = true)	
-	private Integer puntajeMinimo;
+	@Column(name = "instrumento_puntaje_minimo", nullable = false, precision=10, scale=2)	
+	private Float puntajeMinimo;
 	
-	@Column(name = "instrumento_puntaje_maximo", nullable = true)	
-	private Integer puntajeMaximo;
+	@Column(name = "instrumento_puntaje_maximo", nullable = false, precision=10, scale=2)	
+	private Float puntajeMaximo;
+	
+	@Column(name = "instrumento_cantidad_preguntas", nullable = true)
+	private Integer cantidadPreguntas;
+	
+	@Column(name = "instrumento_respuestas_fallidas", nullable = true)
+	private Integer respuestasFallidas;
 	
 	@OneToMany(mappedBy="instrumento")
 	private List<Guia> guias;
@@ -125,7 +131,6 @@ public class Instrumento implements Serializable {
 		return guias;
 	}
 
-
 	public void setGuias(List<Guia> guias) {
 		this.guias = guias;
 	}
@@ -142,20 +147,36 @@ public class Instrumento implements Serializable {
 		this.entidadId = entidadId;
 	}
 
-	public Integer getPuntajeMinimo() {
+	public Float getPuntajeMinimo() {
 		return puntajeMinimo;
 	}
 
-	public void setPuntajeMinimo(Integer puntajeMinimo) {
+	public void setPuntajeMinimo(Float puntajeMinimo) {
 		this.puntajeMinimo = puntajeMinimo;
 	}
 
-	public Integer getPuntajeMaximo() {
+	public Float getPuntajeMaximo() {
 		return puntajeMaximo;
 	}
 
-	public void setPuntajeMaximo(Integer puntajeMaximo) {
+	public void setPuntajeMaximo(Float puntajeMaximo) {
 		this.puntajeMaximo = puntajeMaximo;
+	}
+
+	public Integer getCantidadPreguntas() {
+		return cantidadPreguntas;
+	}
+
+	public void setCantidadPreguntas(Integer cantidadPreguntas) {
+		this.cantidadPreguntas = cantidadPreguntas;
+	}
+
+	public Integer getRespuestasFallidas() {
+		return respuestasFallidas;
+	}
+
+	public void setRespuestasFallidas(Integer respuestasFallidas) {
+		this.respuestasFallidas = respuestasFallidas;
 	}
 
 	public boolean getEstatus() {
@@ -185,7 +206,7 @@ public class Instrumento implements Serializable {
 		this.guias = new ArrayList<Guia>();
 	}
 	
-	public Instrumento(Long unidad, String codigo, Mantenedor tipo, boolean cualitativo, String nombre, Integer puntajeMinimo, Integer puntajeMaximo, List<Guia> guias, Integer entidadId, boolean estatus){
+	public Instrumento(Long unidad, String codigo, Mantenedor tipo, boolean cualitativo, String nombre, Float puntajeMinimo, Float puntajeMaximo, List<Guia> guias, Integer entidadId, boolean estatus){
 		super();
 		
 		this.unidad = unidad;

@@ -183,6 +183,10 @@ public class InstrumentoManagedBean implements Serializable {
 		instrumento.setTipo(catalogoTiposInstrumento.get(selectedTipoInstrumento));
 		instrumento.setUnidad(selectedUnidad);
 		instrumento.setEntidadId(contacto.getEntidadId());
+		if(instrumento.isCualitativo()){
+			instrumento.setPuntajeMaximo(new Float(100));
+			instrumento.setPuntajeMinimo(new Float(100 - ((100/instrumento.getCantidadPreguntas())*instrumento.getRespuestasFallidas())));
+		}
 		Instrumento i = (Instrumento) service.guardar(instrumento);
 		instrumentos.add(i);
 		setSelectedInstrumento(i);
@@ -220,6 +224,9 @@ public class InstrumentoManagedBean implements Serializable {
 	}
 	
 	public void guardarGuia(Guia guia){
+		if(guia.getInstrumento().isCualitativo()){
+			guia.setPuntaje(new Float(100/guia.getInstrumento().getCantidadPreguntas()));
+		}
 		service.guardar(guia);
 		setSelectedInstrumento(selectedInstrumento);
 	}
