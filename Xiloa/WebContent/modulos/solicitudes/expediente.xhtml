@@ -77,9 +77,9 @@
                              style="display:block;" value="Aplicar Cambios" 
                              update=":formExpediente:msgExpediente" 
                              action="#{expedienteManagedBean.actualizarContacto}" />          
-    	</div>    	
-    	<div class="barra_azul">  
-    		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO">  
+    	</div>
+    	<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO">
+    	<div class="barra_azul">    
     			<div>
 	    			<h:outputLabel styleClass="estilo_label" for="certificacionNombre" value="Solicitud para evaluar:" />            
 		        	<h:outputText styleClass="estilo_span" id="certificacionNombre" value="#{expedienteManagedBean.solicitudExp.certificacion.nombre}" />
@@ -91,9 +91,9 @@
 		        <div>	        
 	            	<h:outputLabel styleClass="estilo_label" value="Siguiente Estatus:" />
 	            	  #{expEvalManagedBean.estadoSiguiente.valor}           		
-	           	</div>   
-           	</sec:authorize>   		       
-    	</div>	
+	           	</div>   		       
+    	</div>
+    	</sec:authorize>
     	<div id="contenedor_datos_lab" class="seccion_expediente">
     		<p style="padding: 7px;font-weight:bold;">Trayectoria profesional y academica:</p>    		
            	<div style="margin-bottom: 16px;">

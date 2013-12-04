@@ -216,4 +216,4 @@ select 1629,41,0,'ROLE_RIGHT_EDITA_SEGUIMIENTO','solicitudes/convocatoria.xhtml'
 
 update admon.roles set opciones='1610,1611,1612,1613,1614,1615,1616,1617,1618,1619,1620,1621,1622,1623,1624,1625,1627,1628,1629' where id_rol=215
 update admon.roles set opciones='1610,1611,1612,1613,1614,1615,1616,1617,1618,1619,1620,1621,1622,1623,1624,1625,1627,1628,1629' where id_rol=218
-update admon.roles set opciones='1610,1611,1612,1613,1614,1615,1616,1617,1618,1619,1620,1621,1622,1623,1624,1625,1625' where id_rol=217
+update admon.roles set opciones='1612,1614,1615,1618,1619,1621,1622,1624,1626' where id_rol=217

@@ -45,7 +45,7 @@ public class JavaEmailSender {
 		}
 		catch(EmptyResultDataAccessException e)
 		{
-			USER_NAME = null;
+			USER_NAME = "sccl.inatec.gmail.com";
 		}
 
 		FROM_ADDRESS = USER_NAME;
@@ -56,7 +56,7 @@ public class JavaEmailSender {
 		}
 		catch(EmptyResultDataAccessException e)
 		{
-			PASSWORD = null;
+			PASSWORD = "sccl2013";
 		}
 
 		try
@@ -65,7 +65,7 @@ public class JavaEmailSender {
 		}
 		catch(EmptyResultDataAccessException e)
 		{
-			HOST = null;
+			HOST = "smtp.gmail.com";
 		}
 
 		try
@@ -74,7 +74,7 @@ public class JavaEmailSender {
 		}
 		catch(EmptyResultDataAccessException e)
 		{
-			PORT = null;
+			PORT = "587";
 		}
 		
 		try
@@ -83,7 +83,7 @@ public class JavaEmailSender {
 		}
 		catch(EmptyResultDataAccessException e)
 		{
-			RESPONSIBLE = null;
+			RESPONSIBLE = "dnchavez@hotmail.com";
 		}
 	}
 	 
