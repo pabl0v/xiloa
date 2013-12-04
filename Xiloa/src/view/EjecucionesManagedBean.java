@@ -11,6 +11,7 @@ import javax.faces.model.SelectItem;
 
 import model.Actividad;
 import model.Bitacora;
+import model.Certificacion;
 import model.Contacto;
 import model.Mantenedor;
 
@@ -53,7 +54,7 @@ public class EjecucionesManagedBean implements Serializable {
 	private void init(){
 		actividades = service.getActividades(null);
 		catalogoTiposActividad = service.getMapMantenedoresByTipo("1");
-		catalogoEstatusActividad = service.getMapMantenedoresByTipo("4");  
+		catalogoEstatusActividad = service.getMapMantenedoresByTipo("4");
 	}
 
 	public void reset(){
@@ -123,6 +124,18 @@ public class EjecucionesManagedBean implements Serializable {
 		opciones[0] = new SelectItem("", "Seleccione");
 		for(int i = 0; i<estatusList.size(); i++)
 			opciones[i + 1] = new SelectItem(estatusList.get(i).getValor(), estatusList.get(i).getValor());
+		return opciones;
+	}
+	
+	public SelectItem[] getNombreCertificacion(){
+
+		List<Certificacion> certificaciones = service.getCertificaciones();
+		SelectItem opciones[] = new SelectItem[certificaciones.size() + 1];
+
+		opciones[0] = new SelectItem("", "Seleccione");
+		for(int i = 0; i<certificaciones.size(); i++){
+			opciones[i + 1] = new SelectItem(certificaciones.get(i).getNombre(), certificaciones.get(i).getNombre());
+		}
 		return opciones;
 	}
 

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.model.SelectItem;
 
 import model.Certificacion;
 import model.Contacto;
@@ -21,6 +22,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import service.IService;
+import support.Ifp;
 import support.UCompetencia;
 
 @Component
@@ -118,4 +120,26 @@ public class PlanificacionManagedBean implements Serializable {
 	
 	public void onRowSelectCompetencia(SelectEvent event) {  
     }
+	
+	public SelectItem[] getListaCentros(){
+	
+		List<Ifp> centros = service.getIfpByInatec();
+		SelectItem[] opciones = new SelectItem[centros.size()+1];
+		opciones[0] = new SelectItem("","Seleccione");
+		for(int i=0; i<centros.size(); i++)
+			opciones[i+1] = new SelectItem(centros.get(i).getIfpNombre(),centros.get(i).getIfpNombre());
+		return opciones;
+	}
+	
+	public SelectItem[] getListaEstatus(){
+
+		List<Mantenedor> estatusList = new ArrayList<Mantenedor>(utilitarios.getCatalogoEstatusCertificacion().values());
+		SelectItem[] estatus = new SelectItem[estatusList.size() + 1];
+		
+		estatus[0] = new SelectItem("","Seleccione");
+		for(int i=0; i<estatusList.size(); i++)
+			estatus[i+1] = new SelectItem(estatusList.get(i).getValor(),estatusList.get(i).getValor());
+		
+		return estatus;
+	}
 }

@@ -28,41 +28,17 @@
             </div>
         </div>
       
-       <div id="contenedor_filtro">            
-	            <p style="margin-left:5px">Buscar:</p>
-	            <p:selectOneMenu styleClass="selectores" id="selector_buscarByAll" value="#{dashBoardSolicitudesManagedBean.selectedBuscarByAll}">
-	            	<f:selectItems value="#{dashBoardSolicitudesManagedBean.listBuscarByAll}"/>	            			        
-			    </p:selectOneMenu>
-		        <p:inputText style="margin-right:10px;" id="filtro_buscarByAll" value="#{dashBoardSolicitudesManagedBean.buscarByAllValue}">
-		        	<p:ajax event="keyup" update="" listener="#{dashBoardSolicitudesManagedBean.handleBuscar}" process="" />
-		        </p:inputText>
-		        <span style="display:inline-block;">
-		            <p>Centro evaluador:</p>
-		            <p:selectOneMenu styleClass="selectores selector_centrosBySolicitudEstilo" id="selector_centrosBySolicitud" value="#{dashBoardSolicitudesManagedBean.selectedIdIfpSolicitud}" >			        
-				        <f:selectItems value="#{dashBoardSolicitudesManagedBean.listCentrosBySolicitud}"/>
-				        <p:ajax update=""  listener="#{dashBoardSolicitudesManagedBean.handleCertByCentro}" />
-				    </p:selectOneMenu>
-			    </span>
-			    <span style="display:inline-block; margin-left:5px">
-				    <p>Certificaciones:</p>
-		            <p:selectOneMenu styleClass="selectores selector_certificacionByCentroEstilo" id="selector_certificacionByCentro" value="#{dashBoardSolicitudesManagedBean.selectedIdCertByCentro}" >			        
-				        <f:selectItems value="#{dashBoardSolicitudesManagedBean.listCertByCentro}" />
-				        <p:ajax update="" listener="#{dashBoardSolicitudesManagedBean.handleBuscar}" />  
-				    </p:selectOneMenu>	
-			    </span>		  
-        </div>             
-      
         <div id="contenedor_tabla_planificacion" style="margin-top:10px;">
             <h:form id="form">  
                 <p:dataTable id="certificaciones" emptyMessage="No hay datos para mostrar" var="certificacion" value="#{planificacionManagedBean.certificaciones}" selection="#{planificacionManagedBean.selectedCertificacion}" paginator="true" rows="12" rowKey="#{certificacion.id}" selectionMode="single">  
                         <!--Las columnas de la tabla-->
                         <p:column headerText="Registrado"><h:outputText value="#{certificacion.fechaRegistro}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>  
-                        <p:column headerText="Centro de Formacion"><h:outputText value="#{certificacion.ifpNombre}" /></p:column>  
-                        <p:column headerText="Certificacion"><h:outputText value="#{certificacion.nombre}"/></p:column>
+                        <p:column filterBy="#{certificacion.ifpNombre}" headerText="Centro de Formación" filterOptions="#{planificacionManagedBean.listaCentros}" filterMatchMode="exact"><h:outputText value="#{certificacion.ifpNombre}" /></p:column>  
+                        <p:column filterBy="#{certificacion.nombre}" headerText="Certificación" filterMatchMode="contains"><h:outputText value="#{certificacion.nombre}"/></p:column>
                         <p:column headerText="Disponible"><h:outputText value="#{certificacion.disponibilidad}" /></p:column>                
                         <p:column headerText="Coordinador"><h:outputText value="#{certificacion.coordinador.nombreCompleto}" /></p:column>                
                         <p:column headerText="Evalua"><h:outputText value="#{certificacion.evaluador.nombreCompleto}" /></p:column>
-                        <p:column headerText="Estatus"><h:outputText value="#{certificacion.estatus.valor}" /></p:column>               
+                        <p:column filterBy="#{certificacion.estatus.valor}" headerText="Estatus" filterOptions="#{planificacionManagedBean.listaEstatus}" filterMatchMode="exact"><h:outputText value="#{certificacion.estatus.valor}" /></p:column>               
                         <p:column style="width:4%" rendered="#{sec:areAnyGranted('ROLE_RIGHT_EDITAR_PLANIFICACIONES')}">
 							<p:commandButton id="editarButton" action="#{certificacionManagedBean.editarCertificacion(planificacionManagedBean.selectedCertificacion)}" icon="ui-icon-pencil" title="Editar"/>  
 				        </p:column>
