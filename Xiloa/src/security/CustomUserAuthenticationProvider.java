@@ -110,6 +110,7 @@ public class CustomUserAuthenticationProvider implements AuthenticationProvider 
 			}
 			
 			service.registrarAcceso(usuario);
+			System.out.println("Usuario autenticado: "+usuario.getUsuarioAlias());
 			return new UsernamePasswordAuthenticationToken(usuario.getUsuarioAlias(), null, service.getAuthoritiesInatecByRolId(usuario.getRol().getIdRolInatec()));			
 		}
 	}

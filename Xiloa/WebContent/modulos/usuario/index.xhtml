@@ -83,19 +83,19 @@
         </h:form>        
         
         <div class="contenedor_central">
-          <div id="contenedor_tabs">
+          <div id="contenedor_tabs">  
           	     <!-- Formulario para login principal -->
 		         <h:form id="messageForm">
           	     	<p:messages id="messages" showDetail="false" autoUpdate="true" closable="true"/>          	     
           	     </h:form>
                  <h:form id="loginForm" prependId="false">
-            	 <h:outputLabel for="username" value="Usuario:" />  
-				 <h:inputText id="username" required="true" requiredMessage="El usuario es requerido"  label="username" value="#{loginController.username}" />
-			     <h:outputLabel for="password" value="Contraseña:" />  
-				 <h:inputSecret id="password" label="password" required="true" requiredMessage="La contraseña es requerida" value="#{loginController.password}" />  
-			     <h:commandButton styleClass="boton_verde" type="submit" id="login" value="Continuar" action="#{loginController.login}" />
+            	 <h:outputLabel for="j_username" value="Usuario:" />  
+				 <h:inputText name="j_username" id="j_username" required="true" requiredMessage="El usuario es requerido"  label="username" value="#{loginController.username}" />
+			     <h:outputLabel for="j_password" value="Contraseña:" />  
+				 <h:inputSecret name="j_password" id="j_password" label="password" required="true" requiredMessage="La contraseña es requerida" value="#{loginController.password}" />  
+   			     <h:commandButton styleClass="boton_verde" type="submit" id="login" value="Continuar" action="#{loginController.doLogin}" update="messages"/>
 			     <h:outputText value="Usuario INATEC: " />  
-        	     <p:selectBooleanCheckbox value="#{loginController.inatec}" />
+        	     <h:selectBooleanCheckbox id="inatec" name="inatec" value="#{loginController.inatec}" />
 				</h:form>
 				<!-- Formulario para login de OpenID -->
 				<h:form id="openid_form">

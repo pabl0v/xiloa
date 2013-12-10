@@ -18,7 +18,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
@@ -37,11 +36,11 @@ public class LoginController implements PhaseListener {
 	protected final Log logger = LogFactory.getLog(getClass());
 	private String username;
 	private String password;
-	private boolean inatec;
+	private boolean inatec = false;
 	private String loggedUser;
 	
 	@Autowired
-	private AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager;	
 	
 	public String getLoggedUser(){
 		if(loggedUser==null){
@@ -58,7 +57,7 @@ public class LoginController implements PhaseListener {
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
     	this.authenticationManager = authenticationManager;
     }
-    	
+
 	public String login() {
 		CustomUsernamePasswordAuthenticationToken token = new CustomUsernamePasswordAuthenticationToken(username, password, inatec);
 		try{
@@ -76,7 +75,7 @@ public class LoginController implements PhaseListener {
 	}
 	
 	public String doLogin() throws ServletException, IOException {
-		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();		
 		RequestDispatcher dispatcher = ((ServletRequest) context.getRequest()).getRequestDispatcher("/j_spring_security_check");
 		dispatcher.forward((ServletRequest) context.getRequest(),(ServletResponse) context.getResponse());
 		FacesContext.getCurrentInstance().responseComplete();
@@ -99,18 +98,23 @@ public class LoginController implements PhaseListener {
 		FacesContext.getCurrentInstance().responseComplete();
 	}
 	
+	public void updateMessages(boolean update) throws Exception {
+		Exception ex = (Exception)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(WebAttributes.AUTHENTICATION_EXCEPTION);
+		if (ex != null) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ex.getMessage()));
+			ex = null;
+		}
+	}
+	
 	public void afterPhase(PhaseEvent event) {
 	}
 
 	public void beforePhase(PhaseEvent event) {
-		Exception e = (Exception) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(
-				WebAttributes.AUTHENTICATION_EXCEPTION);
+		Exception e = (Exception) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(WebAttributes.AUTHENTICATION_EXCEPTION);
  
-        if (e instanceof BadCredentialsException) {
-        	logger.debug("Found exception in session map: "+e);
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(
-            		WebAttributes.AUTHENTICATION_EXCEPTION, null);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Username or password not valid.", "Username or password not valid"));
+        if (e instanceof Exception) {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(WebAttributes.AUTHENTICATION_EXCEPTION, null);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Autenticación fallida: " + e.getMessage(), null));
         }
 	}
 
@@ -134,7 +138,7 @@ public class LoginController implements PhaseListener {
 		this.password = password;
 	}
 
-	public boolean isInatec() {
+	public boolean getInatec() {
 		return inatec;
 	}
 
