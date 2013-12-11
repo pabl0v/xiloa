@@ -41,13 +41,21 @@
 		</div>
 		<div id="contenedor_panel_mantenedores" class="contenedor_paneles">
 			<p:tabView id="tabView1">  
-	            <p:tab id="tab1" title="Mantenedores">  
-	                   <p:dataTable emptyMessage="No hay datos para mostrar"  var="mantenedor" value="#{utilitariosManagedBean.mantenedores}">  
+	            <p:tab id="tab1" title="Mantenedores">
+	            	   <h:form id="form_mantenedores">
+					   <p:commandButton value="Agregar Mantenedor" style="margin-bottom: 5px" update=":mantenedorDialogo" action="#{configuracionManagedBean.nuevoMantenedor}" onclick="PF('dlg1').show();"/>  
+	                   <p:dataTable id="mantenedoresDataTable" emptyMessage="No hay datos para mostrar"  var="mantenedor" value="#{configuracionManagedBean.mantenedores}" selection="#{configuracionManagedBean.selectedMantenedor}" rowKey="#{mantenedor.id}" selectionMode="single">  
 	                      <p:column headerText="Tipo"><h:outputText value="#{mantenedor.tipo}" /></p:column>
 						  <p:column headerText="Nombre"><h:outputText value="#{mantenedor.etiqueta}" /></p:column>
-	                      <p:column headerText="Valor"><h:outputText value="#{mantenedor.valor}" /></p:column>                   
-	                   </p:dataTable>    
-	            </p:tab>  
+	                      <p:column headerText="Valor"><h:outputText value="#{mantenedor.valor}" /></p:column>
+	                      <p:column headerText="Anterior"><h:outputText value="#{mantenedor.anterior}" /></p:column>
+	                      <p:column headerText="Próximo"><h:outputText value="#{mantenedor.proximo}" /></p:column>
+						  <p:column headerText="Editar" style="width:4%">
+							<p:commandButton id="selectButton" action="#{configuracionManagedBean.editarMantenedor(configuracionManagedBean.selectedMantenedor)}" update=":mantenedorDialogo" icon="ui-icon-pencil" title="Editar" onclick="PF('dlg1').show();"/>  
+						  </p:column>
+	                   </p:dataTable>
+	                   </h:form>
+	            </p:tab>
 	
 	            <p:tab id="tab2" title="Usuarios">  
 	                   <p:dataTable emptyMessage="No hay datos para mostrar"  var="usuario" value="#{utilitariosManagedBean.usuarios}">  
@@ -67,6 +75,35 @@
 	            </p:tab> 
 	       </p:tabView>  
        </div>
-    </div>     
+    </div>
+    
+	<p:dialog id="modalDialog1" styleClass="estilo_dialogoactividades" header="Edición de Mantenedor:" widgetVar="dlg1" modal="true" resizable="false" width="350" height="300">
+		<div id="contenedor_dialogoactividades">
+		<h:panelGrid id="modal1" columns="2" cellpadding="4">
+		<h:form id="mantenedorDialogo">
+		  	<h:outputLabel styleClass="estilo_label" value="Tipo:" />
+            <p:inputText id="codigo1" value="#{configuracionManagedBean.mantenedor.tipo}" required="true" requiredMessage="El tipo es requerido"/>
+            <br/>	
+            <h:outputLabel styleClass="estilo_label" value="Etiqueta:" />
+            <p:inputText id="codigo2" value="#{configuracionManagedBean.mantenedor.etiqueta}" required="true" requiredMessage="La etiqueta es requerida"/>
+            <br/>	
+            <h:outputLabel styleClass="estilo_label" value="Valor:" />
+            <p:inputText id="codigo3" value="#{configuracionManagedBean.mantenedor.valor}" required="true" requiredMessage="El valor es requerido"/>
+            <br/>
+            <h:outputLabel styleClass="estilo_label" value="Valor Anterior:" />
+            <p:inputText id="codigo4" value="#{configuracionManagedBean.mantenedor.anterior}" required="false" />
+			<br/>
+            <h:outputLabel styleClass="estilo_label" value="Valor Próximo:" />
+            <p:inputText id="codigo5" value="#{configuracionManagedBean.mantenedor.proximo}" required="false" />
+			<br/>	
+			<div class="contenedor_botones" style="margin-top:32px;">			
+	            <h:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/> 
+				<h:commandButton value="Aceptar" update=":tab1:mantenedoresDataTable" action="#{configuracionManagedBean.guardarMantenedor(configuracionManagedBean.mantenedor)}" onclick="PF('dlg1').hide();"/>
+			</div>
+		</h:form>
+		</h:panelGrid>
+		</div>
+	</p:dialog>	
+         
 </h:body>
 </html>
