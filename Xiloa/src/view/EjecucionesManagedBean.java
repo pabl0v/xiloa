@@ -97,7 +97,6 @@ public class EjecucionesManagedBean implements Serializable {
 	public void guardarBitacora(Bitacora bitacora) {
 		bitacora.setActividad(selectedActividad);
 		bitacora.setFechaRegistro(new Date());
-		//bitacora.setUsuario((Contacto)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 		bitacora.setUsuario(controller.getContacto());
 		service.guardar(bitacora);
 		this.bitacora = new Bitacora();
@@ -131,7 +130,7 @@ public class EjecucionesManagedBean implements Serializable {
 	
 	public SelectItem[] getNombreCertificacion(){
 
-		List<Certificacion> certificaciones = service.getCertificaciones();
+		List<Certificacion> certificaciones = service.getCertificaciones(controller.getEntidadUsuario());
 		SelectItem opciones[] = new SelectItem[certificaciones.size() + 1];
 
 		opciones[0] = new SelectItem("", "Seleccione");

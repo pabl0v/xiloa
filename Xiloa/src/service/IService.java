@@ -58,7 +58,7 @@ public interface IService {
 	
 	public Map<Long, Item> getCatalogoUnidades();
 	
-	public List<Certificacion> getCertificaciones();
+	public List<Certificacion> getCertificaciones(Integer entidadId);
 	
 	public List<Certificacion> getCertificacionesActivas(Integer parametro, String valor);
 	
@@ -91,7 +91,7 @@ public interface IService {
 	public void updateRequisito(Requisito requisito);
 	public List<Usuario> getUsuarios();
 	public void updateUsuario(Usuario usuario);
-	public List<UCompetencia> getUcompetenciaSinPlanificar();
+	public List<UCompetencia> getUcompetenciaSinPlanificar(Integer entidadId);
 	public List<Contacto> getContactosInatec();
 	public Usuario getUsuarioLocal(String usuario);
 	public Usuario getUsuarioInatec(String usuario);	

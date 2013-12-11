@@ -108,10 +108,7 @@ public class DaoInatecImpl implements IDaoInatec {
 			"forma.id_tipo_estructura in (3,5) "+ 
 			"and o.activo=1 "+ 
 			"and forma.id_tipo_acreditacion=1 "+ 
-			"and forma.nivel_cualificacion='2' "+
-			"--and o.id_centro='4020' "+ 
-		"order by "+
-			"c.descripcion";
+			"and forma.nivel_cualificacion='2' ";
 	
 	private static final String SQL_SELECT_UNIDADES_COMPETENCIA = 
 		"select	distinct "+
@@ -237,9 +234,9 @@ public class DaoInatecImpl implements IDaoInatec {
 	}
 
 	@Override
-	public List<UCompetencia> getCertificacionesSinPlanificar() {
+	public List<UCompetencia> getCertificacionesSinPlanificar(Integer entidadId) {
 		List<UCompetencia> certificaciones = this.jdbcTemplate.query(
-				SQL_CERTIFICACIONES_SIN_PLANIFICAR,
+				SQL_CERTIFICACIONES_SIN_PLANIFICAR + " and o.id_centro = case " + entidadId + " when 1000 then o.id_centro else " + entidadId+ " end order by c.descripcion",
 		        new RowMapper<UCompetencia>() {
 		            public UCompetencia mapRow(ResultSet rs, int rowNum) throws SQLException {
 		                UCompetencia certificacion = new UCompetencia();

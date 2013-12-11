@@ -18,7 +18,7 @@ public interface IDaoInatec {
 
 	public Collection<Authority> getAuthorities(Integer rolId);
 	public Integer getIdRol(String usuario);
-	public List<UCompetencia> getCertificacionesSinPlanificar();
+	public List<UCompetencia> getCertificacionesSinPlanificar(Integer entidadId);
 	public Map<Long, Item> getCatalogoUnidades();
 	public Map<Long, String> getUnidadesByEstructuraId(Integer estructura); 
 	public Usuario getUsuario(String username);

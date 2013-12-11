@@ -50,8 +50,8 @@ public class PlanificacionManagedBean implements Serializable {
 	
 	@PostConstruct
 	private void init(){
-		competencias = service.getUcompetenciaSinPlanificar();
-		certificaciones = service.getCertificaciones();
+		competencias = service.getUcompetenciaSinPlanificar(controller.getEntidadUsuario());
+		certificaciones = service.getCertificaciones(controller.getEntidadUsuario());
 	}
 	
 	public List<Certificacion> getCertificaciones(){
@@ -115,8 +115,6 @@ public class PlanificacionManagedBean implements Serializable {
 	}
 	
 	public String configurarInstrumento(Certificacion certificacion){
-		//FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().put("idCertificacion", certificacion.getId().toString());
-		//FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().put("nombreCertificacion", certificacion.getNombre());
 		return "/modulos/planificacion/instrumentos?faces-redirect=true";
 	}
 	

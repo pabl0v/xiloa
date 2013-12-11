@@ -12,12 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.sql.DataSource;
-
-import org.primefaces.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.embedded.DataSourceFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import reporte.ControlGenericoReporte;
 import security.Authority;
 import support.Departamento;
-import support.FacesUtil;
 import support.Ifp;
 import support.Item;
 import support.JavaEmailSender;
@@ -34,7 +28,6 @@ import support.PasswordGenerator;
 import support.USolicitud;
 import support.UCompetencia;
 import support.UsuarioExterno;
-import util.Global;
 import dao.IDao;
 import dao.IDaoInatec;
 import model.Actividad;
@@ -118,8 +111,8 @@ public class ServiceImp implements IService {
 	private IDao<Object> objectDao;
 	
 	@Override
-	public List<Certificacion> getCertificaciones(){
-		return certificacionDao.findAllByNamedQuery("Certificacion.findAll");
+	public List<Certificacion> getCertificaciones(Integer entidadId){
+		return certificacionDao.findAllByNamedQueryParam("Certificacion.findByIfpId", new Object[] {entidadId});
 	}
 	
 	@Override
@@ -183,8 +176,8 @@ public class ServiceImp implements IService {
 	}
 
 	@Override
-	public List<UCompetencia> getUcompetenciaSinPlanificar() {
-		return inatecDao.getCertificacionesSinPlanificar();
+	public List<UCompetencia> getUcompetenciaSinPlanificar(Integer entidadId) {
+		return inatecDao.getCertificacionesSinPlanificar(entidadId);
 	}
 	
 	@Override

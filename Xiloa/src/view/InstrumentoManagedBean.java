@@ -18,9 +18,9 @@ import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import controller.LoginController;
 import service.IService;
 
 @Component
@@ -34,6 +34,9 @@ public class InstrumentoManagedBean implements Serializable {
 	
 	@Autowired
 	private transient UtilitariosManagedBean util;
+	
+	@Autowired
+	private LoginController controller;
 
 	private Long idCertificacion;
 	private String nombreCertificacion;
@@ -68,8 +71,7 @@ public class InstrumentoManagedBean implements Serializable {
 	@PostConstruct
 	private void init(){
 		catalogoTiposInstrumento = util.getCatalogoTiposInstrumento();
-		contacto = service.getContactoByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
-		//catalogoTiposInstrumento = service.getMapMantenedoresByTipo("6");
+		contacto = controller.getContacto();
 		configurarInstrumento();
 	}
 	
