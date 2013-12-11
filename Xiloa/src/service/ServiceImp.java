@@ -181,8 +181,8 @@ public class ServiceImp implements IService {
 	}
 	
 	@Override
-	public List<Contacto> getContactosInatec() {
-		return contactoDao.findAllByNamedQuery("Contacto.findInvolucradosInatec");
+	public List<Contacto> getContactosInatec(Integer entidadId) {
+		return contactoDao.findAllByNamedQueryParam("Contacto.findInvolucradosInatec", new Object [] {entidadId});
 	}
 
 	@Override
@@ -408,10 +408,7 @@ public class ServiceImp implements IService {
 
 	@Override
 	public List<Actividad> getActividades(Long certificacionId) {
-		if(certificacionId != null)
 			return actividadDao.findAllByNamedQueryParam("Actividad.findByCertificacionId", new Object[] {certificacionId});
-		else
-			return actividadDao.findAll(Actividad.class);
 	}
 
 	@Override
@@ -981,5 +978,10 @@ public class ServiceImp implements IService {
 			}						
 		}
 		return pasa;
+	}
+
+	@Override
+	public List<Actividad> getActividadesByEntidadId(Integer entidadId) {
+		return actividadDao.findAllByNamedQueryParam("Actividad.findByEntidadId", new Object[] {entidadId});
 	}
 }

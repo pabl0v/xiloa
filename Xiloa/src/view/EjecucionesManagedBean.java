@@ -53,7 +53,7 @@ public class EjecucionesManagedBean implements Serializable {
 
 	@PostConstruct
 	private void init(){
-		actividades = service.getActividades(null);
+		actividades = service.getActividadesByEntidadId(controller.getEntidadUsuario());
 		catalogoTiposActividad = service.getMapMantenedoresByTipo("1");
 		catalogoEstatusActividad = service.getMapMantenedoresByTipo("4");
 	}

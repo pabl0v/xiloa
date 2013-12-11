@@ -18,9 +18,9 @@ import model.Mantenedor;
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import controller.LoginController;
 import service.IService;
 
 @Component
@@ -31,6 +31,9 @@ public class ActividadManagedBean implements Serializable {
 
 	@Autowired
 	private IService service;
+	
+	@Autowired
+	private LoginController controller;
 
 	private Certificacion certificacion;
 	@SuppressWarnings("unused")
@@ -62,8 +65,8 @@ public class ActividadManagedBean implements Serializable {
 	private void init(){
 		catalogoTiposActividad = service.getMapMantenedoresByTipo("1");
 		catalogoEstatusActividad = service.getMapMantenedoresByTipo("4");
-		contacto = service.getContactoByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
-		contactos = service.getContactosInatec();
+		contacto = controller.getContacto();
+		contactos = service.getContactosInatec(controller.getEntidadUsuario());
 	}
 	
 	public Certificacion getCertificacion() {

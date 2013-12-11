@@ -32,7 +32,8 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @Entity(name = "actividades")
 @Table(name = "actividades", schema = "sccl")
 @NamedQueries({
-	@NamedQuery(name="Actividad.findByCertificacionId", query="select a from actividades a where a.certificacion.id=?1")
+	@NamedQuery(name="Actividad.findByCertificacionId", query="select a from actividades a where a.certificacion.id=?1"),
+	@NamedQuery(name="Actividad.findByEntidadId", query="select a from actividades a where a.certificacion.ifpId = case ?1 when 1000 then a.certificacion.ifpId else ?1 end"),
 })
 public class Actividad implements Serializable {
 

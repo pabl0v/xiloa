@@ -76,6 +76,8 @@ public interface IService {
 	
 	public List<Actividad> getActividades(Long certificacionId);
 	
+	public List<Actividad> getActividadesByEntidadId(Integer entidadId);
+	
 	public List<Mantenedor> getMantenedorActividades();
 	
 	public List<Mantenedor> getMantenedorEstatusCertificacion();
@@ -92,7 +94,7 @@ public interface IService {
 	public List<Usuario> getUsuarios();
 	public void updateUsuario(Usuario usuario);
 	public List<UCompetencia> getUcompetenciaSinPlanificar(Integer entidadId);
-	public List<Contacto> getContactosInatec();
+	public List<Contacto> getContactosInatec(Integer entidadId);
 	public Usuario getUsuarioLocal(String usuario);
 	public Usuario getUsuarioInatec(String usuario);	
 	public void RegistrarUsuarioOpenId(String login, String nombre, String apellido, String email);

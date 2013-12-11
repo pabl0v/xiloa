@@ -49,7 +49,7 @@ public class CertificacionManagedBean implements Serializable {
 	
 	@PostConstruct
 	private void init(){
-		contactos = service.getContactosInatec();
+		contactos = service.getContactosInatec(controller.getEntidadUsuario());
 		catalogoEstatusCertificacion = service.getMapMantenedoresByTipo("3");
 	}
 	
