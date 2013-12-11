@@ -1,5 +1,7 @@
 package service;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -128,4 +130,12 @@ public interface IService {
 	public Evaluacion guardarEvaluacion(Evaluacion eval, Guia [] guias);
 	public EvaluacionGuia updateEvaluacionGuia(EvaluacionGuia evalGuia);
 	public boolean validaListoInscripcion(Solicitud solicitud);
+	
+	public Connection getSqlConnection() throws SQLException;
+	
+	public void imprimirReporte(String nombreReporte, Map<String,Object> parametros, String formato, boolean visualiza) throws SQLException;
+	
+	public List<Solicitud> filtraListaSolicitudes(HashMap<String, Object> param, Integer tipoFiltro);
+	public boolean validaProcesoConcluido(Solicitud solicitud, boolean validaEvaluacion);
+	public boolean validaEvaluacionAprobada(Solicitud solicitud);
 }

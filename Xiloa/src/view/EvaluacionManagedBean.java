@@ -70,6 +70,8 @@ public class EvaluacionManagedBean implements Serializable {
 	private Float puntajeMinEval;
 	private List<SelectItem> listaAprobados;
 	private Float puntajeMaxEval;
+	private boolean cualitativo; 
+	private boolean visualizaPuntaje;
 	
 	public EvaluacionManagedBean() {
 		super();
@@ -86,6 +88,24 @@ public class EvaluacionManagedBean implements Serializable {
 		listaEvaluacionGuia = new ArrayList<EvaluacionGuia> ();
 		disableAgregaGuias = true;
 		listaAprobados = new ArrayList<SelectItem> ();
+		cualitativo = false;
+		visualizaPuntaje = (this.isCualitativo()) ? false : true;
+	}
+
+	public boolean isVisualizaPuntaje() {		
+		return visualizaPuntaje;
+	}
+
+	public void setVisualizaPuntaje(boolean visualizaPuntaje) {
+		this.visualizaPuntaje = visualizaPuntaje;
+	}
+
+	public boolean isCualitativo() {
+		return cualitativo;
+	}
+
+	public void setCualitativo(boolean cualitativo) {
+		this.cualitativo = cualitativo;
 	}
 
 	public Float getPuntajeMaxEval() {
@@ -178,7 +198,7 @@ public class EvaluacionManagedBean implements Serializable {
 
 	public List<EvaluacionGuia> getListaEvaluacionGuia() {
 		if (this.getSelectedEvaluacion() != null)
-			this.listaEvaluacionGuia = service.getEvaluacionGuiaByEvaluacionId(this.selectedEvaluacion.getId());
+			this.listaEvaluacionGuia = service.getEvaluacionGuiaByEvaluacionId(this.selectedEvaluacion.getId());		
 		return listaEvaluacionGuia;
 	}
 
@@ -262,6 +282,8 @@ public class EvaluacionManagedBean implements Serializable {
 		if (this.selectedInstrumento != null){
 			this.puntajeMinEval = selectedInstrumento.getPuntajeMinimo();
 			this.puntajeMaxEval = selectedInstrumento.getPuntajeMaximo();
+			this.cualitativo = this.selectedInstrumento.isCualitativo();
+			this.visualizaPuntaje = (this.cualitativo) ? false : true;
 			this.setIdSelectedInstrByUnd(this.selectedInstrumento.getId());
 			Object [] objs =  new Object [] {this.selectedEvaluacion.getId(), this.selectedInstrumento.getId()};
 			List<Guia> guiasEvalInst = service.getGuiaByParam("EvaluacionGuia.findGuiasByEvalAndInstrumento", objs);
@@ -394,8 +416,8 @@ public class EvaluacionManagedBean implements Serializable {
 			this.setSelectedInstrumento(null);
 			
 		listaAprobados = new ArrayList<SelectItem> ();
-		listaAprobados.add(new SelectItem(true, "Aprobado"));
-		listaAprobados.add(new SelectItem(false, "No Aprobado"));
+		listaAprobados.add(new SelectItem(true, " Aprobado "));
+		listaAprobados.add(new SelectItem(false, " No Aprobado "));
 	}
 
 	public void handleInstrumentosByUnidad () {
@@ -441,11 +463,14 @@ public class EvaluacionManagedBean implements Serializable {
 			selectedInstrumentoId = inst.getId();
 			puntajeMaxEval = selectedInstrumento.getPuntajeMaximo();
 			puntajeMinEval = selectedInstrumento.getPuntajeMinimo();
+			
 		}
 		
 		if (inst.getId() != selectedInstrumentoId)
 			selectedInstrumento = inst;
-			
+		
+		cualitativo = selectedInstrumento.isCualitativo();
+		visualizaPuntaje = (this.isCualitativo()) ? false : true;
 		Object [] objs =  new Object [] {selectedInstrumento.getId()};
 		listGuiaByInstru = service.getGuiaByParam("Guia.findByIdInstrumento", objs);						
 	}
@@ -577,6 +602,13 @@ public class EvaluacionManagedBean implements Serializable {
 			
 			puntajeByGuia = selectedEvaluacionGuia.getPk().getGuia().getPuntaje();
 			
+			if (this.aprobadoGuia)
+				this.puntajeGuia = (this.cualitativo) ? puntajeByGuia.intValue() : this.puntajeGuia;
+			else
+				this.puntajeGuia = (this.cualitativo) ? new Integer(0) : this.puntajeGuia;
+				
+			visualizaPuntaje = (this.isCualitativo()) ? false : true;
+			
 			if (this.puntajeGuia > puntajeByGuia){
 				FacesUtil.getMensaje("SCCL - Mensaje", "El puntaje indicado es mayor al puntaje maximo permitido por detalle. Favor revisar...", true);
 			} else {
@@ -600,12 +632,16 @@ public class EvaluacionManagedBean implements Serializable {
 		if (this.selectedEvaluacionGuia != null){			
 			this.preguntaGuia = this.selectedEvaluacionGuia.getPk().getGuia().getPregunta();
 			this.respuestaGuia = this.selectedEvaluacionGuia.getPk().getGuia().getRespuesta();
-			this.puntajeGuia = this.selectedEvaluacionGuia.getPuntaje();			
+			this.puntajeGuia = this.selectedEvaluacionGuia.getPuntaje();	
+			this.cualitativo = this.selectedEvaluacionGuia.getPk().getGuia().getInstrumento().isCualitativo();
+			
 		} else {
 			this.preguntaGuia = null;
 			this.respuestaGuia = null;
 			this.puntajeGuia = 0;
+			this.cualitativo = false;
 		}
+		visualizaPuntaje = (this.isCualitativo()) ? false : true;
 		
 	}
 	
@@ -655,6 +691,7 @@ public class EvaluacionManagedBean implements Serializable {
 		this.fechaEvaluacion = null;
 		this.observaciones = null;
 		this.estado = null;
+		this.cualitativo = false;
 	}
 	
 	public String registrar_evaluacion (Solicitud sol) {		

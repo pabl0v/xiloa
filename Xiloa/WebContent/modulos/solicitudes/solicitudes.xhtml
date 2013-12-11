@@ -24,10 +24,7 @@
             <div id="botones_filtro_contenedor">                 
                 <div class="botones_filtro" onclick="window.location='/Xiloa/modulos/solicitudes/registro_solicitud.xhtml'" >
                 	<p class="icono_nuevo">Nueva solicitud</p>
-                </div>  
-                <div class="botones_filtro" onclick="window.location='/Xiloa/modulos/solicitudes/convocatoria.xhtml'">
-                	<p class="icono_folder">Seguimiento</p>
-                </div>            
+                </div>                           
                 <div class="botones_filtro"><p class="icono_exportar">Exportar</p></div>                
             </div>
             </sec:authorize>
@@ -61,6 +58,10 @@
             		<p:dataExporter type="xls" target="dtSolicitud" fileName="ReporteSolicitudes" />           		
         		</h:commandLink>
         		 -->  		
+        		 <p:commandButton id="btnReporte" value="Reporte" title="Reporte Solicitudes" 
+	    		                 icon="ui-icon-star" style="display:inline-block;"
+	    		                 action="#{dashBoardSolicitudesManagedBean.runReporte()}" 
+	    					     />
         		 <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_PARTICIPANTE">       	 
 		            <p:commandButton id="btnEnviarSolicitud" value="Enviar" title="Solicitar Certificacion" 
 	    		                 icon="ui-icon-star" style="display:inline-block;"
@@ -100,7 +101,7 @@
 	        <div id="contenedor_exportar">
 	    		<p>Con seleccionado:</p>    		
 	        	<p:splitButton value="Convocar" icon="ui-icon-disk"
-	        	               action="#{dashBoardSolicitudesManagedBean.indicarConvocar}"  >           		   
+	        	               action="#{dashBoardSolicitudesManagedBean.indicarConvocar}" >           		   
 	       			<p:menuitem value="Asesorar" icon="ui-icon-arrowrefresh-1-w"
 	       			            action="#{dashBoardSolicitudesManagedBean.indicarAsesorar}" />
 	       			<p:separator />  

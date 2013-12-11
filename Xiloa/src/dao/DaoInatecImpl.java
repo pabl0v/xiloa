@@ -185,7 +185,7 @@ public class DaoInatecImpl implements IDaoInatec {
 	public Usuario getUsuario(String usuario) {
 		Usuario user = null;
 		try
-		{
+		{			
 			user = jdbcTemplate.queryForObject(
 					SQL_SELECT_USUARIO, 
 					new RowMapper<Usuario>() {

@@ -1,5 +1,7 @@
 package dao;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface IDao <T extends Object>{
@@ -14,4 +16,5 @@ public interface IDao <T extends Object>{
 	public T findOneByNamedQueryParam(String namedQuery, Object [] params);
 	public List<T> findAllByNamedQueryParam(String named, Object [] params);
 	public List<T> findAllByNamedQuery(String named);
+	public Connection getSqlConexion() throws SQLException;
 }

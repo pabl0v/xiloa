@@ -1,14 +1,19 @@
 package dao;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository("daoImpl")	
@@ -18,6 +23,9 @@ public class DaoImpl<T extends Object> implements IDao<T>{
 		
 	@PersistenceContext
 	protected EntityManager em;
+	
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 		
 	@Override
 	public T save(T pojo) {
@@ -129,5 +137,23 @@ public class DaoImpl<T extends Object> implements IDao<T>{
 			result = null;
 		}		
 		return result;
+	}
+	
+	@Override
+	public Connection getSqlConexion() throws SQLException {			
+		DataSource ds = null;
+		Connection c = null;
+		System.out.println("Entra a DaoImp getSqlConexion");
+		try{			
+			ds = jdbcTemplate.getDataSource(); //(DataSource)em.getProperties().get("dataSource");			
+			System.out.println("DataSource " + ds);
+			c = ds.getConnection();
+			System.out.println("Conexion " + c);
+		}catch (Exception e){
+			e.printStackTrace();
+			c = null;
+		}
+	
+		return c;
 	}
 }

@@ -116,16 +116,9 @@ public class ExpEvalManagedBean implements Serializable  {
 	private boolean disabledBtnAgregaEvaluacion;
 	
 	private List<SelectItem> listEvalBySolicitud;	
-	
-	private Map<Integer, Mantenedor> catalogoTipoDatosLaborales;
-	private Map<Integer, Mantenedor> catalogoEstadosSolicitud;
-	private Map<Integer, Mantenedor> catalogoEstadosPortafolio;
-	
-	
-	private Map<Integer, Departamento> catalogoDepartamento;
+
 	private Map<Integer, Municipio> catalogoMunicipiosByDepto;
-	private Map<Integer, Mantenedor> catalogoGenero;
-	
+		
 	private List<SelectItem> listDeptos;
 	private List<SelectItem> listMunicipioByDptos;
 	private List<SelectItem> listPaises;
@@ -183,15 +176,9 @@ public class ExpEvalManagedBean implements Serializable  {
 		listEstadosPortafolio  = new ArrayList<SelectItem> ();
 		
 		listEvalBySolicitud = new ArrayList<SelectItem> ();	
-		
-		catalogoTipoDatosLaborales = new HashMap<Integer, Mantenedor>();
-		catalogoEstadosSolicitud = new HashMap<Integer, Mantenedor>();
-		catalogoEstadosPortafolio = new HashMap<Integer, Mantenedor> ();
-		
-		catalogoDepartamento = new HashMap<Integer, Departamento>();
+					
 		catalogoMunicipiosByDepto = new HashMap<Integer, Municipio>();
-		catalogoGenero = new HashMap<Integer, Mantenedor> ();
-		
+				
 		listDeptos = new ArrayList<SelectItem> ();
 		listMunicipioByDptos = new ArrayList<SelectItem> ();
 		listPaises = new ArrayList<SelectItem> ();
@@ -201,17 +188,6 @@ public class ExpEvalManagedBean implements Serializable  {
 		
 	}	
 	
-
-	public Map<Integer, Mantenedor> getCatalogoGenero() {
-		return catalogoGenero;
-	}
-
-
-	public void setCatalogoGenero(Map<Integer, Mantenedor> catalogoGenero) {
-		this.catalogoGenero = catalogoGenero;
-	}
-
-
 	public String getTipoEstadosPortafolio() {
 		return tipoEstadosPortafolio;
 	}
@@ -390,18 +366,6 @@ public class ExpEvalManagedBean implements Serializable  {
 		this.listEstadosPortafolio = listEstadosPortafolio;
 	}
 
-
-	public Map<Integer, Mantenedor> getCatalogoEstadosPortafolio() {
-		return catalogoEstadosPortafolio;
-	}
-
-
-	public void setCatalogoEstadosPortafolio(
-			Map<Integer, Mantenedor> catalogoEstadosPortafolio) {
-		this.catalogoEstadosPortafolio = catalogoEstadosPortafolio;
-	}
-
-
 	public boolean isDisabledBtnActualizaContacto() {		
 		return disabledBtnActualizaContacto;
 	}
@@ -553,20 +517,12 @@ public class ExpEvalManagedBean implements Serializable  {
 	}
 
 	public List<SelectItem> getListDeptos() {
-		if (this.catalogoDepartamento.size() > 0 ) {
-			
-			Integer idValor;
-			Departamento valor;
-			
-			Iterator<Integer> claveSet = this.catalogoDepartamento.keySet().iterator();
-			
-			listDeptos = new ArrayList<SelectItem> ();
+		
+		if (utilitarios.getCatalogoEstadoSolicitud().size() > 0){
 			listDeptos.add(new SelectItem(null, "Seleccion un Departamento"));
-		    while(claveSet.hasNext()){		      
-		    	idValor = claveSet.next();
-		    	valor = this.catalogoDepartamento.get(idValor);
-		    	this.listDeptos.add(new SelectItem(idValor, valor.getDpto_nombre()));		    			        		        
-		    }		    
+			for (Departamento d : utilitarios.getCatalogoDepartamentos().values()){
+				this.listDeptos.add(new SelectItem(d.getDpto_id(), d.getDpto_nombre()));
+			}
 		}
 		
 		return listDeptos;
@@ -587,24 +543,9 @@ public class ExpEvalManagedBean implements Serializable  {
 		this.listMunicipioByDptos = listMunicipioByDptos;
 	}
 
-
-	public Map<Integer, Departamento> getCatalogoDepartamento() {		
-		return this.catalogoDepartamento;
-	}
-
-
-
-	public void setCatalogoDepartamento(Map<Integer, Departamento> catalogoDepartamento) {
-		this.catalogoDepartamento = catalogoDepartamento;
-	}
-
-
-
 	public Map<Integer, Municipio> getCatalogoMunicipiosByDepto() {
 		return catalogoMunicipiosByDepto;
 	}
-
-
 
 	public void setCatalogoMunicipiosByDepto(Map<Integer, Municipio> catalogoMunicipiosByDepto) {
 		this.catalogoMunicipiosByDepto = catalogoMunicipiosByDepto;
@@ -766,7 +707,8 @@ public class ExpEvalManagedBean implements Serializable  {
 			proxKey = Integer.valueOf(actualEstado.getProximo());
 			
 			if (proxKey != null){				
-				proximoEstado = this.catalogoEstadosSolicitud.get(proxKey);				
+				proximoEstado = utilitarios.getCatalogoEstadoSolicitud().get(proxKey);
+									
 				estadoSiguiente = (proximoEstado == null) ? actualEstado : proximoEstado;								
 			} else {
 				estadoSiguiente = actualEstado;
@@ -794,16 +736,6 @@ public class ExpEvalManagedBean implements Serializable  {
 	public void setListTipoDatosLaborales(List<SelectItem> listTipoDatosLaborales) {
 		this.listTipoDatosLaborales = listTipoDatosLaborales;
 	}
-
-	public Map<Integer, Mantenedor> getCatalogoTipoDatosLaborales() {
-		return catalogoTipoDatosLaborales;
-	}
-
-	public void setCatalogoTipoDatosLaborales(
-			Map<Integer, Mantenedor> catalogoTipoDatosLaborales) {
-		this.catalogoTipoDatosLaborales = catalogoTipoDatosLaborales;
-	}
-			
 	
 	public Laboral getSelectedLaboral() {
 		return selectedLaboral;
@@ -869,53 +801,29 @@ public class ExpEvalManagedBean implements Serializable  {
 		this.evalIdByArchivoExp = evalIdByArchivoExp;
 	}
 
-	public Map<Integer, Mantenedor> getCatalogoEstadosSolicitud() {			
-		return catalogoEstadosSolicitud;
-	}
-
-	public void setCatalogoEstadosSolicitud(
-			Map<Integer, Mantenedor> catalogoEstadosSolicitud) {
-		this.catalogoEstadosSolicitud = catalogoEstadosSolicitud;
-	}
-
 	@PostConstruct
 	private void initBean(){        
-		List<Mantenedor> listaCatalogo = service.getMantenedoresByTipo(new Integer(5));		
-		for (Mantenedor dato : listaCatalogo) {
-			this.catalogoTipoDatosLaborales.put(dato.getId(), dato);			
+							
+		for (Mantenedor dato : utilitarios.getCatalogoTiposDatosLaborales().values()) {			
 			this.listTipoDatosLaborales.add(new SelectItem(dato.getId(), dato.getValor()));			
 		}	
-				
-		listaCatalogo = service.getMantenedoresByTipo(new Integer(8));
+						
 		listEstadosPortafolio = new ArrayList<SelectItem> ();
-		for (Mantenedor dato : listaCatalogo) {
-			this.catalogoEstadosPortafolio.put(dato.getId(), dato);
+		for (Mantenedor dato : utilitarios.getCatalogoPortafolio().values()) {
 			this.listEstadosPortafolio.add(new SelectItem(dato.getId(), dato.getValor()));
 		}
-		
-		//Llenando el catalogo de Departamentos
-		this.catalogoDepartamento = new HashMap<Integer, Departamento>();
-		
-		this.catalogoDepartamento = service.getDepartamentosByInatec();
-		
+				
 		List<Pais> paises = service.getPaises();
 		this.listPaises = new ArrayList<SelectItem> ();
 		this.listPaises.add(new SelectItem(null, "Seleccion un pais"));
 		for (Pais p : paises){
 			this.listPaises.add(new SelectItem(p.getId(), p.getNombre()));
 		}
-		
-		//Catalogo Genero
-		listGenero = new ArrayList<SelectItem> ();
-		this.catalogoGenero = new HashMap<Integer, Mantenedor> ();
-		
+						
 		listGenero.add(new SelectItem(null, "Indique el Genero"));
-		
-		List<Mantenedor> listaGenero = new ArrayList<Mantenedor> ();
-		listaGenero = service.getMantenedoresByTipo(new Integer(10));
-		for (Mantenedor dato : listaGenero){
-			listGenero.add(new SelectItem(dato.getId(), dato.getValor()));
-			this.catalogoGenero.put(new Integer(dato.getId()), dato);
+							
+		for (Mantenedor dato : utilitarios.getCatalogoGenero().values()){
+			listGenero.add(new SelectItem(dato.getId(), dato.getValor()));			
 		}		
 				
 		archivoExp = new Archivo();
@@ -926,10 +834,7 @@ public class ExpEvalManagedBean implements Serializable  {
 	public void iniciaBeanExpEval (){
 		
 		Solicitud  solicitud = (Solicitud)FacesUtil.getParametroSession("dbSolicitudesBean");				
-		Map<Integer, Mantenedor> catEstadosSolicitud = null;
-		Integer tipoEstadoSolicitud = null;
-		List<Mantenedor> listaEstadosSol = null;
-		
+				
 		if (solicitud != null){		
 						
 			this.solicitudExp = solicitud;
@@ -939,14 +844,14 @@ public class ExpEvalManagedBean implements Serializable  {
 			if (this.contactoExp != null){
 				
 				if (this.contactoExp.getSexo() != null) 
-					this.generoContacto =  this.catalogoGenero.get(this.contactoExp.getSexo());
+					this.generoContacto = utilitarios.getCatalogoGenero().get(this.contactoExp.getSexo());					
 				else 
 					this.generoContacto = null; 
 				 
 				if (this.contactoExp.getDepartamentoId() != null){
 					this.departamentoIdSelected = this.contactoExp.getDepartamentoId();					
 					handleMunicipios();					
-					this.setDeptoContacto(this.catalogoDepartamento.get(this.contactoExp.getDepartamentoId()));					
+					this.setDeptoContacto(utilitarios.getCatalogoDepartamentos().get(this.contactoExp.getDepartamentoId()));							
 				} else{
 					this.setDeptoContacto(null);
 					
@@ -964,20 +869,7 @@ public class ExpEvalManagedBean implements Serializable  {
 				}
 								
 			}
-					
-			//Llenando el catalogo de Estados Solicitudes			
-			tipoEstadoSolicitud = Integer.valueOf(this.solicitudExp.getTipomantenedorestado());
-			
-			listaEstadosSol = service.getMantenedoresByTipo(tipoEstadoSolicitud);
-			
-			catEstadosSolicitud = new HashMap<Integer, Mantenedor>();
-			
-			for (Mantenedor dato : listaEstadosSol) {
-				catEstadosSolicitud.put(new Integer(dato.getId()), dato);						
-			}
-						
-			this.setCatalogoEstadosSolicitud(catEstadosSolicitud);
-									
+														
 			//Estado Actual
 			this.setEstadoActual(this.solicitudExp.getEstatus());
 			
@@ -1147,8 +1039,8 @@ public class ExpEvalManagedBean implements Serializable  {
 		Mantenedor estadoActual = this.getSolicitudExp().getEstatus();
 		Integer proxEstado = Integer.valueOf(estadoActual.getProximo()); //this.catalogoEstadosSolicitud.get(estadoActual).getProximo();
 		
-		Mantenedor proximoEstado = this.getCatalogoEstadosSolicitud().get(proxEstado);
-		
+		Mantenedor proximoEstado = utilitarios.getCatalogoEstadoSolicitud().get(proxEstado);
+						
 		if (proxEstado != null)
 			this.solicitudExp.setEstatus(proximoEstado);		
 		
@@ -1258,29 +1150,29 @@ public class ExpEvalManagedBean implements Serializable  {
 		
 		Integer inicialKey, convocaKey, asesoraKey, siguienteKey, evaluarKey;
 		
-		Mantenedor inicialEstado, convocaEstado, asesoraEstado, siguienteEstado, evaluarEstado;				
+		Mantenedor inicialEstado, convocaEstado, asesoraEstado, siguienteEstado, evaluarEstado, ultimoEstado;				
 		
 		if (sol != null){		
 			
 			inicialEstado = service.getMantenedorMinByTipo(sol.getTipomantenedorestado());
 			inicialKey = inicialEstado.getId();
-			
+			ultimoEstado = service.getMantenedorMaxByTipo(sol.getTipomantenedorestado());
 			convocaKey = Integer.valueOf(inicialEstado.getProximo());
 			
-			convocaEstado = this.getCatalogoEstadosSolicitud().get(convocaKey);
-			
+			convocaEstado = utilitarios.getCatalogoEstadoSolicitud().get(convocaKey);
+								
 			asesoraKey = Integer.valueOf(convocaEstado.getProximo());
 			
-			asesoraEstado = this.getCatalogoEstadosSolicitud().get(asesoraKey);
-			
+			asesoraEstado = utilitarios.getCatalogoEstadoSolicitud().get(asesoraKey); 
+								
 			evaluarEstado = sol.getEstatus();
 			
 			evaluarKey = evaluarEstado.getId();
 			
 			siguienteKey = Integer.valueOf(evaluarEstado.getProximo());
 			
-			siguienteEstado = (siguienteKey == null) ? null : this.getCatalogoEstadosSolicitud().get(siguienteKey);
-			
+			siguienteEstado = (siguienteKey == null) ? null : utilitarios.getCatalogoEstadoSolicitud().get(siguienteKey);
+							
 		} else{
 			inicialEstado = null;
 			inicialKey = null;			
@@ -1292,6 +1184,7 @@ public class ExpEvalManagedBean implements Serializable  {
 			evaluarKey = null;			
 			siguienteKey = null;			
 			siguienteEstado = null;
+			ultimoEstado = null;
 		}
 				
 		switch(opcion) {
@@ -1323,9 +1216,16 @@ public class ExpEvalManagedBean implements Serializable  {
 			case 4: {
 				if ((evaluarKey == Integer.valueOf(asesoraEstado.getProximo())) && (evaluarKey != null))
 					this.setDisabledBtnAgregaEvaluacion(false);
-				else
+				else{
+					
 					this.setDisabledBtnAgregaEvaluacion(true);
+				}
+					
 				break;
+			}
+			//Boton Proceso Concluido
+			case 5: {
+				
 			}
 			default: 
 				break;			
@@ -1446,7 +1346,8 @@ public class ExpEvalManagedBean implements Serializable  {
 		Integer  proxEstado = Integer.valueOf(estadoArchivo.getProximo());
 		
 		if (proxEstado != null){
-			archivoExp.setEstado(this.catalogoEstadosPortafolio.get(proxEstado));
+			archivoExp.setEstado(utilitarios.getCatalogoPortafolio().get(proxEstado));
+				
 		}
 				
 		archivoExp = (Archivo) service.guardar(archivoExp);
@@ -1685,38 +1586,55 @@ public class ExpEvalManagedBean implements Serializable  {
 	
 	
 	public void asesorarCertificacion (){
-		String  titulo = "";
-		String  textoMsg = "";	
-		boolean isError = false;
-		
 	
-		if (this.solicitudExp != null){
-			System.out.println("Nuevo estado " + this.getEstadoSiguiente().getValor());
+		String  textoMsg = "";	
+		boolean indicaAsesorado = false;
 			
-			this.solicitudExp.setEstatus(this.getEstadoSiguiente());
+		solicitudExp = avanzaProceso (solicitudExp, "listo para inscripción", indicaAsesorado, textoMsg);
 			
-			this.solicitudExp = (Solicitud) service.guardar(this.solicitudExp);
-			
-			if (this.solicitudExp != null){
-				titulo = "SCCL - Proceso exitoso: ";
-				textoMsg = "La solicitud ha pasado a asesorado.";
-				isError = false;
-			} else {
-				titulo = "SCCL - Error: ";
-				textoMsg = "Se generó un error al aplicar los cambios. Favor comuníquese al Departamento de Tecnología del INATEC.";
-				isError = true;
-			}				
-		} else {
-			titulo = "SCCL - Error: ";
-			textoMsg = "Se generó un error al obtener los datos del proceso de certificacion. Favor comuníquese al Departamento de Tecnología del INATEC.";
-			isError = true;
-		}
-		
-		FacesUtil.getMensaje(titulo, textoMsg, isError);
-		
 	}	
 	
 	public void inscripcionCertificacion (){
+		boolean listoInscripcion = false;	
+		String textoMsg = "La solicitud no cumple con las condiciones para proceder con la inscripcion. Favor revisar...";
+		
+		if (solicitudExp != null) {
+			listoInscripcion = service.validaListoInscripcion(solicitudExp);			
+			solicitudExp = avanzaProceso (solicitudExp, "listo para inscripción", listoInscripcion, textoMsg);						
+		}
+	}
+	
+	public Solicitud avanzaProceso (Solicitud sol, String nombreEstado, boolean pasa, String msgNoPasa){
+		String 	titulo = "";
+		String 	textoMsg = "";
+		boolean isError = false;
+				
+		if (sol == null){
+			textoMsg = "Se generó un error al obtener los datos del proceso de certificacion. Favor comuníquese al Departamento de Tecnología del INATEC.";
+			isError = true;
+		} else {
+			if (!pasa){
+				textoMsg = msgNoPasa;
+				isError = true;
+			}else {
+				sol.setEstatus(this.getEstadoSiguiente());		
+				sol = (Solicitud) service.guardar(sol);
+				
+				if (sol != null)					
+					textoMsg = "La solicitud se encuentra en estatus " + nombreEstado;					
+				else {					
+					textoMsg = "Se generó un error al intentar aplicar los cambios. Favor comuníquese al Departamento de Tecnología del INATEC.";
+					isError = true;
+				}
+			}			
+			
+		}
+		
+		titulo = (isError) ? "SCCL - Error: " : "SCCL - Proceso exitoso: ";
+		
+		FacesUtil.getMensaje(titulo, textoMsg, isError);
+		
+		return sol;		
 		
 	}
 

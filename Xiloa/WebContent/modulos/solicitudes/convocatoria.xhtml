@@ -25,29 +25,29 @@
         
         <div id="contenedor_filtro">            
 	            <p style="margin-left:5px;margin-bottom: 12px;">Buscar:</p>
-	            <p:selectOneMenu styleClass="selectores" id="selector_buscarByAll" value="#{dashBoardSolicitudesManagedBean.selectedBuscarByAll}">
-	            	<f:selectItems value="#{dashBoardSolicitudesManagedBean.listBuscarByAll}"/>	            			        
+	            <p:selectOneMenu styleClass="selectores" id="selector_buscarByAll" value="#{convocatoriaManagedBean.selectedBuscarByAll}">
+	            	<f:selectItems value="#{convocatoriaManagedBean.listBuscarByAll}"/>	            			        
 			    </p:selectOneMenu>
-		        <p:inputText style="margin-right:10px;" id="filtro_buscarByAll" value="#{dashBoardSolicitudesManagedBean.buscarByAllValue}">
-		        	<p:ajax event="keyup" update="dtSolicitud" listener="#{dashBoardSolicitudesManagedBean.handleBuscar}" process="@form" />
+		        <p:inputText style="margin-right:10px;" id="filtro_buscarByAll" value="#{convocatoriaManagedBean.buscarByAllValue}">
+		        	<p:ajax event="keyup" update="dtSolicitud" listener="#{convocatoriaManagedBean.handleBuscar}" process="@form" />
 		        </p:inputText>
 		        <span style="display:inline-block; margin-left:5px">
 		            <p>Centro evaluador:</p>
-		            <p:selectOneMenu styleClass="selectores selector_centrosBySolicitudEstilo" id="selector_centrosBySolicitud" value="#{dashBoardSolicitudesManagedBean.selectedIdIfpSolicitud}" >			        
-				        <f:selectItems value="#{dashBoardSolicitudesManagedBean.listCentrosBySolicitud}"/>
-				        <p:ajax update="selector_certificacionByCentro, dtSolicitud"  listener="#{dashBoardSolicitudesManagedBean.handleCertByCentro}" />
+		            <p:selectOneMenu styleClass="selectores selector_centrosBySolicitudEstilo" id="selector_centrosBySolicitud" value="#{convocatoriaManagedBean.selectedIdIfpSolicitud}" >			        
+				        <f:selectItems value="#{convocatoriaManagedBean.listCentrosBySolicitud}"/>
+				        <p:ajax update="selector_certificacionByCentro, dtSolicitud"  listener="#{convocatoriaManagedBean.handleCertByCentro}" />
 				    </p:selectOneMenu>
 			    </span>
 			    <span style="display:inline-block; margin-left:5px">
 				    <p>Certificaciones:</p>
-		            <p:selectOneMenu styleClass="selectores selector_certificacionByCentroEstilo" id="selector_certificacionByCentro" value="#{dashBoardSolicitudesManagedBean.selectedIdCertByCentro}" >			        
-				        <f:selectItems value="#{dashBoardSolicitudesManagedBean.listCertByCentro}" />
-				        <p:ajax update="dtSolicitud" listener="#{dashBoardSolicitudesManagedBean.handleBuscar}" />  
+		            <p:selectOneMenu styleClass="selectores selector_certificacionByCentroEstilo" id="selector_certificacionByCentro" value="#{convocatoriaManagedBean.selectedIdCertByCentro}" >			        
+				        <f:selectItems value="#{convocatoriaManagedBean.listCertByCentro}" />
+				        <p:ajax update="dtSolicitud" listener="#{convocatoriaManagedBean.handleBuscar}" />  
 				    </p:selectOneMenu>	
 			    </span>	
 
 			    <p:commandButton id="aplicarSeguimiento" value="Aplicar Seguimiento"
-			                     action="#{dashBoardSolicitudesManagedBean.handleConvocatoria}" 	            	                             				     
+			                     action="#{convocatoriaManagedBean.handleConvocatoria}" 	            	                             				     
 	           	                 icon="ui-icon-disk" title="Aplicar Seguimiento"
 	           	                 update=":formConvocatoria:dtSolicitud, :formConvocatoria:msgConvocatoria"  />   	           		 
 			    	  
@@ -55,8 +55,8 @@
         <div id="contenedor_tabla_solicitudes">           
         	<p:messages id="msgConvocatoria" showDetail="true" autoUpdate="true" closable="true" />
         	<p:dataTable id="dtSolicitud" widgetVar="dtSolicitudes" emptyMessage="No existen solicitudes activas" var="varSolicitudI" 
-        	             value="#{dashBoardSolicitudesManagedBean.listaSolicitudes}" 
-        	             selection="#{dashBoardSolicitudesManagedBean.selectedListSolicitud}"
+        	             value="#{convocatoriaManagedBean.listaSolicitudes}" 
+        	             selection="#{convocatoriaManagedBean.selectedListSolicitud}"
         	             paginator="true" rows="12" rowKey="#{varSolicitudI.id}" >        	                                        	             
 	            <!--Las columnas de la tabla-->	                
                 <p:column id="centroColumn" headerText="Centro evaluador" exportable="true"><h:outputText value="#{varSolicitudI.certificacion.ifpNombre}" /></p:column>                      

@@ -1,5 +1,7 @@
 package service;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -10,13 +12,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.sql.DataSource;
+
+import org.primefaces.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.embedded.DataSourceFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import reporte.ControlGenericoReporte;
 import security.Authority;
 import support.Departamento;
+import support.FacesUtil;
 import support.Ifp;
 import support.Item;
 import support.JavaEmailSender;
@@ -25,6 +34,7 @@ import support.PasswordGenerator;
 import support.USolicitud;
 import support.UCompetencia;
 import support.UsuarioExterno;
+import util.Global;
 import dao.IDao;
 import dao.IDaoInatec;
 import model.Actividad;
@@ -103,6 +113,9 @@ public class ServiceImp implements IService {
 	
 	@Autowired
 	private JavaEmailSender email;
+	
+	@Autowired
+	private IDao<Object> objectDao;
 	
 	@Override
 	public List<Certificacion> getCertificaciones(){
@@ -834,33 +847,146 @@ public class ServiceImp implements IService {
 	@Override
 	public boolean validaListoInscripcion(Solicitud solicitud){
 		String     tipoMantenedor = null;
-		String     proximoEstado  = null;
+		Integer     proximoEstado  = null;
 		boolean    pasa = true;
 		Mantenedor ultimoEstado = null;
 		Mantenedor estadoActual = null;
-		
+		System.out.println("Entra al servicio validaListoInscripcion");
 		tipoMantenedor = solicitud.getTipomantenedorestado();
 		estadoActual  = solicitud.getEstatus();
-		proximoEstado = estadoActual.getProximo();
+		proximoEstado = Integer.valueOf(estadoActual.getProximo());
 		
 		ultimoEstado = getMantenedorMaxByTipo(tipoMantenedor);
-			
-		if ( (proximoEstado != null) && (ultimoEstado != null) && (proximoEstado == ultimoEstado.getAnterior())){
-			List<Evaluacion> listaEval = getEvaluaciones(solicitud);
-			
-			if (listaEval.size() == 0)
-				pasa = false;
-			else {
-				for (Evaluacion eval : listaEval){
-					if (eval.isAprobado() != true){
-						pasa = false;
-						break;
-					}
-				}						
-			}
+		System.out.println("Valores de los estados proximoEstado " + proximoEstado + " ultimo anterior " + ultimoEstado.getAnterior());	
+		if ( (proximoEstado != null) && (ultimoEstado != null) && (proximoEstado == Integer.valueOf(ultimoEstado.getAnterior()))){
+			pasa = validaEvaluacionAprobada(solicitud);			
 		} else
 			pasa = false;		
 		
+		return pasa;
+	}
+
+	@Override
+	public Connection getSqlConnection() throws SQLException {	
+		Connection con = objectDao.getSqlConexion();
+	
+		return con;
+	}
+	
+	@Override
+	public void imprimirReporte(String nombreReporte, Map<String,Object> parametros, String formato, boolean visualiza) throws SQLException{
+						
+		try {			
+			Connection conn = getSqlConnection();
+			System.out.println("Conexion " + conn);											
+			ControlGenericoReporte.getInstancia().runReporteFisico(nombreReporte, parametros,formato, conn, visualiza);		
+			//String reporte = nombreReporte.toLowerCase() + "." + Global.EXPORT_PDF.toLowerCase();
+			//String reporte = nombreReporte + "." + formato.toLowerCase();
+			//context.execute("window.open('" +  FacesUtil.getContentPath() + "/reporte?file="+ reporte + "&formato=" + Global.EXPORT_PDF + "','myWindow');");		
+			//context.execute("window.open('" +  FacesUtil.getContentPath() + "/reporte/"+ reporte + "','myWindow');");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	@Override
+	public List<Solicitud> filtraListaSolicitudes(HashMap<String, Object> param, Integer tipoFiltro){
+		List<Solicitud> lista = new ArrayList<Solicitud> ();
+		List<Solicitud> listaFiltrada = new ArrayList<Solicitud> ();
+		Mantenedor inicialEstado = null;
+		Mantenedor ultimoEstado = null;
+		Mantenedor estadoSolicitud = null;		
+		Integer    prxEstadoKey;
+		Integer    anteriorEvaluarKey;
+		
+		Contacto solicitante = null;
+		boolean enlistar = false;
+					
+		lista = getSolicitudesByParam(param);
+		
+		for (Solicitud dato : lista) {
+			solicitante = dato.getContacto();		
+			estadoSolicitud = dato.getEstatus();
+			
+			inicialEstado = (inicialEstado == null) ? getMantenedorMinByTipo(dato.getTipomantenedorestado()) : inicialEstado;
+			ultimoEstado = (ultimoEstado == null) ? getMantenedorMaxByTipo(dato.getTipomantenedorestado()) : ultimoEstado;
+			
+			prxEstadoKey = Integer.valueOf(inicialEstado.getProximo());
+			if (estadoSolicitud.getAnterior() != null)
+				anteriorEvaluarKey = Integer.valueOf(estadoSolicitud.getAnterior());
+			else
+				anteriorEvaluarKey = null;
+			
+			switch(tipoFiltro){
+				case 1:{ //Pasa a Estado Convocado
+					if (estadoSolicitud.getId() == prxEstadoKey.intValue()) 
+						enlistar = portafolioVerificado(solicitante, new String("8"));
+					else
+						enlistar = false;
+					break;
+				}
+				case 2:{ //Pasa a Asesorado
+					if ((anteriorEvaluarKey == prxEstadoKey) && (anteriorEvaluarKey != null))
+						enlistar = true;
+					else
+						enlistar = false;
+					
+					break;
+				}
+				case 3: { //Pasa a Listo para Inscripcion					
+					enlistar = validaListoInscripcion(dato);
+					break;
+				}
+				default:{
+					enlistar = true;
+					break;
+				}
+			}			
+								
+			if (enlistar == true)
+				listaFiltrada.add(dato);
+		}
+		
+		return listaFiltrada;
+		
+	}
+	
+	@Override
+	public boolean validaProcesoConcluido(Solicitud solicitud, boolean validaEvaluacion){
+		boolean pasaConcluido = false;
+		Mantenedor ultimoEstado = null;
+		Mantenedor estadoActual = solicitud.getEstatus();
+		Integer    idMatricula = null;
+		
+		ultimoEstado = getMantenedorMaxByTipo(solicitud.getTipomantenedorestado());
+		
+		if (ultimoEstado != null){
+			if (Integer.valueOf(estadoActual.getProximo()) == ultimoEstado.getId()){
+				idMatricula = solicitud.getIdMatricula();
+				pasaConcluido = (idMatricula != null) ? true : false;					
+			}				
+		}		
+		
+		return pasaConcluido;
+	}
+	
+	public boolean validaEvaluacionAprobada(Solicitud solicitud){
+		boolean pasa = true;
+		
+		List<Evaluacion> listaEval = getEvaluaciones(solicitud);
+		System.out.println("Numero de Evaluaciones " + listaEval.size());
+		if (listaEval.size() == 0)
+			pasa = false;
+		else {
+			for (Evaluacion eval : listaEval){
+				if (eval.isAprobado() != true){
+					pasa = false;
+					break;
+				}
+			}						
+		}
 		return pasa;
 	}
 }

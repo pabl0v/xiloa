@@ -483,6 +483,8 @@ public class SolicitudesManagedBean implements Serializable {
 				s.setContacto(solicitante);
 				s.setCertificacion(c);
 				s.setEvaluaciones(null);
+				s.setEmpresa(this.descEmpresaLabora);
+				s.setSituacion_laboral(this.indicaTrabaja);
 					  
 				s = (Solicitud) service.guardar(s);
 				

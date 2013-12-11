@@ -64,7 +64,7 @@ public class Solicitud implements Serializable {
 	private Date fechaRegistro;
 	
 	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "fecha_matricula", nullable = false)
+	@Column(name = "fecha_matricula", nullable = true)
 	@Temporal(TemporalType.DATE)	
 	private Date fechaMatricula;
 	
@@ -93,6 +93,34 @@ public class Solicitud implements Serializable {
 	@OneToMany(mappedBy="solicitud")
 	private List<Evaluacion> evaluaciones;
 	
+	@Column(name="id_matricula", nullable=true)
+	private Integer idMatricula;
+	
+	@Column(name="resultado_evaluacion", nullable=true)
+	private boolean resultadoEvaluacion = false;
+	
+	@Column(name = "empresa", nullable = true)
+	private String empresa;
+	
+	@Column(name = "situacion_laboral", nullable = true)
+	private boolean situacion_laboral = false;
+		
+	public boolean isSituacion_laboral() {
+		return situacion_laboral;
+	}
+
+	public void setSituacion_laboral(boolean situacion_laboral) {
+		this.situacion_laboral = situacion_laboral;
+	}
+
+	public String getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(String empresa) {
+		this.empresa = empresa;
+	}
+
 	public String getTipomantenedorestado() {
 		return tipoMantenedorEstado;
 	}
@@ -201,11 +229,28 @@ public class Solicitud implements Serializable {
 		this.evaluaciones = evaluaciones;
 	}	
 
+	public Integer getIdMatricula() {
+		return idMatricula;
+	}
+
+	public void setIdMatricula(Integer idMatricula) {
+		this.idMatricula = idMatricula;
+	}
+
+	public boolean isResultadoEvaluacion() {
+		return resultadoEvaluacion;
+	}
+
+	public void setResultadoEvaluacion(boolean resultadoEvaluacion) {
+		this.resultadoEvaluacion = resultadoEvaluacion;
+	}
+
 	public Solicitud(String nombre, String ticket, Mantenedor estatus,
 			Date fechaRegistro, Date fechaMatricula, int experiencia,
 			String ocupacion, String oficio, int escolaridad,
 			Contacto contacto, Certificacion certificacion,
-			List<Evaluacion> evaluaciones) {
+			List<Evaluacion> evaluaciones, Integer idMatricula, boolean resultadoEvaluacion,
+			String empresa, boolean situacion_laboral) {
 		super();
 		this.nombre = nombre;
 		this.ticket = ticket;
@@ -219,6 +264,10 @@ public class Solicitud implements Serializable {
 		this.contacto = contacto;
 		this.certificacion = certificacion;
 		this.evaluaciones = evaluaciones;
+		this.idMatricula = idMatricula;
+		this.resultadoEvaluacion = resultadoEvaluacion;
+		this.empresa = empresa;
+		this.situacion_laboral = situacion_laboral;
 	}
 	
 	public Solicitud() {

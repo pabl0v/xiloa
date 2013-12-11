@@ -94,7 +94,7 @@ public class UtilitariosManagedBean implements Serializable {
 				case 13:
 				case 14:
 				case 15:
-				case 16: catalogoTiposDatosLaborales.put(mantenedor.getId(), mantenedor); break;
+				case 16: 
 				case 17:
 				case 18:
 				case 19: catalogoTiposInstrumento.put(mantenedor.getId(), mantenedor); break;
@@ -110,7 +110,7 @@ public class UtilitariosManagedBean implements Serializable {
 				case 2:
 				case 3:
 				case 4:
-				case 5:
+				case 5: catalogoTiposDatosLaborales.put(mantenedor.getId(), mantenedor); break;
 				case 6:
 				case 7: catalogoEstadoSolicitud.put(mantenedor.getId(), mantenedor); break;
 				case 8: catalogoPortafolio.put(mantenedor.getId(), mantenedor); break;

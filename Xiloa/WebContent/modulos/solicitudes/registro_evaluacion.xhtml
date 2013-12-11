@@ -43,7 +43,7 @@
 	     		        <p:ajax event="rowSelect" listener="#{evaluacionManagedBean.onRowSelectDtGuias}" update=":formEvaluacion:msgEvaluacion" />
 		             	<p:column headerText="Pregunta"><h:outputText value="#{varGuia.pregunta}" /></p:column>  
 		                <p:column headerText="Respuesta"><h:outputText value="#{varGuia.respuesta}" /></p:column>  
-		                <p:column headerText="Puntaje"><h:outputText value="#{varGuia.puntaje}" /></p:column>  
+		                <p:column headerText="Puntaje" rendered="#{evaluacionManagedBean.visualizaPuntaje}" ><h:outputText value="#{varGuia.puntaje}" /></p:column>  
 		                <p:column selectionMode="multiple" style="width:2%" />
 	            	</p:dataTable>			    
 			    <div style="display:inline-block;margin-left:7px;">
@@ -57,10 +57,13 @@
 					<p>Estado:</p>					
 					<h:outputText value="#{evaluacionManagedBean.estado.valor}" />					
 				</div>	
-				<div style="display:inline-block;margin-left:7px;">
-					<p>Puntaje:</p>  
-	            	<h:outputText id="puntajeEval" value="#{evaluacionManagedBean.puntajeEval}" />
-	            </div>
+				<p:panel rendered="#{evaluacionManagedBean.visualizaPuntaje}">
+					<div style="display:inline-block;margin-left:7px;">
+						<p>Puntaje:</p>  
+		            	<h:outputText id="puntajeEval" value="#{evaluacionManagedBean.puntajeEval}" />
+		            </div>
+	            </p:panel>
+	            
 				<div style="display:inline-block;margin-left:7px;">
 					<h:outputText value="Resultado Evaluacion: " />  
 				    <p:selectOneRadio id="optAprobado" value="#{evaluacionManagedBean.aprobado}">  
@@ -86,7 +89,8 @@
         				</f:facet> 
 		             	<p:column headerText="Pregunta"><h:outputText value="#{evalGuia.pk.guia.pregunta}" /></p:column>  
 		                <p:column headerText="Respuesta"><h:outputText value="#{evalGuia.pk.guia.respuesta}" /></p:column>  
-		                <p:column headerText="Puntaje"><h:outputText value="#{evalGuia.puntaje}" /></p:column>
+		                <p:column headerText="Puntaje" rendered="#{evaluacionManagedBean.visualizaPuntaje}"><h:outputText value="#{evalGuia.puntaje}" /></p:column>
+		                <p:column headerText="Aprobado" ><p:selectBooleanCheckbox disabled="true" value="#{evalGuia.aprobado}" /></p:column>		                
 		                <p:column >
 		                	<p:commandButton id="selectButton" action="#{evaluacionManagedBean.editaGuia}" icon="ui-icon-pencil" 
 		                	                 title="Editar Guia" oncomplete="PF('dlgEvalGuias').show();" update=":formEvaluacion:editaEvaluacionGuia" >
@@ -112,7 +116,8 @@
 		            	</div>
 		            	<div>	
 			            	<p>Puntaje:</p>  
-			            	<p:inputText id="puntajeGuia" value="#{evaluacionManagedBean.puntajeGuia}" />
+			            	<p:inputText id="puntajeGuia" value="#{evaluacionManagedBean.puntajeGuia}"
+			            	             disabled="#{evaluacionManagedBean.cualitativo}" />
 		            	</div>
 		            	<div>
 			            	<h:outputText value="Resultado Evaluacion por Guia: " />  
