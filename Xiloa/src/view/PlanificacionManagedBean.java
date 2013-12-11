@@ -14,13 +14,13 @@ import model.Certificacion;
 import model.Contacto;
 import model.Mantenedor;
 import model.Requisito;
-import model.Usuario;
 
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import controller.LoginController;
 import service.IService;
 import support.Ifp;
 import support.UCompetencia;
@@ -39,6 +39,8 @@ public class PlanificacionManagedBean implements Serializable {
 	private List<UCompetencia> competencias;
 	private UCompetencia selectedCompetencia;
 	private Certificacion selectedCertificacion;
+	@Autowired
+	private LoginController controller;
 	
 	public PlanificacionManagedBean(){
 		super();
@@ -79,7 +81,7 @@ public class PlanificacionManagedBean implements Serializable {
 	public void nuevaCertificacion(UCompetencia competencia){
 		
 		Mantenedor estatus = service.getMapMantenedoresByTipo("3").get(7);		//estatus pendiente
-		Usuario creador = service.getUsuarioLocal("admin");						//actualizar
+		Contacto creador = controller.getContacto();						//actualizar
 		
 		Certificacion certificacion = new Certificacion();
 		certificacion.setEstructuraId(competencia.getEsructuraId());

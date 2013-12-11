@@ -7,7 +7,6 @@ import java.io.OutputStream;
 
 import javax.servlet.ServletException;
 
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class RunReport
  */
-@WebServlet("/viewFile")
+//@WebServlet("/viewFile")
 public class RunReport extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -26,14 +25,12 @@ public class RunReport extends HttpServlet {
      */
     public RunReport() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		String fileName = request.getParameter("file");    	
     	String formato  = request.getParameter("formato");
     	File   f 	    = (File)request.getSession().getAttribute("file");
@@ -59,7 +56,6 @@ public class RunReport extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 }

@@ -13,13 +13,12 @@ import model.Actividad;
 import model.Certificacion;
 import model.Contacto;
 import model.Mantenedor;
-import model.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;  
 
+import controller.LoginController;
 import service.IService;
 
 @Component
@@ -30,6 +29,8 @@ public class CertificacionManagedBean implements Serializable {
 	
 	@Autowired
 	private IService service;
+	@Autowired
+	private LoginController controller;
 	
 	private Certificacion certificacion;
 	private List<Contacto> contactos;
@@ -37,7 +38,6 @@ public class CertificacionManagedBean implements Serializable {
 	private Map<Integer, Mantenedor> catalogoEstatusCertificacion;
 	private Integer selectedEstatusCertificacion;
 	private Actividad selectedActividad;
-	private Usuario usuario;
 	
 	public CertificacionManagedBean(){
 		super();
@@ -49,7 +49,6 @@ public class CertificacionManagedBean implements Serializable {
 	
 	@PostConstruct
 	private void init(){
-		usuario = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
 		contactos = service.getContactosInatec();
 		catalogoEstatusCertificacion = service.getMapMantenedoresByTipo("3");
 	}
@@ -84,7 +83,7 @@ public class CertificacionManagedBean implements Serializable {
 		
 		certificacion.setFechaRegistro(new Date());
 		certificacion.setFechaActualiza(new Date());
-		certificacion.setActualiza(usuario);
+		certificacion.setActualiza(controller.getContacto());
 		certificacion.setReferencial("N/D");
 		certificacion = (Certificacion) service.guardar(certificacion);
 		certificacion = new Certificacion();
@@ -94,20 +93,16 @@ public class CertificacionManagedBean implements Serializable {
 	public String guardar(){
 		
 		certificacion.setFechaRegistro(new Date());
-		certificacion.setCreador(usuario);
-		certificacion.setProgramador(usuario);
+		certificacion.setCreador(controller.getContacto());
+		certificacion.setProgramador(controller.getContacto());
 		certificacion.setReferencial("N/D");
 		certificacion = (Certificacion) service.guardar(certificacion);
 		certificacion = new Certificacion();
 		return "/modulos/planificacion/planificacion?faces-redirect=true";
 	}
-	
-	private Usuario getUsuario(){
-		return this.usuario;
-	}
-	
+		
 	public void agregarActividad(Actividad actividad){
-		actividad.setCreador(getUsuario());
+		actividad.setCreador(controller.getContacto());
 		actividad.setFechaRegistro(new Date());
 		Mantenedor estado = service.getMapMantenedoresByTipo("4").get(10);		//estatus pendiente
 		actividad.setEstado(estado);

@@ -91,11 +91,11 @@ public class Actividad implements Serializable {
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="actividad_creador_id")
-	private Usuario creador;
+	private Contacto creador;
 	
 	@ManyToOne
 	@JoinColumn(name="actividad_ejecutor_id")
-	private Usuario ejecutor;
+	private Contacto ejecutor;
 			
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable
@@ -212,19 +212,19 @@ public class Actividad implements Serializable {
 		this.fechaFinal = fechaFinal;
 	}
 
-	public Usuario getCreador() {
+	public Contacto getCreador() {
 		return creador;
 	}
 
-	public void setCreador(Usuario creador) {
+	public void setCreador(Contacto creador) {
 		this.creador = creador;
 	}
 
-	public Usuario getEjecutor() {
+	public Contacto getEjecutor() {
 		return ejecutor;
 	}
 
-	public void setEjecutor(Usuario ejecutor) {
+	public void setEjecutor(Contacto ejecutor) {
 		this.ejecutor = ejecutor;
 	}
 
@@ -271,8 +271,8 @@ public class Actividad implements Serializable {
 						Date fechaRegistro,
 						Date fechaInicial, 
 						Date fechaFinal, 
-						Usuario creador,
-						Usuario ejecutor, 
+						Contacto creador,
+						Contacto ejecutor, 
 						Map<Integer,Contacto> involucrados,
 						List<Bitacora> bitacoras,
 						Mantenedor estado) {

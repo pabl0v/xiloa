@@ -87,7 +87,7 @@ public class CustomUserAuthenticationProvider implements AuthenticationProvider 
 				}
 			}
 
-			return new UsernamePasswordAuthenticationToken(contacto.getUsuarioInatec(), null, service.getAuthoritiesInatecByLogin(authentication.getName()));
+			return new UsernamePasswordAuthenticationToken(authentication.getName(), null, service.getAuthoritiesInatecByLogin(authentication.getName()));
 		}
 		else
 		{
@@ -110,13 +110,12 @@ public class CustomUserAuthenticationProvider implements AuthenticationProvider 
 			}
 			
 			service.registrarAcceso(usuario);
-			System.out.println("Usuario autenticado: "+usuario.getUsuarioAlias());
-			return new UsernamePasswordAuthenticationToken(usuario.getUsuarioAlias(), null, service.getAuthoritiesInatecByRolId(usuario.getRol().getIdRolInatec()));			
+			return new UsernamePasswordAuthenticationToken(usuario.getUsuarioAlias(), null, service.getAuthoritiesInatecByRolId(usuario.getRol().getIdRolInatec()));
 		}
 	}
 
 	@Override
 	public boolean supports(Class<?> authentication) {
 		return CustomUsernamePasswordAuthenticationToken.class.equals(authentication);
-	}	
+	}
 }

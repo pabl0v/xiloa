@@ -13,22 +13,20 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
+import model.Contacto;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 
-import security.CustomUsernamePasswordAuthenticationToken;
+import service.IService;
 
 @Controller
-@Scope("request")
+@Scope("session")
 public class LoginController implements PhaseListener {
 
 	private static final long serialVersionUID = 1L;
@@ -37,41 +35,29 @@ public class LoginController implements PhaseListener {
 	private String username;
 	private String password;
 	private boolean inatec = false;
-	private String loggedUser;
+	private Contacto contacto = null;
 	
 	@Autowired
-	private AuthenticationManager authenticationManager;	
-	
-	public String getLoggedUser(){
-		if(loggedUser==null){
-			loggedUser = SecurityContextHolder.getContext().getAuthentication().getName();
+	private IService service;
+		
+	public Contacto getContacto(){
+		if(contacto == null){
+			contacto = service.getContactoByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
 		}
-		logger.info("Usuario conectado: "+loggedUser);
-		return loggedUser;
+		return contacto;
 	}
 	
-    public AuthenticationManager getAuthenticationManager() {
-    	return authenticationManager;
-    }
- 
-    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
-    	this.authenticationManager = authenticationManager;
-    }
-
-	public String login() {
-		CustomUsernamePasswordAuthenticationToken token = new CustomUsernamePasswordAuthenticationToken(username, password, inatec);
-		try{
-			Authentication authentication = authenticationManager.authenticate(token);
-			SecurityContext sContext = SecurityContextHolder.getContext();
-			sContext.setAuthentication(authentication);
-			password = "";
-			return "/modulos/solicitudes/solicitudes?faces-redirect=true";
-		} catch(AuthenticationException loginError){
-			FacesContext fContext = FacesContext.getCurrentInstance();
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Autenticación fallida: " + loginError.getMessage(), null);
-			fContext.addMessage(null, message);
-			return "/modulos/usuario/index.xhtml?error=1";
-		}
+	public String getLoggedUser(){
+		getContacto();
+		if(contacto.isInatec() == true)
+			return contacto.getUsuarioInatec();
+		else
+			return contacto.getUsuario().getUsuarioAlias();
+	}
+	
+	public Integer getEntidadUsuario(){
+		getContacto();
+		return contacto.getEntidadId();
 	}
 	
 	public String doLogin() throws ServletException, IOException {
@@ -86,7 +72,7 @@ public class LoginController implements PhaseListener {
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 		RequestDispatcher dispatcher = ((ServletRequest) context.getRequest()).getRequestDispatcher("/j_spring_openid_security_check");
 		dispatcher.forward((ServletRequest) context.getRequest(),(ServletResponse)context.getResponse());
-	    FacesContext.getCurrentInstance().responseComplete();	    
+	    FacesContext.getCurrentInstance().responseComplete();
 	    return null;
 	}
 	

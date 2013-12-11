@@ -150,7 +150,7 @@ public class ServiceImp implements IService {
 				
 		Mantenedor estado = getMapMantenedoresByTipo("4").get(10);				//estatus pendiente
 		Map<Integer, Mantenedor> actividades = getMapMantenedoresByTipo("1");	//actualizar
-		Usuario creador = getUsuarioLocal("admin");								//actualizar
+		Contacto creador = certificacion.getCreador();								//actualizar
 		
 		actividadDao.save(new Actividad(certificacion,0,actividades.get(1),"Divulgacion","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado));
 		actividadDao.save(new Actividad(certificacion,1,actividades.get(4),"Convocatoria","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado));
