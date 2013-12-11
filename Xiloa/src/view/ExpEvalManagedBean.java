@@ -114,6 +114,7 @@ public class ExpEvalManagedBean implements Serializable  {
 	private boolean disabledBtnActualizaContacto;
 	private boolean disabledBtnAgregaLaborales;
 	private boolean disabledBtnAgregaEvaluacion;
+	private boolean disabledConcluido;
 	
 	private List<SelectItem> listEvalBySolicitud;	
 
@@ -160,7 +161,8 @@ public class ExpEvalManagedBean implements Serializable  {
 		this.setIndicaCVFull(false);
 		this.setDisabledBtnActualizaContacto(false);
 		this.setDisabledBtnAgregaLaborales(false);
-		this.setDisabledBtnAgregaEvaluacion(true);		
+		this.setDisabledBtnAgregaEvaluacion(true);	
+		this.setDisabledConcluido(false);
 		
 		listDatosLaborales = new ArrayList<Laboral> ();
 		listDatosEstudios = new ArrayList<Laboral> ();
@@ -188,6 +190,14 @@ public class ExpEvalManagedBean implements Serializable  {
 		
 	}	
 	
+	public boolean isDisabledConcluido() {
+		return disabledConcluido;
+	}
+
+	public void setDisabledConcluido(boolean disabledConcluido) {
+		this.disabledConcluido = disabledConcluido;
+	}
+
 	public String getTipoEstadosPortafolio() {
 		return tipoEstadosPortafolio;
 	}
@@ -1150,13 +1160,13 @@ public class ExpEvalManagedBean implements Serializable  {
 		
 		Integer inicialKey, convocaKey, asesoraKey, siguienteKey, evaluarKey;
 		
-		Mantenedor inicialEstado, convocaEstado, asesoraEstado, siguienteEstado, evaluarEstado, ultimoEstado;				
+		Mantenedor inicialEstado, convocaEstado, asesoraEstado, siguienteEstado, evaluarEstado;				
 		
 		if (sol != null){		
 			
 			inicialEstado = service.getMantenedorMinByTipo(sol.getTipomantenedorestado());
 			inicialKey = inicialEstado.getId();
-			ultimoEstado = service.getMantenedorMaxByTipo(sol.getTipomantenedorestado());
+			
 			convocaKey = Integer.valueOf(inicialEstado.getProximo());
 			
 			convocaEstado = utilitarios.getCatalogoEstadoSolicitud().get(convocaKey);
@@ -1183,8 +1193,7 @@ public class ExpEvalManagedBean implements Serializable  {
 			evaluarEstado = null;			
 			evaluarKey = null;			
 			siguienteKey = null;			
-			siguienteEstado = null;
-			ultimoEstado = null;
+			siguienteEstado = null;		
 		}
 				
 		switch(opcion) {
@@ -1217,15 +1226,21 @@ public class ExpEvalManagedBean implements Serializable  {
 				if ((evaluarKey == Integer.valueOf(asesoraEstado.getProximo())) && (evaluarKey != null))
 					this.setDisabledBtnAgregaEvaluacion(false);
 				else{
-					
-					this.setDisabledBtnAgregaEvaluacion(true);
+					if (service.validaProcesoConcluido(sol, false))
+						this.setDisabledBtnAgregaEvaluacion(false);
+					else
+						this.setDisabledBtnAgregaEvaluacion(true);
 				}
 					
 				break;
 			}
 			//Boton Proceso Concluido
 			case 5: {
-				
+				if (service.validaProcesoConcluido(sol, false))
+					this.setDisabledConcluido(false);
+				else
+					this.setDisabledConcluido(true);
+					
 			}
 			default: 
 				break;			
@@ -1603,7 +1618,14 @@ public class ExpEvalManagedBean implements Serializable  {
 			solicitudExp = avanzaProceso (solicitudExp, "listo para inscripción", listoInscripcion, textoMsg);						
 		}
 	}
-	
+	public void concluirCertificacion(){
+		boolean concluir = false;
+		String textoMsg = "La solicitud no cumple con las condiciones para concluir el proceso de certificacion. Favor revisar...";
+		if (solicitudExp != null){
+			concluir = service.validaProcesoConcluido(solicitudExp, false);
+			solicitudExp = avanzaProceso(solicitudExp, " Proceso Concluido", concluir, textoMsg );
+		}
+	}
 	public Solicitud avanzaProceso (Solicitud sol, String nombreEstado, boolean pasa, String msgNoPasa){
 		String 	titulo = "";
 		String 	textoMsg = "";

@@ -181,6 +181,28 @@ public class DaoInatecImpl implements IDaoInatec {
 				+"and r.activo = 1 "
 				+"and s.activo = 1 "
 				+"and r.id_rol = ?";
+	
+	private static final String SQL_VALIDA_EVAL_BY_INSTRUMENTOS = " select count(cu.unidad_id) as existen " +
+																     "from sccl.solicitudes s, sccl.certificaciones c, " +
+			                                                               "sccl.certificacion_unidades cu, sccl.evaluaciones e " +         
+																      "where s.solicitud_id = ?  " + 
+																	     "and c.certificacion_id = s.certificacion_id " +
+																	     "and cu.certificacion_id = c.certificacion_id " +
+																	     "and e.evaluacion_solicitud_id = s.solicitud_id " +
+																	     "and e.evaluacion_unidad_id = cu.unidad_id " +
+																	     "and exists (select 1  " +
+																			         "  from sccl.instrumentos i, sccl.mantenedores m " +
+																			         " where m.mantenedor_id = i.instrumento_tipo " +
+																					   " and m.mantenedor_tipo = '6'  " +
+																					   " and i.instrumento_unidad_id = e.evaluacion_unidad_id " +
+																					   " and not exists ( select 1 " + 
+																								        "   from sccl.evaluacion_guia eg, sccl.guias g " +
+																									    "  where eg.evaluacion_id = e.evaluacion_id " +
+																									      "  and g.guia_id = eg.guia_id  " +       
+																									      "  and i.instrumento_id = g.instrumento_id  " +      
+																									    "  group by g.instrumento_id " +
+																									    ") " +
+																					  " )";																					
 		
 	public Usuario getUsuario(String usuario) {
 		Usuario user = null;
@@ -433,5 +455,25 @@ public class DaoInatecImpl implements IDaoInatec {
 			return null;
 		}
 		return authorities;
+	}
+	
+	public Integer getUnidadesSinEvaluacion (Integer idSolicitud){
+		Integer existeEval = null;		
+		try
+		{			
+			existeEval = jdbcTemplate.queryForObject(
+								SQL_VALIDA_EVAL_BY_INSTRUMENTOS, 
+								new RowMapper<Integer>() {
+									public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+										return rs.getInt("existen");
+									}
+								},
+								idSolicitud);
+			return existeEval;
+		}
+		catch(EmptyResultDataAccessException e)
+		{
+			return null;
+		}
 	}
 }

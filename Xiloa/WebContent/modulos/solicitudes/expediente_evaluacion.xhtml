@@ -38,6 +38,13 @@
     		                 actionListener="#{expEvalManagedBean.inscripcionCertificacion}" 
     					     update=":formExpediente:msgExpediente"    		
     					     disabled="#{expEvalManagedBean.disabledCerrar}"			        					       
+             				/> 
+             
+             <p:commandButton id="concluirProcesoSolicitud" value="Proceso Concluido" title="Concluir Proceso de Solicitud" 
+    		                 icon="ui-icon-arrowrefresh-1-w" style="display:inline-block;"
+    		                 actionListener="#{expEvalManagedBean.concluirCertificacion}" 
+    					     update=":formExpediente:msgExpediente"    		
+    					     disabled="#{expEvalManagedBean.disabledConcluido}"			        					       
              				/> 				    		
     	
     	<div>

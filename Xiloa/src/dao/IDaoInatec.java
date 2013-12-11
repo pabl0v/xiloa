@@ -28,4 +28,5 @@ public interface IDaoInatec {
 	public List<Departamento> getDepartamentosInatec();
 	public List<Municipio> getMunicipioByDeptoInatec(Integer idDepto);
 	public List<Requisito> getRequisitos(int cursoId, int centroId);
+	public Integer getUnidadesSinEvaluacion (Integer idSolicitud);
 }

@@ -23,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import controller.LoginController;
+
 import reporte.ControlGenericoReporte;
 import service.IService;
 import support.Ifp;
@@ -45,6 +47,9 @@ public class ConvocatoriaManagedBean implements Serializable {
 	
 	@Autowired
 	private UtilitariosManagedBean util;
+	
+	@Autowired
+	private LoginController login; 
 	
 	private List<Solicitud> listaSolicitudes;
 	
@@ -317,7 +322,8 @@ public class ConvocatoriaManagedBean implements Serializable {
 	
 	public HashMap<String, Object> asignaParams () {
 		HashMap<String, Object> params = new HashMap<String, Object>();
-				
+		Contacto contacto = null;
+		
 		if (this.getSelectedIdIfpSolicitud() != null) {
 			params.put("s.certificacion.ifpId", this.getSelectedIdIfpSolicitud());
 		}
@@ -329,7 +335,13 @@ public class ConvocatoriaManagedBean implements Serializable {
 		if (this.buscarByAllValue != null && this.selectedBuscarByAll != null) {			
 			params.put(this.selectedBuscarByAll, this.buscarByAllValue);
 		}
-		
+		contacto = login.getContacto();
+		//if (contacto.getEntidadId() == 1000) // Usuario Inatec
+		if (contacto.getEntidadId() == null){ // Usuario OpenId
+			params.put("s.contacto.id", contacto.getId());
+		} else if (contacto.getEntidadId() != 1000){
+			params.put("s.certificacion.ifpId", contacto.getEntidadId());
+		}
 		return params;
 	}
 	
