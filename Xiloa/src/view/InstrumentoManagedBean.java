@@ -176,7 +176,7 @@ public class InstrumentoManagedBean implements Serializable {
 		this.nombreCertificacion = "";
 		
 		this.catalogoUnidades = service.getCatalogoUnidades();
-		this.instrumentos = service.getInstrumentos();
+		this.instrumentos = service.getInstrumentos(controller.getEntidadUsuario());
 
 		return "/modulos/planificacion/instrumentos?faces-redirect=true";
 	}
@@ -192,7 +192,6 @@ public class InstrumentoManagedBean implements Serializable {
 		Instrumento i = (Instrumento) service.guardar(instrumento);
 		instrumentos.add(i);
 		setSelectedInstrumento(i);
-		//this.instrumentos = service.getInstrumentosByCertificacionId(idCertificacion);
 	}
 		
 	public void nuevoInstrumento(){

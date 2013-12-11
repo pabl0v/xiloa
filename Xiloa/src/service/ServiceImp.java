@@ -453,14 +453,7 @@ public class ServiceImp implements IService {
 		Object [] objs =  new Object [] {solicitud.getId()};
 		return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllBySolicitudId", objs);		
 	}
-	
-	/*
-	@Override
-	public Unidad getUnidadById(Long idUnidad){
-		Object [] objs =  new Object [] {idUnidad};
-		return unidadDao.findOneByNamedQueryParam("Unidad.findById", objs);
-	}*/
-	
+		
 	@Override
 	public Instrumento getInstrumentoById(Long idInstrumento){
 		Object [] objs =  new Object [] {idInstrumento};
@@ -476,8 +469,7 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Long> getUnidadesByCertificacionId(Long certificacionId) {
 		Certificacion certificacion = (Certificacion) certificacionDao.findOneByQuery("select c from certificaciones c where c.id="+certificacionId);
-		return new ArrayList<Long>(certificacion.getUnidades());
-		//return longDao.findAllByNamedQueryParam("Certificacion.findUnidadesByCert", new Object[] {certificacionId});		
+		return new ArrayList<Long>(certificacion.getUnidades());		
 	}
 
 	@Override
@@ -684,8 +676,8 @@ public class ServiceImp implements IService {
 	}
 
 	@Override
-	public List<Instrumento> getInstrumentos() {
-		return instrumentoDao.findAllByNamedQuery("Instrumento.findAll");
+	public List<Instrumento> getInstrumentos(Integer entidadId) {
+		return instrumentoDao.findAllByNamedQueryParam("Instrumento.findAllByEntidadId", new Object[] {entidadId});
 	}
 
 	@Override

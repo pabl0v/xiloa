@@ -46,7 +46,7 @@ public interface IService {
 	
 	public List<Rol> getRoles();
 	
-	public List<Instrumento> getInstrumentos();
+	public List<Instrumento> getInstrumentos(Integer entidadId);
 	
 	public boolean existeUsuario(String usuario);
 	

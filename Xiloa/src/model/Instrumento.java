@@ -22,6 +22,7 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @Table(name = "instrumentos", schema = "sccl")
 @NamedQueries({
 	@NamedQuery(name="Instrumento.findAll", query="select i from instrumentos i order by 1 desc"),
+	@NamedQuery(name="Instrumento.findAllByEntidadId", query="select i from instrumentos i where i.entidadId = case ?1 when 1000 then i.entidadId else ?1 end order by 1 desc"),
 	@NamedQuery(name="Instrumento.findAllByUnidadId", query="select i from instrumentos i where i.unidad=?1 order by 1 desc"),
 	@NamedQuery(name="Instrumento.findById", query="select i from instrumentos i where i.id=?1"),
 	@NamedQuery(name="Instrumento.findAllByCertificacionId", query="select i from instrumentos i, certificaciones c where i.unidad member of c.unidades and c.id=?1")
