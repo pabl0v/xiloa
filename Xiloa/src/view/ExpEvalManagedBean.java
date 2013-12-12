@@ -55,16 +55,10 @@ import support.Municipio;
 @Scope(value="request")
 public class ExpEvalManagedBean implements Serializable  {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
 	private IService service;	
-	
-	@Autowired
-	private UtilitariosManagedBean utilitarios;
 	
 	private Solicitud solicitudExp;
 	private Contacto contactoExp;
@@ -528,9 +522,9 @@ public class ExpEvalManagedBean implements Serializable  {
 
 	public List<SelectItem> getListDeptos() {
 		
-		if (utilitarios.getCatalogoEstadoSolicitud().size() > 0){
+		if (service.getCatalogoEstadoSolicitud().size() > 0){
 			listDeptos.add(new SelectItem(null, "Seleccion un Departamento"));
-			for (Departamento d : utilitarios.getCatalogoDepartamentos().values()){
+			for (Departamento d : service.getCatalogoDepartamentos().values()){
 				this.listDeptos.add(new SelectItem(d.getDpto_id(), d.getDpto_nombre()));
 			}
 		}
@@ -717,7 +711,7 @@ public class ExpEvalManagedBean implements Serializable  {
 			proxKey = Integer.valueOf(actualEstado.getProximo());
 			
 			if (proxKey != null){				
-				proximoEstado = utilitarios.getCatalogoEstadoSolicitud().get(proxKey);
+				proximoEstado = service.getCatalogoEstadoSolicitud().get(proxKey);
 									
 				estadoSiguiente = (proximoEstado == null) ? actualEstado : proximoEstado;								
 			} else {
@@ -814,12 +808,12 @@ public class ExpEvalManagedBean implements Serializable  {
 	@PostConstruct
 	private void initBean(){        
 							
-		for (Mantenedor dato : utilitarios.getCatalogoTiposDatosLaborales().values()) {			
+		for (Mantenedor dato : service.getCatalogoTiposDatosLaborales().values()) {			
 			this.listTipoDatosLaborales.add(new SelectItem(dato.getId(), dato.getValor()));			
 		}	
 						
 		listEstadosPortafolio = new ArrayList<SelectItem> ();
-		for (Mantenedor dato : utilitarios.getCatalogoPortafolio().values()) {
+		for (Mantenedor dato : service.getCatalogoPortafolio().values()) {
 			this.listEstadosPortafolio.add(new SelectItem(dato.getId(), dato.getValor()));
 		}
 				
@@ -832,7 +826,7 @@ public class ExpEvalManagedBean implements Serializable  {
 						
 		listGenero.add(new SelectItem(null, "Indique el Genero"));
 							
-		for (Mantenedor dato : utilitarios.getCatalogoGenero().values()){
+		for (Mantenedor dato : service.getCatalogoGenero().values()){
 			listGenero.add(new SelectItem(dato.getId(), dato.getValor()));			
 		}		
 				
@@ -854,14 +848,14 @@ public class ExpEvalManagedBean implements Serializable  {
 			if (this.contactoExp != null){
 				
 				if (this.contactoExp.getSexo() != null) 
-					this.generoContacto = utilitarios.getCatalogoGenero().get(this.contactoExp.getSexo());					
+					this.generoContacto = service.getCatalogoGenero().get(this.contactoExp.getSexo());					
 				else 
 					this.generoContacto = null; 
 				 
 				if (this.contactoExp.getDepartamentoId() != null){
 					this.departamentoIdSelected = this.contactoExp.getDepartamentoId();					
 					handleMunicipios();					
-					this.setDeptoContacto(utilitarios.getCatalogoDepartamentos().get(this.contactoExp.getDepartamentoId()));							
+					this.setDeptoContacto(service.getCatalogoDepartamentos().get(this.contactoExp.getDepartamentoId()));							
 				} else{
 					this.setDeptoContacto(null);
 					
@@ -906,7 +900,7 @@ public class ExpEvalManagedBean implements Serializable  {
 			
 			estadoEval = e.getEstado(); 
 			
-			unidadDescripcion = this.utilitarios.getCompetenciaDescripcion(e.getUnidad());
+			unidadDescripcion = this.service.getCompetenciaDescripcion(e.getUnidad());
 					
 			List<Instrumento> listInstrumento = service.getIntrumentoByEvaluacion(e.getId());
 			for (Instrumento inst : listInstrumento) {				
@@ -1049,7 +1043,7 @@ public class ExpEvalManagedBean implements Serializable  {
 		Mantenedor estadoActual = this.getSolicitudExp().getEstatus();
 		Integer proxEstado = Integer.valueOf(estadoActual.getProximo()); //this.catalogoEstadosSolicitud.get(estadoActual).getProximo();
 		
-		Mantenedor proximoEstado = utilitarios.getCatalogoEstadoSolicitud().get(proxEstado);
+		Mantenedor proximoEstado = service.getCatalogoEstadoSolicitud().get(proxEstado);
 						
 		if (proxEstado != null)
 			this.solicitudExp.setEstatus(proximoEstado);		
@@ -1169,11 +1163,11 @@ public class ExpEvalManagedBean implements Serializable  {
 			
 			convocaKey = Integer.valueOf(inicialEstado.getProximo());
 			
-			convocaEstado = utilitarios.getCatalogoEstadoSolicitud().get(convocaKey);
+			convocaEstado = service.getCatalogoEstadoSolicitud().get(convocaKey);
 								
 			asesoraKey = Integer.valueOf(convocaEstado.getProximo());
 			
-			asesoraEstado = utilitarios.getCatalogoEstadoSolicitud().get(asesoraKey); 
+			asesoraEstado = service.getCatalogoEstadoSolicitud().get(asesoraKey); 
 								
 			evaluarEstado = sol.getEstatus();
 			
@@ -1181,7 +1175,7 @@ public class ExpEvalManagedBean implements Serializable  {
 			
 			siguienteKey = Integer.valueOf(evaluarEstado.getProximo());
 			
-			siguienteEstado = (siguienteKey == null) ? null : utilitarios.getCatalogoEstadoSolicitud().get(siguienteKey);
+			siguienteEstado = (siguienteKey == null) ? null : service.getCatalogoEstadoSolicitud().get(siguienteKey);
 							
 		} else{
 			inicialEstado = null;
@@ -1276,8 +1270,7 @@ public class ExpEvalManagedBean implements Serializable  {
 		System.out.println("Obtiene el listado de las evaluaciones");
 		listEvalBySolicitud.add(new SelectItem(null, "Seleccione la evaluacion"));
 		for (Evaluacion dato : listE) {
-			listEvalBySolicitud.add(new SelectItem(dato.getUnidad(), utilitarios.getCompetenciaDescripcion(dato.getUnidad())));
-			//listEvalBySolicitud.add(new SelectItem(dato.getId(), dato.getUnidad().getCompetenciaDescripcion()));
+			listEvalBySolicitud.add(new SelectItem(dato.getUnidad(), service.getCompetenciaDescripcion(dato.getUnidad())));
 		}
 	}
 
@@ -1361,7 +1354,7 @@ public class ExpEvalManagedBean implements Serializable  {
 		Integer  proxEstado = Integer.valueOf(estadoArchivo.getProximo());
 		
 		if (proxEstado != null){
-			archivoExp.setEstado(utilitarios.getCatalogoPortafolio().get(proxEstado));
+			archivoExp.setEstado(service.getCatalogoPortafolio().get(proxEstado));
 				
 		}
 				

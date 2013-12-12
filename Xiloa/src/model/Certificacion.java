@@ -109,31 +109,6 @@ public class Certificacion implements Serializable {
 	@JoinColumn(name="certificacion_programador_id")	
 	private Contacto programador;
 	
-	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "certificacion_divulgacion_inicia", nullable = false)
-	@Temporal(TemporalType.DATE)	
-	private Date divulgacionInicia;
-	
-	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "certificacion_divulgacion_finaliza", nullable = true)
-	@Temporal(TemporalType.DATE)
-	private Date divulgacionFinaliza;
-	
-	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "certificacion_inscripcion_finaliza", nullable = false)
-	@Temporal(TemporalType.DATE)
-	private Date inscripcionFinaliza;
-	
-	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "certificacion_convocatoria_inicia", nullable = false)
-	@Temporal(TemporalType.DATE)
-	private Date convocatoriaInicia;
-	
-	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "certificacion_evaluacion_inicia", nullable = false)
-	@Temporal(TemporalType.DATE)
-	private Date evaluacionInicia;
-	
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="certificacion_creador_id")	
@@ -334,43 +309,35 @@ public class Certificacion implements Serializable {
 	}
 
 	public Date getDivulgacionInicia() {
-		return divulgacionInicia;
-	}
-
-	public void setDivulgacionInicia(Date divulgacionInicia) {
-		this.divulgacionInicia = divulgacionInicia;
+		return actividades.get(0).getFechaInicial();
 	}
 
 	public Date getDivulgacionFinaliza() {
-		return divulgacionFinaliza;
-	}
-
-	public void setDivulgacionFinaliza(Date divulgacionFinaliza) {
-		this.divulgacionFinaliza = divulgacionFinaliza;
-	}
-
-	public Date getInscripcionFinaliza() {
-		return inscripcionFinaliza;
-	}
-
-	public void setInscripcionFinaliza(Date inscripcionFinaliza) {
-		this.inscripcionFinaliza = inscripcionFinaliza;
+		return actividades.get(0).getFechaFinal();
 	}
 
 	public Date getConvocatoriaInicia() {
-		return convocatoriaInicia;
+		return actividades.get(1).getFechaInicial();
 	}
-
-	public void setConvocatoriaInicia(Date convocatoriaInicia) {
-		this.convocatoriaInicia = convocatoriaInicia;
+	
+	public Date getConvocatoriaFinaliza() {
+		return actividades.get(1).getFechaFinal();
 	}
 
 	public Date getEvaluacionInicia() {
-		return evaluacionInicia;
+		return actividades.get(2).getFechaInicial();
 	}
 
-	public void setEvaluacionInicia(Date evaluacionInicia) {
-		this.evaluacionInicia = evaluacionInicia;
+	public Date getEvaluacionFinaliza() {
+		return actividades.get(2).getFechaFinal();
+	}
+	
+	public Date getVerificacionInicia() {
+		return actividades.get(3).getFechaInicial();
+	}
+
+	public Date getVerificacionFinaliza() {
+		return actividades.get(3).getFechaFinal();
 	}
 
 	public Contacto getCreador() {

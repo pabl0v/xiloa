@@ -83,7 +83,7 @@ public class JavaEmailSender {
 		}
 		catch(EmptyResultDataAccessException e)
 		{
-			RESPONSIBLE = "dnchavez@hotmail.com";
+			RESPONSIBLE = "sccl.inatec@gmail.com";
 		}
 	}
 	 

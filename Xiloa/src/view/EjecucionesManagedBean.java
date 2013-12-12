@@ -30,8 +30,7 @@ public class EjecucionesManagedBean implements Serializable {
 
 	@Autowired
 	private IService service;
-	@Autowired
-	private UtilitariosManagedBean utilitarios;
+	
 	@Autowired
 	private LoginController controller;
 

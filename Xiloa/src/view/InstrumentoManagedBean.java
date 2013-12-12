@@ -33,9 +33,6 @@ public class InstrumentoManagedBean implements Serializable {
 	private IService service;
 	
 	@Autowired
-	private transient UtilitariosManagedBean util;
-	
-	@Autowired
 	private LoginController controller;
 
 	private Long idCertificacion;
@@ -70,7 +67,7 @@ public class InstrumentoManagedBean implements Serializable {
 	
 	@PostConstruct
 	private void init(){
-		catalogoTiposInstrumento = util.getCatalogoTiposInstrumento();
+		catalogoTiposInstrumento = service.getCatalogoTiposInstrumento();
 		contacto = controller.getContacto();
 		configurarInstrumento();
 	}
@@ -164,7 +161,7 @@ public class InstrumentoManagedBean implements Serializable {
 			
 		List<Long> unidades = service.getUnidadesByCertificacionId(idCertificacion);
 		for(int i=0; i<unidades.size(); i++)
-			this.catalogoUnidades.put(unidades.get(i), new Item(unidades.get(i),util.getCompetenciaDescripcion(unidades.get(i))));
+			this.catalogoUnidades.put(unidades.get(i), new Item(unidades.get(i),service.getCompetenciaDescripcion(unidades.get(i))));
 		this.instrumentos = service.getInstrumentosByCertificacionId(idCertificacion);
 
 		return "/modulos/planificacion/instrumentos?faces-redirect=true";
@@ -250,6 +247,6 @@ public class InstrumentoManagedBean implements Serializable {
     }
     
     public String getCompetenciaDescripcion(Long codigo){
-    	return util.getCompetenciaDescripcion(codigo);
+    	return service.getCompetenciaDescripcion(codigo);
     }
 }

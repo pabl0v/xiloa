@@ -33,8 +33,6 @@ public class PlanificacionManagedBean implements Serializable {
 	
 	@Autowired
 	private IService service;
-	@Autowired
-	private UtilitariosManagedBean utilitarios;
 	private List<Certificacion> certificaciones;
 	private List<UCompetencia> competencias;
 	private UCompetencia selectedCompetencia;
@@ -81,7 +79,7 @@ public class PlanificacionManagedBean implements Serializable {
 	public void nuevaCertificacion(UCompetencia competencia){
 		
 		Mantenedor estatus = service.getMapMantenedoresByTipo("3").get(7);		//estatus pendiente
-		Contacto creador = controller.getContacto();						//actualizar
+		Contacto creador = controller.getContacto();
 		
 		Certificacion certificacion = new Certificacion();
 		certificacion.setEstructuraId(competencia.getEsructuraId());
@@ -97,11 +95,6 @@ public class PlanificacionManagedBean implements Serializable {
 		certificacion.setIfpDireccion(competencia.getDireccion());
 		certificacion.setUnidades(new HashSet<Long>());
 		certificacion.setInvolucrados(new Contacto[] {});
-		certificacion.setDivulgacionInicia(new Date());
-		certificacion.setDivulgacionFinaliza(new Date());
-		certificacion.setInscripcionFinaliza(new Date());
-		certificacion.setEvaluacionInicia(new Date());
-		certificacion.setConvocatoriaInicia(new Date());
 
 		certificacion.setEstatus(estatus);
 		
@@ -133,7 +126,7 @@ public class PlanificacionManagedBean implements Serializable {
 	
 	public SelectItem[] getListaEstatus(){
 
-		List<Mantenedor> estatusList = new ArrayList<Mantenedor>(utilitarios.getCatalogoEstatusCertificacion().values());
+		List<Mantenedor> estatusList = new ArrayList<Mantenedor>(service.getCatalogoEstatusCertificacion().values());
 		SelectItem[] estatus = new SelectItem[estatusList.size() + 1];
 		
 		estatus[0] = new SelectItem("","Seleccione");

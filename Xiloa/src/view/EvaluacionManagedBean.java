@@ -34,8 +34,6 @@ public class EvaluacionManagedBean implements Serializable {
 
 	@Autowired
 	private IService service;
-	@Autowired
-	private UtilitariosManagedBean utilitarios;
 	
 	private Solicitud   solicitudEval;
 	private Long        idSelectedUnidad;
@@ -374,14 +372,14 @@ public class EvaluacionManagedBean implements Serializable {
 		
 		if (sol != null){
 			this.setSolicitudEval(sol);
-			Mantenedor estadoInicialSolicitud = service.getMantenedorMinByTipo(sol.getTipomantenedorestado());
-			Mantenedor segEstado = utilitarios.getCatalogoEstadoSolicitud().get(Integer.valueOf(estadoInicialSolicitud.getProximo()));
+			Mantenedor estadoInicialSolicitud = service.getMantenedorMinByTipo(sol.getTipomantenedorestado());			
+			Mantenedor segEstado = service.getCatalogoEstadoSolicitud().get(Integer.valueOf(estadoInicialSolicitud.getProximo()));
 			
 			if (segEstado != null) {
-				Mantenedor estadoConvocado = utilitarios.getCatalogoEstadoSolicitud().get(Integer.valueOf(segEstado.getProximo()));
+				Mantenedor estadoConvocado = service.getCatalogoEstadoSolicitud().get(Integer.valueOf(segEstado.getProximo()));
 				
 				if (estadoConvocado != null)
-					this.solicitudAsesorado = utilitarios.getCatalogoEstadoSolicitud().get(Integer.valueOf(segEstado.getProximo()));
+					this.solicitudAsesorado = service.getCatalogoEstadoSolicitud().get(Integer.valueOf(segEstado.getProximo()));
 			}
 			
 			
@@ -486,8 +484,7 @@ public class EvaluacionManagedBean implements Serializable {
 			this.listUnidadCompentecia.add(new SelectItem(null, "Seleccione la unidad de competencia"));
 			
 			for(Long unidad : setUnidades){
-				this.listUnidadCompentecia.add(new SelectItem(unidad, utilitarios.getCompetenciaDescripcion(unidad)));			
-				//this.listUnidadCompentecia.add(new SelectItem(unidad.getId(), utilitarios.getCompetenciaDescripcion(unidad.getCodigo())));
+				this.listUnidadCompentecia.add(new SelectItem(unidad, service.getCompetenciaDescripcion(unidad)));
 			}
 								
 			this.listInstrumentoByUnidad = new ArrayList<SelectItem>();

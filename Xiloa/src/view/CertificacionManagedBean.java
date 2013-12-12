@@ -81,7 +81,7 @@ public class CertificacionManagedBean implements Serializable {
 	
 	public String guardarEdicion(){
 		
-		certificacion.setFechaRegistro(new Date());
+		//certificacion.setFechaRegistro(new Date());
 		certificacion.setFechaActualiza(new Date());
 		certificacion.setActualiza(controller.getContacto());
 		certificacion.setReferencial("N/D");

@@ -35,6 +35,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.UploadedFile;
 
+import controller.LoginController;
 import service.IService;
 import support.BeanEvaluacion;
 import support.Departamento;
@@ -51,7 +52,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	private IService service;
 	
 	@Autowired
-	private UtilitariosManagedBean util;
+	private LoginController controller;
 	
 	private Solicitud solicitudExp;
 	private Contacto contactoExp;
@@ -721,15 +722,15 @@ public class ExpedienteManagedBean implements Serializable  {
 		listDeptos = new ArrayList<SelectItem> ();
 		listDeptos.add(new SelectItem(null, "Seleccione un Departamento"));
 		
-		if (util.getCatalogoDepartamentos().size() > 0 ) {			
-			List<Departamento> listaDeptos = new ArrayList<Departamento> (util.getCatalogoDepartamentos().values());
+		if (service.getCatalogoDepartamentos().size() > 0 ) {
+			List<Departamento> listaDeptos = new ArrayList<Departamento> (service.getCatalogoDepartamentos().values());
 			
 			for (Departamento dpto : listaDeptos) 
 				this.listDeptos.add(new SelectItem(dpto.getDpto_id(), dpto.getDpto_nombre()));		       
 		}
 			
 		//Obtiene el catalogo de los Paises
-		List<Pais> paises = new ArrayList<Pais>(this.util.getCatalogoPaises().values()); //service.getPaises();
+		List<Pais> paises = new ArrayList<Pais>(this.service.getCatalogoPaises().values()); //service.getPaises();
 		this.listPaises = new ArrayList<SelectItem> ();
 		this.listNacionalidades = new ArrayList<SelectItem> ();
 		this.listPaises.add(new SelectItem(null, "Seleccione un pais"));
@@ -743,7 +744,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		listGenero = new ArrayList<SelectItem> ();		
 		listGenero.add(new SelectItem(null, "Indique el Genero"));
 		
-		List<Mantenedor> listaGenero = new ArrayList<Mantenedor> (this.util.getCatalogoGenero().values());		
+		List<Mantenedor> listaGenero = new ArrayList<Mantenedor> (this.service.getCatalogoGenero().values());		
 		for (Mantenedor dato : listaGenero){
 			listGenero.add(new SelectItem(dato.getId(), dato.getValor()));
 		}		
@@ -763,7 +764,8 @@ public class ExpedienteManagedBean implements Serializable  {
 			this.solicitudExp = null;
 			Usuario userName = null;
 			
-			userName = service.getUsuarioLocal(util.getUsuario());
+			//userName = service.getUsuarioLocal(util.getUsuario());
+			userName = controller.getContacto().getUsuario();
 			if (userName.getContacto() != null)
 				this.setContactoExp(userName.getContacto());		
 		} else{
@@ -797,9 +799,9 @@ public class ExpedienteManagedBean implements Serializable  {
 		String     unidadDescripcion = "";
 		for (Evaluacion e : listEval) {
 			
-			estadoEval = this.util.getCatalogoEstadosEvaluacion().get(e.getEstado().getId());
+			estadoEval = this.service.getCatalogoEstadosEvaluacion().get(e.getEstado().getId());
 			
-			unidadDescripcion = this.util.getCompetenciaDescripcion(e.getUnidad());
+			unidadDescripcion = this.service.getCompetenciaDescripcion(e.getUnidad());
 			List<Instrumento> listInstrumento = service.getIntrumentoByEvaluacion(e.getId());
 			for (Instrumento inst : listInstrumento) {				
 				BeanEvaluacion bean = new BeanEvaluacion (sol, //Solicitud, 
@@ -919,7 +921,7 @@ public class ExpedienteManagedBean implements Serializable  {
 			proxEstado = Integer.valueOf(estadoActual.getProximo()); 
 			
 			if (proxEstado != null){
-				proximoEstado = this.util.getCatalogoEstadoSolicitud().get(proxEstado);
+				proximoEstado = this.service.getCatalogoEstadoSolicitud().get(proxEstado);
 				this.solicitudExp.setEstatus(proximoEstado);		
 			
 				Solicitud sol = (Solicitud) service.guardar(this.solicitudExp);
@@ -978,7 +980,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		nombreCargoLaboral = this.nombreCargo.toUpperCase() + " /  " + this.nombreInstitucion.toUpperCase();
 		
 		if (this.idSeletedLaboral == null) {			
-			paisInstitucion = (this.paisIdLaboral != null) ? this.util.getCatalogoPaises().get(this.paisIdLaboral) : null;				
+			paisInstitucion = (this.paisIdLaboral != null) ? this.service.getCatalogoPaises().get(this.paisIdLaboral) : null;				
 									
 			this.selectedLaboral = new Laboral (this.getContactoExp(), // contacto, 
 									   this.tipoLaboral, // tipo, 
@@ -1102,8 +1104,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		System.out.println("Obtiene el listado de las evaluaciones");
 		listEvalBySolicitud.add(new SelectItem(null, "Seleccione la evaluacion"));
 		for (Evaluacion dato : listE) {
-			//listEvalBySolicitud.add(new SelectItem(dato.getId(), dato.getUnidad().getCompetenciaDescripcion()));
-			listEvalBySolicitud.add(new SelectItem(dato.getId(), util.getCompetenciaDescripcion(dato.getUnidad())));
+			listEvalBySolicitud.add(new SelectItem(dato.getId(), service.getCompetenciaDescripcion(dato.getUnidad())));
 		}
 	}
 
@@ -1185,7 +1186,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		Integer  proxEstado = Integer.valueOf(estadoArchivo.getProximo());
 		
 		if (proxEstado != null){
-			archivoExp.setEstado(this.util.getCatalogoPortafolio().get(proxEstado));
+			archivoExp.setEstado(this.service.getCatalogoPortafolio().get(proxEstado));
 		}
 				
 		archivoExp = (Archivo) service.guardar(archivoExp);

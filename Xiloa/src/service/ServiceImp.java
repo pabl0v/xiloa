@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -62,11 +64,9 @@ public class ServiceImp implements IService {
 	@Autowired
 	private IDao<Contacto> contactoDao;
 	@Autowired
-	private IDao<Rol> rolDao;
-	//Inicio : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Propiedades definidas para ser utilizados principalmente en el Modulo SOLICITUDES	
+	private IDao<Rol> rolDao;	
 	@Autowired
 	private IDao<Solicitud> solicitudDao;
-	//Fin : SCCL || 22.10.2013 || Ing. Miriam Martinez Cano || Propiedades definidas para ser utilizados principalmente en el Modulo SOLICITUDES
 	@Autowired
 	private IDao<Mantenedor> mantenedorDao;
 	@Autowired
@@ -79,36 +79,194 @@ public class ServiceImp implements IService {
 	private IDao<Instrumento> instrumentoDao;
 	@Autowired	
 	private IDaoInatec inatecDao;
-	
 	@Autowired	
 	private IDao<Laboral> laboralDao;
-	
 	@Autowired	
 	private IDao<Evaluacion> evaluacionDao;
-	
 	@Autowired	
 	private IDao<EvaluacionGuia> evaluacionGuiaDao;
-	
 	@Autowired
 	private IDao<Long> longDao;
-	
 	@Autowired
 	private IDao<Bitacora> bitacoraDao;
-	
 	@Autowired
 	private IDao<Integer> integerDao;
-	
 	@Autowired
 	private IDao<Archivo> archivoDao;
-	
 	@Autowired
 	private IDao<Pais> paisDao;
-	
 	@Autowired
 	private JavaEmailSender email;
-	
 	@Autowired
 	private IDao<Object> objectDao;
+	
+	private List<Mantenedor> mantenedores;
+	private Map<Integer, Mantenedor> catalogoEstatusCertificacion;
+	private Map<Integer, Mantenedor> catalogoTiposActividad;
+	private Map<Integer, Mantenedor> catalogoEstatusActividad; 
+	private Map<Integer, Mantenedor> catalogoTiposInstrumento;
+	private Map<Integer, Mantenedor> catalogoTiposDatosLaborales;	
+	private Map<Long, Item> catalogoUnidades;
+	private List<Usuario> usuarios;
+	private List<Rol> roles;
+	private Map<Integer, Mantenedor> catalogoGenero;
+	private Map<Integer, Mantenedor> catalogoEstadoSolicitud;
+	private Map<Integer, Mantenedor> catalogoPortafolio;
+	private Map<Integer, Mantenedor> catalogoEstadosEvaluacion;
+	private Map<Long, Pais> catalogoPaises;
+	private Map<Integer, Departamento> catalogoDepartamentos;
+	
+	public ServiceImp(){
+		super();
+		mantenedores = new ArrayList<Mantenedor>();
+		catalogoEstatusCertificacion = new HashMap<Integer, Mantenedor>();
+		catalogoTiposActividad = new HashMap<Integer, Mantenedor>();
+		catalogoEstatusActividad = new HashMap<Integer, Mantenedor>();
+		catalogoTiposInstrumento = new HashMap<Integer, Mantenedor>();
+		catalogoTiposDatosLaborales = new HashMap<Integer, Mantenedor>();
+		catalogoUnidades = new HashMap<Long, Item>();
+		usuarios = new ArrayList<Usuario>();
+		roles = new ArrayList<Rol>();
+		catalogoGenero = new HashMap<Integer, Mantenedor> ();
+		catalogoEstadoSolicitud = new HashMap<Integer, Mantenedor>();
+		catalogoPortafolio = new HashMap<Integer, Mantenedor>();
+		catalogoEstadosEvaluacion = new HashMap<Integer, Mantenedor>();
+		catalogoPaises = new HashMap<Long, Pais>();
+		catalogoDepartamentos = new HashMap<Integer, Departamento>();
+	}
+	
+	@PostConstruct
+	public void init(){
+		mantenedores = mantenedorDao.findAll(Mantenedor.class);
+		usuarios = usuarioDao.findAll(Usuario.class);
+		roles = rolDao.findAll(Rol.class);
+		int tipoMantenedor = 0;
+		
+		for(int i=0; i<mantenedores.size(); i++){
+			Mantenedor mantenedor = mantenedores.get(i);
+			switch(mantenedor.getId()){
+				case 1:
+				case 2:
+				case 3:
+				case 4: catalogoTiposActividad.put(mantenedor.getId(), mantenedor); break;
+				case 7:
+				case 8:
+				case 9: catalogoEstatusCertificacion.put(mantenedor.getId(), mantenedor); break;
+				case 10:
+				case 11:
+				case 12: catalogoEstatusActividad.put(mantenedor.getId(), mantenedor); break;
+				case 17:
+				case 18:
+				case 19: catalogoTiposInstrumento.put(mantenedor.getId(), mantenedor); break;
+			}
+			
+			tipoMantenedor = Integer.valueOf(mantenedor.getTipo()).intValue();
+			switch (tipoMantenedor){
+				case 1:		
+				case 2:
+				case 3:
+				case 4:
+				case 5: catalogoTiposDatosLaborales.put(mantenedor.getId(), mantenedor); break;
+				case 6:
+				case 7: catalogoEstadoSolicitud.put(mantenedor.getId(), mantenedor); break;
+				case 8: catalogoPortafolio.put(mantenedor.getId(), mantenedor); break;
+				case 9: catalogoEstadosEvaluacion.put(mantenedor.getId(), mantenedor); break;
+				case 10: catalogoGenero.put(mantenedor.getId(), mantenedor); break;
+			}
+			
+		}
+		
+		catalogoUnidades = inatecDao.getCatalogoUnidades();
+		
+	    List<Pais> listaPaises = new ArrayList<Pais> ();
+	    listaPaises = getPaises();
+	    
+	    for (Pais p : listaPaises) {
+	    	this.catalogoPaises.put(p.getId(), p);
+	    }		 
+		
+		this.catalogoDepartamentos = getDepartamentosByInatec();
+	}
+	
+	@Override
+	public Map<Long, Pais> getCatalogoPaises() {
+		return catalogoPaises;
+	}
+
+	@Override
+	public Map<Integer, Departamento> getCatalogoDepartamentos() {
+		return catalogoDepartamentos;
+	}
+
+	@Override
+	public Map<Integer, Mantenedor> getCatalogoEstadosEvaluacion() {
+		return catalogoEstadosEvaluacion;
+	}
+
+	@Override
+	public Map<Integer, Mantenedor> getCatalogoPortafolio() {
+		return catalogoPortafolio;
+	}
+	
+	@Override
+	public Map<Integer, Mantenedor> getCatalogoEstadoSolicitud() {
+		return catalogoEstadoSolicitud;
+	}
+
+	@Override
+	public Map<Integer, Mantenedor> getCatalogoGenero() {
+		return catalogoGenero;
+	}
+
+	@Override
+	public List<Mantenedor> getMantenedores(){
+		return this.mantenedores;
+	}
+
+	@Override
+	public Map<Integer, Mantenedor> getCatalogoEstatusCertificacion(){
+		return catalogoEstatusCertificacion;
+	}
+	
+	@Override
+	public Map<Integer, Mantenedor> getCatalogoTiposActividad(){
+		return catalogoTiposActividad;
+	}
+
+	@Override
+	public Map<Integer, Mantenedor> getCatalogoEstatusActividad(){
+		return catalogoEstatusActividad;
+	}
+
+	@Override
+	public Map<Integer, Mantenedor> getCatalogoTiposInstrumento(){
+		return catalogoTiposInstrumento;
+	}
+
+	@Override
+	public Map<Integer, Mantenedor> getCatalogoTiposDatosLaborales(){
+		return catalogoTiposDatosLaborales;
+	}
+	
+	@Override
+	public Map<Long, Item> getCatalogoUnidades(){
+		return catalogoUnidades;
+	}
+
+	@Override
+	public String getCompetenciaDescripcion(Long codigo){
+		return catalogoUnidades.get(codigo).getDescripcion();
+	}
+
+	@Override
+	public List<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	@Override
+	public List<Rol> getRoles() {
+		return roles;
+	}
 	
 	@Override
 	public List<Certificacion> getCertificaciones(Integer entidadId){
@@ -143,7 +301,7 @@ public class ServiceImp implements IService {
 				
 		Mantenedor estado = getMapMantenedoresByTipo("4").get(10);				//estatus pendiente
 		Map<Integer, Mantenedor> actividades = getMapMantenedoresByTipo("1");	//actualizar
-		Contacto creador = certificacion.getCreador();								//actualizar
+		Contacto creador = certificacion.getCreador();
 		
 		actividadDao.save(new Actividad(certificacion,0,actividades.get(1),"Divulgacion","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado));
 		actividadDao.save(new Actividad(certificacion,1,actividades.get(4),"Convocatoria","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado));
@@ -162,11 +320,6 @@ public class ServiceImp implements IService {
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void updateRequisito(Requisito requisito) {
 		requisitoDao.save(requisito);
-	}
-
-	@Override
-	public List<Usuario> getUsuarios() {
-		return usuarioDao.findAll(Usuario.class);
 	}
 
 	@Override
@@ -410,11 +563,6 @@ public class ServiceImp implements IService {
 	public List<Actividad> getActividades(Long certificacionId) {
 			return actividadDao.findAllByNamedQueryParam("Actividad.findByCertificacionId", new Object[] {certificacionId});
 	}
-
-	@Override
-	public List<Mantenedor> getMantenedores() {
-		return mantenedorDao.findAll(Mantenedor.class);		
-	}
 	
 	@Override
 	public List<Mantenedor> getMantenedoresByTipo(Integer tipo) {
@@ -585,11 +733,6 @@ public class ServiceImp implements IService {
 	}
 
 	@Override
-	public Map<Long, Item> getCatalogoUnidades() {
-		return inatecDao.getCatalogoUnidades();
-	}
-
-	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void registrarUsuarioExterno(UsuarioExterno usuario) {
 		
@@ -683,11 +826,6 @@ public class ServiceImp implements IService {
 	@Override
 	public Contacto getContactoLocalByLogin(String login) {
 		return contactoDao.findOneByNamedQueryParam("Contacto.findByLogin", new Object[] {login});
-	}
-
-	@Override
-	public List<Rol> getRoles() {
-		return rolDao.findAll(Rol.class);
 	}
 
 	@Override
@@ -851,7 +989,6 @@ public class ServiceImp implements IService {
 	@Override
 	public Connection getSqlConnection() throws SQLException {	
 		Connection con = objectDao.getSqlConexion();
-	
 		return con;
 	}
 	
@@ -869,8 +1006,6 @@ public class ServiceImp implements IService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		
 	}
 	
 	@Override

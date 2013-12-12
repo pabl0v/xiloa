@@ -33,61 +33,46 @@ import model.Solicitud;
 import model.Usuario;
 
 public interface IService {
-	
+
+	public Map<Long, Pais> getCatalogoPaises();
+	public Map<Integer, Departamento> getCatalogoDepartamentos();
+	public Map<Integer, Mantenedor> getCatalogoEstadosEvaluacion();
+	public Map<Integer, Mantenedor> getCatalogoPortafolio();
+	public Map<Integer, Mantenedor> getCatalogoEstadoSolicitud();
+	public Map<Integer, Mantenedor> getCatalogoGenero();
+	public Map<Integer, Mantenedor> getCatalogoEstatusCertificacion();
+	public Map<Integer, Mantenedor> getCatalogoTiposActividad();
+	public Map<Integer, Mantenedor> getCatalogoEstatusActividad();
+	public Map<Integer, Mantenedor> getCatalogoTiposInstrumento();
+	public Map<Integer, Mantenedor> getCatalogoTiposDatosLaborales();
+	public String getCompetenciaDescripcion(Long codigo);
 	public Contacto getContactoByLogin(String login);
-	
 	public Contacto getContactoLocalByLogin(String login);
-	
 	public Contacto getContactoInatecByLogin(String login);
-	
 	public Collection<Authority> getAuthoritiesInatecByRolId(Integer rolId);
-	
 	public Collection<Authority> getAuthoritiesInatecByLogin(String login);
-	
 	public List<Rol> getRoles();
-	
 	public List<Instrumento> getInstrumentos(Integer entidadId);
-	
 	public boolean existeUsuario(String usuario);
-	
 	public Usuario registrarAcceso(Usuario usuario); 
-	
 	public void resetPassword(String usuario);
-	
 	public void registrarUsuarioExterno(UsuarioExterno usuario);
-	
 	public Map<Long, Item> getCatalogoUnidades();
-	
 	public List<Certificacion> getCertificaciones(Integer entidadId);
-	
 	public List<Certificacion> getCertificacionesActivas(Integer parametro, String valor);
-	
 	public Map<Long, String> getUnidadesByEstructuraId(Integer estructura);
-		
 	public List<Mantenedor> getMantenedores();
-	
 	public List<Mantenedor> getMantenedoresByTipo(Integer tipo);
-	
 	public Map<Integer, Mantenedor> getMapMantenedoresByTipo(String tipo);
-	
 	public Map<Integer, Departamento> getDepartamentosByInatec();
-	
 	public Map<Integer, Municipio> getMunicipioDptoByInatec(Integer idDpto);
-	
 	public List<Actividad> getActividades(Long certificacionId);
-	
 	public List<Actividad> getActividadesByEntidadId(Integer entidadId);
-	
 	public List<Mantenedor> getMantenedorActividades();
-	
 	public List<Mantenedor> getMantenedorEstatusCertificacion();
-	
 	public Rol getRolById(int id);
-	
 	public Contacto generarNuevoContactoInatec(String usuario);
-	
 	public boolean isNuevoContactoInatec(String usuario);
-	
 	public Certificacion guardarCertificacion(Certificacion certificacion, List<Requisito> requisitos);
 	public List<Requisito> getRequisitos(int certificacionId);
 	public void updateRequisito(Requisito requisito);
@@ -132,11 +117,8 @@ public interface IService {
 	public Evaluacion guardarEvaluacion(Evaluacion eval, Guia [] guias);
 	public EvaluacionGuia updateEvaluacionGuia(EvaluacionGuia evalGuia);
 	public boolean validaListoInscripcion(Solicitud solicitud);
-	
 	public Connection getSqlConnection() throws SQLException;
-	
 	public void imprimirReporte(String nombreReporte, Map<String,Object> parametros, String formato, boolean visualiza) throws SQLException;
-	
 	public List<Solicitud> filtraListaSolicitudes(HashMap<String, Object> param, Integer tipoFiltro);
 	public boolean validaProcesoConcluido(Solicitud solicitud, boolean validaEvaluacion);
 	public boolean validaEvaluacionAprobada(Solicitud solicitud);

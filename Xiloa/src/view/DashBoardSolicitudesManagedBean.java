@@ -1,7 +1,6 @@
 package view;
 
 import java.io.Serializable;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +15,6 @@ import model.Laboral;
 import model.Mantenedor;
 import model.Solicitud;
 
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +22,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import controller.LoginController;
-
-import reporte.ControlGenericoReporte;
 import service.IService;
 import support.Ifp;
 import support.FacesUtil;
@@ -35,19 +31,14 @@ import util.Global;
 @Scope(value="view")
 public class DashBoardSolicitudesManagedBean implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
+	@SuppressWarnings("unused")
 	private static final String NOMBREREPORTE = "listasolicitudes";
 
 	@Autowired
 	private IService service;
-	
-	@Autowired
-	private UtilitariosManagedBean util;
-	
+		
 	@Autowired
 	private LoginController login; 
 	
@@ -429,7 +420,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 					proxEstado = Integer.valueOf(estadoActual.getProximo());
 											
 					if (proxEstado != null){
-						proximoEstado = util.getCatalogoEstadoSolicitud().get(proxEstado);
+						proximoEstado = service.getCatalogoEstadoSolicitud().get(proxEstado);
 						solicitudExp.setEstatus(proximoEstado);
 						
 						Solicitud sol = (Solicitud) service.guardar(solicitudExp);
