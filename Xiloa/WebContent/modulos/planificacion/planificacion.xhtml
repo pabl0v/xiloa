@@ -42,10 +42,6 @@
                         <p:column style="width:4%" rendered="#{sec:areAnyGranted('ROLE_RIGHT_EDITAR_PLANIFICACIONES')}">
 							<p:commandButton id="editarButton" action="#{certificacionManagedBean.editarCertificacion(planificacionManagedBean.selectedCertificacion)}" icon="ui-icon-pencil" title="Editar"/>  
 				        </p:column>
-						<p:column style="width:4%" rendered="#{sec:areAnyGranted('ROLE_RIGHT_CONFIGURAR_INSTRUMENTOS')}">
-							<p:commandButton id="instrumentosButton" action="#{instrumentoManagedBean.configurarInstrumento(planificacionManagedBean.selectedCertificacion.id,planificacionManagedBean.selectedCertificacion.nombre)}" icon="ui-icon-pencil" title="instrumentos">
-							</p:commandButton>
-						</p:column>
                 </p:dataTable>
             </h:form>
         </div>

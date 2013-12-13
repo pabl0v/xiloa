@@ -76,12 +76,6 @@
 							</p:commandButton>
 							<h:panelGroup id="contenidoActividades" style="border:0">
 								<p:dataTable id="actividadesDataTable" emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.certificacion.actividades}" selection="#{certificacionManagedBean.selectedActividad}" paginator="true" rows="10" rowKey="#{actividad.id}" selectionMode="single">  
-									<f:facet name="header">  
-										<p:outputPanel style="text-align:right;">  
-											<h:outputText value="Buscar:" />  
-											<p:inputText id="globalFilter" onkeyup="carsTable.filter()" style="margin-left: 4px; width:150px" />  
-										</p:outputPanel>  
-									</f:facet>
 									<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>
 									<p:column headerText="Nombre de la actividad"><h:outputText value="#{actividad.nombre}" /></p:column>    
 									<p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
