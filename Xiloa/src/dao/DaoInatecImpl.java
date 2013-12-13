@@ -108,7 +108,8 @@ public class DaoInatecImpl implements IDaoInatec {
 			"forma.id_tipo_estructura in (3,5) "+ 
 			"and o.activo=1 "+ 
 			"and forma.id_tipo_acreditacion=1 "+ 
-			"and forma.nivel_cualificacion='2' ";
+			"and forma.nivel_cualificacion='2' "+
+			"and not exists (select 1 from sccl.certificaciones x where x.certificacion_curso_id = cc.id_curso and x.certificacion_ifp_id = o.id_centro and x.certificacion_estatus in (7,8)) ";
 	
 	private static final String SQL_SELECT_UNIDADES_COMPETENCIA = 
 		"select	distinct "+
