@@ -23,12 +23,12 @@ h3 {
 .barra_azul {
 	background: #006699;
 	color:white;
-	width: 45%;
+	width: 100%;
 	display:inline-block;
 	padding: 5px;
-	margin-left: 14px;
+
 	border-radius: 9px;
-	margin-top: -52px;
+
 	height: 110px;
 }
 .barra_azul div{
@@ -175,4 +175,11 @@ font-size: 13px;
 width: 490px;
 height: 325px;
 display: inline-block;
+}
+.panel_barra_azul {
+display: inline-block;
+width: 45%;
+height: 135px;
+background: none;
+border: none;
 }

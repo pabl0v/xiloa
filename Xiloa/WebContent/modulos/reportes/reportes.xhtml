@@ -21,14 +21,16 @@
         <div id="cabezera">
             <h2>Reportes SCCL</h2>           
        </div>
-        <h:form id="formReportes">	        
+        <h:form id="formReportes" class="estilo_formReportes">	        
         <div id="contenedor_filtro">           
-	            <p style="margin-left:5px">Seleccione el reporte a generar:</p>
-	            <p:selectOneMenu id="selector_reportes" styleClass="selectores" value="#{reportesManagedBean.rptId}" >	                
-	                <f:selectItems value="#{reportesManagedBean.listaTiposReportes}" />     
-	                <p:ajax update=":formReportes:selector_Estados"  listener="#{reportesManagedBean.handleEstadosByRpt}" />         
-            	</p:selectOneMenu>  	            
-		        <span style="display:inline-block;">
+        		<span style="display:block;">
+		            <p>Seleccione el reporte a generar:</p>
+		            <p:selectOneMenu id="selector_reportes" styleClass="selectores selector_centrosBySolicitudEstilo" value="#{reportesManagedBean.rptId}" >	                
+		                <f:selectItems value="#{reportesManagedBean.listaTiposReportes}" />     
+		                <p:ajax update=":formReportes:selector_Estados"  listener="#{reportesManagedBean.handleEstadosByRpt}" />         
+	            	</p:selectOneMenu>  
+            	</span>	            
+		        <span style="display:block;">
 		            <p>Centro evaluador:</p>
 		            <p:selectOneMenu styleClass="selectores selector_centrosBySolicitudEstilo" id="selector_centrosBySolicitud" 
 		                             value="#{reportesManagedBean.selectedIdIfp}" >			        
@@ -36,21 +38,21 @@
 				        <p:ajax update=":formReportes:selector_certificacionByCentro"  listener="#{reportesManagedBean.handleCertByCentro}" />
 				    </p:selectOneMenu>
 			    </span>
-			    <span style="display:inline-block; margin-left:5px">
+			    <span style="display:block;">
 				    <p>Certificaciones:</p>
 		            <p:selectOneMenu styleClass="selectores selector_certificacionByCentroEstilo" id="selector_certificacionByCentro" 
 		                             value="#{reportesManagedBean.selectedIdCertByCentro}" >			        
 				        <f:selectItems value="#{reportesManagedBean.listCertByCentro}" />				       
 				    </p:selectOneMenu>	
 			    </span>		
-			    <span style="display:inline-block; margin-left:5px">
+			    <span style="display:block;">
 				    <p>Estados:</p>
 		            <p:selectOneMenu styleClass="selectores selector_certificacionByCentroEstilo" id="selector_Estados" 
 		                             value="#{reportesManagedBean.estadoId}" >			        
 				        <f:selectItems value="#{reportesManagedBean.listaEstados}" />				       
 				    </p:selectOneMenu>	
 			    </span>		   
-        		 <p:commandButton id="btnReporte" value="Generar" title="Generar Reporte" 
+        		 <p:commandButton id="btnReporte" styleClass="boton" value="Generar" title="Generar Reporte" 
 	    		                 icon="ui-icon-star" style="display:inline-block;"
 	    		                 action="#{reportesManagedBean.runReporte()}" 
 	    					     />        		
@@ -59,7 +61,9 @@
         	<p:messages id="msgReportes" showDetail="true" autoUpdate="true" closable="true" />        	
         </div>      
      </h:form>
-    </div>        
-    
+     <div class="bigPDF">
+     	
+     </div>        
+    </div>
 </h:body>
 </html>

@@ -22,9 +22,12 @@
         <div id="cabezera">
             <h2>Planificación Actual</h2>
             <div id="botones_filtro_contenedor">
-                <div class="botones_filtro" onclick="PF('dlg2').show();"><p class="icono_nuevo">Nueva</p></div>
-                <div class="botones_filtro"><p class="icono_buscar">Búsqueda</p></div>
-                <div class="botones_filtro"><p class="icono_exportar">Exportar</p></div>
+				<div class="botones_filtro">
+					<h:form>
+					    <p class="icono_nuevo"></p>
+						<p:commandButton rendered="#{sec:areAnyGranted('ROLE_RIGHT_CREAR_PLANIFICACIONES')}" value="Nueva" style="margin-bottom: 5px" update=":cursosDialogo" onclick="PF('dlg2').show();" />
+					</h:form>
+				</div>
             </div>
         </div>
       
@@ -48,7 +51,7 @@
     </div>
 
     <p:dialog id="modalDialog" header="Seleccione la Unidad de Competencia a Planificar:" widgetVar="dlg2" modal="true" width="740" height="480">  
-         <h:form>  
+         <h:form id="cursosDialogo" >  
              <div id="contenedor_tabla_unidadcomp">
                 <p:dataTable emptyMessage="No hay datos para mostrar" var="competencia" value="#{planificacionManagedBean.competencias}" selection="#{planificacionManagedBean.selectedCompetencia}" rowKey="#{competencia.grupo}" selectionMode="single"  paginator="true" rows="11" >
                     <p:column style="display:none;" headerText="idCentro"><h:outputText value="#{competencia.grupo}" /></p:column>

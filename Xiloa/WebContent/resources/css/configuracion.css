@@ -16,4 +16,22 @@ h2 {
 #contenedor_panel_configuracion table{
 	width: 100%;
 }
-
+.estilo_ediciondemantenedor {
+	background: #e6eef9;	
+}
+.estilo_ediciondemantenedor .estilo_label {
+	padding: 10px;
+	width:120px;
+	display: inline-block;
+}
+.botones{
+	padding: 7px;
+	background: #c4c4c4 -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.8)), to(rgba(255,255,255,0)));
+	display: inline-block;
+	margin: 3px;
+	font-weight:bold;
+	color:#4f4f4f;
+	border-radius: 2px;
+	text-decoration: none !important;
+	cursor: pointer;
+}

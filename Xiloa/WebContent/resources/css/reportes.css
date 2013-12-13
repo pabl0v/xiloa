@@ -6,10 +6,11 @@
     position: relative;
 }
 #cabezera h2{
-    font-size: 30px;   
-    display: inline-block;
-    color: #585858;
-    backgorund: aliceblue;
+font-size: 34px;
+display: inline-block;
+color: #585858;
+margin-left: 70px;
+margin-top: 21px;
 }
 #contenedor_filtro p{
 	color: black;
@@ -110,9 +111,41 @@
 	display: inline-block;
 }
 .selector_centrosBySolicitudEstilo {
-	width: 250px!important;
+	width: 350px!important;
 }
 
 .selector_certificacionByCentroEstilo {
-	width: 250px!important;
+	width: 350px!important;
+}
+#contenedor_filtro {
+	
+}
+#contenedor_filtro > span{
+	margin: 40px;
+	margin-left: 70px;
+	width: 500px;
+}
+#contenedor_filtro > span p{
+	width: 252px;
+	font-size: 15px;
+}
+#contenedor_filtro > span label{
+	font-size: 14px;
+}
+#contenedor_filtro .boton{
+	margin-left:70px;
+}
+.estilo_formReportes{
+	
+	
+}
+.bigPDF {
+	background:  url("../../resources/imagenes/bigPDF2g.png") no-repeat center;
+	width: 500px;
+height: 500px;
+
+position: absolute;
+top: 58px;
+right: 46px;
+z-index: -1;
 }

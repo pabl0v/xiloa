@@ -33,6 +33,7 @@
     border-radius: 8px;
     padding: 5px;
     text-align: center;
+    height: 65px;
 }
 #contenedor_filtro{
 	margin: 42px 0px;	
@@ -60,7 +61,7 @@
     cursor: pointer;
 }
 .botones_filtro p{
-    height: 63px;
+    height: 40px;
     line-height: 94px;
     background-position-y: 5px;
 }

@@ -188,3 +188,6 @@ h2{
 #contenedor_dialogoactividades input{
 	width: 140px;
 }
+.estilo_panelInstrumento tbody tr td input {
+	margin-top: 22px;
+}

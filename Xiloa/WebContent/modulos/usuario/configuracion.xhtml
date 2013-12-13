@@ -77,7 +77,7 @@
        </div>
     </div>
     
-	<p:dialog id="modalDialog1" styleClass="estilo_dialogoactividades" header="Edición de Mantenedor:" widgetVar="dlg1" modal="true" resizable="false" width="350" height="300">
+	<p:dialog id="modalDialog1" styleClass="estilo_ediciondemantenedor" header="Edición de Mantenedor:" widgetVar="dlg1" modal="true" resizable="false" width="350" height="300">
 		<div id="contenedor_dialogoactividades">
 		<h:panelGrid id="modal1" columns="2" cellpadding="4">
 		<h:form id="mantenedorDialogo">
@@ -97,8 +97,8 @@
             <p:inputText id="codigo5" value="#{configuracionManagedBean.mantenedor.proximo}" required="false" />
 			<br/>	
 			<div class="contenedor_botones" style="margin-top:32px;">			
-	            <h:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/> 
-				<h:commandButton value="Aceptar" update=":tab1:mantenedoresDataTable" action="#{configuracionManagedBean.guardarMantenedor(configuracionManagedBean.mantenedor)}" onclick="PF('dlg1').hide();"/>
+	            <h:commandButton class="botones" value="Cancelar" onclick="PF('dlg1').hide();"/> 
+				<h:commandButton class="botones" value="Aceptar" update=":tab1:mantenedoresDataTable" action="#{configuracionManagedBean.guardarMantenedor(configuracionManagedBean.mantenedor)}" onclick="PF('dlg1').hide();"/>
 			</div>
 		</h:form>
 		</h:panelGrid>
