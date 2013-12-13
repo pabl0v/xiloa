@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="listadosolicitudes" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
@@ -25,7 +25,8 @@
 	</style>
 	<subDataset name="Table Dataset 1"/>
 	<parameter name="certificacionid" class="java.lang.Long"/>
-	<parameter name="ifpid" class="java.lang.Integer"/>
+	<parameter name="idCentro" class="java.lang.Integer"/>
+	<parameter name="idEstado" class="java.lang.Integer"/>
 	<queryString language="SQL">
 		<![CDATA[select c.certificacion_nombre as cert_nombre,
        c.certificacion_ifp_nombre as centro,
@@ -48,9 +49,10 @@ from sccl.solicitudes s, sccl.certificaciones c, sccl.contactos cu,
      (select m.mantenedor_id as genero_id, m.mantenedor_valor as genero_nombre from sccl.mantenedores m where m.mantenedor_tipo = '10') g,
      public.municipio mun, sccl.paises p,
      sccl.mantenedores est
-where (c.certificacion_id = $P{certificacionid} or 1 is null)
- and  (c.certificacion_ifp_id = $P{ifpid})
+where (c.certificacion_id = $P{certificacionid} or $P{certificacionid} is null)
+ and  (c.certificacion_ifp_id = $P{idCentro} or $P{idCentro} is null)
  and s.certificacion_id = c.certificacion_id
+ and (s.solicitud_estatus = $P{idEstado} or $P{idEstado} is null)
  and cu.contacto_id = s.contacto_id
  and g.genero_id = cu.sexo_id
  and mun.municipioid = cu.municipio_id
@@ -58,7 +60,7 @@ where (c.certificacion_id = $P{certificacionid} or 1 is null)
  and p.pais_id = cu.nacionalidad_id
  and est.mantenedor_tipo = s.tipomantenedorestado
  and est.mantenedor_id = s.solicitud_estatus
- and (est.mantenedor_id = 20)]]>
+]]>
 	</queryString>
 	<field name="cert_nombre" class="java.lang.String"/>
 	<field name="centro" class="java.lang.String"/>
@@ -269,7 +271,7 @@ where (c.certificacion_id = $P{certificacionid} or 1 is null)
 			<textField>
 				<reportElement x="4" y="3" width="149" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{contacto_nombre} ]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{contacto_nombre}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="156" y="3" width="94" height="20"/>

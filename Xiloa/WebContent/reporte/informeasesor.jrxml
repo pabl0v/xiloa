@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="informeasesor" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="124"/>
+	<parameter name="idEvaluador" class="java.lang.Long"/>
+	<parameter name="idSolicitud" class="java.lang.Long"/>
+	<queryString language="SQL">
+		<![CDATA[select c.certificacion_ifp_nombre as centro_nombre,
+       c.certificacion_nombre as curso_nombre,
+       cc.nombre_completo as candidato_nombre,
+       cc.numero_identificacion as candidato_identificacion,
+       cc.direccion_actual as candidato_direccion,
+       cc.telefono1 as candidato_telefono,
+       cc.telefono2 as candidato_celular,
+       cc.correo1 as candidato_email,
+       evaluador.nombre_completo as evaluador_nombre,
+       evaluador.numero_identificacion as evaluador_identificacion,
+       evaluador.direccion_actual as evaluador_direccion,
+       evaluador.telefono1 as evaluador_telefono,
+       evaluador.telefono2 as evaluador_celular,
+       evaluador.correo1 as evaluador_email
+from sccl.solicitudes s, sccl.certificaciones c,
+     (select ce.* from sccl.contactos ce where ce.contacto_id = $P{idEvaluador} ) evaluador,
+     sccl.contactos cc
+where s.solicitud_id = $P{idSolicitud}
+ and c.certificacion_id = s.certificacion_id
+ and cc.contacto_id = s.contacto_id]]>
+	</queryString>
+	<field name="centro_nombre" class="java.lang.String"/>
+	<field name="curso_nombre" class="java.lang.String"/>
+	<field name="candidato_nombre" class="java.lang.String"/>
+	<field name="candidato_identificacion" class="java.lang.String"/>
+	<field name="candidato_direccion" class="java.lang.String"/>
+	<field name="candidato_telefono" class="java.lang.String"/>
+	<field name="candidato_celular" class="java.lang.String"/>
+	<field name="candidato_email" class="java.lang.String"/>
+	<field name="evaluador_nombre" class="java.lang.String"/>
+	<field name="evaluador_identificacion" class="java.lang.String"/>
+	<field name="evaluador_direccion" class="java.lang.String"/>
+	<field name="evaluador_telefono" class="java.lang.String"/>
+	<field name="evaluador_celular" class="java.lang.String"/>
+	<field name="evaluador_email" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="56" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="5" width="752" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INSTITUTO NACIONAL TECNOLOGICO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="31" width="752" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{centro_nombre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="6" width="752" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INFORME DEL ASESOR]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="5" y="5" width="170" height="20"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Datos del Candidato]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="356" splitType="Stretch">
+			<textField>
+				<reportElement x="139" y="7" width="598" height="20"/>
+				<textElement>
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{candidato_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="139" y="31" width="299" height="20"/>
+				<textElement>
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{candidato_identificacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="139" y="59" width="598" height="20"/>
+				<textElement>
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{candidato_direccion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="7" width="120" height="20"/>
+				<textElement/>
+				<text><![CDATA[Nombre y Apellido:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="32" width="120" height="20"/>
+				<textElement/>
+				<text><![CDATA[No. de Cédula:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="58" width="120" height="20"/>
+				<textElement/>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="82" width="120" height="20"/>
+				<textElement/>
+				<text><![CDATA[Teléfono del contacto:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="422" y="82" width="54" height="20"/>
+				<textElement/>
+				<text><![CDATA[E-mail:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="482" y="82" width="255" height="20"/>
+				<textElement>
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{candidato_email}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="139" y="82" width="265" height="20"/>
+				<textElement>
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{candidato_telefono} + " / " + $F{candidato_celular}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="115" width="169" height="20"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Datos del Asesor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="142" width="120" height="20"/>
+				<textElement/>
+				<text><![CDATA[Nombre y Apellido:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="217" width="120" height="20"/>
+				<textElement/>
+				<text><![CDATA[Teléfono del contacto:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="167" width="120" height="20"/>
+				<textElement/>
+				<text><![CDATA[No. de Cédula:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="193" width="120" height="20"/>
+				<textElement/>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="423" y="217" width="54" height="20"/>
+				<textElement/>
+				<text><![CDATA[E-mail:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="137" y="143" width="600" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{evaluador_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="137" y="168" width="301" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{evaluador_identificacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="137" y="194" width="600" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{evaluador_direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="483" y="216" width="254" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{evaluador_email}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="137" y="219" width="267" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{evaluador_telefono} + " / " + $F{evaluador_celular}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="12" y="244" width="118" height="20"/>
+				<textElement/>
+				<text><![CDATA[Convocatoria:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="133" y="257" width="395" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="537" y="244" width="200" height="20"/>
+				<textElement/>
+				<text><![CDATA[(Fecha de la convocatoria).]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="22" y="323" width="197" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Firma del Candidato (a)]]></text>
+			</staticText>
+			<line>
+				<reportElement x="18" y="318" width="214" height="1"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="23" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="20" splitType="Stretch"/>
+	</summary>
+</jasperReport>
