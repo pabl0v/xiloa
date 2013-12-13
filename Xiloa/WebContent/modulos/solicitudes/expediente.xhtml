@@ -80,6 +80,7 @@
                              action="#{expedienteManagedBean.actualizarContacto}" />          
     	</div>
     	<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO">
+    	<p:panel rendered="#{expedienteManagedBean.verEnviarSolicitud}">
     	<div class="barra_azul">    
     			<div>
 	    			<h:outputLabel styleClass="estilo_label" for="certificacionNombre" value="Solicitud para evaluar:" />            
@@ -94,6 +95,7 @@
 	            	  #{expEvalManagedBean.estadoSiguiente.valor}           		
 	           	</div>   		       
     	</div>
+    	</p:panel>
     	</sec:authorize>
     	<div id="contenedor_datos_lab" class="seccion_expediente">
     		<p style="padding: 7px;font-weight:bold;">Trayectoria profesional y academica:</p>    		
