@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="listadoplanificaciones" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="89"/>
+	<property name="ireport.x" value="375"/>
+	<property name="ireport.y" value="82"/>
 	<parameter name="idCentro" class="java.lang.Integer"/>
 	<parameter name="idEstado" class="java.lang.Integer"/>
 	<queryString language="SQL">
@@ -80,11 +80,11 @@ where (c.certificacion_ifp_id =$P{idCentro} or $P{idCentro}  is null)
 				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="575" y="55" width="177" height="20"/>
+				<reportElement x="542" y="55" width="210" height="20"/>
 				<textElement textAlignment="Right">
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Pág. " + $V{PAGE_NUMBER}.toString() + " de " + $V{PAGE_COUNT}.toString()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Pág. " + $V{PAGE_NUMBER} + " de " + $V{PAGE_COUNT}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -100,54 +100,54 @@ where (c.certificacion_ifp_id =$P{idCentro} or $P{idCentro}  is null)
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="44" splitType="Stretch">
+		<band height="39" splitType="Stretch">
 			<staticText>
 				<reportElement x="2" y="7" width="221" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="11"/>
+					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Certificación]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="225" y="7" width="81" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="11"/>
+					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Registrado]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="308" y="7" width="77" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="11"/>
+					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Disponibilidad]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="389" y="7" width="136" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="11"/>
+					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Coordinador]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="528" y="7" width="136" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="11"/>
+					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Evaluador]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="667" y="7" width="78" height="20"/>
 				<textElement textAlignment="Center">
-					<font size="11"/>
+					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Estado]]></text>
 			</staticText>
 			<line>
-				<reportElement x="8" y="33" width="734" height="1"/>
+				<reportElement x="8" y="31" width="734" height="1"/>
 			</line>
 			<line>
-				<reportElement x="8" y="39" width="734" height="1"/>
+				<reportElement x="8" y="34" width="734" height="1"/>
 			</line>
 		</band>
 	</columnHeader>
