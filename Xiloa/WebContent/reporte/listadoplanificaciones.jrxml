@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="listadoplanificaciones" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="106"/>
+	<property name="ireport.y" value="89"/>
 	<parameter name="idCentro" class="java.lang.Integer"/>
 	<parameter name="idEstado" class="java.lang.Integer"/>
 	<queryString language="SQL">
@@ -17,8 +17,8 @@ from sccl.certificaciones c,
      (select ce.* from sccl.contactos ce where ce.contacto_id = 7 ) evaluador,
      (select cc.* from sccl.contactos cc where cc.contacto_id = 6 ) coordinador,
      (select m.* from sccl.mantenedores m where m.mantenedor_tipo = '3') estados
-where c.certificacion_ifp_id =$P{idCentro}
- and c.certificacion_estatus = $P{idEstado}
+where (c.certificacion_ifp_id =$P{idCentro} or $P{idCentro}  is null)
+ and (c.certificacion_estatus = $P{idEstado} or  $P{idEstado} is null)
  and estados.mantenedor_id = c.certificacion_estatus]]>
 	</queryString>
 	<field name="centro_nombre" class="java.lang.String"/>
