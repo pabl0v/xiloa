@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags">
+    <h:head>
+	<link type="text/css" rel="stylesheet" href="../../resources/css/solicitudes.css"></link>
+    </h:head>
+    <h:body>
+ 
+    <div id="contenedor">
+    	<div id="header">
+            <ui:insert name="header" >
+                <ui:include src="../../modulos/compartido/paginamaestra.xhtml" />
+	    	</ui:insert>
+	    	 <script type="text/javascript" src="../../resources/scripts/solicitudes.js"></script>
+		</div>	        
+        <div id="cabezera">
+            <h2>Portafolio</h2>           
+       </div>
+        <h:form id="formCandidato">               
+        <div id="contenedor_tabla_solicitudes">     
+        	<p:messages id="msgContactos" showDetail="true" autoUpdate="true" closable="true" />        	      
+        	<p:dataTable id="dtContactos" widgetVar="dtContactos" emptyMessage="No existen candidatos" 
+        	             var="varContacto" value="#{candidatosManagedBean.listaContactos}" 
+        	             selectionMode="single" rowKey="#{varContacto.id}"
+        	             selection="#{candidatosManagedBean.selectedContacto}"         	              
+        	             paginator="true" rows="12"  >     
+        	       	      
+	        	<p:ajax event="rowSelect" listener="#{candidatosManagedBean.onRowSelectDtContactos}"  />  
+				<p:ajax event="rowUnselect" listener="#{candidatosManagedBean.onRowSelectDtContactos}"  />   		                               
+	            <!--Las columnas de la tabla-->
+                <p:column id="centroColumn" headerText="Nombres y Apellidos" exportable="true"><h:outputText value="#{varContacto.nombreCompleto}" /></p:column>                      
+                <p:column id="candidatoColumn" headerText="Identificación" exportable="true"><h:outputText value="#{varContacto.numeroIdentificacion}" /></p:column>  
+                <p:column id="certificacionColumn" headerText="Telefono / Celular" exportable="true"><h:outputText value="#{varContacto.telefono1} / #{varContacto.telefono2}"/></p:column>  
+                <p:column id="fechaColumn" headerText="Fecha Nacimiento" exportable="true"><h:outputText value="#{varContacto.fechaNacimiento}" /></p:column>               
+                <p:column id="evaluadorColumn" headerText="Correo Electrónico" exportable="true"><h:outputText value="#{varContacto.correo1}" /></p:column>                
+                <p:column style="width:4%" exportable="false">                  
+		           	<p:commandButton id="editaExpediente" action="#{candidatosManagedBean.consultarExpediente}" 	            	                             				     
+		           	                 icon="ui-icon-pencil" title="Consultar Portafolio" >
+		               	<f:setPropertyActionListener value="#{varContacto}" target="#{candidatosManagedBean.selectedContacto}" />
+		           	</p:commandButton>		            	           
+	    		</p:column>    						
+            </p:dataTable>            
+        </div>        
+     </h:form>
+    </div>        
+    
+</h:body>
+</html>

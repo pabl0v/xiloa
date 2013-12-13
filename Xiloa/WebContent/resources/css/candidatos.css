@@ -1,0 +1,118 @@
+#cabezera {
+    margin-top: 10px;  
+    margin-bottom: 25px; 
+    height: 60px;
+    padding: 0px 5px;
+    position: relative;
+}
+#cabezera h2{
+    font-size: 30px;   
+    display: inline-block;
+    color: #585858;
+    backgorund: aliceblue;
+}
+#contenedor_filtro p{
+	color: black;
+	font-weight: bold;
+}
+#contenedor_filtro .selectores{
+    position: relative;
+    top: 8px;
+    margin: 0 5px;
+    width: 150px;
+}
+.selectores{
+    position: relative;
+    top: 8px;
+    margin: 0 5px;
+    width: 150px;
+}
+#contenedor_tabla_unidadcomp{
+    margin: 7px;
+    height: 400px;
+    background: aliceblue;
+    border: 1px solid #888;
+}
+#botones_filtro_contenedor{
+    width: 302px;
+	margin: 10px;
+    display: inline-block;
+    position: absolute;
+    right: 0px;
+    border: 1px solid #7E7E7E;
+    border-radius: 8px;
+    padding: 5px;
+    text-align: center;
+    margin-bottom: 76px;
+}
+.botones_filtro {
+    display: inline-table;
+    width: 75px;
+    height: 60px;
+    font-size: 12px;
+    margin-right: 4px;
+    /* background: red; */
+}
+.botones_filtro p{
+    height: 57px;
+    width: 93px;
+    background-position-y: 7px;
+    line-height: 98px;
+}
+.boton_azul{
+    background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIHZpZXdCb3g9IjAgMCAxIDEiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPgo8bGluZWFyR3JhZGllbnQgaWQ9Imc3MzgiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjAlIiB5Mj0iMTAwJSI+CjxzdG9wIHN0b3AtY29sb3I9IiM0QjlGRUUiIG9mZnNldD0iMCIvPjxzdG9wIHN0b3AtY29sb3I9IiMyNDc5REEiIG9mZnNldD0iMSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2c3MzgpIiAvPgo8L3N2Zz4=)!important;
+    color: white!important;
+    font-weight: normal!important;
+    text-shadow: none!important;
+    border: 1px solid #216fc8!important;
+    margin: 11px 9px;
+}
+.icono_nuevo {
+    background: url("../../resources/imagenes/nuevo.png") no-repeat center;
+}
+.icono_folder {
+    background: url("../../resources/imagenes/folder.png") no-repeat center;
+}
+.icono_buscar{
+    background: url("../../resources/imagenes/buscar.png") no-repeat center;
+}
+.icono_exportar{
+    background: url("../../resources/imagenes/pdf.png") no-repeat center;
+}
+.flotante {
+    float: right;
+}
+#contenedor_filtro{
+	margin: 42px 0px;	
+	margin-bottom: 0px;
+}
+#contenedor_filtro p{
+	display: inline-block;
+}
+#contenedor_exportar {
+	position: fixed;
+	bottom: 0px;
+	right: 0px;
+	width: 330px;
+	height: 25px;
+	background: white;
+	display: inline-block;	
+	padding: 15px 23px;
+	font-size: 15px;
+	border-radius: 7px 0 0 0;
+	border: 1px solid #ddd;
+	box-shadow: 0 2px 10px 1px #444;
+}
+#contenedor_tabla_solicitudes{	
+	margin-top: 12px;
+}
+#contenedor_exportar p{
+	display: inline-block;
+}
+.selector_centrosBySolicitudEstilo {
+	width: 250px!important;
+}
+
+.selector_certificacionByCentroEstilo {
+	width: 250px!important;
+}

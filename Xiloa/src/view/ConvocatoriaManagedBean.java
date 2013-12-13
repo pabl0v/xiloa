@@ -4,19 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 
 import model.Certificacion;
 import model.Contacto;
-import model.Laboral;
 import model.Mantenedor;
 import model.Solicitud;
 
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.UnselectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -25,16 +21,12 @@ import controller.LoginController;
 import service.IService;
 import support.Ifp;
 import support.FacesUtil;
-import util.Global;
 
 @Component
 @Scope(value="view")
 public class ConvocatoriaManagedBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-
-	@SuppressWarnings("unused")
-	private static final String NOMBREREPORTE = "listasolicitudes";
 
 	@Autowired
 	private IService service;
@@ -43,11 +35,7 @@ public class ConvocatoriaManagedBean implements Serializable {
 	private LoginController login; 
 	
 	private List<Solicitud> listaSolicitudes;
-	
-	private Solicitud selectedSolicitud;
-	
-	private Long selectedSolicitudId;
-	
+		
 	private String selectedBuscarByAll;
 	private String buscarByAllValue;
 	
@@ -74,10 +62,7 @@ public class ConvocatoriaManagedBean implements Serializable {
 	private List<Solicitud> filterSolicitudes;
 	
 	private Mantenedor estadoInicialSolicitud;
-	
-	private boolean disableEnviarSolicitud;
-	
-			
+				
 	public ConvocatoriaManagedBean() {
 		
 		super();	
@@ -94,21 +79,8 @@ public class ConvocatoriaManagedBean implements Serializable {
 		selectedIdCertByCentro = null;	
 		
 		selectedBuscarByAll = null;	
-		
-		disableEnviarSolicitud = true;
-					
+							
 	}	
-
-	
-	public boolean isDisableEnviarSolicitud() {
-		return disableEnviarSolicitud;
-	}
-
-
-	public void setDisableEnviarSolicitud(boolean disableEnviarSolicitud) {
-		this.disableEnviarSolicitud = disableEnviarSolicitud;
-	}
-
 
 	public Mantenedor getEstadoInicialSolicitud() {
 		return estadoInicialSolicitud;
@@ -118,16 +90,7 @@ public class ConvocatoriaManagedBean implements Serializable {
 	public void setEstadoInicialSolicitud(Mantenedor estadoInicialSolicitud) {
 		this.estadoInicialSolicitud = estadoInicialSolicitud;
 	}
-
-
-	public Long getSelectedSolicitudId() {
-		return selectedSolicitudId;
-	}
-
-	public void setSelectedSolicitudId(Long selectedSolicitudId) {
-		this.selectedSolicitudId = selectedSolicitudId;
-	}
-
+	
 	public List<Solicitud> getFilterSolicitudes() {
 		return filterSolicitudes;
 	}
@@ -239,16 +202,7 @@ public class ConvocatoriaManagedBean implements Serializable {
 	public void setCk_convo(boolean ck_convo) {
 		this.ck_convo = ck_convo;
 	}
-	
-	public Solicitud getSelectedSolicitud() {
-		return selectedSolicitud;
-	}
-
-	public void setSelectedSolicitud(Solicitud selectedSolicitud) {
-		this.selectedSolicitud = selectedSolicitud;
-	}	
-	
-	
+		
 	public Solicitud[] getSelectedListSolicitud() {
 		return selectedListSolicitud;
 	}
@@ -266,17 +220,7 @@ public class ConvocatoriaManagedBean implements Serializable {
 		this.listBuscarByAll.add(new SelectItem("s.contacto.correo1", "Evaluador"));
 		this.listBuscarByAll.add(new SelectItem("s.estatus", "Estado"));		
 	}
-	
-	public void llenarListAccionConvo () {
-		this.listAccionConvo = new ArrayList<SelectItem> ();
-		this.listAccionConvo.add(new SelectItem(null, "Seleccione la accion"));
-		this.listAccionConvo.add(new SelectItem(new Integer(1), "Convocar"));
-		this.listAccionConvo.add(new SelectItem(new Integer(2), "Asesorado"));
-		this.listAccionConvo.add(new SelectItem(new Integer(3), "Listos para inscripcion"));
-		this.listAccionConvo.add(new SelectItem(new Integer(4), "Exportar a Excel"));
-		this.listAccionConvo.add(new SelectItem(new Integer(5), "Exportar a PDF"));
-	}
-			
+				
    //Llenado de Centro
 	@PostConstruct
 	private void initBeanDBSolicitudes(){
@@ -287,7 +231,6 @@ public class ConvocatoriaManagedBean implements Serializable {
 		}		
 					
 		llenarListBuscarByAll();
-		llenarListAccionConvo ();
 		handleCertByCentro();
 		
 		//Asigna el estado inicial de la Solicitud
@@ -351,164 +294,41 @@ public class ConvocatoriaManagedBean implements Serializable {
 		return "/modulos/solicitudes/solicitudes?faces-redirect=true";				
 	}
 			
-	public String handleConvocatoria() {
+	public String handleSeguimiento() {
 		boolean isError = false;
-		String titulo = "";
+		String titulo  = "SCCL - Mensaje: ";
 		String texto = "";
 		
-		for (Solicitud sol : this.selectedListSolicitud){				
+		if (this.selectedListSolicitud == null){
+			isError = true;
+			texto = "Debe seleccionar al menos una solicitud. Favor revisar...";
+		}else{			
+			for (Solicitud sol : this.selectedListSolicitud){				
+					
+				Integer idEstado = Integer.valueOf(sol.getEstatus().getProximo());
+				Mantenedor sigEstado = service.getMantenedorById(idEstado);
+				sol.setEstatus(sigEstado);
+				sol = (Solicitud)service.guardar(sol);
 				
-			Integer idEstado = Integer.valueOf(sol.getEstatus().getProximo());
-			Mantenedor sigEstado = service.getMantenedorById(idEstado);
-			sol.setEstatus(sigEstado); //22 es el estado Convocado
-			sol = (Solicitud)service.guardar(sol);
-			
-			if (sol != null){
-				isError = false;
-			} else {
-				isError = true;
-				break;
-			}
-		}			
+				if (sol != null){
+					isError = false;
+				} else {
+					isError = true;
+					break;
+				}
+			}			
 		
-		texto = (isError == true) ? "Error al pasar las solicitudes a Convocatoria. Favor revisar..." : "Proceso aplicado exitosamente.";
-		
-		titulo = "SCCL - Mensaje: ";
-		this.selectedListSolicitud = null;
+			texto = (isError == true) ? "Error al aplicar seguimiento a las solicitudes seleccionadas. Favor revisar..." : "Proceso aplicado exitosamente.";
+					
+			this.selectedListSolicitud = null;
+		}
 		
 		FacesUtil.setParamBySession("tipoFiltro", null);
 		
 		FacesUtil.getMensaje(titulo, texto, isError);
 		
 		return "/modulos/solicitudes/solicitudes?faces-redirect=true";
-		
-		
-	}
-		
-	public void solicitarCertificacion (){
-		
-		Mantenedor estadoActual = null;				
-		Integer    proxEstado = null; 
-		Solicitud  solicitudExp = null;
-		Mantenedor inicialEstado = null;
-		
-		Mantenedor proximoEstado = null;
-		
-		solicitudExp = this.getSelectedSolicitud();
-		
-		if (solicitudExp != null) {
-			
-			if (validaRegistroCV (solicitudExp)){
-			
-				estadoActual = this.getSelectedSolicitud().getEstatus();
 				
-				inicialEstado = this.getEstadoInicialSolicitud();
-				
-				if (inicialEstado.getId() == estadoActual.getId()){
-					
-					proxEstado = Integer.valueOf(estadoActual.getProximo());
-											
-					if (proxEstado != null){
-						proximoEstado = service.getCatalogoEstadoSolicitud().get(proxEstado);
-						solicitudExp.setEstatus(proximoEstado);
-						
-						Solicitud sol = (Solicitud) service.guardar(solicitudExp);
-						
-						if (sol != null)		
-							FacesUtil.getMensaje("SCCL - Mensaje: ", "La solicitud a sido registrada exitosamente !!", false);				
-						else				
-							FacesUtil.getMensaje("SCCL - Mensaje: ", "Error al registrar la solicitud. Favor revisar...", false);
-					}				
-					
-				}
-			}
-			
-		} else
-			FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe seleccionar una solicitud.", true);
-		
-		
-	}
-	
-	public boolean validaRegistroCV (Solicitud solicitud){
-		String        textMsg = "";
-		String        titulo = "";
-		boolean       isValido = true;
-		List<Laboral> listDatosLaborales;
-		
-		Contacto solicitante = solicitud.getContacto();
-		
-		if (solicitante.getTelefono1() == null) {
-			textMsg = "Debe indicar el numero de telefono";
-			isValido = false;
-		}
-			
-		if (solicitante.getDireccionActual() == null) {
-			textMsg = (textMsg.isEmpty()) ? "Debe indicar la direccion actual" : textMsg + ", la direccion actual";					    
-			isValido = false;
-		} 
-			
-		if (solicitante.getDepartamentoId() == null) {
-			textMsg = (textMsg.isEmpty()) ? "Debe indicar el departamento" : textMsg + ", el departamento";			
-			isValido = false;
-		}
-			
-		if (solicitante.getMunicipioId() == null) {
-			textMsg = (textMsg.isEmpty()) ? "Debe indicar el municipio." : textMsg + " y el municipio.";		
-			isValido = false;
-		}
-		
-		listDatosLaborales = service.getListLaboralByTipo(new Integer(13), solicitante);
-		
-		if (listDatosLaborales.size() == 0) {
-			textMsg = (textMsg.isEmpty()) ? "Debe indicar los datos Laborales / Academicos." : ". Debe indicar los datos Laborales / Academicos.";
-			isValido = false;
-		}
-			
-		if (isValido == false){
-			titulo = "Informacion incompleta: ";
-			FacesUtil.getMensaje(titulo, textMsg, true);
-		}else{
-			titulo = "Informacion: ";
-			textMsg = "Puede proceder a registrar la solicitud";
-			FacesUtil.getMensaje(titulo, textMsg, false);
-		}		
-		
-		return isValido;
-		
-	}
-	
-	public void onRowSelectDtSolicitudes(SelectEvent event) {
-		this.setSelectedSolicitud((Solicitud) event.getObject());
-		
-		Mantenedor estadoActual = this.getSelectedSolicitud().getEstatus();
-		
-		if (estadoActual.getId() == this.getEstadoInicialSolicitud().getId())
-			this.setDisableEnviarSolicitud(false);
-		else
-			this.setDisableEnviarSolicitud(true);
-		
-    }
-  
-    public void onRowUnSelectDtSolicitudes(UnselectEvent event) {
-    	this.setDisableEnviarSolicitud(true);
-    }
-	
-    public void runReporte() throws Exception {
-    	Map<String,Object> params = new HashMap<String,Object>();
-    	String nombreRpt = "listadosolicitudes";
-   
-    	System.out.println("Solicitud seleccionado " + this.selectedSolicitud.getId());
-		params.put("id",this.selectedSolicitud.getId());	
-		
-    	service.imprimirReporte(nombreRpt, params, Global.EXPORT_PDF, true);
-		
-	//	ControlGenericoReporte.getInstancia().runReporteFisico(nombreRpt, params,Global.EXPORT_PDF, conn, true);		
-		//String reporte = nombreRpt.toLowerCase() + "." + Global.EXPORT_PDF.toLowerCase();
-		/*String reporte = nombreRpt + "." + Global.EXPORT_PDF.toLowerCase();
-		FacesUtil.setParamBySession("file", ControlGenericoReporte.getInstancia().getFile());		
-		//context.execute("window.open('" +  FacesUtil.getContentPath() + "/reporte?file="+ reporte + "&formato=" + Global.EXPORT_PDF + "','myWindow');");		
-		context.execute("window.open('" +  FacesUtil.getContentPath() + "/reporte/"+ reporte + "','myWindow');");
-		*/
-	}
+	}	
 	
 }

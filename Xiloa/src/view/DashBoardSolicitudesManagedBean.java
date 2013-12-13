@@ -33,9 +33,6 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings("unused")
-	private static final String NOMBREREPORTE = "listasolicitudes";
-
 	@Autowired
 	private IService service;
 		
@@ -52,9 +49,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	private String buscarByAllValue;
 	
 	private Integer selectedIdIfpSolicitud;
-	
-	private Integer selectedAccionConvo;
-	
+		
 	//Implementacion SelectItems	
 	private List<SelectItem> listBuscarByAll;
 	private List<SelectItem> listCentrosBySolicitud;				
@@ -66,11 +61,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	
 	private Long selectedIdCertificacion;
 	private Long selectedIdCertByCentro;	
-		
-	private boolean ck_convo;
-	
-	private Solicitud [] selectedListSolicitud;
-	
+			
 	private List<Solicitud> filterSolicitudes;
 	
 	private Mantenedor estadoInicialSolicitud;
@@ -223,23 +214,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	public void setListaSolicitudes(List<Solicitud> listaSolicitudes) {
 		this.listaSolicitudes = listaSolicitudes;
 	}
-	
-	public Integer getSelectedAccionConvo() {
-		return selectedAccionConvo;
-	}
-
-	public void setSelectedAccionConvo(Integer selectedAccionConvo) {
-		this.selectedAccionConvo = selectedAccionConvo;
-	}
-	
-	public boolean isCk_convo() {
-		return ck_convo;
-	}
-
-	public void setCk_convo(boolean ck_convo) {
-		this.ck_convo = ck_convo;
-	}
-	
+		
 	public Solicitud getSelectedSolicitud() {
 		return selectedSolicitud;
 	}
@@ -248,15 +223,6 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		this.selectedSolicitud = selectedSolicitud;
 	}	
 	
-	
-	public Solicitud[] getSelectedListSolicitud() {
-		return selectedListSolicitud;
-	}
-
-	public void setSelectedListSolicitud(Solicitud[] selectedListSolicitud) {
-		this.selectedListSolicitud = selectedListSolicitud;
-	}
-
 	public void llenarListBuscarByAll () {
 		this.listBuscarByAll.add(new SelectItem(null, "Todos los campos"));
 		this.listBuscarByAll.add(new SelectItem("s.certificacion.ifpNombre", "Centro Evaluador"));
@@ -266,17 +232,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		this.listBuscarByAll.add(new SelectItem("s.contacto.correo1", "Evaluador"));
 		this.listBuscarByAll.add(new SelectItem("s.estatus", "Estado"));		
 	}
-	
-	public void llenarListAccionConvo () {
-		this.listAccionConvo = new ArrayList<SelectItem> ();
-		this.listAccionConvo.add(new SelectItem(null, "Seleccione la accion"));
-		this.listAccionConvo.add(new SelectItem(new Integer(1), "Convocar"));
-		this.listAccionConvo.add(new SelectItem(new Integer(2), "Asesorado"));
-		this.listAccionConvo.add(new SelectItem(new Integer(3), "Listos para inscripcion"));
-		this.listAccionConvo.add(new SelectItem(new Integer(4), "Exportar a Excel"));
-		this.listAccionConvo.add(new SelectItem(new Integer(5), "Exportar a PDF"));
-	}
-			
+				
    //Llenado de Centro
 	@PostConstruct
 	private void initBeanDBSolicitudes(){
@@ -287,7 +243,6 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		}		
 		FacesUtil.setParamBySession("tipoFiltro", null);		
 		llenarListBuscarByAll();
-		llenarListAccionConvo ();
 		handleCertByCentro();
 		
 		//Asigna el estado inicial de la Solicitud
@@ -504,22 +459,26 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
     	this.setDisableEnviarSolicitud(true);
     }
 	
-    public void runReporte() throws Exception {
+    public void runPreMatricula () throws Exception{
+    	String rptNombre = "pre_matricula";
+    	
+    	runReporte(rptNombre);
+    }
+    
+    public void runSolicitudCandidato() throws Exception{
+    	String rptNombre = "solicitud_candidato";
+    	
+    	runReporte(rptNombre);
+    }
+    public void runReporte(String nombreReporte) throws Exception {
     	Map<String,Object> params = new HashMap<String,Object>();
-    	String nombreRpt = "listadosolicitudes";
-   
-    	System.out.println("Solicitud seleccionado " + this.selectedSolicitud.getId());
-		params.put("id",this.selectedSolicitud.getId());	
-		
-    	service.imprimirReporte(nombreRpt, params, Global.EXPORT_PDF, true);
-		
-	//	ControlGenericoReporte.getInstancia().runReporteFisico(nombreRpt, params,Global.EXPORT_PDF, conn, true);		
-		//String reporte = nombreRpt.toLowerCase() + "." + Global.EXPORT_PDF.toLowerCase();
-		/*String reporte = nombreRpt + "." + Global.EXPORT_PDF.toLowerCase();
-		FacesUtil.setParamBySession("file", ControlGenericoReporte.getInstancia().getFile());		
-		//context.execute("window.open('" +  FacesUtil.getContentPath() + "/reporte?file="+ reporte + "&formato=" + Global.EXPORT_PDF + "','myWindow');");		
-		context.execute("window.open('" +  FacesUtil.getContentPath() + "/reporte/"+ reporte + "','myWindow');");
-		*/
+    	
+    	if (this.selectedSolicitud != null){
+    		params.put("idSolicitud",this.selectedSolicitud.getId());
+    		service.imprimirReporte(nombreReporte, params, Global.EXPORT_PDF, true);
+    	}else
+    		FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe seleccionar una solicitud.", true);
+				
 	}
 	
 }

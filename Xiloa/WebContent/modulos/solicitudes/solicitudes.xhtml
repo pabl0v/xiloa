@@ -52,22 +52,24 @@
 				        <p:ajax update=":formSolicitudes:dtSolicitud" listener="#{dashBoardSolicitudesManagedBean.handleBuscar}" />  
 				    </p:selectOneMenu>	
 			    </span>
-			    <!-- 
-			    <h:commandLink>  
-            		<h:outputText value="Exportar a Excel" />   
-            		<p:dataExporter type="xls" target="dtSolicitud" fileName="ReporteSolicitudes" />           		
-        		</h:commandLink>
-        		 -->  		
-        		 <p:commandButton id="btnReporte" value="Reporte" title="Reporte Solicitudes" 
-	    		                 icon="ui-icon-star" style="display:inline-block;"
-	    		                 action="#{dashBoardSolicitudesManagedBean.runReporte()}" 
-	    					     />
+			    
         		 <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_PARTICIPANTE">       	 
 		            <p:commandButton id="btnEnviarSolicitud" value="Enviar" title="Solicitar Certificacion" 
 	    		                 icon="ui-icon-star" style="display:inline-block;"
 	    		                 action="#{dashBoardSolicitudesManagedBean.solicitarCertificacion}" 
 	    					     update=":formSolicitudes:dtSolicitud" disabled="#{dashBoardSolicitudesManagedBean.disableEnviarSolicitud}" />
              	</sec:authorize>  
+             	
+             	<p:commandButton id="rptPreMatricula" value="Pre-Matricula" title="Generar Pre-Matricula" 
+	    		    	         icon="ui-icon-star" style="display:inline-block;"
+	    		    	         update=":formSolicitudes:dtSolicitud"
+	    		           		 action="#{dashBoardSolicitudesManagedBean.runPreMatricula}" />
+	    		        		    	             
+	        	<p:commandButton id="rptSolicitudCandidato" value="Solicitud Candidato" title="Generar Solicitud Candidato" 
+	    		    		         icon="ui-icon-star" style="display:inline-block;"
+	    		    		         update=":formSolicitudes:dtSolicitud"
+	    		            		 action="#{dashBoardSolicitudesManagedBean.runSolicitudCandidato}" />
+	    		   
         </div>              
         <div id="contenedor_tabla_solicitudes">     
         	<p:messages id="msgConvocatoria" showDetail="true" autoUpdate="true" closable="true" />        	      
@@ -94,7 +96,7 @@
 		   	            	<f:setPropertyActionListener value="#{varSolicitudI}" target="#{dashBoardSolicitudesManagedBean.selectedSolicitud}" />
 		            	</p:commandButton>		            	           
 	    			</p:column>
-    			</sec:authorize>  
+    			</sec:authorize>    			
             </p:dataTable>            
         </div>
         <sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_SEGUIMIENTO">  

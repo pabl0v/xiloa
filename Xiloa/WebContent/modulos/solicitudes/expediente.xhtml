@@ -23,7 +23,8 @@
     			<p:commandButton id="enviarSolicitud" value="Enviar Solicitud" title="Solicitar Certificacion" 
 	    		                 icon="ui-icon-star" style="display:inline-block;"
 	    		                 actionListener="#{expedienteManagedBean.solicitarCertificacion}" 
-	    					     update=":formExpediente:msgExpediente"    					        					       
+	    					     update=":formExpediente:msgExpediente" 
+	    					     rendered="#{expedienteManagedBean.verEnviarSolicitud}"   					        					       
 	             				/>       		
             </sec:authorize>				  		
     	<div>

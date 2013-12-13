@@ -45,7 +45,17 @@
     		                 actionListener="#{expEvalManagedBean.concluirCertificacion}" 
     					     update=":formExpediente:msgExpediente"    		
     					     disabled="#{expEvalManagedBean.disabledConcluido}"			        					       
-             				/> 				    		
+             				/> 	
+             				
+            <p:commandButton id="rptInformeAsesor" value="Informe del Asesor" title="Generar Informe del Asesor" 
+	    		             icon="ui-icon-star" style="display:inline-block;"
+	    		             update=":formExpediente:msgExpediente" 
+	    		             action="#{expEvalManagedBean.runInformeAsesor}" /> 
+	        
+	        <p:commandButton id="rptPlanCapacitacion" value="Plan Capacitacion" title="Generar Plan de Capacitacion" 
+	    		             icon="ui-icon-star" style="display:inline-block;"
+	    		             update=":formExpediente:msgExpediente" 
+	    		             action="#{expEvalManagedBean.runPlanCapacitacion}" />			    		
     	
     	<div>
     	<p:messages id="msgExpediente" showDetail="true" autoUpdate="true" closable="true" />
@@ -165,8 +175,7 @@
            </p:tabView>  		
     	</div>
     	<div id="contenedor_tab_planes" class="seccion_expediente" style="width:98%">
-    		
-    			<p:tabView id="tabView_Evaluaciones">  
+    		<p:tabView id="tabView_Evaluaciones">  
                     <p:tab id="tab1" title="UC a evaluar" >                    	                   	 
                     	 <p:commandButton id="btnAgregaEvaluacion" disabled="#{expEvalManagedBean.disabledBtnAgregaEvaluacion}" 
                     	                  action="#{expEvalManagedBean.registrarEvaluacion}" value="Agregar"  >

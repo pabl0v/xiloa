@@ -24,6 +24,9 @@
             <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_PARTICIPANTE">
             	<div id="boton_participante" onclick="window.location='/Xiloa/modulos/solicitudes/expediente.xhtml';" class="botones_navegacion"><p class="icono_flechas">Participante</p></div>
             </sec:authorize>
+             <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_CANDIDATOS">
+            	<div id="boton_candidatos" onclick="window.location='/Xiloa/modulos/solicitudes/candidatos.xhtml';" class="botones_navegacion"><p class="icono_flechas">Portafolio</p></div>
+            </sec:authorize>
             <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_EJECUCUIONES">
             	<div id="boton_ejecuciones" onclick="window.location='/Xiloa/modulos/planificacion/ejecuciones.xhtml';" class="botones_navegacion"><p class="icono_ejecuciones">Ejecuciones</p></div>
             </sec:authorize>

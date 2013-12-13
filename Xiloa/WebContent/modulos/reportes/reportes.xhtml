@@ -4,11 +4,62 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>       
-        <title>En construcción</title>
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags">
+    <h:head>
+	<link type="text/css" rel="stylesheet" href="../../resources/css/reportes.css"></link>
     </h:head>
     <h:body>
-		<h1>Reportes en construcción</h1> 
-    </h:body>
+ 
+    <div id="contenedor">
+    	<div id="header">
+            <ui:insert name="header" >
+                <ui:include src="../../modulos/compartido/paginamaestra.xhtml" />
+	    	</ui:insert>
+	    	 <script type="text/javascript" src="../../resources/scripts/reportes.js"></script>
+		</div>	        
+        <div id="cabezera">
+            <h2>Reportes SCCL</h2>           
+       </div>
+        <h:form id="formReportes">	        
+        <div id="contenedor_filtro">           
+	            <p style="margin-left:5px">Seleccione el reporte a generar:</p>
+	            <p:selectOneMenu id="selector_reportes" styleClass="selectores" value="#{reportesManagedBean.rptId}" >	                
+	                <f:selectItems value="#{reportesManagedBean.listaTiposReportes}" />     
+	                <p:ajax update=":formReportes:selector_Estados"  listener="#{reportesManagedBean.handleEstadosByRpt}" />         
+            	</p:selectOneMenu>  	            
+		        <span style="display:inline-block;">
+		            <p>Centro evaluador:</p>
+		            <p:selectOneMenu styleClass="selectores selector_centrosBySolicitudEstilo" id="selector_centrosBySolicitud" 
+		                             value="#{reportesManagedBean.selectedIdIfp}" >			        
+				        <f:selectItems value="#{reportesManagedBean.listCentros}"/>
+				        <p:ajax update=":formReportes:selector_certificacionByCentro"  listener="#{reportesManagedBean.handleCertByCentro}" />
+				    </p:selectOneMenu>
+			    </span>
+			    <span style="display:inline-block; margin-left:5px">
+				    <p>Certificaciones:</p>
+		            <p:selectOneMenu styleClass="selectores selector_certificacionByCentroEstilo" id="selector_certificacionByCentro" 
+		                             value="#{reportesManagedBean.selectedIdCertByCentro}" >			        
+				        <f:selectItems value="#{reportesManagedBean.listCertByCentro}" />				       
+				    </p:selectOneMenu>	
+			    </span>		
+			    <span style="display:inline-block; margin-left:5px">
+				    <p>Estados:</p>
+		            <p:selectOneMenu styleClass="selectores selector_certificacionByCentroEstilo" id="selector_Estados" 
+		                             value="#{reportesManagedBean.estadoId}" >			        
+				        <f:selectItems value="#{reportesManagedBean.listaEstados}" />				       
+				    </p:selectOneMenu>	
+			    </span>		   
+        		 <p:commandButton id="btnReporte" value="Generar" title="Generar Reporte" 
+	    		                 icon="ui-icon-star" style="display:inline-block;"
+	    		                 action="#{reportesManagedBean.runReporte()}" 
+	    					     />        		
+        </div>              
+        <div id="contenedor_tabla_solicitudes">     
+        	<p:messages id="msgReportes" showDetail="true" autoUpdate="true" closable="true" />        	
+        </div>      
+     </h:form>
+    </div>        
+    
+</h:body>
 </html>

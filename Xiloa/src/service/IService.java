@@ -124,4 +124,5 @@ public interface IService {
 	public boolean validaProcesoConcluido(Solicitud solicitud, boolean validaEvaluacion);
 	public boolean validaEvaluacionAprobada(Solicitud solicitud);
 	public void auditar(Auditoria auditoria);
+	public List<Contacto> getContactosByParam(String namedString, Object [] parametros);
 }

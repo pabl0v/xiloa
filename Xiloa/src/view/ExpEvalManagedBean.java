@@ -1,11 +1,7 @@
 package view;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,20 +9,16 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
-import javax.servlet.http.HttpServletRequest;
 
 import model.Archivo;
+import model.Certificacion;
 import model.Contacto;
 import model.Evaluacion;
 import model.Instrumento;
@@ -50,6 +42,7 @@ import support.BeanEvaluacion;
 import support.Departamento;
 import support.FacesUtil;
 import support.Municipio;
+import util.Global;
 
 @Component
 @Scope(value="request")
@@ -105,8 +98,6 @@ public class ExpEvalManagedBean implements Serializable  {
 	private boolean disablePortafolio;
 	private boolean disabledUploadFile;
 	private boolean indicaCVFull;
-	private boolean disabledBtnActualizaContacto;
-	private boolean disabledBtnAgregaLaborales;
 	private boolean disabledBtnAgregaEvaluacion;
 	private boolean disabledConcluido;
 	
@@ -153,8 +144,6 @@ public class ExpEvalManagedBean implements Serializable  {
 		this.setDisablePortafolio(true);
 		this.setDisabledUploadFile(true);
 		this.setIndicaCVFull(false);
-		this.setDisabledBtnActualizaContacto(false);
-		this.setDisabledBtnAgregaLaborales(false);
 		this.setDisabledBtnAgregaEvaluacion(true);	
 		this.setDisabledConcluido(false);
 		
@@ -370,30 +359,9 @@ public class ExpEvalManagedBean implements Serializable  {
 		this.listEstadosPortafolio = listEstadosPortafolio;
 	}
 
-	public boolean isDisabledBtnActualizaContacto() {		
-		return disabledBtnActualizaContacto;
-	}
-
-
-	public void setDisabledBtnActualizaContacto(boolean disabledBtnActualizaContacto) {
-		this.disabledBtnActualizaContacto = disabledBtnActualizaContacto;
-	}
-
-
-	public boolean isDisabledBtnAgregaLaborales() {		
-		return disabledBtnAgregaLaborales;
-	}
-
-
-	public void setDisabledBtnAgregaLaborales(boolean disabledBtnAgregaLaborales) {
-		this.disabledBtnAgregaLaborales = disabledBtnAgregaLaborales;
-	}
-
-
 	public boolean isDisabledBtnAgregaEvaluacion() {		
 		return disabledBtnAgregaEvaluacion;
 	}
-
 
 	public void setDisabledBtnAgregaEvaluacion(boolean disabledBtnAgregaEvaluacion) {
 		this.disabledBtnAgregaEvaluacion = disabledBtnAgregaEvaluacion;
@@ -476,37 +444,25 @@ public class ExpEvalManagedBean implements Serializable  {
 		this.listPortafolioLaboral = listPortafolioLaboral;
 	}
 
-
-
 	public String getTelefonoInstitucion() {
 		return telefonoInstitucion;
 	}
-
-
 
 	public void setTelefonoInstitucion(String telefonoInstitucion) {
 		this.telefonoInstitucion = telefonoInstitucion;
 	}
 
-
-
 	public String getDescripcionCargo() {
 		return descripcionCargo;
 	}
-
-
 
 	public void setDescripcionCargo(String descripcionCargo) {
 		this.descripcionCargo = descripcionCargo;
 	}
 
-
-
 	public Pais getPaisInstitucion() {
 		return paisInstitucion;
 	}
-
-
 
 	public void setPaisInstitucion(Pais paisInstitucion) {
 		this.paisInstitucion = paisInstitucion;
@@ -881,10 +837,9 @@ public class ExpEvalManagedBean implements Serializable  {
 			enabledDisableButton(2);
 			enabledDisableButton(3);
 			enabledDisableButton(4);
-			
+			enabledDisableButton(5);			
 		}		
-		
-		//((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("dbSolicitudesBean",null);
+	
 	}
 	
 	public List<BeanEvaluacion> getListadoEvaluacionesByParam(Solicitud sol, boolean todos) {
@@ -1039,9 +994,8 @@ public class ExpEvalManagedBean implements Serializable  {
 	
 	public void solicitarCertificacion (){
 		
-		//Integer estadoActual = new Integer(this.getSolicitudExp().getEstatus().getId());
 		Mantenedor estadoActual = this.getSolicitudExp().getEstatus();
-		Integer proxEstado = Integer.valueOf(estadoActual.getProximo()); //this.catalogoEstadosSolicitud.get(estadoActual).getProximo();
+		Integer proxEstado = Integer.valueOf(estadoActual.getProximo()); 
 		
 		Mantenedor proximoEstado = service.getCatalogoEstadoSolicitud().get(proxEstado);
 						
@@ -1653,5 +1607,29 @@ public class ExpEvalManagedBean implements Serializable  {
 		
 	}
 
+	public void runInformeAsesor() throws Exception{
+		String rptNombre = "informeasesor";
+		runReporte(rptNombre);
+	}
 	
+	public void runPlanCapacitacion() throws Exception{
+		String rptNombre = "plancapacitacion";
+		runReporte(rptNombre);
+	}
+	
+	public void runReporte(String nombreReporte) throws Exception {
+    	Map<String,Object> params = new HashMap<String,Object>();
+    	Certificacion cert = this.solicitudExp.getCertificacion();
+    	
+    	if (cert.getEvaluador() != null){
+    		params.put("idSolicitud",this.solicitudExp.getId());	
+    		params.put("idEvaluador",cert.getEvaluador().getId());
+    		
+        	service.imprimirReporte(nombreReporte, params, Global.EXPORT_PDF, true);
+    	}else
+    		FacesUtil.getMensaje("Mensaje SCCL ", "Error al consultar los datos del evaluador. Favor comuníquese con el Departamento de Tecnología del INATEC", true);
+    	  
+		
+		
+	}
 }

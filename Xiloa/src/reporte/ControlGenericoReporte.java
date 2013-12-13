@@ -137,8 +137,8 @@ public class ControlGenericoReporte implements java.io.Serializable{
 		String reporte = nombreReporte + "." + formato.toLowerCase();
 		if (visualiza) {
 			RequestContext context = RequestContext.getCurrentInstance();
-			context.execute("window.open('" +  FacesUtil.getContentPath() + "/reporte?file="+ reporte + "&formato=" + formato + "','myWindow');");		
-		    //context.execute("window.open('" +  FacesUtil.getContentPath() + "/reporte/"+ reporte + "','myWindow');");
+			//context.execute("window.open('" +  FacesUtil.getContentPath() + "/reporte?file="+ reporte + "&formato=" + formato + "','myWindow');");		
+		    context.execute("window.open('" +  FacesUtil.getContentPath() + "/reporte/"+ reporte + "','myWindow');");
 		}
 		
 	}	

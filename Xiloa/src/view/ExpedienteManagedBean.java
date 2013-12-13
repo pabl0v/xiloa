@@ -101,8 +101,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	private boolean indicaCVFull;
 	private boolean disabledBtnActualizaContacto;
 	private boolean disabledBtnAgregaLaborales;
-	private boolean disabledBtnAgregaEvaluacion;
-	
+		
 	private List<SelectItem> listEvalBySolicitud;	
 	
 	private Map<Integer, Mantenedor> catalogoTipoDatosLaborales;
@@ -129,6 +128,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	private String descripcionArchivoExp;
 	private String nombreRealArchivoExp;
 	private String sizeArchivoExp;
+	private boolean verEnviarSolicitud;
 	
 	public ExpedienteManagedBean() {
 		super();
@@ -139,8 +139,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.setIndicaCVFull(false);
 		this.setDisabledBtnActualizaContacto(false);
 		this.setDisabledBtnAgregaLaborales(false);
-		this.setDisabledBtnAgregaEvaluacion(true);		
-		
+				
 		listDatosLaborales = new ArrayList<Laboral> ();
 		listDatosEstudios = new ArrayList<Laboral> ();
 		listDatosCalificacion = new ArrayList<Laboral> ();
@@ -168,9 +167,18 @@ public class ExpedienteManagedBean implements Serializable  {
 		nuevoLaboral = new Laboral();		
 		
 		listNacionalidades = new ArrayList<SelectItem>();
+		verEnviarSolicitud = true;
 		
 	}	
 		
+	public boolean isVerEnviarSolicitud() {
+		return verEnviarSolicitud;
+	}
+
+	public void setVerEnviarSolicitud(boolean verEnviarSolicitud) {
+		this.verEnviarSolicitud = verEnviarSolicitud;
+	}
+
 	public List<SelectItem> getListNacionalidades() {
 		return listNacionalidades;
 	}
@@ -303,17 +311,6 @@ public class ExpedienteManagedBean implements Serializable  {
 	public void setDisabledBtnAgregaLaborales(boolean disabledBtnAgregaLaborales) {
 		this.disabledBtnAgregaLaborales = disabledBtnAgregaLaborales;
 	}
-
-
-	public boolean isDisabledBtnAgregaEvaluacion() {		
-		return disabledBtnAgregaEvaluacion;
-	}
-
-
-	public void setDisabledBtnAgregaEvaluacion(boolean disabledBtnAgregaEvaluacion) {
-		this.disabledBtnAgregaEvaluacion = disabledBtnAgregaEvaluacion;
-	}
-
 
 	public boolean isIndicaCVFull() {
 		return indicaCVFull;
@@ -758,16 +755,23 @@ public class ExpedienteManagedBean implements Serializable  {
 	public void iniciaBeanExp (){
 		
 		Solicitud  solicitud = (Solicitud)FacesUtil.getParametroSession("dbSolicitudesBean");
+		verEnviarSolicitud = true;
 						
 		if (solicitud == null){
 			//Inicializa el Contacto por el Usuario
 			this.solicitudExp = null;
 			Usuario userName = null;
 			
-			//userName = service.getUsuarioLocal(util.getUsuario());
-			userName = controller.getContacto().getUsuario();
-			if (userName.getContacto() != null)
-				this.setContactoExp(userName.getContacto());		
+			Contacto contactoSelected = (Contacto) FacesUtil.getParametroSession("candidato");
+			
+			if (contactoSelected == null) {			
+				userName = controller.getContacto().getUsuario();
+				if (userName.getContacto() != null)
+					this.setContactoExp(userName.getContacto());
+			} else{
+				this.setContactoExp(contactoSelected);
+				verEnviarSolicitud = false;
+			}
 		} else{
 			this.solicitudExp = solicitud;
 			this.contactoExp = this.solicitudExp.getContacto();
@@ -1061,15 +1065,7 @@ public class ExpedienteManagedBean implements Serializable  {
 				}
 								
 				break;
-			}
-			case 4: {
-				if ((sol == null) || (estadoInicial == estadoSolicitud)){
-					this.setDisabledBtnAgregaEvaluacion(true);
-				} else {				
-					this.setDisabledBtnAgregaEvaluacion(false);					
-				}				
-				break;
-			}
+			}			
 			default: 
 				break;			
 		}

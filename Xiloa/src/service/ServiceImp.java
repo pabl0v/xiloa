@@ -452,7 +452,7 @@ public class ServiceImp implements IService {
 		    		valor = "'" + param.get(campo) + "'";
 		    	}		    	
 		    	
-		    	sqlWhere = (sqlWhere == null) ? "where " + campo + " = " + valor :sqlWhere + " and " + campo + " = " + valor;		        		        
+		    	sqlWhere = (sqlWhere == null) ? "where " + campo.toLowerCase() + " like %" + valor.toString().toLowerCase() + "%" :sqlWhere + " and " + campo.toLowerCase() + " like %" + valor.toString().toLowerCase();		        		        
 		    }
 		}		
 		
@@ -1118,5 +1118,10 @@ public class ServiceImp implements IService {
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void auditar(Auditoria auditoria) {
 		auditoriaDao.save(auditoria);
+	}
+	
+	@Override
+	public List<Contacto> getContactosByParam(String namedString, Object [] parametros){
+		return contactoDao.findAllByNamedQueryParam(namedString, parametros);				
 	}
 }
