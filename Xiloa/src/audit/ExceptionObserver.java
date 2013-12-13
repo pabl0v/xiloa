@@ -29,7 +29,6 @@ public class ExceptionObserver {
 	public void myAfterThrowing(JoinPoint joinPoint, Throwable e) {
 
 		Signature signature = joinPoint.getSignature();
-		//String methodName = signature.getName();
 		String stuff = signature.toString();
 		String arguments = Arrays.toString(joinPoint.getArgs());
 		

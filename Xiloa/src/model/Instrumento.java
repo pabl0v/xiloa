@@ -147,6 +147,13 @@ public class Instrumento implements Serializable {
 	public void setEntidadId(Integer entidadId) {
 		this.entidadId = entidadId;
 	}
+	
+	public String getPuntajeMinimoCualitativo() {
+		if(cualitativo)
+			return (cantidadPreguntas - respuestasFallidas) + "/" + cantidadPreguntas;
+		else
+			return "N/D";
+	}
 
 	public Float getPuntajeMinimo() {
 		return puntajeMinimo;
@@ -154,6 +161,13 @@ public class Instrumento implements Serializable {
 
 	public void setPuntajeMinimo(Float puntajeMinimo) {
 		this.puntajeMinimo = puntajeMinimo;
+	}
+	
+	public String getPuntajeMaximoCualitativo() {
+		if(cualitativo)
+			return cantidadPreguntas + "/" + cantidadPreguntas;
+		else
+			return "N/D";
 	}
 
 	public Float getPuntajeMaximo() {
@@ -163,7 +177,7 @@ public class Instrumento implements Serializable {
 	public void setPuntajeMaximo(Float puntajeMaximo) {
 		this.puntajeMaximo = puntajeMaximo;
 	}
-
+	
 	public Integer getCantidadPreguntas() {
 		return cantidadPreguntas;
 	}
@@ -200,6 +214,27 @@ public class Instrumento implements Serializable {
 
 	public void setEstatus(boolean estatus) {
 		this.estatus = estatus;
+	}
+	
+	@Override
+	public String toString(){
+	
+		String cadena = "Tabla instrumentos -> ";
+		
+		//cadena = cadena + "instrumento_id=" + getId().toString() + ", ";
+		cadena = cadena + "instrumento_unidad_id=" + getUnidad().toString() + ", ";
+		cadena = cadena + "instrumento_codigo=" + getCodigo() + ", ";
+		cadena = cadena + "instrumento_tipo=" + getTipo().getId() + ", ";
+		cadena = cadena + "instrumento_cualitativo=" + Boolean.toString(isCualitativo()) + ", ";
+		cadena = cadena + "instrumento_nombre=" + getNombre() + ", ";
+		cadena = cadena + "instrumento_puntaje_minimo=" + getPuntajeMinimo().toString() + ", ";
+		cadena = cadena + "instrumento_puntaje_maximo=" + getPuntajeMaximo().toString() + ", ";
+		cadena = cadena + "instrumento_cantidad_preguntas=" + getCantidadPreguntas() + ", ";
+		cadena = cadena + "instrumento_respuestas_fallidas=" + getRespuestasFallidas() + ", ";
+		cadena = cadena + "instrumento_entidad_id=" + getEntidadId() + ", ";
+		cadena = cadena + "instrumento_estatus=" + Boolean.toString(getEstatus()) + " ";
+
+		return cadena;
 	}
 	
 	public Instrumento(){

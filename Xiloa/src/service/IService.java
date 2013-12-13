@@ -17,6 +17,7 @@ import support.USolicitud;
 import support.UsuarioExterno;
 import model.Actividad;
 import model.Archivo;
+import model.Auditoria;
 import model.Bitacora;
 import model.Certificacion;
 import model.Contacto;
@@ -122,4 +123,5 @@ public interface IService {
 	public List<Solicitud> filtraListaSolicitudes(HashMap<String, Object> param, Integer tipoFiltro);
 	public boolean validaProcesoConcluido(Solicitud solicitud, boolean validaEvaluacion);
 	public boolean validaEvaluacionAprobada(Solicitud solicitud);
+	public void auditar(Auditoria auditoria);
 }

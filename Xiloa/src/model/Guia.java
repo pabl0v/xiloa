@@ -79,6 +79,13 @@ public class Guia implements Serializable {
 	public void setRespuesta(String respuesta) {
 		this.respuesta = respuesta;
 	}
+	
+	public String getPesoPregunta(){
+		if(instrumento.isCualitativo())
+			return "1/"+instrumento.getCantidadPreguntas();
+		else
+			return "N/D";
+	}
 			
 	public Float getPuntaje() {
 		return puntaje;
@@ -101,6 +108,20 @@ public class Guia implements Serializable {
 	
 	public void setEstatus(boolean estatus){
 		this.estatus = estatus;
+	}
+	
+	@Override
+	public String toString(){
+	
+		String cadena = "Tabla guias -> ";
+		
+		//cadena = cadena + "guia_id=" + getId().toString() + ", ";
+		cadena = cadena + "instrumento_id=" + getInstrumento().getId() + ", ";
+		cadena = cadena + "guia_pregunta=" + getPregunta() + ", ";
+		cadena = cadena + "guia_respuesta=" + getRespuesta() + ", ";
+		cadena = cadena + "guia_estatus=" + Boolean.toString(getEstatus()) + " ";
+		
+		return cadena;
 	}
 	
 	public Guia(){

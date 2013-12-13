@@ -34,6 +34,7 @@ import dao.IDao;
 import dao.IDaoInatec;
 import model.Actividad;
 import model.Archivo;
+import model.Auditoria;
 import model.Bitacora;
 import model.Certificacion;
 import model.Contacto;
@@ -99,6 +100,8 @@ public class ServiceImp implements IService {
 	private JavaEmailSender email;
 	@Autowired
 	private IDao<Object> objectDao;
+	@Autowired
+	private IDao<Auditoria> auditoriaDao;
 	
 	private List<Mantenedor> mantenedores;
 	private Map<Integer, Mantenedor> catalogoEstatusCertificacion;
@@ -167,7 +170,6 @@ public class ServiceImp implements IService {
 				case 3:
 				case 4:
 				case 5: catalogoTiposDatosLaborales.put(mantenedor.getId(), mantenedor); break;
-				case 6:
 				case 7: catalogoEstadoSolicitud.put(mantenedor.getId(), mantenedor); break;
 				case 8: catalogoPortafolio.put(mantenedor.getId(), mantenedor); break;
 				case 9: catalogoEstadosEvaluacion.put(mantenedor.getId(), mantenedor); break;
@@ -1110,5 +1112,11 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Actividad> getActividadesByEntidadId(Integer entidadId) {
 		return actividadDao.findAllByNamedQueryParam("Actividad.findByEntidadId", new Object[] {entidadId});
+	}
+	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void auditar(Auditoria auditoria) {
+		auditoriaDao.save(auditoria);
 	}
 }
