@@ -2,7 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pre_matricula" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="317"/>
+	<property name="ireport.y" value="258"/>
+	<parameter name="idSolicitud" class="java.lang.Long"/>
 	<queryString language="SQL">
 		<![CDATA[select s.fecha_registro as solicitud_fecha,
        s.fecha_matricula as solicitud_fmatricula,
@@ -26,7 +27,7 @@
        g.mantenedor_valor
 from sccl.solicitudes s, sccl.certificaciones c, sccl.contactos cu, public.municipio m,
      (select mant.* from sccl.mantenedores mant where mant.mantenedor_tipo = '10') g
-where solicitud_id = 1
+where solicitud_id = $P{idSolicitud}
  and c.certificacion_id = s.certificacion_id
  and cu.contacto_id = s.contacto_id
  and m.departamentoid = cu.departamento_id
