@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="solicitud_candidato" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="193"/>
-	<parameter name="idsolicitud" class="java.lang.Long"/>
+	<property name="ireport.y" value="29"/>
+	<parameter name="idSolicitud" class="java.lang.Long"/>
 	<queryString language="SQL">
 		<![CDATA[select s.fecha_registro as solicitud_fecha,
        s.experiencia as solicitud_experiencia,
@@ -17,7 +17,7 @@
        cu.nombre_completo as contacto_nombre,
        cu.numero_identificacion as contacto_nui
 from sccl.solicitudes s, sccl.certificaciones c, sccl.contactos cu
-where solicitud_id = $P{idsolicitud}
+where solicitud_id = $P{idSolicitud}
  and c.certificacion_id = s.certificacion_id
  and cu.contacto_id = s.contacto_id]]>
 	</queryString>
