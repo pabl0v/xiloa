@@ -436,6 +436,7 @@ public class ServiceImp implements IService {
 		String sqlSolicitud;		
 		
 		String sqlWhere = null;		
+		String condicion = "";
 		
 		if (param.size() > 0 ) {
 			
@@ -444,15 +445,17 @@ public class ServiceImp implements IService {
 			
 			Iterator<String> claveSet = param.keySet().iterator();			
 		    
-		    while(claveSet.hasNext()){		      
-		    	campo = claveSet.next();		    	
+		    while(claveSet.hasNext()){		 
+		    	condicion = "";
+		    	campo = claveSet.next();		
+		    	valor = param.get(campo);
 		    	if (param.get(campo) instanceof Integer || param.get(campo) instanceof Long) {
-		    		valor = param.get(campo);
+		    		condicion = campo + " = " + valor;		    		
 		    	} else {
-		    		valor = "'" + param.get(campo) + "'";
+		    		condicion = " lower(" + campo + ") like '%" + valor.toString().trim().toLowerCase() + "%'";			    			    		    		
 		    	}		    	
 		    	
-		    	sqlWhere = (sqlWhere == null) ? "where " + campo.toLowerCase() + " like %" + valor.toString().toLowerCase() + "%" :sqlWhere + " and " + campo.toLowerCase() + " like %" + valor.toString().toLowerCase();		        		        
+		    	sqlWhere = (sqlWhere == null) ? "where " + condicion  :sqlWhere + " and " + condicion;		        		        
 		    }
 		}		
 		

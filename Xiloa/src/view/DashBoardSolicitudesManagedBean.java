@@ -230,7 +230,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		this.listBuscarByAll.add(new SelectItem("s.certificacion.nombre", "Certificacion a Evaluar"));
 		this.listBuscarByAll.add(new SelectItem("s.fechaRegistro", "Fecha Solicitud"));
 		this.listBuscarByAll.add(new SelectItem("s.contacto.correo1", "Evaluador"));
-		this.listBuscarByAll.add(new SelectItem("s.estatus", "Estado"));		
+		this.listBuscarByAll.add(new SelectItem("s.estatus.valor", "Estado"));		
 	}
 				
    //Llenado de Centro
