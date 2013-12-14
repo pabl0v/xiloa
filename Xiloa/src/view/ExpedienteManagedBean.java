@@ -747,7 +747,9 @@ public class ExpedienteManagedBean implements Serializable  {
 		}		
 		
 		archivoExp = new Archivo();
-					
+		System.out.println("Nombre del S.O " + System.getProperty("os.name"));
+		System.out.println("Nombre del Usuario Conectado " + System.getProperty("user.home"));
+		System.out.println("Nombre del Directorio de la Aplicacion " + System.getProperty("user.dir"));
 				
 	}
 	

@@ -75,7 +75,7 @@
 	       		  <f:selectItems value="#{expedienteManagedBean.listMunicipioByDptos}"/>	       		   	       		  		  	       		  			                         
 			</p:selectOneMenu>     	
             <p:commandButton id="btnActualizaContacto" disabled="#{expedienteManagedBean.disabledBtnActualizaContacto}"
-                             style="display:block;" value="Aplicar Cambios" 
+                             style="display:block;" value="Aplicar Cambios" icon="ui-icon-disk"
                              update=":formExpediente:msgExpediente" 
                              action="#{expedienteManagedBean.actualizarContacto}" />          
     	</div>
@@ -101,7 +101,7 @@
     		<p style="padding: 7px;font-weight:bold;">Trayectoria profesional y academica:</p>    		
            	<div style="margin-bottom: 16px;">
            		<p:commandButton id="btnAgregaLaborales" disabled="#{expedienteManagedBean.disabledBtnAgregaLaborales}"
-           		                 action="#{expedienteManagedBean.nuevoLaboral}" value="Agregar"
+           		                 action="#{expedienteManagedBean.nuevoLaboral}" value="Agregar" icon="ui-icon-document"
            		                 oncomplete="PF('dlg1').show();"  process="@form" update=":formExpediente:modalLaborales" />
            	</div>       	    					
     		<p:tabView id="tabView_datosLaborales">    			   
@@ -120,7 +120,7 @@
     						               icon="ui-icon-pencil" >
     						     <f:setPropertyActionListener value="#{datosLaborales}" target="#{expedienteManagedBean.selectedLaboral}" />           	        	         
         						<p:menuitem value="Subir Archivo" action="#{expedienteManagedBean.nuevoPortafolio}"
-        									oncomplete="PF('dlgPortafolio').show()"
+        									oncomplete="PF('dlgPortafolio').show()" 
         									update=":formExpediente:modalPortafolio" 
         						            icon="ui-icon-arrowrefresh-1-w" >
         						      <f:setPropertyActionListener value="#{datosLaborales}" target="#{expedienteManagedBean.selectedLaboral}" />
@@ -260,7 +260,7 @@
 				<div style="position: absolute;top: 55px;right: 55px;">
 					<p:commandButton value="Cancelar" action="#{expedienteManagedBean.limpiarCampos}" oncomplete="PF('dlg1').hide();" />
 					<p:commandButton value="Aceptar" action="#{expedienteManagedBean.guardarDatosLaborales}" oncomplete="PF('dlg1').hide();"
-									 update=":formExpediente:tabView_datosLaborales, :formExpediente:msgExpediente"	/>
+									 icon="ui-icon-disk" update=":formExpediente:tabView_datosLaborales, :formExpediente:msgExpediente"	/>
 				</div>
 				    
 				<p:dataTable id="dtPortafolioLaboral" emptyMessage="No hay datos"  var="varPortafolioLaboral" 
@@ -303,7 +303,7 @@
 	            	<p:inputText id="descripcionArchivo" value="#{expedienteManagedBean.descripcionArchivoExp}" />
 	            	<p:fileUpload id="fileEvidencia" fileUploadListener="#{expedienteManagedBean.uploadFile}" 
 	            	 			  mode="advanced" dragDropSupport="false"  auto="true" sizeLimit="2097152"  
-	            	              allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|PDF)$/" fileLimit="1"	            	              
+	            	              allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|PDF)$/" fileLimit="1" label="Buscar Archivo"            	              
 	            	              update=":formExpediente:messages, :formExpediente:nombreRealArchivo, :formExpediente:sizeArchivo" />
 					<p:growl id="messages" showDetail="true"/>	            	
 					<p>Archivo (Nombre Real):</p>  
@@ -312,7 +312,7 @@
 					<h:outputText styleClass="estilo_span" id="sizeArchivo" value="#{expedienteManagedBean.sizeArchivoExp}" />
 				</div>				
 				<p:commandButton value="Cancelar" action="#{expedienteManagedBean.cancelaPortafolio}" onclick="PF('dlgPortafolio').hide();"/>
-				<p:commandButton value="Guardar" action="#{expedienteManagedBean.guardarArchivo}" oncomplete="PF('dlgPortafolio').hide();" />												
+				<p:commandButton value="Guardar" icon="ui-icon-disk" action="#{expedienteManagedBean.guardarArchivo}" oncomplete="PF('dlgPortafolio').hide();" />												
 		    </div>					
 		</p:dialog>
 		
