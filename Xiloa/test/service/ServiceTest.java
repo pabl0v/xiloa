@@ -30,7 +30,7 @@ public class ServiceTest {
 	               mantenedor13, mantenedor14, mantenedor15, mantenedor16, mantenedor17, mantenedor18, mantenedor19,
 	               mantenedor20, mantenedor21, mantenedor22, mantenedor23, mantenedor24, mantenedor25, mantenedor26, 
 	               mantenedor27, mantenedor28, mantenedor29, mantenedor30, mantenedor31, mantenedor32, mantenedor33, 
-	               mantenedor34, mantenedor35, mantenedor36, mantenedor37; 
+	               mantenedor34, mantenedor35, mantenedor36, mantenedor37, mantenedor38; 
 	               	
 	private static Perfil perfil;
 	private static List<Perfil> perfiles;
@@ -60,7 +60,8 @@ public class ServiceTest {
 		mantenedor7 = new Mantenedor("3","Estatus certificaciones","Pendiente",null,null);
 		mantenedor8 = new Mantenedor("3","Estatus certificaciones","Activo",null,null);
 		mantenedor9 = new Mantenedor("3","Estatus certificaciones","Anulado",null,null);
-		
+		mantenedor38 = new Mantenedor("3","Estatus certificaciones","Cerrado",null,null);
+
 		mantenedor10 = new Mantenedor("4","Estatus actividades","Pendiente",null,null);
 		mantenedor11 = new Mantenedor("4","Estatus actividades","Activo",null,null);
 		mantenedor12 = new Mantenedor("4","Estatus actividades","Anulado",null,null);
@@ -133,9 +134,9 @@ public class ServiceTest {
 		service.guardar(mantenedor35);
 		service.guardar(mantenedor36);
 		service.guardar(mantenedor37);
+		service.guardar(mantenedor38);
 
 		//creando perfiles
-		
 		perfil = new Perfil("admin","admin","all","all","all",true,true);
 		
 		//creando roles

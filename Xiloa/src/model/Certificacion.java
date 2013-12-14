@@ -42,7 +42,7 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @NamedQueries({
 	@NamedQuery(name="Certificacion.findAll", query="select c from certificaciones c order by c.id desc"),
 	@NamedQuery(name="Certificacion.findActivas", query="select c from certificaciones c where c.estatus.id=8 order by c.id desc"),
-	@NamedQuery(name="Certificacion.findByIfpId", query="select c from certificaciones c where c.ifpId = case ?1 when 1000 then c.ifpId else ?1 end"),
+	@NamedQuery(name="Certificacion.findByIfpId", query="select c from certificaciones c where c.estatus.id!=9 and c.ifpId = case ?1 when 1000 then c.ifpId else ?1 end"),
 	@NamedQuery(name="Certificacion.findById", query="select c from certificaciones c where c.id=?1"),
 	@NamedQuery(name="Certificacion.findAllByNombre", query="select c from certificaciones c where c.estatus.id=8 and c.nombre like ?1 order by c.id desc"),
 	@NamedQuery(name="Certificacion.findAllByCentro", query="select c from certificaciones c where c.estatus.id=8 and c.ifpNombre like ?1 order by c.id desc")

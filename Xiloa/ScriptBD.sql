@@ -76,6 +76,14 @@ select
 41 as id_sistema,
 1 as activo,
 'admon' as usuario_grabacion,
+now() as fecha_grabacion
+union
+select
+219 as id_rol,
+'Evaluador' as descripcion_rol,
+41 as id_sistema,
+1 as activo,
+'admon' as usuario_grabacion,
 now() as fecha_grabacion;
 
 --registrando usuario administrador
@@ -174,48 +182,48 @@ where usuario='admin';
 --configurando los permisos de cada rol
 
 insert into admon.menu(id,id_sistema,parent_id,texto,href,title,posicion,fecha_grabacion)
-select 1610,41,0,'ROLE_RIGHT_MENU_PLANIFICACIONES','compartido/paginamaestra.xhtml','Menu planificaciones',0,NOW()
+select 1838,41,0,'ROLE_RIGHT_MENU_PLANIFICACIONES','compartido/paginamaestra.xhtml','Menu planificaciones',0,NOW()
 union
-select 1611,41,0,'ROLE_RIGHT_CREAR_PLANIFICACIONES','planificacion/planificacion.xhtml','Crear planificaciones',1,NOW()
+select 1839,41,0,'ROLE_RIGHT_CREAR_PLANIFICACIONES','planificacion/planificacion.xhtml','Crear planificaciones',1,NOW()
 union
-select 1612,41,0,'ROLE_RIGHT_EDITAR_PLANIFICACIONES','planificacion/edicion_planificacion.xhtml','Editar planificaciones',1,NOW()
+select 1840,41,0,'ROLE_RIGHT_EDITAR_PLANIFICACIONES','planificacion/edicion_planificacion.xhtml','Editar planificaciones',1,NOW()
 union
-select 1613,41,0,'ROLE_RIGHT_MENU_EJECUCUIONES','compartido/paginamaestra.xhtml','Menu ejecuciones',0,NOW()
+select 1841,41,0,'ROLE_RIGHT_MENU_EJECUCUIONES','compartido/paginamaestra.xhtml','Menu ejecuciones',0,NOW()
 union
-select 1614,41,0,'ROLE_RIGHT_AGREGAR_BITACORAS','planificacion/bitacoras.xhtml','Agregar bitacoras',1,NOW()
+select 1842,41,0,'ROLE_RIGHT_AGREGAR_BITACORAS','planificacion/bitacoras.xhtml','Agregar bitacoras',1,NOW()
 union
-select 1615,41,0,'ROLE_RIGHT_VER_BITACORAS','planificacion/ejecuciones.xhtml','Ver bitacoras',1,NOW()
+select 1843,41,0,'ROLE_RIGHT_VER_BITACORAS','planificacion/ejecuciones.xhtml','Ver bitacoras',1,NOW()
 union
-select 1616,41,0,'ROLE_RIGHT_MENU_INSTRUMENTOS','compartido/paginamaestra.xhtml','Menu instrumentos',0,NOW()
+select 1844,41,0,'ROLE_RIGHT_MENU_INSTRUMENTOS','compartido/paginamaestra.xhtml','Menu instrumentos',0,NOW()
 union
-select 1617,41,0,'ROLE_RIGHT_CONFIGURAR_INSTRUMENTOS','planificaccion/instrumentos.xhtml','Configurar instrumentos',1,NOW()
+select 1845,41,0,'ROLE_RIGHT_CONFIGURAR_INSTRUMENTOS','planificaccion/instrumentos.xhtml','Configurar instrumentos',1,NOW()
 union
-select 1618,41,0,'ROLE_RIGHT_MENU_SOLICITUDES','compartido/paginamaestra.xhtml','Menu solicitudes',0,NOW()
+select 1846,41,0,'ROLE_RIGHT_MENU_SOLICITUDES','compartido/paginamaestra.xhtml','Menu solicitudes',0,NOW()
 union
-select 1619,41,0,'ROLE_RIGHT_CREAR_SOLICITUDES','compartido/solicitudes.xhtml','Crear solicitudes',1,NOW()
+select 1847,41,0,'ROLE_RIGHT_CREAR_SOLICITUDES','compartido/solicitudes.xhtml','Crear solicitudes',1,NOW()
 union
-select 1620,41,0,'ROLE_RIGHT_MENU_CONFIGURACION','compartido/paginamaestra.xhtml','Menu configuracion',0,NOW()
+select 1848,41,0,'ROLE_RIGHT_MENU_CONFIGURACION','compartido/paginamaestra.xhtml','Menu configuracion',0,NOW()
 union
-select 1621,41,0,'ROLE_RIGHT_CONFIGURAR_MANTENEDORES','usuario/configuracion.xhtml','Configurar mantenedores',1,NOW()
+select 1849,41,0,'ROLE_RIGHT_CONFIGURAR_MANTENEDORES','usuario/configuracion.xhtml','Configurar mantenedores',1,NOW()
 union
-select 1622,41,0,'ROLE_RIGHT_AGREGAR_EVALUACIONES','solicitudes/registro_evaluacion.xhtml','Agregar evaluaciones',1,NOW()
+select 1850,41,0,'ROLE_RIGHT_AGREGAR_EVALUACIONES','solicitudes/registro_evaluacion.xhtml','Agregar evaluaciones',1,NOW()
 union
-select 1623,41,0,'ROLE_RIGHT_EDITAR_PORTAFOLIO','solicitudes/registro_solicitud.xhtml','Editar portafolio',1,NOW()
+select 1851,41,0,'ROLE_RIGHT_EDITAR_PORTAFOLIO','solicitudes/registro_solicitud.xhtml','Editar portafolio',1,NOW()
 union
-select 1624,41,0,'ROLE_RIGHT_VER_PORTAFOLIO','solicitudes/registro_solicitud.xhtml','Ver portafolio',1,NOW()
+select 1852,41,0,'ROLE_RIGHT_VER_PORTAFOLIO','solicitudes/registro_solicitud.xhtml','Ver portafolio',1,NOW()
 union
-select 1625,41,0,'ROLE_RIGHT_MENU_REPORTES','planificacion/reportes.xhtml','Reportes',1,NOW()
+select 1853,41,0,'ROLE_RIGHT_MENU_REPORTES','planificacion/reportes.xhtml','Reportes',1,NOW()
 union
-select 1626,41,0,'ROLE_RIGHT_MENU_PARTICIPANTE','solicitudes/expediente.xhtml','Participante',1,NOW()
+select 1854,41,0,'ROLE_RIGHT_MENU_PARTICIPANTE','solicitudes/expediente.xhtml','Participante',1,NOW()
 union
-select 1627,41,0,'ROLE_RIGHT_EDITA_EXPEDIENTE','solicitudes/expediente_evaluacion.xhtml','Edita Expediente',1,NOW()
+select 1855,41,0,'ROLE_RIGHT_EDITA_EXPEDIENTE','solicitudes/expediente_evaluacion.xhtml','Edita Expediente',1,NOW()
 union
-select 1628,41,0,'ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO','solicitudes/expediente.xhtml','Expediente',1,NOW()
+select 1856,41,0,'ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO','solicitudes/expediente.xhtml','Expediente',1,NOW()
 union
-select 1629,41,0,'ROLE_RIGHT_EDITA_SEGUIMIENTO','solicitudes/convocatoria.xhtml','Seguimiento',1,NOW()
+select 1857,41,0,'ROLE_RIGHT_EDITA_SEGUIMIENTO','solicitudes/convocatoria.xhtml','Seguimiento',1,NOW()
 union
-select 1630,41,0,'ROLE_RIGHT_MENU_CANDIDATOS','solicitudes/candidatos.xhtml','Candidatos',1,NOW()
+select 1858,41,0,'ROLE_RIGHT_MENU_CANDIDATOS','solicitudes/candidatos.xhtml','Candidatos',1,NOW()
 
-update admon.roles set opciones='1610,1611,1612,1613,1614,1615,1616,1617,1618,1619,1620,1621,1622,1623,1624,1625,1627,1628,1629,1630' where id_rol=215
-update admon.roles set opciones='1610,1611,1612,1613,1614,1615,1616,1617,1618,1619,1620,1621,1622,1623,1624,1625,1627,1628,1629,1630' where id_rol=218
-update admon.roles set opciones='1612,1614,1615,1618,1619,1621,1622,1624,1626' where id_rol=217
+update admon.roles set opciones='1838,1839,1840,1841,1842,1843,1844,1845,1846,1847,1848,1849,1850,1851,1852,1853,1855,1856,1857,1858' where id_rol=215
+update admon.roles set opciones='1838,1839,1840,1841,1842,1843,1844,1845,1846,1847,1848,1849,1850,1851,1852,1853,1855,1856,1857,1858' where id_rol=218
+update admon.roles set opciones='1840,1842,1843,1846,1847,1849,1850,1852,1854' where id_rol=217
