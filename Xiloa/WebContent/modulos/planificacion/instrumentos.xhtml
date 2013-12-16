@@ -9,11 +9,11 @@
         <link type="text/css" rel="stylesheet" href="../../resources/css/instrumentos.css"></link>
         <script type="text/javascript">  
 			function handleLoginRequest(xhr, status, args) {  
-				if(args.validationFailed || !args.cerrar) {  
-					PF('dlg').jq.effect("shake", { times:5 }, 100);  
+				if(args.validationFailed) {  
+					PF('dlg1').jq.effect("shake", { times:5 }, 100);  
 				} 
 				else {  
-					PF('dlg').hide();  
+					PF('dlg1').hide();  
 					$('#loginLink').fadeOut();  
 				}
 			}
@@ -28,7 +28,9 @@
 		    <script type="text/javascript" src="../../resources/scripts/instrumentos.js"></script>
 		</div>
         <h2>Configuración de Instrumentos - <h:outputText value="#{instrumentoManagedBean.nombreCertificacion}" /> </h2>
-        <div id="contenedor_secciones">  
+        <div id="contenedor_secciones">
+        
+		<p:growl id="growl" showDetail="true" />  
         
          <div class="seccion_edicion" style="width: 93%;">
 		          		<h:form id="instrumentos">
@@ -71,11 +73,6 @@
 		                    </p:dataTable>
 		                </h:form>
 		                </div>
-						<h:form>
-							<div class="contenedor_botones">
-								<h:commandButton style="float:right;" value="Cerrar" action="#{instrumentoManagedBean.aceptar}"/> 
-							</div>
-						</h:form>		           
 		          </div>
 		</div>
 	</div>
@@ -83,30 +80,24 @@
 	<p:dialog id="modalDialog1" styleClass="estilo_dialogoactividades" header="Edicion de Guia:" widgetVar="dlg1" modal="true" resizable="false" width="400" height="300">
 		<div id="contenedor_dialogoactividades">
 		<h:panelGrid id="modal1" columns="3" cellpadding="4">
-		<h:form id="guiaDialogo">
+		<h:form id="guiaDialogo"> 
 		  	<h:outputLabel styleClass="estilo_label" value="Pregunta:" />  
             <p:inputText id="codigo1" value="#{instrumentoManagedBean.guia.pregunta}" />
-            <p:message for="codigo1" />
-            <h:outputText value="#{instrumentoManagedBean.guia.pregunta}" />
             <br/>
             <h:outputLabel styleClass="estilo_label" value="Respuesta:" />
             <p:inputText id="codigo2" value="#{instrumentoManagedBean.guia.respuesta}" />
-			<p:message for="codigo2" />
-			<h:outputText value="#{instrumentoManagedBean.guia.respuesta}" />
             <br/>
             <h:outputLabel rendered="#{instrumentoManagedBean.guia.instrumento.cualitativo}" styleClass="estilo_label" value="Peso:" />
             <p:inputText id="codigo3a" rendered="#{instrumentoManagedBean.guia.instrumento.cualitativo}" disabled="#{instrumentoManagedBean.guia.instrumento.cualitativo}" value="#{instrumentoManagedBean.guia.pesoPregunta}" />
             <h:outputLabel rendered="#{!instrumentoManagedBean.guia.instrumento.cualitativo}" styleClass="estilo_label" value="Puntaje:" />
             <p:inputText id="codigo3b" rendered="#{!instrumentoManagedBean.guia.instrumento.cualitativo}" value="#{instrumentoManagedBean.guia.puntaje}" />
-            <p:message rendered="#{!instrumentoManagedBean.guia.instrumento.cualitativo}" for="codigo3b" />
-            <h:outputText rendered="#{!instrumentoManagedBean.guia.instrumento.cualitativo}" value="#{instrumentoManagedBean.guia.puntaje}" />
             <br/>
             <h:outputLabel styleClass="estilo_label" value="Activo:" />
 			<p:selectBooleanCheckbox value="#{instrumentoManagedBean.guia.estatus}" required="true" requiredMessage="El estado es requerido"/>
 			<br/>	
-			<div class="contenedor_botones" style="margin-top:32px;">			
+			<div class="contenedor_botones" style="margin-top:32px;">
 	            <h:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/> 
-				<h:commandButton value="Aceptar" validateClient="true" update=":guias:display" action="#{instrumentoManagedBean.guardarGuia(instrumentoManagedBean.guia)}" />
+				<h:commandButton value="Aceptar" oncomplete="handleDialogSubmit(xhr, status, args)" update=":guias:display, :growl" actionListener="#{instrumentoManagedBean.guardarGuia}" />
 			</div>
 		</h:form>
 		</h:panelGrid>
@@ -156,7 +147,7 @@
 			<br/>
 			<div class="contenedor_botones" style="margin-top:32px;">		
 	            <h:commandButton value="Cancelar" onclick="PF('dlg2').hide();"/> 
-				<h:commandButton value="Aceptar" update=":instrumentos:instrumentosDataTable" action="#{instrumentoManagedBean.guardarInstrumento(instrumentoManagedBean.instrumento)}" onclick="PF('dlg2').hide();"/>
+				<h:commandButton value="Aceptar" oncomplete="if(!args.validationFailed) {dlg2.hide()} else {dlg2.show()}" update=":instrumentos:instrumentosDataTable" action="#{instrumentoManagedBean.guardarInstrumento(instrumentoManagedBean.instrumento)}" onclick="PF('dlg2').hide();"/>
 			</div>
 		</h:form>
 	</p:dialog>

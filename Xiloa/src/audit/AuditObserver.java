@@ -1,3 +1,4 @@
+/*
 package audit;
 
 import java.util.Date;
@@ -33,4 +34,4 @@ public class AuditObserver {
 		Contacto contacto = service.getContactoByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
 		service.auditar(new Auditoria(new Date(), contacto, instrumento.toString()));
 	}
-}
+}*/

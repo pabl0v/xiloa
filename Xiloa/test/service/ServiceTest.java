@@ -34,7 +34,7 @@ public class ServiceTest {
 	               	
 	private static Perfil perfil;
 	private static List<Perfil> perfiles;
-	private static Rol rolAdmin, rolSupervisor, rolVerificador, rolRegistrador, rolDocente, rolVisitante;
+	private static Rol rolAdmin, rolSupervisor, rolVerificador, rolRegistrador, rolDocente, rolVisitante, rolEvaluador;
 	private static Usuario usuarioAdmin, usuarioLopez, usuarioPerez, usuarioRuiz, usuarioArauz;
 	private static Contacto contactoLopez, contactoRuiz, contactoPerez, contactoArauz, contactoAdmin;
 	
@@ -147,6 +147,7 @@ public class ServiceTest {
 		rolRegistrador = new Rol("registro_academico","Registro Academico",216,null,true);
 		rolVisitante = new Rol("visitante","Visitante",217,null,true);
 		rolAdmin = new Rol("admin","admin",218,null,true);
+		rolEvaluador = new Rol("Evaluador","Evaluador",219,null,true);
 		
 		perfil = (Perfil)service.guardar(perfil);
 		perfiles = new ArrayList<Perfil>();
@@ -158,6 +159,7 @@ public class ServiceTest {
 		rolDocente.setPerfiles(perfiles);
 		rolRegistrador.setPerfiles(perfiles);
 		rolVisitante.setPerfiles(perfiles);
+		rolEvaluador.setPerfiles(perfiles);
 		
 		rolAdmin = (Rol)service.guardar(rolAdmin);
 		rolSupervisor = (Rol)service.guardar(rolSupervisor);
@@ -165,6 +167,7 @@ public class ServiceTest {
 		rolDocente = (Rol)service.guardar(rolDocente);
 		rolRegistrador = (Rol)service.guardar(rolRegistrador);
 		rolVisitante = (Rol)service.guardar(rolVisitante);
+		rolEvaluador = (Rol)service.guardar(rolEvaluador);
 		
 		//creando usuarios
 		
@@ -181,11 +184,11 @@ public class ServiceTest {
 		usuarioRuiz = (Usuario)service.guardar(usuarioRuiz);
 					
 		//creando contactos
-		contactoAdmin = new Contacto(usuarioAdmin,null, null, 1,"Admin",null,"Admin",null,"Administrador",1,"nlopez@inatec.edu.ni",null,"00000000",null, 1, 1,"12345678901234","Managua",new Date(),new Date(),1,1,null, null, false,null,null,null);
-		contactoLopez = new Contacto(usuarioLopez,null, null, 1,"Norcecy",null,"Lopez",null,"Norcecy Lopez",1,"nlopez@inatec.edu.ni",null,"00000000",null, 1, 1,"12345678901234","Managua",new Date(),new Date(),1,1,null, null, false,null,null,null);
-		contactoRuiz = new Contacto(usuarioRuiz,null,null, 1,"Ana",null,"Ruiz",null,"Ana Ruiz",1,"aruiz@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,1, null, null, false,null,null,null);
-		contactoPerez = new Contacto(usuarioPerez,null, null,1,"Luis",null,"Perez",null,"Luis Perez",1,"lperez@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,null,null, null, false,null,null,null);
-		contactoArauz = new Contacto(usuarioArauz,null,null, 1,"Luz",null,"Arauz",null,"Luz Arauz",1,"larauz@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,null,null, null, false,null,null,null);
+		contactoAdmin = new Contacto(usuarioAdmin,null, rolAdmin, 1000,"Admin",null,"Admin",null,"Administrador",1,"nlopez@inatec.edu.ni",null,"00000000",null, 1, 1,"12345678901234","Managua",new Date(),new Date(),1,1,null, null, false,null,null,null);
+		contactoLopez = new Contacto(usuarioLopez,null, rolAdmin, 1000,"Norcecy",null,"Lopez",null,"Norcecy Lopez",1,"nlopez@inatec.edu.ni",null,"00000000",null, 1, 1,"12345678901234","Managua",new Date(),new Date(),1,1,null, null, false,null,null,null);
+		contactoRuiz = new Contacto(usuarioRuiz,null,rolAdmin, 1000,"Ana",null,"Ruiz",null,"Ana Ruiz",1,"aruiz@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,1, null, null, false,null,null,null);
+		contactoPerez = new Contacto(usuarioPerez,null, rolAdmin,1000,"Luis",null,"Perez",null,"Luis Perez",1,"lperez@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,null,null, null, false,null,null,null);
+		contactoArauz = new Contacto(usuarioArauz,null,rolAdmin, 1000,"Luz",null,"Arauz",null,"Luz Arauz",1,"larauz@inatec.edu.ni",null,"00000000",null,1,1,"12345678901234","Managua",new Date(),new Date(),1,null,null, null, false,null,null,null);
 
 		contactoLopez = (Contacto)service.guardar(contactoLopez);
 		contactoRuiz = (Contacto)service.guardar(contactoRuiz);

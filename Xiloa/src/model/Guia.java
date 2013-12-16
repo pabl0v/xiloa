@@ -13,7 +13,10 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
+//import javax.validation.constraints.Max;
+//import javax.validation.constraints.Min;
+//import javax.validation.constraints.NotNull;
+
 
 @Entity(name = "guias")
 @Table(name = "guias", schema = "sccl")
@@ -33,18 +36,20 @@ public class Guia implements Serializable {
 	@JoinColumn(name="instrumento_id")
 	private Instrumento instrumento;
 	
-	@NotNull
+	//@NotNull(message = "La pregunta es Requerida")
 	@Column(name = "guia_pregunta", nullable = false)	
 	private String pregunta;
 	
-	@Column(name = "guia_respuesta", nullable = false)	
+	//@NotNull(message = "La respuesta es Requerida")
+	@Column(name = "guia_respuesta", nullable = false)
 	private String respuesta;
 
-	@NotNull
-	@Column(name = "guia_puntaje", nullable = false, precision=10, scale=2)	
+	//@Min( value = 0, message = "0 < puntaje <= 100")
+	//@Max( value = 100, message = "0 < puntaje <= 100")
+	@Column(name = "guia_puntaje", nullable = false, precision=10, scale=2)
 	private Float puntaje;
 
-	@NotNull
+	//@NotNull
 	@Column(name = "guia_estatus", nullable = false)
 	private boolean estatus;
 	

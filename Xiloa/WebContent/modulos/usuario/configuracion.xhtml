@@ -44,7 +44,9 @@
 	            <p:tab id="tab1" title="Mantenedores">
 	            	   <h:form id="form_mantenedores">
 					   <p:commandButton value="Agregar Mantenedor" style="margin-bottom: 5px" update=":mantenedorDialogo" action="#{configuracionManagedBean.nuevoMantenedor}" onclick="PF('dlg1').show();"/>  
-	                   <p:dataTable id="mantenedoresDataTable" emptyMessage="No hay datos para mostrar"  var="mantenedor" value="#{configuracionManagedBean.mantenedores}" selection="#{configuracionManagedBean.selectedMantenedor}" rowKey="#{mantenedor.id}" selectionMode="single">  
+	                   <p:dataTable id="mantenedoresDataTable" emptyMessage="No hay datos para mostrar"  var="mantenedor" value="#{configuracionManagedBean.mantenedores}" selection="#{configuracionManagedBean.selectedMantenedor}" rowKey="#{mantenedor.id}" selectionMode="single" paginator="true" rows="10">
+							<p:ajax event="rowSelect" listener="#{configuracionManagedBean.onRowSelect}" />  
+							<p:ajax event="rowUnselect" listener="#{configuracionManagedBean.onRowUnselect}" />
 	                      <p:column headerText="Tipo"><h:outputText value="#{mantenedor.tipo}" /></p:column>
 						  <p:column headerText="Nombre"><h:outputText value="#{mantenedor.etiqueta}" /></p:column>
 	                      <p:column headerText="Valor"><h:outputText value="#{mantenedor.valor}" /></p:column>
@@ -58,7 +60,7 @@
 	            </p:tab>
 	
 	            <p:tab id="tab2" title="Usuarios">  
-	                   <p:dataTable emptyMessage="No hay datos para mostrar"  var="usuario" value="#{utilitariosManagedBean.usuarios}">  
+	                   <p:dataTable emptyMessage="No hay datos para mostrar"  var="usuario" value="#{configuracionManagedBean.usuarios}">  
 	                      <p:column headerText="Login"><h:outputText value="#{usuario.usuarioAlias}" /></p:column>  
 	                      <p:column headerText="Nombre completo"><h:outputText value="#{usuario.contacto.nombreCompleto}" /></p:column>  
 	                      <p:column headerText="Rol"><h:outputText value="#{usuario.rol.nombre}" /></p:column>                 
@@ -68,7 +70,7 @@
 	            </p:tab>  
 	
 	            <p:tab id="tab3" title="Roles">  
-	                    <p:dataTable emptyMessage="No hay datos para mostrar"  var="rol" value="#{utilitariosManagedBean.roles}">  
+	                    <p:dataTable emptyMessage="No hay datos para mostrar"  var="rol" value="#{configuracionManagedBean.roles}">  
 	                      <p:column headerText="Nombre"><h:outputText value="#{rol.nombre}" /></p:column>  
 	                      <p:column headerText="Descripcion"><h:outputText value="#{rol.descripcion}" /></p:column>                   
 	                   </p:dataTable>    

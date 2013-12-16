@@ -15,8 +15,9 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
+//import javax.validation.constraints.Max;
+//import javax.validation.constraints.Min;
+//import javax.validation.constraints.NotNull;
 
 @Entity(name = "instrumentos")
 @Table(name = "instrumentos", schema = "sccl")
@@ -36,47 +37,52 @@ public class Instrumento implements Serializable {
 	@Column(name = "instrumento_id", nullable = false)
 	private Long id;
 	
-	@NotNull
+	//@NotNull(message="La unidad es requerida")
 	@Column(name="instrumento_unidad_id", nullable = false)
 	private Long unidad;
 	
-	@NotNull
+	//@NotNull(message="El código es requerido")
 	@Column(name = "instrumento_codigo", nullable = false)	
 	private String codigo;
 	
-	@NotNull
+	//@NotNull(message="El tipo de instrumento es requerido")
 	@ManyToOne
 	@JoinColumn(name="instrumento_tipo")
 	private Mantenedor tipo;
 	
-	@NotNull
+	//@NotNull
 	@Column(name = "instrumento_cualitativo", nullable = false)	
 	private boolean cualitativo;
 		
-	@NotNull
+	//@NotNull(message="El nombre es requerido")
 	@Column(name = "instrumento_nombre", nullable = false)	
 	private String nombre;
-		
+	
+	
 	@Column(name = "instrumento_puntaje_minimo", nullable = false, precision=10, scale=2)	
 	private Float puntajeMinimo;
 	
 	@Column(name = "instrumento_puntaje_maximo", nullable = false, precision=10, scale=2)	
 	private Float puntajeMaximo;
-	
+
+	//@Min( value = 0, message = "La cantidad de preguntas debe ser > 0")
+	//@Max( value = 100, message = "La cantidad de preguntas debe ser < 100")	
 	@Column(name = "instrumento_cantidad_preguntas", nullable = true)
 	private Integer cantidadPreguntas;
-	
+
+	//@Min( value = 0, message = "Las respuestas fallidas deben ser > 0")
+	//@Max( value = 100, message = "Las respuestas fallidas deben ser < 100")	
 	@Column(name = "instrumento_respuestas_fallidas", nullable = true)
 	private Integer respuestasFallidas;
 	
 	@OneToMany(mappedBy="instrumento")
 	private List<Guia> guias;
 
-	@NotNull
+	//@NotNull
 	@Column(name = "instrumento_entidad_id", nullable = false)	
 	private Integer entidadId;
 
-	@NotNull
+	//@NotNull
 	@Column(name = "instrumento_estatus", nullable = false)	
 	private boolean estatus;
 	
@@ -255,5 +261,5 @@ public class Instrumento implements Serializable {
 		this.guias = guias;
 		this.entidadId = entidadId;
 		this.estatus = estatus;
-	}
+	}	
 }

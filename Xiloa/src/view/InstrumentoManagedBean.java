@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.event.ActionEvent;
 
 import model.Contacto;
 import model.Guia;
@@ -220,8 +221,9 @@ public class InstrumentoManagedBean implements Serializable {
 	public void editarGuia(Guia guia){
 		this.guia = guia;
 	}
-	
-	public void guardarGuia(Guia guia){
+		
+	//public void guardarGuia(Guia guia){
+	public void guardarGuia(ActionEvent actionEvent){
 		if(guia.getInstrumento().isCualitativo()){
 			guia.setPuntaje(new Float(100/guia.getInstrumento().getCantidadPreguntas()));
 		}
