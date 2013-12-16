@@ -41,6 +41,7 @@ import support.BeanEvaluacion;
 import support.Departamento;
 import support.FacesUtil;
 import support.Municipio;
+import util.ValidatorUtil;
 
 @Component
 @Scope(value="request")
@@ -766,13 +767,13 @@ public class ExpedienteManagedBean implements Serializable  {
 			
 			Contacto contactoSelected = (Contacto) FacesUtil.getParametroSession("candidato");
 			
-			if (contactoSelected == null) {			
+			if (contactoSelected != null) {		
+				this.setContactoExp(contactoSelected);
+				verEnviarSolicitud = false;				
+			} else{
 				userName = controller.getContacto().getUsuario();
 				if (userName.getContacto() != null)
 					this.setContactoExp(userName.getContacto());
-			} else{
-				this.setContactoExp(contactoSelected);
-				verEnviarSolicitud = false;
 			}
 		} else{
 			this.solicitudExp = solicitud;
@@ -953,22 +954,28 @@ public class ExpedienteManagedBean implements Serializable  {
 			if (this.getContactoExp().getDireccionActual() == null) {
 				this.getContactoExp().setDireccionActual("");			
 			}
-			if (this.getContactoExp().getCorreo1() == null) {
-				this.getContactoExp().setCorreo1("");			
-			}		
 			if (this.getContactoExp().getTelefono1() == null) {
 				this.getContactoExp().setTelefono1("");			
 			}
 			if (this.getContactoExp().getTelefono2() == null) {
 				this.getContactoExp().setTelefono2("");			
 			}
+			if (this.getContactoExp().getCorreo1() == null) {
+				this.getContactoExp().setCorreo1("");			
+			} else if (ValidatorUtil.validateEmail(this.getContactoExp().getCorreo1())){
+				
+				Contacto contacto = (Contacto)service.guardar(this.getContactoExp());
+				
+				if (contacto != null)
+					FacesUtil.getMensaje("SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!", false);				
+				else
+					FacesUtil.getMensaje("SCCL - Mensaje: ", "Error al actualizar los datos del contacto...", true);
+			}else {
+				FacesUtil.getMensaje("SCCL - Mensaje: ", "El correo electronico indicado no es válido. Favor revisar...", true);
+			}		
 			
-			Contacto contacto = (Contacto)service.guardar(this.getContactoExp());
 			
-			if (contacto != null)
-				FacesUtil.getMensaje("SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!", false);				
-			else
-				FacesUtil.getMensaje("SCCL - Mensaje: ", "Error al actualizar los datos del contacto...", true);					
+								
 		}
 		
 	      
@@ -1225,7 +1232,6 @@ public class ExpedienteManagedBean implements Serializable  {
 		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
 		
 	    String directorio = ec.getRealPath("/portafolio");	    
-	    Usuario u = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
 	    String nombreFile;
 	    String nombrePropietario;
 	    Long   sizeArchivo;
@@ -1246,7 +1252,7 @@ public class ExpedienteManagedBean implements Serializable  {
 			
 			if ((this.nombreRealArchivoExp.toLowerCase().endsWith(".pdf")) || (this.nombreRealArchivoExp.toLowerCase().endsWith(".png"))){
 							
-				nombrePropietario = u.getUsuarioAlias();
+				nombrePropietario = this.contactoExp.getNombreCompleto();
 				
 				sizeArchivo = (file.getSize()) / 1024; // El tamaño del archivo en KB
 				

@@ -115,8 +115,8 @@ public class PlanificacionManagedBean implements Serializable {
     }
 	
 	public SelectItem[] getListaCentros(){
+		List<Ifp> centros = service.getIfpByInatec(controller.getEntidadUsuario());
 	
-		List<Ifp> centros = service.getIfpByInatec();
 		SelectItem[] opciones = new SelectItem[centros.size()+1];
 		opciones[0] = new SelectItem("","Seleccione");
 		for(int i=0; i<centros.size(); i++)

@@ -560,8 +560,8 @@ public class ServiceImp implements IService {
 	}	
 	
 	@Override
-	public List<Ifp> getIfpByInatec () {
-		return inatecDao.getIfpInatec();
+	public List<Ifp> getIfpByInatec (Integer entidadId) {
+		return inatecDao.getIfpInatec(entidadId);
 	}
 
 	@Override

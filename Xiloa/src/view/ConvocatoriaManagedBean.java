@@ -224,8 +224,13 @@ public class ConvocatoriaManagedBean implements Serializable {
    //Llenado de Centro
 	@PostConstruct
 	private void initBeanDBSolicitudes(){
-		List<Ifp> lista = service.getIfpByInatec();
-		this.listCentrosBySolicitud.add(new SelectItem(null, "Todos"));
+		Integer entidadContacto = login.getEntidadUsuario();
+		
+		List<Ifp> lista = service.getIfpByInatec(entidadContacto);
+		
+		if (lista.size() > 1)
+			this.listCentrosBySolicitud.add(new SelectItem(null, "Todos"));
+		
 		for (Ifp dato : lista) {	
 			this.listCentrosBySolicitud.add(new SelectItem(dato.getIfpId(),dato.getIfpNombre()));
 		}		

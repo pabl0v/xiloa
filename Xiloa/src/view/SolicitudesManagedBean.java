@@ -25,8 +25,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import controller.LoginController;
+
 import service.IService;
 import support.Ifp;
+import util.ValidatorUtil;
 
 @Component
 @Scope(value="view")
@@ -39,6 +42,9 @@ public class SolicitudesManagedBean implements Serializable {
 
 	@Autowired
 	private IService service;
+	
+	@Autowired
+	private LoginController login; 
 	
 	private String primerNombre;
 	private String segundoNombre;
@@ -252,7 +258,7 @@ public class SolicitudesManagedBean implements Serializable {
 
 	@PostConstruct
 	private void initBean(){
-		List<Ifp> lista = service.getIfpByInatec();		
+		List<Ifp> lista = service.getIfpByInatec(login.getEntidadUsuario());		
 		this.listCentros.add(new SelectItem(null,"Seleccione un Centro de Capacitacion"));
 		for (Ifp dato : lista) {
 			this.listCentros.add(new SelectItem(dato.getIfpId(),dato.getIfpNombre()));
@@ -381,14 +387,16 @@ public class SolicitudesManagedBean implements Serializable {
 			mensaje = "Debe indicar el numero de cedula. ";
 			titulo = "Informacion incompleta: ";
 			isError = true;
+		} else if (ValidatorUtil.validateCedula(this.getNumeroIdentificacion()) == false){
+			mensaje = "El número de cedula indicado es incorrecto. Favor revisar.... ";
+			titulo = "Formato de Cedula Incorrecto: ";
+			isError = true;
 		} else {
 			
 			try{
 				
 				c = service.getCertificacionById(this.getSelectedIdCertificacion());
-				
-				
-								
+												
 				if (tipoGrabar == 2) {
 					u = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
 					r = service.getRolById(u.getRol().getId());
@@ -401,14 +409,10 @@ public class SolicitudesManagedBean implements Serializable {
 				}			
 				
 				contactoByCedula = service.getContactoByCedula(this.getNumeroIdentificacion());
-				
-				System.out.println("Identificacion " + this.getNumeroIdentificacion());
-				
+								
 				//Nuevo Contacto
 				if ((contactoByUser == null) && (contactoByCedula == null)) {
-										
-					System.out.println("Procede a grabar el contacto");
-					
+					System.out.println("Usuario Indicado " + u);				
 					solicitante = new Contacto(u, //Usuario
 							                   null, //laborales
 											  r, //Rol
@@ -434,7 +438,7 @@ public class SolicitudesManagedBean implements Serializable {
 											  null, // municipioId
 											  "", // lugarNacimiento 
 											  false, // inatec 
-											  "", // usuarioInatec
+											  null, // usuarioInatec
 											  "", // funcion
 											  null//idEmpleado									  
 											  );		
@@ -450,10 +454,8 @@ public class SolicitudesManagedBean implements Serializable {
 						
 						solicitante = (Contacto)service.guardar(solicitante);
 					}
-					
-					
-				}
-					
+										
+				}					
 				
 			} catch (Exception e) {
 				

@@ -80,16 +80,18 @@ public class CandidatosManagedBean implements Serializable {
    //Llenado de Centro
 	@PostConstruct
 	private void initBeanDBSolicitudes(){
-		List<Ifp> lista = service.getIfpByInatec();
+		Integer entidadContacto = login.getEntidadUsuario();
+		
+		List<Ifp> lista = service.getIfpByInatec(entidadContacto);
 		
 		//Asigna permisos segun contacto conectado
-		Contacto contacto = null;
-		Object [] objs =  null;
-				
-		contacto = login.getContacto();
-		objs = new Object [] {contacto.getEntidadId()};
+		
+		Object [] objs =  null;		
+		objs = new Object [] {entidadContacto};
 		
 		this.listaContactos = service.getContactosByParam("Contacto.findAllPortafolio", objs);
+		
+		FacesUtil.setParamBySession("candidato", null);
 		
 	}
 	

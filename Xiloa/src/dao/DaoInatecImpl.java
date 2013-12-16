@@ -127,7 +127,8 @@ public class DaoInatecImpl implements IDaoInatec {
 	private static final String SQL_SELECT_IFP_INATEC = "select ci.centroid as id_centro, " +
 														       "ci.nombre as nombre " +
 														  "from public.centros_inatec ci " +
-														 "order by ci.nombre";
+														  "where ci.centroid = case ? when '1000' then ci.centroid else ? end " +
+														  "order by ci.nombre";
 	
 	private static final String SQL_SELECT_DPTOS_INATEC = "select d.departamentoid as dpto_id,  " +
 		       											         "d.nombre as dpto_nombre " +
@@ -137,7 +138,11 @@ public class DaoInatecImpl implements IDaoInatec {
 	private static final String SQL_SELECT_MunicipioByDpto_INATEC = "select m.municipioid as municipio_id,  " +
 																	       "m.departamentoid as municipio_dpto_id, " +
 		       														       "m.nombre as municipio_nombre " +
-		       														  "from public.municipio m ";
+		       														  "from public.municipio m " +
+		       														  "where m.departamentoid = ? " +
+		       														  "order by m.nombre ";
+	
+	
 	
 	private static final String SQL_SELECT_REQUISITOS_CERTIFICACION = 
 			"select "
@@ -337,16 +342,29 @@ public class DaoInatecImpl implements IDaoInatec {
 	}
 	
 	@Override
-	public List<Ifp> getIfpInatec() {
-		List<Ifp> ifpList = jdbcTemplate.query(SQL_SELECT_IFP_INATEC, 
-												new RowMapper<Ifp>() {
-													public Ifp mapRow(ResultSet rs, int rowNum) throws SQLException {
-														Ifp ifp = new Ifp();
-														ifp.setIfpId(rs.getInt("id_centro"));
-														ifp.setIfpNombre(rs.getString("nombre"));
-														return ifp;
-													}
-				      							});	
+	public List<Ifp> getIfpInatec(Integer entidadId) {
+		List<Ifp> ifpList = null;
+		try{
+			
+			entidadId = (entidadId == null) ? 1000 : entidadId;
+			Object [] params =  new Object [] {String.valueOf(entidadId), String.valueOf(entidadId)};
+			int [] paramsType = {java.sql.Types.VARCHAR, java.sql.Types.VARCHAR};
+			 
+			ifpList = jdbcTemplate.query(SQL_SELECT_IFP_INATEC, 
+										params, paramsType, 
+										new RowMapper<Ifp>() {
+											public Ifp mapRow(ResultSet rs, int rowNum) throws SQLException {
+												Ifp ifp = new Ifp();
+												ifp.setIfpId(rs.getInt("id_centro"));
+												ifp.setIfpNombre(rs.getString("nombre"));
+												return ifp;
+											}
+										});
+			
+		} catch(EmptyResultDataAccessException e){
+			e.printStackTrace();
+			ifpList = null;
+		}
 		return ifpList;		
 	}
 
@@ -366,18 +384,24 @@ public class DaoInatecImpl implements IDaoInatec {
 
 	@Override
 	public List<Municipio> getMunicipioByDeptoInatec(Integer idDepto) {
-		List<Municipio> muni = jdbcTemplate.query(SQL_SELECT_MunicipioByDpto_INATEC + 
-				                                  " where m.departamentoid = " + idDepto +
-				                                  " order by m.nombre", 
-													new RowMapper<Municipio>() {
-														public Municipio mapRow(ResultSet rs, int rowNum) throws SQLException {
-															Municipio munic = new Municipio();
-															munic.setMunicipio_id(rs.getInt("municipio_id"));
-															munic.setMunicipio_dpto_id(rs.getInt("municipio_dpto_id"));
-															munic.setMunicipio_nombre(rs.getString("municipio_nombre"));																															
-															return munic;
-														}
-														});	
+		List<Municipio> muni = null;
+		try{
+			Object [] params =  new Object [] {idDepto};
+			muni = jdbcTemplate.query(SQL_SELECT_MunicipioByDpto_INATEC,
+									  params,  
+									  new RowMapper<Municipio>() {
+											public Municipio mapRow(ResultSet rs, int rowNum) throws SQLException {
+												Municipio munic = new Municipio();
+												munic.setMunicipio_id(rs.getInt("municipio_id"));
+												munic.setMunicipio_dpto_id(rs.getInt("municipio_dpto_id"));
+												munic.setMunicipio_nombre(rs.getString("municipio_nombre"));																															
+												return munic;
+											}
+											});	
+		} catch(EmptyResultDataAccessException e){
+			e.printStackTrace();
+			muni = null;
+		}
 		return muni;
 	}
 

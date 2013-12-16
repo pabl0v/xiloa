@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import controller.LoginController;
+
 import service.IService;
 import support.Ifp;
 import util.Global;
@@ -28,6 +30,9 @@ public class ReportesManagedBean implements Serializable {
 
 	@Autowired
 	private IService service;
+	
+	@Autowired
+	private LoginController login; 
 				
 	//Implementacion SelectItems	
 	private List<SelectItem> listCentros;				
@@ -154,8 +159,11 @@ public class ReportesManagedBean implements Serializable {
    //Llenado de Centro
 	@PostConstruct
 	private void initBeanDBSolicitudes(){
-		List<Ifp> lista = service.getIfpByInatec();
-		this.listCentros.add(new SelectItem(null, "Todos"));
+		List<Ifp> lista = service.getIfpByInatec(login.getEntidadUsuario());
+		
+		if (lista.size() > 1 )
+			this.listCentros.add(new SelectItem(null, "Todos"));
+		
 		for (Ifp dato : lista) {	
 			this.listCentros.add(new SelectItem(dato.getIfpId(),dato.getIfpNombre()));
 		}		

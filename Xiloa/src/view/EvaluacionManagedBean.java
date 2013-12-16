@@ -379,7 +379,7 @@ public class EvaluacionManagedBean implements Serializable {
 				Mantenedor estadoConvocado = service.getCatalogoEstadoSolicitud().get(Integer.valueOf(segEstado.getProximo()));
 				
 				if (estadoConvocado != null)
-					this.solicitudAsesorado = service.getCatalogoEstadoSolicitud().get(Integer.valueOf(segEstado.getProximo()));
+					this.solicitudAsesorado = service.getCatalogoEstadoSolicitud().get(Integer.valueOf(estadoConvocado.getProximo()));
 			}
 			
 			
@@ -436,12 +436,12 @@ public class EvaluacionManagedBean implements Serializable {
 			this.listInstrumentoByUnidad = new ArrayList<SelectItem>();
 			this.listInstrumentoByUnidad.add(new SelectItem(null, "Seleccione el instrumento"));
 			for (Instrumento dato : listInstru){
-				Mantenedor tipoInstrumento = dato.getTipo();
-				if (isInicial == true){
-					if (tipoInstrumento.getId() != diagnostico.getId())
+				Mantenedor tipoInstrumento = dato.getTipo();				
+				if (isInicial){					
+					if (tipoInstrumento.getId() == diagnostico.getId())
 						this.listInstrumentoByUnidad.add(new SelectItem(dato.getId(), dato.getNombre() + " - " + tipoInstrumento.getValor()));					
 				} else{
-					if (tipoInstrumento.getId() == diagnostico.getId())
+					if (tipoInstrumento.getId() != diagnostico.getId())
 						this.listInstrumentoByUnidad.add(new SelectItem(dato.getId(), dato.getNombre() + " - " + tipoInstrumento.getValor()));
 				}
 			}

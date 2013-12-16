@@ -236,8 +236,14 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
    //Llenado de Centro
 	@PostConstruct
 	private void initBeanDBSolicitudes(){
-		List<Ifp> lista = service.getIfpByInatec();
-		this.listCentrosBySolicitud.add(new SelectItem(null, "Todos"));
+		FacesUtil.setParamBySession("candidato", null);
+		Integer entidadContacto = login.getEntidadUsuario();
+		System.out.println("Entidad Usuario Conectado " + entidadContacto);
+		List<Ifp> lista = service.getIfpByInatec(entidadContacto);
+		
+		if (lista.size() > 1)
+			this.listCentrosBySolicitud.add(new SelectItem(null, "Todos"));
+		
 		for (Ifp dato : lista) {	
 			this.listCentrosBySolicitud.add(new SelectItem(dato.getIfpId(),dato.getIfpNombre()));
 		}		
@@ -469,6 +475,22 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
     	String rptNombre = "solicitud_candidato";
     	
     	runReporte(rptNombre);
+    }
+    
+    public void runEmisionJuicio() throws Exception{
+    	
+    }
+    
+    public void runCertificado() throws Exception{
+    	Map<String,Object> params = new HashMap<String,Object>();
+    	
+    	if (this.selectedSolicitud != null){
+    		Certificacion cert = this.selectedSolicitud.getCertificacion();
+    		params.put("idSolicitud",this.selectedSolicitud.getId());
+    		params.put("idCentro", String.valueOf(cert.getIfpId()));
+    		service.imprimirReporte("certificado", params, Global.EXPORT_PDF, true);
+    	}else
+    		FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe seleccionar una solicitud.", true);
     }
     public void runReporte(String nombreReporte) throws Exception {
     	Map<String,Object> params = new HashMap<String,Object>();

@@ -24,7 +24,7 @@ public interface IDaoInatec {
 	public Usuario getUsuario(String username);
 	public List<Contacto> getContactosInatec();
 	public Contacto generarContacto(String usuario);	
-	public List<Ifp> getIfpInatec();
+	public List<Ifp> getIfpInatec(Integer entidadId);
 	public List<Departamento> getDepartamentosInatec();
 	public List<Municipio> getMunicipioByDeptoInatec(Integer idDepto);
 	public List<Requisito> getRequisitos(int cursoId, int centroId);

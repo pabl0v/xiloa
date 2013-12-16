@@ -67,19 +67,19 @@
 	    					     update=":formSolicitudes:dtSolicitud" disabled="#{dashBoardSolicitudesManagedBean.disableEnviarSolicitud}" />
              	</sec:authorize>  
              	
-             	<p:commandButton id="rptPreMatricula" value="Pre-Matricula" title="Generar Pre-Matricula" 
-	    		    	         icon="ui-icon-print" style="display:inline-block;"
-	    		    	         update=":formSolicitudes:dtSolicitud"
-	    		           		 action="#{dashBoardSolicitudesManagedBean.runPreMatricula}" />
-	    		        		    	             
-	        	<p:commandButton id="rptSolicitudCandidato" value="Solicitud Candidato" title="Generar Solicitud Candidato" 
-	    		    		     icon="ui-icon-print" style="display:inline-block;"
-	    		    		     update=":formSolicitudes:dtSolicitud"
-	    		            	 action="#{dashBoardSolicitudesManagedBean.runSolicitudCandidato}" />
-	    			    			    		   
+             <p:splitButton value="Pre-Matricula" icon="ui-icon-print" title="Generar Formato Pre-Matricula" style="display:inline-block;"
+	        	           action="#{dashBoardSolicitudesManagedBean.runPreMatricula}"  update=":formSolicitudes:msgSolicitudes" >   
+	        	 <p:separator />         		   
+	       		 <p:menuitem value="Solicitud Candidato" icon="ui-icon-print" title="Generar Solicitud Candidato" style="display:inline-block;"  
+	       		             action="#{dashBoardSolicitudesManagedBean.runSolicitudCandidato}" update=":formSolicitudes:msgSolicitudes"  />
+	       		 <p:menuitem value="Emisión Juicio" icon="ui-icon-print" title="Imprimir Emisión de Juicio y Reporte de Orientación" style="display:inline-block;"  
+	       		             action="#{dashBoardSolicitudesManagedBean.runEmisionJuicio}" update=":formSolicitudes:msgSolicitudes"  />
+	       		 <p:menuitem value="Certificado" icon="ui-icon-print" title="Imprimir Certificado" style="display:inline-block;"  
+	       		             action="#{dashBoardSolicitudesManagedBean.runCertificado}" update=":formSolicitudes:msgSolicitudes"  />	   	       			     			       			  
+	   		</p:splitButton>           		    			    			    		   
         </div>              
         <div id="contenedor_tabla_solicitudes">     
-        	<p:messages id="msgConvocatoria" showDetail="true" autoUpdate="true" closable="true" />        	      
+        	<p:messages id="msgSolicitudes" showDetail="true" autoUpdate="true" closable="true" />        	      
         	<p:dataTable id="dtSolicitud" widgetVar="dtSolicitudes" emptyMessage="No existen solicitudes activas" 
         	             var="varSolicitudI" value="#{dashBoardSolicitudesManagedBean.listaSolicitudes}" 
         	             selectionMode="single" rowKey="#{varSolicitudI.id}"

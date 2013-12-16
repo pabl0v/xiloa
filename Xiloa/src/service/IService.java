@@ -92,7 +92,7 @@ public interface IService {
 	public Contacto getContactoByCedula(String cedula);
 	public Object guardar(Object obj);	
 	public List<Certificacion> getCertificacionesByIdIfp(Integer id);
-	public List<Ifp> getIfpByInatec ();
+	public List<Ifp> getIfpByInatec (Integer entidadId);
 	public List<Laboral> getListLaboralByTipo(Integer tipo, Contacto contacto);
 	public Laboral getLaboralById(Long idLaboral);
 	public List<Evaluacion> getEvaluaciones(Solicitud solicitud);
