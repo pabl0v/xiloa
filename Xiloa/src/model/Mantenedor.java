@@ -16,7 +16,8 @@ import javax.persistence.Table;
 @NamedQueries({
 	@NamedQuery(name="Mantenedor.findMinByTipo", query="select min(m) from mantenedores m where m.tipo = ?1"),
 	@NamedQuery(name="Mantenedor.findByTipo", query="select m from mantenedores m where m.tipo = ?1 order by 1"),
-	@NamedQuery(name="Mantenedor.findMaxByTipo", query="select max(m) from mantenedores m where m.tipo = ?1")	
+	@NamedQuery(name="Mantenedor.findMaxByTipo", query="select max(m) from mantenedores m where m.tipo = ?1"),
+	@NamedQuery(name="Mantenedor.findAll", query="select m from mantenedores m order by tipo, id")
 })
 public class Mantenedor implements Serializable {
 

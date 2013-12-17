@@ -6,6 +6,7 @@ import java.util.List;
 
 public class UCompetencia {
 	
+	private int ofertaId;
 	private int esructuraId;
 	private String grupo;
 	private int idCentro;
@@ -19,6 +20,12 @@ public class UCompetencia {
 	private List<String> requisitos = new ArrayList<String>();
 	private int disponibilidad;
 	
+	public int getOfertaId() {
+		return ofertaId;
+	}
+	public void setOfertaId(int ofertaId) {
+		this.ofertaId = ofertaId;
+	}
 	public int getEsructuraId() {
 		return esructuraId;
 	}

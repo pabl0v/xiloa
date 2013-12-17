@@ -84,6 +84,7 @@ public class DaoInatecImpl implements IDaoInatec {
 
 	private static final String SQL_CERTIFICACIONES_SIN_PLANIFICAR = 
 		"select "+
+			"o.id as oferta_id, "+
 			"forma.id as estructura_id, "+
 			"ci.centroid as id_centro, "+
 			"ci.nombre as nombre, "+
@@ -246,6 +247,7 @@ public class DaoInatecImpl implements IDaoInatec {
 		        new RowMapper<UCompetencia>() {
 		            public UCompetencia mapRow(ResultSet rs, int rowNum) throws SQLException {
 		                UCompetencia certificacion = new UCompetencia();
+		                certificacion.setOfertaId(rs.getInt("oferta_id"));
 		                certificacion.setEsructuraId(rs.getInt("estructura_id"));
 		                certificacion.setGrupo(rs.getString("grupo_clase"));
 		                certificacion.setIdCentro(rs.getInt("id_centro"));

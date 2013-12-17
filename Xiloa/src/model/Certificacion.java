@@ -56,6 +56,9 @@ public class Certificacion implements Serializable {
 	@Column(name = "certificacion_id", nullable = false)
 	private Long id;
 	
+	@Column(name = "certificacion_oferta_id", nullable = false)
+	private Integer ofertaId;	
+	
 	@Column(name = "certificacion_estructura_id", nullable = false)
 	private Integer estructuraId;	
 	
@@ -159,6 +162,14 @@ public class Certificacion implements Serializable {
 	@MapKeyColumn(name="id_rol")
 	private Map<Integer, Contacto> involucrados;
 	
+	public Integer getOfertaId() {
+		return ofertaId;
+	}
+
+	public void setOfertaId(Integer ofertaId) {
+		this.ofertaId = ofertaId;
+	}
+
 	public Contacto getCoordinador(){
 		return involucrados.get(2);
 	}
@@ -432,7 +443,8 @@ public class Certificacion implements Serializable {
 		}
 	}
 
-	public Certificacion(	Integer estructuraId,
+	public Certificacion(	Integer ofertaId,
+							Integer estructuraId,
 							int cursoId,
 							String nombre, 
 							String descripcion,
@@ -452,6 +464,7 @@ public class Certificacion implements Serializable {
 							List<Solicitud> solicitudes,
 							Map<Integer, Contacto> involucrados) {
 		super();
+		this.ofertaId = ofertaId;
 		this.estructuraId = estructuraId;
 		this.cursoId = cursoId;
 		this.nombre = nombre;

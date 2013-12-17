@@ -22,7 +22,6 @@ public class ConfiguracionManagedBean {
 	private List<Mantenedor> mantenedores;
 	private Mantenedor selectedMantenedor;
 	private Mantenedor mantenedor;
-	private boolean add = false;
 	
 	@Autowired
 	private IService service;
@@ -47,14 +46,11 @@ public class ConfiguracionManagedBean {
 	
 	public void nuevoMantenedor(){
 		this.mantenedor = new Mantenedor();
-		this.add = true;
 	}
 
 	public void guardarMantenedor(Mantenedor mantenedor){
-		this.mantenedor = (Mantenedor) service.guardar(this.mantenedor);
-		if(add)
-			this.mantenedores.add(this.mantenedor);
-		add = false;
+		this.selectedMantenedor = (Mantenedor) service.guardar(mantenedor);
+		mantenedores = service.getMantenedores();
 	}
 	
 	public void editarMantenedor(Mantenedor mantenedor){

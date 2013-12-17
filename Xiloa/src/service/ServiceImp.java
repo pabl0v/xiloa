@@ -140,7 +140,7 @@ public class ServiceImp implements IService {
 	
 	@PostConstruct
 	public void init(){
-		mantenedores = mantenedorDao.findAll(Mantenedor.class);
+		mantenedores = mantenedorDao.findAllByNamedQuery("Mantenedor.findAll");
 		usuarios = usuarioDao.findAll(Usuario.class);
 		roles = rolDao.findAll(Rol.class);
 		int tipoMantenedor = 0;
@@ -222,7 +222,8 @@ public class ServiceImp implements IService {
 
 	@Override
 	public List<Mantenedor> getMantenedores(){
-		return this.mantenedores;
+		mantenedores = mantenedorDao.findAllByNamedQuery("Mantenedor.findAll");
+		return  mantenedores;
 	}
 
 	@Override
@@ -262,11 +263,13 @@ public class ServiceImp implements IService {
 
 	@Override
 	public List<Usuario> getUsuarios() {
+		usuarios = usuarioDao.findAll(Usuario.class); 
 		return usuarios;
 	}
 
 	@Override
 	public List<Rol> getRoles() {
+		roles = rolDao.findAll(Rol.class); 
 		return roles;
 	}
 	
