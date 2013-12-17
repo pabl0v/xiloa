@@ -100,7 +100,7 @@ public class LoginController implements PhaseListener {
  
         if (e instanceof Exception) {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put(WebAttributes.AUTHENTICATION_EXCEPTION, null);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Autenticación fallida: " + e.getMessage(), null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Autenticacion fallida: " + e.getMessage(), null));
         }
 	}
 
