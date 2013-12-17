@@ -36,21 +36,25 @@ where solicitud_id = $P{idSolicitud}
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="59" splitType="Stretch">
+		<band height="77" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="9" width="572" height="20"/>
+				<reportElement x="108" y="5" width="356" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[INSTITUTO NACIONAL TECNOLOGICO]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="35" width="572" height="20"/>
+				<reportElement x="0" y="53" width="572" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="13" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{certificacion_ifpnombre}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="464" y="2" width="109" height="51"/>
+				<imageExpression class="java.lang.String"><![CDATA["C:\\Miriam\\logo INATEC.png"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
@@ -70,7 +74,7 @@ where solicitud_id = $P{idSolicitud}
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{solicitud_dia} + " / " + $F{solicitud_mes} + ", " + $F{solicitud_anio}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="307" y="33" width="100" height="20"/>
+				<reportElement x="307" y="34" width="100" height="20"/>
 				<textElement/>
 				<text><![CDATA[Lugar,]]></text>
 			</staticText>

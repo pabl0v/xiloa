@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="listadoplanificaciones" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="375"/>
-	<property name="ireport.y" value="82"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="idCentro" class="java.lang.Integer"/>
 	<parameter name="idEstado" class="java.lang.Integer"/>
 	<queryString language="SQL">
@@ -59,14 +59,14 @@ where (c.certificacion_ifp_id =$P{idCentro} or $P{idCentro}  is null)
 	<title>
 		<band height="79" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="4" width="752" height="20"/>
+				<reportElement x="76" y="4" width="571" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[INSTITUTO NACIONAL TECNOLOGICO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="29" width="752" height="20"/>
+				<reportElement x="76" y="29" width="571" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
@@ -86,6 +86,10 @@ where (c.certificacion_ifp_id =$P{idCentro} or $P{idCentro}  is null)
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Pág. " + $V{PAGE_NUMBER} + " de " + $V{PAGE_COUNT}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="653" y="4" width="95" height="45"/>
+				<imageExpression class="java.lang.String"><![CDATA["C:\\Miriam\\logo INATEC.png"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>

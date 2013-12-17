@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="informeasesor" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="124"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="idEvaluador" class="java.lang.Long"/>
 	<parameter name="idSolicitud" class="java.lang.Long"/>
 	<queryString language="SQL">
@@ -47,19 +47,23 @@ where s.solicitud_id = $P{idSolicitud}
 	<title>
 		<band height="56" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="5" width="752" height="20"/>
+				<reportElement x="111" y="5" width="499" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[INSTITUTO NACIONAL TECNOLOGICO]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="31" width="752" height="20"/>
+				<reportElement x="111" y="31" width="499" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{centro_nombre}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="652" y="5" width="92" height="47"/>
+				<imageExpression class="java.lang.String"><![CDATA["C:\\Miriam\\logo INATEC.png"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>

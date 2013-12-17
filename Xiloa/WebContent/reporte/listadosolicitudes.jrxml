@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="listadosolicitudes" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="19"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -59,8 +59,7 @@ where (c.certificacion_id = $P{certificacionid} or $P{certificacionid} is null)
  and mun.departamentoid = cu.departamento_id
  and p.pais_id = cu.nacionalidad_id
  and est.mantenedor_tipo = s.tipomantenedorestado
- and est.mantenedor_id = s.solicitud_estatus
-]]>
+ and est.mantenedor_id = s.solicitud_estatus]]>
 	</queryString>
 	<field name="cert_nombre" class="java.lang.String"/>
 	<field name="centro" class="java.lang.String"/>
@@ -161,14 +160,14 @@ where (c.certificacion_id = $P{certificacionid} or $P{certificacionid} is null)
 	<title>
 		<band height="72" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="4" width="802" height="20"/>
+				<reportElement x="69" y="4" width="649" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[INSTITUTO NACIONAL TECNOLOGICO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="27" width="802" height="20"/>
+				<reportElement x="69" y="27" width="649" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
@@ -188,6 +187,10 @@ where (c.certificacion_id = $P{certificacionid} or $P{certificacionid} is null)
 				</textElement>
 				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="718" y="4" width="78" height="43"/>
+				<imageExpression class="java.lang.String"><![CDATA["C:\\Miriam\\logo INATEC.png"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>

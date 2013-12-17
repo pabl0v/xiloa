@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pre_matricula" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="258"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="idSolicitud" class="java.lang.Long"/>
 	<queryString language="SQL">
 		<![CDATA[select s.fecha_registro as solicitud_fecha,
@@ -60,26 +60,30 @@ where solicitud_id = $P{idSolicitud}
 	<title>
 		<band height="88" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="11" width="572" height="20"/>
+				<reportElement x="82" y="5" width="419" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="13" isBold="true"/>
 				</textElement>
 				<text><![CDATA[INSTITUTO NACIONAL TECNOLOGICO]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="36" width="572" height="20"/>
+				<reportElement x="82" y="28" width="419" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="13" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{certificacion_ifpnombre}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="60" width="572" height="20"/>
+				<reportElement x="82" y="53" width="419" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Formato de Pre - Matricula]]></text>
 			</staticText>
+			<image>
+				<reportElement x="501" y="1" width="71" height="52"/>
+				<imageExpression class="java.lang.String"><![CDATA["C:\\Miriam\\logo INATEC.png"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>

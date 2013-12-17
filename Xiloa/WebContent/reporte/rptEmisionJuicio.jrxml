@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rptEmisionJuicio" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="56d7f964-7db5-44de-a54b-5aa014b069e6">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="305"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -36,7 +36,7 @@
 			<frame>
 				<reportElement mode="Opaque" x="-1" y="9" width="451" height="81" backcolor="#FFFFFF" uuid="12b73d36-5c30-41bb-a75f-f4e75496e51e"/>
 				<staticText>
-					<reportElement style="Title" positionType="Float" x="3" y="0" width="398" height="32" forecolor="#333333" uuid="b3646ad2-dd94-460f-b2ea-499e72e1fb1d"/>
+					<reportElement style="Title" positionType="Float" x="3" y="1" width="398" height="32" forecolor="#333333" uuid="b3646ad2-dd94-460f-b2ea-499e72e1fb1d"/>
 					<textElement>
 						<font size="26" isBold="true"/>
 					</textElement>
@@ -79,7 +79,7 @@
 				<text><![CDATA[Centro Evaluador:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement style="Detail" positionType="Float" x="106" y="115" width="101" height="18" uuid="8c3b13ca-1138-4725-8288-d9404b6f4575"/>
+				<reportElement style="Detail" positionType="Float" x="106" y="115" width="144" height="18" uuid="8c3b13ca-1138-4725-8288-d9404b6f4575"/>
 				<textElement>
 					<font size="14"/>
 				</textElement>
