@@ -573,7 +573,7 @@ public class EvaluacionManagedBean implements Serializable {
 				eval.setObservaciones(this.observaciones);			
 				eval.setAprobado(this.aprobado);
 										
-				eval = (Evaluacion) service.guardar(eval);			
+				eval = service.actualizaEvaluacion(eval); //service.guardar(eval);			
 				
 				if (eval == null){
 					isError = true;
@@ -614,8 +614,11 @@ public class EvaluacionManagedBean implements Serializable {
 							
 				this.selectedEvaluacionGuia = service.updateEvaluacionGuia(this.selectedEvaluacionGuia);	
 				
-				if (this.selectedEvaluacion != null)
+				if (this.selectedEvaluacion != null){
+					this.selectedEvaluacion = service.getEvaluacionById(this.selectedEvaluacion.getId());
 					this.puntajeEval = this.selectedEvaluacion.getPuntaje();
+					
+				}
 			}
 			
 			

@@ -27,7 +27,9 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @Entity(name = "evaluaciones")
 @Table(name = "evaluaciones", schema = "sccl")
 @NamedQueries({
-	@NamedQuery(name="Evaluacion.findAllBySolicitudId", query="select e from evaluaciones e where e.solicitud.id=?1")
+	@NamedQuery(name="Evaluacion.findAllBySolicitudId", query="select e from evaluaciones e where e.solicitud.id=?1"),
+	@NamedQuery(name="Evaluacion.findById", query="select e from evaluaciones e where e.id=?1"),
+	@NamedQuery(name="Evaluacion.findAllBySolicitudUCL", query="select e from evaluaciones e where e.solicitud.id=?1 and e.unidad=?2")
 })
 public class Evaluacion implements Serializable {
 

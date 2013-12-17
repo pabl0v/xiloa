@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
+import javax.faces.model.SelectItem;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,7 @@ import model.Contacto;
 import model.Evaluacion;
 import model.EvaluacionGuia;
 import model.EvaluacionGuiaId;
+import model.EvaluacionUnidad;
 import model.Guia;
 import model.Instrumento;
 import model.Laboral;
@@ -102,6 +104,8 @@ public class ServiceImp implements IService {
 	private IDao<Object> objectDao;
 	@Autowired
 	private IDao<Auditoria> auditoriaDao;
+	@Autowired
+	private IDao<EvaluacionUnidad> evaluacionUnidadDao;
 	
 	private List<Mantenedor> mantenedores;
 	private Map<Integer, Mantenedor> catalogoEstatusCertificacion;
@@ -987,7 +991,7 @@ public class ServiceImp implements IService {
 		ultimoEstado = getMantenedorMaxByTipo(tipoMantenedor);
 		System.out.println("Valores de los estados proximoEstado " + proximoEstado + " ultimo anterior " + ultimoEstado.getAnterior());	
 		if ( (proximoEstado != null) && (ultimoEstado != null) && (proximoEstado == Integer.valueOf(ultimoEstado.getAnterior()))){
-			pasa = validaEvaluacionAprobada(solicitud);			
+			pasa = validaEvaluacionAprobada(solicitud, true, null);			
 		} else
 			pasa = false;		
 		
@@ -1089,29 +1093,62 @@ public class ServiceImp implements IService {
 		
 		if (ultimoEstado != null){
 			if (Integer.valueOf(estadoActual.getProximo()) == ultimoEstado.getId()){
-				idMatricula = solicitud.getIdMatricula();
-				pasaConcluido = (idMatricula != null) ? true : false;					
+				idMatricula = solicitud.getIdMatricula();	
+				if (idMatricula == null)
+					pasaConcluido =  false;
+				else {
+					pasaConcluido = validaEvaluacionAprobada(solicitud, false, null);
+				}
+				
+				
 			}				
 		}		
 		
 		return pasaConcluido;
 	}
 	
-	public boolean validaEvaluacionAprobada(Solicitud solicitud){
+	@Override	
+	public boolean validaEvaluacionAprobada(Solicitud solicitud, boolean diagnostica, Long ucl){
+		Object [] objs = null;	
 		boolean pasa = true;
+		boolean aprobado = true;
+		List<Instrumento> listaInstrumento = null;
+		Certificacion c = solicitud.getCertificacion();
+		Integer idTipoInstrumento = diagnostica ? 17 : null;
 		
-		List<Evaluacion> listaEval = getEvaluaciones(solicitud);
-		System.out.println("Numero de Evaluaciones " + listaEval.size());
-		if (listaEval.size() == 0)
-			pasa = false;
-		else {
-			for (Evaluacion eval : listaEval){
-				if (eval.isAprobado() != true){
+		if (ucl == null){ // Evalua todas las unidades de compentencia
+			List<Long> setUnidades =  getUnidadesByCertificacionId(c.getId());
+			
+			for(Long unidad : setUnidades){
+				
+				objs =  new Object [] {new String("6"), idTipoInstrumento, unidad, solicitud.getId()};	
+				listaInstrumento = instrumentoDao.findAllByNamedQueryParam("Instrumento.findPendientesEvaluar", objs);
+				
+				//Existen evaluaciones pendientes por unidad de compentencia
+				if (listaInstrumento.size() > 0) {
 					pasa = false;
 					break;
+				} else { // La unidad de competencia ha sido evaluada
+					if (diagnostica == false){
+						pasa = validaEvalUnidad(solicitud, ucl);
+					}
 				}
-			}						
-		}
+				
+			}
+		}else { // Evalua por Unidad de compentencia
+			objs =  new Object [] {new String("6"), idTipoInstrumento, ucl, solicitud.getId()};	
+			listaInstrumento = instrumentoDao.findAllByNamedQueryParam("Instrumento.findPendientesEvaluar", objs);
+			
+			//Existen evaluaciones pendientes por unidad de compentencia
+			if (listaInstrumento.size() > 0) {
+				pasa = false;				
+			} else { // La unidad de competencia ha sido evaluada		
+				if (diagnostica == false){
+					pasa = validaEvalUnidad(solicitud, ucl);
+				}
+			}
+		}		
+		
 		return pasa;
 	}
 
@@ -1130,4 +1167,71 @@ public class ServiceImp implements IService {
 	public List<Contacto> getContactosByParam(String namedString, Object [] parametros){
 		return contactoDao.findAllByNamedQueryParam(namedString, parametros);				
 	}
+	
+	@Override
+	public Evaluacion getEvaluacionById(Long evaluacionId){
+		Object [] objs =  new Object [] {evaluacionId};		
+		return evaluacionDao.findOneByNamedQueryParam("Evaluacion.findById", objs);	
+	}
+	
+	@Override
+	public List<Evaluacion> getEvaluacionesBySolicitudUnidad(Solicitud solicitud, Long unidad){
+		Object [] objs =  new Object [] {solicitud.getId(), unidad};	
+		return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllBySolicitudUCL", objs);
+		
+	}
+	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public boolean validaEvalUnidad(Solicitud solicitud, Long ucl){
+		boolean aprobado = true;
+		
+		List<Evaluacion> listaEval = this.getEvaluacionesBySolicitudUnidad(solicitud, ucl);
+		
+		System.out.println("Numero de Evaluaciones " + listaEval.size());
+		if (listaEval.size() == 0)// No existen evaluaciones para la unidad de compentencia
+			aprobado = false;
+		else {
+			for (Evaluacion eval : listaEval){
+				if (eval.isAprobado() != true){
+					aprobado = false;
+					break;
+				}
+			}	
+			EvaluacionUnidad eUcl = null;
+			
+			eUcl = getEvaluacionUnidadBySolicitudUCL(solicitud, ucl);
+			if (eUcl == null){
+				Mantenedor estatusEval = this.getMantenedorById(29);
+				eUcl = new EvaluacionUnidad(solicitud, ucl, aprobado, estatusEval);
+				eUcl = evaluacionUnidadDao.save(eUcl);				
+			}
+			aprobado = (eUcl == null) ? false : true;
+		}
+		return aprobado;
+	}
+	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public Evaluacion actualizaEvaluacion(Evaluacion evaluacion){
+		boolean val = false;
+		Evaluacion eval = null;
+		Solicitud solicitud = evaluacion.getSolicitud();
+		Mantenedor estatusEval = evaluacion.getEstado();
+		Mantenedor estatus = this.getMantenedorMaxByTipo(estatusEval.getTipo());
+		
+		if (estatus.getId() == estatusEval.getId()) //Evaluacion Completada 
+			val = validaEvaluacionAprobada(solicitud, false, evaluacion.getUnidad());
+		
+		eval = evaluacionDao.save(evaluacion);
+		
+		return eval;
+		
+	}
+	
+	public EvaluacionUnidad getEvaluacionUnidadBySolicitudUCL(Solicitud solicitud, Long unidad){
+		Object [] objs =  new Object [] {solicitud.getId(), unidad};
+		return evaluacionUnidadDao.findOneByNamedQueryParam("EvaluacionUnidad.findAllBySolicitudUCL", objs);		
+	}
+	
 }

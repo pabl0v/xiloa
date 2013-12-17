@@ -1570,6 +1570,7 @@ public class ExpEvalManagedBean implements Serializable  {
 		String textoMsg = "La solicitud no cumple con las condiciones para concluir el proceso de certificacion. Favor revisar...";
 		if (solicitudExp != null){
 			concluir = service.validaProcesoConcluido(solicitudExp, false);
+			solicitudExp.setResultadoEvaluacion(concluir);
 			solicitudExp = avanzaProceso(solicitudExp, " Proceso Concluido", concluir, textoMsg );
 		}
 	}

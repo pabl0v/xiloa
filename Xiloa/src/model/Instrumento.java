@@ -26,7 +26,20 @@ import javax.persistence.Table;
 	@NamedQuery(name="Instrumento.findAllByEntidadId", query="select i from instrumentos i where i.entidadId = case ?1 when 1000 then i.entidadId else ?1 end order by 1 desc"),
 	@NamedQuery(name="Instrumento.findAllByUnidadId", query="select i from instrumentos i where i.unidad=?1 order by 1 desc"),
 	@NamedQuery(name="Instrumento.findById", query="select i from instrumentos i where i.id=?1"),
-	@NamedQuery(name="Instrumento.findAllByCertificacionId", query="select i from instrumentos i, certificaciones c where i.unidad member of c.unidades and c.id=?1")
+	@NamedQuery(name="Instrumento.findAllByCertificacionId", query="select i from instrumentos i, certificaciones c where i.unidad member of c.unidades and c.id=?1"),
+	@NamedQuery(name="Instrumento.findPendientesEvaluar", query="select i " +
+																  "from instrumentos i, mantenedores m " +
+																 "where m.id = i.tipo and m.tipo = ?1 " +
+																   "and (m.id = ?2 or ?2 = null) " +
+																   "and i.unidad = ?3 " +
+																   "and not exists (select 1 " +
+																				  	 "from evaluacion_guia eg, guias g, evaluaciones e " +
+																					 "where e.solicitud.id = ?4 "+
+																					   "and e.estado.id = 29 " +
+																					   "and eg.pk.evaluacion.id = e.id " +
+																					   "and g.id = eg.pk.guia.id " +        
+																					   "and i.id = g.instrumento.id  " +    
+																					 " group by g.instrumento.id)")	
 })
 public class Instrumento implements Serializable {
 	

@@ -23,6 +23,7 @@ import model.Certificacion;
 import model.Contacto;
 import model.Evaluacion;
 import model.EvaluacionGuia;
+import model.EvaluacionUnidad;
 import model.Guia;
 import model.Instrumento;
 import model.Laboral;
@@ -122,7 +123,12 @@ public interface IService {
 	public void imprimirReporte(String nombreReporte, Map<String,Object> parametros, String formato, boolean visualiza) throws SQLException;
 	public List<Solicitud> filtraListaSolicitudes(HashMap<String, Object> param, Integer tipoFiltro);
 	public boolean validaProcesoConcluido(Solicitud solicitud, boolean validaEvaluacion);
-	public boolean validaEvaluacionAprobada(Solicitud solicitud);
+	public boolean validaEvaluacionAprobada(Solicitud solicitud, boolean diagnostica, Long ucl);
 	public void auditar(Auditoria auditoria);
 	public List<Contacto> getContactosByParam(String namedString, Object [] parametros);
+	public Evaluacion getEvaluacionById(Long evaluacionId);
+	public List<Evaluacion> getEvaluacionesBySolicitudUnidad(Solicitud solicitud, Long unidad);
+	public boolean validaEvalUnidad(Solicitud solicitud, Long ucl);
+	public Evaluacion actualizaEvaluacion(Evaluacion evaluacion);
+	public EvaluacionUnidad getEvaluacionUnidadBySolicitudUCL(Solicitud solicitud, Long unidad);
 }
