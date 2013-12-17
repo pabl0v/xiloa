@@ -57,13 +57,12 @@
 					<p>Estado:</p>					
 					<h:outputText value="#{evaluacionManagedBean.estado.valor}" />					
 				</div>	
-				<p:panel rendered="#{evaluacionManagedBean.visualizaPuntaje}">
-					<div style="display:inline-block;margin-left:7px;">
-						<p>Puntaje:</p>  
-		            	<h:outputText id="puntajeEval" value="#{evaluacionManagedBean.puntajeEval}" />
-		            </div>
-	            </p:panel>
-	            
+				<div style="display:inline-block;margin-left:7px;">
+						<h:outputText value="Puntaje: " rendered="#{evaluacionManagedBean.visualizaPuntaje}" />   
+		            	<h:outputText id="puntajeEval" value="#{evaluacionManagedBean.puntajeEval}" 
+		            	              rendered="#{evaluacionManagedBean.visualizaPuntaje}" />
+		        </div>
+	            	            
 				<div style="display:inline-block;margin-left:7px;">
 					<h:outputText value="Resultado Evaluacion: " />  
 				    <p:selectOneRadio id="optAprobado" value="#{evaluacionManagedBean.aprobado}">  
@@ -115,9 +114,10 @@
 			            	<h:outputText styleClass="estilo_span" id="respuestaGuia" value="#{evaluacionManagedBean.respuestaGuia}" />
 		            	</div>
 		            	<div>	
-			            	<p>Puntaje:</p>  
+			            	<h:outputText value="Puntaje: " rendered="#{!evaluacionManagedBean.cualitativo}" />  
 			            	<p:inputText id="puntajeGuia" value="#{evaluacionManagedBean.puntajeGuia}"
-			            	             disabled="#{evaluacionManagedBean.cualitativo}" />
+			            	             disabled="#{evaluacionManagedBean.cualitativo}" 
+			            	             rendered="#{!evaluacionManagedBean.cualitativo}"/>
 		            	</div>
 		            	<div>
 			            	<h:outputText value="Resultado Evaluacion por Guia: " />  

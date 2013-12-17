@@ -1097,7 +1097,7 @@ public class ServiceImp implements IService {
 				if (idMatricula == null)
 					pasaConcluido =  false;
 				else {
-					pasaConcluido = validaEvaluacionAprobada(solicitud, false, null);
+					pasaConcluido = (validaEvaluacion) ? validaEvaluacionAprobada(solicitud, false, null) : true;
 				}
 				
 				
@@ -1138,12 +1138,13 @@ public class ServiceImp implements IService {
 		}else { // Evalua por Unidad de compentencia
 			objs =  new Object [] {new String("6"), idTipoInstrumento, ucl, solicitud.getId()};	
 			listaInstrumento = instrumentoDao.findAllByNamedQueryParam("Instrumento.findPendientesEvaluar", objs);
-			
+			System.out.println("Indica si falta o no instrumentos " + listaInstrumento.size());
 			//Existen evaluaciones pendientes por unidad de compentencia
 			if (listaInstrumento.size() > 0) {
 				pasa = false;				
 			} else { // La unidad de competencia ha sido evaluada		
 				if (diagnostica == false){
+					System.out.println("Debe agregar en la tabla ");
 					pasa = validaEvalUnidad(solicitud, ucl);
 				}
 			}
@@ -1187,7 +1188,7 @@ public class ServiceImp implements IService {
 		boolean aprobado = true;
 		
 		List<Evaluacion> listaEval = this.getEvaluacionesBySolicitudUnidad(solicitud, ucl);
-		
+		System.out.println("Existen evaluaciones " + listaEval.size());
 		System.out.println("Numero de Evaluaciones " + listaEval.size());
 		if (listaEval.size() == 0)// No existen evaluaciones para la unidad de compentencia
 			aprobado = false;
@@ -1204,6 +1205,7 @@ public class ServiceImp implements IService {
 			if (eUcl == null){
 				Mantenedor estatusEval = this.getMantenedorById(29);
 				eUcl = new EvaluacionUnidad(solicitud, ucl, aprobado, estatusEval);
+				System.out.println("AGREGAR EL REGISTRO " + estatusEval.getValor());
 				eUcl = evaluacionUnidadDao.save(eUcl);				
 			}
 			aprobado = (eUcl == null) ? false : true;
@@ -1213,14 +1215,12 @@ public class ServiceImp implements IService {
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public Evaluacion actualizaEvaluacion(Evaluacion evaluacion){
+	public Evaluacion actualizaEvaluacion(Evaluacion evaluacion, boolean valida){
 		boolean val = false;
 		Evaluacion eval = null;
 		Solicitud solicitud = evaluacion.getSolicitud();
-		Mantenedor estatusEval = evaluacion.getEstado();
-		Mantenedor estatus = this.getMantenedorMaxByTipo(estatusEval.getTipo());
-		
-		if (estatus.getId() == estatusEval.getId()) //Evaluacion Completada 
+		System.out.println("En el servicio, revisa si pasa a validar " + valida);		
+		if (valida) //Evaluacion Completada 
 			val = validaEvaluacionAprobada(solicitud, false, evaluacion.getUnidad());
 		
 		eval = evaluacionDao.save(evaluacion);

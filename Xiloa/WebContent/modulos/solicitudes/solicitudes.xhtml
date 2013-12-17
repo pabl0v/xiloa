@@ -72,10 +72,19 @@
 	        	 <p:separator />         		   
 	       		 <p:menuitem value="Solicitud Candidato" icon="ui-icon-print" title="Generar Solicitud Candidato" style="display:inline-block;"  
 	       		             action="#{dashBoardSolicitudesManagedBean.runSolicitudCandidato}" update=":formSolicitudes:msgSolicitudes"  />
+	       		             
 	       		 <p:menuitem value="Emisión Juicio" icon="ui-icon-print" title="Imprimir Emisión de Juicio y Reporte de Orientación" style="display:inline-block;"  
 	       		             action="#{dashBoardSolicitudesManagedBean.runEmisionJuicio}" update=":formSolicitudes:msgSolicitudes"  />
+	       		             
+				<p:menuitem value="Informe Asesor" icon="ui-icon-print" title="Generar Informe del Asesor" style="display:inline-block;"  
+	       		             action="#{dashBoardSolicitudesManagedBean.runInformeAsesor}" update=":formSolicitudes:msgSolicitudes"  />	       		 
+								       		   
+	       		 <p:menuitem value="Plan Capacitacion" icon="ui-icon-print" title="Generar Plan de Capacitacion" style="display:inline-block;"  
+	       		             action="#{dashBoardSolicitudesManagedBean.runPlanCapacitacion}" update=":formSolicitudes:msgSolicitudes"  />
+	       		 
 	       		 <p:menuitem value="Certificado" icon="ui-icon-print" title="Imprimir Certificado" style="display:inline-block;"  
-	       		             action="#{dashBoardSolicitudesManagedBean.runCertificado}" update=":formSolicitudes:msgSolicitudes"  />	   	       			     			       			  
+	       		             action="#{dashBoardSolicitudesManagedBean.runCertificado}" update=":formSolicitudes:msgSolicitudes"  />	       			     			       			  
+	   							       		         	   	       			     			       			  
 	   		</p:splitButton>           		    			    			    		   
         </div>              
         <div id="contenedor_tabla_solicitudes">     

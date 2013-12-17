@@ -129,6 +129,6 @@ public interface IService {
 	public Evaluacion getEvaluacionById(Long evaluacionId);
 	public List<Evaluacion> getEvaluacionesBySolicitudUnidad(Solicitud solicitud, Long unidad);
 	public boolean validaEvalUnidad(Solicitud solicitud, Long ucl);
-	public Evaluacion actualizaEvaluacion(Evaluacion evaluacion);
+	public Evaluacion actualizaEvaluacion(Evaluacion evaluacion, boolean valida);
 	public EvaluacionUnidad getEvaluacionUnidadBySolicitudUCL(Solicitud solicitud, Long unidad);
 }

@@ -478,7 +478,8 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
     }
     
     public void runEmisionJuicio() throws Exception{
-    	
+    	String rptNombre = "rptEmisionJuicio";
+    	runReporte(rptNombre);    	
     }
     
     public void runCertificado() throws Exception{
@@ -492,11 +493,26 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
     	}else
     		FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe seleccionar una solicitud.", true);
     }
+    
+    public void runInformeAsesor() throws Exception{
+		String rptNombre = "informeasesor";
+		runReporte(rptNombre);
+	}
+	
+	public void runPlanCapacitacion() throws Exception{
+		String rptNombre = "plancapacitacion";
+		runReporte(rptNombre);
+	}
+	    
     public void runReporte(String nombreReporte) throws Exception {
     	Map<String,Object> params = new HashMap<String,Object>();
+    	Certificacion cert = this.selectedSolicitud.getCertificacion();
     	
     	if (this.selectedSolicitud != null){
     		params.put("idSolicitud",this.selectedSolicitud.getId());
+    		if (cert.getEvaluador() != null)
+    			params.put("idEvaluador",cert.getEvaluador().getId());
+    		
     		service.imprimirReporte(nombreReporte, params, Global.EXPORT_PDF, true);
     	}else
     		FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe seleccionar una solicitud.", true);

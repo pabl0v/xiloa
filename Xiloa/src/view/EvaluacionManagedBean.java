@@ -501,6 +501,7 @@ public class EvaluacionManagedBean implements Serializable {
 		boolean isError = false;
 		String  mensaje = "";
 		Float sumaPuntajeGuia = new Float(0);
+		boolean validaEvalbyUnidad = false;
 				
 		//Se registra nueva evaluacion
 		if (selectedEvaluacion == null){
@@ -563,8 +564,10 @@ public class EvaluacionManagedBean implements Serializable {
 					if (estadoEval.getProximo() != null){
 						sigEstado = service.getMantenedorById(Integer.valueOf(estadoEval.getProximo()));
 						
-						if (sigEstado != null)
+						if (sigEstado != null){
 							eval.setEstado(sigEstado);
+							validaEvalbyUnidad = true;
+						}
 					}
 				}
 			}
@@ -572,8 +575,8 @@ public class EvaluacionManagedBean implements Serializable {
 			if (isError == false){
 				eval.setObservaciones(this.observaciones);			
 				eval.setAprobado(this.aprobado);
-										
-				eval = service.actualizaEvaluacion(eval); //service.guardar(eval);			
+				System.out.println("Actualiza la tabla " + validaEvalbyUnidad);					
+				eval = service.actualizaEvaluacion(eval, validaEvalbyUnidad); //service.guardar(eval);			
 				
 				if (eval == null){
 					isError = true;
@@ -634,12 +637,14 @@ public class EvaluacionManagedBean implements Serializable {
 			this.respuestaGuia = this.selectedEvaluacionGuia.getPk().getGuia().getRespuesta();
 			this.puntajeGuia = this.selectedEvaluacionGuia.getPuntaje();	
 			this.cualitativo = this.selectedEvaluacionGuia.getPk().getGuia().getInstrumento().isCualitativo();
+			this.aprobadoGuia = this.selectedEvaluacionGuia.isAprobado();
 			
 		} else {
 			this.preguntaGuia = null;
 			this.respuestaGuia = null;
 			this.puntajeGuia = 0;
 			this.cualitativo = false;
+			this.aprobadoGuia = false;
 		}
 		visualizaPuntaje = (this.isCualitativo()) ? false : true;
 		
