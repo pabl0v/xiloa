@@ -24,12 +24,13 @@ public class ValidatorUtil {
 		String cedulaSinGuion = null;
 		boolean formato = false;
 		String [] partes  = null;
-		Integer num_ced = null;
+		Long num_ced = null;
 		String caracter = null;
 		Double aux = null;
-	    Integer temp = null;
-	    Integer digito = null;
-		
+		Long temp = null;
+	    Long digito = null;
+	   	String num_cadena = null;
+	   	
 		Pattern pat = null;
 		Matcher mat = null;
 		
@@ -49,20 +50,24 @@ public class ValidatorUtil {
 			formato = mat.matches();
 			
 			if (formato) {
+				num_cadena = partes[0] + partes[1] + partes[2].substring(0,4);			
+			    
+				num_ced = Long.valueOf(num_cadena);
 				
-				num_ced = Integer.valueOf(partes[0]) + Integer.valueOf(partes[1]) + Integer.valueOf((partes[2].substring(0,3)));
 				caracter = partes[2].substring(4).toUpperCase().trim();
 				aux  = new Double(num_ced / 23);
-				temp  = (Integer) aux.intValue();
-				digito = num_ced-(temp*23);
+				temp  = (Long) aux.longValue();
+				digito = Math.abs(num_ced-temp*23);
 				
-				if (letras[digito].trim().equals(caracter)){
+				if (letras[digito.intValue()].trim().equals(caracter)){
 					formato =  true;
-				}else{
+				}else{					
+								
 					formato = false;
 				}
 				
-			} 		
+			}
+			
 			
 		}
 			

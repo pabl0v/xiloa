@@ -501,7 +501,7 @@ public class EvaluacionManagedBean implements Serializable {
 		boolean isError = false;
 		String  mensaje = "";
 		Float sumaPuntajeGuia = new Float(0);
-		
+				
 		//Se registra nueva evaluacion
 		if (selectedEvaluacion == null){
 			
