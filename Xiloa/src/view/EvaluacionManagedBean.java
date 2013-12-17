@@ -568,14 +568,17 @@ public class EvaluacionManagedBean implements Serializable {
 							eval.setEstado(sigEstado);
 							validaEvalbyUnidad = true;
 						}
-					}
+					} else
+						validaEvalbyUnidad = true;
 				}
 			}
 			
 			if (isError == false){
 				eval.setObservaciones(this.observaciones);			
 				eval.setAprobado(this.aprobado);
-				System.out.println("Actualiza la tabla " + validaEvalbyUnidad);					
+				
+				System.out.println("Actualiza la tabla " + validaEvalbyUnidad);	
+				
 				eval = service.actualizaEvaluacion(eval, validaEvalbyUnidad); //service.guardar(eval);			
 				
 				if (eval == null){

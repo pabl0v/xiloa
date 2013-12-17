@@ -1137,6 +1137,7 @@ public class ServiceImp implements IService {
 			}
 		}else { // Evalua por Unidad de compentencia
 			objs =  new Object [] {new String("6"), idTipoInstrumento, ucl, solicitud.getId()};	
+			System.out.println("PARAMETROS " + idTipoInstrumento + " ucl " + ucl + " solicitud " + solicitud.getId());
 			listaInstrumento = instrumentoDao.findAllByNamedQueryParam("Instrumento.findPendientesEvaluar", objs);
 			System.out.println("Indica si falta o no instrumentos " + listaInstrumento.size());
 			//Existen evaluaciones pendientes por unidad de compentencia
