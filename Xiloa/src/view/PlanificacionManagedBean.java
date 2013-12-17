@@ -82,6 +82,7 @@ public class PlanificacionManagedBean implements Serializable {
 		Contacto creador = controller.getContacto();
 		
 		Certificacion certificacion = new Certificacion();
+		certificacion.setOfertaId(competencia.getOfertaId());
 		certificacion.setEstructuraId(competencia.getEsructuraId());
 		certificacion.setCursoId(competencia.getIdUCompetencia());
 		certificacion.setNombre(competencia.getNombreUCompetencia());
