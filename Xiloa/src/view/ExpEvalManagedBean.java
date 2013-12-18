@@ -1550,7 +1550,7 @@ public class ExpEvalManagedBean implements Serializable  {
 	public void asesorarCertificacion (){
 	
 		String  textoMsg = "";	
-		boolean indicaAsesorado = false;
+		boolean indicaAsesorado = true;
 			
 		solicitudExp = avanzaProceso (solicitudExp, "listo para inscripción", indicaAsesorado, textoMsg);
 			

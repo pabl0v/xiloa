@@ -101,8 +101,16 @@
                 				 rowKey="#{datosLaborales}" selectionMode="single" paginator="true" rows="4" >      
                     	<p:column headerText="Empresa"><h:outputText value="#{datosLaborales.institucion}" /></p:column>  
                          <p:column headerText="Cargo"><h:outputText value="#{datosLaborales.cargo}" /></p:column>  
-                         <p:column headerText="Desde"><h:outputText value="#{datosLaborales.fechaInicia}" pattern="dd/mm/yyyy" /></p:column>  
-                         <p:column headerText="Hasta"><h:outputText value="#{datosLaborales.fechaFinaliza}" pattern="dd/mm/yyyy" /></p:column>  
+                         <p:column headerText="Desde">
+                         	<h:outputText value="#{datosLaborales.fechaInicia}" pattern="dd/MM/yyyy" >
+                         		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                         	</h:outputText>
+                         </p:column>  
+                         <p:column headerText="Hasta">
+                         	<h:outputText value="#{datosLaborales.fechaFinaliza}" pattern="dd/MM/yyyy" >
+                         		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                         	</h:outputText>
+                         </p:column>  
                          <p:column headerText="Direccion"><h:outputText value="#{datosLaborales.institucionDireccion}" /></p:column>                         
                          <p:column headerText="Editar Registro" >
                          	<p:commandButton id="btnEditaLaboral" title="Editar" icon="ui-icon-pencil" style="display:block;"
@@ -120,8 +128,16 @@
                 				 rowKey="#{datosEstudios}" selectionMode="single" paginator="true" rows="4" >  
                         <p:column headerText="Empresa"><h:outputText value="#{datosEstudios.institucion}" /></p:column>  
                         <p:column headerText="Cargo"><h:outputText value="#{datosEstudios.cargo}" /></p:column>  
-                        <p:column headerText="Desde"><h:outputText value="#{datosEstudios.fechaInicia}" /></p:column>  
-                        <p:column headerText="Hasta"><h:outputText value="#{datosEstudios.fechaFinaliza}" /></p:column>  
+                        <p:column headerText="Desde">
+                        	<h:outputText value="#{datosEstudios.fechaInicia}" pattern="dd/MM/yyyy" >
+                        		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                        	</h:outputText>
+                        </p:column>  
+                        <p:column headerText="Hasta">
+                        	<h:outputText value="#{datosEstudios.fechaFinaliza}" pattern="dd/MM/yyyy" >
+                        		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                        	</h:outputText>
+                        </p:column>  
                         <p:column headerText="Direccion"><h:outputText value="#{datosEstudios.institucionDireccion}" /></p:column>  
                         <p:column headerText="Editar Registro">
                         	<p:commandButton id="btnEditaLaboral" title="Editar" icon="ui-icon-pencil" style="display:block;"
@@ -139,8 +155,16 @@
                 				 rowKey="#{datosCalificacion}" selectionMode="single" paginator="true" rows="4" >  
                         <p:column headerText="Empresa"><h:outputText value="#{datosCalificacion.institucion}" /></p:column>  
                         <p:column headerText="Cargo"><h:outputText value="#{datosCalificacion.cargo}" /></p:column>  
-                        <p:column headerText="Desde"><h:outputText value="#{datosCalificacion.fechaInicia}" /></p:column>  
-                        <p:column headerText="Hasta"><h:outputText value="#{datosCalificacion.fechaFinaliza}" /></p:column>  
+                        <p:column headerText="Desde">
+                        	<h:outputText value="#{datosCalificacion.fechaInicia}" pattern="dd/MM/yyyy" >
+                        		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                        	</h:outputText>
+                        </p:column>  
+                        <p:column headerText="Hasta">
+                        	<h:outputText value="#{datosCalificacion.fechaFinaliza}" pattern="dd/MM/yyyy" >
+                        		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                        	</h:outputText>
+                        </p:column>  
                         <p:column headerText="Direccion"><h:outputText value="#{datosCalificacion.institucionDireccion}" /></p:column>  
                         <p:column headerText="Editar Registro">
                         	<p:commandButton id="btnEditaLaboral" title="Editar" icon="ui-icon-pencil" style="display:block;"
@@ -158,8 +182,16 @@
                                 selectionMode="single" paginator="true" rows="4" >  
                         <p:column headerText="Empresa"><h:outputText value="#{datosCertificacion.institucion}" /></p:column>  
                         <p:column headerText="Cargo"><h:outputText value="#{datosCertificacion.cargo}" /></p:column>  
-                        <p:column headerText="Desde"><h:outputText value="#{datosCertificacion.fechaInicia}" /></p:column>  
-                        <p:column headerText="Hasta"><h:outputText value="#{datosCertificacion.fechaFinaliza}" /></p:column>  
+                        <p:column headerText="Desde">
+                        	<h:outputText value="#{datosCertificacion.fechaInicia}" pattern="dd/MM/yyyy" >
+                        		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                        	</h:outputText>
+                        </p:column>  
+                        <p:column headerText="Hasta">
+                        	<h:outputText value="#{datosCertificacion.fechaFinaliza}" pattern="dd/MM/yyyy" >
+                        		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                        	</h:outputText>
+                        </p:column>  
                         <p:column headerText="Direccion"><h:outputText value="#{datosCertificacion.institucionDireccion}" /></p:column>  
                         <p:column headerText="Editar Registro">
                         	<p:commandButton id="btnEditaLaboral" title="Editar" icon="ui-icon-pencil" style="display:block;"
@@ -236,7 +268,11 @@
                          			  selectionMode="single" paginator="true" rows="4" >  
                              <p:column headerText="Instrumento de evaluacion"><h:outputText value="#{evaluaciones.instrumento.nombre} [ #{evaluaciones.instrumento.tipo.valor} ]" /></p:column>  
                              <p:column headerText="Observacion"><h:outputText value="#{evaluaciones.evaluacion.observaciones}" /></p:column>  
-                             <p:column headerText="Fecha"><h:outputText value="#{evaluaciones.evaluacion.fechaEvaluacion}" /></p:column>  
+                             <p:column headerText="Fecha">
+                             	<h:outputText value="#{evaluaciones.evaluacion.fechaEvaluacion}" pattern="dd/MM/yyyy" >
+                             		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                             	</h:outputText>
+                             </p:column>  
                              <p:column headerText="Aprobado"><p:selectBooleanCheckbox value="#{evaluaciones.evaluacion.aprobado}" disabled="true" /></p:column>  
                              <p:column headerText="Estado"><h:outputText value="#{evaluaciones.estadoEvaluacion.valor}" /></p:column>
                              <!-- 
@@ -306,12 +342,12 @@
 	            	<p:inputText id="descripcionCargo" value="#{expEvalManagedBean.descripcionCargo}" />
 	            	<p:growl id="growlFechaDesde" showDetail="true"/>
 	            	<p>Fecha Desde:</p>					
-					<p:calendar value="#{expEvalManagedBean.fechaDesde}" pattern="dd/mm/yyyy" id="popupButtonCal1" showOn="button">
+					<p:calendar value="#{expEvalManagedBean.fechaDesde}" pattern="dd/MM/yyyy" id="popupButtonCal1" showOn="button">
 						<p:ajax event="dateSelect" update="growlFechaDesde" />
 					</p:calendar>				
 					<p:growl id="growlFechaHasta" showDetail="true"/>
 					<p>Fecha Hasta:</p>					
-					<p:calendar value="#{expEvalManagedBean.fechaHasta}" pattern="dd/mm/yyyy" id="popupButtonCal2" showOn="button">
+					<p:calendar value="#{expEvalManagedBean.fechaHasta}" pattern="dd/MM/yyyy" id="popupButtonCal2" showOn="button">
 						<p:ajax event="dateSelect" update="growlFechaHasta" />
 					</p:calendar>
 				</div>				    	    							
