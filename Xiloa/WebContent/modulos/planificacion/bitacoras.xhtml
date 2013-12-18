@@ -52,15 +52,17 @@
 
     </div>
 
-       <p:dialog id="modalBitacora" styleClass="modal_agregar_bitacora" header="Agregar bitacora" widgetVar="dlg2" modal="true" width="450" height="380" resizable="false">  
+       <p:dialog id="modalBitacora" styleClass="modal_agregar_bitacora" header="Agregar bitacora" widgetVar="dlg2" modal="true" width="450" height="400" resizable="false">  
          <h:form id="form_bitacora" class="form_bitacora_estilo" >
              <h3>Bitácora</h3>  
 			 <p>Fecha del Evento:</p> 
-			 <p:calendar value="#{actividadManagedBean.bitacora.fechaEvento}" id="fecha_evento" showOn="button" pattern="dd/MM/yyyy"/>
+			 <p:calendar id="fecha_evento" required="true" requiredMessage="La fecha es requerida" value="#{actividadManagedBean.bitacora.fechaEvento}" showOn="button" pattern="dd/MM/yyyy"/>
+			 <p:message for="fecha_evento" display="text"  />
              <h3>Descripción del evento</h3>
-             <p:inputTextarea rows="12" cols="65" value="#{actividadManagedBean.bitacora.observaciones}" queryDelay="750" minQueryLength="4" />
-             <h:commandButton styleClass="botones" value="Cancelar" onclick="PF('dlg2').hide();"/>
-			 <h:commandButton styleClass="botones" value="Aceptar" action="#{actividadManagedBean.guardarBitacora(actividadManagedBean.bitacora)}" update=":form_bitacoras:bitacorasDataTable, :form_bitacora" oncomplete="PF('dlg2').hide();"/>
+             <p:inputTextarea id="descripcion" required="true" requiredMessage="La descripcion es requerida" rows="12" cols="65" value="#{actividadManagedBean.bitacora.observaciones}" queryDelay="750" minQueryLength="4" />
+             <p:message for="descripcion" display="text"  />
+             <p:commandButton styleClass="botones" value="Cancelar" onclick="PF('dlg2').hide();" immediate="true" />
+			 <p:commandButton styleClass="botones" value="Aceptar" oncomplete="if(!args.validationFailed) {dlg2.hide()} else {dlg2.show()}" action="#{actividadManagedBean.guardarBitacora(actividadManagedBean.bitacora)}" update=":form_bitacoras:bitacorasDataTable, :form_bitacora" ajax="true" />
          </h:form>
     </p:dialog>
 </h:body>

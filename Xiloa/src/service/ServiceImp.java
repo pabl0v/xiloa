@@ -258,6 +258,7 @@ public class ServiceImp implements IService {
 	
 	@Override
 	public Map<Long, Item> getCatalogoUnidades(){
+		this.catalogoUnidades = inatecDao.getCatalogoUnidades();
 		return catalogoUnidades;
 	}
 
