@@ -222,7 +222,8 @@ public class Actividad implements Serializable {
 	}
 
 	public Contacto getEjecutor() {
-		return ejecutor;
+		//return ejecutor;
+		return involucrados.get(2);
 	}
 
 	public void setEjecutor(Contacto ejecutor) {
