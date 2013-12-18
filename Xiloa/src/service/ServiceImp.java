@@ -159,6 +159,7 @@ public class ServiceImp implements IService {
 				case 7:
 				case 8:
 				case 9: catalogoEstatusCertificacion.put(mantenedor.getId(), mantenedor); break;
+				case 38: catalogoEstatusCertificacion.put(mantenedor.getId(), mantenedor); break;
 				case 10:
 				case 11:
 				case 12: catalogoEstatusActividad.put(mantenedor.getId(), mantenedor); break;
