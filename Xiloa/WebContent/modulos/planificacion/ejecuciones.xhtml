@@ -25,7 +25,8 @@
                 <p:dataTable id="ejecuciones" widgetVar="ejecucionesTable" emptyMessage="No hay datos para mostrar" var="ejecucion" value="#{ejecucionesManagedBean.actividades}" selection="#{ejecucionesManagedBean.selectedActividad}" paginator="true" rows="10" rowKey="#{ejecucion.id}" selectionMode="single">
                         <!--Las columnas de la tabla-->
                         <p:column filterBy="#{ejecucion.certificacion.nombre}" headerText="Certificación" filterMatchMode="contains"><h:outputText value="#{ejecucion.certificacion.nombre}"/></p:column>
-                        <p:column filterBy="#{ejecucion.tipo.valor}" headerText="Tipo Actividad" filterOptions="#{ejecucionesManagedBean.tiposActividad}" filterMatchMode="exact"><h:outputText value="#{ejecucion.tipo.valor}" /></p:column>    
+                        <p:column filterBy="#{ejecucion.tipo.valor}" headerText="Tipo Actividad" filterOptions="#{ejecucionesManagedBean.tiposActividad}" filterMatchMode="exact"><h:outputText value="#{ejecucion.tipo.valor}" /></p:column>
+						<p:column filterBy="#{ejecucion.ejecutor.nombreCompleto}" headerText="Ejecutor" filterMatchMode="contains"><h:outputText value="#{ejecucion.ejecutor.nombreCompleto}" /></p:column>                            
                         <p:column headerText="Fecha programada"><h:outputText value="#{ejecucion.fechaInicial}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>                
                         <p:column filterBy="#{ejecucion.estado.valor}" headerText="Estatus" filterOptions="#{ejecucionesManagedBean.estatusActividad}" filterMatchMode="exact"><h:outputText value="#{ejecucion.estado.valor}" /></p:column>
 						<p:column style="width:4%" rendered="#{sec:areAnyGranted('ROLE_RIGHT_AGREGAR_BITACORAS')}">
