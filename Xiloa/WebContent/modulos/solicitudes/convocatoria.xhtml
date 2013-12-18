@@ -62,7 +62,11 @@
                 <p:column id="centroColumn" headerText="Centro evaluador" exportable="true"><h:outputText value="#{varSolicitudI.certificacion.ifpNombre}" /></p:column>                      
                 <p:column id="candidatoColumn" headerText="Nombre del candidato" exportable="true"><h:outputText value="#{varSolicitudI.contacto.nombreCompleto}" /></p:column>  
                 <p:column id="certificacionColumn" headerText="Certificacion a evaluar" exportable="true"><h:outputText value="#{varSolicitudI.certificacion.nombre}"/></p:column>  
-                <p:column id="fechaColumn" headerText="Fecha solicitud" exportable="true"><h:outputText value="#{varSolicitudI.fechaRegistro}" /></p:column>               
+                <p:column id="fechaColumn" headerText="Fecha solicitud" exportable="true">
+                	<h:outputText value="#{varSolicitudI.fechaRegistro}" >
+                		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                	</h:outputText>
+                </p:column>               
                 <p:column id="evaluadorColumn" headerText="Evaluador" exportable="true"><h:outputText value="#{varSolicitudI.contacto.correo1}" /></p:column>                
                 <p:column id="estadoColumn" headerText="Estado" exportable="true"><h:outputText value="#{varSolicitudI.estatus.valor}" /></p:column>
                 <p:column id="selectConvo" selectionMode="multiple" style="width:2%" exportable="false" />                

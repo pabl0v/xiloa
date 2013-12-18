@@ -174,32 +174,7 @@
     	</div>
     	<div id="contenedor_tab_planes" class="seccion_expediente" style="width:98%">
     		<p:tabView id="tabView_Evaluaciones">  
-                    <p:tab id="tab1" title="UC a evaluar" >                    	                   	 
-                    	 <p:commandButton id="btnAgregaEvaluacion" disabled="#{expEvalManagedBean.disabledBtnAgregaEvaluacion}" 
-                    	                  action="#{expEvalManagedBean.registrarEvaluacion}" value="Agregar" icon="ui-icon-document"   >
-                    	 	<f:setPropertyActionListener value="#{expEvalManagedBean.solicitudExp}" target="#{evaluacionManagedBean.solicitudEval}" />                    	 
-                    	 </p:commandButton>
-                    	  
-                         <p:dataTable emptyMessage="No hay datos"  var="uC" value="#{expEvalManagedBean.listBeanEval}"
-                         			  selection="#{expEvalManagedBean.selectedBeanEvaluacion}" rowKey="#{uC}" 
-                         			  selectionMode="single" paginator="true" rows="4" >  
-                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{uC.unidadCompetenciaDescripcion}" /></p:column>  
-                             <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{uC.instrumento.nombre} [ #{uC.instrumento.tipo.valor} ]" /></p:column>  
-                             <!--  <p:column headerText="Requisito"><h:outputText value="#{uC.instrumento.nombre}" /></p:column> -->  
-                             <p:column headerText="Estado"><h:outputText value="#{uC.estadoEvaluacion.valor}" /></p:column>  
-                             <p:column headerText="Editar">
-                             	<p:commandButton id="editarEvaluaciones" action="#{expEvalManagedBean.editarEvaluacion(uC)}"                         	            	          
-                         	                	 icon="ui-icon-pencil" title="Editar">    	
-                         			<f:setPropertyActionListener value="#{uC.solicitudBeanEval}" target="#{evaluacionManagedBean.solicitudEval}" />
-									<f:setPropertyActionListener value="#{uC.evaluacion}" target="#{evaluacionManagedBean.selectedEvaluacion}" />
-									<f:setPropertyActionListener value="#{uC.instrumento}" target="#{evaluacionManagedBean.selectedInstrumento}" />                         			                         									  
-									<f:setPropertyActionListener value="#{uC.evaluacion.unidad}" target="#{evaluacionManagedBean.selectedUnidad}" />
-    							</p:commandButton>                        
-                             </p:column>              
-                        </p:dataTable>    
-                    </p:tab>  
-
-                    <p:tab id="tabPortafolio" title="Portafolio">                    	                    	
+    				<p:tab id="tabPortafolio" title="Portafolio">                    	                    	
                          <p:dataTable id="dtPortafolio" emptyMessage="No hay datos"  var="portafolioEvidencia" 
                                       value="#{expEvalManagedBean.listPortafolioContacto}"
                                       selection="#{expEvalManagedBean.selectedArchivoId}" rowKey="#{portafolioEvidencia}"                 			 		   
@@ -229,6 +204,32 @@
                              </p:column>                                      
                         </p:dataTable>     
                     </p:tab>  
+                    
+                    <p:tab id="tab1" title="UC a evaluar" >                    	                   	 
+                    	 <p:commandButton id="btnAgregaEvaluacion" disabled="#{expEvalManagedBean.disabledBtnAgregaEvaluacion}" 
+                    	                  action="#{expEvalManagedBean.registrarEvaluacion}" value="Agregar" icon="ui-icon-document"   >
+                    	 	<f:setPropertyActionListener value="#{expEvalManagedBean.solicitudExp}" target="#{evaluacionManagedBean.solicitudEval}" />                    	 
+                    	 </p:commandButton>
+                    	  
+                         <p:dataTable emptyMessage="No hay datos"  var="uC" value="#{expEvalManagedBean.listBeanEval}"
+                         			  selection="#{expEvalManagedBean.selectedBeanEvaluacion}" rowKey="#{uC}" 
+                         			  selectionMode="single" paginator="true" rows="4" >  
+                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{uC.unidadCompetenciaDescripcion}" /></p:column>  
+                             <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{uC.instrumento.nombre} [ #{uC.instrumento.tipo.valor} ]" /></p:column>  
+                             <!--  <p:column headerText="Requisito"><h:outputText value="#{uC.instrumento.nombre}" /></p:column> -->  
+                             <p:column headerText="Estado"><h:outputText value="#{uC.estadoEvaluacion.valor}" /></p:column>  
+                             <p:column headerText="Editar">
+                             	<p:commandButton id="editarEvaluaciones" action="#{expEvalManagedBean.editarEvaluacion(uC)}"                         	            	          
+                         	                	 icon="ui-icon-pencil" title="Editar">    	
+                         			<f:setPropertyActionListener value="#{uC.solicitudBeanEval}" target="#{evaluacionManagedBean.solicitudEval}" />
+									<f:setPropertyActionListener value="#{uC.evaluacion}" target="#{evaluacionManagedBean.selectedEvaluacion}" />
+									<f:setPropertyActionListener value="#{uC.instrumento}" target="#{evaluacionManagedBean.selectedInstrumento}" />                         			                         									  
+									<f:setPropertyActionListener value="#{uC.evaluacion.unidad}" target="#{evaluacionManagedBean.selectedUnidad}" />
+    							</p:commandButton>                        
+                             </p:column>              
+                        </p:dataTable>    
+                    </p:tab>  
+                    
                     <p:tab id="tab3" title="Plan de evaluacion">                    	  
                          <p:dataTable emptyMessage="No hay datos"  var="evaluaciones" value="#{expEvalManagedBean.listBeanEval}"
                                       selection="#{expEvalManagedBean.selectedBeanEvaluacion}" rowKey="#{evaluaciones}" 
@@ -250,8 +251,7 @@
                              </p:column>
                               -->              
                         </p:dataTable>  
-                    </p:tab>  
-                    
+                    </p:tab>                      
                     <p:tab id="tabFormacion" title="Plan de formacion">                                 	  
                          <p:dataTable emptyMessage="No hay datos"  var="formacion" value="#{expEvalManagedBean.listBeanEvalFormacion}"
                                       selection="#{expEvalManagedBean.selectedBeanEvaluacion}" rowKey="#{formacion}" 

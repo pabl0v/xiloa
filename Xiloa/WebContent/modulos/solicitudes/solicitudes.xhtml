@@ -121,7 +121,9 @@
                 	<f:facet name="header">  
             			<h:outputText value="Fecha solicitud" />  
         			</f:facet> 
-                	<h:outputText value="#{varSolicitudI.fechaRegistro}" />
+                	<h:outputText value="#{varSolicitudI.fechaRegistro}" >
+                		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                	</h:outputText>
                 </p:column>               
                 <p:column id="evaluadorColumn" exportable="true">
                 	<f:facet name="header">  

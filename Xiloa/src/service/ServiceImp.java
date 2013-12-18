@@ -988,7 +988,7 @@ public class ServiceImp implements IService {
 		System.out.println("Entra al servicio validaListoInscripcion");
 		tipoMantenedor = solicitud.getTipomantenedorestado();
 		estadoActual  = solicitud.getEstatus();
-		proximoEstado = Integer.valueOf(estadoActual.getProximo());
+		proximoEstado = (estadoActual.getProximo() != null) ? Integer.valueOf(estadoActual.getProximo()) : null; 
 		
 		ultimoEstado = getMantenedorMaxByTipo(tipoMantenedor);
 		System.out.println("Valores de los estados proximoEstado " + proximoEstado + " ultimo anterior " + ultimoEstado.getAnterior());	

@@ -37,7 +37,7 @@
             <h:outputLabel styleClass="estilo_label" for="numeroIdentificacion" value="Numero de identificacion:" />
             <h:outputText styleClass="estilo_span" id="numeroIdentificacion" value="#{expedienteManagedBean.contactoExp.numeroIdentificacion}" />
             <h:outputLabel styleClass="estilo_label" for="fechaNacimiento" value="Fecha de nacimiento:" />
-            <p:calendar value="#{expedienteManagedBean.contactoExp.fechaNacimiento}" pattern="dd/mm/yyyy" 
+            <p:calendar value="#{expedienteManagedBean.contactoExp.fechaNacimiento}" pattern="dd/MM/yyyy" 
                         id="fechaNacimiento" showOn="button">
 						<p:ajax event="dateSelect" update="growlFechaNacimiento" />
 			</p:calendar>				
