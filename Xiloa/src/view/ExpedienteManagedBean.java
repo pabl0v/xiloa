@@ -341,6 +341,23 @@ public class ExpedienteManagedBean implements Serializable  {
 	public List<BeanEvaluacion> getListBeanEvalFormacion() {
 		if (this.solicitudExp != null){			
 			listBeanEvalFormacion = getListadoEvaluacionesByParam(this.solicitudExp, false);
+		} else {
+			if (this.contactoExp != null){
+				Mantenedor estatus = service.getMantenedorMaxByTipo(new String("7"));
+				Object [] objs =  new Object [] {this.contactoExp.getId(), estatus.getId()};
+				List<Solicitud> listaSolicitudes = service.getSolicitudesByNQParam("Solicitud.findActivaByIdContacto", objs);
+				Solicitud  solicitud = null;
+				
+				for (Solicitud s : listaSolicitudes){
+					Mantenedor estadoSolicitud = s.getEstatus();
+					if (estadoSolicitud.getId() != estatus.getId()) {
+						solicitud = s;
+						break;
+					}				
+				}				
+				listBeanEvalFormacion = (solicitud == null) ? null : getListadoEvaluacionesByParam(solicitud, true);							
+			}
+					
 		}
 		return listBeanEvalFormacion;
 	}

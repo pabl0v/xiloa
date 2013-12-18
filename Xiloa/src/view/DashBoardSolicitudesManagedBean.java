@@ -468,18 +468,19 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
     public void runPreMatricula () throws Exception{
     	String rptNombre = "pre_matricula";
     	
-    	runReporte(rptNombre);
+    	runReporte(rptNombre, true);
     }
     
     public void runSolicitudCandidato() throws Exception{
     	String rptNombre = "solicitud_candidato";
     	
-    	runReporte(rptNombre);
+    	runReporte(rptNombre, true);
     }
     
     public void runEmisionJuicio() throws Exception{
+    	runReporte("sub_rptEmisionJuicio", false);
     	String rptNombre = "rptEmisionJuicio";
-    	runReporte(rptNombre);    	
+    	runReporte(rptNombre, true);    	
     }
     
     public void runCertificado() throws Exception{
@@ -496,15 +497,15 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
     
     public void runInformeAsesor() throws Exception{
 		String rptNombre = "informeasesor";
-		runReporte(rptNombre);
+		runReporte(rptNombre, true);
 	}
 	
 	public void runPlanCapacitacion() throws Exception{
 		String rptNombre = "plancapacitacion";
-		runReporte(rptNombre);
+		runReporte(rptNombre, true);
 	}
 	    
-    public void runReporte(String nombreReporte) throws Exception {
+    public void runReporte(String nombreReporte, boolean desplegar) throws Exception {
     	Map<String,Object> params = new HashMap<String,Object>();
     	Certificacion cert = this.selectedSolicitud.getCertificacion();
     	
@@ -513,7 +514,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
     		if (cert.getEvaluador() != null)
     			params.put("idEvaluador",cert.getEvaluador().getId());
     		
-    		service.imprimirReporte(nombreReporte, params, Global.EXPORT_PDF, true);
+    		service.imprimirReporte(nombreReporte, params, Global.EXPORT_PDF, desplegar);
     	}else
     		FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe seleccionar una solicitud.", true);
 				

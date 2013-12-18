@@ -215,7 +215,7 @@
                  <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{dtEvaluaciones.instrumento.nombre} [ #{dtEvaluaciones.instrumento.tipo.valor} ]" /></p:column>                               
                  <p:column headerText="Observaciones"><h:outputText value="#{dtEvaluaciones.evaluacion.observaciones}" /></p:column>                                  
                  <p:column headerText="Fecha"><h:outputText value="#{dtEvaluaciones.evaluacion.fechaEvaluacion}" /></p:column>
-                 <p:column headerText="Aprobado"><p:selectBooleanCheckbox value="#{dtEvaluaciones.evaluacion.aprobado}" /></p:column>    
+                 <p:column headerText="Aprobado"><p:selectBooleanCheckbox value="#{dtEvaluaciones.evaluacion.aprobado}" disabled="true" /></p:column>    
                  <p:column headerText="Estado"><h:outputText value="#{dtEvaluaciones.estadoEvaluacion.valor}" /></p:column>
 	         </p:dataTable>
    	    </div>    	

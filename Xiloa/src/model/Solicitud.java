@@ -25,16 +25,17 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @Entity(name = "solicitudes")
 @Table(name = "solicitudes", schema = "sccl")
 @NamedQueries ({	
-	@NamedQuery(name="Solicitud.findById", query="select s from solicitudes s where s.id=?1"),
-	@NamedQuery(name="Solicitud.findByIdIfp", query="select s from solicitudes s where s.certificacion.ifpId=?1"),
-	@NamedQuery(name="Solicitud.findByIdCert", query="select s from solicitudes s where s.certificacion.id=?1"),
-	@NamedQuery(name="Solicitud.findByIdContacto", query="select s from solicitudes s where s.contacto.id=?1"),
-	@NamedQuery(name="Solicitud.findByIfpNombre", query="select s from solicitudes s where s.certificacion.ifpNombre=?1"),
-	@NamedQuery(name="Solicitud.findByNombreContacto", query="select s from solicitudes s where s.contacto.nombreCompleto=?1"),
-	@NamedQuery(name="Solicitud.findByNombreCert", query="select s from solicitudes s where s.certificacion.nombre=?1"),
-	@NamedQuery(name="Solicitud.findByFechaSolicitud", query="select s from solicitudes s where s.fechaRegistro=?1"),
-	@NamedQuery(name="Solicitud.findByContactoCorreo", query="select s from solicitudes s where s.contacto.correo1=?1"),
-	@NamedQuery(name="Solicitud.findByEstatusSolicitud", query="select s from solicitudes s where s.estatus=?1")	
+	@NamedQuery(name="Solicitud.findById", query="select s from solicitudes s where s.id=?1 order by s.id desc"),
+	@NamedQuery(name="Solicitud.findByIdIfp", query="select s from solicitudes s where s.certificacion.ifpId=?1 order by s.id desc"),
+	@NamedQuery(name="Solicitud.findByIdCert", query="select s from solicitudes s where s.certificacion.id=?1 order by s.id desc"),
+	@NamedQuery(name="Solicitud.findByIdContacto", query="select s from solicitudes s where s.contacto.id=?1 order by s.id desc"),
+	@NamedQuery(name="Solicitud.findByIfpNombre", query="select s from solicitudes s where s.certificacion.ifpNombre=?1 order by s.id desc"),
+	@NamedQuery(name="Solicitud.findByNombreContacto", query="select s from solicitudes s where s.contacto.nombreCompleto=?1 order by s.id desc"),
+	@NamedQuery(name="Solicitud.findByNombreCert", query="select s from solicitudes s where s.certificacion.nombre=?1 order by s.id desc"),
+	@NamedQuery(name="Solicitud.findByFechaSolicitud", query="select s from solicitudes s where s.fechaRegistro=?1 order by s.id desc"),
+	@NamedQuery(name="Solicitud.findByContactoCorreo", query="select s from solicitudes s where s.contacto.correo1=?1 order by s.id desc"),
+	@NamedQuery(name="Solicitud.findByEstatusSolicitud", query="select s from solicitudes s where s.estatus=?1 order by s.id desc"),
+	@NamedQuery(name="Solicitud.findActivaByIdContacto", query="select s from solicitudes s where s.contacto.id=?1 and s.estatus.id != ?2 order by s.id desc")
 })
 public class Solicitud implements Serializable {
 
