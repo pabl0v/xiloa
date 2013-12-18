@@ -147,7 +147,7 @@ public class ServiceTest {
 		rolRegistrador = new Rol("registro_academico","Registro Academico",216,null,true);
 		rolVisitante = new Rol("visitante","Visitante",217,null,true);
 		rolAdmin = new Rol("admin","admin",218,null,true);
-		rolEvaluador = new Rol("Evaluador","Evaluador",219,null,true);
+		rolEvaluador = new Rol("evaluador","Evaluador",219,null,true);
 		
 		perfil = (Perfil)service.guardar(perfil);
 		perfiles = new ArrayList<Perfil>();
@@ -197,12 +197,12 @@ public class ServiceTest {
 		contactoAdmin = (Contacto)service.guardar(contactoAdmin);
 	
 		//Creando valores iniciales de paises
-		pais1 = new Pais ("Nicaragua", "Nicaraguense");
+		pais1 = new Pais ("Nicaragua", "Nicaragua");
 		pais2 = new Pais ("Costa Rica", "Costa Rica");
-		pais3 = new Pais ("El Salvador", "Salvadoreño"); 
-		pais4 = new Pais ("Panama", "Panameñ"); 
-		pais5 = new Pais ("Honduras", "Hondureño"); 
-		pais6 = new Pais ("Guatemala", "Guatemalteco");
+		pais3 = new Pais ("El Salvador", "El Salvador"); 
+		pais4 = new Pais ("Panama", "Panama"); 
+		pais5 = new Pais ("Honduras", "Honduras"); 
+		pais6 = new Pais ("Guatemala", "Guatemala");
 		
 		pais1 = (Pais) service.guardar(pais1);
 		pais2 = (Pais) service.guardar(pais2);

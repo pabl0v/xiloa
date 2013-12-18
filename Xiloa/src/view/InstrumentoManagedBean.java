@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.event.ActionEvent;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 import model.Contacto;
 import model.Guia;
@@ -79,7 +80,6 @@ public class InstrumentoManagedBean implements Serializable {
 	
 	public void setIdCertificacion(Long id){
 		this.idCertificacion = id;
-		System.out.println("setIdCertificacion: "+id);
 	}
 	
 	public String getNombreCertificacion() {
@@ -88,7 +88,6 @@ public class InstrumentoManagedBean implements Serializable {
 	
 	public void setNombreCertificacion(String nombre){
 		this.nombreCertificacion = nombre;
-		System.out.println("setNombreCertificacion: "+nombre);
 	}
 
 	public Instrumento getInstrumento() {
@@ -179,17 +178,21 @@ public class InstrumentoManagedBean implements Serializable {
 		return "/modulos/planificacion/instrumentos?faces-redirect=true";
 	}
 		
-	public void guardarInstrumento(Instrumento instrumento){
+	public void guardarInstrumento(Instrumento instrumento){		
 		instrumento.setTipo(catalogoTiposInstrumento.get(selectedTipoInstrumento));
 		instrumento.setUnidad(selectedUnidad);
 		instrumento.setEntidadId(contacto.getEntidadId());
+
 		if(instrumento.isCualitativo()){
 			instrumento.setPuntajeMaximo(new Float(100));
 			instrumento.setPuntajeMinimo(new Float(100 - ((100/instrumento.getCantidadPreguntas())*instrumento.getRespuestasFallidas())));
 		}
+			
 		Instrumento i = (Instrumento) service.guardar(instrumento);
-		instrumentos.add(i);
+		instrumentos = service.getInstrumentos(controller.getEntidadUsuario());
 		setSelectedInstrumento(i);
+
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Instrumento registrado exitosamente"));			
 	}
 		
 	public void nuevoInstrumento(){
@@ -222,13 +225,14 @@ public class InstrumentoManagedBean implements Serializable {
 		this.guia = guia;
 	}
 		
-	//public void guardarGuia(Guia guia){
-	public void guardarGuia(ActionEvent actionEvent){
+	public void guardarGuia(Guia guia){		
 		if(guia.getInstrumento().isCualitativo()){
 			guia.setPuntaje(new Float(100/guia.getInstrumento().getCantidadPreguntas()));
 		}
+
 		service.guardar(guia);
 		setSelectedInstrumento(selectedInstrumento);
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Guia registrada exitosamente"));
 	}
 	
 	public List<Instrumento> getInstrumentos() {

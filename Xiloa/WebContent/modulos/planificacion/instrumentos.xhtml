@@ -8,13 +8,12 @@
     <h:head>
         <link type="text/css" rel="stylesheet" href="../../resources/css/instrumentos.css"></link>
         <script type="text/javascript">  
-			function handleLoginRequest(xhr, status, args) {  
+			function handleGuiaRequest(xhr, status, args) {  
 				if(args.validationFailed) {  
-					PF('dlg1').jq.effect("shake", { times:5 }, 100);  
-				} 
+					PF('dlg1').show();  
+				}
 				else {  
-					PF('dlg1').hide();  
-					$('#loginLink').fadeOut();  
+					PF('dlg1').show();  
 				}
 			}
 		</script>  
@@ -28,13 +27,13 @@
 		    <script type="text/javascript" src="../../resources/scripts/instrumentos.js"></script>
 		</div>
         <h2>Configuración de Instrumentos - <h:outputText value="#{instrumentoManagedBean.nombreCertificacion}" /> </h2>
-        <div id="contenedor_secciones">
+        <div id="contenedor_secciones">  
         
-		<p:growl id="growl" showDetail="true" />  
+		<p:growl id="growl" showDetail="true" life="3000" globalOnly="true" />
         
          <div class="seccion_edicion" style="width: 93%;">
 		          		<h:form id="instrumentos">
-		          		<p:commandButton value="Agregar Instrumento" style="margin-bottom: 5px" update=":instrumentoDialogo" action="#{instrumentoManagedBean.nuevoInstrumento}" onclick="PF('dlg2').show();"/>
+		          		<p:commandButton value="Agregar Instrumento" style="margin-bottom: 5px" update=":modalDialog1, :instrumentoDialogo, :modal2" action="#{instrumentoManagedBean.nuevoInstrumento}" onclick="PF('dlg2').show();"/>
 						<p:dataTable id="instrumentosDataTable" emptyMessage="No hay datos para mostrar" var="var" value="#{instrumentoManagedBean.instrumentos}" selection="#{instrumentoManagedBean.selectedInstrumento}" paginator="true" rows="4" rowKey="#{var.id}" selectionMode="single">
 							<p:ajax event="rowSelect" listener="#{instrumentoManagedBean.onRowSelect}" update=":guias:display"/>  
 							<p:ajax event="rowUnselect" listener="#{instrumentoManagedBean.onRowUnselect}" update=":guias:display"/>    
@@ -58,7 +57,7 @@
         
 		            <div class="seccion_edicion" style="width: 93%;margin-top:15px">
 		                <h:form styleClass="formulario_inline">
-		                    <p:commandButton value="Agregar guía" update=":guiaDialogo" action="#{instrumentoManagedBean.nuevaGuia}" onclick="PF('dlg1').show();"/> 
+		                    <p:commandButton value="Agregar guía" update=":guiaDialogo, :modal1" action="#{instrumentoManagedBean.nuevaGuia}" onclick="PF('dlg1').show();"/> 
 		                </h:form>
 						<div class="seccion_interna">
 						<h:form id="guias">
@@ -77,27 +76,32 @@
 		</div>
 	</div>
 
-	<p:dialog id="modalDialog1" styleClass="estilo_dialogoactividades" header="Edicion de Guia:" widgetVar="dlg1" modal="true" resizable="false" width="400" height="300">
+	<p:dialog id="modalDialog1" styleClass="estilo_dialogoactividades" header="Edicion de Guia:" widgetVar="dlg1" modal="true" resizable="false" width="400" height="380">
 		<div id="contenedor_dialogoactividades">
 		<h:panelGrid id="modal1" columns="3" cellpadding="4">
 		<h:form id="guiaDialogo"> 
 		  	<h:outputLabel styleClass="estilo_label" value="Pregunta:" />  
-            <p:inputText id="codigo1" value="#{instrumentoManagedBean.guia.pregunta}" />
+            <p:inputText id="codigo1" value="#{instrumentoManagedBean.guia.pregunta}" required="true" requiredMessage="La pregunta es requerida" /> 
+            <p:message for="codigo1" display="text"  />
             <br/>
             <h:outputLabel styleClass="estilo_label" value="Respuesta:" />
-            <p:inputText id="codigo2" value="#{instrumentoManagedBean.guia.respuesta}" />
+            <p:inputText id="codigo2" value="#{instrumentoManagedBean.guia.respuesta}" required="true" requiredMessage="La respuesta es requerida" />
+            <p:message for="codigo2" display="text"  />
             <br/>
             <h:outputLabel rendered="#{instrumentoManagedBean.guia.instrumento.cualitativo}" styleClass="estilo_label" value="Peso:" />
             <p:inputText id="codigo3a" rendered="#{instrumentoManagedBean.guia.instrumento.cualitativo}" disabled="#{instrumentoManagedBean.guia.instrumento.cualitativo}" value="#{instrumentoManagedBean.guia.pesoPregunta}" />
             <h:outputLabel rendered="#{!instrumentoManagedBean.guia.instrumento.cualitativo}" styleClass="estilo_label" value="Puntaje:" />
-            <p:inputText id="codigo3b" rendered="#{!instrumentoManagedBean.guia.instrumento.cualitativo}" value="#{instrumentoManagedBean.guia.puntaje}" />
+            <p:inputText id="codigo3b" rendered="#{!instrumentoManagedBean.guia.instrumento.cualitativo}" value="#{instrumentoManagedBean.guia.puntaje}" required="true" requiredMessage="El puntaje es requerido" validatorMessage="El puntaje debe ser entre 0 y 100" converterMessage="El puntaje debe ser numerico" >
+				<f:validateDoubleRange minimum="0" maximum="100" />
+            </p:inputText>
+			<p:message rendered="#{!instrumentoManagedBean.guia.instrumento.cualitativo}" for="codigo3b" display="text" />
             <br/>
             <h:outputLabel styleClass="estilo_label" value="Activo:" />
-			<p:selectBooleanCheckbox value="#{instrumentoManagedBean.guia.estatus}" required="true" requiredMessage="El estado es requerido"/>
+			<p:selectBooleanCheckbox value="#{instrumentoManagedBean.guia.estatus}" />
 			<br/>	
-			<div class="contenedor_botones" style="margin-top:32px;">
-	            <h:commandButton value="Cancelar" onclick="PF('dlg1').hide();"/> 
-				<h:commandButton value="Aceptar" oncomplete="handleDialogSubmit(xhr, status, args)" update=":guias:display, :growl" actionListener="#{instrumentoManagedBean.guardarGuia}" />
+			<div class="contenedor_botones" style="margin-top:40px;">
+	            <p:commandButton value="Cancelar" oncomplete="PF('dlg1').hide();" immediate="true" /> 
+				<p:commandButton value="Aceptar" oncomplete="if (!args.validationFailed) dlg1.hide()" update=":guias:display, :growl, :guiaDialogo" action="#{instrumentoManagedBean.guardarGuia(instrumentoManagedBean.guia)}" ajax="true" />
 			</div>
 		</h:form>
 		</h:panelGrid>
@@ -105,20 +109,22 @@
 	</p:dialog>	
 	
 	<div id="contenedor_dialogoactividades">
-	<h:panelGrid id="modal2" columns="2" cellpadding="5">
-	<p:dialog id="modalDialog2" styleClass="estilo_dialogoactividades" header="Edición de Instrumento:" widgetVar="dlg2" modal="true" resizable="false" width="360" height="450">
+	<p:dialog id="modalDialog2" styleClass="estilo_dialogoactividades" header="Edición de Instrumento:" widgetVar="dlg2" modal="true" resizable="false" width="450" height="450">
+		<h:panelGrid id="modal2" columns="3" cellpadding="5">
 		<h:form id="instrumentoDialogo">
 		  	<h:outputLabel styleClass="estilo_label" value="Instrumento:" />
-			<p:selectOneMenu id="selector_estatus1" required="true" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedTipoInstrumento}" >  
+			<p:selectOneMenu id="selector_estatus1" required="true" requiredMessage="Debe seleccionar el tipo de instrumento" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedTipoInstrumento}" >  
 				<f:selectItem itemLabel="Seleccione..." itemValue="" />
 				<f:selectItems value="#{instrumentoManagedBean.catalogoTiposInstrumento}" var="tipo" itemLabel="#{tipo.valor}" itemValue="#{tipo.id}" />
 			</p:selectOneMenu>
+			<p:message for="selector_estatus1" display="text"  />
             <br/>	
             <h:outputLabel styleClass="estilo_label" value="Unidad:" />
-			<p:selectOneMenu id="selector_estatus2" required="true" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedUnidad}" >  
+			<p:selectOneMenu id="selector_estatus2" required="true" requiredMessage="Debe seleccionar la unidad" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedUnidad}" >  
 				<f:selectItem itemLabel="Seleccione..." itemValue="" />
 				<f:selectItems value="#{instrumentoManagedBean.catalogoUnidades}" var="unidad" itemLabel="#{unidad.descripcion}" itemValue="#{unidad.id}" />
 			</p:selectOneMenu>
+			<p:message for="selector_estatus2" display="text" />
             <br/>
             <h:outputLabel styleClass="estilo_label" value="Cualitativo:" />
             <p:selectBooleanCheckbox value="#{instrumentoManagedBean.instrumento.cualitativo}">
@@ -127,31 +133,45 @@
             <br/> 
             <h:outputLabel styleClass="estilo_label" value="Codigo:" />
             <p:inputText id="codigo4" value="#{instrumentoManagedBean.instrumento.codigo}" required="true" requiredMessage="El código es requerido" />
+            <p:message for="codigo4" display="text"  />
             <br/>
             <h:outputLabel styleClass="estilo_label" value="Nombre:" />
 			<p:inputText id="codigo5" value="#{instrumentoManagedBean.instrumento.nombre}" required="true" requiredMessage="El nombre es requerido" />
+			<p:message for="codigo5" display="text"  />
 			<br/>
-			<h:panelGrid id="panelInstrumento" class="estilo_panelInstrumento" columns="2">
+			<h:panelGrid id="panelInstrumento" class="estilo_panelInstrumento" columns="3">
 	            <h:outputLabel rendered="#{!instrumentoManagedBean.instrumento.cualitativo}" id="codigo6" styleClass="estilo_label" value="Puntaje Mínimo:" />
-	            <p:inputText rendered="#{!instrumentoManagedBean.instrumento.cualitativo}" id="codigo7" value="#{instrumentoManagedBean.instrumento.puntajeMinimo}" required="true" requiredMessage="El puntaje mínimo es requerido" />
+	            <p:inputText rendered="#{!instrumentoManagedBean.instrumento.cualitativo}" id="codigo7" value="#{instrumentoManagedBean.instrumento.puntajeMinimo}" required="true" requiredMessage="El puntaje mínimo es requerido y numerico" validatorMessage="El puntaje debe ser entre 0 y 100" converterMessage="El puntaje debe ser numerico" >
+	            	<f:validateDoubleRange minimum="0" maximum="100" />
+	            </p:inputText>
+	            <p:message rendered="#{!instrumentoManagedBean.instrumento.cualitativo}" for="codigo7" display="text"  />	            
 	            <h:outputLabel rendered="#{!instrumentoManagedBean.instrumento.cualitativo}" id="codigo8" styleClass="estilo_label" value="Puntaje Máximo:" />
-				<p:inputText rendered="#{!instrumentoManagedBean.instrumento.cualitativo}" id="codigo9" value="#{instrumentoManagedBean.instrumento.puntajeMaximo}" required="true" requiredMessage="El puntaje máximo es requerido" />
+				<p:inputText rendered="#{!instrumentoManagedBean.instrumento.cualitativo}" id="codigo9" value="#{instrumentoManagedBean.instrumento.puntajeMaximo}" required="true" requiredMessage="El puntaje máximo es requerido y numerico" validatorMessage="El puntaje debe ser entre 0 y 100" converterMessage="El puntaje debe ser numerico" >
+					<f:validateDoubleRange minimum="0" maximum="100" />
+				</p:inputText>
+				<p:message rendered="#{!instrumentoManagedBean.instrumento.cualitativo}" for="codigo9" display="text"  />
 	            <h:outputLabel rendered="#{instrumentoManagedBean.instrumento.cualitativo}" id="codigo10" styleClass="estilo_label" value="No. de Preguntas:" />
-				<p:inputText rendered="#{instrumentoManagedBean.instrumento.cualitativo}" id="codigo11" value="#{instrumentoManagedBean.instrumento.cantidadPreguntas}" required="true" requiredMessage="El No. de preguntas es requerido" />
+				<p:inputText rendered="#{instrumentoManagedBean.instrumento.cualitativo}" id="codigo11" value="#{instrumentoManagedBean.instrumento.cantidadPreguntas}" required="true" requiredMessage="El No. de preguntas es requerido" converterMessage="El No. de preguntas debe ser numerico" >
+					<f:validateDoubleRange minimum="0" />
+				</p:inputText>
+				<p:message rendered="#{instrumentoManagedBean.instrumento.cualitativo}" for="codigo11" display="text"  />
 	            <h:outputLabel rendered="#{instrumentoManagedBean.instrumento.cualitativo}" id="codigo12" styleClass="estilo_label" value="No. de Fallos:" />
-				<p:inputText rendered="#{instrumentoManagedBean.instrumento.cualitativo}" id="codigo13" value="#{instrumentoManagedBean.instrumento.respuestasFallidas}" required="true" requiredMessage="El No. de fallos es requerido" />
+				<p:inputText rendered="#{instrumentoManagedBean.instrumento.cualitativo}" id="codigo13" value="#{instrumentoManagedBean.instrumento.respuestasFallidas}" required="true" requiredMessage="El No. de fallos es requerido" converterMessage="El No. de fallos debe ser numerico" >
+					<f:validateDoubleRange minimum="0" />
+				</p:inputText>	            	            
+				<p:message rendered="#{instrumentoManagedBean.instrumento.cualitativo}" for="codigo13" display="text"  />
 			</h:panelGrid>
 			<br/>
             <h:outputLabel styleClass="estilo_label" value="Activo:" />
-			<p:selectBooleanCheckbox value="#{instrumentoManagedBean.instrumento.estatus}" required="true" requiredMessage="El estado es requerido" />
+			<p:selectBooleanCheckbox value="#{instrumentoManagedBean.instrumento.estatus}" />
 			<br/>
 			<div class="contenedor_botones" style="margin-top:32px;">		
-	            <h:commandButton value="Cancelar" onclick="PF('dlg2').hide();"/> 
-				<h:commandButton value="Aceptar" oncomplete="if(!args.validationFailed) {dlg2.hide()} else {dlg2.show()}" update=":instrumentos:instrumentosDataTable" action="#{instrumentoManagedBean.guardarInstrumento(instrumentoManagedBean.instrumento)}" onclick="PF('dlg2').hide();"/>
+	            <p:commandButton value="Cancelar" onclick="PF('dlg2').hide();" immediate="true" /> 
+				<p:commandButton value="Aceptar" oncomplete="if(!args.validationFailed) {dlg2.hide()} else {dlg2.show()}" update=":instrumentos:instrumentosDataTable, :instrumentoDialogo" action="#{instrumentoManagedBean.guardarInstrumento(instrumentoManagedBean.instrumento)}" ajax="true" />
 			</div>
 		</h:form>
+		</h:panelGrid>
 	</p:dialog>
-	</h:panelGrid>
 	</div>
 </h:body>
 </html>

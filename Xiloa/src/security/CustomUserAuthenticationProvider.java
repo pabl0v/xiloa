@@ -46,7 +46,7 @@ public class CustomUserAuthenticationProvider implements AuthenticationProvider 
 			String passwordHash = DigestUtils.md5Hex(authentication.getCredentials().toString());
 			
 			if (!passwordHash.equals(usuario.getUsuarioPwd())) {
-				throw new BadCredentialsException("Contraseña incorrecta.");
+				throw new BadCredentialsException("Password incorrecto.");
 			}
 			
 			if(usuario != null)
@@ -106,7 +106,7 @@ public class CustomUserAuthenticationProvider implements AuthenticationProvider 
 			String passwordHash = DigestUtils.shaHex(authentication.getCredentials().toString());
 			
 			if (!passwordHash.equals(usuario.getUsuarioPwd())) {
-				throw new BadCredentialsException("Contraseña incorrecta.");
+				throw new BadCredentialsException("Password incorrecto.");
 			}
 			
 			service.registrarAcceso(usuario);
