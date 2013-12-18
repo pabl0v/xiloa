@@ -139,12 +139,12 @@
 			<p:inputText id="codigo5" value="#{instrumentoManagedBean.instrumento.nombre}" required="true" requiredMessage="El nombre es requerido" />
 			<p:message for="codigo5" display="text"  />
 			<br/>
-			<h:panelGrid id="panelInstrumento" class="estilo_panelInstrumento" columns="2">
+			<h:panelGrid id="panelInstrumento" class="estilo_panelInstrumento" columns="3">
 	            <h:outputLabel rendered="#{!instrumentoManagedBean.instrumento.cualitativo}" id="codigo6" styleClass="estilo_label" value="Puntaje Mínimo:" />
 	            <p:inputText rendered="#{!instrumentoManagedBean.instrumento.cualitativo}" id="codigo7" value="#{instrumentoManagedBean.instrumento.puntajeMinimo}" required="true" requiredMessage="El puntaje mínimo es requerido y numerico" validatorMessage="El puntaje debe ser entre 0 y 100" converterMessage="El puntaje debe ser numerico" >
 	            	<f:validateDoubleRange minimum="0" maximum="100" />
 	            </p:inputText>
-	            <p:message rendered="#{!instrumentoManagedBean.instrumento.cualitativo}" for="codigo7" display="text"  />
+	            <p:message rendered="#{!instrumentoManagedBean.instrumento.cualitativo}" for="codigo7" display="text"  />	            
 	            <h:outputLabel rendered="#{!instrumentoManagedBean.instrumento.cualitativo}" id="codigo8" styleClass="estilo_label" value="Puntaje Máximo:" />
 				<p:inputText rendered="#{!instrumentoManagedBean.instrumento.cualitativo}" id="codigo9" value="#{instrumentoManagedBean.instrumento.puntajeMaximo}" required="true" requiredMessage="El puntaje máximo es requerido y numerico" validatorMessage="El puntaje debe ser entre 0 y 100" converterMessage="El puntaje debe ser numerico" >
 					<f:validateDoubleRange minimum="0" maximum="100" />
@@ -158,7 +158,7 @@
 	            <h:outputLabel rendered="#{instrumentoManagedBean.instrumento.cualitativo}" id="codigo12" styleClass="estilo_label" value="No. de Fallos:" />
 				<p:inputText rendered="#{instrumentoManagedBean.instrumento.cualitativo}" id="codigo13" value="#{instrumentoManagedBean.instrumento.respuestasFallidas}" required="true" requiredMessage="El No. de fallos es requerido" converterMessage="El No. de fallos debe ser numerico" >
 					<f:validateDoubleRange minimum="0" />
-				</p:inputText>
+				</p:inputText>	            	            
 				<p:message rendered="#{instrumentoManagedBean.instrumento.cualitativo}" for="codigo13" display="text"  />
 			</h:panelGrid>
 			<br/>
