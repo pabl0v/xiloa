@@ -786,8 +786,7 @@ public class ExpedienteManagedBean implements Serializable  {
 			
 			if (contactoSelected != null) {		
 				this.setContactoExp(contactoSelected);
-				verEnviarSolicitud = false;				
-				FacesUtil.setParamBySession("candidato", null);
+				verEnviarSolicitud = false;					
 			} else{
 				userName = controller.getContacto().getUsuario();
 				if (userName.getContacto() != null)

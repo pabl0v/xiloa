@@ -67,11 +67,11 @@
 	    					     update=":formSolicitudes:dtSolicitud" disabled="#{dashBoardSolicitudesManagedBean.disableEnviarSolicitud}" />
              	</sec:authorize>  
              	
-             <p:splitButton value="Pre-Matricula" icon="ui-icon-print" title="Generar Formato Pre-Matricula" style="display:inline-block;"
-	        	           action="#{dashBoardSolicitudesManagedBean.runPreMatricula}"  update=":formSolicitudes:msgSolicitudes" >   
+             <p:splitButton value="Solicitud Candidato" icon="ui-icon-print" title="Generar Solicitud Candidato" style="display:inline-block;"
+	        	           action="#{dashBoardSolicitudesManagedBean.runSolicitudCandidato}"  update=":formSolicitudes:msgSolicitudes" >   
 	        	 <p:separator />         		   
-	       		 <p:menuitem value="Solicitud Candidato" icon="ui-icon-print" title="Generar Solicitud Candidato" style="display:inline-block;"  
-	       		             action="#{dashBoardSolicitudesManagedBean.runSolicitudCandidato}" update=":formSolicitudes:msgSolicitudes"  />
+	       		 <p:menuitem value="Pre-Matricula" icon="ui-icon-print" title="Generar Formato Pre-Matricula" style="display:inline-block;"  
+	       		             action="#{dashBoardSolicitudesManagedBean.runPreMatricula}" update=":formSolicitudes:msgSolicitudes"  />
 	       		             
 	       		 <p:menuitem value="Emisión Juicio" icon="ui-icon-print" title="Imprimir Emisión de Juicio y Reporte de Orientación" style="display:inline-block;"  
 	       		             action="#{dashBoardSolicitudesManagedBean.runEmisionJuicio}" update=":formSolicitudes:msgSolicitudes"  />

@@ -310,6 +310,16 @@
                               -->
                         </p:dataTable>                        
                     </p:tab>  
+                    
+                     <p:tab id="tabEvalUnidad" title="Evaluacion por Unidad" >  
+                         <p:dataTable emptyMessage="No hay datos"  var="uCL" value="#{expEvalManagedBean.listaEvalUnidad}"
+                         			  selection="#{expEvalManagedBean.selectedEvalUnidad}" rowKey="#{uCL}" 
+                         			  selectionMode="single" paginator="true" rows="4" >  
+                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{uCL.descripcionunidad}" /></p:column>  
+                             <p:column headerText="Estado"><h:outputText value="#{uCL.estado.valor}" /></p:column>       
+                             <p:column headerText="Aprobado"><p:selectBooleanCheckbox value="#{uCL.aprobado}" disabled="true" /></p:column>                            
+                        </p:dataTable>    
+                    </p:tab>
                 </p:tabView>    		
     	</div>
     	    	     	

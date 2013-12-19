@@ -131,4 +131,6 @@ public interface IService {
 	public boolean validaEvalUnidad(Solicitud solicitud, Long ucl);
 	public Evaluacion actualizaEvaluacion(Evaluacion evaluacion, boolean valida);
 	public EvaluacionUnidad getEvaluacionUnidadBySolicitudUCL(Solicitud solicitud, Long unidad);
+	public boolean validaEvaluacionByUnidad(Solicitud solicitud, Long ucl);
+	public List<EvaluacionUnidad> getListEvalUnidad(Long idSolicitud);
 }

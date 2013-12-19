@@ -18,7 +18,8 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @Entity(name = "evaluaciones_unidad")
 @Table(name = "evaluaciones_unidad", schema = "sccl")
 @NamedQueries({
-	@NamedQuery(name="EvaluacionUnidad.findAllBySolicitudUCL", query="select e from evaluaciones_unidad e where e.solicitud.id=?1 and e.unidad=?2")
+	@NamedQuery(name="EvaluacionUnidad.findAllBySolicitudUCL", query="select e from evaluaciones_unidad e where e.solicitud.id=?1 and e.unidad=?2"),
+	@NamedQuery(name="EvaluacionUnidad.findAllBySolicitud", query="select e from evaluaciones_unidad e where e.solicitud.id=?1 order by e.id desc")
 })
 public class EvaluacionUnidad implements Serializable {
 	
@@ -37,9 +38,20 @@ public class EvaluacionUnidad implements Serializable {
 	@Column(name = "evaluacion_ucl_id", nullable = false)
 	private Long unidad;
 	
+	@Column(name = "evaluacion_ucl_descripcion", nullable = true)
+	private String descripcionunidad;
+	
 	@Column(name = "evaluacion_unidad_aprobado", nullable = true)
 	private boolean aprobado = false;
 	
+	public String getDescripcionunidad() {
+		return descripcionunidad;
+	}
+
+	public void setDescripcionunidad(String descripcionunidad) {
+		this.descripcionunidad = descripcionunidad;
+	}
+
 	@ManyToOne
 	@JoinColumn(name="evaluacion_unidad_estado", nullable=false)	
 	private Mantenedor estado;
@@ -84,13 +96,14 @@ public class EvaluacionUnidad implements Serializable {
 		super();
 	}
 
-	public EvaluacionUnidad(Solicitud solicitud, Long unidad,
+	public EvaluacionUnidad(Solicitud solicitud, Long unidad, String descripcionunidad,
 			boolean aprobado, Mantenedor estado) {
 		super();
 		this.solicitud = solicitud;
 		this.unidad = unidad;
 		this.aprobado = aprobado;
 		this.estado = estado;
+		this.descripcionunidad = descripcionunidad;
 	}
 	
 	

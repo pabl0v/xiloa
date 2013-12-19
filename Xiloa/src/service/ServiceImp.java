@@ -1099,7 +1099,7 @@ public class ServiceImp implements IService {
 				if (idMatricula == null)
 					pasaConcluido =  false;
 				else {
-					pasaConcluido = (validaEvaluacion) ? validaEvaluacionAprobada(solicitud, false, null) : true;
+					pasaConcluido = (validaEvaluacion) ? validaEvaluacionByUnidad(solicitud, null) : true;
 				}
 				
 				
@@ -1201,13 +1201,16 @@ public class ServiceImp implements IService {
 					aprobado = false;
 					break;
 				}
-			}	
+			}
+			
+			boolean existeEUcl = validaEvaluacionByUnidad(solicitud, ucl);
+			
 			EvaluacionUnidad eUcl = null;
 			
-			eUcl = getEvaluacionUnidadBySolicitudUCL(solicitud, ucl);
-			if (eUcl == null){
+			if (existeEUcl == false){
 				Mantenedor estatusEval = this.getMantenedorById(29);
-				eUcl = new EvaluacionUnidad(solicitud, ucl, aprobado, estatusEval);
+				String     nombreUCL = getCompetenciaDescripcion(ucl);
+				eUcl = new EvaluacionUnidad(solicitud, ucl, nombreUCL, aprobado, estatusEval);
 				System.out.println("AGREGAR EL REGISTRO " + estatusEval.getValor());
 				eUcl = evaluacionUnidadDao.save(eUcl);				
 			}
@@ -1220,21 +1223,57 @@ public class ServiceImp implements IService {
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Evaluacion actualizaEvaluacion(Evaluacion evaluacion, boolean valida){
 		boolean val = false;
-		Evaluacion eval = null;
-		Solicitud solicitud = evaluacion.getSolicitud();
-		System.out.println("En el servicio, revisa si pasa a validar " + valida);		
-		if (valida) //Evaluacion Completada 
-			val = validaEvaluacionAprobada(solicitud, false, evaluacion.getUnidad());
+		Evaluacion eval = null;		
+		System.out.println("En el servicio, revisa si pasa a validar " + valida);
 		
 		eval = evaluacionDao.save(evaluacion);
 		
+		if (eval != null){
+			if (valida) //Evaluacion Completada 
+				val = validaEvaluacionAprobada(eval.getSolicitud(), false, eval.getUnidad());
+		}
 		return eval;
 		
 	}
 	
+	@Override
 	public EvaluacionUnidad getEvaluacionUnidadBySolicitudUCL(Solicitud solicitud, Long unidad){
 		Object [] objs =  new Object [] {solicitud.getId(), unidad};
 		return evaluacionUnidadDao.findOneByNamedQueryParam("EvaluacionUnidad.findAllBySolicitudUCL", objs);		
 	}
 	
+	@Override
+	public boolean validaEvaluacionByUnidad(Solicitud solicitud, Long ucl){
+		boolean existe = true;
+		Certificacion c = null;
+		EvaluacionUnidad eUcl = null;
+		c = solicitud.getCertificacion();
+				
+		if (ucl == null){ // Evalua por todas las unidades de competencia
+			List<Long> setUnidades =  getUnidadesByCertificacionId(c.getId());
+			
+			for(Long unidad : setUnidades){
+				eUcl = null;
+				
+				eUcl = getEvaluacionUnidadBySolicitudUCL(solicitud, unidad);
+				if (eUcl == null){
+					existe = false;
+					break;
+				}					
+			}
+		} else {//Evalua por unidad de compentencia
+			eUcl = null;
+			eUcl = getEvaluacionUnidadBySolicitudUCL(solicitud, ucl);
+			existe = (eUcl == null) ? false : true;
+		}
+		
+		return existe;
+	}
+	
+	@Override
+	public List<EvaluacionUnidad> getListEvalUnidad(Long idSolicitud){
+		Object [] objs =  new Object [] {idSolicitud};
+		return evaluacionUnidadDao.findAllByNamedQueryParam("EvaluacionUnidad.findAllBySolicitud", objs);		
+	}
+		
 }

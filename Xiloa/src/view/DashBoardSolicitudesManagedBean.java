@@ -332,12 +332,14 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 			
 			if (estadoActualSolicitud.getId() == inicialEstadoKey.intValue()){
 				FacesUtil.setParamBySession("dbSolicitudesBean", this.selectedSolicitud);
-				urlDestino = "/modulos/solicitudes/expediente?faces-redirect=true";
+				FacesUtil.setParamBySession("candidato", null);
+				urlDestino = "/modulos/solicitudes/expediente?faces-redirect=true";				
 			} else if (estadoActualSolicitud.getId() == finalEstadoKey.intValue()) {
 				FacesUtil.setParamBySession("candidato", selectedSolicitud.getContacto());
 				urlDestino = "/modulos/solicitudes/expediente?faces-redirect=true";
 			}else {
 				FacesUtil.setParamBySession("dbSolicitudesBean", this.selectedSolicitud);
+				FacesUtil.setParamBySession("candidato", null);
 				urlDestino = "/modulos/solicitudes/expediente_evaluacion?faces-redirect=true";
 			}
 		} 	
@@ -486,9 +488,30 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
     }
     
     public void runEmisionJuicio() throws Exception{
-    	runReporte("sub_rptEmisionJuicio", false);
-    	String rptNombre = "rptEmisionJuicio";
-    	runReporte(rptNombre, true);    	
+    	Map<String,Object> params = new HashMap<String,Object>();
+    	Certificacion cert = null;
+    	String rptNombre = "emision_juicio";    	
+    	    	
+    	if (this.selectedSolicitud != null){
+    		
+    		cert = this.selectedSolicitud.getCertificacion();
+    		
+    		params.put("idSolicitud",this.selectedSolicitud.getId());
+    		
+    		if (cert.getEvaluador() != null){
+    			params.put("idEvaluador",cert.getEvaluador().getId());
+    			
+    			if (cert.getVerificador() != null){
+        			params.put("idVerificador", cert.getVerificador().getId());
+        			service.imprimirReporte(rptNombre, params, Global.EXPORT_PDF, true);
+    			} else
+    				FacesUtil.getMensaje("SCCL - Mensaje: ", "No existen datos del verificador. Favor comuníquese al Departamento de Informatica del INATEC.", true);
+    			
+    		} else
+    			FacesUtil.getMensaje("SCCL - Mensaje: ", "No existen datos del evaluador. Favor comuníquese al Departamento de Informatica del INATEC.", true);
+    		    		
+    	}else
+    		FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe seleccionar una solicitud.", true);
     }
     
     public void runCertificado() throws Exception{
@@ -525,6 +548,9 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
     		
     		if (cert.getEvaluador() != null)
     			params.put("idEvaluador",cert.getEvaluador().getId());
+    		
+    		if (cert.getVerificador() != null)
+    			params.put("idVerificador", cert.getVerificador().getId());
     		
     		service.imprimirReporte(nombreReporte, params, Global.EXPORT_PDF, desplegar);
     	}else

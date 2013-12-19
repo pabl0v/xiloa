@@ -21,6 +21,7 @@ import model.Archivo;
 import model.Certificacion;
 import model.Contacto;
 import model.Evaluacion;
+import model.EvaluacionUnidad;
 import model.Instrumento;
 import model.Laboral;
 import model.Mantenedor;
@@ -137,6 +138,10 @@ public class ExpEvalManagedBean implements Serializable  {
 	
 	private String tipoEstadosPortafolio;
 	
+	private List<EvaluacionUnidad> listaEvalUnidad;
+	
+	private EvaluacionUnidad selectedEvalUnidad;
+	
 	public ExpEvalManagedBean() {
 		super();
 		
@@ -169,10 +174,33 @@ public class ExpEvalManagedBean implements Serializable  {
 		listPaises = new ArrayList<SelectItem> ();
 		listGenero = new ArrayList<SelectItem> ();
 				
-		nuevoLaboral = new Laboral();		
+		nuevoLaboral = new Laboral();
+		
+		listaEvalUnidad = new ArrayList<EvaluacionUnidad> ();
+		selectedEvalUnidad = null;
 		
 	}	
 	
+	public EvaluacionUnidad getSelectedEvalUnidad() {
+		return selectedEvalUnidad;
+	}
+
+	public void setSelectedEvalUnidad(EvaluacionUnidad selectedEvalUnidad) {
+		this.selectedEvalUnidad = selectedEvalUnidad;
+	}
+
+	public List<EvaluacionUnidad> getListaEvalUnidad() {
+		if (this.solicitudExp != null){
+			List<EvaluacionUnidad> lista = service.getListEvalUnidad(this.solicitudExp.getId());
+			listaEvalUnidad = lista;
+		}
+		return listaEvalUnidad;
+	}
+
+	public void setListaEvalUnidad(List<EvaluacionUnidad> listaEvalUnidad) {
+		this.listaEvalUnidad = listaEvalUnidad;
+	}
+
 	public boolean isDisabledConcluido() {
 		return disabledConcluido;
 	}
