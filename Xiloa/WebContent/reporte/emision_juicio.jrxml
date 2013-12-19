@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="emision_juicio" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="182"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
 	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
@@ -123,49 +123,49 @@ sccl.contactos ct on s.contacto_id = ct.contacto_id inner join sccl.certificacio
 					<text><![CDATA[DATOS GENERALES DE LA CALIFICACION]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="true">
-					<reportElement style="Detail" positionType="Float" x="2" y="134" width="293" height="18"/>
+					<reportElement style="Detail" positionType="Float" x="2" y="134" width="293" height="33"/>
 					<textElement>
-						<font size="14"/>
+						<font size="12"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{titulo_calificacion}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement style="Detail" positionType="Float" x="295" y="134" width="112" height="18"/>
 					<textElement textAlignment="Center">
-						<font size="14"/>
+						<font size="12"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{codigo}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true">
 					<reportElement style="Detail" positionType="Float" x="407" y="134" width="148" height="18"/>
 					<textElement>
-						<font size="14"/>
+						<font size="12"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{nivel_competencia}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement style="Column header" x="295" y="116" width="112" height="18" forecolor="#000000"/>
 					<textElement>
-						<font isBold="false"/>
+						<font size="12" isBold="false"/>
 					</textElement>
 					<text><![CDATA[Código]]></text>
 				</staticText>
 				<staticText>
 					<reportElement style="Column header" x="407" y="116" width="148" height="18" forecolor="#000000"/>
 					<textElement>
-						<font isBold="false"/>
+						<font size="12" isBold="false"/>
 					</textElement>
 					<text><![CDATA[Nivel de Competencia]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="2" y="116" width="293" height="18"/>
 					<textElement>
-						<font fontName="Times New Roman" size="14"/>
+						<font fontName="Times New Roman" size="12"/>
 					</textElement>
 					<text><![CDATA[Titulo de la Calificación]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="167" width="555" height="20" forecolor="#666666"/>
+					<reportElement x="0" y="167" width="555" height="19" forecolor="#666666"/>
 					<textElement>
 						<font fontName="Arial" size="12" isBold="true" isItalic="true"/>
 					</textElement>
@@ -293,14 +293,14 @@ sccl.contactos ct on s.contacto_id = ct.contacto_id inner join sccl.certificacio
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="31" splitType="Stretch">
+		<band height="18" splitType="Stretch">
 			<frame>
 				<reportElement style="Row" mode="Opaque" x="2" y="0" width="551" height="18"/>
 			</frame>
 			<textField isStretchWithOverflow="true">
-				<reportElement style="Detail" positionType="Float" x="0" y="0" width="555" height="31"/>
+				<reportElement style="Detail" positionType="Float" x="0" y="0" width="555" height="18"/>
 				<textElement>
-					<font size="14"/>
+					<font size="12"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{ucl}]]></textFieldExpression>
 			</textField>

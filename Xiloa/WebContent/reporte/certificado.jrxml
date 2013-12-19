@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="certificado" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="63"/>
+	<property name="ireport.y" value="126"/>
 	<parameter name="idSolicitud" class="java.lang.Long"/>
 	<parameter name="idCentro" class="java.lang.String"/>
 	<parameter name="logoinatec" class="java.lang.String"/>
@@ -86,15 +86,17 @@ where s.solicitud_id = $P{idSolicitud}
 	<columnHeader>
 		<band height="101" splitType="Stretch">
 			<textField>
-				<reportElement x="75" y="4" width="570" height="20"/>
+				<reportElement x="2" y="4" width="750" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{candidato_nombre}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="75" y="30" width="570" height="20"/>
-				<textElement/>
+				<reportElement x="2" y="30" width="749" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
 				<text><![CDATA[Ha sido Evaluado en la Norma Técnica de Competencia Laboral]]></text>
 			</staticText>
 			<textField>
@@ -116,7 +118,7 @@ where s.solicitud_id = $P{idSolicitud}
 	<detail>
 		<band height="26" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="3" width="751" height="20"/>
+				<reportElement x="41" y="3" width="710" height="20"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
@@ -173,112 +175,112 @@ where s.solicitud_id = $P{idSolicitud}
 				<reportElement x="412" y="98" width="318" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="12" y="103" width="225" height="20"/>
+				<reportElement x="12" y="101" width="225" height="20"/>
 				<textElement/>
 				<text><![CDATA[Director(a) Centro Evaluador]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="412" y="103" width="225" height="20"/>
+				<reportElement x="412" y="100" width="225" height="20"/>
 				<textElement/>
 				<text><![CDATA[Director(a) General de Formación Profesional]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="121" y="124" width="75" height="20"/>
+				<reportElement x="514" y="122" width="75" height="20"/>
 				<textElement>
 					<font isUnderline="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{registro}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="12" y="124" width="100" height="20"/>
+				<reportElement x="12" y="122" width="100" height="20"/>
 				<textElement/>
 				<text><![CDATA[Registrado bajo No.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="200" y="124" width="46" height="20"/>
+				<reportElement x="200" y="122" width="46" height="20"/>
 				<textElement/>
 				<text><![CDATA[folio]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="253" y="124" width="68" height="20"/>
+				<reportElement x="646" y="122" width="68" height="20"/>
 				<textElement>
 					<font isUnderline="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{folio}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="12" y="147" width="304" height="20"/>
+				<reportElement x="12" y="144" width="304" height="20"/>
 				<textElement/>
 				<text><![CDATA[En el libro de Registros de Certificación Ocupacional]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="12" y="171" width="44" height="20"/>
+				<reportElement x="12" y="166" width="44" height="20"/>
 				<textElement/>
 				<text><![CDATA[Fecha: ]]></text>
 			</staticText>
 			<line>
-				<reportElement x="64" y="187" width="51" height="1"/>
+				<reportElement x="64" y="182" width="51" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="120" y="171" width="23" height="20"/>
+				<reportElement x="120" y="166" width="23" height="20"/>
 				<textElement/>
 				<text><![CDATA[de]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="214" y="171" width="46" height="20"/>
+				<reportElement x="214" y="166" width="46" height="20"/>
 				<textElement/>
 				<text><![CDATA[de 20]]></text>
 			</staticText>
 			<line>
-				<reportElement x="152" y="188" width="51" height="1"/>
+				<reportElement x="152" y="183" width="51" height="1"/>
 			</line>
 			<line>
-				<reportElement x="266" y="186" width="51" height="1"/>
+				<reportElement x="266" y="181" width="51" height="1"/>
 			</line>
 			<line>
-				<reportElement x="676" y="189" width="51" height="1"/>
+				<reportElement x="676" y="184" width="51" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="412" y="150" width="317" height="20"/>
+				<reportElement x="412" y="145" width="317" height="20"/>
 				<textElement/>
 				<text><![CDATA[En el Libro de Registros de Certificación Ocupacional del INATEC]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="412" y="174" width="44" height="20"/>
+				<reportElement x="412" y="169" width="44" height="20"/>
 				<textElement/>
 				<text><![CDATA[Fecha: ]]></text>
 			</staticText>
 			<line>
-				<reportElement x="474" y="190" width="51" height="1"/>
+				<reportElement x="474" y="185" width="51" height="1"/>
 			</line>
 			<line>
-				<reportElement x="562" y="191" width="51" height="1"/>
+				<reportElement x="562" y="186" width="51" height="1"/>
 			</line>
 			<staticText>
-				<reportElement x="530" y="174" width="23" height="20"/>
+				<reportElement x="530" y="169" width="23" height="20"/>
 				<textElement/>
 				<text><![CDATA[de]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="624" y="174" width="46" height="20"/>
+				<reportElement x="624" y="169" width="46" height="20"/>
 				<textElement/>
 				<text><![CDATA[de 20]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="412" y="126" width="100" height="20"/>
+				<reportElement x="412" y="122" width="100" height="20"/>
 				<textElement/>
 				<text><![CDATA[Registrado bajo No.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="595" y="126" width="46" height="20"/>
+				<reportElement x="595" y="122" width="46" height="20"/>
 				<textElement/>
 				<text><![CDATA[folio]]></text>
 			</staticText>
 			<line>
-				<reportElement x="519" y="142" width="64" height="1"/>
+				<reportElement x="116" y="141" width="64" height="1"/>
 			</line>
 			<line>
-				<reportElement x="651" y="142" width="64" height="1"/>
+				<reportElement x="248" y="141" width="64" height="1"/>
 			</line>
 		</band>
 	</columnFooter>

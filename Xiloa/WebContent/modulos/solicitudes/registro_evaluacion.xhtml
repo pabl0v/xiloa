@@ -73,7 +73,7 @@
           		<p>Observaciones:</p>	      
           		<p:editor id="observacionReprobado" value="#{evaluacionManagedBean.observaciones}" height="150"/>	            	
 				<div style="margin-top:10px;">
-					<p:commandButton value="Cancelar" action="#{evaluacionManagedBean.cancelarRegistro}" >
+					<p:commandButton value="Retornar" action="#{evaluacionManagedBean.cancelarRegistro}" >
 						<f:setPropertyActionListener value="#{evaluacionManagedBean.solicitudEval}" target="#{expedienteManagedBean.solicitudExp}" />
 					</p:commandButton>
 					<p:commandButton value="Guardar" action="#{evaluacionManagedBean.guardarEvaluacion}" update=":formEvaluacion:msgEvaluacion, :formEvaluacion:dtGuiasEval" process="@form" />
