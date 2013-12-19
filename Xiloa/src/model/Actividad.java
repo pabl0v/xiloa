@@ -222,8 +222,7 @@ public class Actividad implements Serializable {
 	}
 
 	public Contacto getEjecutor() {
-		//return ejecutor;
-		return involucrados.get(2);
+		return ejecutor;
 	}
 
 	public void setEjecutor(Contacto ejecutor) {
@@ -235,6 +234,8 @@ public class Actividad implements Serializable {
 	}
 	
 	public void setInvolucrados(Contacto[] involucrados) {
+		setEjecutor(involucrados[0]);
+		this.involucrados.clear();
 		for(int i=0; i<involucrados.length; i++){
 			this.involucrados.put(involucrados[i].getRol().getId(), involucrados[i]);
 		}

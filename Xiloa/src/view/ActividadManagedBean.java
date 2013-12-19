@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 import model.Actividad;
 import model.Bitacora;
@@ -48,6 +50,7 @@ public class ActividadManagedBean implements Serializable {
 	
 	private List<Contacto> contactos;
 	private Contacto[] selectedContactos;
+	private Contacto selectedContacto;
 	
 	public ActividadManagedBean(){
 		super();
@@ -90,6 +93,15 @@ public class ActividadManagedBean implements Serializable {
 		this.actividad.setInvolucrados(selectedContactos);
 	}
 	
+	public Contacto getSelectedContacto() {
+		return selectedContacto;
+	}
+
+	public void setSelectedContacto(Contacto selectedContacto) {
+		this.selectedContacto = selectedContacto;
+		this.actividad.setInvolucrados(new Contacto[] {selectedContacto});
+	}
+
 	public void reset(){
 		this.actividad = new Actividad();
 		this.selectedEstatusActividad = 0;
@@ -110,8 +122,15 @@ public class ActividadManagedBean implements Serializable {
 	}
 
 	public void setSelectedEstatusActividad(Integer selectedEstatusActividad) {
-		this.selectedEstatusActividad = selectedEstatusActividad;
-		this.actividad.setEstado(catalogoEstatusActividad.get(selectedEstatusActividad));
+		
+		if(selectedEstatusActividad == 11 && (actividad.getInvolucrados().isEmpty() || actividad.getFechaInicial() == null || actividad.getFechaFinal() == null )){
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN , "", "Debe completar las fechas y los involucrados"));
+		}
+		else{
+		
+			this.selectedEstatusActividad = selectedEstatusActividad;
+			this.actividad.setEstado(catalogoEstatusActividad.get(selectedEstatusActividad));
+		}
 	}
 	
 	public Actividad getActividad(){
@@ -185,8 +204,12 @@ public class ActividadManagedBean implements Serializable {
 	}
 
 	public String guardar(Actividad actividad){
+				
 		actividad.setEstado(catalogoEstatusActividad.get(selectedEstatusActividad));
 		actividad = (Actividad)service.guardar(actividad);
+		
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Actividad actualizada exitosamente"));
+		
 		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
 	}
 	

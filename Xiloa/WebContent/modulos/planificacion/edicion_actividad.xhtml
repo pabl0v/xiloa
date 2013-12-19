@@ -19,6 +19,9 @@
 	    	<script type="text/javascript" src="../../resources/scripts/edicion_actividad.js"></script>
 		</div>    
         <h2>Actividad: <h:outputText value="#{actividadManagedBean.actividad.nombre}" /></h2>
+        
+        <p:growl id="growl" showDetail="true" life="3000" globalOnly="true" />
+        
         <h:form id="form_global">
         <div id="contenedor_secciones">
             <div class="seccion_edicion" style="height:140px;">
@@ -75,9 +78,10 @@
 	                <p>Tipo de actividad: <b><h:outputText value="#{actividadManagedBean.actividad.tipo.valor}" /></b></p>
                 	<br/>                    
                 	<p>Estatus:</p>
-                	<p:selectOneMenu style="position:relative;top:7px;margin-left:62px;width:190px;" id="estatus" value="#{actividadManagedBean.selectedEstatusActividad}">  
+                	<p:selectOneMenu style="position:relative;top:7px;margin-left:62px;width:190px;" id="estatus" value="#{actividadManagedBean.selectedEstatusActividad}" >  
 	                   <f:selectItem itemLabel="Seleccione..." itemValue="" />  
-	                   <f:selectItems value="#{actividadManagedBean.catalogoEstatusActividad}" var="estatus" itemLabel="#{estatus.valor}" itemValue="#{estatus.id}" />  
+	                   <f:selectItems value="#{actividadManagedBean.catalogoEstatusActividad}" var="estatus" itemLabel="#{estatus.valor}" itemValue="#{estatus.id}" />
+	                   <p:ajax update="growl" event="valueChange" listener="#{actividadManagedBean.catalogoEstatusActividad}"></p:ajax>   
 	                </p:selectOneMenu>
             </div>
             <div class="seccion_edicion" style="position: relative;top: -150px;">
@@ -88,7 +92,7 @@
             </div>
             <div class="seccion_edicion" style="height:30px;">
                     <p:commandButton value="Cancelar" action="#{actividadManagedBean.cancelar}"/> 
-                    <p:commandButton value="Aceptar" action="#{actividadManagedBean.guardar(actividadManagedBean.actividad)}"/> 
+                    <p:commandButton value="Aceptar" action="#{actividadManagedBean.guardar(actividadManagedBean.actividad)}" update="growl" /> 
             </div>
         </div>
         </h:form>        
@@ -97,7 +101,7 @@
      <p:dialog id="modalIntegrantes" styleClass="estilo_dialogoactividades" header="Agregar involucrados:" widgetVar="dlg1" modal="true" resizable="false" width="550" height="400">
      	<h:form>
      		<h3>Agregue intregantes:</h3>
-     		 <p:dataTable emptyMessage="No hay datos para mostrar"  var="contacto" value="#{actividadManagedBean.contactos}" rowKey="#{contacto.id}" selection="#{actividadManagedBean.selectedContactos}" selectionMode="multiple">  
+     		 <p:dataTable emptyMessage="No hay datos para mostrar"  var="contacto" value="#{actividadManagedBean.contactos}" rowKey="#{contacto.id}" selection="#{actividadManagedBean.selectedContacto}" selectionMode="single">  
                         <p:column headerText="Nombre"><h:outputText value="#{contacto.nombreCompleto}" /></p:column>  
                         <p:column headerText="Funcion"><h:outputText value="#{contacto.rol.descripcion}" /></p:column>  
                         <p:column headerText="Correo electronico"><h:outputText value="#{contacto.correo1}" /></p:column>  

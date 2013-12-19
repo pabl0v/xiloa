@@ -5,6 +5,10 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+	<!--
+		archivos de configuracion de spring y spring security 
+	 -->
         
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
@@ -24,6 +28,8 @@
 	<listener>
 		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
 	</listener>
+
+	<!-- Listener de JSF -->
 	
 	<listener>
     	<listener-class>com.sun.faces.config.ConfigureListener</listener-class>
