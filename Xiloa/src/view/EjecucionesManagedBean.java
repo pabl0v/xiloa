@@ -62,6 +62,7 @@ public class EjecucionesManagedBean implements Serializable {
 	}
 
 	public List<Actividad> getActividades(){
+		this.actividades = service.getActividadesByEntidadId(controller.getEntidadUsuario());
 		return this.actividades;
 	}	
 	

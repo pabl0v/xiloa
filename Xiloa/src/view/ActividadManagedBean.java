@@ -188,6 +188,12 @@ public class ActividadManagedBean implements Serializable {
 		this.selectedEstatusActividad = actividad.getEstado().getId();
 		return "/modulos/planificacion/bitacoras?faces-redirect=true";
 	}
+	
+	public void completarActividad(Actividad actividad){
+		this.actividad = actividad;
+		this.actividad.setEstado(service.getMantenedorById(39));
+		this.actividad = (Actividad) service.guardar(this.actividad);
+	}
 		
 	public String cancelar(){
 		actividad = new Actividad();

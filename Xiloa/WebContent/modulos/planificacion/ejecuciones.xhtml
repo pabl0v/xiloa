@@ -30,8 +30,10 @@
                         <p:column headerText="Fecha programada"><h:outputText value="#{ejecucion.fechaInicial}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>                
                         <p:column filterBy="#{ejecucion.estado.valor}" headerText="Estatus" filterOptions="#{ejecucionesManagedBean.estatusActividad}" filterMatchMode="exact"><h:outputText value="#{ejecucion.estado.valor}" /></p:column>
 						<p:column style="width:4%" rendered="#{sec:areAnyGranted('ROLE_RIGHT_AGREGAR_BITACORAS')}">
-							<p:commandButton id="editarButton" action="#{actividadManagedBean.ejecuciones(ejecucionesManagedBean.selectedActividad)}" icon="ui-icon-pencil" title="Editar">
-							</p:commandButton>
+							<p:commandButton id="estatusButton" action="#{actividadManagedBean.completarActividad(ejecucionesManagedBean.selectedActividad)}" icon="ui-icon-pencil" title="Completar actividad" update=":form:ejecuciones" />
+						</p:column>
+						<p:column style="width:4%" rendered="#{sec:areAnyGranted('ROLE_RIGHT_AGREGAR_BITACORAS')}">
+							<p:commandButton id="editarButton" action="#{actividadManagedBean.ejecuciones(ejecucionesManagedBean.selectedActividad)}" icon="ui-icon-pencil" title="Agregar bitacora" />
 						</p:column>
                 </p:dataTable>
             </h:form>
