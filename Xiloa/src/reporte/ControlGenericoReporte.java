@@ -87,7 +87,7 @@ public class ControlGenericoReporte implements java.io.Serializable{
 		Map<String,Object> parametro = params;
 	try {	    
 		parametro.put("logoinatec", new String("../../resources/imagenes/logo INATEC.png")); //Parametro que contiene la ubicacion del logo de INATEC
-		reportFile = path  + "\\" + nombreReporte;		
+		reportFile = path  + "/" + nombreReporte;		
 		System.out.println("Imprime el reporte: " + reportFile);
 		formatoAplicacion = getContentType(formato);		
 		exportMode = formato;
