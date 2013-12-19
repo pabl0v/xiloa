@@ -317,21 +317,29 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		Mantenedor estadoActualSolicitud = null;
 		
 		Integer inicialEstadoKey = null;
+		Integer finalEstadoKey = null;
 		Mantenedor estadoInicial = null;
-		
-		FacesUtil.setParamBySession("dbSolicitudesBean", this.selectedSolicitud);		
-		
+		Mantenedor estadoFinal = null;
+				
 		estadoActualSolicitud = this.selectedSolicitud.getEstatus();
 		
 		if (estadoActualSolicitud != null) {
 			estadoInicial = service.getMantenedorMinByTipo(estadoActualSolicitud.getTipo());
+			estadoFinal = service.getMantenedorMaxByTipo(estadoActualSolicitud.getTipo());
 			
 			inicialEstadoKey = estadoInicial.getId();
+			finalEstadoKey = estadoFinal.getId();
 			
-			if (estadoActualSolicitud.getId() == inicialEstadoKey.intValue())
+			if (estadoActualSolicitud.getId() == inicialEstadoKey.intValue()){
+				FacesUtil.setParamBySession("dbSolicitudesBean", this.selectedSolicitud);
 				urlDestino = "/modulos/solicitudes/expediente?faces-redirect=true";
-			else 
+			} else if (estadoActualSolicitud.getId() == finalEstadoKey.intValue()) {
+				FacesUtil.setParamBySession("candidato", selectedSolicitud.getContacto());
+				urlDestino = "/modulos/solicitudes/expediente?faces-redirect=true";
+			}else {
+				FacesUtil.setParamBySession("dbSolicitudesBean", this.selectedSolicitud);
 				urlDestino = "/modulos/solicitudes/expediente_evaluacion?faces-redirect=true";
+			}
 		} 	
 		
 		return urlDestino;
@@ -507,10 +515,14 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	    
     public void runReporte(String nombreReporte, boolean desplegar) throws Exception {
     	Map<String,Object> params = new HashMap<String,Object>();
-    	Certificacion cert = this.selectedSolicitud.getCertificacion();
+    	Certificacion cert = null;
     	
     	if (this.selectedSolicitud != null){
+    		
+    		cert = this.selectedSolicitud.getCertificacion();
+    		
     		params.put("idSolicitud",this.selectedSolicitud.getId());
+    		
     		if (cert.getEvaluador() != null)
     			params.put("idEvaluador",cert.getEvaluador().getId());
     		

@@ -49,7 +49,7 @@
 			    <div style="display:inline-block;margin-left:7px;">
 					<p:growl id="growlFechaEval" showDetail="true"/>
 					<p>Fecha:</p>					
-					<p:calendar id="popupBtnFechaEval" value="#{evaluacionManagedBean.fechaEvaluacion}" pattern="dd/mm/yyyy" showOn="button">
+					<p:calendar id="popupBtnFechaEval" value="#{evaluacionManagedBean.fechaEvaluacion}" pattern="dd/MM/yyyy" showOn="button">
 						<p:ajax event="dateSelect" update="growlFechaEval" />
 					</p:calendar>					
 				</div>					

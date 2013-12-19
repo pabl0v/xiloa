@@ -27,6 +27,7 @@
 	<parameter name="certificacionid" class="java.lang.Long"/>
 	<parameter name="idCentro" class="java.lang.Integer"/>
 	<parameter name="idEstado" class="java.lang.Integer"/>
+	<parameter name="logoinatec" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[select c.certificacion_nombre as cert_nombre,
        c.certificacion_ifp_nombre as centro,
@@ -189,7 +190,7 @@ where (c.certificacion_id = $P{certificacionid} or $P{certificacionid} is null)
 			</textField>
 			<image>
 				<reportElement x="718" y="4" width="78" height="43"/>
-				<imageExpression class="java.lang.String"><![CDATA["C:\\Miriam\\logo INATEC.png"]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA[$P{logoinatec}]]></imageExpression>
 			</image>
 		</band>
 	</title>

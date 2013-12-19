@@ -5,6 +5,7 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="idCentro" class="java.lang.Integer"/>
 	<parameter name="idEstado" class="java.lang.Integer"/>
+	<parameter name="logoinatec" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[select c.certificacion_ifp_nombre as centro_nombre,
        c.certificacion_nombre as curso_nombre,
@@ -88,7 +89,7 @@ where (c.certificacion_ifp_id =$P{idCentro} or $P{idCentro}  is null)
 			</textField>
 			<image>
 				<reportElement x="653" y="4" width="95" height="45"/>
-				<imageExpression class="java.lang.String"><![CDATA["C:\\Miriam\\logo INATEC.png"]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA[$P{logoinatec}]]></imageExpression>
 			</image>
 		</band>
 	</title>

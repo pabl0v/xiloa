@@ -2,9 +2,10 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="certificado" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="63"/>
 	<parameter name="idSolicitud" class="java.lang.Long"/>
 	<parameter name="idCentro" class="java.lang.String"/>
+	<parameter name="logoinatec" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[select c.certificacion_nombre as curso_nombre,
        uc.nombre_completo as candidato_nombre,
@@ -20,13 +21,16 @@
        ld.tomo,
        ld.registro,
        ld.folio
-from sccl.solicitudes s, sccl.certificaciones c, sccl.contactos uc, sccl.certificacion_unidades u, registro_cobranza.cu_cat_uc un,
-     scert.tramites_d td, scert.tramites_e te, scert.libro_detalle ld
+from sccl.solicitudes s, sccl.certificaciones c, sccl.contactos uc, sccl.certificacion_unidades u, sccl.evaluaciones_unidad eu,
+     registro_cobranza.cu_cat_uc un, scert.tramites_d td, scert.tramites_e te, scert.libro_detalle ld
 where s.solicitud_id = $P{idSolicitud}
  and uc.contacto_id = s.contacto_id
  and c.certificacion_id = s.certificacion_id
  and u.certificacion_id = c.certificacion_id
- and un.id = u.unidad_id
+ and eu.evaluacion_unidad_solicitud_id = s.solicitud_id
+ and eu.evaluacion_ucl_id = u.unidad_id
+ and eu.evaluacion_unidad_aprobado = true
+ and un.id = eu.evaluacion_ucl_id
  and td.id_matricula = s.id_matricula
  and te.centroid = $P{idCentro}
  and td.no_tramite = te.no_tramite
@@ -64,7 +68,7 @@ where s.solicitud_id = $P{idSolicitud}
 			</staticText>
 			<image>
 				<reportElement x="616" y="4" width="135" height="57"/>
-				<imageExpression class="java.lang.String"><![CDATA["C:\\Miriam\\logo INATEC.png"]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA[$P{logoinatec}]]></imageExpression>
 			</image>
 		</band>
 	</title>

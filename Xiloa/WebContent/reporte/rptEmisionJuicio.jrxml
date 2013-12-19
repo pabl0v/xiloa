@@ -17,6 +17,7 @@
 		<defaultValueExpression><![CDATA["D:\\CENICSA\\INATEC\\Reportes\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="idSolicitud" class="java.lang.Long"/>
+	<parameter name="logoinatec" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[select s.solicitud_id, c.certificacion_ifp_nombre as centro_evaluador, ct.nombre_completo as nombre_candidato, e.evaluador, v.verificador, c.certificacion_descripcion as titulo_calificacion, c.certificacion_curso_id as codigo,c.certificacion_nivel_competencia as nivel_competencia from (select cts.nombre_completo as evaluador from sccl.contactos cts where contacto_id = 1) e, (select cts.nombre_completo as verificador from sccl.contactos cts where contacto_id = 2) v,sccl.solicitudes s  inner join sccl.certificaciones c on s.certificacion_id = c.certificacion_id inner join sccl.contactos ct on s.contacto_id = ct.contacto_id where s.solicitud_id = $P{idSolicitud}]]>
 	</queryString>
@@ -62,7 +63,7 @@
 			</frame>
 			<image>
 				<reportElement x="451" y="1" width="104" height="94"/>
-				<imageExpression class="java.lang.String"><![CDATA["C:\\Miriam\\logo INATEC.png"]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA[$P{logoinatec}]]></imageExpression>
 			</image>
 			<textField pattern="EEEEE dd MMMMM yyyy">
 				<reportElement x="411" y="95" width="144" height="20" forecolor="#000000"/>

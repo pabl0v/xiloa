@@ -1184,7 +1184,7 @@ public class ExpEvalManagedBean implements Serializable  {
 			}
 			//Boton Proceso Concluido
 			case 5: {
-				if (service.validaProcesoConcluido(sol, false))
+				if (service.validaProcesoConcluido(sol, true))
 					this.setDisabledConcluido(false);
 				else
 					this.setDisabledConcluido(true);
@@ -1625,7 +1625,7 @@ public class ExpEvalManagedBean implements Serializable  {
     	if (cert.getEvaluador() != null){
     		params.put("idSolicitud",this.solicitudExp.getId());	
     		params.put("idEvaluador",cert.getEvaluador().getId());
-    		
+    		    		
         	service.imprimirReporte(nombreReporte, params, Global.EXPORT_PDF, true);
     	}else
     		FacesUtil.getMensaje("Mensaje SCCL ", "Error al consultar los datos del evaluador. Favor comuníquese con el Departamento de Tecnología del INATEC", true);

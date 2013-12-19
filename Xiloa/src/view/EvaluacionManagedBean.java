@@ -551,6 +551,7 @@ public class EvaluacionManagedBean implements Serializable {
 			eval = selectedEvaluacion;
 			estadoEval = eval.getEstado();
 			Integer  puntajeEvaluacion = eval.getPuntaje();
+			validaEvalbyUnidad = true;
 			
 			if (this.aprobado == true){
 				if (puntajeEvaluacion == 0){
@@ -565,11 +566,9 @@ public class EvaluacionManagedBean implements Serializable {
 						sigEstado = service.getMantenedorById(Integer.valueOf(estadoEval.getProximo()));
 						
 						if (sigEstado != null){
-							eval.setEstado(sigEstado);
-							validaEvalbyUnidad = true;
+							eval.setEstado(sigEstado);							
 						}
-					} else
-						validaEvalbyUnidad = true;
+					} 
 				}
 			}
 			

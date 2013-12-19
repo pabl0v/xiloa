@@ -2,8 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pre_matricula" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="122"/>
 	<parameter name="idSolicitud" class="java.lang.Long"/>
+	<parameter name="logoinatec" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[select s.fecha_registro as solicitud_fecha,
        s.fecha_matricula as solicitud_fmatricula,
@@ -82,7 +83,7 @@ where solicitud_id = $P{idSolicitud}
 			</staticText>
 			<image>
 				<reportElement x="501" y="1" width="71" height="52"/>
-				<imageExpression class="java.lang.String"><![CDATA["C:\\Miriam\\logo INATEC.png"]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA[$P{logoinatec}]]></imageExpression>
 			</image>
 		</band>
 	</title>
@@ -111,41 +112,49 @@ where solicitud_id = $P{idSolicitud}
 		<band height="61" splitType="Stretch">
 			<textField pattern="">
 				<reportElement x="11" y="9" width="111" height="20"/>
-				<textElement textAlignment="Center" lineSpacing="Single"/>
+				<textElement textAlignment="Center" lineSpacing="Single">
+					<font isUnderline="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{contacto_apellido1}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="130" y="9" width="111" height="20"/>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center">
+					<font isItalic="false" isUnderline="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{contacto_apellido2}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="248" y="9" width="111" height="20"/>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center">
+					<font isUnderline="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{contacto_nombre1}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="372" y="9" width="111" height="20"/>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center">
+					<font isUnderline="true"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{contacto_nombre2}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="14" y="34" width="100" height="20"/>
+				<reportElement x="14" y="32" width="100" height="20"/>
 				<textElement/>
 				<text><![CDATA[Primer apellido]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="134" y="34" width="100" height="20"/>
+				<reportElement x="134" y="32" width="100" height="20"/>
 				<textElement/>
 				<text><![CDATA[Segundo apellido]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="249" y="35" width="100" height="20"/>
+				<reportElement x="249" y="33" width="100" height="20"/>
 				<textElement/>
 				<text><![CDATA[Primer nombre]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="376" y="35" width="100" height="20"/>
+				<reportElement x="376" y="33" width="100" height="20"/>
 				<textElement/>
 				<text><![CDATA[Segundo nombre]]></text>
 			</staticText>

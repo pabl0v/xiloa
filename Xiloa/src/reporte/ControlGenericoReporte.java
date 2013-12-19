@@ -10,11 +10,9 @@ import java.util.Map;
 import javax.faces.context.ExternalContext;
 
 import org.primefaces.context.RequestContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import service.IService;
 import support.FacesUtil;
 import util.Global;
 import net.sf.jasperreports.engine.JRExporter;
@@ -88,6 +86,7 @@ public class ControlGenericoReporte implements java.io.Serializable{
 		Connection jdbcConnection = null;
 		Map<String,Object> parametro = params;
 	try {	    
+		parametro.put("logoinatec", new String("../../resources/imagenes/logo INATEC.png")); //Parametro que contiene la ubicacion del logo de INATEC
 		reportFile = path  + "\\" + nombreReporte;		
 		System.out.println("Imprime el reporte: " + reportFile);
 		formatoAplicacion = getContentType(formato);		

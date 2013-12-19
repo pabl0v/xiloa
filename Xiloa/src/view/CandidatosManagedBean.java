@@ -92,6 +92,7 @@ public class CandidatosManagedBean implements Serializable {
 		this.listaContactos = service.getContactosByParam("Contacto.findAllPortafolio", objs);
 		
 		FacesUtil.setParamBySession("candidato", null);
+		FacesUtil.setParamBySession("dbSolicitudesBean", null);
 		
 	}
 	

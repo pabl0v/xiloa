@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="solicitud_candidato" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="29"/>
+	<property name="ireport.y" value="484"/>
 	<parameter name="idSolicitud" class="java.lang.Long"/>
+	<parameter name="logoinatec" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[select s.fecha_registro as solicitud_fecha,
        s.experiencia as solicitud_experiencia,
@@ -53,12 +54,12 @@ where solicitud_id = $P{idSolicitud}
 			</textField>
 			<image>
 				<reportElement x="464" y="2" width="109" height="51"/>
-				<imageExpression class="java.lang.String"><![CDATA["C:\\Miriam\\logo INATEC.png"]]></imageExpression>
+				<imageExpression class="java.lang.String"><![CDATA[$P{logoinatec}]]></imageExpression>
 			</image>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="58" splitType="Stretch">
+		<band height="78" splitType="Stretch">
 			<staticText>
 				<reportElement x="119" y="0" width="274" height="20"/>
 				<textElement textAlignment="Center">
@@ -67,24 +68,24 @@ where solicitud_id = $P{idSolicitud}
 				<text><![CDATA[Solicitud del Candidato (a)]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="416" y="10" width="143" height="20"/>
+				<reportElement x="416" y="31" width="143" height="20"/>
 				<textElement>
 					<font isUnderline="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{solicitud_dia} + " / " + $F{solicitud_mes} + ", " + $F{solicitud_anio}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="307" y="34" width="100" height="20"/>
+				<reportElement x="307" y="55" width="100" height="20"/>
 				<textElement/>
 				<text><![CDATA[Lugar,]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="421" y="35" width="100" height="20"/>
+				<reportElement x="421" y="56" width="100" height="20"/>
 				<textElement/>
 				<text><![CDATA[dias, mes  año]]></text>
 			</staticText>
 			<line>
-				<reportElement x="308" y="29" width="108" height="1"/>
+				<reportElement x="308" y="50" width="108" height="1"/>
 			</line>
 		</band>
 	</pageHeader>
@@ -108,38 +109,91 @@ where solicitud_id = $P{idSolicitud}
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="264" splitType="Stretch">
+		<band height="314" splitType="Stretch">
 			<textField>
-				<reportElement x="19" y="12" width="540" height="56"/>
+				<reportElement x="19" y="8" width="540" height="36"/>
 				<textElement textAlignment="Justified">
 					<font isUnderline="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Por este medio, solicitud su amable gestión para ser incluido en el proceso de evaluación y certificación de competencias profesionales en el referencial de certificación de " + $F{certificacion_nombre}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Por este medio, solicitud su amable gestión para ser incluido en el proceso de evaluación y certificación de competencias profesionales en el referencial de certificación de "]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="19" y="79" width="540" height="55"/>
+				<reportElement x="19" y="88" width="89" height="22"/>
 				<textElement textAlignment="Justified"/>
-				<textFieldExpression class="java.lang.String"><![CDATA["Mi nombre es " + $F{contacto_nombre} + ", trabajo en la empresa " + $F{solicitud_empresa} + " y me he desempeñado en la ocupación de " + $F{solicitud_oficio} + " durante " + $F{solicitud_experiencia} + " años."]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["Mi nombre es "]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="19" y="142" width="540" height="20"/>
+				<reportElement x="19" y="176" width="540" height="20"/>
 				<textElement/>
 				<text><![CDATA[Agradeciendo su amable gestión, le saludo,]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="25" y="169" width="100" height="20"/>
+				<reportElement x="19" y="206" width="100" height="20"/>
 				<textElement/>
 				<text><![CDATA[Atentamente, ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="192" y="200" width="44" height="20"/>
+				<reportElement x="192" y="267" width="44" height="20"/>
 				<textElement/>
 				<text><![CDATA[Firma]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="192" y="231" width="290" height="20"/>
+				<reportElement x="192" y="294" width="290" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA["Cédula número " + $F{contacto_nui}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="190" y="290" width="292" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="19" y="44" width="538" height="20"/>
+				<textElement>
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{certificacion_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="111" y="88" width="448" height="20"/>
+				<textElement>
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{contacto_nombre} + ", "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="19" y="113" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[trabajo en la empresa ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="126" y="113" width="164" height="20"/>
+				<textElement>
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{solicitud_empresa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="298" y="113" width="152" height="20"/>
+				<textElement/>
+				<text><![CDATA[ y me he desempeñado en la ocupación de ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="459" y="113" width="100" height="20"/>
+				<textElement>
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{solicitud_oficio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="19" y="135" width="45" height="20"/>
+				<textElement/>
+				<text><![CDATA[durante ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="69" y="135" width="488" height="20"/>
+				<textElement>
+					<font isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{solicitud_experiencia} + " años."]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
