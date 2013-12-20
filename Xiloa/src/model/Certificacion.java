@@ -56,7 +56,7 @@ public class Certificacion implements Serializable {
 	@Column(name = "certificacion_id", nullable = false)
 	private Long id;
 	
-	@Column(name = "certificacion_oferta_id", nullable = false)
+	@Column(name = "certificacion_oferta_id", nullable = true)
 	private Integer ofertaId;	
 	
 	@Column(name = "certificacion_estructura_id", nullable = false)
@@ -71,11 +71,11 @@ public class Certificacion implements Serializable {
 	@Column(name = "certificacion_descripcion", nullable = false)
 	private String descripcion;
 		
-	@Column(name = "certificacion_disponibilidad", nullable = false)
-	private int disponibilidad;
+	@Column(name = "certificacion_disponibilidad", nullable = true)
+	private Integer disponibilidad;
 	
-	@Column(name = "certificacion_costo", nullable = false)
-	private float costo;
+	@Column(name = "certificacion_costo", nullable = true)
+	private Float costo;
 	
 	@NotNull
 	@DateTimeFormat(iso = ISO.DATE)
@@ -101,7 +101,7 @@ public class Certificacion implements Serializable {
 	@Column(name = "certificacion_ifp_id", nullable = false)
 	private int ifpId;
 	
-	@Column(name = "certificacion_ifp_direccion", nullable = false)
+	@Column(name = "certificacion_ifp_direccion", nullable = true)
 	private String ifpDireccion;
 	
 	@Column(name = "certificacion_ifp_nombre", nullable = false)
@@ -186,7 +186,7 @@ public class Certificacion implements Serializable {
 		super();
 		this.requisitos = new ArrayList<Requisito>();
 		this.unidades = new HashSet<Long>();
-		this.disponibilidad = 0;
+		this.disponibilidad = null;
 		this.actividades = new HashMap<Integer,Actividad>();
 		this.solicitudes = new ArrayList<Solicitud>();
 		this.involucrados = new HashMap<Integer, Contacto>();
@@ -232,26 +232,31 @@ public class Certificacion implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public int getDisponibilidad() {
+	public Integer getDisponibilidad() {
 		return disponibilidad;
 	}
 
-	public void setDisponibilidad(int disponibilidad) {
+	public void setDisponibilidad(Integer disponibilidad) {
 		this.disponibilidad = disponibilidad;
 	}
 
 	public String getCostoFormateado() {
-		NumberFormat format = NumberFormat.getInstance(Locale.US);
-		format.setMaximumFractionDigits(2);
-		format.setMinimumFractionDigits(2);
-		return format.format(costo);
+		if(costo == null)
+			return "N/D";
+		else
+		{
+			NumberFormat format = NumberFormat.getInstance(Locale.US);
+			format.setMaximumFractionDigits(2);
+			format.setMinimumFractionDigits(2);
+			return format.format(costo);
+		}
 	}
 	
-	public float getCosto() {
+	public Float getCosto() {
 		return costo;
 	}
 
-	public void setCosto(float costo) {
+	public void setCosto(Float costo) {
 		this.costo = costo;
 	}
 

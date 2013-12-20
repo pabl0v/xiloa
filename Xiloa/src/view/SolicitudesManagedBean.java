@@ -157,9 +157,9 @@ public class SolicitudesManagedBean implements Serializable {
 		String nombreCompleto = "";
 		
 		nombreCompleto = (this.getPrimerNombre().trim().isEmpty() ? "" : (this.getPrimerNombre().trim() + " " )) +
-				         (this.getSegundoNombre().trim().isEmpty() ? "" : (this.getSegundoNombre().trim() + " " )) +
+				         ((this.getSegundoNombre() == null) ? "" : (this.getSegundoNombre().trim() + " " )) +
 				         (this.getPrimerApellido().trim().isEmpty() ? "" : (this.getPrimerApellido().trim() + " " )) +
-						 (this.getSegundoApellido().trim().isEmpty() ? "" : (this.getSegundoApellido().trim() + " " ));
+						 ((this.getSegundoApellido() == null) ? "" : (this.getSegundoApellido().trim() + " " ));
 		
 		return nombreCompleto;
 	}
@@ -413,14 +413,20 @@ public class SolicitudesManagedBean implements Serializable {
 				//Nuevo Contacto
 				if ((contactoByUser == null) && (contactoByCedula == null)) {
 					System.out.println("Usuario Indicado " + u);				
+					String segundoNombre = null;
+					String segundoApellido = null;
+					
+					segundoNombre = (this.getSegundoNombre() == null) ? null : this.getSegundoNombre().toUpperCase().trim();
+					segundoApellido = (this.getSegundoApellido() == null) ? null : this.getSegundoApellido().toUpperCase().trim();
+					
 					solicitante = new Contacto(u, //Usuario
 							                   null, //laborales
 											  r, //Rol
 											  null, //EntidadId
 											  this.getPrimerNombre().toUpperCase().trim(), 
-											  this.getSegundoNombre().toUpperCase().trim(), 
+											  segundoNombre, 
 											  this.getPrimerApellido().toUpperCase().trim(),
-											  this.getSegundoApellido().toUpperCase().trim(), 
+											  segundoApellido, 
 											  this.getNombreCompleto().toUpperCase().trim(), // NombreCompleto 
 											  null, //Sexo
 											  "", // correo1 

@@ -97,7 +97,7 @@
     <p:dialog id="modalDialog" header="Seleccione la Unidad de Competencia a Planificar:" widgetVar="dlg2" modal="true" width="740" height="480">  
          <h:form id="cursosDialogo" >  
              <div id="contenedor_tabla_unidadcomp">
-                <p:dataTable emptyMessage="No hay datos para mostrar" var="competencia" value="#{planificacionManagedBean.competencias}" selection="#{planificacionManagedBean.selectedCompetencia}" rowKey="#{competencia.grupo}" selectionMode="single"  paginator="true" rows="11" >
+                <p:dataTable emptyMessage="No hay datos para mostrar" var="competencia" value="#{planificacionManagedBean.competencias}" selection="#{planificacionManagedBean.selectedCompetencia}" rowKey="#{competencia.estructuraId}" selectionMode="single"  paginator="true" rows="11" >
                     <p:column style="display:none;" headerText="idCentro"><h:outputText value="#{competencia.grupo}" /></p:column>
                     <p:column headerText="Centro de Formación Profesional"><h:outputText value="#{competencia.nombreCentro}" /></p:column>  
                     <p:column headerText="Curso"><h:outputText value="#{competencia.nombreUCompetencia}" /></p:column>  

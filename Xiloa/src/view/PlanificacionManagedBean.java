@@ -81,9 +81,12 @@ public class PlanificacionManagedBean implements Serializable {
 		Mantenedor estatus = service.getMapMantenedoresByTipo("3").get(7);		//estatus pendiente
 		Contacto creador = controller.getContacto();
 		
+		System.out.println("Competencia=" + competencia);
+		System.out.println("OfertaId=" + competencia.getOfertaId());
+		
 		Certificacion certificacion = new Certificacion();
 		certificacion.setOfertaId(competencia.getOfertaId());
-		certificacion.setEstructuraId(competencia.getEsructuraId());
+		certificacion.setEstructuraId(competencia.getEstructuraId());
 		certificacion.setCursoId(competencia.getIdUCompetencia());
 		certificacion.setNombre(competencia.getNombreUCompetencia());
 		certificacion.setDescripcion(competencia.getNombreUCompetencia());

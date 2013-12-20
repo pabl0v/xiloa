@@ -6,31 +6,31 @@ import java.util.List;
 
 public class UCompetencia {
 	
-	private int ofertaId;
-	private int esructuraId;
+	private Integer ofertaId;
+	private Integer estructuraId;
 	private String grupo;
 	private int idCentro;
 	private String nombreCentro;
 	private String direccion;
 	private int idUCompetencia;
 	private String nombreUCompetencia;
-	private float costo;
+	private Float costo;
 	private Date fechaInicio;
 	private Date fechaFin;
 	private List<String> requisitos = new ArrayList<String>();
-	private int disponibilidad;
+	private Integer disponibilidad;
 	
-	public int getOfertaId() {
+	public Integer getOfertaId() {
 		return ofertaId;
 	}
-	public void setOfertaId(int ofertaId) {
+	public void setOfertaId(Integer ofertaId) {
 		this.ofertaId = ofertaId;
 	}
-	public int getEsructuraId() {
-		return esructuraId;
+	public Integer getEstructuraId() {
+		return estructuraId;
 	}
-	public void setEsructuraId(int esructuraId) {
-		this.esructuraId = esructuraId;
+	public void setEstructuraId(Integer estructuraId) {
+		this.estructuraId = estructuraId;
 	}
 	public String getGrupo() {
 		return grupo;
@@ -68,10 +68,10 @@ public class UCompetencia {
 	public void setNombreUCompetencia(String nombreUCompetencia) {
 		this.nombreUCompetencia = nombreUCompetencia;
 	}
-	public float getCosto() {
+	public Float getCosto() {
 		return costo;
 	}
-	public void setCosto(float costo) {
+	public void setCosto(Float costo) {
 		this.costo = costo;
 	}
 	public Date getFechaInicio() {
@@ -92,10 +92,10 @@ public class UCompetencia {
 	public void setRequisitos(List<String> requisitos) {
 		this.requisitos = requisitos;
 	}
-	public int getDisponibilidad() {
+	public Integer getDisponibilidad() {
 		return disponibilidad;
 	}
-	public void setDisponibilidad(int disponibilidad) {
+	public void setDisponibilidad(Integer disponibilidad) {
 		this.disponibilidad = disponibilidad;
 	}
 }

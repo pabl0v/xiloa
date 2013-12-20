@@ -83,34 +83,30 @@ public class DaoInatecImpl implements IDaoInatec {
 			+ "and u.usuario=?";
 
 	private static final String SQL_CERTIFICACIONES_SIN_PLANIFICAR = 
-		"select "+
-			"o.id as oferta_id, "+
-			"forma.id as estructura_id, "+
-			"ci.centroid as id_centro, "+
-			"ci.nombre as nombre, "+
-			"ci.alias as nombre_corto, "+
-			"ci.direccion as direccion, "+
-			"o.id_acuerdo_deta as acreditacion, "+
-			"cc.id_curso as id_curso, "+
-			"c.descripcion as nombre_curso, "+
-			"o.costo_normal as costo, "+
-			"o.grupo as grupo_clase, "+
-			"o.cupo as disponibilidad, "+
-			"o.finicio as fecha_inicio, "+
-			"o.ffin as fecha_fin "+
-		"from "+
-			"registro_cobranza.rg_oferta o "+
-			"inner join sac.acuerdos_detalles a on (a.id=o.id_acuerdo_deta) "+
-			"inner join registro_cobranza.cu_curso_clasificacion cc on (cc.id=a.id_curso_clasificacion) "+
-			"inner join registro_cobranza.cu_estructura_formativa forma on forma.id=cc.id_estructura_formativa "+
-			"inner join registro_cobranza.cu_cat_curso c on (c.id=cc.id_curso) "+
-			"inner join public.centros_inatec ci on (ci.centroid=cast(o.id_centro as varchar)) "+
-		"where "+
-			"forma.id_tipo_estructura in (3,5) "+ 
-			"and o.activo=1 "+ 
-			"and forma.id_tipo_acreditacion=1 "+ 
-			"and forma.nivel_cualificacion='2' "+
-			"and not exists (select 1 from sccl.certificaciones x where x.certificacion_curso_id = cc.id_curso and x.certificacion_ifp_id = o.id_centro and x.certificacion_estatus in (7,8)) ";
+		"select"
+			+ " null as oferta_id, "
+			+ " forma.id as estructura_id, "
+			+ " ci.centroid as id_centro, " 
+			+ " ci.nombre as nombre, " 
+			+ " ci.alias as nombre_corto, " 
+			+ " isnull(ci.direccion,'N/D') as direccion, " 
+			+ " a.id as acreditacion, " 
+			+ " cc.id_curso as id_curso, " 
+			+ " c.descripcion as nombre_curso, " 
+			+ " null as costo, " 
+			+ " null as grupo_clase, " 
+			+ " null as disponibilidad, " 
+			+ " null as fecha_inicio, " 
+			+ " null as fecha_fin " 
+		+ "from 	sac.acuerdos_detalles a " 
+			+ " inner join registro_cobranza.cu_curso_clasificacion cc on (cc.id=a.id_curso_clasificacion) " 
+			+ " inner join registro_cobranza.cu_estructura_formativa forma on forma.id=cc.id_estructura_formativa " 
+			+ " inner join registro_cobranza.cu_cat_curso c on (c.id=cc.id_curso) " 
+			+ " inner join registro_cobranza.cu_centro_curso ccc on (c.id=ccc.id_curso) " 
+			+ " inner join public.centros_inatec ci on (ci.centroid=ccc.id_centro ) " 
+		+ "where	forma.id_tipo_estructura in (3,5) "
+			+ " and (horas=0 or horas=null) " 
+			+ " and not exists (select 1 from sccl.certificaciones x where cast(x.certificacion_curso_id as bigint) = cc.id_curso and cast(x.certificacion_ifp_id as varchar) = ci.centroid and x.certificacion_estatus in (7,8)) ";
 	
 	private static final String SQL_SELECT_UNIDADES_COMPETENCIA = 
 		"select	distinct "+
@@ -243,20 +239,23 @@ public class DaoInatecImpl implements IDaoInatec {
 	@Override
 	public List<UCompetencia> getCertificacionesSinPlanificar(Integer entidadId) {
 		List<UCompetencia> certificaciones = this.jdbcTemplate.query(
-				SQL_CERTIFICACIONES_SIN_PLANIFICAR + " and o.id_centro = case " + entidadId + " when 1000 then o.id_centro else " + entidadId+ " end order by c.descripcion",
+				SQL_CERTIFICACIONES_SIN_PLANIFICAR + " and ci.centroid = case '" + entidadId + "' when '1000' then ci.centroid else '" + entidadId+ "' end order by c.descripcion",
 		        new RowMapper<UCompetencia>() {
 		            public UCompetencia mapRow(ResultSet rs, int rowNum) throws SQLException {
 		                UCompetencia certificacion = new UCompetencia();
-		                certificacion.setOfertaId(rs.getInt("oferta_id"));
-		                certificacion.setEsructuraId(rs.getInt("estructura_id"));
+		                //certificacion.setOfertaId(rs.getInt("oferta_id"));
+		                certificacion.setOfertaId(null);
+		                certificacion.setEstructuraId(rs.getInt("estructura_id"));
 		                certificacion.setGrupo(rs.getString("grupo_clase"));
 		                certificacion.setIdCentro(rs.getInt("id_centro"));
 		                certificacion.setNombreCentro(rs.getString("nombre"));
 		                certificacion.setDireccion(rs.getString("direccion"));
 		                certificacion.setIdUCompetencia(rs.getInt("id_curso"));
 		                certificacion.setNombreUCompetencia(rs.getString("nombre_curso"));
-		                certificacion.setCosto(rs.getFloat("costo"));
-		                certificacion.setDisponibilidad(rs.getInt("disponibilidad"));
+		                //certificacion.setCosto(rs.getFloat("costo"));
+		                certificacion.setCosto(null);
+		                //certificacion.setDisponibilidad(rs.getInt("disponibilidad"));
+		                certificacion.setDisponibilidad(null);
 		                certificacion.setFechaInicio(rs.getDate("fecha_inicio"));
 		                certificacion.setFechaFin(rs.getDate("fecha_fin"));
 		                return certificacion;
