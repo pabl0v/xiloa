@@ -13,6 +13,16 @@ import org.springframework.stereotype.Component;
 
 import support.JavaEmailSender;
 
+/**
+ * 
+ * @author Denis Chavez
+ * @version 1.0
+ *
+ * Esta clase utiliza la programacion orientada a aspectos de Spring (ASP Programming)
+ * para captar las excepciones que se producen en tiepo de ejecucion dentro del paquete service.
+ * Una vez captada la excepcion, el metododo myAfterThrowing envia por email los detalles de la excepcion
+ */
+
 @Aspect
 @Component
 public class ExceptionObserver {

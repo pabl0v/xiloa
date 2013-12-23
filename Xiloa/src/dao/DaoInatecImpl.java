@@ -28,6 +28,14 @@ import support.Item;
 import support.Municipio;
 import support.UCompetencia;
 
+
+/**
+ * Esta clase implementa la interface IDaoInatec, para interactuar con los demas esquemas de la BD Inatec
+ * 
+ * @author Denis Chavez, Miriam Martinez
+ * @version 1.0
+ *
+ */
 @Repository
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class DaoInatecImpl implements IDaoInatec {
@@ -204,6 +212,14 @@ public class DaoInatecImpl implements IDaoInatec {
 																									    ") " +
 																					  " )";																					
 		
+	
+	/**
+	 * Este metodo obtiene la instancia de usuario a partir del login
+	 * 
+	 * @param username el login del usuario
+	 * @return la instancia de usuario correspondiente al parametro
+	 */
+	
 	public Usuario getUsuario(String usuario) {
 		Usuario user = null;
 		try
@@ -235,6 +251,13 @@ public class DaoInatecImpl implements IDaoInatec {
 		user.setRol(rol);
 		return user;
 	}
+	
+	/**
+	 * Este metodo obtiene la lista de cursos cuya certificacion se planificara, para la entidad indicada como parametro
+	 * 
+	 * @param entidadId, la entidad cuyos cursos de certificacion se van a planificar
+	 * @return la lista de competencias listas para planificar
+	 */
 
 	@Override
 	public List<UCompetencia> getCertificacionesSinPlanificar(Integer entidadId) {
@@ -264,6 +287,13 @@ public class DaoInatecImpl implements IDaoInatec {
 		return certificaciones;
 	}
 	
+	/**
+	 * Este metodo obtiene las unidades de competencia de la estructura pasada como parametro
+	 * 
+	 * @param estructura el id de estructura cuyas unidades de competencia se quieren conocer
+	 * @return un map con las unidades de competencia de la estructura pasada como parametro
+	 */
+	
 	@Override
 	public Map<Long, String> getUnidadesByEstructuraId(Integer estructura) {		
 		Map<Long, String> unidades = new HashMap<Long, String>();
@@ -273,11 +303,24 @@ public class DaoInatecImpl implements IDaoInatec {
 		}
 		return unidades;
 	}
+	
+	/**
+	 * Este metodo obtiene un listado de los usuarios inatec con roles dentro de responsabilidad dentro del sistema SCCL
+	 * 
+	 * @return lista de contactos de usuarios inatec con los roles del sistema: evaluador, supervisor, registrador, docente, verificador, etc
+	 */
 
 	@Override
 	public List<Contacto> getContactosInatec() {
 		return null;
 	}
+	
+	/**
+	 * Este metodo genera una instancia de contacto para el login especificado. Se usa en la autenticacion con los usuario inatec
+	 * 
+	 * @param usuario el login del usuairo cuyo contacto se quiere generar
+	 * @return una instancia de contacto generada a partir del login
+	 */
 
 	@Override
 	public Contacto generarContacto(String usuario) {
@@ -318,6 +361,13 @@ public class DaoInatecImpl implements IDaoInatec {
 		}
 		return contacto;
 	}
+	
+	/**
+	 * Este metodo retorna el rolId del usuario pasado por parametro
+	 * 
+	 * @param usuario cuyo rolId se quiere saber
+	 * @return el rolId del usuario en cuestion
+	 */
 
 	@Override
 	public Integer getIdRol(String usuario) {	
@@ -341,6 +391,13 @@ public class DaoInatecImpl implements IDaoInatec {
 
 		return rolId;	
 	}
+	
+	/**
+	 * Este metodo obtiene la lista de centros (ifps) ligados a una entidadId
+	 * 
+	 * @param entidadId el id de entidad
+	 * @return la lista de centros correspondientes a la entidad
+	 */
 	
 	@Override
 	public List<Ifp> getIfpInatec(Integer entidadId) {
@@ -368,6 +425,12 @@ public class DaoInatecImpl implements IDaoInatec {
 		}
 		return ifpList;		
 	}
+	
+	/**
+	 * Este metodo obtiene el listado de departamentos del pais
+	 * 
+	 * @return el listado de departamentos del pais
+	 */
 
 	@Override
 	public List<Departamento> getDepartamentosInatec() {
@@ -382,6 +445,13 @@ public class DaoInatecImpl implements IDaoInatec {
 															});	
 		return dptos;
 	}
+
+	/**
+	 * Este metodo obtiene los municipios de un departamento pasado como parametro
+	 * 
+	 * @param idDepto el departamento cuyos municipios se quieren conocer
+	 * @return el listado de los municipios de un departamento
+	 */
 
 	@Override
 	public List<Municipio> getMunicipioByDeptoInatec(Integer idDepto) {
@@ -405,6 +475,14 @@ public class DaoInatecImpl implements IDaoInatec {
 		}
 		return muni;
 	}
+
+	/**
+	 * Este metodo obtiene los requisitos de un curso en un centro dado
+	 * 
+	 * @param cursoId el id del curso
+	 * @param centroId el ide del centro que oferta el curso
+	 * @return la lista de requisitos para ese curso en ese centro
+	 */
 
 	@Override
 	public List<Requisito> getRequisitos(int cursoId, int centroId) {
@@ -430,6 +508,12 @@ public class DaoInatecImpl implements IDaoInatec {
 		return requisitos;
 	}
 
+	/**
+	 * Este metodo obtiene el catalogo de unidades de copetencia
+	 * 
+	 * @return un map conteniendo el catalogo completo de las unidades de competencias
+	 */
+
 	@Override
 	public Map<Long, Item> getCatalogoUnidades() {
 		Map<Long, Item> unidades = new HashMap<Long, Item>();
@@ -439,6 +523,13 @@ public class DaoInatecImpl implements IDaoInatec {
 		}
 		return unidades;
 	}
+
+	/**
+	 * Este metodo obtiene los permisos de un
+	 * 
+	 * @param rolId, el rolId cuyos permisos se quieren recuperar
+	 * @return retorna la coleccion de permisos del rol en cuestion
+	 */
 
 	@Override
 	public Collection<Authority> getAuthorities(Integer rolId) {
@@ -479,6 +570,13 @@ public class DaoInatecImpl implements IDaoInatec {
 		}
 		return authorities;
 	}
+	
+	/**
+	 * Este metodo obtiene la proxima unidad de competencia a evaluar en una solicitud
+	 * 
+	 * @param idSolicitud el id de solicitud cuyas unidades sin evaluar se quieren saber
+	 * @return la proxima unidad a evaluar
+	 */
 	
 	public Integer getUnidadesSinEvaluacion (Integer idSolicitud){
 		Integer existeEval = null;		

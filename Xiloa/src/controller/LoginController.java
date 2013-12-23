@@ -25,6 +25,15 @@ import org.springframework.stereotype.Controller;
 
 import service.IService;
 
+/*
+ * @author Denis Chavez
+ * @version 1.0
+ * 
+ * Esta clase se encarga de gestionar -del lado de la interfaz- la autenticacion de usuarios por las tres vias: usuario con cuenta inatec, usuario con cuenta local y usuario con cuenta openid
+ * Su ambito es session y mantiene entre sus atributos la instancia del contacto autenticado
+ * 
+ */
+
 @Controller
 @Scope("session")
 public class LoginController implements PhaseListener {
@@ -39,6 +48,11 @@ public class LoginController implements PhaseListener {
 	
 	@Autowired
 	private IService service;
+	
+	/**
+	 * 
+	 * @return retorna el contacto del usuario conectado
+	 */
 		
 	public Contacto getContacto(){
 		if(contacto == null){
@@ -46,6 +60,11 @@ public class LoginController implements PhaseListener {
 		}
 		return contacto;
 	}
+	
+	/**
+	 * 
+	 * @return retorna el nombre de usuario del usuario conectado
+	 */
 	
 	public String getLoggedUser(){
 		getContacto();
@@ -55,10 +74,23 @@ public class LoginController implements PhaseListener {
 			return contacto.getUsuario().getUsuarioAlias();
 	}
 	
+	/**
+	 * 
+	 * @return retorna la entidad a la que pertenece el usuario conectado
+	 */
+	
 	public Integer getEntidadUsuario(){
 		getContacto();
 		return contacto.getEntidadId();
 	}
+	
+	/**
+	 * Este metodo delega a Spring Security la autenticacion de usuario y contraseña proporcionados en la interfaz de usuario
+	 * 
+	 * @return null
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	
 	public String doLogin() throws ServletException, IOException {
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();		
@@ -68,6 +100,14 @@ public class LoginController implements PhaseListener {
 		return null;
 	}
 	
+	/**
+	 * Este metodo delega a Spring Security la autenticacion de usuario via openId proporcionados en la interfaz de usuario
+	 * 
+	 * @return null
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	
 	public String openIdAuth() throws ServletException, IOException {
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 		RequestDispatcher dispatcher = ((ServletRequest) context.getRequest()).getRequestDispatcher("/j_spring_openid_security_check");
@@ -75,6 +115,14 @@ public class LoginController implements PhaseListener {
 	    FacesContext.getCurrentInstance().responseComplete();
 	    return null;
 	}
+	
+	/**
+	 * Este metodo delega a Spring Security el cierre de la sesion actual
+	 * 
+	 * @return null
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	
 	public void logout() throws ServletException, IOException {
 		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
@@ -84,6 +132,14 @@ public class LoginController implements PhaseListener {
 		FacesContext.getCurrentInstance().responseComplete();
 	}
 	
+	/**
+	 * 
+	 * Este metido se utilizaria para mostrar en la interfaz de usuario los mensajes de error de autenticacion generados por Spring Security
+	 * 
+	 * @param update valor booleano true false
+	 * @throws Exception
+	 */
+	
 	public void updateMessages(boolean update) throws Exception {
 		Exception ex = (Exception)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(WebAttributes.AUTHENTICATION_EXCEPTION);
 		if (ex != null) {
@@ -92,9 +148,17 @@ public class LoginController implements PhaseListener {
 		}
 	}
 	
+	/**
+	 * Este metido es parte de la interfaz PhaseListener para visualizar los mensajes de error en la interfaz
+	 */
+	
 	public void afterPhase(PhaseEvent event) {
 	}
 
+	/**
+	 * Este metido es parte de la interfaz PhaseListener para visualizar los mensajes de error en la interfaz
+	 */
+	
 	public void beforePhase(PhaseEvent event) {
 		Exception e = (Exception) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(WebAttributes.AUTHENTICATION_EXCEPTION);
  
@@ -103,10 +167,18 @@ public class LoginController implements PhaseListener {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Autenticacion fallida: " + e.getMessage(), null));
         }
 	}
+	
+	/**
+	 * Este metido es parte de la interfaz PhaseListener para visualizar los mensajes de error en la interfaz
+	 */
 
 	public PhaseId getPhaseId() {
 		return PhaseId.RENDER_RESPONSE;
 	}
+	
+	/*
+	 * seccion getters y setters 
+	 */
 	
 	public String getUsername(){
 		return username;
