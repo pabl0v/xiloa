@@ -911,6 +911,7 @@ public class ServiceImp implements IService {
 			return 	contactoDao.findOneByNamedQueryParam("Contacto.findByLogin", new Object[] {login});
 	}
 	
+	//Miriam Martinez Cano || Proyecto Xiloa - INATEC || Procedimiento que registra nueva evaluacion y su detalle (EvaluacionGuia)
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Evaluacion guardarEvaluacion(Evaluacion eval, Guia [] guias) {		

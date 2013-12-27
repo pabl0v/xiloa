@@ -26,6 +26,7 @@ import model.Instrumento;
 import model.Mantenedor;
 import model.Solicitud;
 
+//Miriam Martinez Cano || Proyecto Xiloa - INATEC || Bean asociado al facet registro_evaluacion.xhtml
 @Component
 @Scope(value="view")
 public class EvaluacionManagedBean implements Serializable {

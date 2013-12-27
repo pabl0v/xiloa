@@ -26,7 +26,7 @@ import service.IService;
 import support.Ifp;
 import support.FacesUtil;
 import util.Global;
-
+//Miriam Martinez Cano || Proyecto Xiloa - INATEC || Bean asociada al facet solicitudes.xhtml
 @Component
 @Scope(value="view")
 public class DashBoardSolicitudesManagedBean implements Serializable {

@@ -43,6 +43,7 @@ import support.FacesUtil;
 import support.Municipio;
 import util.ValidatorUtil;
 
+//Miriam Martinez Cano || Proyecto Xiloa - INATEC || Bean asociado al facet expediente.xhtml
 @Component
 @Scope(value="request")
 public class ExpedienteManagedBean implements Serializable  {
