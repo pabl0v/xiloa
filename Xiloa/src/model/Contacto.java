@@ -29,7 +29,7 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @Entity(name = "contactos")
 @Table(name = "contactos", schema = "sccl")
 @NamedQueries({
-	@NamedQuery(name="Contacto.findByCedulaId", query="select c from contactos c where c.numeroIdentificacion =?1"),
+	@NamedQuery(name="Contacto.findByCedulaId", query="select c from contactos c where upper(c.numeroIdentificacion) = upper(?1)"),
 	@NamedQuery(name="Contacto.findByLogin", query="select c from contactos c where c.usuario.usuarioAlias =?1"),
 	@NamedQuery(name="Contacto.findByLoginInatec", query="select c from contactos c where c.inatec = 'true' and c.usuarioInatec =?1"),
 	@NamedQuery(name="Contacto.findInvolucradosInatec", query="Select c from contactos c where c.inatec='true' and c.rol.idRolInatec in (213,214,215,216,219) and c.entidadId is not null and c.entidadId = case ?1 when 1000 then c.entidadId else ?1 end"),

@@ -397,7 +397,7 @@ public class SolicitudesManagedBean implements Serializable {
 				
 				c = service.getCertificacionById(this.getSelectedIdCertificacion());
 												
-				if (tipoGrabar == 2) {
+				if (tipoGrabar == 2) {//Miriam Martinez Cano || Proyecto SCCL - INATEC || Se esta agregando una solicitud por usuario externo via OpenId
 					u = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
 					r = service.getRolById(u.getRol().getId());
 					
