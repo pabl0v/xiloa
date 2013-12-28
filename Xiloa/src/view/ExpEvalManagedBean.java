@@ -1155,7 +1155,7 @@ public class ExpEvalManagedBean implements Serializable  {
 			
 			evaluarKey = evaluarEstado.getId();
 			
-			siguienteKey = Integer.valueOf(evaluarEstado.getProximo());
+			siguienteKey = (evaluarEstado.getProximo() != null) ? Integer.valueOf(evaluarEstado.getProximo()) : null;
 			
 			siguienteEstado = (siguienteKey == null) ? null : service.getCatalogoEstadoSolicitud().get(siguienteKey);
 							
