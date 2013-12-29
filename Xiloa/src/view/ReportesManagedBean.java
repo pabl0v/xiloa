@@ -22,6 +22,7 @@ import service.IService;
 import support.Ifp;
 import util.Global;
 
+//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Bean asociado al facet reportes.xhtml
 @Component
 @Scope(value="view")
 public class ReportesManagedBean implements Serializable {
@@ -51,6 +52,7 @@ public class ReportesManagedBean implements Serializable {
 	private List<SelectItem> listaTiposReportes;
 	private List<SelectItem> listaEstados;
 			
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Constructor de la clase.
 	public ReportesManagedBean() {
 		
 		super();	
@@ -156,7 +158,7 @@ public class ReportesManagedBean implements Serializable {
 		this.listCertByCentro = listCertByCentro;
 	}	
 			
-   //Llenado de Centro
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo que se ejecuta posterior al constructor.
 	@PostConstruct
 	private void initBeanDBSolicitudes(){
 		List<Ifp> lista = service.getIfpByInatec(login.getEntidadUsuario());
@@ -181,6 +183,7 @@ public class ReportesManagedBean implements Serializable {
 				
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Asigna valores en el selectItem de los estatus.
 	public void llenarListaEstados (Integer tipo){
 		listaEstados = new ArrayList<SelectItem> ();
 		listaEstados.add(new SelectItem(null, "Todos los estados"));
@@ -204,11 +207,13 @@ public class ReportesManagedBean implements Serializable {
 		
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Consulta los estados segun el reporte seleccionado.
 	public void handleEstadosByRpt(){
 		if (rptId != null)
 			llenarListaEstados (rptId);
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Consulta las certificaciones por centro de formacion profesional seleccionado.
 	public void handleCertByCentro() {
 		List<Certificacion> certificacionList = service.getCertificacionesByIdIfp(this.getSelectedIdIfp());
 		listCertByCentro = new ArrayList<SelectItem>();
@@ -218,13 +223,12 @@ public class ReportesManagedBean implements Serializable {
 		}
 		
 	}
-					
+
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Ejecuta el reporte generico.
     public void runReporte() throws Exception {
     	Map<String,Object> params = new HashMap<String,Object>();
     	rptNombre = this.catalogoTiposReportes.get(rptId);
-    	
-    	System.out.println("Reporte a Generar " + rptNombre);
-    	       	   	
+    	    	       	   	
 		params.put("idCentro",selectedIdIfp);
 		params.put("idEstado", estadoId);
 		params.put("certificacionid", selectedIdCertByCentro);

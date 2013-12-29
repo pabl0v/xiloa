@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+//Ing. Miriam Martínez Cano e Ing. Denis Chavez|| Proyecto SCCL INATEC - CENICSA || Varios metodos utilitarios.
 public class FacesUtil {
 	
 	public static String getActionAttribute(ActionEvent event, String name) {

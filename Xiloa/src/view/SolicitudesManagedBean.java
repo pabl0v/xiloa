@@ -28,9 +28,11 @@ import org.springframework.stereotype.Component;
 import controller.LoginController;
 
 import service.IService;
+import support.FacesUtil;
 import support.Ifp;
 import util.ValidatorUtil;
 
+//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Bean asociado al facet registro_solicitud.xhtml y registro_solicitud_userExterno.xhtml
 @Component
 @Scope(value="view")
 public class SolicitudesManagedBean implements Serializable {
@@ -73,7 +75,8 @@ public class SolicitudesManagedBean implements Serializable {
 	private Usuario usuarioSolicitante;
 	
 	private boolean indicaUserExterno;
-			
+	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Constructor de la clase.
 	public SolicitudesManagedBean() {
 		
 		super();			
@@ -256,6 +259,7 @@ public class SolicitudesManagedBean implements Serializable {
 		this.certificacionSolicitante = certificacionSolicitante;
 	}
 
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo que se ejecuta posterior al constructor de la clase.
 	@PostConstruct
 	private void initBean(){
 		List<Ifp> lista = service.getIfpByInatec(login.getEntidadUsuario());		
@@ -271,26 +275,28 @@ public class SolicitudesManagedBean implements Serializable {
 			
 		//Considerando si se tiene la certificacion seleccionada.
 		if (this.usuarioSolicitante == null){
-			Usuario usuarioExterno = (Usuario)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("UsuarioAplica");
+			Usuario usuarioExterno = (Usuario)FacesUtil.getParametroSession("UsuarioAplica");
 			
 			if (usuarioExterno != null) {
 				this.usuarioSolicitante = usuarioExterno;
 				this.setIndicaUserExterno(true);
-				//((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("UsuarioAplica",null);
+				
 			}
 		}
 
 		if (this.certificacionSolicitante == null) {
-			Certificacion cert = (Certificacion)((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).getAttribute("CertificacionSeleccionada");
+			Certificacion cert = (Certificacion)FacesUtil.getParametroSession("CertificacionSeleccionada");
+					
 			if (cert != null) {
 				this.certificacionSolicitante = cert;
 				inicializaDatos ();
-				//((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("CertificacionSeleccionada",null);
+				
 			}
 		}
 							
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Consulta las certificaciones seleccionadas.
 	public void handleCertificaciones() {				
 		List<Certificacion> certificacionList = service.getCertificacionesByIdIfp(this.getSelectedIdIfp());	
 		this.listCertificaciones1 = new ArrayList<Certificacion> ();
@@ -305,22 +311,22 @@ public class SolicitudesManagedBean implements Serializable {
 	}
 		
 	
-	public String nuevaSolicitud(){
-		//Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-		//setSolicitudI(params.get("solicitudI"));			
-	return "/modulos/solicitudes/registro_solicitud?faces-redirect=true";
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Redirecciona al facet registro_solicitud.xhtml
+	public String nuevaSolicitud(){		
+		return "/modulos/solicitudes/registro_solicitud?faces-redirect=true";
 	}
 	
-	public String editaSolicitud(){
-		//Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-		//setSolicitudI(params.get("solicitudI"));			
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Redirecciona al facet expediente.xhtml
+	public String editaSolicitud(){		
 	return "/modulos/solicitudes/expediente?faces-redirect=true";
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Redirecciona al facet solicitudes.xhtml
 	public String cancelarEdicion() {		
 		return "/modulos/solicitudes/solicitudes?faces-redirect=true";				
 	}
 			
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Guarda la solicitud por usuario interno del inatec.
 	public void guardar(){
 				
 		FacesContext context = FacesContext.getCurrentInstance();
@@ -336,28 +342,24 @@ public class SolicitudesManagedBean implements Serializable {
 		
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Guarda la solicitud por el usuario externo via OpenId.
 	public String guardarBySolicitante(){
 				
 		if (this.certificacionSolicitante != null){			
 			this.selectedIdIfp = certificacionSolicitante.getIfpId();		
-			this.selectedIdCertificacion = certificacionSolicitante.getId();
-			
-			System.out.println("Certificacion " + this.selectedIdCertificacion);
+			this.selectedIdCertificacion = certificacionSolicitante.getId();			
 		}
 		
 		Solicitud sol = grabarSolicitud(new Integer(2));		
 		
-		if (sol != null) {
-			
-			System.out.println("La solicitud ha sido grabada " + sol.getId());
-			
-			((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getSession(false).setAttribute("dbSolicitudesBean",sol);
-			
+		if (sol != null) {			
+			FacesUtil.setParamBySession("dbSolicitudesBean",sol);			
 			return "/modulos/solicitudes/expediente?faces-redirect=true";
 		} else 
 			return null;
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Graba la solicitud.
 	public Solicitud grabarSolicitud(Integer tipoGrabar){
 		
 		Solicitud 		s 		= null;
@@ -512,17 +514,14 @@ public class SolicitudesManagedBean implements Serializable {
 		}
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Inicializa datos.
 	public void inicializaDatos (){
 		
-		System.out.println("Entra a solicitudesManagedBean.inicializaDatos");
-		//Usuario userConectado = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());	
 		if (this.usuarioSolicitante != null){
-			
-		    System.out.println("Indica usuario Ext ");
-		    
+				    
 			if (this.usuarioSolicitante.getContacto() != null) {
 				Contacto c = this.usuarioSolicitante.getContacto();
-				System.out.println("EXISTE EL CONTACTO");
+			
 			    this.userSolicitante = c;
 				
 				this.primerNombre = (this.userSolicitante.getPrimerNombre() == null) ? "" : this.userSolicitante.getPrimerNombre(); 
@@ -533,12 +532,9 @@ public class SolicitudesManagedBean implements Serializable {
 			}		
 		}
 		
-		//this.certificacionSolicitante = service.getCertificacionById(this.getSelectedIdCertificacion());
 		if (this.certificacionSolicitante != null){			
 			this.selectedIdIfp = certificacionSolicitante.getIfpId();			
-			this.selectedIdCertificacion = certificacionSolicitante.getId();
-			
-			System.out.println("Indica la certificacion: " + this.selectedIdCertificacion);
+			this.selectedIdCertificacion = certificacionSolicitante.getId();			
 		}
 				
 	    this.setDescEmpresaLabora("");
@@ -546,10 +542,12 @@ public class SolicitudesManagedBean implements Serializable {
 		this.setOcupacion("");		
 	}
 
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Obtiene el listado de centros de formacion profesional.
 	public List<SelectItem> getCentros() {
 		return new ArrayList<SelectItem>(centros.values());
 	}
 
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Obtiene el listado de certificaciones.
 	public List<SelectItem> getCertificaciones() {
 		return new ArrayList<SelectItem>(certificaciones.values());
 	}

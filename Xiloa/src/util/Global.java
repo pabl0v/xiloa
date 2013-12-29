@@ -1,6 +1,6 @@
 package util;
 
-
+//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Variables globales utilizadas en la generacion de reportes.
 public class Global {
 	public static final String REPORTE_DIR = "/reporte";
 	public static final String EXPORT_PDF  = "PDF";

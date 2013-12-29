@@ -43,7 +43,7 @@ import support.FacesUtil;
 import support.Municipio;
 import util.ValidatorUtil;
 
-//Miriam Martinez Cano || Proyecto Xiloa - INATEC || Bean asociado al facet expediente.xhtml
+//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Bean asociado al facet expediente.xhtml
 @Component
 @Scope(value="request")
 public class ExpedienteManagedBean implements Serializable  {
@@ -132,6 +132,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	private String sizeArchivoExp;
 	private boolean verEnviarSolicitud;
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Constructor de la clase.
 	public ExpedienteManagedBean() {
 		super();
 		
@@ -372,65 +373,45 @@ public class ExpedienteManagedBean implements Serializable  {
 		return listPortafolioContacto;
 	}
 
-
 	public void setListPortafolioContacto(List<Archivo> listPortafolioContacto) {
 		this.listPortafolioContacto = listPortafolioContacto;
 	}
-
 
 	public Long getSelectedArchivoId() {
 		return selectedArchivoId;
 	}
 
-
-
 	public void setSelectedArchivoId(Long selectedArchivoId) {
 		this.selectedArchivoId = selectedArchivoId;
 	}
-
-
 
 	public List<Archivo> getListPortafolioLaboral() {		
 		return listPortafolioLaboral;
 	}
 
-
-
 	public void setListPortafolioLaboral(List<Archivo> listPortafolioLaboral) {
 		this.listPortafolioLaboral = listPortafolioLaboral;
 	}
-
-
 
 	public String getTelefonoInstitucion() {
 		return telefonoInstitucion;
 	}
 
-
-
 	public void setTelefonoInstitucion(String telefonoInstitucion) {
 		this.telefonoInstitucion = telefonoInstitucion;
 	}
-
-
 
 	public String getDescripcionCargo() {
 		return descripcionCargo;
 	}
 
-
-
 	public void setDescripcionCargo(String descripcionCargo) {
 		this.descripcionCargo = descripcionCargo;
 	}
 
-
-
 	public Pais getPaisInstitucion() {
 		return paisInstitucion;
 	}
-
-
 
 	public void setPaisInstitucion(Pais paisInstitucion) {
 		this.paisInstitucion = paisInstitucion;
@@ -448,33 +429,25 @@ public class ExpedienteManagedBean implements Serializable  {
 		return listDeptos;
 	}
 
-
 	public void setListDeptos(List<SelectItem> listDeptos) {
 		this.listDeptos = listDeptos;
 	}
-
 
 	public List<SelectItem> getListMunicipioByDptos() {
 		return listMunicipioByDptos;
 	}
 
-
 	public void setListMunicipioByDptos(List<SelectItem> listMunicipioByDptos) {
 		this.listMunicipioByDptos = listMunicipioByDptos;
 	}
-
 
 	public Map<Integer, Municipio> getCatalogoMunicipiosByDepto() {
 		return catalogoMunicipiosByDepto;
 	}
 
-
-
 	public void setCatalogoMunicipiosByDepto(Map<Integer, Municipio> catalogoMunicipiosByDepto) {
 		this.catalogoMunicipiosByDepto = catalogoMunicipiosByDepto;
 	}
-
-
 
 	public boolean isDisableSolicitarCertificacion() {
 		return disableSolicitarCertificacion;
@@ -726,6 +699,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.evalIdByArchivoExp = evalIdByArchivoExp;
 	}
 
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo que se ejecuta posterior al constructor de la clase utilizado para inicializar valores.
 	@PostConstruct
 	private void initBean(){        
 		List<Mantenedor> listaCatalogo = service.getMantenedoresByTipo(new Integer(5));		
@@ -766,12 +740,10 @@ public class ExpedienteManagedBean implements Serializable  {
 		}		
 		
 		archivoExp = new Archivo();
-		System.out.println("Nombre del S.O " + System.getProperty("os.name"));
-		System.out.println("Nombre del Usuario Conectado " + System.getProperty("user.home"));
-		System.out.println("Nombre del Directorio de la Aplicacion " + System.getProperty("user.dir"));
-				
+						
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo que se ejecuta posterior al postConstruct.
 	@Autowired
 	public void iniciaBeanExp (){
 		
@@ -814,6 +786,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Obtiene el listado de las evaluaciones segun el parametro y filtro indicado.
 	public List<BeanEvaluacion> getListadoEvaluacionesByParam(Solicitud sol, boolean todos) {
 		
 		List<BeanEvaluacion> listBeanEv = new ArrayList<BeanEvaluacion> ();		
@@ -849,6 +822,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		return listBeanEv;
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Activa y desactiva el UpLoad.
 	public void handleActivaUpload(){
 		if (archivoExp != null) {
 			if ((archivoExp.getNombre() != null) && (archivoExp.getTipo() != null) && (archivoExp.getVersion() != null) && (archivoExp.getDescripcion() != null)){
@@ -857,6 +831,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		}
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Consulta los municipios segun el departamento seleccionado.
 	public void handleMunicipios() {
 		System.out.println("Entra a handleMunicipio");
 		Contacto cExp;
@@ -882,12 +857,9 @@ public class ExpedienteManagedBean implements Serializable  {
 				
 				this.listMunicipioByDptos.add(new SelectItem(null, "Seleccione un Municipio"));
 				
-			    while(claveSet.hasNext()){
-			    	System.out.println("Crea la lista de Municipios");			    	
+			    while(claveSet.hasNext()){			    	
 			    	idValor = claveSet.next();
 			    	valor = this.catalogoMunicipiosByDepto.get(idValor);
-			    	System.out.println("IdMunicipio: " + valor.getMunicipio_id());
-			    	System.out.println("Descripcion " + valor.getMunicipio_nombre());
 			    	this.listMunicipioByDptos.add(new SelectItem(valor.getMunicipio_id(), valor.getMunicipio_nombre()));			    			    			        		        
 			    }
 			}
@@ -896,6 +868,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		}
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Prepara la edicion de datos laborales.
 	public void editarLaboral(){
 				
 		this.setNombreInstitucion(this.selectedLaboral.getInstitucion());
@@ -914,27 +887,29 @@ public class ExpedienteManagedBean implements Serializable  {
 			this.setPaisIdLaboral(null);
 		
 		FacesUtil.setParamBySession("idSelectedLaboral", this.selectedLaboral.getId());
-				
-		//enabledDisableButton(2);
-		
+					
 		actualizaListaPortafolio (new Integer(1));		
 				
 	}
 		
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Prepara para agregar un nuevo dato laboral.
 	public void nuevoLaboral() {		
 		limpiarCampos();		
 	}
-	
+
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Listener asociado al evento edit de la tabla Portafolio
 	public void rowEditListenerPortafolio(RowEditEvent event){
 		System.out.println("El estado seleccionado es: " + (String)event.getObject());
 		System.out.println("Archivo Seleccionado " + selectedArchivoId);
 		
 	}
-	
+	 
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Redirecciona al facet registro_evaluacion.xhtml.
 	public String RegistrarEditarEvaluacion() {		
 		return "/modulos/solicitudes/registro_evaluacion?faces-redirect=true";		
 	}	
-	
+
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Asigna el estatus Registrado.
 	public void solicitarCertificacion (){
 		Integer    proxEstado = null;
 		Mantenedor estadoActual = null;		 		
@@ -966,7 +941,8 @@ public class ExpedienteManagedBean implements Serializable  {
 		}		
 		
 	}
-				
+		
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Actualiza o aplica los cambios en datos generales del contacto.
 	public void actualizarContacto() {
 		if (this.getContactoExp() != null){
 			if (this.getContactoExp().getDireccionActual() == null) {
@@ -991,14 +967,10 @@ public class ExpedienteManagedBean implements Serializable  {
 			}else {
 				FacesUtil.getMensaje("SCCL - Mensaje: ", "El correo electronico indicado no es válido. Favor revisar...", true);
 			}		
-			
-			
-								
 		}
-		
-	      
 	}
 
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Guarda los datos laborales.
 	public void guardarDatosLaborales() {
 		
 		System.out.println("Entra al metodo guardarDatosLaborales");
@@ -1050,6 +1022,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		enabledDisableButton(2);		
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Habilita y deshabilita los botones segun el status de la solicitud.
 	public void enabledDisableButton(int opcion) {
 		
 		Solicitud sol = this.getSolicitudExp();
@@ -1098,7 +1071,8 @@ public class ExpedienteManagedBean implements Serializable  {
 		}
 			
 	}
-	
+
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Limpia los campos.
 	public void limpiarCampos (){
 				
 		this.setSelectedLaboral(null);
@@ -1117,22 +1091,21 @@ public class ExpedienteManagedBean implements Serializable  {
 					
 	}	
 	
-	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Prepara para registrar nuevo archivo.	
 	public void nuevoArchivo() {
 		archivoExp = new Archivo();
 		
 		listEvalBySolicitud = new ArrayList<SelectItem> ();
 		List<Evaluacion> listE = this.getListEvaluaciones();
 		
-		System.out.println("Obtiene el listado de las evaluaciones");
 		listEvalBySolicitud.add(new SelectItem(null, "Seleccione la evaluacion"));
 		for (Evaluacion dato : listE) {
 			listEvalBySolicitud.add(new SelectItem(dato.getId(), service.getCompetenciaDescripcion(dato.getUnidad())));
 		}
 	}
 
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Filtra para nuevo portafolio.
 	public void nuevoPortafolio (){
-		System.out.println("Agrega archivo de evidencia al dato laboral/academico: ");
 		
 		if (this.selectedLaboral == null)			
 			this.idSeletedLaboral = (Long)FacesUtil.getParametroSession("idSelectedLaboral");			
@@ -1146,10 +1119,10 @@ public class ExpedienteManagedBean implements Serializable  {
 			
 			FacesUtil.setParamBySession("selectedLaboral", this.selectedLaboral);			
 		}
-		 
-		
-	}
 	
+	}
+
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Guarda el archivo.
 	public void guardarArchivo() {
 		
 		this.archivoExp = (Archivo)FacesUtil.getParametroSession("archivoExp");
@@ -1175,6 +1148,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Cancela el registro en el portafolio.
 	public void cancelaPortafolio (){
 		
 		this.setNombreArchivoExp(null);
@@ -1189,6 +1163,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		FacesUtil.setParamBySession("idSelectedLaboral", null);		
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Edita el portafolio.
 	public void editarPortafolio(){		
 		Object [] objs;
 		if (selectedArchivoId != null){			
@@ -1199,11 +1174,9 @@ public class ExpedienteManagedBean implements Serializable  {
 		}
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Asigna el status aprobado al portafolio.
 	public void aprobarPortafolio(){
-		System.out.println("selectedLaboral " + selectedLaboral);
-		System.out.println("archivoExp "+ archivoExp);
-		System.out.println("Indica Aprobado: "+ archivoExp.getAprobado());
-		
+			
 		Mantenedor estadoArchivo = archivoExp.getEstado();
 		
 		Integer  proxEstado = Integer.valueOf(estadoArchivo.getProximo());
@@ -1219,6 +1192,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		}
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || actualiza lista de portafolio.
 	public void actualizaListaPortafolio (Integer tipo){
 		Object [] objs;
 		if (tipo == 1) {
@@ -1237,7 +1211,8 @@ public class ExpedienteManagedBean implements Serializable  {
 				}
 		}
 	}
-	
+
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Sube el archivo.
 	public void uploadFile(FileUploadEvent event){
 		
 		Date fechaAhora = new Date();
@@ -1338,7 +1313,8 @@ public class ExpedienteManagedBean implements Serializable  {
 		FacesContext.getCurrentInstance().addMessage(null, msg);  
 	        			
 	}
-	
+
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Valida que exista la informacion minima en el contacto para pasar la solicitud al estatus registrado.
 	public void validaRegistroCV (){
 		FacesMessage msg;
 		String       textMsg = "";
@@ -1389,7 +1365,8 @@ public class ExpedienteManagedBean implements Serializable  {
 			this.setDisableSolicitarCertificacion(true);
 		}
 	}	
-	
+
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Inicializa parametros.
 	public String inicializaParametros (ActionEvent event){
 		//Recibiendo el parametro del IdSolicitud que se va a editar en el Expediente.
 		System.out.println("ExpedienteManagedBean. Obtiendo los parametros ");
@@ -1408,6 +1385,5 @@ public class ExpedienteManagedBean implements Serializable  {
 		
 	}
 		
-
 	
 }

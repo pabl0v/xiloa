@@ -45,6 +45,7 @@ import support.FacesUtil;
 import support.Municipio;
 import util.Global;
 
+//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Bean asociado al facet expediente_evaluacion.xhtml
 @Component
 @Scope(value="request")
 public class ExpEvalManagedBean implements Serializable  {
@@ -141,7 +142,8 @@ public class ExpEvalManagedBean implements Serializable  {
 	private List<EvaluacionUnidad> listaEvalUnidad;
 	
 	private EvaluacionUnidad selectedEvalUnidad;
-	
+
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Constructor de la clase.
 	public ExpEvalManagedBean() {
 		super();
 		
@@ -408,24 +410,17 @@ public class ExpEvalManagedBean implements Serializable  {
 		return disabledUploadFile;
 	}
 
-
-
 	public void setDisabledUploadFile(boolean disabledUploadFile) {
 		this.disabledUploadFile = disabledUploadFile;
 	}
-
-
 
 	public boolean isDisablePortafolio() {
 		return disablePortafolio;
 	}
 
-
-
 	public void setDisablePortafolio(boolean disablePortafolio) {
 		this.disablePortafolio = disablePortafolio;
 	}
-
 
 	public List<BeanEvaluacion> getListBeanEvalFormacion() {
 		if (this.solicitudExp != null){			
@@ -448,25 +443,17 @@ public class ExpEvalManagedBean implements Serializable  {
 		this.listPortafolioContacto = listPortafolioContacto;
 	}
 
-
-
 	public Long getSelectedArchivoId() {
 		return selectedArchivoId;
 	}
-
-
 
 	public void setSelectedArchivoId(Long selectedArchivoId) {
 		this.selectedArchivoId = selectedArchivoId;
 	}
 
-
-
 	public List<Archivo> getListPortafolioLaboral() {		
 		return listPortafolioLaboral;
 	}
-
-
 
 	public void setListPortafolioLaboral(List<Archivo> listPortafolioLaboral) {
 		this.listPortafolioLaboral = listPortafolioLaboral;
@@ -538,8 +525,6 @@ public class ExpEvalManagedBean implements Serializable  {
 	public void setCatalogoMunicipiosByDepto(Map<Integer, Municipio> catalogoMunicipiosByDepto) {
 		this.catalogoMunicipiosByDepto = catalogoMunicipiosByDepto;
 	}
-
-
 
 	public boolean isDisableSolicitarCertificacion() {
 		return disableSolicitarCertificacion;
@@ -789,6 +774,7 @@ public class ExpEvalManagedBean implements Serializable  {
 		this.evalIdByArchivoExp = evalIdByArchivoExp;
 	}
 
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo que se ejecuta posterior al constructor de la clase.
 	@PostConstruct
 	private void initBean(){        
 							
@@ -818,6 +804,7 @@ public class ExpEvalManagedBean implements Serializable  {
 				
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo que se ejecuta posterior al postConstruct
 	@Autowired
 	public void iniciaBeanExpEval (){
 		
@@ -870,6 +857,7 @@ public class ExpEvalManagedBean implements Serializable  {
 	
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Obtiene el listado de evaluaciones segun el tipo de filtro.
 	public List<BeanEvaluacion> getListadoEvaluacionesByParam(Solicitud sol, boolean todos) {
 		
 		List<BeanEvaluacion> listBeanEv = new ArrayList<BeanEvaluacion> ();		
@@ -907,6 +895,7 @@ public class ExpEvalManagedBean implements Serializable  {
 		return listBeanEv;
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Listener asociado al upload del portafolio.
 	public void handleActivaUpload(){
 		if (archivoExp != null) {
 			if ((archivoExp.getNombre() != null) && (archivoExp.getTipo() != null) && (archivoExp.getVersion() != null) && (archivoExp.getDescripcion() != null)){
@@ -915,8 +904,8 @@ public class ExpEvalManagedBean implements Serializable  {
 		}
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Consulta los municipios por el Departamento seleccionado.
 	public void handleMunicipios() {
-		System.out.println("Entra a handleMunicipio");
 		Contacto cExp;
 		this.municipioIdSelected = "1";
 		
@@ -941,21 +930,17 @@ public class ExpEvalManagedBean implements Serializable  {
 				this.listMunicipioByDptos.add(new SelectItem(null, "Seleccione un Municipio"));
 				
 			    while(claveSet.hasNext()){
-			    	System.out.println("Crea la lista de Municipios");			    	
 			    	idValor = claveSet.next();
 			    	valor = this.catalogoMunicipiosByDepto.get(idValor);
-			    	System.out.println("IdMunicipio: " + valor.getMunicipio_id());
-			    	System.out.println("Descripcion " + valor.getMunicipio_nombre());
 			    	this.listMunicipioByDptos.add(new SelectItem(valor.getMunicipio_id(), valor.getMunicipio_nombre()));			    			    			        		        
 			    }
 			}
-			
-			
+		
 		}
 	}
-	
-	public void editarLaboral(){
-				
+
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Prepara datos laborales.
+	public void editarLaboral(){				
 		this.setNombreInstitucion(this.selectedLaboral.getInstitucion());
 		this.setInstitucionDireccion(this.selectedLaboral.getInstitucionDireccion());
 		this.setTipoLaboral(this.selectedLaboral.getTipo());
@@ -979,16 +964,19 @@ public class ExpEvalManagedBean implements Serializable  {
 				
 	}
 		
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Prepara para nuevo laboral.
 	public void nuevoLaboral() {		
 		limpiarCampos();		
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Asociado al listener edit del portafolio.
 	public void rowEditListenerPortafolio(RowEditEvent event){
 		System.out.println("El estado seleccionado es: " + (String)event.getObject());
 		System.out.println("Archivo Seleccionado " + selectedArchivoId);
 		
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Redirecciona al facet registro_evaluacion.xhtml
 	public String editarEvaluacion(BeanEvaluacion beanEval) {		
 		Evaluacion eval = null;
 		
@@ -1010,8 +998,8 @@ public class ExpEvalManagedBean implements Serializable  {
 		return "/modulos/solicitudes/registro_evaluacion?faces-redirect=true";		
 	}	
 	
-	public String registrarEvaluacion() {		
-				
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Registra nueva evaluacion.
+	public String registrarEvaluacion() {				
 		FacesUtil.setParamBySession("solicitudEval", this.solicitudExp);		
 		FacesUtil.setParamBySession("selectedInstrumento", null);		
 		FacesUtil.setParamBySession("selectedEvaluacion", null);
@@ -1020,6 +1008,7 @@ public class ExpEvalManagedBean implements Serializable  {
 		return "/modulos/solicitudes/registro_evaluacion?faces-redirect=true";		
 	}	
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA ||
 	public void solicitarCertificacion (){
 		
 		Mantenedor estadoActual = this.getSolicitudExp().getEstatus();
@@ -1042,94 +1031,11 @@ public class ExpEvalManagedBean implements Serializable  {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "La solicitud a sido registrada exitosamente !!"));
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje: ", "Error al registrar la solicitud. Favor revisar..."));
-		}
-		
-		
-	}
-				
-	public void actualizarContacto() {
-		System.out.println("correo " + solicitudExp.getContacto().getCorreo1());
-		
-		if (solicitudExp.getContacto().getDireccionActual() == null) {
-			solicitudExp.getContacto().setDireccionActual("");			
-		}
-		if (solicitudExp.getContacto().getCorreo1() == null) {
-			solicitudExp.getContacto().setCorreo1("");			
 		}		
-		if (solicitudExp.getContacto().getTelefono1() == null) {
-			solicitudExp.getContacto().setTelefono1("");			
-		}
-		if (solicitudExp.getContacto().getTelefono2() == null) {
-			solicitudExp.getContacto().setTelefono2("");			
-		}
 		
-		Contacto contactoExp = (Contacto)service.guardar(solicitudExp.getContacto());
-		
-		if (contactoExp != null)
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!"));
-		else
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje: ", "Error al actualizar los datos del contacto..."));
-	      
-	}
-
-	public void guardarDatosLaborales() {
-		
-		System.out.println("Entra al metodo guardarDatosLaborales");
-		
-		String nombreCargoLaboral;
-		
-		this.idSeletedLaboral = (Long)FacesUtil.getParametroSession("idSelectedLaboral");				
-		
-		FacesUtil.setParamBySession("idSelectedLaboral", null);
-		
-		nombreCargoLaboral = this.nombreCargo.toUpperCase() + " /  " + this.nombreInstitucion.toUpperCase();
-		
-		if (this.idSeletedLaboral == null) {
-			
-			if (this.paisIdLaboral != null){
-				Object [] objs =  new Object [] {this.paisIdLaboral};
-				paisInstitucion = service.getPaisByNQParam("Pais.findById", objs);
-			} 
-				
-						
-			this.selectedLaboral = new Laboral (this.solicitudExp.getContacto(), // contacto, 
-									   this.tipoLaboral, // tipo, 
-									   nombreCargoLaboral.toUpperCase(), // nombre,
-									   this.descripcionCargo, // descripcion, 
-									   this.nombreInstitucion.toUpperCase(), // institucion, 
-									   this.paisInstitucion, // pais,
-									   this.fechaDesde, // fechaInicia, 
-									   this.fechaHasta, // fechaFinaliza, 
-									   this.institucionDireccion.toUpperCase(), // institucionDireccion,
-									   this.telefonoInstitucion, // institucionTelefono, 
-									   this.nombreCargo.toUpperCase(), // cargo,
-									   null // archivo
-										);		
-			
-		} else {
-			this.selectedLaboral = service.getLaboralById(this.idSeletedLaboral);
-						
-			this.selectedLaboral.setInstitucion(this.nombreInstitucion.toUpperCase());
-			this.selectedLaboral.setInstitucionDireccion(this.institucionDireccion.toUpperCase());		
-			this.selectedLaboral.setCargo(this.nombreCargo.toUpperCase());		
-			this.selectedLaboral.setFechaInicia(this.fechaDesde);
-			this.selectedLaboral.setFechaFinaliza(this.fechaHasta);	
-			this.selectedLaboral.setDescripcion(this.descripcionCargo.toUpperCase());
-			this.selectedLaboral.setNombre(nombreCargoLaboral.toUpperCase());
-			this.selectedLaboral.setInstitucionTelefono(this.telefonoInstitucion.toUpperCase());
-			this.selectedLaboral.setPais(this.paisInstitucion);			
-		}
-		this.selectedLaboral = (Laboral)service.guardar(this.selectedLaboral);
-		
-		if (this.selectedLaboral != null) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!"));			
-		} else {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje: ", "Se genero un error al grabar los datos laborales / academicos. Favor revisar..."));
-		}
-		
-		enabledDisableButton(2);		
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Habilita y deshabilita botones.
 	public void enabledDisableButton(int opcion) {
 		
 		Solicitud sol = this.getSolicitudExp();
@@ -1224,6 +1130,7 @@ public class ExpEvalManagedBean implements Serializable  {
 			
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Limpiar campos.
 	public void limpiarCampos (){
 				
 		this.setSelectedLaboral(null);
@@ -1242,23 +1149,9 @@ public class ExpEvalManagedBean implements Serializable  {
 					
 	}	
 	
-	
-	public void nuevoArchivo() {
-		archivoExp = new Archivo();
-		
-		listEvalBySolicitud = new ArrayList<SelectItem> ();
-		List<Evaluacion> listE = this.getListEvaluaciones();
-		
-		System.out.println("Obtiene el listado de las evaluaciones");
-		listEvalBySolicitud.add(new SelectItem(null, "Seleccione la evaluacion"));
-		for (Evaluacion dato : listE) {
-			listEvalBySolicitud.add(new SelectItem(dato.getUnidad(), service.getCompetenciaDescripcion(dato.getUnidad())));
-		}
-	}
-
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA ||
 	public void nuevoPortafolio (){
-		System.out.println("Agrega archivo de evidencia al dato laboral/academico: ");
-		
+				
 		if (this.selectedLaboral == null)			
 			this.idSeletedLaboral = (Long)FacesUtil.getParametroSession("idSelectedLaboral");			
 		else
@@ -1266,41 +1159,14 @@ public class ExpEvalManagedBean implements Serializable  {
 			
 		if (this.idSeletedLaboral != null) {
 			
-			if (this.selectedLaboral == null)
-				
+			if (this.selectedLaboral == null)				
 				this.selectedLaboral = service.getLaboralById(this.idSeletedLaboral);
-				FacesUtil.setParamBySession("selectedLaboral", this.selectedLaboral);				
-			
-		}
-		 
+			FacesUtil.setParamBySession("selectedLaboral", this.selectedLaboral);			
+		}		 
 		
 	}
 	
-	public void guardarArchivo() {
-		
-		this.archivoExp = (Archivo)FacesUtil.getParametroSession("archivoExp");			
-				
-		if (archivoExp != null) {
-			//Asignando valores de pantalla
-			
-			archivoExp.setNombre(this.getNombreArchivoExp());
-			archivoExp.setVersion(this.getVersionArchivoExp());
-			archivoExp.setDescripcion(this.getDescripcionArchivoExp());
-						
-			archivoExp = (Archivo) service.guardar(archivoExp);
-			
-			if (archivoExp != null){
-				FacesUtil.getMensaje("SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!", false);
-				FacesUtil.setParamBySession("archivoExp", null);
-				FacesUtil.setParamBySession("selectedLaboral", null);
-				FacesUtil.setParamBySession("idSelectedLaboral", null);		
-			}else{
-				FacesUtil.getMensaje("SCCL - Mensaje: ", "Error al grabar el archivo. Favor revisar...", true);				
-			}
-		}		
-		
-	}
-	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Cancela edicion de portafolio.
 	public void cancelaPortafolio (){
 		
 		this.setNombreArchivoExp(null);
@@ -1313,9 +1179,9 @@ public class ExpEvalManagedBean implements Serializable  {
 		FacesUtil.setParamBySession("archivoExp", null);
 		FacesUtil.setParamBySession("selectedLaboral", null);
 		FacesUtil.setParamBySession("idSelectedLaboral", null);		
-		
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Edita el portafolio.
 	public void editarPortafolio(){		
 		Object [] objs;
 		if (selectedArchivoId != null){			
@@ -1326,11 +1192,9 @@ public class ExpEvalManagedBean implements Serializable  {
 		}
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Aplica estatus de aprobado al portafolio.
 	public void aprobarPortafolio(){
-		System.out.println("selectedLaboral " + selectedLaboral);
-		System.out.println("archivoExp "+ archivoExp);
-		System.out.println("Indica Aprobado: "+ archivoExp.getAprobado());
-		
+				
 		Mantenedor estadoArchivo = archivoExp.getEstado();
 		
 		Integer  proxEstado = Integer.valueOf(estadoArchivo.getProximo());
@@ -1347,14 +1211,12 @@ public class ExpEvalManagedBean implements Serializable  {
 		}
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Actualiza listado de portafolio.
 	public void actualizaListaPortafolio (Integer tipo){
 		Object [] objs;
-		if (tipo == 1) {
-			System.out.println("Consulta el listado de Archivos por datos laborales");			
+		if (tipo == 1) {						
 			if (selectedLaboral != null) {			
-				System.out.println("Datos laborales " + selectedLaboral.getId());
-				 objs =  new Object [] {selectedLaboral.getId()};
-				 System.out.println("Ejecuta la consulta");
+				 objs =  new Object [] {selectedLaboral.getId()};			
 				 this.listPortafolioLaboral = service.getArchivoByParam ("Archivo.findByLaboralId", objs);				
 			}
 		} else {		
@@ -1366,155 +1228,7 @@ public class ExpEvalManagedBean implements Serializable  {
 		}
 	}
 	
-	public void uploadFile(FileUploadEvent event){
-		
-		Date fechaAhora = new Date();
-		String tituloMsg = "";
-		String mensaje = "";
-		boolean isError = false;
-					    
-		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-		
-	    String directorio = ec.getRealPath("/portafolio");	    
-	    Usuario u = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
-	    String nombreFile;
-	    String nombrePropietario;
-	    Long   sizeArchivo;
-	    int    pos;
-	    String extension;
-	    	    	    
-		try {
-		
-			this.file = event.getFile();			
-	
-			nombreFile = file.getFileName().trim();
-			
-			this.nombreRealArchivoExp = nombreFile;
-			
-			pos=nombreFile.indexOf(".");
-			
-			extension = nombreFile.substring(pos); 
-			
-			if ((this.nombreRealArchivoExp.toLowerCase().endsWith(".pdf")) || (this.nombreRealArchivoExp.toLowerCase().endsWith(".png"))){
-							
-				nombrePropietario = u.getUsuarioAlias();
-				
-				sizeArchivo = (file.getSize()) / 1024; // El tamaño del archivo en KB
-				
-				this.sizeArchivoExp = String.valueOf(sizeArchivo) + " KB";
-				
-				archivoExp.setNombre(nombreFile);
-				archivoExp.setSize(this.sizeArchivoExp);			
-				archivoExp.setFecha(fechaAhora);					
-				archivoExp.setNombreReal(this.nombreRealArchivoExp);
-				archivoExp.setRuta(String.format(directorio+"/%s",nombreFile));
-				archivoExp.setPropietario(nombrePropietario);
-				archivoExp.setTipo(extension);
-				archivoExp.setCategoria(extension);
-				archivoExp.setIcono(nombreFile);
-				archivoExp.setVersion("1");
-				archivoExp.setDescripcion(this.nombreRealArchivoExp);
-																	
-				FileOutputStream fos = new FileOutputStream(String.format(directorio+"/%s",file.getFileName()));			
-	            fos.write(file.getContents());
-	            fos.flush();
-	            fos.close();            
-	            
-	            String tipoMantenedorEstado = archivoExp.getTipoMantenedorEstado();
-				
-				Mantenedor primerEstado = service.getMantenedorMinByTipo(tipoMantenedorEstado);
-				
-				archivoExp.setEstado(primerEstado);
-				
-				this.selectedLaboral = (Laboral)FacesUtil.getParametroSession("selectedLaboral");
-										
-				archivoExp.setLaboral(this.selectedLaboral);
-				
-				archivoExp = (Archivo) service.guardar(archivoExp);
-				
-				if (archivoExp != null){		            
-					mensaje = nombreFile + " ha sido cargado al servidor.";
-					isError = false;
-					FacesUtil.setParamBySession("archivoExp", this.archivoExp);					
-				}else {
-					isError = true;
-				}
-				
-				
-	            
-			} else {
-				 mensaje = nombreFile + "Unicamente se permite subir archivo PDF y PNG. Favor revisar...." + nombreFile.toLowerCase();
-				 isError = true;
-			}
-	
-		} catch (IOException e) {
-			isError = true;
-			e.printStackTrace();
-		}		
-		
-	
-		if (isError){
-			tituloMsg = "Proceso Incompleto: ";
-			mensaje = (mensaje.isEmpty()) ? "Se genero un error al subir el archivo. Favor revisar...." : mensaje;
-		} else {
-			tituloMsg = "Proceso Exitoso !!!";
-		}
-		
-		FacesUtil.getMensaje(tituloMsg, mensaje, isError);
-			        			
-	}
-	
-	public void validaRegistroCV (){
-		String       textMsg = "";
-		String       titulo = "";
-		boolean      isError = false;
-		
-		Contacto solicitante = this.solicitudExp.getContacto();
-		
-		if (this.isIndicaCVFull()) {
-			this.setDisableSolicitarCertificacion(false);		
-			
-			if (solicitante.getTelefono1() == null) {
-				textMsg = "Debe indicar el numero de telefono";					    
-				this.setDisableSolicitarCertificacion(true);
-			}
-			
-			if (solicitante.getDireccionActual() == null) {
-				textMsg = (textMsg.isEmpty()) ? "Debe indicar la direccion actual" : textMsg + ", la direccion actual";					    
-				this.setDisableSolicitarCertificacion(true);
-			} 
-			
-			if (solicitante.getDepartamentoId() == null) {
-				textMsg = (textMsg.isEmpty()) ? "Debe indicar el departamento" : textMsg + ", el departamento";			
-				this.setDisableSolicitarCertificacion(true);
-			}
-			
-			if (solicitante.getMunicipioId() == null) {
-				textMsg = (textMsg.isEmpty()) ? "Debe indicar el municipio." : textMsg + " y el municipio.";		
-				this.setDisableSolicitarCertificacion(true);
-			}
-			
-			if (this.getListDatosLaborales().size() == 0) {
-				textMsg = (textMsg.isEmpty()) ? "Debe indicar los datos Laborales / Academicos." : ". Debe indicar los datos Laborales / Academicos.";
-				this.setDisableSolicitarCertificacion(true);
-			}
-			
-			if (this.isDisableSolicitarCertificacion()){
-				titulo = "Informacion incompleta: ";
-				isError = true;
-			}else{
-				isError = false;
-				titulo = "Informacion: ";
-				textMsg = "Puede proceder a registrar la solicitud";
-			}
-						
-			FacesUtil.getMensaje(titulo, textMsg, isError);
-		} else
-		{
-			this.setDisableSolicitarCertificacion(true);
-		}
-	}	
-	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Inicializa parametros.
 	public String inicializaParametros (ActionEvent event){
 		//Recibiendo el parametro del IdSolicitud que se va a editar en el Expediente.
 		System.out.println("ExpedienteManagedBean. Obtiendo los parametros ");
@@ -1533,6 +1247,7 @@ public class ExpEvalManagedBean implements Serializable  {
 		
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Aplica estatus convocado.
 	public void convocarCertificacion(){
 		Contacto solicitante = null;
 		boolean pasaConvocatoria = false;
@@ -1545,12 +1260,9 @@ public class ExpEvalManagedBean implements Serializable  {
 			
 			pasaConvocatoria = service.portafolioVerificado(solicitante, new String("8"));			
 		}
-		
-		System.out.println("Se cambia el estado");
-		
+						
 		if (pasaConvocatoria == true){
-			System.out.println("Nuevo estado " + this.getEstadoSiguiente().getValor());
-			
+					
 			this.solicitudExp.setEstatus(this.getEstadoSiguiente());
 			
 			this.solicitudExp = (Solicitud) service.guardar(this.solicitudExp);
@@ -1574,16 +1286,15 @@ public class ExpEvalManagedBean implements Serializable  {
 		
 	}
 	
-	
-	public void asesorarCertificacion (){
-	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Aplica estatus asesorado.
+	public void asesorarCertificacion (){	
 		String  textoMsg = "";	
-		boolean indicaAsesorado = true;
-			
+		boolean indicaAsesorado = true;			
 		solicitudExp = avanzaProceso (solicitudExp, "listo para inscripción", indicaAsesorado, textoMsg);
 			
 	}	
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Aplica estatus listo para inscripcion.
 	public void inscripcionCertificacion (){
 		boolean listoInscripcion = false;	
 		String textoMsg = "La solicitud no cumple con las condiciones para proceder con la inscripcion. Favor revisar...";
@@ -1593,6 +1304,8 @@ public class ExpEvalManagedBean implements Serializable  {
 			solicitudExp = avanzaProceso (solicitudExp, "listo para inscripción", listoInscripcion, textoMsg);						
 		}
 	}
+	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Aplica estatus finalizado.
 	public void concluirCertificacion(){
 		boolean concluir = false;
 		String textoMsg = "La solicitud no cumple con las condiciones para concluir el proceso de certificacion. Favor revisar...";
@@ -1602,6 +1315,8 @@ public class ExpEvalManagedBean implements Serializable  {
 			solicitudExp = avanzaProceso(solicitudExp, " Proceso Concluido", concluir, textoMsg );
 		}
 	}
+	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Aplica cambio de estatus.
 	public Solicitud avanzaProceso (Solicitud sol, String nombreEstado, boolean pasa, String msgNoPasa){
 		String 	titulo = "";
 		String 	textoMsg = "";
@@ -1636,16 +1351,19 @@ public class ExpEvalManagedBean implements Serializable  {
 		
 	}
 
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Ejecuta reporte Informe del Asesor.
 	public void runInformeAsesor() throws Exception{
 		String rptNombre = "informeasesor";
 		runReporte(rptNombre);
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Ejecuta reporte Plan de Capacitacion.
 	public void runPlanCapacitacion() throws Exception{
 		String rptNombre = "plancapacitacion";
 		runReporte(rptNombre);
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Ejecuta reporte generico.
 	public void runReporte(String nombreReporte) throws Exception {
     	Map<String,Object> params = new HashMap<String,Object>();
     	Certificacion cert = this.solicitudExp.getCertificacion();
@@ -1657,8 +1375,6 @@ public class ExpEvalManagedBean implements Serializable  {
         	service.imprimirReporte(nombreReporte, params, Global.EXPORT_PDF, true);
     	}else
     		FacesUtil.getMensaje("Mensaje SCCL ", "Error al consultar los datos del evaluador. Favor comuníquese con el Departamento de Tecnología del INATEC", true);
-    	  
-		
-		
+    	  		
 	}
 }

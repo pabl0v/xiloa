@@ -26,7 +26,8 @@ import service.IService;
 import support.Ifp;
 import support.FacesUtil;
 import util.Global;
-//Miriam Martinez Cano || Proyecto Xiloa - INATEC || Bean asociada al facet solicitudes.xhtml
+
+//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Bean asociada al facet solicitudes.xhtml
 @Component
 @Scope(value="view")
 public class DashBoardSolicitudesManagedBean implements Serializable {
@@ -68,7 +69,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	
 	private boolean disableEnviarSolicitud;
 	
-			
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Constructor de la clase
 	public DashBoardSolicitudesManagedBean() {
 		
 		super();	
@@ -223,6 +224,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		this.selectedSolicitud = selectedSolicitud;
 	}	
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo utilizado para llenar la lista del selector utilizado para filtrar por cualquier campo
 	public void llenarListBuscarByAll () {
 		this.listBuscarByAll.add(new SelectItem(null, "Todos los campos"));
 		this.listBuscarByAll.add(new SelectItem("s.certificacion.ifpNombre", "Centro Evaluador"));
@@ -233,7 +235,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		this.listBuscarByAll.add(new SelectItem("s.estatus.valor", "Estado"));		
 	}
 				
-   //Llenado de Centro
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo que se ejecuta posterior al constructor. Se utiliza para inicializar valores.
 	@PostConstruct
 	private void initBeanDBSolicitudes(){
 		FacesUtil.setParamBySession("candidato", null);
@@ -256,6 +258,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Método utilizado para consultar las certificaciones disponibles por el centro de formacion profesional seleccionado.
 	public void handleCertByCentro() {
 		List<Certificacion> certificacionList = service.getCertificacionesByIdIfp(this.getSelectedIdIfpSolicitud());
 		listCertByCentro = new ArrayList<SelectItem>();
@@ -268,11 +271,13 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		this.filterSolicitudes = this.listaSolicitudes;
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo utilizado para ejecutar consulta de solicitudes segun los parametros de busquedas seleccionados.
 	public void handleBuscar () {						
 		this.listaSolicitudes = filtraSolicitudes(); //service.getSolicitudesByParam(asignaParams ());
 		this.filterSolicitudes = this.listaSolicitudes;
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo utilizado para asignar los parametros de busqueda segun lo que se ha seleccionado en los filtros de lista de solicitudes.
 	public HashMap<String, Object> asignaParams () {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		Contacto contacto = null;
@@ -298,7 +303,8 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		
 		return params;
 	}
-	
+
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo utilizado para asignar el tipo de filtro a ser utilizado en la lista de solicitudes que se desplegará en pantalla disponibles para realizar seguimiento.
 	public List<Solicitud> filtraSolicitudes(){		
 		Integer tipoFiltro = null;		
 		tipoFiltro = (Integer)FacesUtil.getParametroSession("tipoFiltro");		
@@ -307,11 +313,13 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		
 		return service.filtraListaSolicitudes(asignaParams (), tipoFiltro);				
 	}
-		
+	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo que redireccion al facet registro_solicitudes.xhtml que permite agregar nueva solicitudes.
 	public String nuevaSolicitud(){		
 		return "/modulos/solicitudes/registro_solicitud?faces-redirect=true";
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo utilizado para redireccionar a la edicion de la solicitud en dependencia del estatus en que se encuentra la solicitud seleccionada.
 	public String editaSolicitud(){
 		String urlDestino = null;
 		Mantenedor estadoActualSolicitud = null;
@@ -347,26 +355,30 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		return urlDestino;
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo que redirecciona al facet solicitudes.xhtml.
 	public String cancelarEdicion() {		
 		return "/modulos/solicitudes/solicitudes?faces-redirect=true";				
 	}
-				
+	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Indica el filtro de la lista de solicitudes que pueden ser pasadas a convocadas.
 	public String indicarConvocar(){
 		FacesUtil.setParamBySession("tipoFiltro", new Integer(1));
 		return "/modulos/solicitudes/convocatoria?faces-redirect=true";
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Indica el filtro de la lista de solicitudes que pueden ser pasadas a asesorado. 
 	public String indicarAsesorar(){
 		FacesUtil.setParamBySession("tipoFiltro", new Integer(2));
 		return "/modulos/solicitudes/convocatoria?faces-redirect=true";
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Indica el filtro de la lista de solicitudes que pueden ser pasadas a listo para inscripcion.
 	public String indicarInscribir(){
 		FacesUtil.setParamBySession("tipoFiltro", new Integer(3));
 		return "/modulos/solicitudes/convocatoria?faces-redirect=true";
 	}
 	
-	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Asigna el estatus de solicitar certificacion.
 	public void solicitarCertificacion (){
 		
 		Mantenedor estadoActual = null;				
@@ -411,6 +423,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || funcion que valida las condiciones necesarias para que la solicitud pase a estatus registrada.
 	public boolean validaRegistroCV (Solicitud solicitud){
 		String        textMsg = "";
 		String        titulo = "";
@@ -459,6 +472,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Método o listener asociado al evento select de registro en el dataTable dtSolicitudes.
 	public void onRowSelectDtSolicitudes(SelectEvent event) {
 		this.setSelectedSolicitud((Solicitud) event.getObject());
 		
@@ -471,22 +485,26 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		
     }
   
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Método o listener asociado al evento unSelect del dataTable dtSolicitudes.
     public void onRowUnSelectDtSolicitudes(UnselectEvent event) {
     	this.setDisableEnviarSolicitud(true);
     }
 	
+  //Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Ejecuta reporte pre-matricula.
     public void runPreMatricula () throws Exception{
     	String rptNombre = "pre_matricula";
     	
     	runReporte(rptNombre, true);
     }
     
+  //Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Ejecuta reporte solicitud del candidato.
     public void runSolicitudCandidato() throws Exception{
     	String rptNombre = "solicitud_candidato";
     	
     	runReporte(rptNombre, true);
     }
     
+  //Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Ejecuta reporte Emision del Juicio.
     public void runEmisionJuicio() throws Exception{
     	Map<String,Object> params = new HashMap<String,Object>();
     	Certificacion cert = null;
@@ -513,7 +531,8 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
     	}else
     		FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe seleccionar una solicitud.", true);
     }
-    
+
+  //Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Ejecuta reporte Certificado.
     public void runCertificado() throws Exception{
     	Map<String,Object> params = new HashMap<String,Object>();
     	
@@ -526,16 +545,19 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
     		FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe seleccionar una solicitud.", true);
     }
     
+  //Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Ejecuta reporte Informe Asesor.
     public void runInformeAsesor() throws Exception{
 		String rptNombre = "informeasesor";
 		runReporte(rptNombre, true);
 	}
 	
+  //Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Ejecuta reporte Plan de Capacitacion.
 	public void runPlanCapacitacion() throws Exception{
 		String rptNombre = "plancapacitacion";
 		runReporte(rptNombre, true);
 	}
 	    
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo generico que permite ejecutar reporte.
     public void runReporte(String nombreReporte, boolean desplegar) throws Exception {
     	Map<String,Object> params = new HashMap<String,Object>();
     	Certificacion cert = null;

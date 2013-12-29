@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * Servlet implementation class RunReport
  */
 //@WebServlet("/viewFile")
+//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Generacion de reportes
 public class RunReport extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

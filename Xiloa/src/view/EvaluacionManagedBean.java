@@ -26,7 +26,7 @@ import model.Instrumento;
 import model.Mantenedor;
 import model.Solicitud;
 
-//Miriam Martinez Cano || Proyecto Xiloa - INATEC || Bean asociado al facet registro_evaluacion.xhtml
+//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Bean asociado al facet registro_evaluacion.xhtml
 @Component
 @Scope(value="view")
 public class EvaluacionManagedBean implements Serializable {
@@ -72,6 +72,7 @@ public class EvaluacionManagedBean implements Serializable {
 	private boolean cualitativo; 
 	private boolean visualizaPuntaje;
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Constructor de la clase.
 	public EvaluacionManagedBean() {
 		super();
 		
@@ -362,6 +363,7 @@ public class EvaluacionManagedBean implements Serializable {
 		this.observaciones = observaciones;
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo que se ejecuta posterior al constructor de la clase, utilizado para inicializar datos.
 	@PostConstruct
 	private void initBeanEvaluacion(){
 		Solicitud sol = null;
@@ -421,6 +423,7 @@ public class EvaluacionManagedBean implements Serializable {
 		listaAprobados.add(new SelectItem(false, " No Aprobado "));
 	}
 
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo que consulta los instrumento por la unidad de compentencia seleccionada.
 	public void handleInstrumentosByUnidad () {
 		
 		List<Instrumento> listInstru;
@@ -452,6 +455,7 @@ public class EvaluacionManagedBean implements Serializable {
 		}
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo que consulta las guias configurada por el instrumento de evaluacion seleccionado.
 	public void handleGuiasByInstrumento(){		
 		Instrumento inst = null;
 		Long  selectedInstrumentoId = null;
@@ -476,6 +480,7 @@ public class EvaluacionManagedBean implements Serializable {
 		listGuiaByInstru = service.getGuiaByParam("Guia.findByIdInstrumento", objs);						
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo utilizado para inicializar varios selectItems.
 	public void inicializaSelectItems (){
 		if (solicitudEval != null){
 			Certificacion c = this.solicitudEval.getCertificacion();
@@ -498,6 +503,7 @@ public class EvaluacionManagedBean implements Serializable {
 		}
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo utilizado para guardar o actualizar los cambios de la evaluacion.
 	public void guardarEvaluacion() {
 				
 		Evaluacion eval;			
@@ -598,6 +604,7 @@ public class EvaluacionManagedBean implements Serializable {
 		
 	}	
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo utilizado para guardar los cambios en el detalle de guias por evaluacion.
 	public void saveEvalGuia(){
 		this.selectedEvaluacionGuia = (this.selectedEvaluacionGuia == null) ? (EvaluacionGuia) FacesUtil.getParametroSession("selectedEvaluacionGuia") : this.selectedEvaluacionGuia;
 		FacesUtil.setParamBySession("selectedEvaluacionGuia", null);
@@ -634,7 +641,8 @@ public class EvaluacionManagedBean implements Serializable {
 		}
 		
 	}
-	
+
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo utilizado para asignar valores en los campos del dialog utilizado para editar el detalle de guias por evaluacion.
 	public void editaGuia(){
 		FacesUtil.setParamBySession("selectedEvaluacionGuia", this.selectedEvaluacionGuia);	
 		if (this.selectedEvaluacionGuia != null){			
@@ -655,6 +663,7 @@ public class EvaluacionManagedBean implements Serializable {
 		
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Agrega nuevas guias por evaluacion.
 	public void agregaGuias (){
 		if (this.selectedEvaluacion != null) {
 			Set<EvaluacionGuia> setEvalGuia = new HashSet<EvaluacionGuia> ();
@@ -680,6 +689,7 @@ public class EvaluacionManagedBean implements Serializable {
 				
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Cancela la edicion de la evaluacion.
 	public void cancelEdicionEvalGuia(){
 		FacesUtil.setParamBySession("selectedEvaluacionGuia", null);
 		this.preguntaGuia = null;
@@ -687,6 +697,7 @@ public class EvaluacionManagedBean implements Serializable {
 		this.puntajeGuia = 0;
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Inicializa valores en cero o null.
 	public void resetValores () {
 		this.selectedEvaluacion = null;
 		this.selectedGuia = null;
@@ -704,6 +715,7 @@ public class EvaluacionManagedBean implements Serializable {
 		this.cualitativo = false;
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Redirecciona al facet registro_evaluacion.xhtml.
 	public String registrar_evaluacion (Solicitud sol) {		
 		
 		this.setSolicitudEval(sol);
@@ -713,6 +725,7 @@ public class EvaluacionManagedBean implements Serializable {
 		return "/modulos/solicitudes/registro_evaluacion?faces-redirect=true";
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Cancela registro de nueva evaluacion.
 	public String cancelarRegistro () {
 		String urlDestino = "";
 		
@@ -723,6 +736,7 @@ public class EvaluacionManagedBean implements Serializable {
 		return urlDestino;
 	}
 	
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Funcion que obtiene el total de puntos a nivel de evaluacion segun lo asignado en cada detalle de guia por evaluacion.
 	public Float sumaPuntajeGuia(Guia [] guias){
 		Float sumaPuntaje = new Float(0);
 		
@@ -731,15 +745,14 @@ public class EvaluacionManagedBean implements Serializable {
 		
 		return sumaPuntaje;
 	}
-	
+
+	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Listener del evento select del datatable dtGuias.
 	public void onRowSelectDtGuias(SelectEvent event){
 		Float suma = new Float(0);
 		
 		suma = sumaPuntajeGuia(this.selectedGuia);
 		
 		if (suma > this.getPuntajeMaxEval())
-			FacesUtil.getMensaje("SCCL - Mensaje", "Favor revisar, ha excedido el puntaje maximo permitido...", true);
-			
-				
+			FacesUtil.getMensaje("SCCL - Mensaje", "Favor revisar, ha excedido el puntaje maximo permitido...", true);			
 	}
 }
