@@ -15,6 +15,15 @@ import model.Mantenedor;
 import model.Rol;
 import model.Usuario;
 
+/**
+ * 
+ * @author Denis Chavez
+ * 
+ * JSF ManagedBean asociado a la interfaz  configuracion.xhtml
+ * Esta clase maneja lo que se muestra en la página, los eventos relacionados 
+ * e interacciona con la capa de servicio (paquete service)
+ */
+
 @Component
 @Scope(value="view")
 public class ConfiguracionManagedBean {

@@ -4,6 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 
+ * @author Denis Chavez
+ * 
+ * Esta clase agrupa información proporcionada por el sistema de ofertas del inatec.
+ * Esta información será usuada para mostrar las certificaciones disponibles y permitir su creación.
+ *
+ */
 public class UCompetencia {
 	
 	private Integer ofertaId;

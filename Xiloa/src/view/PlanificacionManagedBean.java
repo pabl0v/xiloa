@@ -25,6 +25,15 @@ import service.IService;
 import support.Ifp;
 import support.UCompetencia;
 
+/**
+ * 
+ * @author Denis Chavez
+ * 
+ * JSF ManagedBean asociado a la interfaz  planificacion.xhtml
+ * Esta clase maneja lo que se muestra en la página, los eventos relacionados 
+ * e interacciona con la capa de servicio (paquete service)
+ */
+
 @Component
 @Scope(value="request")
 public class PlanificacionManagedBean implements Serializable {

@@ -1,5 +1,13 @@
 package support;
 
+/**
+ * 
+ * @author Denis Chavez
+ *
+ * Esta clase se utiliza para la creación de cuentas de usuario externo desde la página de inicio de la aplicación.
+ * Encapsula la información proporcionada por el usuario: usuario, nombre, apellido, email1 y email2.
+ * 
+ */
 public class UsuarioExterno {
 
 	private String usuario;

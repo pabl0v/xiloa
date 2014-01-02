@@ -15,12 +15,26 @@ import org.springframework.stereotype.Component;
 
 import service.IService;
 
+/**
+ * 
+ * @author Denis Chavez
+ * 
+ * Esta clase implementa la interface AuthenticationProvider de Spring Security
+ * implementa el método de autenticación vía usuario y contraseña contra la base de datos local e inatec
+ * según el método de autenticación seleccionado por el usuario
+ *
+ */
+
 @Component
 public class CustomUserAuthenticationProvider implements AuthenticationProvider {
 	
 	@Autowired
 	private IService service;
 
+	/**
+	 * @param el token conteniendo el usuario, la contraseña y el tipo de usuario (inatec o local)
+	 * @return la instancia con el resultado de la autenticación (éxito o fallo) y los permisos del usuario 
+	 */
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		
@@ -28,6 +42,10 @@ public class CustomUserAuthenticationProvider implements AuthenticationProvider 
 		boolean inatec = token.isInatec();
 		Contacto contacto = null;
 		Usuario usuario = null;
+		
+		/**
+		 * si el usuario es inatec, se autentica contra el esquema de seguridad existente en el inatec
+		 */
 		
 		if(inatec)
 		{
@@ -89,7 +107,7 @@ public class CustomUserAuthenticationProvider implements AuthenticationProvider 
 
 			return new UsernamePasswordAuthenticationToken(authentication.getName(), null, service.getAuthoritiesInatecByLogin(authentication.getName()));
 		}
-		else
+		else		//si el usuario no es inatec, se autentica contra el esquema local de la aplicación : sccl
 		{
 			try
 			{
@@ -114,6 +132,10 @@ public class CustomUserAuthenticationProvider implements AuthenticationProvider 
 		}
 	}
 
+	/**
+	 * @param un token cualquiera de autenticación
+	 * @return indica si la clase actual soporta la autenticación del token pasado como parámetro 
+	 */
 	@Override
 	public boolean supports(Class<?> authentication) {
 		return CustomUsernamePasswordAuthenticationToken.class.equals(authentication);

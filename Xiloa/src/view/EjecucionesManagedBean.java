@@ -22,6 +22,15 @@ import org.springframework.stereotype.Component;
 import controller.LoginController;
 import service.IService;
 
+/**
+ * 
+ * @author Denis Chavez
+ * 
+ * JSF ManagedBean asociado a la interfaz  ejecuciones.xhtml
+ * Esta clase maneja lo que se muestra en la página, los eventos relacionados 
+ * e interacciona con la capa de servicio (paquete service)
+ */
+
 @Component
 @Scope("request")
 public class EjecucionesManagedBean implements Serializable {

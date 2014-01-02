@@ -14,12 +14,25 @@ import org.springframework.stereotype.Service;
 
 import service.IService;
 
+/**
+ * 
+ * @author Denis Chavez
+ * 
+ * Esta clase ayuda en la autenticación vía OpenId. 
+ * Si la autenticación fue exitosa, obtiene el email y el nombre del usuairo y le crea una cuenta en la base de datos local
+ *
+ */
+
 @Service
 public class OpenIdUserService implements UserDetailsService, AuthenticationUserDetailsService<OpenIDAuthenticationToken> {
 
 	@Autowired
 	private IService service;
 
+	/**
+	 * @param el token de autenticación de OpenId
+	 * @return una instancia con el usuario autenticado
+	 */
 	@Override
 	public UserDetails loadUserDetails(OpenIDAuthenticationToken token) {
 		String email = getUserData(token, "email");
@@ -41,6 +54,12 @@ public class OpenIdUserService implements UserDetailsService, AuthenticationUser
 		return null;
 	}
 	
+	/**
+	 * 
+	 * @param token, el token de autenticación de donde se extraerá la info indicada en el parámetro "data"
+	 * @param data, la información a extraer del token de autenticación
+	 * @return El dato solicitado
+	 */
 	private String getUserData(OpenIDAuthenticationToken token, String data) {
 	    for (OpenIDAttribute attribute : token.getAttributes()) {
 	        if (attribute.getName().equals(data)) {

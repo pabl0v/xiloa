@@ -23,6 +23,15 @@ import service.IService;
 import support.FacesUtil;
 import support.UsuarioExterno;
 
+/**
+ * 
+ * @author Denis Chavez
+ * 
+ * JSF ManagedBean asociado a la interfaz  index.xhtml
+ * Esta clase maneja lo que se muestra en la página, los eventos relacionados 
+ * e interacciona con la capa de servicio (paquete service)
+ */
+
 @Component
 @Scope(value="request")
 public class InicioManagedBean implements Serializable {	

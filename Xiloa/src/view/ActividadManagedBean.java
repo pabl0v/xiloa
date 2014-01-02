@@ -24,7 +24,14 @@ import org.springframework.stereotype.Component;
 
 import controller.LoginController;
 import service.IService;
-
+/**
+ * 
+ * @author Denis Chavez
+ * 
+ * JSF ManagedBean asociado a la interfaz  edicion_actividad.xhtml
+ * Esta clase maneja lo que se muestra en la página, los eventos relacionados 
+ * e interacciona con la capa de servicio (paquete service)
+ */
 @Component
 @Scope("session")
 public class ActividadManagedBean implements Serializable {

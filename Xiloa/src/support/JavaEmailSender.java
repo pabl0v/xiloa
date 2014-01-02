@@ -16,6 +16,14 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+
+/**
+ * 
+ * @author Denis Chavez
+ * 
+ * Esta clase implementa los métodos para envío de correos electrónicos desde la aplicación.
+ *
+ */
 @Component
 public class JavaEmailSender {
 
@@ -36,6 +44,10 @@ public class JavaEmailSender {
 	public JavaEmailSender(){
 		super();
 	}
+	
+	/**
+	 * Este método se ejecuta inmediatamente después del constructor y lee desde la tabla de mantenedores los datos de la cuenta desde la que se enviarán los correos
+	 */
 	
 	@PostConstruct
 	private void init(){
@@ -86,6 +98,14 @@ public class JavaEmailSender {
 			RESPONSIBLE = "sccl.inatec@gmail.com";
 		}
 	}
+	
+	/*
+	 * @param emailAdressTo, el email del destinatario
+	 * @param msgSubject, el subject del correo
+	 * @param msgText, el texto del mensaje
+	 * 
+	 * Crea y envía un correo electrónico con los parámetros recibidos
+	 */
 	 
 	public synchronized void createAndSendEmail(String emailAddressTo, String msgSubject, String msgText) {
 		this.emailAddressTo = emailAddressTo;
@@ -94,12 +114,24 @@ public class JavaEmailSender {
 		sendEmailMessage();
 	}
 	
+	/**
+	 * 
+	 * @param msgSubject, el subject del correo
+	 * @param msgText, el texto del correo
+	 * 
+	 * Crea y envía un correo electrónico al responsable del sistema (especificado en los mantenedores)
+	 */
+	
 	public synchronized void createAndSendEmailResponsible(String msgSubject, String msgText) {
 		this.emailAddressTo = RESPONSIBLE;
 		this.msgSubject = msgSubject;
 		this.msgText = msgText;	
 		sendEmailMessage();
 	}
+	
+	/**
+	 * Envía el mensaje de correo seteando los datos de la cuenta cuyos parámetros están en los mantenedores
+	 */
 
 	private void sendEmailMessage() {
 		//Create email sending properties

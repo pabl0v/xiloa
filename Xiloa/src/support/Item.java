@@ -1,5 +1,12 @@
 package support;
 
+/**
+ * 
+ * @author Denis Chavez
+ * 
+ * Esta clase es usada para manejar en los combos JSF el duo código/descripción
+ *
+ */
 public class Item {
 	
 	private Long id;	
