@@ -15,9 +15,16 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-//import javax.validation.constraints.Max;
-//import javax.validation.constraints.Min;
-//import javax.validation.constraints.NotNull;
+
+/**
+ * 
+ * @author Denis Chavez, Miriam Martínez
+ * 
+ * Entity Bean anotado con JPA para el manejo del mapeo Objeto/Relacional y la persistencia en BD
+ * Esta clase es usada extensivamente por el servicio (paquete service)
+ * Esta clase se corresponde con la tabla sccl.instrumentos 
+ * 
+ */
 
 @Entity(name = "instrumentos")
 @Table(name = "instrumentos", schema = "sccl")

@@ -5,6 +5,15 @@ import java.io.Serializable;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 
+/**
+ * 
+ * @author Denis Chavez, Miriam Martínez
+ * 
+ * Entity Bean anotado con JPA para el manejo del mapeo Objeto/Relacional y la persistencia en BD
+ * Esta clase es auxiliar para la anotación de la entidad EvaluacionGuia 
+ * 
+ */
+
 @Embeddable
 public class EvaluacionGuiaId implements Serializable {
 

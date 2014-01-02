@@ -25,6 +25,16 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.Length;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
+/**
+ * 
+ * @author Denis Chavez, Miriam Martínez
+ * 
+ * Entity Bean anotado con JPA para el manejo del mapeo Objeto/Relacional y la persistencia en BD
+ * Esta clase es usada extensivamente por el servicio (paquete service)
+ * Esta clase se corresponde con la tabla sccl.usuarios 
+ * 
+ */
+
 @Entity(name = "usuarios")
 @Table(name = "usuarios", schema = "sccl")
 @NamedQueries({

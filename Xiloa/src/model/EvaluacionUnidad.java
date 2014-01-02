@@ -15,6 +15,16 @@ import javax.persistence.Table;
 
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
+/**
+ * 
+ * @author Denis Chavez, Miriam Martínez
+ * 
+ * Entity Bean anotado con JPA para el manejo del mapeo Objeto/Relacional y la persistencia en BD
+ * Esta clase es usada extensivamente por el servicio (paquete service)
+ * Esta clase se corresponde con la tabla sccl.evaluaciones_unidad 
+ * 
+ */
+
 @Entity(name = "evaluaciones_unidad")
 @Table(name = "evaluaciones_unidad", schema = "sccl")
 @NamedQueries({
