@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
-import javax.faces.model.SelectItem;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +52,15 @@ import model.Requisito;
 import model.Rol;
 import model.Solicitud;
 import model.Usuario;
+
+/**
+ * 
+ * @author Denis Chavez, Miriam Martinez
+ *
+ * @version 1.0
+ * 
+ * Esta clase implementa la interface de servicio IService con todas las reglas de negocio y manejo de transacciones
+ */
 
 @Service
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -123,6 +131,10 @@ public class ServiceImp implements IService {
 	private Map<Long, Pais> catalogoPaises;
 	private Map<Integer, Departamento> catalogoDepartamentos;
 	
+	/*
+	 * Constructor por defecto
+	 */
+	
 	public ServiceImp(){
 		super();
 		mantenedores = new ArrayList<Mantenedor>();
@@ -141,6 +153,10 @@ public class ServiceImp implements IService {
 		catalogoPaises = new HashMap<Long, Pais>();
 		catalogoDepartamentos = new HashMap<Integer, Departamento>();
 	}
+	
+	/*
+	 * Método para poblar los catálogos básicos y variables globales de la aplicación.
+	 */
 	
 	@PostConstruct
 	public void init(){
@@ -195,83 +211,164 @@ public class ServiceImp implements IService {
 		this.catalogoDepartamentos = getDepartamentosByInatec();
 	}
 	
+	/*
+	 * @return obtiene un map con el catálogo de países
+	 * 
+	 */
+	
 	@Override
 	public Map<Long, Pais> getCatalogoPaises() {
 		return catalogoPaises;
 	}
 
+	/*
+	 * @return obtiene un map con el catálogo de departamentos
+	 * 
+	 */
+	
 	@Override
 	public Map<Integer, Departamento> getCatalogoDepartamentos() {
 		return catalogoDepartamentos;
 	}
 
+	/*
+	 * @return obtiene un map con el catálogo de estados se una evaluación
+	 * 
+	 */
+
 	@Override
 	public Map<Integer, Mantenedor> getCatalogoEstadosEvaluacion() {
 		return catalogoEstadosEvaluacion;
 	}
+	
+	/*
+	 * @return obtiene un map con el catálogo de portafolios de los solicitantes
+	 * 
+	 */
 
 	@Override
 	public Map<Integer, Mantenedor> getCatalogoPortafolio() {
 		return catalogoPortafolio;
 	}
 	
+	/*
+	 * @return obtiene un map con el catálogo de posibles estados de una solicitud
+	 * 
+	 */
+	
 	@Override
 	public Map<Integer, Mantenedor> getCatalogoEstadoSolicitud() {
 		return catalogoEstadoSolicitud;
 	}
+	
+	/*
+	 * @return obtiene un map con el catálogo de géneros
+	 * 
+	 */
 
 	@Override
 	public Map<Integer, Mantenedor> getCatalogoGenero() {
 		return catalogoGenero;
 	}
+	
+	/*
+	 * @return obtiene el listado de mantenedores
+	 * 
+	 */
 
 	@Override
 	public List<Mantenedor> getMantenedores(){
 		mantenedores = mantenedorDao.findAllByNamedQuery("Mantenedor.findAll");
 		return  mantenedores;
 	}
+	
+	/*
+	 * @return obtiene un map con el catálogo de posibles estatus de una certificación
+	 * 
+	 */
 
 	@Override
 	public Map<Integer, Mantenedor> getCatalogoEstatusCertificacion(){
 		return catalogoEstatusCertificacion;
 	}
 	
+	/*
+	 * @return obtiene un map con el catálogo de tipos de actividad en una planificación
+	 * 
+	 */
+	
 	@Override
 	public Map<Integer, Mantenedor> getCatalogoTiposActividad(){
 		return catalogoTiposActividad;
 	}
+	
+	/*
+	 * @return obtiene un map con el catálogo de posibles estatus de una actividad de planificación
+	 * 
+	 */
 
 	@Override
 	public Map<Integer, Mantenedor> getCatalogoEstatusActividad(){
 		return catalogoEstatusActividad;
 	}
+	
+	/*
+	 * @return obtiene un map con el catálogo de tipos de instrumentos de evaluación
+	 * 
+	 */
 
 	@Override
 	public Map<Integer, Mantenedor> getCatalogoTiposInstrumento(){
 		return catalogoTiposInstrumento;
 	}
+	
+	/*
+	 * @return obtiene un map con el catálogo de tipos de datos laborales posibles
+	 * 
+	 */
 
 	@Override
 	public Map<Integer, Mantenedor> getCatalogoTiposDatosLaborales(){
 		return catalogoTiposDatosLaborales;
 	}
 	
+	/*
+	 * @return obtiene un map con el catálogo de unidades de competencia
+	 * 
+	 */
+	
 	@Override
 	public Map<Long, Item> getCatalogoUnidades(){
 		this.catalogoUnidades = inatecDao.getCatalogoUnidades();
 		return catalogoUnidades;
 	}
+	
+	/*
+	 * @return obtiene la descripción de una unidad de competencia
+	 * @param el código de la unidad de competencia
+	 * 
+	 */
 
 	@Override
 	public String getCompetenciaDescripcion(Long codigo){
 		return catalogoUnidades.get(codigo).getDescripcion();
 	}
+	
+	/*
+	 * @return obtiene el listado de usuarios del sistema
+	 * 
+	 */
 
 	@Override
 	public List<Usuario> getUsuarios() {
 		usuarios = usuarioDao.findAll(Usuario.class); 
 		return usuarios;
 	}
+	
+	/*
+	 * @return obtiene el listado de roles del sistema
+	 * 
+	 */
 
 	@Override
 	public List<Rol> getRoles() {
@@ -279,10 +376,22 @@ public class ServiceImp implements IService {
 		return roles;
 	}
 	
+	/*
+	 * @return obtiene el listado de certificaciones de una unidad de competencia
+	 * @param código de la unidad de competencia
+	 * 
+	 */
+	
 	@Override
 	public List<Certificacion> getCertificaciones(Integer entidadId){
 		return certificacionDao.findAllByNamedQueryParam("Certificacion.findByIfpId", new Object[] {entidadId});
 	}
+	
+	/*
+	 * @return obtiene el listado de certificaciones activas para el nombre o centro indicados
+	 * @param número de parámetro y valor del parámetro (1-> nombre, 2-> centro)
+	 * 
+	 */
 	
 	@Override
 	public List<Certificacion> getCertificacionesActivas(Integer parametro, String valor){
@@ -298,6 +407,12 @@ public class ServiceImp implements IService {
 		}
 		return certificacionDao.findAllByNamedQuery("Certificacion.findActivas");
 	}	
+	
+	/*
+	 * @return la instancia de certificación registrada en base de datos
+	 * @param la certificación a guardar y su listado de sus requisitos
+	 * 
+	 */
 		
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
@@ -322,42 +437,89 @@ public class ServiceImp implements IService {
 		return certificacionDao.save(certificacion);
 	}
 	
+	/*
+	 * @return obtiene el listado de requisitos de la certificación solicitada
+	 * @param código de la certificación
+	 * 
+	 */
+	
 	@Override
 	public List<Requisito> getRequisitos(int certificacionId) {
 		return requisitoDao.findAll(Requisito.class);
 	}
+	
+	/*
+	 * @param el requisito a guardar
+	 * Este método registra o actualiza el requisito en cuestión en la base de datos
+	 * 
+	 */
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void updateRequisito(Requisito requisito) {
 		requisitoDao.save(requisito);
 	}
+	
+	/*
+	 * @param el usuario a guardar
+	 * Este método registra o actualiza el usuario en cuestión en la base de datos
+	 * 
+	 */
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)	
 	public void updateUsuario(Usuario usuario) {
 		usuarioDao.save(usuario);
 	}
+	
+	/**
+	 * @return el listado de cursos ofrecidos por una entidad de formación
+	 * @param el código de la entidad
+	 */
 
 	@Override
 	public List<UCompetencia> getUcompetenciaSinPlanificar(Integer entidadId) {
 		return inatecDao.getCertificacionesSinPlanificar(entidadId);
 	}
 	
+	/**
+	 * @return el listado de contactos de una entidad de formación
+	 * @param el código de la entidad
+	 */
+	
 	@Override
 	public List<Contacto> getContactosInatec(Integer entidadId) {
 		return contactoDao.findAllByNamedQueryParam("Contacto.findInvolucradosInatec", new Object [] {entidadId});
 	}
+	
+	/**
+	 * @return la instancia del usuario local buscado
+	 * @param el login del usuario local a buscar
+	 */
 
 	@Override
 	public Usuario getUsuarioLocal(String usuario) {
 		return usuarioDao.findOneByNamedQueryParam("Usuario.findByLogin", new Object[] {usuario});
 	}
 	
+	/**
+	 * @return la instancia del usuario inatec buscado
+	 * @param el login del usuario inatec a buscar
+	 */
+	
 	@Override
 	public Usuario getUsuarioInatec(String usuario) {
 		return inatecDao.getUsuario(usuario);
 	}
+	
+	/**
+	 * Registra el usuario especificado
+	 * 
+	 * @param el login del usuario
+	 * @param el nombre del usuario
+	 * @param el apellido del usuario
+	 * @param el email del usuario
+	 */
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
@@ -396,6 +558,11 @@ public class ServiceImp implements IService {
 				null,  
 				null));
 	}
+	
+	/**
+	 * @return indica si se trata de un contacto perteneciente al inatec
+	 * @param el login del usuario
+	 */
 
 	@Override
 	public boolean isNuevoContactoInatec(String usuario) {
@@ -405,6 +572,11 @@ public class ServiceImp implements IService {
 		else
 			return false;
 	}
+	
+	/**
+	 * @return la instancia de contacto generada
+	 * @param el login del usuario cuyo contacto se quiere registrar
+	 */
 
 	@Override
 	public Contacto generarNuevoContactoInatec(String usuario) {
@@ -414,6 +586,10 @@ public class ServiceImp implements IService {
 			contacto.setRol(rol);
 		return contacto;
 	}
+	
+	/**
+	 * @return el listado de solicitudes
+	 */
 
 	@Override
 	public List<USolicitud> getUSolicitudes () {			
@@ -428,16 +604,30 @@ public class ServiceImp implements IService {
 			return uSols;
 	}
 	
+	/**
+	 * @return el listado de solicitudes
+	 */
+	
 	@Override
 	public List<Solicitud> getSolicitudes() {
 		return solicitudDao.findAll(Solicitud.class);		
-	}	
+	}
+	
+	/**
+	 * @return la instancia de solicitud buscada
+	 * @param el código de la solicitud a buscar
+	 */
 	
 	@Override
 	public Solicitud getSolicitudById(Long idSolicitud) {
 		Object [] objs =  new Object [] {idSolicitud};
 		return solicitudDao.findOneByNamedQueryParam("Solicitud.findById", objs);			
 	}
+	
+	/**
+	 * @return el listado de solicitudes
+	 * @param un map con los parámetros de búsqueda
+	 */
 	
 	@Override
 	public List<Solicitud> getSolicitudesByParam(HashMap<String, Object> param) {
@@ -473,31 +663,61 @@ public class ServiceImp implements IService {
 		return solicitudDao.findAllByQuery(sqlSolicitud);
 	}
 	
+	/**
+	 * @return el listado de solicitudes
+	 * @param el nombre del namedQuery a usar
+	 * @param el arreglo con los parámetros de búsqueda
+	 */
+	
 	@Override
 	public List<Solicitud> getSolicitudesByNQParam(String nQuery, Object [] parametros){
 		return solicitudDao.findAllByNamedQueryParam(nQuery, parametros);
 	}
+	
+	/**
+	 * @return la instancia del contacto
+	 * @param el número de cédula del contacto a buscar
+	 */
 	
 	@Override
 	public Contacto getContactoByCedula(String cedula) {
 		Object [] objs =  new Object [] {cedula};
 		return contactoDao.findOneByNamedQueryParam("Contacto.findByCedulaId", objs);		
 	}	
+	
+	/**
+	 * @return la instancia del rol buscado
+	 * @param el id del rol a buscar
+	 */
 
 	@Override
 	public Rol getRolById(int id) {
 		return rolDao.findById(Rol.class, id);
 	}
+	
+	/**
+	 * @return el listado de las actividades según los mantenedores
+	 * 
+	 */
 
 	@Override
 	public List<Mantenedor> getMantenedorActividades() {
 		return this.getMantenedoresByTipo(new Integer(1));
 	}
+	
+	/**
+	 * @return el listado de los estatus de una certificación según los mantenedores
+	 */
 
 	@Override
 	public List<Mantenedor> getMantenedorEstatusCertificacion() {
 		return this.getMantenedoresByTipo(new Integer(3));
 	}
+	
+	/**
+	 * @return la instancia del objeto registrado
+	 * @param el objeto a guardar
+	 */
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
@@ -552,6 +772,11 @@ public class ServiceImp implements IService {
 		return null;
 	}
 	
+	/**
+	 * @return el listado de certificaciones
+	 * @param el código de la entidad cuyas certificaciones se quieren buscar
+	 */
+	
 	@Override
 	public List<Certificacion> getCertificacionesByIdIfp (Integer id) {
 		if (id == null){
@@ -562,27 +787,52 @@ public class ServiceImp implements IService {
 		}		
 	}
 	
+	/**
+	 * @return la instancia de la certificación buscada
+	 * @param el id de la certificación a buscar
+	 */
+	
 	@Override
 	public Certificacion getCertificacionById(Long id) {
 		Object [] objs =  new Object [] {id};
 		return certificacionDao.findOneByNamedQueryParam("Certificacion.findById", objs);						
 	}	
 	
+	/**
+	 * @return el listado de las entidades o centros de formación
+	 * @param el id de la entidad a buscar
+	 */
+	
 	@Override
 	public List<Ifp> getIfpByInatec (Integer entidadId) {
 		return inatecDao.getIfpInatec(entidadId);
 	}
+	
+	/**
+	 * @return el listado de actividades de una certificación
+	 * @param el código de la certificación cuyas actividades se quiere buscar
+	 */
 
 	@Override
 	public List<Actividad> getActividades(Long certificacionId) {
 			return actividadDao.findAllByNamedQueryParam("Actividad.findByCertificacionId", new Object[] {certificacionId});
 	}
 	
+	/**
+	 * @return el listado de mantenedores
+	 * @param el tipo del mantenedores que se quiere buscar
+	 */
+	
 	@Override
 	public List<Mantenedor> getMantenedoresByTipo(Integer tipo) {
 		Object [] objs =  new Object [] {tipo.toString()};
 		return mantenedorDao.findAllByNamedQueryParam("Mantenedor.findByTipo", objs);		
 	}
+	
+	/**
+	 * @return el map de mantenedores
+	 * @param el tipo del mantenedores que se quiere buscar
+	 */
 	
 	@Override
 	public Map<Integer, Mantenedor> getMapMantenedoresByTipo(String tipo) {
@@ -598,35 +848,66 @@ public class ServiceImp implements IService {
 		return m;
 	}
 	
+	/**
+	 * @return el historial laboral del tipo y contacto en cuestión
+	 * @param el tipo de historial a buscar
+	 * @param el contacto cuyo historial interesa
+	 */
+	
 	@Override
 	public List<Laboral> getListLaboralByTipo(Integer tipo, Contacto contacto) {
 		Object [] objs =  new Object [] {tipo, contacto.getId()};
 		return laboralDao.findAllByNamedQueryParam("Laboral.findAllByTipoAndContactoId", objs);					
 	}
 	
+	/**
+	 * @return la instancia del dato laboral buscado
+	 * @param el id del dato laboral a buscar
+	 */
+
 	@Override
 	public Laboral getLaboralById(Long idLaboral) {
 		Object [] objs =  new Object [] {idLaboral};
 		return laboralDao.findOneByNamedQueryParam("Laboral.findById", objs);				
 	}
 	
+	/**
+	 * @return el listado de evaluaciones
+	 * @param la solicitud cuyas evaluaciones se quieren conocer
+	 */
+
 	@Override
 	public List<Evaluacion> getEvaluaciones(Solicitud solicitud) {
 		Object [] objs =  new Object [] {solicitud.getId()};
 		return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllBySolicitudId", objs);		
 	}
+	
+	/**
+	 * @return el instrumento buscado
+	 * @param el id del instrumento a buscar
+	 */
 		
 	@Override
 	public Instrumento getInstrumentoById(Long idInstrumento){
 		Object [] objs =  new Object [] {idInstrumento};
 		return instrumentoDao.findOneByNamedQueryParam("Instrumento.findById", objs);		
 	}
-	
+
+	/**
+	 * @return el listado de instrumentos de la unidad de competencia indicada
+	 * @param el id de la unidad de competencia
+	 */
+
 	@Override
 	public List<Instrumento> getInstrumentoByUnidad (Long idUnidad) {
 		Object [] objs =  new Object [] {idUnidad};
 		return instrumentoDao.findAllByNamedQueryParam("Instrumento.findAllByUnidadId", objs);				
 	}	
+
+	/**
+	 * @return el listado de las unidades de competencia de la certificación indicada
+	 * @param el id de la certificación
+	 */
 
 	@Override
 	public List<Long> getUnidadesByCertificacionId(Long certificacionId) {
@@ -634,18 +915,33 @@ public class ServiceImp implements IService {
 		return new ArrayList<Long>(certificacion.getUnidades());		
 	}
 
+	/**
+	 * @return el listado de los instrumentos de la certificación indicada
+	 * @param el id de la certificación
+	 */
+
 	@Override
 	public List<Instrumento> getInstrumentosByCertificacionId(Long certificacionId) {
 		Object [] objs =  new Object [] {certificacionId};
 		return instrumentoDao.findAllByNamedQueryParam("Instrumento.findAllByCertificacionId", objs);
 	}
 	
+	/**
+	 * @return el listado de las guías de evaluación de la evaluación indicada
+	 * @param el id de la evaluación
+	 */
+
 	@Override
 	public List<EvaluacionGuia> getEvaluacionGuiaByEvaluacionId(Long evaluacionId) {
 		Object [] objs =  new Object [] {evaluacionId};
 		return evaluacionGuiaDao.findAllByNamedQueryParam("EvaluacionGuia.findByEvaluacionId", objs);		
 	}
 	
+	/**
+	 * @return el listado de instrumentos de la evaluación indicada
+	 * @param el id de la evaluación
+	 */
+
 	@Override
 	public List<Instrumento> getIntrumentoByEvaluacion(Long evaluacionId){
 		Object [] objs =  new Object [] {evaluacionId};
@@ -658,29 +954,54 @@ public class ServiceImp implements IService {
 		return listInstrumentos;
 	}
 
+	/**
+	 * @return el listado de bitácoras de la actividad indicada
+	 * @param el id de la actividad
+	 */
+
 	@Override
 	public List<Bitacora> getBitacoras(Long actividadId) {
 		Object [] objs =  new Object [] {actividadId};
 		return bitacoraDao.findAllByNamedQueryParam("Bitacoras.findAllByActividadId", objs);
 	}
-	
+
+	/**
+	 * @return la instancia inicial o primera del tipo de mantenedor indicado 
+	 * @param el tipo del mantenedor
+	 */
+
 	@Override
 	public Mantenedor getMantenedorMinByTipo(String tipo) {		
 		Object [] objs =  new Object [] {tipo};
 		return mantenedorDao.findOneByNamedQueryParam("Mantenedor.findMinByTipo", objs);				
 	}
-	
+
+	/**
+	 * @return la instancia final o última del tipo de mantenedor indicado 
+	 * @param el tipo del mantenedor
+	 */
+
 	@Override
 	public Mantenedor getMantenedorMaxByTipo(String tipo){		
 		Object [] objs =  new Object [] {tipo};
 		return mantenedorDao.findOneByNamedQueryParam("Mantenedor.findMaxByTipo", objs);				
 	}	
 
+	/**
+	 * @return la instancia del mantenedor buscado 
+	 * @param el id del mantenedor
+	 */
+
 	@Override
 	public Mantenedor getMantenedorById(Integer idMantenedor) {
 		return mantenedorDao.findById(Mantenedor.class, idMantenedor.intValue());	
 	}
 	
+	/**
+	 * @return un map conteniendo los departamentos del país 
+	 * 
+	 */
+
 	@Override
 	public Map<Integer, Departamento> getDepartamentosByInatec() {
 		List<Departamento> lista = inatecDao.getDepartamentosInatec();
@@ -694,6 +1015,11 @@ public class ServiceImp implements IService {
 		return m;
 	}
 
+	/**
+	 * @return un map con el listado de municipios de un departamento 
+	 * @param el id del departamento cuyos municipios se quiere buscar
+	 */	
+
 	@Override
 	public Map<Integer, Municipio> getMunicipioDptoByInatec(Integer idDpto) {
 		List<Municipio> lista = inatecDao.getMunicipioByDeptoInatec(idDpto);
@@ -706,45 +1032,96 @@ public class ServiceImp implements IService {
 		return m;
 	}	
 
+	/**
+	 * @return lista de guias de evaluación 
+	 * @param el nombre del namedQuery a usar
+	 * @param el arreglo conteniendo los parámetros para la búsqueda
+	 */
+
 	@Override
 	public List<Guia> getGuiaByParam(String namedString, Object [] parametros){
 		return guiaDao.findAllByNamedQueryParam(namedString, parametros);
 	}		
-	
+
+	/**
+	 * @return lista de archivos de un portafolio 
+	 * @param el nombre del namedQuery a usar
+	 * @param el arreglo conteniendo los parámetros para la búsqueda
+	 */
+
 	@Override
 	public List<Archivo> getArchivoByParam (String namedString, Object [] parametros) {
 		return archivoDao.findAllByNamedQueryParam(namedString, parametros);
 	}
-	
+
+	/**
+	 * @return lista de requisitos de un curso en un centro específico 
+	 * @param el id de curso
+	 * @param el id del centro
+	 */
+
 	@Override
 	public List<Requisito> getRequisitos(int cursoId, int centroId){
 		return inatecDao.getRequisitos(cursoId, centroId);
 	}
+
+	/**
+	 * @return lista de unidades de competencia 
+	 * 
+	 */
 
 	@Override
 	public List<Long> getUnidades() {
 		return null;
 	}
 	
+	/**
+	 * @return la instancia del archivo 
+	 * @param el nombre del namedQuery a usar
+	 * @param el arreglo conteniendo los parámetros para la búsqueda
+	 */
+
 	@Override
 	public Archivo getArchivoOneByParam (String namedString, Object [] parametros){
 		return archivoDao.findOneByNamedQueryParam(namedString, parametros);
 	}
 	
+	/**
+	 * @return lista de países
+	 *  
+	 */
+
 	@Override
 	public List<Pais> getPaises (){
 		return paisDao.findAll(Pais.class);
 	}
 	
+	/**
+	 * @return la instancia del país buscado 
+	 * @param el nombre del namedQuery a usar
+	 * @param el arreglo conteniendo los parámetros para la búsqueda
+	 */
+
 	@Override
 	public Pais getPaisByNQParam(String namedString, Object [] param){
 		return paisDao.findOneByNamedQueryParam(namedString, param);
 	}
+	
+	/**
+	 * @return un map conteniendo las unidades de competencia de una estructura formativa 
+	 * @param el id de la estructura formativa
+	 * 
+	 */
 
 	@Override
 	public Map<Long, String> getUnidadesByEstructuraId(Integer estructura) {
 		return inatecDao.getUnidadesByEstructuraId(estructura);
 	}
+
+	/**
+	 * @return el objeto usuario externo a registrar en la base de datos local
+	 *  
+	 */
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
@@ -798,6 +1175,11 @@ public class ServiceImp implements IService {
 		email.createAndSendEmail(usuario.getEmail1(), "Creacion de cuenta...", "Su usuario y contraseña son: "+usuario.getUsuario()+"/"+password);
 	}
 
+	/** 
+	 * @param el login del usuario local cuya contraseña se va a resetear
+	 * 
+	 */
+
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void resetPassword(String usuario) {
@@ -813,6 +1195,12 @@ public class ServiceImp implements IService {
 		}
 	}
 
+	/**
+	 * @return la instancia del usuario cuyo acceso se registró 
+	 * @param el login del usuario cuyo acceso se registrará
+	 * 
+	 */
+
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Usuario registrarAcceso(Usuario usuario) {
@@ -823,6 +1211,12 @@ public class ServiceImp implements IService {
 		return null;
 	}
 
+	/**
+	 * @return indica si el usuario existe o no 
+	 * @param el login del usuario a buscar
+	 * 
+	 */
+
 	@Override
 	public boolean existeUsuario(String usuario) {
 		Usuario user = usuarioDao.findOneByNamedQueryParam("Usuario.findByLogin", new Object[] {usuario});
@@ -831,16 +1225,34 @@ public class ServiceImp implements IService {
 		else
 			return false;
 	}
+	
+	/**
+	 * @return lista de instrumentos de evaluación 
+	 * @param el id de la entidad o centro de formación
+	 * 
+	 */
 
 	@Override
 	public List<Instrumento> getInstrumentos(Integer entidadId) {
 		return instrumentoDao.findAllByNamedQueryParam("Instrumento.findAllByEntidadId", new Object[] {entidadId});
 	}
 
+	/**
+	 * @return la instancia del contacto buscado 
+	 * @param el login del usuario a buscar
+	 * 
+	 */
+
 	@Override
 	public Contacto getContactoLocalByLogin(String login) {
 		return contactoDao.findOneByNamedQueryParam("Contacto.findByLogin", new Object[] {login});
 	}
+
+	/**
+	 * @return indica si el portafolio fue o no verificado 
+	 * @param el contacto
+	 * @param el tipo de estado del portafolio
+	 */
 
 	@Override
 	public boolean portafolioVerificado(Contacto contacto, String tipoEstadoPortafolio){
@@ -886,22 +1298,46 @@ public class ServiceImp implements IService {
 		else
 			return false;			
 	}
+	
+	/**
+	 * @return lista de permisos del usuario 
+	 * @param el login del usuario
+	 * 
+	 */
 
 	@Override
 	public Collection<Authority> getAuthoritiesInatecByLogin(String usuario) {
 		return inatecDao.getAuthorities(inatecDao.getIdRol(usuario));
 	}
 	
+	/**
+	 * @return lista de permisos del usuario 
+	 * @param el id del rol
+	 * 
+	 */
+
 	@Override
 	public Collection<Authority> getAuthoritiesInatecByRolId(Integer rolId) {
 		return inatecDao.getAuthorities(rolId);
 	}
+
+	/**
+	 * @return la instancia del contacto buscado 
+	 * @param el login del usuario inatec
+	 * 
+	 */
 
 	@Override
 	public Contacto getContactoInatecByLogin(String login) {
 		return contactoDao.findOneByNamedQueryParam("Contacto.findByLoginInatec", new Object[] {login});
 	}
 
+	/**
+	 * @return la instancia del contacto buscado 
+	 * @param el login del usuario a buscar, puede ser inatec o local
+	 * 
+	 */
+	
 	@Override
 	public Contacto getContactoByLogin(String login) {
 		Contacto contacto = contactoDao.findOneByNamedQueryParam("Contacto.findByLoginInatec", new Object[] {login});
@@ -910,6 +1346,13 @@ public class ServiceImp implements IService {
 		else
 			return 	contactoDao.findOneByNamedQueryParam("Contacto.findByLogin", new Object[] {login});
 	}
+	
+	/**
+	 * @return la instancia de evaluación registrada 
+	 * @param la evaluación a registrar
+	 * @param las guías usadas en la evaluación
+	 * 
+	 */
 	
 	//Miriam Martinez Cano || Proyecto Xiloa - INATEC || Procedimiento que registra nueva evaluacion y su detalle (EvaluacionGuia)
 	@Override
@@ -949,6 +1392,12 @@ public class ServiceImp implements IService {
 		return evaluacion;		
 	}
 	
+	/**
+	 * @return la instancia de la evaluación-guia guardada o actualizada 
+	 * @param la evaluación-guia a guardar o actualizar
+	 * 
+	 */	
+
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public EvaluacionGuia updateEvaluacionGuia(EvaluacionGuia evalGuia){				
@@ -979,6 +1428,12 @@ public class ServiceImp implements IService {
 		return detalleEvaluacion;
 	}
 	
+	/**
+	 * @return indica si está listo para la inscripción o no 
+	 * @param la solicitud a validar para inscripción
+	 * 
+	 */
+
 	@Override
 	public boolean validaListoInscripcion(Solicitud solicitud){
 		String     tipoMantenedor = null;
@@ -1001,12 +1456,25 @@ public class ServiceImp implements IService {
 		return pasa;
 	}
 
+	/**
+	 * @return la instancia de conexión a la base de datos 
+	 * 
+	 */
+
 	@Override
 	public Connection getSqlConnection() throws SQLException {	
 		Connection con = objectDao.getSqlConexion();
 		return con;
 	}
 	
+	/** 
+	 * @param el nombre del reporte a imprimir
+	 * @param el map con los parámetros
+	 * @param el formato del reporte
+	 * @param indicador si visualiza o no el reporte
+	 * 
+	 */
+
 	@Override
 	public void imprimirReporte(String nombreReporte, Map<String,Object> parametros, String formato, boolean visualiza) throws SQLException{
 						
@@ -1022,7 +1490,14 @@ public class ServiceImp implements IService {
 			e.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 * @return la lista de solicitudes filtradas 
+	 * @param los parámetros de la búsqueda
+	 * @parm el tipo de filtro a aplicar a la búsqueda
+	 * 
+	 */
+
 	@Override
 	public List<Solicitud> filtraListaSolicitudes(HashMap<String, Object> param, Integer tipoFiltro){
 		List<Solicitud> lista = new ArrayList<Solicitud> ();
@@ -1085,6 +1560,13 @@ public class ServiceImp implements IService {
 		
 	}
 	
+	/**
+	 * @return indica si el proceso de evaluación está concluido o no 
+	 * @param la solicitud a validar
+	 * @param el indicador de concluido
+	 * 
+	 */
+
 	@Override
 	public boolean validaProcesoConcluido(Solicitud solicitud, boolean validaEvaluacion){
 		boolean pasaConcluido = false;
@@ -1110,6 +1592,14 @@ public class ServiceImp implements IService {
 		return pasaConcluido;
 	}
 	
+	/**
+	 * @return indica si el proceso de evaluación está aprobado o no 
+	 * @param la solicitud a validar
+	 * @param el indicador de prueba diagnóstica
+	 * @param el id de la unidad de competencia
+	 * 
+	 */
+
 	@Override	
 	public boolean validaEvaluacionAprobada(Solicitud solicitud, boolean diagnostica, Long ucl){
 		Object [] objs = null;	
@@ -1157,28 +1647,59 @@ public class ServiceImp implements IService {
 		return pasa;
 	}
 
+	/**
+	 * @return la lista de actividades de una entidad o centro de formación 
+	 * @param el id de la entidad o centro
+	 * 
+	 */
+
 	@Override
 	public List<Actividad> getActividadesByEntidadId(Integer entidadId) {
 		return actividadDao.findAllByNamedQueryParam("Actividad.findByEntidadId", new Object[] {entidadId});
 	}
 	
+	/** 
+	 * @param la pista de auditoría a registrar
+	 * 
+	 */
+
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void auditar(Auditoria auditoria) {
 		auditoriaDao.save(auditoria);
 	}
 	
+	/**
+	 * @return la lista de contactos según los parámetros de búsqueda 
+	 * @param el nombre del namedQuery a usar
+	 * @param el arrego de parámetros para la búsqueda
+	 * 
+	 */
+
 	@Override
 	public List<Contacto> getContactosByParam(String namedString, Object [] parametros){
 		return contactoDao.findAllByNamedQueryParam(namedString, parametros);				
 	}
-	
+
+	/**
+	 * @return la instancia de evaluación buscada 
+	 * @param el id de la evaluación a buscar
+	 * 
+	 */
+
 	@Override
 	public Evaluacion getEvaluacionById(Long evaluacionId){
 		Object [] objs =  new Object [] {evaluacionId};		
 		return evaluacionDao.findOneByNamedQueryParam("Evaluacion.findById", objs);	
 	}
-	
+
+	/**
+	 * @return la lista de evaluaciones de una solicitud e unidad de competencia 
+	 * @param la solicitud
+	 * @param la unidad de competencia
+	 * 
+	 */
+
 	@Override
 	public List<Evaluacion> getEvaluacionesBySolicitudUnidad(Solicitud solicitud, Long unidad){
 		Object [] objs =  new Object [] {solicitud.getId(), unidad};	
@@ -1186,6 +1707,13 @@ public class ServiceImp implements IService {
 		
 	}
 	
+	/**
+	 * @return indicador de validado para la unidad de competencia de una solicitud 
+	 * @param la solicitud
+	 * @param la unidad de competencia
+	 * 
+	 */
+
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public boolean validaEvalUnidad(Solicitud solicitud, Long ucl){
@@ -1219,7 +1747,14 @@ public class ServiceImp implements IService {
 		}
 		return aprobado;
 	}
-	
+		
+	/**
+	 * @return la instancia de evaluación actualizada 
+	 * @param la evaluación a actualizar
+	 * @param el indicador de validado
+	 * 
+	 */
+
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Evaluacion actualizaEvaluacion(Evaluacion evaluacion, boolean valida){
@@ -1237,12 +1772,26 @@ public class ServiceImp implements IService {
 		
 	}
 	
+	/**
+	 * @return la instancia de la unidad validada 
+	 * @param la solicitud validada
+	 * @param la unidad de competencia validada
+	 * 
+	 */
+
 	@Override
 	public EvaluacionUnidad getEvaluacionUnidadBySolicitudUCL(Solicitud solicitud, Long unidad){
 		Object [] objs =  new Object [] {solicitud.getId(), unidad};
 		return evaluacionUnidadDao.findOneByNamedQueryParam("EvaluacionUnidad.findAllBySolicitudUCL", objs);		
 	}
 	
+	/**
+	 * @return el indicador de validado de la unidad de competencia 
+	 * @param la solicitud a validar
+	 * @param la unidad de competencia a validar
+	 * 
+	 */
+
 	@Override
 	public boolean validaEvaluacionByUnidad(Solicitud solicitud, Long ucl){
 		boolean existe = true;
@@ -1271,6 +1820,12 @@ public class ServiceImp implements IService {
 		return existe;
 	}
 	
+	/**
+	 * @return la lista de unidades de competencia evaluadas 
+	 * @param el id de la solicitud cuyas unidades evaluadas se quiere conocer
+	 * 
+	 */
+
 	@Override
 	public List<EvaluacionUnidad> getListEvalUnidad(Long idSolicitud){
 		Object [] objs =  new Object [] {idSolicitud};
