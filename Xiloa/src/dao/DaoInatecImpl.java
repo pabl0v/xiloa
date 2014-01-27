@@ -97,7 +97,7 @@ public class DaoInatecImpl implements IDaoInatec {
 			+ " ci.centroid as id_centro, " 
 			+ " ci.nombre as nombre, " 
 			+ " ci.alias as nombre_corto, " 
-			+ " isnull(ci.direccion,'N/D') as direccion, " 
+			+ " case when ci.direccion is null then 'N/D' else ci.direccion end as direccion, " 
 			+ " a.id as acreditacion, " 
 			+ " cc.id_curso as id_curso, " 
 			+ " c.descripcion as nombre_curso, " 
