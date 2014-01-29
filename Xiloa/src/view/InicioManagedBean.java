@@ -103,13 +103,21 @@ public class InicioManagedBean implements Serializable {
 		String url;
 		
 		if (contacto != null) {
-			Mantenedor estadoSol = service.getMantenedorMaxByTipo(new String("7"));
+			//Mantenedor estadoSol = service.getMantenedorMaxByTipo(new String("7"));
 			Object [] objs =  new Object [] {contacto.getId()};
 			
 			List<Solicitud> listaSolicitudes = service.getSolicitudesByNQParam("Solicitud.findByIdContacto", objs);
 			
+			/*
 			for (Solicitud dato : listaSolicitudes){
 				if (!estadoSol.equals(dato.getEstatus())){
+					solicitudActiva = true;
+					break;
+				}
+			}*/
+			
+			for (Solicitud dato : listaSolicitudes){
+				if (dato.getEstatus().getId() != 37){
 					solicitudActiva = true;
 					break;
 				}
