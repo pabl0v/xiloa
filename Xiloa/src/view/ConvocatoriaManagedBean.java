@@ -227,20 +227,17 @@ public class ConvocatoriaManagedBean implements Serializable {
 		
 		Integer entidadContacto = login.getEntidadUsuario();
 		
-		if(entidadContacto != null){
+		List<Ifp> lista = service.getIfpByInatec(entidadContacto);
 		
-			List<Ifp> lista = service.getIfpByInatec(entidadContacto);
+		if (lista.size() > 1)
+			this.listCentrosBySolicitud.add(new SelectItem(null, "Todos"));
 		
-			if (lista.size() > 1)
-				this.listCentrosBySolicitud.add(new SelectItem(null, "Todos"));
-		
-			for (Ifp dato : lista) {	
-				this.listCentrosBySolicitud.add(new SelectItem(dato.getIfpId(),dato.getIfpNombre()));
-			}		
+		for (Ifp dato : lista) {	
+			this.listCentrosBySolicitud.add(new SelectItem(dato.getIfpId(),dato.getIfpNombre()));
+		}		
 					
-			llenarListBuscarByAll();
-			handleCertByCentro();
-		}
+		llenarListBuscarByAll();
+		handleCertByCentro();
 		
 		//Asigna el estado inicial de la Solicitud
 		this.estadoInicialSolicitud = service.getMantenedorMinByTipo(new String("7"));
