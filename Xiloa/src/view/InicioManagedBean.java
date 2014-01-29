@@ -110,7 +110,7 @@ public class InicioManagedBean implements Serializable {
 			List<Solicitud> listaSolicitudes = service.getSolicitudesByNQParam("Solicitud.findByIdContacto", objs);
 			
 			for (Solicitud dato : listaSolicitudes){
-				if (dato.getEstatus().getId() == 37){
+				if (dato.getEstatus().getId() != 37){
 					solicitudActiva = true;
 					break;
 				}
