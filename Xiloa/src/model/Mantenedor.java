@@ -24,9 +24,11 @@ import javax.persistence.Table;
 @Entity(name = "mantenedores")
 @Table(name = "mantenedores", schema = "sccl")
 @NamedQueries({
-	@NamedQuery(name="Mantenedor.findMinByTipo", query="select min(m) from mantenedores m where m.tipo = ?1"),
+	//@NamedQuery(name="Mantenedor.findMinByTipo", query="select min(m) from mantenedores m where m.tipo = ?1"),
+	@NamedQuery(name="Mantenedor.findMinByTipo", query="select m from sccl.mantenedores m where m.id = (select min(x.id) from sccl.mantenedores x where x.tipo = ?1)"),
 	@NamedQuery(name="Mantenedor.findByTipo", query="select m from mantenedores m where m.tipo = ?1 order by 1"),
-	@NamedQuery(name="Mantenedor.findMaxByTipo", query="select max(m) from mantenedores m where m.tipo = ?1"),
+	//@NamedQuery(name="Mantenedor.findMaxByTipo", query="select max(m) from mantenedores m where m.tipo = ?1"),
+	@NamedQuery(name="Mantenedor.findMaxByTipo", query="select m from sccl.mantenedores m where m.id = (select max(x.id) from sccl.mantenedores x where x.tipo = ?1)"),
 	@NamedQuery(name="Mantenedor.findAll", query="select m from mantenedores m order by tipo, id")
 })
 public class Mantenedor implements Serializable {
