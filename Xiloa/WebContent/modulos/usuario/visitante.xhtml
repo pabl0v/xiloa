@@ -25,15 +25,6 @@
             	<h1>Sistema de gestion de Certificacion de competencias laborales</h1>
             	<div class="botones_navegacion" ><p><a href="#{request.contextPath}/j_spring_security_logout">Logout</a></p></div>          
         	</header>
-        	<div id="barra_buscar">
-            	<p>Buscar por</p>            
-	            <p:selectOneMenu id="selector_filtro" styleClass="selector_status_estilo" value="a">  
-		            <f:selectItem itemLabel="Nombre de la competencia a certificar:" itemValue="a" />
-		            <f:selectItem itemLabel="Centro donde esta disponible:" itemValue="a" />
-		            <f:selectItem itemLabel="Otro:" itemValue="a" />  
-		        </p:selectOneMenu>
-	            <p:inputText id="filtro_buscar"></p:inputText>            
-        	</div>
         	<div class="contenedor_central" style="width:100%;">
         		<h2>Certificaciones de Competencias Laborales disponibles</h2>
 	        	<p>Seleccione en el nombre de la competencia para ver el detalle y solicitar la certificacion</p>
