@@ -255,12 +255,19 @@ public class ConvocatoriaManagedBean implements Serializable {
 	}
 	
 	public void handleCertByCentro() {
+		
+		System.out.println("handleCertByCentro...");
+		
+		System.out.println("Antes de certificacionList...");
+		
 		List<Certificacion> certificacionList = service.getCertificacionesByIdIfp(this.getSelectedIdIfpSolicitud());
 		listCertByCentro = new ArrayList<SelectItem>();
 		this.listCertByCentro.add(new SelectItem(null,"Todas las Unidades"));
 		for (Certificacion dato : certificacionList) {
 			this.listCertByCentro.add(new SelectItem(dato.getId(),dato.getNombre()));
 		}
+		
+		System.out.println("Antes de filtraSolicitudes...");
 		
 		this.listaSolicitudes = filtraSolicitudes(); // service.getSolicitudesByParam(asignaParams ());
 		this.filterSolicitudes = this.listaSolicitudes;
