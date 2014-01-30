@@ -23,7 +23,7 @@ import support.Ifp;
 import support.FacesUtil;
 
 @Component
-@Scope(value="view")
+@Scope(value="session")
 public class ConvocatoriaManagedBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -308,6 +308,9 @@ public class ConvocatoriaManagedBean implements Serializable {
 		tipoFiltro = (Integer)FacesUtil.getParametroSession("tipoFiltro");		
 		if (tipoFiltro == null)
 			tipoFiltro = new Integer(0);
+		
+		System.out.println("Dentro de filtraSolicitudes...");
+		System.out.println("asignaParams ->..."+asignaParams().size() + " tipoFiltro ->... "+tipoFiltro);
 		
 		return service.filtraListaSolicitudes(asignaParams (), tipoFiltro);	
 		
