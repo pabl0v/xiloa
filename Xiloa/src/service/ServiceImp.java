@@ -1510,8 +1510,12 @@ public class ServiceImp implements IService {
 		
 		Contacto solicitante = null;
 		boolean enlistar = false;
+		
+		System.out.println("Dentro de service.filtroListaSolicitudes...");		
 					
 		lista = getSolicitudesByParam(param);
+		
+		System.out.println("getSolicitudesByParam retorna " + lista.size() + " registros...");
 		
 		for (Solicitud dato : lista) {
 			solicitante = dato.getContacto();		
@@ -1528,10 +1532,13 @@ public class ServiceImp implements IService {
 			
 			switch(tipoFiltro){
 				case 1:{ //Pasa a Estado Convocado
+						System.out.println("Pasa a estado convocado en switch...");
 					if (estadoSolicitud.getId() == prxEstadoKey.intValue()) 
-						enlistar = portafolioVerificado(solicitante, new String("8"));
+						//enlistar = portafolioVerificado(solicitante, new String("8"));
+						enlistar = true;
 					else
 						enlistar = false;
+					System.out.println("Sale de estado convocado en switch...");
 					break;
 				}
 				case 2:{ //Pasa a Asesorado
