@@ -1125,7 +1125,9 @@ public class ExpedienteManagedBean implements Serializable  {
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Guarda el archivo.
 	public void guardarArchivo() {
 		
-		this.archivoExp = (Archivo)FacesUtil.getParametroSession("archivoExp");
+		//2014/02/08 Error al subir el archivo, linea no necesaria		
+		//this.archivoExp = (Archivo)FacesUtil.getParametroSession("archivoExp");
+		this.archivoExp = null;
 						
 		if (archivoExp != null) {
 			//Asignando valores de pantalla
