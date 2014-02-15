@@ -797,7 +797,8 @@ public class ExpedienteManagedBean implements Serializable  {
 		String     unidadDescripcion = "";
 		for (Evaluacion e : listEval) {
 			
-			estadoEval = this.service.getCatalogoEstadosEvaluacion().get(e.getEstado().getId());
+			//estadoEval = this.service.getCatalogoEstadosEvaluacion().get(e.getEstado().getId());
+			estadoEval = e.getEstado();
 			
 			unidadDescripcion = this.service.getCompetenciaDescripcion(e.getUnidad());
 			List<Instrumento> listInstrumento = service.getIntrumentoByEvaluacion(e.getId());

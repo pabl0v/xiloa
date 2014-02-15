@@ -945,13 +945,22 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Instrumento> getIntrumentoByEvaluacion(Long evaluacionId){
 		Object [] objs =  new Object [] {evaluacionId};
+
+		/*
+		 * 2014/02/15: dchavez. Obtencion de los instrumentos de una evaluacion via sql directamente.
+		 * Ordinariamente es un instrumento por cada tipo de prueba (diagnostica, objetiva, desempeño)
+		 */
+		
+		return instrumentoDao.findAllByNamedQueryParam("Instrumento.findInstrumentosByEvaluacionId", objs);
+
+		/*
 		List<Long> instrumentosId = longDao.findAllByNamedQueryParam("EvaluacionGuia.findInstrumentoByEvaluacionId", objs);
 		List<Instrumento> listInstrumentos = new ArrayList<Instrumento> ();
 		
 		for (Long dato : instrumentosId) {
 			listInstrumentos.add(this.getInstrumentoById(dato));
 		}
-		return listInstrumentos;
+		return listInstrumentos;*/
 	}
 
 	/**
