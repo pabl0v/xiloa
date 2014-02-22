@@ -20,7 +20,6 @@ import javax.faces.model.SelectItem;
 import model.Archivo;
 import model.Contacto;
 import model.Evaluacion;
-import model.Instrumento;
 import model.Laboral;
 import model.Mantenedor;
 import model.Pais;
@@ -29,7 +28,6 @@ import model.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
@@ -37,7 +35,7 @@ import org.primefaces.model.UploadedFile;
 
 import controller.LoginController;
 import service.IService;
-import support.BeanEvaluacion;
+//import support.BeanEvaluacion;
 import support.Departamento;
 import support.FacesUtil;
 import support.Municipio;
@@ -64,8 +62,16 @@ public class ExpedienteManagedBean implements Serializable  {
 	private List<Laboral> listDatosCalificacion;
 	private List<Laboral> listDatosCertificaciones;
 	private List<Evaluacion> listEvaluaciones;
-	private List<BeanEvaluacion> listBeanEval;
-	private List<BeanEvaluacion> listBeanEvalFormacion;	
+	
+	/**
+	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+	 */
+		
+	//private List<BeanEvaluacion> listBeanEval;
+	//private List<BeanEvaluacion> listBeanEvalFormacion;
+	
+	private List<Evaluacion> listBeanEval;
+	private List<Evaluacion> listBeanEvalFormacion;	
 	
 	private String telefonoInstitucion;	
 	private String descripcionCargo;
@@ -88,7 +94,13 @@ public class ExpedienteManagedBean implements Serializable  {
 	private Laboral nuevoLaboral;
 	
 	private Evaluacion seletedEvaluacion;
-	private BeanEvaluacion selectedBeanEvaluacion;
+
+	/**
+	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+	 */
+
+	//private BeanEvaluacion selectedBeanEvaluacion;
+	private Evaluacion selectedBeanEvaluacion;
 	
 	private UploadedFile file;
 	
@@ -148,8 +160,17 @@ public class ExpedienteManagedBean implements Serializable  {
 		listDatosCalificacion = new ArrayList<Laboral> ();
 		listDatosCertificaciones = new ArrayList<Laboral> ();
 		listEvaluaciones = new ArrayList<Evaluacion> ();
-		listBeanEval = new ArrayList<BeanEvaluacion> ();
-		listBeanEvalFormacion = new ArrayList<BeanEvaluacion> ();
+		
+		/**
+		 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+		 */
+		
+		//listBeanEval = new ArrayList<BeanEvaluacion> ();
+		//listBeanEvalFormacion = new ArrayList<BeanEvaluacion> ();
+		
+		listBeanEval = new ArrayList<Evaluacion> ();
+		listBeanEvalFormacion = new ArrayList<Evaluacion> ();
+		
 		listPortafolioContacto = new ArrayList<Archivo> ();
 		listPortafolioLaboral = new ArrayList<Archivo> ();
 		
@@ -339,7 +360,11 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.disablePortafolio = disablePortafolio;
 	}
 
-
+	/**
+	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+	 */
+	
+	/*
 	public List<BeanEvaluacion> getListBeanEvalFormacion() {
 		if (this.solicitudExp != null){			
 			listBeanEvalFormacion = getListadoEvaluacionesByParam(this.solicitudExp, false);
@@ -362,9 +387,30 @@ public class ExpedienteManagedBean implements Serializable  {
 					
 		}
 		return listBeanEvalFormacion;
+	}*/
+	
+	public List<Evaluacion> getListBeanEvalFormacion() {
+		if (this.solicitudExp != null)
+		{			
+			listBeanEvalFormacion = getListadoEvaluacionesByParam(this.solicitudExp, false);
+		} 
+		else
+		{
+			if (this.contactoExp != null)
+			{
+				//para este contacto, obtener las evaluaciones de la primera solicitud no concluida				
+				listBeanEvalFormacion = service.getEvaluacionesPendientesByContactoId(this.contactoExp);
+			}
+		}
+		return listBeanEvalFormacion;
 	}
 
-	public void setListBeanEvalFormacion(List<BeanEvaluacion> listBeanEvalFormacion) {
+	/**
+	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+	 */
+
+	//public void setListBeanEvalFormacion(List<BeanEvaluacion> listBeanEvalFormacion) {
+	public void setListBeanEvalFormacion(List<Evaluacion> listBeanEvalFormacion) {
 		this.listBeanEvalFormacion = listBeanEvalFormacion;
 	}
 
@@ -513,14 +559,24 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.listEvaluaciones = listEvaluaciones;
 	}
 
-	public List<BeanEvaluacion> getListBeanEval() {
+	/**
+	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+	 */
+	
+	//public List<BeanEvaluacion> getListBeanEval() {
+	public List<Evaluacion> getListBeanEval() {
 		if (this.solicitudExp != null){
 			listBeanEval = getListadoEvaluacionesByParam(this.solicitudExp, true);
 		}
 		return listBeanEval;
 	}		
 
-	public void setListBeanEval(List<BeanEvaluacion> listBeanEval) {
+	/**
+	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+	 */
+	
+	//public void setListBeanEval(List<BeanEvaluacion> listBeanEval) {
+	public void setListBeanEval(List<Evaluacion> listBeanEval) {
 		this.listBeanEval = listBeanEval;
 	}
 
@@ -651,11 +707,21 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.seletedEvaluacion = seletedEvaluacion;
 	}
 
-	public BeanEvaluacion getSelectedBeanEvaluacion() {
+	/**
+	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+	 */
+
+	//public BeanEvaluacion getSelectedBeanEvaluacion() {
+	public Evaluacion getSelectedBeanEvaluacion() {
 		return selectedBeanEvaluacion;
 	}
 
-	public void setSelectedBeanEvaluacion(BeanEvaluacion selectedBeanEvaluacion) {
+	/**
+	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+	 */
+
+	//public void setSelectedBeanEvaluacion(BeanEvaluacion selectedBeanEvaluacion) {
+	public void setSelectedBeanEvaluacion(Evaluacion selectedBeanEvaluacion) {
 		this.selectedBeanEvaluacion = selectedBeanEvaluacion;
 	}
 	
@@ -786,8 +852,12 @@ public class ExpedienteManagedBean implements Serializable  {
 		
 	}
 	
+	/**
+	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+	 */
+	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Obtiene el listado de las evaluaciones segun el parametro y filtro indicado.
-	public List<BeanEvaluacion> getListadoEvaluacionesByParam(Solicitud sol, boolean todos) {
+	/*public List<BeanEvaluacion> getListadoEvaluacionesByParam(Solicitud sol, boolean todos) {
 		
 		List<BeanEvaluacion> listBeanEv = new ArrayList<BeanEvaluacion> ();		
 		
@@ -821,6 +891,13 @@ public class ExpedienteManagedBean implements Serializable  {
 		}			
 		
 		return listBeanEv;
+	}*/
+	
+	public List<Evaluacion> getListadoEvaluacionesByParam(Solicitud sol, boolean todos) {
+		if(todos)
+			return service.getEvaluaciones(sol);
+		else
+			return service.getEvaluacionesPendientes(sol);		
 	}
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Activa y desactiva el UpLoad.

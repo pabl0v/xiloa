@@ -1,9 +1,8 @@
 package view;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.application.FacesMessage;
@@ -22,32 +20,25 @@ import model.Certificacion;
 import model.Contacto;
 import model.Evaluacion;
 import model.EvaluacionUnidad;
-import model.Instrumento;
 import model.Laboral;
 import model.Mantenedor;
 import model.Pais;
 import model.Solicitud;
-import model.Usuario;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-
-import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.UploadedFile;
 
 import service.IService;
-import support.BeanEvaluacion;
 import support.Departamento;
 import support.FacesUtil;
 import support.Municipio;
 import util.Global;
 
-//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Bean asociado al facet expediente_evaluacion.xhtml
 @Component
-@Scope(value="request")
+@Scope(value="view")
 public class ExpEvalManagedBean implements Serializable  {
 	
 	private static final long serialVersionUID = 1L;
@@ -58,13 +49,23 @@ public class ExpEvalManagedBean implements Serializable  {
 	private Solicitud solicitudExp;
 	private Contacto contactoExp;
 	
-	private List<Laboral> listDatosLaborales;
-	private List<Laboral> listDatosEstudios;
-	private List<Laboral> listDatosCalificacion;
-	private List<Laboral> listDatosCertificaciones;
+	private Map<Integer, List<Laboral>> laborales;
+	//private List<Laboral> listDatosLaborales;
+	//private List<Laboral> listDatosEstudios;
+	//private List<Laboral> listDatosCalificacion;
+	//private List<Laboral> listDatosCertificaciones;
+
 	private List<Evaluacion> listEvaluaciones;
-	private List<BeanEvaluacion> listBeanEval;
-	private List<BeanEvaluacion> listBeanEvalFormacion;	
+	
+	/**
+	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+	 */
+	
+	//private List<BeanEvaluacion> listBeanEval;
+	//private List<BeanEvaluacion> listBeanEvalFormacion;
+	
+	private List<Evaluacion> listBeanEval;
+	private List<Evaluacion> listBeanEvalFormacion;	
 	
 	private String telefonoInstitucion;	
 	private String descripcionCargo;
@@ -87,7 +88,13 @@ public class ExpEvalManagedBean implements Serializable  {
 	private Laboral nuevoLaboral;
 	
 	private Evaluacion seletedEvaluacion;
-	private BeanEvaluacion selectedBeanEvaluacion;
+	
+	/**
+	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+	 */
+
+	//private BeanEvaluacion selectedBeanEvaluacion;
+	private Evaluacion selectedBeanEvaluacion;
 	
 	private UploadedFile file;
 	
@@ -154,13 +161,24 @@ public class ExpEvalManagedBean implements Serializable  {
 		this.setDisabledBtnAgregaEvaluacion(true);	
 		this.setDisabledConcluido(false);
 		
-		listDatosLaborales = new ArrayList<Laboral> ();
-		listDatosEstudios = new ArrayList<Laboral> ();
-		listDatosCalificacion = new ArrayList<Laboral> ();
-		listDatosCertificaciones = new ArrayList<Laboral> ();
+		laborales = new HashMap<Integer, List<Laboral>>();
+		
+		//listDatosLaborales = new ArrayList<Laboral> ();
+		//listDatosEstudios = new ArrayList<Laboral> ();
+		//listDatosCalificacion = new ArrayList<Laboral> ();
+		//listDatosCertificaciones = new ArrayList<Laboral> ();
 		listEvaluaciones = new ArrayList<Evaluacion> ();
-		listBeanEval = new ArrayList<BeanEvaluacion> ();
-		listBeanEvalFormacion = new ArrayList<BeanEvaluacion> ();
+		
+		/**
+		 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+		 */
+		
+		//listBeanEval = new ArrayList<BeanEvaluacion> ();
+		//listBeanEvalFormacion = new ArrayList<BeanEvaluacion> ();
+		
+		listBeanEval = new ArrayList<Evaluacion> ();
+		listBeanEvalFormacion = new ArrayList<Evaluacion> ();
+		
 		listPortafolioContacto = new ArrayList<Archivo> ();
 		listPortafolioLaboral = new ArrayList<Archivo> ();
 		
@@ -422,14 +440,24 @@ public class ExpEvalManagedBean implements Serializable  {
 		this.disablePortafolio = disablePortafolio;
 	}
 
-	public List<BeanEvaluacion> getListBeanEvalFormacion() {
+	/**
+	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+	 */
+	
+	//public List<BeanEvaluacion> getListBeanEvalFormacion() {
+	public List<Evaluacion> getListBeanEvalFormacion() {
 		if (this.solicitudExp != null){			
 			listBeanEvalFormacion = getListadoEvaluacionesByParam(this.solicitudExp, false);
 		}
 		return listBeanEvalFormacion;
 	}
 
-	public void setListBeanEvalFormacion(List<BeanEvaluacion> listBeanEvalFormacion) {
+	/**
+	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+	 */
+	
+	//public void setListBeanEvalFormacion(List<BeanEvaluacion> listBeanEvalFormacion) {
+	public void setListBeanEvalFormacion(List<Evaluacion> listBeanEvalFormacion) {
 		this.listBeanEvalFormacion = listBeanEvalFormacion;
 	}
 
@@ -544,48 +572,52 @@ public class ExpEvalManagedBean implements Serializable  {
 	}
 
 	public List<Laboral> getListDatosLaborales() {
-		if (this.solicitudExp != null){
+		return laborales.get(13);
+		/*if (this.solicitudExp != null){
 			this.listDatosLaborales = service.getListLaboralByTipo(new Integer(13), this.solicitudExp.getContacto());
 		}
-		return this.listDatosLaborales;
+		return this.listDatosLaborales;*/
 	}
 
-	public void setListDatosLaborales(List<Laboral> listDatosLaborales) {
+	/*public void setListDatosLaborales(List<Laboral> listDatosLaborales) {
 		this.listDatosLaborales = listDatosLaborales;
-	}
+	}*/
 
 	public List<Laboral> getListDatosEstudios() {
-		if (this.solicitudExp != null){
+		return laborales.get(14);
+		/*if (this.solicitudExp != null){
 			this.listDatosEstudios = service.getListLaboralByTipo(new Integer(14), this.solicitudExp.getContacto());
 		}
-		return listDatosEstudios;
+		return listDatosEstudios;*/
 	}
 
-	public void setListDatosEstudios(List<Laboral> listDatosEstudios) {
+	/*public void setListDatosEstudios(List<Laboral> listDatosEstudios) {
 		this.listDatosEstudios = listDatosEstudios;
-	}
+	}*/
 
 	public List<Laboral> getListDatosCalificacion() {
-		if (this.solicitudExp != null){
+		return laborales.get(15);
+		/*if (this.solicitudExp != null){
 			this.listDatosCalificacion = service.getListLaboralByTipo(new Integer(15), this.solicitudExp.getContacto());
 		}
-		return listDatosCalificacion;
+		return listDatosCalificacion;*/
 	}
 
-	public void setListDatosCalificacion(List<Laboral> listDatosCalificacion) {
+	/*public void setListDatosCalificacion(List<Laboral> listDatosCalificacion) {
 		this.listDatosCalificacion = listDatosCalificacion;
-	}
+	}*/
 
 	public List<Laboral> getListDatosCertificaciones() {
-		if (this.solicitudExp != null){
+		return laborales.get(16);
+		/*if (this.solicitudExp != null){
 			this.listDatosCertificaciones = service.getListLaboralByTipo(new Integer(16), this.solicitudExp.getContacto());
 		}
-		return listDatosCertificaciones;
+		return listDatosCertificaciones;*/
 	}
 
-	public void setListDatosCertificaciones(List<Laboral> listDatosCertificaciones) {
+	/*public void setListDatosCertificaciones(List<Laboral> listDatosCertificaciones) {
 		this.listDatosCertificaciones = listDatosCertificaciones;
-	}
+	}*/
 
 	public List<Evaluacion> getListEvaluaciones() {
 		if (this.solicitudExp != null){
@@ -598,14 +630,24 @@ public class ExpEvalManagedBean implements Serializable  {
 		this.listEvaluaciones = listEvaluaciones;
 	}
 
-	public List<BeanEvaluacion> getListBeanEval() {
+	/**
+	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+	 */
+
+	//public List<BeanEvaluacion> getListBeanEval() {
+	public List<Evaluacion> getListBeanEval() {
 		if (this.solicitudExp != null){
 			listBeanEval = getListadoEvaluacionesByParam(this.solicitudExp, true);
 		}
 		return listBeanEval;
 	}		
 
-	public void setListBeanEval(List<BeanEvaluacion> listBeanEval) {
+	/**
+	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+	 */
+	
+	//public void setListBeanEval(List<BeanEvaluacion> listBeanEval) {
+	public void setListBeanEval(List<Evaluacion> listBeanEval) {
 		this.listBeanEval = listBeanEval;
 	}
 
@@ -726,11 +768,21 @@ public class ExpEvalManagedBean implements Serializable  {
 		this.seletedEvaluacion = seletedEvaluacion;
 	}
 
-	public BeanEvaluacion getSelectedBeanEvaluacion() {
+	/**
+	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+	 */
+
+	//public BeanEvaluacion getSelectedBeanEvaluacion() {
+	public Evaluacion getSelectedBeanEvaluacion() {
 		return selectedBeanEvaluacion;
 	}
 
-	public void setSelectedBeanEvaluacion(BeanEvaluacion selectedBeanEvaluacion) {
+	/**
+	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+	 */
+
+	//public void setSelectedBeanEvaluacion(BeanEvaluacion selectedBeanEvaluacion) {
+	public void setSelectedBeanEvaluacion(Evaluacion selectedBeanEvaluacion) {
 		this.selectedBeanEvaluacion = selectedBeanEvaluacion;
 	}
 	
@@ -776,14 +828,17 @@ public class ExpEvalManagedBean implements Serializable  {
 
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo que se ejecuta posterior al constructor de la clase.
 	@PostConstruct
-	private void initBean(){        
-							
-		for (Mantenedor dato : service.getCatalogoTiposDatosLaborales().values()) {			
+	private void initBean(){
+		
+		Collection<Mantenedor> a = service.getCatalogoTiposDatosLaborales().values();
+		for (Mantenedor dato : a ) {
+			System.out.println("postconstruct-> listTipoDatosLaborales");
 			this.listTipoDatosLaborales.add(new SelectItem(dato.getId(), dato.getValor()));			
 		}	
 						
 		listEstadosPortafolio = new ArrayList<SelectItem> ();
-		for (Mantenedor dato : service.getCatalogoPortafolio().values()) {
+		Collection<Mantenedor> b = service.getCatalogoPortafolio().values();
+		for (Mantenedor dato : b) {
 			this.listEstadosPortafolio.add(new SelectItem(dato.getId(), dato.getValor()));
 		}
 				
@@ -842,7 +897,8 @@ public class ExpEvalManagedBean implements Serializable  {
 					this.setMunicipioContacto(null);
 					this.municipioIdSelected = null;					
 				}
-								
+				System.out.println("Obtiene datos laborales del contacto: "+contactoExp.getId());
+				laborales = service.getLaboralesMapByContacto(contactoExp);
 			}
 														
 			//Estado Actual
@@ -857,8 +913,12 @@ public class ExpEvalManagedBean implements Serializable  {
 	
 	}
 	
+	/**
+	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+	 */
+	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Obtiene el listado de evaluaciones segun el tipo de filtro.
-	public List<BeanEvaluacion> getListadoEvaluacionesByParam(Solicitud sol, boolean todos) {
+	/*public List<BeanEvaluacion> getListadoEvaluacionesByParam(Solicitud sol, boolean todos) {
 		
 		List<BeanEvaluacion> listBeanEv = new ArrayList<BeanEvaluacion> ();		
 		
@@ -893,6 +953,18 @@ public class ExpEvalManagedBean implements Serializable  {
 		}			
 		
 		return listBeanEv;
+	}*/
+	
+	public List<Evaluacion> getListadoEvaluacionesByParam(Solicitud sol, boolean todos) {
+		
+		if(todos)
+			return service.getEvaluaciones(sol);
+		else
+			return service.getEvaluacionesPendientes(sol);
+	}
+	
+	public String getCompetenciaDescripcion(Long codigo){
+		return service.getCompetenciaDescripcion(codigo);
 	}
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Listener asociado al upload del portafolio.
@@ -976,8 +1048,12 @@ public class ExpEvalManagedBean implements Serializable  {
 		
 	}
 	
+	/**
+	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
+	 */
+	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Redirecciona al facet registro_evaluacion.xhtml
-	public String editarEvaluacion(BeanEvaluacion beanEval) {		
+	/*public String editarEvaluacion(BeanEvaluacion beanEval) {		
 		Evaluacion eval = null;
 		
 		this.setSelectedBeanEvaluacion(beanEval);
@@ -986,6 +1062,27 @@ public class ExpEvalManagedBean implements Serializable  {
 		FacesUtil.setParamBySession("selectedInstrumento", this.selectedBeanEvaluacion.getInstrumento());
 		
 		eval = this.selectedBeanEvaluacion.getEvaluacion();
+		
+		if (eval != null){
+			FacesUtil.setParamBySession("selectedEvaluacion", eval);					
+			FacesUtil.setParamBySession("selectedUnidad", eval.getUnidad());
+		} else {
+			FacesUtil.setParamBySession("selectedEvaluacion", null);
+			FacesUtil.setParamBySession("selectedUnidad", null);
+		}
+		
+		return "/modulos/solicitudes/registro_evaluacion?faces-redirect=true";		
+	}*/
+	
+	public String editarEvaluacion(Evaluacion beanEval) {		
+		Evaluacion eval = null;
+		
+		this.setSelectedBeanEvaluacion(beanEval);
+		
+		FacesUtil.setParamBySession("solicitudEval", this.selectedBeanEvaluacion.getSolicitud());		
+		FacesUtil.setParamBySession("selectedInstrumento", this.selectedBeanEvaluacion.getInstrumento());
+		
+		eval = this.getSelectedBeanEvaluacion();
 		
 		if (eval != null){
 			FacesUtil.setParamBySession("selectedEvaluacion", eval);					
@@ -1031,8 +1128,7 @@ public class ExpEvalManagedBean implements Serializable  {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje: ", "La solicitud a sido registrada exitosamente !!"));
 		} else {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje: ", "Error al registrar la solicitud. Favor revisar..."));
-		}		
-		
+		}
 	}
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Habilita y deshabilita botones.
@@ -1046,7 +1142,8 @@ public class ExpEvalManagedBean implements Serializable  {
 		
 		if (sol != null){		
 			
-			inicialEstado = service.getMantenedorMinByTipo(sol.getTipomantenedorestado());
+			//inicialEstado = service.getMantenedorMinByTipo(sol.getTipomantenedorestado());
+			inicialEstado = service.getCatalogoEstadoSolicitud().get(20);
 			inicialKey = inicialEstado.getId();
 			
 			convocaKey = Integer.valueOf(inicialEstado.getProximo());
@@ -1376,5 +1473,5 @@ public class ExpEvalManagedBean implements Serializable  {
     	}else
     		FacesUtil.getMensaje("Mensaje SCCL ", "Error al consultar los datos del evaluador. Favor comuníquese con el Departamento de Tecnología del INATEC", true);
     	  		
-	}
+	}	
 }

@@ -37,9 +37,12 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @Entity(name = "evaluaciones")
 @Table(name = "evaluaciones", schema = "sccl")
 @NamedQueries({
-	@NamedQuery(name="Evaluacion.findAllBySolicitudId", query="select e from evaluaciones e where e.solicitud.id=?1 order by e.id desc"),
+	@NamedQuery(name="Evaluacion.findAllPendientesByFirstSolicitudByContactoId", query="select e from evaluaciones e where e.solicitud.contacto=?1 and e.solicitud.id=(select min(x.id) from solicitudes x where x.contacto=e.solicitud.contacto and x.estatus.id!=76) order by e.id desc"),
+	@NamedQuery(name="Evaluacion.findAllPendientesBySolicitudId", query="select e from evaluaciones e inner join fetch e.solicitud s where e.aprobado=false and s.id=?1 order by e.id desc"),
+	//@NamedQuery(name="Evaluacion.findAllBySolicitudId", query="select e from evaluaciones e where e.solicitud.id=?1 order by e.id desc"),
+	@NamedQuery(name="Evaluacion.findAllBySolicitudId", query="select e from evaluaciones e inner join fetch e.instrumento inner join fetch e.solicitud s where s.id=?1 order by e.id desc"),
 	@NamedQuery(name="Evaluacion.findById", query="select e from evaluaciones e where e.id=?1"),
-	@NamedQuery(name="Evaluacion.findAllBySolicitudUCL", query="select e from evaluaciones e where e.solicitud.id=?1 and e.unidad=?2")
+	@NamedQuery(name="Evaluacion.findAllBySolicitudUCL", query="select e from evaluaciones e inner join fetch e.solicitud s where s.id=?1 and e.unidad=?2")
 })
 public class Evaluacion implements Serializable {
 
@@ -51,6 +54,15 @@ public class Evaluacion implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "evaluacion_id", nullable = false)
 	private Long id;
+	
+	/**
+	 * dchavez, 16/02/2014: agregando instrumento a la entidad evaluacion
+	 */
+	
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name="evaluacion_instrumento_id")
+	private Instrumento instrumento;
 	
 	@NotNull
 	@ManyToOne
@@ -111,6 +123,14 @@ public class Evaluacion implements Serializable {
 	public void setSolicitud(Solicitud solicitud) {
 		this.solicitud = solicitud;
 	}
+	
+	public Instrumento getInstrumento() {
+		return instrumento;
+	}
+
+	public void setInstrumento(Instrumento instrumento) {
+		this.instrumento = instrumento;
+	}
 
 	public Date getFechaEvaluacion() {
 		return fechaEvaluacion;
@@ -165,9 +185,10 @@ public class Evaluacion implements Serializable {
 		this.guias = new HashSet<EvaluacionGuia>();		
 	}
 
-	public Evaluacion(Solicitud solicitud, Date fecha, Long unidad, Set<EvaluacionGuia> guias, Integer puntaje, String observaciones, boolean aprobado) {
+	public Evaluacion(Solicitud solicitud, Instrumento instrumento, Date fecha, Long unidad, Set<EvaluacionGuia> guias, Integer puntaje, String observaciones, boolean aprobado) {
 		super();		
 		this.solicitud = solicitud;
+		this.instrumento = instrumento;
 		this.fechaEvaluacion = fecha;
 		this.unidad = unidad;
 		this.guias = guias;

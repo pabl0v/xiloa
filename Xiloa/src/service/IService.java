@@ -127,7 +127,7 @@ public interface IService {
 	 * @param el código de la unidad de competencia
 	 * 
 	 */
-	
+
 	public String getCompetenciaDescripcion(Long codigo);
 
 	/**
@@ -485,6 +485,13 @@ public interface IService {
 	 */
 	
 	public Laboral getLaboralById(Long idLaboral);
+	
+	/**
+	 * @return los datos laborales del contacto
+	 * @param el contacto a buscar
+	 */
+	
+	public Map<Integer, List<Laboral>> getLaboralesMapByContacto(Contacto contacto);
 
 	/**
 	 * @return el listado de evaluaciones
@@ -494,10 +501,24 @@ public interface IService {
 	public List<Evaluacion> getEvaluaciones(Solicitud solicitud);
 
 	/**
+	 * @return el listado de evaluaciones no aprobadas
+	 * @param la solicitud cuyas evaluaciones se quieren conocer
+	 */
+
+	public List<Evaluacion> getEvaluacionesPendientes(Solicitud solicitud);
+
+	/**
+	 * @return el listado de evaluaciones no aprobadas
+	 * @param el contacto cuyas evaluaciones se quieren conocer
+	 */
+
+	public List<Evaluacion> getEvaluacionesPendientesByContactoId(Contacto contacto);
+	
+	/**
 	 * @return la instancia de solicitud buscada
 	 * @param el código de la solicitud a buscar
 	 */
-	
+
 	public Solicitud getSolicitudById(Long idSolicitud);
 
 	/**

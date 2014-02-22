@@ -227,3 +227,21 @@ select 1858,41,0,'ROLE_RIGHT_MENU_CANDIDATOS','solicitudes/candidatos.xhtml','Ca
 update admon.roles set opciones='1838,1839,1840,1841,1842,1843,1844,1845,1846,1847,1848,1849,1850,1851,1852,1853,1855,1856,1857,1858' where id_rol=215
 update admon.roles set opciones='1838,1839,1840,1841,1842,1843,1844,1845,1846,1847,1848,1849,1850,1851,1852,1853,1855,1856,1857,1858' where id_rol=218
 update admon.roles set opciones='1840,1842,1843,1846,1847,1849,1850,1852,1854' where id_rol=217
+
+--actualizando el instrumento en evaluaciones existentes
+
+update	sccl.evaluaciones
+set		evaluacion_instrumento_id=(		select	distinct g.instrumento_id 
+										from	sccl.guias g
+										where	guia_id in (	select	eg.guia_id 
+																from	sccl.evaluacion_guia eg
+																where	eg.evaluacion_id=sccl.evaluaciones.evaluacion_id
+															)
+									)
+									
+--para borrar la duplicidad de los mantenedores, roles y perfiles que existe en la bd inatec 
+									
+delete from sccl.perfiles_roles where perfil_id=2
+delete from sccl.roles where rol_id>7
+delete from sccl.perfiles where perfil_id=2
+delete from sccl.mantenedores where mantenedor_id>39									

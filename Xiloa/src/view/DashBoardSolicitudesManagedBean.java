@@ -254,7 +254,8 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		handleCertByCentro();
 		
 		//Asigna el estado inicial de la Solicitud
-		this.estadoInicialSolicitud = service.getMantenedorMinByTipo(new String("7"));
+		//this.estadoInicialSolicitud = service.getMantenedorMinByTipo(new String("7"));
+		this.estadoInicialSolicitud = service.getCatalogoEstadoSolicitud().get(20);
 		
 	}
 	
@@ -332,8 +333,11 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		estadoActualSolicitud = this.selectedSolicitud.getEstatus();
 		
 		if (estadoActualSolicitud != null) {
-			estadoInicial = service.getMantenedorMinByTipo(estadoActualSolicitud.getTipo());
-			estadoFinal = service.getMantenedorMaxByTipo(estadoActualSolicitud.getTipo());
+			//estadoInicial = service.getMantenedorMinByTipo(estadoActualSolicitud.getTipo());
+			//estadoFinal = service.getMantenedorMaxByTipo(estadoActualSolicitud.getTipo());
+			
+			estadoInicial = service.getCatalogoEstadoSolicitud().get(20);
+			estadoFinal = service.getCatalogoEstadoSolicitud().get(37);
 			
 			inicialEstadoKey = estadoInicial.getId();
 			finalEstadoKey = estadoFinal.getId();

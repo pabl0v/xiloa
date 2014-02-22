@@ -529,7 +529,8 @@ public class EvaluacionManagedBean implements Serializable {
 					mensaje = "El detalle indicado (Guias), segun su puntaje, es mayor al máximo permitido. Favor revisar...";
 				} else {
 					this.puntajeEval = new Integer(0);
-					eval = new Evaluacion (this.getSolicitudEval(), // solicitud 
+					eval = new Evaluacion (this.getSolicitudEval(), // solicitud
+										   this.getSelectedInstrumento(), // instrumento
 					   					   this.getFechaEvaluacion(), // fecha 
 										   this.getSelectedUnidad(), // unidad 
 										   null , // Set<EvaluacionGuia> guias 

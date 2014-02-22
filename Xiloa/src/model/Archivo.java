@@ -33,8 +33,8 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @Entity(name = "archivo")
 @Table(name = "archivo", schema = "sccl")
 @NamedQueries({
-	@NamedQuery(name="Archivo.findByLaboralId", query="select a from archivo a where a.laboral.id=?1"),
-	@NamedQuery(name="Archivo.findByContactoId", query="select a from archivo a where a.laboral.contacto.id=?1"),
+	@NamedQuery(name="Archivo.findByLaboralId", query="select a from archivo a inner join fetch a.laboral l where l.id=?1"),
+	@NamedQuery(name="Archivo.findByContactoId", query="select a from archivo a inner join fetch a.laboral l where l.contacto.id=?1"),
 	@NamedQuery(name="Archivo.findById", query="select a from archivo a where a.id=?1")
 })
 public class Archivo implements Serializable {

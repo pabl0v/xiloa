@@ -29,7 +29,8 @@ import javax.persistence.Table;
 @Entity(name = "instrumentos")
 @Table(name = "instrumentos", schema = "sccl")
 @NamedQueries({
-	@NamedQuery(name="Instrumento.findInstrumentosByEvaluacionId", query="select distinct i from instrumentos i, guias g, evaluacion_guia eg where i.id=g.instrumento.id and g.id=eg.pk.guia.id and eg.pk.evaluacion.id=?"),
+	@NamedQuery(name="Instrumento.findInstrumentosByEvaluacionId", query="select e.instrumento from evaluaciones e where e.id=?"),
+	//@NamedQuery(name="Instrumento.findInstrumentosByEvaluacionId", query="select distinct i from instrumentos i, guias g, evaluacion_guia eg where i.id=g.instrumento.id and g.id=eg.pk.guia.id and eg.pk.evaluacion.id=?"),
 	@NamedQuery(name="Instrumento.findAll", query="select i from instrumentos i order by 1 desc"),
 	@NamedQuery(name="Instrumento.findAllByEntidadId", query="select i from instrumentos i where i.entidadId = case ?1 when 1000 then i.entidadId else ?1 end order by 1 desc"),
 	@NamedQuery(name="Instrumento.findAllByUnidadId", query="select i from instrumentos i where i.unidad=?1 order by 1 desc"),

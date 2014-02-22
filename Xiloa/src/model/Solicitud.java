@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -66,7 +67,7 @@ public class Solicitud implements Serializable {
 	
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name="solicitud_estatus")		
+	@JoinColumn(name="solicitud_estatus", nullable = false)		
 	private Mantenedor estatus;
 	
 	@DateTimeFormat(iso = ISO.DATE)
@@ -92,12 +93,12 @@ public class Solicitud implements Serializable {
 	private int escolaridad;
 
 	@NotNull
-	@ManyToOne 
-	@JoinColumn(name="contacto_id")	
+	@ManyToOne
+	@JoinColumn(name="contacto_id")
 	private Contacto contacto;
 	
 	@NotNull
-	@ManyToOne 
+	@ManyToOne
 	@JoinColumn(name="certificacion_id")	
 	private Certificacion certificacion;
 	

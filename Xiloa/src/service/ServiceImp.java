@@ -660,7 +660,7 @@ public class ServiceImp implements IService {
 		
 		sqlSolicitud = "select s from solicitudes s " + ((sqlWhere == null) ? "" : sqlWhere) ;		
 		
-		return solicitudDao.findAllByQuery(sqlSolicitud);
+		return solicitudDao.findAllByQuery(sqlSolicitud+" order by 1");
 	}
 	
 	/**
@@ -872,6 +872,45 @@ public class ServiceImp implements IService {
 	}
 	
 	/**
+	 * @return los datos laborales del contacto
+	 * @param el contacto a buscar
+	 */
+	@Override
+	public Map<Integer, List<Laboral>> getLaboralesMapByContacto(Contacto contacto){
+		Object [] objs =  new Object [] {contacto.getId()};
+		List<Laboral> laborales = laboralDao.findAllByNamedQueryParam("Laboral.findAllByContactoId", objs);
+		
+		List<Laboral> experiencias = new ArrayList<Laboral>();
+		List<Laboral> estudios = new ArrayList<Laboral>();
+		List<Laboral> calificaciones = new ArrayList<Laboral>();
+		List<Laboral> certificaciones = new ArrayList<Laboral>();
+		
+		Map<Integer, List<Laboral>> laboralesMap = new HashMap<Integer, List<Laboral>>();
+		
+		for(int i=0; i<laborales.size(); i++){
+			
+			if(laborales.get(i).getTipo()==13)
+				experiencias.add(laborales.get(i));
+
+			if(laborales.get(i).getTipo()==14)
+				estudios.add(laborales.get(i));
+
+			if(laborales.get(i).getTipo()==15)
+				calificaciones.add(laborales.get(i));
+
+			if(laborales.get(i).getTipo()==16)
+				certificaciones.add(laborales.get(i));
+		}
+
+		laboralesMap.put(13, experiencias);
+		laboralesMap.put(14, estudios);
+		laboralesMap.put(15, calificaciones);
+		laboralesMap.put(16, certificaciones);
+		
+		return laboralesMap;
+	}
+	
+	/**
 	 * @return el listado de evaluaciones
 	 * @param la solicitud cuyas evaluaciones se quieren conocer
 	 */
@@ -880,6 +919,27 @@ public class ServiceImp implements IService {
 	public List<Evaluacion> getEvaluaciones(Solicitud solicitud) {
 		Object [] objs =  new Object [] {solicitud.getId()};
 		return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllBySolicitudId", objs);		
+	}
+
+	/**
+	 * @return el listado de evaluaciones no aprobadas
+	 * @param la solicitud cuyas evaluaciones se quieren conocer
+	 */
+
+	@Override
+	public List<Evaluacion> getEvaluacionesPendientes(Solicitud solicitud) {
+		Object [] objs =  new Object [] {solicitud.getId()};
+		return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllPendientesBySolicitudId", objs);		
+	}
+	
+	/**
+	 * @return el listado de evaluaciones no aprobadas
+	 * @param el contacto cuyas evaluaciones se quieren conocer
+	 */
+
+	public List<Evaluacion> getEvaluacionesPendientesByContactoId(Contacto contacto){
+		Object [] objs =  new Object [] {contacto.getId()};
+		return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllPendientesByFirstSolicitudByContactoId", objs);				
 	}
 	
 	/**
@@ -1275,7 +1335,8 @@ public class ServiceImp implements IService {
 		
 		portafolio = archivoDao.findAllByNamedQueryParam("Archivo.findByContactoId", new Object[] {contacto.getId()});
 		
-		estadoVerificado = this.getMantenedorMaxByTipo(tipoEstadoPortafolio);
+		//estadoVerificado = this.getMantenedorMaxByTipo(tipoEstadoPortafolio);
+		estadoVerificado = catalogoPortafolio.get(27);
 		
 		for (Archivo dato : portafolio) {
 			estadoArchivo = dato.getEstado();
