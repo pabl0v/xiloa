@@ -1290,7 +1290,7 @@ public class ExpEvalManagedBean implements Serializable  {
 	}
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Aplica estatus de aprobado al portafolio.
-	public void aprobarPortafolio(){
+	/*public void aprobarPortafolio(){
 				
 		Mantenedor estadoArchivo = archivoExp.getEstado();
 		
@@ -1306,6 +1306,18 @@ public class ExpEvalManagedBean implements Serializable  {
 		if (archivoExp != null){
 			
 		}
+	}*/
+	
+	public void aprobarPortafolio(){
+		archivoExp.setEstado(service.getCatalogoPortafolio().get(26));
+		archivoExp.setAprobado("Aprobado");
+		archivoExp = (Archivo) service.guardar(archivoExp);		
+	}
+	
+	public void reprobarPortafolio(){
+		archivoExp.setEstado(service.getCatalogoPortafolio().get(27));
+		archivoExp.setAprobado("No Aprobado");
+		archivoExp = (Archivo) service.guardar(archivoExp);		
 	}
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Actualiza listado de portafolio.

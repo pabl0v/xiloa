@@ -216,7 +216,7 @@
                              <p:column headerText="Descripcion"><h:outputText value="#{portafolioEvidencia.descripcion}" /></p:column>  
                              <p:column headerText="Respaldo de"><h:outputText value="#{portafolioEvidencia.laboral.nombre}" /></p:column>  
                              <p:column headerText="Estado">                             	
-	                             <h:outputText value="#{portafolioEvidencia.estado.valor}" /> / <h:outputText value="#{portafolioEvidencia.aprobado}" /> 	                             
+	                             <h:outputText value="#{portafolioEvidencia.estado.valor}" /> 	                             
                              </p:column>                                 
                              <p:column headerText="Indica Verificado">
                              	<p:splitButton id="splitEditPortafolio" value="Aprobado" 
@@ -226,7 +226,7 @@
                          				<f:setPropertyActionListener value="#{portafolioEvidencia}" target="#{expEvalManagedBean.archivoExp}" />
                          				<f:setPropertyActionListener value="Aprobado" target="#{expEvalManagedBean.archivoExp.aprobado}" />
 							        <p:menuitem id="mnuSplitEditPortafolio" value="No Aprobado" 
-							                   action="#{expEvalManagedBean.aprobarPortafolio}" update="dtPortafolio" 
+							                   action="#{expEvalManagedBean.reprobarPortafolio}" update="dtPortafolio" 
 							                   icon="ui-icon-close">
 							        	<f:setPropertyActionListener value="#{portafolioEvidencia.laboral}" target="#{expEvalManagedBean.selectedLaboral}" />
                          				<f:setPropertyActionListener value="#{portafolioEvidencia}" target="#{expEvalManagedBean.archivoExp}" />
@@ -234,7 +234,7 @@
                          			</p:menuitem>             						        
 							    </p:splitButton>                                							     							                                                    
                              </p:column>                                      
-                        </p:dataTable>     
+                        </p:dataTable>
                     </p:tab>  
                     
                     <p:tab id="tab1" title="UC a evaluar" >                    	                   	 

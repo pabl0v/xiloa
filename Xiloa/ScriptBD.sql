@@ -244,4 +244,18 @@ set		evaluacion_instrumento_id=(		select	distinct g.instrumento_id
 delete from sccl.perfiles_roles where perfil_id=2
 delete from sccl.roles where rol_id>7
 delete from sccl.perfiles where perfil_id=2
-delete from sccl.mantenedores where mantenedor_id>39									
+delete from sccl.mantenedores where mantenedor_id>39
+
+--actualiza los estados del portafolio, cambio realizado por dchavez 22/02/2014
+
+update sccl.mantenedores
+set mantenedor_anterior=null,
+mantenedor_proximo=null,
+mantenedor_valor='Verificado Aprobado'
+where mantenedor_id=26;
+
+update sccl.mantenedores
+set mantenedor_anterior=null,
+mantenedor_proximo=null,
+mantenedor_valor='Verificado no Aprobado'
+where mantenedor_id=27

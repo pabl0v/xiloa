@@ -1323,7 +1323,7 @@ public class ServiceImp implements IService {
 	 * @param el tipo de estado del portafolio
 	 */
 
-	@Override
+	/*@Override
 	public boolean portafolioVerificado(Contacto contacto, String tipoEstadoPortafolio){
 		
 		int 	   contador = 0;
@@ -1367,6 +1367,16 @@ public class ServiceImp implements IService {
 			return true;
 		else
 			return false;			
+	}*/
+	
+	public boolean portafolioVerificado(Contacto contacto, String tipoEstadoPortafolio){
+		
+		//si no hay reprobados -> portafolio verificado
+		//si hay reprobados -> portafolio no verificado
+		if(archivoDao.findAllByNamedQueryParam("Archivo.findAllReprobadosByContactoId", new Object[] {contacto.getId()}).isEmpty())
+			return true;
+		else
+			return false;
 	}
 	
 	/**
