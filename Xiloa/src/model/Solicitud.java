@@ -94,12 +94,12 @@ public class Solicitud implements Serializable {
 
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name="contacto_id")
+	@JoinColumn(name="contacto_id", nullable = false)
 	private Contacto contacto;
 	
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name="certificacion_id")	
+	@JoinColumn(name="certificacion_id", nullable = false)	
 	private Certificacion certificacion;
 	
 	@OneToMany(mappedBy="solicitud")

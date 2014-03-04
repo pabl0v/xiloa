@@ -536,11 +536,12 @@ public class EvaluacionManagedBean implements Serializable {
 										   null , // Set<EvaluacionGuia> guias 
 										   this.puntajeEval, // puntaje, 
 										   this.getObservaciones(), // observaciones 
-										   this.isAprobado() // aprobado
+										   this.isAprobado(), // aprobado
+										   service.getMantenedorMinByTipo("9")
 										   );
-					String estadoTipo = eval.getTipoMantenedorEstado();
+					//String estadoTipo = eval.getTipoMantenedorEstado();
 					
-					eval.setEstado(service.getMantenedorMinByTipo(estadoTipo));			
+					//eval.setEstado(service.getMantenedorMinByTipo(estadoTipo));			
 					
 					eval = service.guardarEvaluacion(eval, this.selectedGuia);					
 					

@@ -799,4 +799,12 @@ public interface IService {
 	 */
 	
 	public List<EvaluacionUnidad> getListEvalUnidad(Long idSolicitud);
+	
+	/**
+	 * @return la lista de unidades aprobadas o reprobadas a nivel global 
+	 * @param la solicitud cuyo resumen de unidades evaluadas se quiere conocer
+	 * 
+	 */
+	
+	public List<Item> getListEvaluacionesUnidad(Long idSolicitud);
 }

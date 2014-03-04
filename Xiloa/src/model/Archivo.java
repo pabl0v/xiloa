@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,6 +37,7 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 	@NamedQuery(name="Archivo.findByLaboralId", query="select a from archivo a inner join fetch a.laboral l where l.id=?1"),
 	@NamedQuery(name="Archivo.findAllReprobadosByContactoId", query="select a from archivo a inner join fetch a.laboral l where l.contacto.id=?1 and a.estado.id!=26"),
 	@NamedQuery(name="Archivo.findByContactoId", query="select a from archivo a inner join fetch a.laboral l where l.contacto.id=?1"),
+	//@NamedQuery(name="Archivo.findAllArchivosByContactoId", query="select l.archivo from laborales l inner join fetch l.contacto c where l.tipo in (13,14,15,16) and c.id = ?1"),
 	@NamedQuery(name="Archivo.findById", query="select a from archivo a where a.id=?1")
 })
 public class Archivo implements Serializable {
@@ -50,8 +52,8 @@ public class Archivo implements Serializable {
 	private Long id;
 			
 	@NotNull
-	@ManyToOne
-	@JoinColumn(name="laboral_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="laboral_id", nullable = false)
 	private Laboral laboral;
 			
 	@NotNull

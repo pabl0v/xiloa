@@ -34,6 +34,7 @@ import org.primefaces.model.UploadedFile;
 import service.IService;
 import support.Departamento;
 import support.FacesUtil;
+import support.Item;
 import support.Municipio;
 import util.Global;
 
@@ -44,7 +45,7 @@ public class ExpEvalManagedBean implements Serializable  {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private IService service;	
+	private IService service;
 	
 	private Solicitud solicitudExp;
 	private Contacto contactoExp;
@@ -56,6 +57,7 @@ public class ExpEvalManagedBean implements Serializable  {
 	//private List<Laboral> listDatosCertificaciones;
 
 	private List<Evaluacion> listEvaluaciones;
+	private List<Item> listEvaluacionesUnidad;
 	
 	/**
 	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
@@ -197,6 +199,10 @@ public class ExpEvalManagedBean implements Serializable  {
 		nuevoLaboral = new Laboral();
 		
 		listaEvalUnidad = new ArrayList<EvaluacionUnidad> ();
+		
+		//dchavez> 01/03/2014: lista que retorna el resumen de evaluaciones por unidad. Pestana "Evaluacion por Unidad"
+		listEvaluacionesUnidad = new ArrayList<Item>();
+		
 		selectedEvalUnidad = null;
 		
 	}	
@@ -209,14 +215,23 @@ public class ExpEvalManagedBean implements Serializable  {
 		this.selectedEvalUnidad = selectedEvalUnidad;
 	}
 
-	public List<EvaluacionUnidad> getListaEvalUnidad() {
+	/*public List<EvaluacionUnidad> getListaEvalUnidad() {
 		if (this.solicitudExp != null){
 			List<EvaluacionUnidad> lista = service.getListEvalUnidad(this.solicitudExp.getId());
 			listaEvalUnidad = lista;
 		}
 		return listaEvalUnidad;
+	}*/
+	
+	/**
+	 * 
+	 * dchavez: 01/03/2014. Retorna lista que indica si esta aprobada o reprobada cada unidad de competencia de forma global
+	 * 
+	 */
+	public List<Item> getListEvaluacionesUnidad() {
+		return listEvaluacionesUnidad;
 	}
-
+	
 	public void setListaEvalUnidad(List<EvaluacionUnidad> listaEvalUnidad) {
 		this.listaEvalUnidad = listaEvalUnidad;
 	}
@@ -619,10 +634,13 @@ public class ExpEvalManagedBean implements Serializable  {
 		this.listDatosCertificaciones = listDatosCertificaciones;
 	}*/
 
+	/*
+	 * dchavez: 01/03/2014. Retorna la lista de evaluaciones cargada al inicio y que alimenta los tabs del dataTable inferior
+	 */
 	public List<Evaluacion> getListEvaluaciones() {
-		if (this.solicitudExp != null){
-			listEvaluaciones = service.getEvaluaciones(this.solicitudExp);
-		}
+		//if (this.solicitudExp != null){
+			//listEvaluaciones = service.getEvaluaciones(this.solicitudExp);
+		//}
 		return listEvaluaciones;
 	}
 
@@ -863,6 +881,8 @@ public class ExpEvalManagedBean implements Serializable  {
 	@Autowired
 	public void iniciaBeanExpEval (){
 		
+		System.out.println("Comienzo de IniciaBeanExpEval....");
+		
 		Solicitud  solicitud = (Solicitud)FacesUtil.getParametroSession("dbSolicitudesBean");				
 				
 		if (solicitud != null){		
@@ -898,7 +918,12 @@ public class ExpEvalManagedBean implements Serializable  {
 					this.municipioIdSelected = null;					
 				}
 				System.out.println("Obtiene datos laborales del contacto: "+contactoExp.getId());
+				
+				//dchavez: 01/03/2014 llenado de estructuras de datos de dataTable tab al momento de la carga unicamente
+				
 				laborales = service.getLaboralesMapByContacto(contactoExp);
+				listEvaluaciones = service.getEvaluaciones(solicitudExp);
+				listEvaluacionesUnidad = service.getListEvaluacionesUnidad (solicitudExp.getId());
 			}
 														
 			//Estado Actual
@@ -908,9 +933,10 @@ public class ExpEvalManagedBean implements Serializable  {
 			enabledDisableButton(2);
 			enabledDisableButton(3);
 			enabledDisableButton(4);
-			enabledDisableButton(5);			
-		}		
-	
+			enabledDisableButton(5);
+		}
+		
+		System.out.println("Fin de IniciaBeanExpEval....");
 	}
 	
 	/**
@@ -1326,13 +1352,15 @@ public class ExpEvalManagedBean implements Serializable  {
 		if (tipo == 1) {						
 			if (selectedLaboral != null) {			
 				 objs =  new Object [] {selectedLaboral.getId()};			
-				 this.listPortafolioLaboral = service.getArchivoByParam ("Archivo.findByLaboralId", objs);				
+				 this.listPortafolioLaboral = service.getArchivoByParam ("Archivo.findByLaboralId", objs);
+				 //this.listPortafolioLaboral = (List<Archivo>)service.getArchivoByParam ("Archivo.findAllArchivosByContactoId", objs);
 			}
 		} else {		
 				if (this.solicitudExp != null){
 					Contacto c = solicitudExp.getContacto();
 					objs =  new Object [] {c.getId()};
 					this.listPortafolioContacto = service.getArchivoByParam ("Archivo.findByContactoId", objs);
+					//this.listPortafolioContacto = (List<Archivo>)service.getArchivoByParam ("Archivo.findAllArchivosByContactoId", objs);
 				}
 		}
 	}

@@ -205,12 +205,12 @@
            </p:tabView>  		
     	</div>
     	<div id="contenedor_tab_planes" class="seccion_expediente" style="width:98%">
-    		<p:tabView id="tabView_Evaluaciones">  
+    		<p:tabView id="tabView_Evaluaciones"> 
     				<p:tab id="tabPortafolio" title="Portafolio">                    	                    	
                          <p:dataTable id="dtPortafolio" emptyMessage="No hay datos"  var="portafolioEvidencia" 
                                       value="#{expEvalManagedBean.listPortafolioContacto}"
                                       selection="#{expEvalManagedBean.selectedArchivoId}" rowKey="#{portafolioEvidencia}"                 			 		   
-                         			  selectionMode="single" paginator="true" rows="4" >
+                         			  selectionMode="single" paginator="true" rows="8" >
                          			   
                              <p:column headerText="Documento de soporte o evidencia"><h:outputText value="#{portafolioEvidencia.nombre}" /></p:column>  
                              <p:column headerText="Descripcion"><h:outputText value="#{portafolioEvidencia.descripcion}" /></p:column>  
@@ -243,9 +243,10 @@
                     	 	<f:setPropertyActionListener value="#{expEvalManagedBean.solicitudExp}" target="#{evaluacionManagedBean.solicitudEval}" />                    	 
                     	 </p:commandButton>
                     	  
-                         <p:dataTable emptyMessage="No hay datos"  var="uC" value="#{expEvalManagedBean.listBeanEval}"
+                         <!-- <p:dataTable emptyMessage="No hay datos"  var="uC" value="#{expEvalManagedBean.listBeanEval}"-->
+                         <p:dataTable emptyMessage="No hay datos"  var="uC" value="#{expEvalManagedBean.listEvaluaciones}"
                          			  selection="#{expEvalManagedBean.selectedBeanEvaluacion}" rowKey="#{uC.id}" 
-                         			  selectionMode="single" paginator="true" rows="4"> 
+                         			  selectionMode="single" paginator="true" rows="6"> 
                              <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{expEvalManagedBean.getCompetenciaDescripcion(uC.instrumento.unidad)}" /></p:column>  
                              <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{uC.instrumento.nombre} [ #{uC.instrumento.tipo.valor} ]" /></p:column>  
                              <!--  <p:column headerText="Requisito"><h:outputText value="#{uC.instrumento.nombre}" /></p:column> -->  
@@ -263,9 +264,10 @@
                     </p:tab>  
                     
                     <p:tab id="tab3" title="Plan de evaluacion">                    	  
-                         <p:dataTable emptyMessage="No hay datos"  var="evaluaciones" value="#{expEvalManagedBean.listBeanEval}"
+                         <!-- <p:dataTable emptyMessage="No hay datos"  var="evaluaciones" value="#{expEvalManagedBean.listBeanEval}"-->
+                         <p:dataTable emptyMessage="No hay datos"  var="evaluaciones" value="#{expEvalManagedBean.listEvaluaciones}"
                                       selection="#{expEvalManagedBean.selectedBeanEvaluacion}" rowKey="#{evaluaciones.id}" 
-                         			  selectionMode="single" paginator="true" rows="4" >  
+                         			  selectionMode="single" paginator="true" rows="8" >  
                              <p:column headerText="Instrumento de evaluacion"><h:outputText value="#{evaluaciones.instrumento.nombre} [ #{evaluaciones.instrumento.tipo.valor} ]" /></p:column>  
                              <p:column headerText="Observacion"><h:outputText value="#{evaluaciones.observaciones}" /></p:column>  
                              <p:column headerText="Fecha">
@@ -289,9 +291,10 @@
                         </p:dataTable>  
                     </p:tab>                      
                     <p:tab id="tabFormacion" title="Plan de formacion">                                 	  
-                         <p:dataTable emptyMessage="No hay datos"  var="formacion" value="#{expEvalManagedBean.listBeanEvalFormacion}"
+                         <!-- <p:dataTable emptyMessage="No hay datos"  var="formacion" value="#{expEvalManagedBean.listBeanEvalFormacion}"-->
+                         <p:dataTable emptyMessage="No hay datos"  var="formacion" value="#{expEvalManagedBean.listEvaluaciones}"
                                       selection="#{expEvalManagedBean.selectedBeanEvaluacion}" rowKey="#{formacion.id}" 
-                         			  selectionMode="single" paginator="true" rows="4" >                         	 
+                         			  selectionMode="single" paginator="true" rows="8" >                         	 
                              <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{expEvalManagedBean.getCompetenciaDescripcion(formacion.instrumento.unidad)}" /></p:column>  
                              <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{formacion.instrumento.nombre} [ #{formacion.instrumento.tipo.valor} ]" /></p:column>                               
                              <p:column headerText="Observaciones"><h:outputText value="#{formacion.observaciones}" /></p:column>
@@ -312,12 +315,10 @@
                     </p:tab>  
                     
                      <p:tab id="tabEvalUnidad" title="Evaluacion por Unidad" >  
-                         <p:dataTable emptyMessage="No hay datos"  var="uCL" value="#{expEvalManagedBean.listaEvalUnidad}"
-                         			  selection="#{expEvalManagedBean.selectedEvalUnidad}" rowKey="#{uCL.id}" 
-                         			  selectionMode="single" paginator="true" rows="4" >  
-                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{uCL.descripcionunidad}" /></p:column>  
-                             <p:column headerText="Estado"><h:outputText value="#{uCL.estado.valor}" /></p:column>       
-                             <p:column headerText="Aprobado"><p:selectBooleanCheckbox value="#{uCL.aprobado}" disabled="true" /></p:column>                            
+                         <p:dataTable emptyMessage="No hay datos"  var="uCL" value="#{expEvalManagedBean.listEvaluacionesUnidad}" rowKey="#{uCL.id}"  selectionMode="single" paginator="true" rows="8" >  
+                             <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{expEvalManagedBean.getCompetenciaDescripcion(uCL.id)}" /></p:column>  
+                             <p:column headerText="Estado"><h:outputLabel value="Aprobado" rendered="#{uCL.descripcion == '1'}" /><h:outputLabel value="Pendiente" rendered="#{uCL.descripcion != '1'}" /></p:column> 
+                             <!-- <p:column headerText="Estado"><p:selectBooleanCheckbox value="#{uCL.descripcion}" disabled="true" /></p:column> -->                            
                         </p:dataTable>    
                     </p:tab>
                 </p:tabView>    		

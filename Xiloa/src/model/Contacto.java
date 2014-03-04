@@ -54,14 +54,14 @@ public class Contacto implements Serializable {
 	@Column(name = "contacto_id", nullable = false)	
 	private Long id;
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="usuario_id")
 	private Usuario usuario;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="contacto", cascade = CascadeType.ALL)
 	private Set<Laboral> laborales;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="rol_id")
 	private Rol rol;
 	

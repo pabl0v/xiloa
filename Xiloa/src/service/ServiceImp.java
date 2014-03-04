@@ -114,6 +114,8 @@ public class ServiceImp implements IService {
 	private IDao<Auditoria> auditoriaDao;
 	@Autowired
 	private IDao<EvaluacionUnidad> evaluacionUnidadDao;
+	@Autowired
+	private IDao<Item> itemDao;
 	
 	private List<Mantenedor> mantenedores;
 	private Map<Integer, Mantenedor> catalogoEstatusCertificacion;
@@ -918,7 +920,7 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Evaluacion> getEvaluaciones(Solicitud solicitud) {
 		Object [] objs =  new Object [] {solicitud.getId()};
-		return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllBySolicitudId", objs);		
+		return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllBySolicitudId", objs);
 	}
 
 	/**
@@ -1918,5 +1920,9 @@ public class ServiceImp implements IService {
 		Object [] objs =  new Object [] {idSolicitud};
 		return evaluacionUnidadDao.findAllByNamedQueryParam("EvaluacionUnidad.findAllBySolicitud", objs);		
 	}
-		
+	
+	public List<Item> getListEvaluacionesUnidad(Long idSolicitud){
+		Object [] objs =  new Object [] {idSolicitud};
+		return itemDao.findAllByNamedQueryParam("Evaluacion.findAllUnidadesBySolicitudId", objs);		
+	}
 }

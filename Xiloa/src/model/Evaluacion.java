@@ -40,9 +40,12 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 	@NamedQuery(name="Evaluacion.findAllPendientesByFirstSolicitudByContactoId", query="select e from evaluaciones e where e.solicitud.contacto=?1 and e.solicitud.id=(select min(x.id) from solicitudes x where x.contacto=e.solicitud.contacto and x.estatus.id!=76) order by e.id desc"),
 	@NamedQuery(name="Evaluacion.findAllPendientesBySolicitudId", query="select e from evaluaciones e inner join fetch e.solicitud s where e.aprobado=false and s.id=?1 order by e.id desc"),
 	//@NamedQuery(name="Evaluacion.findAllBySolicitudId", query="select e from evaluaciones e where e.solicitud.id=?1 order by e.id desc"),
-	@NamedQuery(name="Evaluacion.findAllBySolicitudId", query="select e from evaluaciones e inner join fetch e.instrumento inner join fetch e.solicitud s where s.id=?1 order by e.id desc"),
+	//@NamedQuery(name="Evaluacion.findAllBySolicitudId", query="select e from evaluaciones e inner join fetch e.instrumento inner join fetch e.solicitud s where s.id=?1 order by e.id desc"),
+	@NamedQuery(name="Evaluacion.findAllBySolicitudId", query="select e from evaluaciones e inner join fetch e.solicitud s where s.id=?1 order by e.id desc"),
 	@NamedQuery(name="Evaluacion.findById", query="select e from evaluaciones e where e.id=?1"),
-	@NamedQuery(name="Evaluacion.findAllBySolicitudUCL", query="select e from evaluaciones e inner join fetch e.solicitud s where s.id=?1 and e.unidad=?2")
+	@NamedQuery(name="Evaluacion.findAllBySolicitudUCL", query="select e from evaluaciones e inner join fetch e.solicitud s where s.id=?1 and e.unidad=?2"),
+	//dchavez: 01/03/2014. NamedQuery para obtener el resumen de aprobado/reprobado por cada unidad de competencia evaluada en una solicitud.
+	@NamedQuery(name="Evaluacion.findAllUnidadesBySolicitudId", query="select new support.Item(e.unidad, min(case e.aprobado when true then '1' else '0' end)) from evaluaciones e where e.solicitud.id=?1 group by e.unidad order by 1")
 })
 public class Evaluacion implements Serializable {
 
@@ -65,7 +68,7 @@ public class Evaluacion implements Serializable {
 	private Instrumento instrumento;
 	
 	@NotNull
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="evaluacion_solicitud_id")
 	private Solicitud solicitud;
 				
@@ -185,7 +188,7 @@ public class Evaluacion implements Serializable {
 		this.guias = new HashSet<EvaluacionGuia>();		
 	}
 
-	public Evaluacion(Solicitud solicitud, Instrumento instrumento, Date fecha, Long unidad, Set<EvaluacionGuia> guias, Integer puntaje, String observaciones, boolean aprobado) {
+	public Evaluacion(Solicitud solicitud, Instrumento instrumento, Date fecha, Long unidad, Set<EvaluacionGuia> guias, Integer puntaje, String observaciones, boolean aprobado, Mantenedor estado) {
 		super();		
 		this.solicitud = solicitud;
 		this.instrumento = instrumento;
@@ -195,5 +198,6 @@ public class Evaluacion implements Serializable {
 		this.puntaje = puntaje;
 		this.observaciones = observaciones;
 		this.aprobado = aprobado;
+		this.estado = estado;
 	}
 }
