@@ -1616,8 +1616,8 @@ public class ServiceImp implements IService {
 				case 1:{ //Pasa a Estado Convocado
 						System.out.println("Pasa a estado convocado en switch...");
 					if (estadoSolicitud.getId() == prxEstadoKey.intValue()) 
-						//enlistar = portafolioVerificado(solicitante, new String("8"));
-						enlistar = true;
+						enlistar = portafolioVerificado(solicitante, new String("8"));
+						//enlistar = true;
 					else
 						enlistar = false;
 					System.out.println("Sale de estado convocado en switch...");

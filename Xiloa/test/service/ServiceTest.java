@@ -30,7 +30,7 @@ public class ServiceTest {
 	               mantenedor13, mantenedor14, mantenedor15, mantenedor16, mantenedor17, mantenedor18, mantenedor19,
 	               mantenedor20, mantenedor21, mantenedor22, mantenedor23, mantenedor24, mantenedor25, mantenedor26, 
 	               mantenedor27, mantenedor28, mantenedor29, mantenedor30, mantenedor31, mantenedor32, mantenedor33, 
-	               mantenedor34, mantenedor35, mantenedor36, mantenedor37, mantenedor38, mantenedor39; 
+	               mantenedor34, mantenedor35, mantenedor36, mantenedor37, mantenedor38, mantenedor39, mantenedor40; 
 	               	
 	private static Perfil perfil;
 	private static List<Perfil> perfiles;
@@ -97,6 +97,7 @@ public class ServiceTest {
 		mantenedor36 = new Mantenedor("11","Email del encargado de incidencias","dnchavez@hotmail.com",null,null);
 		
 		mantenedor37 = new Mantenedor("7","Estados Solicitud Certificacion","Concluido",new String("24"),null);
+		mantenedor40 = new Mantenedor("7","Estados Solicitud Certificacion","Anulado",null,null);
 
 		service.guardar(mantenedor1);
 		service.guardar(mantenedor2);
@@ -137,6 +138,7 @@ public class ServiceTest {
 		service.guardar(mantenedor37);
 		service.guardar(mantenedor38);
 		service.guardar(mantenedor39);
+		service.guardar(mantenedor40);
 
 		//creando perfiles
 		perfil = new Perfil("admin","admin","all","all","all",true,true);

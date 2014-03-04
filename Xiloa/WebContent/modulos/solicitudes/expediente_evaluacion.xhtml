@@ -299,7 +299,7 @@
                              <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{formacion.instrumento.nombre} [ #{formacion.instrumento.tipo.valor} ]" /></p:column>                               
                              <p:column headerText="Observaciones"><h:outputText value="#{formacion.observaciones}" /></p:column>
                              <p:column headerText="Aprobado"><p:selectBooleanCheckbox value="#{formacion.aprobado}" disabled="true" /></p:column>  
-                             <p:column headerText="Estado"><h:outputText value="#{formacion.estado.valor}" /></p:column>                              
+                             <p:column headerText="Estado"><h:outputText value="#{formacion.estado.valor}" /></p:column>
                              <!-- 
                              <p:column headerText="Editar">
                              	<p:commandButton id="editarEvaluacionesPlanForma" action="#{expEvalManagedBean.RegistrarEditarEvaluacion}" 
@@ -318,7 +318,7 @@
                          <p:dataTable emptyMessage="No hay datos"  var="uCL" value="#{expEvalManagedBean.listEvaluacionesUnidad}" rowKey="#{uCL.id}"  selectionMode="single" paginator="true" rows="8" >  
                              <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{expEvalManagedBean.getCompetenciaDescripcion(uCL.id)}" /></p:column>  
                              <p:column headerText="Estado"><h:outputLabel value="Aprobado" rendered="#{uCL.descripcion == '1'}" /><h:outputLabel value="Pendiente" rendered="#{uCL.descripcion != '1'}" /></p:column> 
-                             <!-- <p:column headerText="Estado"><p:selectBooleanCheckbox value="#{uCL.descripcion}" disabled="true" /></p:column> -->                            
+                             <!--<p:column headerText="Estado"><p:selectBooleanCheckbox value="#{uCL.descripcion}" disabled="true" /></p:column>-->                    
                         </p:dataTable>    
                     </p:tab>
                 </p:tabView>    		

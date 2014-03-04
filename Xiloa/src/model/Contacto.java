@@ -61,7 +61,8 @@ public class Contacto implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="contacto", cascade = CascadeType.ALL)
 	private Set<Laboral> laborales;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	//@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="rol_id")
 	private Rol rol;
 	
