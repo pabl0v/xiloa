@@ -54,7 +54,8 @@ public class Contacto implements Serializable {
 	@Column(name = "contacto_id", nullable = false)	
 	private Long id;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	//@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne
 	@JoinColumn(name="usuario_id")
 	private Usuario usuario;
 	
