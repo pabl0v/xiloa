@@ -807,4 +807,12 @@ public interface IService {
 	 */
 	
 	public List<Item> getListEvaluacionesUnidad(Long idSolicitud);
+
+	/**
+	 * @return booleando que indica si la solicitud fue anulada o no 
+	 * @param el id de la solicitud que se desea anular
+	 * 
+	 */
+
+	public Solicitud anularSolicitud(Solicitud solicitud);
 }

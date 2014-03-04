@@ -51,7 +51,14 @@
 	        	 <p:separator />         		   
 	       		 <p:menuitem value="Plan Capacitacion" icon="ui-icon-print" title="Generar Plan de Capacitacion" style="display:inline-block;"  
 	       		             action="#{expEvalManagedBean.runPlanCapacitacion}" update=":formExpediente:msgExpediente"  />	       			     			       			  
-	   		</p:splitButton> 
+	   		</p:splitButton>
+	   		
+	   		 <p:commandButton id="anularProcesoSolicitud" value="Anular" title="Anular Proceso de Solicitud" 
+							icon="ui-icon-arrowrefresh-1-w" style="display:inline-block;"
+							actionListener="#{expEvalManagedBean.anularSolicitud}" 
+							update=":formExpediente:msgExpediente"    		
+							disabled="#{expEvalManagedBean.disabledAnulado}"        					       
+             />
 				    		    		
     	<div>
     	<p:messages id="msgExpediente" showDetail="true" autoUpdate="true" closable="true" />

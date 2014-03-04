@@ -1925,4 +1925,18 @@ public class ServiceImp implements IService {
 		Object [] objs =  new Object [] {idSolicitud};
 		return itemDao.findAllByNamedQueryParam("Evaluacion.findAllUnidadesBySolicitudId", objs);		
 	}
+	
+	/**
+	 * @return booleando que indica si la solicitud fue anulada o no 
+	 * @param el id de la solicitud que se desea anular
+	 * 
+	 */
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public Solicitud anularSolicitud(Solicitud solicitud){
+		solicitud.setEstatus(catalogoEstadoSolicitud.get(40));
+		System.out.println("Anular solicitud: "+solicitud.getEstatus().getValor()+" mantenedor-->"+catalogoEstadoSolicitud.get(40).getValor());
+		return solicitudDao.save(solicitud);
+	}
 }

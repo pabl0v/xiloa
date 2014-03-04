@@ -111,6 +111,8 @@ public class ExpEvalManagedBean implements Serializable  {
 	private boolean indicaCVFull;
 	private boolean disabledBtnAgregaEvaluacion;
 	private boolean disabledConcluido;
+	//dchavez 03/03/2014. Anulacion de solicitud
+	private boolean disabledAnulado;
 	
 	private List<SelectItem> listEvalBySolicitud;	
 
@@ -244,6 +246,16 @@ public class ExpEvalManagedBean implements Serializable  {
 		this.disabledConcluido = disabledConcluido;
 	}
 
+	//dchavez 03/03/2014. Anulacion de solicitudes
+	public boolean isDisabledAnulado() {
+		return disabledAnulado;
+	}
+	
+	//dchavez 03/03/2014. Anulacion de solicitudes
+	public void setDisabledAnulado(boolean disabledAnulado) {
+		this.disabledAnulado = disabledAnulado;
+	}
+	
 	public String getTipoEstadosPortafolio() {
 		return tipoEstadosPortafolio;
 	}
@@ -1452,6 +1464,16 @@ public class ExpEvalManagedBean implements Serializable  {
 			solicitudExp = avanzaProceso(solicitudExp, " Proceso Concluido", concluir, textoMsg );
 		}
 	}
+	
+	//dchavez 03/03/2014. Agregando opcion para anular solicitud
+	public void anularSolicitud(){
+		String textoMsg = "La solicitud fue anulada exitosamente...";
+		if (solicitudExp != null){
+			solicitudExp = service.anularSolicitud(solicitudExp); 
+		}
+		else
+			textoMsg = "La solicitud no puede ser anulada...";
+	}	
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Aplica cambio de estatus.
 	public Solicitud avanzaProceso (Solicitud sol, String nombreEstado, boolean pasa, String msgNoPasa){
