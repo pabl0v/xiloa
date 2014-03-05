@@ -658,9 +658,10 @@ public class ServiceImp implements IService {
 		    	
 		    	sqlWhere = (sqlWhere == null) ? "where " + condicion  :sqlWhere + " and " + condicion;		        		        
 		    }
-		}		
+		}
 		
-		sqlSolicitud = "select s from solicitudes s " + ((sqlWhere == null) ? "" : sqlWhere) ;		
+		//sqlSolicitud = "select s from solicitudes s " + ((sqlWhere == null) ? "" : sqlWhere);
+		sqlSolicitud = "select s from solicitudes s " + ((sqlWhere == null) ? " where s.estatus.id != 40 " : sqlWhere + " and s.estatus.id != 40 ") ;
 		
 		return solicitudDao.findAllByQuery(sqlSolicitud+" order by 1");
 	}
@@ -1603,8 +1604,11 @@ public class ServiceImp implements IService {
 			solicitante = dato.getContacto();		
 			estadoSolicitud = dato.getEstatus();
 			
-			inicialEstado = (inicialEstado == null) ? getMantenedorMinByTipo(dato.getTipomantenedorestado()) : inicialEstado;
-			ultimoEstado = (ultimoEstado == null) ? getMantenedorMaxByTipo(dato.getTipomantenedorestado()) : ultimoEstado;
+			//inicialEstado = (inicialEstado == null) ? getMantenedorMinByTipo(dato.getTipomantenedorestado()) : inicialEstado;
+			//ultimoEstado = (ultimoEstado == null) ? getMantenedorMaxByTipo(dato.getTipomantenedorestado()) : ultimoEstado;
+			
+			inicialEstado = (inicialEstado == null) ? catalogoEstadoSolicitud.get(20) : inicialEstado;
+			ultimoEstado = (ultimoEstado == null) ? catalogoEstadoSolicitud.get(37) : ultimoEstado;
 			
 			prxEstadoKey = Integer.valueOf(inicialEstado.getProximo());
 			if (estadoSolicitud.getAnterior() != null)
@@ -1663,7 +1667,8 @@ public class ServiceImp implements IService {
 		Mantenedor estadoActual = solicitud.getEstatus();
 		Integer    idMatricula = null;
 		
-		ultimoEstado = getMantenedorMaxByTipo(solicitud.getTipomantenedorestado());
+		//ultimoEstado = getMantenedorMaxByTipo(solicitud.getTipomantenedorestado());
+		ultimoEstado = catalogoEstadoSolicitud.get(37);
 		
 		if (ultimoEstado != null){
 			if (Integer.valueOf(estadoActual.getProximo()) == ultimoEstado.getId()){
@@ -1673,11 +1678,8 @@ public class ServiceImp implements IService {
 				else {
 					pasaConcluido = (validaEvaluacion) ? validaEvaluacionByUnidad(solicitud, null) : true;
 				}
-				
-				
 			}				
-		}		
-		
+		}
 		return pasaConcluido;
 	}
 	

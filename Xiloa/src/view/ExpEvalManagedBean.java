@@ -1466,13 +1466,11 @@ public class ExpEvalManagedBean implements Serializable  {
 	}
 	
 	//dchavez 03/03/2014. Agregando opcion para anular solicitud
-	public void anularSolicitud(){
-		String textoMsg = "La solicitud fue anulada exitosamente...";
+	public String anularSolicitud(){
 		if (solicitudExp != null){
 			solicitudExp = service.anularSolicitud(solicitudExp); 
 		}
-		else
-			textoMsg = "La solicitud no puede ser anulada...";
+		return "/modulos/solicitudes/solicitudes?faces-redirect=true";
 	}	
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Aplica cambio de estatus.
