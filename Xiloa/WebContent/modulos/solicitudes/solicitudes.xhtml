@@ -37,29 +37,7 @@
             </sec:authorize>
        </div>
             
-        <div id="contenedor_filtro">            
-	            <p style="margin-left:5px">Buscar:</p>
-	            <p:selectOneMenu styleClass="selectores" id="selector_buscarByAll" value="#{dashBoardSolicitudesManagedBean.selectedBuscarByAll}">
-	            	<f:selectItems value="#{dashBoardSolicitudesManagedBean.listBuscarByAll}"/>	            			        
-			    </p:selectOneMenu>
-		        <p:inputText style="margin-right:10px;" id="filtro_buscarByAll" value="#{dashBoardSolicitudesManagedBean.buscarByAllValue}">
-		        	<p:ajax event="keyup" update=":formSolicitudes:dtSolicitud" listener="#{dashBoardSolicitudesManagedBean.handleBuscar}" process="@form" />
-		        </p:inputText>
-		        <span style="display:inline-block;">
-		            <p>Centro evaluador:</p>
-		            <p:selectOneMenu styleClass="selectores selector_centrosBySolicitudEstilo" id="selector_centrosBySolicitud" value="#{dashBoardSolicitudesManagedBean.selectedIdIfpSolicitud}" >			        
-				        <f:selectItems value="#{dashBoardSolicitudesManagedBean.listCentrosBySolicitud}"/>
-				        <p:ajax update=":formSolicitudes:selector_certificacionByCentro, :formSolicitudes:dtSolicitud"  listener="#{dashBoardSolicitudesManagedBean.handleCertByCentro}" />
-				    </p:selectOneMenu>
-			    </span>
-			    <span style="display:inline-block; margin-left:5px">
-				    <p>Certificaciones:</p>
-		            <p:selectOneMenu styleClass="selectores selector_certificacionByCentroEstilo" id="selector_certificacionByCentro" value="#{dashBoardSolicitudesManagedBean.selectedIdCertByCentro}" >			        
-				        <f:selectItems value="#{dashBoardSolicitudesManagedBean.listCertByCentro}" />
-				        <p:ajax update=":formSolicitudes:dtSolicitud" listener="#{dashBoardSolicitudesManagedBean.handleBuscar}" />  
-				    </p:selectOneMenu>	
-			    </span>
-			    
+        <div id="contenedor_filtro">			    
         		 <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_PARTICIPANTE">       	 
 		            <p:commandButton id="btnEnviarSolicitud" value="Enviar" title="Solicitar Certificacion" 
 	    		                 icon="ui-icon-star" style="display:inline-block;"
@@ -83,8 +61,7 @@
 	       		             action="#{dashBoardSolicitudesManagedBean.runPlanCapacitacion}" update=":formSolicitudes:msgSolicitudes"  />
 	       		 
 	       		 <p:menuitem value="Certificado" icon="ui-icon-print" title="Imprimir Certificado" style="display:inline-block;"  
-	       		             action="#{dashBoardSolicitudesManagedBean.runCertificado}" update=":formSolicitudes:msgSolicitudes"  />	       			     			       			  
-	   							       		         	   	       			     			       			  
+	       		             action="#{dashBoardSolicitudesManagedBean.runCertificado}" update=":formSolicitudes:msgSolicitudes"  />				       		         	   	       			     			       			  
 	   		</p:splitButton>           		    			    			    		   
         </div>              
         <div id="contenedor_tabla_solicitudes">     
@@ -99,19 +76,19 @@
 					<p:ajax event="rowUnselect" listener="#{dashBoardSolicitudesManagedBean.onRowUnSelectDtSolicitudes}" update=":formSolicitudes:btnEnviarSolicitud" />       		                               
 				</sec:authorize>
 				<!--Las columnas de la tabla-->
-                <p:column id="centroColumn" exportable="true">
+                <p:column id="centroColumn" exportable="true" filterBy="#{varSolicitudI.certificacion.ifpNombre}" filterOptions="#{dashBoardSolicitudesManagedBean.listaCentros}" filterMatchMode="exact">
                 	<f:facet name="header">  
             			<h:outputText value="Centro evaluador" />  
         			</f:facet> 
                 	<h:outputText value="#{varSolicitudI.certificacion.ifpNombre}" />
                 </p:column>                      
-                <p:column id="candidatoColumn" exportable="true">
+                <p:column id="candidatoColumn" exportable="true" filterBy="#{varSolicitudI.contacto.nombreCompleto}"  filterMatchMode="contains">
                 	<f:facet name="header">  
             			<h:outputText value="Nombre del candidato" />  
         			</f:facet> 
                 	<h:outputText value="#{varSolicitudI.contacto.nombreCompleto}" />
                  </p:column>  
-                <p:column id="certificacionColumn" exportable="true">
+                <p:column id="certificacionColumn" exportable="true" filterBy="#{varSolicitudI.certificacion.nombre}" filterMatchMode="contains">
                 	<f:facet name="header">  
             			<h:outputText value="Certificacion a evaluar" />  
         			</f:facet> 
@@ -131,8 +108,8 @@
         			</f:facet>
                 	<h:outputText value="#{varSolicitudI.certificacion.getEvaluador().nombreCompleto} [ #{varSolicitudI.certificacion.getEvaluador().correo1} ]" />
                 </p:column>                
-                <p:column id="estadoColumn" exportable="true">
-                	<f:facet name="header">  
+                <p:column id="estadoColumn" exportable="true" filterBy="#{varSolicitudI.estatus.valor}" filterOptions="#{dashBoardSolicitudesManagedBean.listaEstatus}" filterMatchMode="exact">
+                	<f:facet name="header">
             			<h:outputText value="Estado" />  
         			</f:facet>
                 	<h:outputText value="#{varSolicitudI.estatus.valor}" />

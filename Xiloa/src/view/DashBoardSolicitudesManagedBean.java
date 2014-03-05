@@ -583,5 +583,26 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
     		FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe seleccionar una solicitud.", true);
 				
 	}
+    
+	public SelectItem[] getListaCentros(){
+		List<Ifp> centros = service.getIfpByInatec(login.getEntidadUsuario());
 	
+		SelectItem[] opciones = new SelectItem[centros.size()+1];
+		opciones[0] = new SelectItem("","Seleccione");
+		for(int i=0; i<centros.size(); i++)
+			opciones[i+1] = new SelectItem(centros.get(i).getIfpNombre(),centros.get(i).getIfpNombre());
+		return opciones;
+	}
+	
+	public SelectItem[] getListaEstatus(){
+
+		List<Mantenedor> estatusList = new ArrayList<Mantenedor>(service.getCatalogoEstadoSolicitud().values());
+		SelectItem[] estatus = new SelectItem[estatusList.size() + 1];
+		
+		estatus[0] = new SelectItem("","Seleccione");
+		for(int i=0; i<estatusList.size(); i++)
+			estatus[i+1] = new SelectItem(estatusList.get(i).getValor(),estatusList.get(i).getValor());
+		
+		return estatus;
+	}	
 }
