@@ -1529,7 +1529,8 @@ public class ServiceImp implements IService {
 		estadoActual  = solicitud.getEstatus();
 		proximoEstado = (estadoActual.getProximo() != null) ? Integer.valueOf(estadoActual.getProximo()) : null; 
 		
-		ultimoEstado = getMantenedorMaxByTipo(tipoMantenedor);
+		//ultimoEstado = getMantenedorMaxByTipo(tipoMantenedor);
+		ultimoEstado = catalogoEstadoSolicitud.get(37);
 		System.out.println("Valores de los estados proximoEstado " + proximoEstado + " ultimo anterior " + ultimoEstado.getAnterior());	
 		if ( (proximoEstado != null) && (ultimoEstado != null) && (proximoEstado == Integer.valueOf(ultimoEstado.getAnterior()))){
 			pasa = validaEvaluacionAprobada(solicitud, true, null);			

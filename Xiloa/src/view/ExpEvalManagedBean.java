@@ -1397,7 +1397,7 @@ public class ExpEvalManagedBean implements Serializable  {
 	}
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Aplica estatus convocado.
-	public void convocarCertificacion(){
+	public String convocarCertificacion(){
 		Contacto solicitante = null;
 		boolean pasaConvocatoria = false;
 		String  titulo = "";
@@ -1405,8 +1405,7 @@ public class ExpEvalManagedBean implements Serializable  {
 		boolean isError = false;
 		
 		if (this.solicitudExp != null){
-			solicitante = this.solicitudExp.getContacto();		
-			
+			solicitante = this.solicitudExp.getContacto();
 			pasaConvocatoria = service.portafolioVerificado(solicitante, new String("8"));			
 		}
 						
@@ -1420,6 +1419,7 @@ public class ExpEvalManagedBean implements Serializable  {
 				titulo = "SCCL - Proceso exitoso: ";
 				textoMsg = "La solicitud ha pasado a convocatoria.";
 				isError = false;
+				return "/modulos/solicitudes/solicitudes?faces-redirect=true";
 			} else {
 				titulo = "SCCL - Error: ";
 				textoMsg = "Se generó un error al aplicar los cambios. Favor comuníquese al Departamento de Tecnología del INATEC.";
@@ -1432,45 +1432,58 @@ public class ExpEvalManagedBean implements Serializable  {
 		}
 				
 		FacesUtil.getMensaje(titulo, textoMsg, isError);	  
-		
+		return textoMsg;
 	}
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Aplica estatus asesorado.
-	public void asesorarCertificacion (){	
-		String  textoMsg = "";	
+	public String asesorarCertificacion (){
+		String  textoMsg = "Se generó un error al intentar aplicar los cambios. Favor comuníquese al Departamento de Tecnología del INATEC.";
 		boolean indicaAsesorado = true;			
 		solicitudExp = avanzaProceso (solicitudExp, "listo para inscripción", indicaAsesorado, textoMsg);
-			
-	}	
+		if(solicitudExp!=null)
+			return "/modulos/solicitudes/solicitudes?faces-redirect=true";
+		else
+			return textoMsg;
+	}
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Aplica estatus listo para inscripcion.
-	public void inscripcionCertificacion (){
+	public String inscripcionCertificacion (){
 		boolean listoInscripcion = false;	
 		String textoMsg = "La solicitud no cumple con las condiciones para proceder con la inscripcion. Favor revisar...";
 		
 		if (solicitudExp != null) {
 			listoInscripcion = service.validaListoInscripcion(solicitudExp);			
-			solicitudExp = avanzaProceso (solicitudExp, "listo para inscripción", listoInscripcion, textoMsg);						
+			solicitudExp = avanzaProceso (solicitudExp, "listo para inscripción", listoInscripcion, textoMsg);
+			if(solicitudExp!=null)
+				return "/modulos/solicitudes/solicitudes?faces-redirect=true";
 		}
+		return textoMsg;
 	}
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Aplica estatus finalizado.
-	public void concluirCertificacion(){
+	public String concluirCertificacion(){
 		boolean concluir = false;
 		String textoMsg = "La solicitud no cumple con las condiciones para concluir el proceso de certificacion. Favor revisar...";
 		if (solicitudExp != null){
 			concluir = service.validaProcesoConcluido(solicitudExp, false);
 			solicitudExp.setResultadoEvaluacion(concluir);
 			solicitudExp = avanzaProceso(solicitudExp, " Proceso Concluido", concluir, textoMsg );
+			if(solicitudExp!=null)
+				return "/modulos/solicitudes/solicitudes?faces-redirect=true";			
 		}
+		return textoMsg;
 	}
 	
 	//dchavez 03/03/2014. Agregando opcion para anular solicitud
 	public String anularSolicitud(){
-		if (solicitudExp != null){
-			solicitudExp = service.anularSolicitud(solicitudExp); 
+		if (solicitudExp != null && solicitudExp.getEstatus().getId()!=37){
+			solicitudExp = service.anularSolicitud(solicitudExp);
+			if(solicitudExp!=null)
+				return "/modulos/solicitudes/solicitudes?faces-redirect=true";
+			else
+				return "Ocurrió un error, vuelva a intentarlo...";
 		}
-		return "/modulos/solicitudes/solicitudes?faces-redirect=true";
+		return "Operación no permitida...";
 	}	
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Aplica cambio de estatus.
@@ -1487,7 +1500,7 @@ public class ExpEvalManagedBean implements Serializable  {
 				textoMsg = msgNoPasa;
 				isError = true;
 			}else {
-				sol.setEstatus(this.getEstadoSiguiente());		
+				sol.setEstatus(this.getEstadoSiguiente());
 				sol = (Solicitud) service.guardar(sol);
 				
 				if (sol != null)					
@@ -1504,8 +1517,8 @@ public class ExpEvalManagedBean implements Serializable  {
 		
 		FacesUtil.getMensaje(titulo, textoMsg, isError);
 		
-		return sol;		
-		
+		//return sol;
+		return isError==true?null:sol;
 	}
 
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Ejecuta reporte Informe del Asesor.

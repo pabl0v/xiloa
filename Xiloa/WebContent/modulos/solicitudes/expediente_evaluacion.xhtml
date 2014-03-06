@@ -21,27 +21,27 @@
 			    		
 			<p:commandButton id="convocarSolicitud" value="Convocar" title="Convocar Candidato" 
 		                     icon="ui-icon-star" style="display:inline-block;"
-		                     actionListener="#{expEvalManagedBean.convocarCertificacion}" 
+		                     action="#{expEvalManagedBean.convocarCertificacion}" 
 		    			     update=":formExpediente:msgExpediente"    					       
 		    			     disabled="#{expEvalManagedBean.disabledConvocar}"	/> 
 		            
             <p:commandButton id="asesarSolicitud" value="Asesorado" title="Indica Asesorado" 
     		                 icon="ui-icon-pencil" style="display:inline-block;"
-    		                 actionListener="#{expEvalManagedBean.asesorarCertificacion}" 
+    		                 action="#{expEvalManagedBean.asesorarCertificacion}" 
     					     update=":formExpediente:msgExpediente"    		
     					     disabled="#{expEvalManagedBean.disabledAsesorar}"			        					       
              				/>
 		    		
     		<p:commandButton id="inscribirSolicitud" value="Inscripcion" title="Listo para Inscripcion" 
     		                 icon="ui-icon-arrowrefresh-1-w" style="display:inline-block;"
-    		                 actionListener="#{expEvalManagedBean.inscripcionCertificacion}" 
+    		                 action="#{expEvalManagedBean.inscripcionCertificacion}" 
     					     update=":formExpediente:msgExpediente"    		
     					     disabled="#{expEvalManagedBean.disabledCerrar}"			        					       
              				/> 
 		             
              <p:commandButton id="concluirProcesoSolicitud" value="Finalizado" title="Concluir Proceso de Solicitud" 
     		                 icon="ui-icon-arrowrefresh-1-w" style="display:inline-block;"
-    		                 actionListener="#{expEvalManagedBean.concluirCertificacion}" 
+    		                 action="#{expEvalManagedBean.concluirCertificacion}" 
     					     update=":formExpediente:msgExpediente"    		
     					     disabled="#{expEvalManagedBean.disabledConcluido}"			        					       
              				/>

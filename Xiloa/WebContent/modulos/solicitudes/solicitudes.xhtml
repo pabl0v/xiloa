@@ -76,6 +76,12 @@
 					<p:ajax event="rowUnselect" listener="#{dashBoardSolicitudesManagedBean.onRowUnSelectDtSolicitudes}" update=":formSolicitudes:btnEnviarSolicitud" />       		                               
 				</sec:authorize>
 				<!--Las columnas de la tabla-->
+                <p:column id="expedienteColumn" exportable="true" filterBy="#{varSolicitudI.id}" filterMatchMode="contains">
+                	<f:facet name="header">  
+            			<h:outputText value="Expediente" />  
+        			</f:facet> 
+                	<h:outputText value="#{varSolicitudI.id}" />
+                </p:column>
                 <p:column id="centroColumn" exportable="true" filterBy="#{varSolicitudI.certificacion.ifpNombre}" filterOptions="#{dashBoardSolicitudesManagedBean.listaCentros}" filterMatchMode="exact">
                 	<f:facet name="header">  
             			<h:outputText value="Centro evaluador" />  
