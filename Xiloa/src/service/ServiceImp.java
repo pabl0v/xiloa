@@ -353,6 +353,7 @@ public class ServiceImp implements IService {
 
 	@Override
 	public String getCompetenciaDescripcion(Long codigo){
+		System.out.println("Tamano del catalogo de unidades: "+catalogoUnidades.size());
 		return catalogoUnidades.get(codigo).getDescripcion();
 	}
 	

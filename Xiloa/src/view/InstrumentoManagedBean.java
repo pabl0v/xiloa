@@ -263,16 +263,17 @@ public class InstrumentoManagedBean implements Serializable {
     }
     
     public String getCompetenciaDescripcion(Long codigo){
+    	System.out.println("El codigo es: "+codigo);
     	return service.getCompetenciaDescripcion(codigo);
     }
     
 	public SelectItem[] getListaUC(){
-		List<Item> unidades = (List<Item>) service.getCatalogoUnidades().values();
+		List<Item> unidades = new ArrayList<Item>(service.getCatalogoUnidades().values());
 	
 		SelectItem[] opciones = new SelectItem[unidades.size()+1];
 		opciones[0] = new SelectItem("","Seleccione");
 		for(int i=0; i<unidades.size(); i++)
-			opciones[i+1] = new SelectItem(unidades.get(i).getDescripcion(),unidades.get(i).getDescripcion());
+			opciones[i+1] = new SelectItem(unidades.get(i).getId(),unidades.get(i).getDescripcion());
 		return opciones;
 	}
 }

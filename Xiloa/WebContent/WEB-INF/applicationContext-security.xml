@@ -79,7 +79,7 @@
 		<beans:constructor-arg name="sessionRegistry" ref="sessionRegistry" />
 		<beans:property name="maximumSessions" value="1" />
 		<beans:property name="alwaysCreateSession" value="true" />
-		<beans:property name="exceptionIfMaximumExceeded" value="true" />
+		<!-- <beans:property name="exceptionIfMaximumExceeded" value="true" /> --> <!-- para invalidar la sesion anterior -->	
     </beans:bean>
 
 	<beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />

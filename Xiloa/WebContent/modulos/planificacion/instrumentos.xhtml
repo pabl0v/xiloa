@@ -34,20 +34,20 @@
          <div class="seccion_edicion" style="width: 93%;">
 		          		<h:form id="instrumentos">
 		          		<p:commandButton value="Agregar Instrumento" style="margin-bottom: 5px" update=":modalDialog1, :instrumentoDialogo, :modal2" action="#{instrumentoManagedBean.nuevoInstrumento}" onclick="PF('dlg2').show();"/>
-						<p:dataTable id="instrumentosDataTable" emptyMessage="No hay datos para mostrar" var="var" value="#{instrumentoManagedBean.instrumentos}" selection="#{instrumentoManagedBean.selectedInstrumento}" paginator="true" rows="4" rowKey="#{var.id}" selectionMode="single">
+						<p:dataTable id="instrumentosDataTable" emptyMessage="No hay datos para mostrar" var="var" value="#{instrumentoManagedBean.instrumentos}" paginator="true" rows="4" rowKey="#{var.id}" selectionMode="single">
 							<p:ajax event="rowSelect" listener="#{instrumentoManagedBean.onRowSelect}" update=":guias:display"/>  
 							<p:ajax event="rowUnselect" listener="#{instrumentoManagedBean.onRowUnselect}" update=":guias:display"/>    
 							<f:facet name="header">
 								Instrumentos existentes
 							</f:facet>
 							<p:column headerText="Instrumento"><h:outputText value="#{var.tipo.valor}" /></p:column>
-	                        <!-- <p:column filterBy="#{instrumentoManagedBean.getCompetenciaDescripcion(var.unidad)}" filterOptions="#{instrumentoManagedBean.listaUC}" filterMatchMode="exact">
+	                        <p:column filterBy="#{var.unidad}" filterOptions="#{instrumentoManagedBean.listaUC}" filterMatchMode="exact">
     	                    	<f:facet name="header">  
         	    					<h:outputText value="Unidad de Competencia" />  
         						</f:facet> 
                 	        	<h:outputText value="#{instrumentoManagedBean.getCompetenciaDescripcion(var.unidad)}" />
-                    	    </p:column>-->
-							<p:column headerText="Unidad de Competencia"><h:outputText value="#{instrumentoManagedBean.getCompetenciaDescripcion(var.unidad)}" /></p:column>
+                    	    </p:column>
+							<!-- <p:column headerText="Unidad de Competencia"><h:outputText value="#{instrumentoManagedBean.getCompetenciaDescripcion(var.unidad)}" /></p:column> -->
 							<p:column headerText="Código"><h:outputText value="#{var.codigo}" /></p:column>
 							<p:column headerText="Cualitativo"><h:outputText value="#{var.cualitativoLabel}" /></p:column>  
 							<p:column headerText="Nombre"><h:outputText value="#{var.nombre}" /></p:column>  
