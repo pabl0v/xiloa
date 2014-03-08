@@ -243,16 +243,17 @@
                          selection="#{expedienteManagedBean.selectedBeanEvaluacion}" rowKey="#{dtEvaluaciones}" 
              			 selectionMode="single" paginator="true" rows="4" >   
              	 <f:facet name="header">Detalle de Evaluaciones</f:facet>                        	 
-                 <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{dtEvaluaciones.unidadCompetenciaDescripcion}" /></p:column>  
+                 <!--<p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{dtEvaluaciones.unidadCompetenciaDescripcion}" /></p:column>  -->
+                 <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{expedienteManagedBean.getUCDescripcion(dtEvaluaciones.unidad)}" /></p:column>
                  <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{dtEvaluaciones.instrumento.nombre} [ #{dtEvaluaciones.instrumento.tipo.valor} ]" /></p:column>                               
-                 <p:column headerText="Observaciones"><h:outputText value="#{dtEvaluaciones.evaluacion.observaciones}" /></p:column>                                  
+                 <p:column headerText="Observaciones"><h:outputText value="#{dtEvaluaciones.observaciones}" /></p:column>                                  
                  <p:column headerText="Fecha">
-                 	<h:outputText value="#{dtEvaluaciones.evaluacion.fechaEvaluacion}" pattern="dd/MM/yyyy" >
+                 	<h:outputText value="#{dtEvaluaciones.fechaEvaluacion}" pattern="dd/MM/yyyy" >
                  		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
                  	</h:outputText>
                  </p:column>
-                 <p:column headerText="Aprobado"><p:selectBooleanCheckbox value="#{dtEvaluaciones.evaluacion.aprobado}" disabled="true" /></p:column>    
-                 <p:column headerText="Estado"><h:outputText value="#{dtEvaluaciones.estadoEvaluacion.valor}" /></p:column>
+                 <p:column headerText="Aprobado"><p:selectBooleanCheckbox value="#{dtEvaluaciones.aprobado}" disabled="true" /></p:column>    
+                 <p:column headerText="Estado"><h:outputText value="#{dtEvaluaciones.estado.valor}" /></p:column>
 	         </p:dataTable>
    	    </div>    	
     	<!-- Cuadro de dialogo emergente que registra datos laborales y académicos -->    	    	

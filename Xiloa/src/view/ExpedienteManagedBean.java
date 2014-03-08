@@ -1465,5 +1465,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		
 	}
 		
-	
+	public String getUCDescripcion(Long id){
+		return service.getCatalogoUnidades().get(id).getDescripcion();
+	}	
 }
