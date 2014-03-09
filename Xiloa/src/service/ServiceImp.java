@@ -989,10 +989,17 @@ public class ServiceImp implements IService {
 
 	@Override
 	public List<Long> getUnidadesByCertificacionId(Long certificacionId) {
+		List<BigInteger> unidades = new ArrayList<BigInteger>();
+		List<Long> unidadesLong = new ArrayList<Long>();
 		if(certificacionId!=null)
-			return longDao.findAllByNativeQuery("select unidad_id from sccl.certificacion_unidades where certificacion_id="+certificacionId);
+			unidades = bigIntegerDao.findAllByNativeQuery("select unidad_id from sccl.certificacion_unidades where certificacion_id="+certificacionId+" order by 1");
 		else
-			return longDao.findAllByNativeQuery("select distinct unidad_id from sccl.certificacion_unidades");
+			unidades = bigIntegerDao.findAllByNativeQuery("select distinct unidad_id from sccl.certificacion_unidades order by 1");
+		
+		for(int i=0; i<unidades.size(); i++)
+			unidadesLong.add(unidades.get(i).longValue());
+		
+		return unidadesLong;
 	}
 	
 	/**
@@ -1709,6 +1716,10 @@ public class ServiceImp implements IService {
 		ultimoEstado = catalogoEstadoSolicitud.get(37);
 		
 		if (ultimoEstado != null){
+			
+			if(estadoActual.getId()==ultimoEstado.getId())
+				return true;
+			
 			if (Integer.valueOf(estadoActual.getProximo()) == ultimoEstado.getId()){
 				idMatricula = solicitud.getIdMatricula();	
 				if (idMatricula == null)
@@ -1716,7 +1727,7 @@ public class ServiceImp implements IService {
 				else {
 					pasaConcluido = (validaEvaluacion) ? validaEvaluacionByUnidad(solicitud, null) : true;
 				}
-			}				
+			}
 		}
 		return pasaConcluido;
 	}
