@@ -46,9 +46,20 @@ public class InstrumentoManagedBean implements Serializable {
 	
 	@Autowired
 	private LoginController controller;
-
+	
+	/* dchavez. 08/04/2014: agregar filtro de unidades de competencia por certificacion
+	 * 
+	 * */
+	
 	private Long idCertificacion;
 	private String nombreCertificacion;
+	private Long selectedCertificacion;
+	private List<Item> catalogoCertificaciones; 
+	
+	/*
+	 * fin del cambio
+	 */
+	
 	private Instrumento instrumento;
 	private Instrumento selectedInstrumento;
 	private Guia guia;
@@ -56,7 +67,7 @@ public class InstrumentoManagedBean implements Serializable {
 	private List<Instrumento> instrumentos;	
 	private Map<Integer,Mantenedor> catalogoTiposInstrumento;
 	private Integer selectedTipoInstrumento;
-	private Map<Long,Item> catalogoUnidades;
+	private List<Item> catalogoUnidades;
 	private Long selectedUnidad;
 	private Contacto contacto;
 
@@ -72,15 +83,18 @@ public class InstrumentoManagedBean implements Serializable {
 		selectedGuia.equals(true);
 		catalogoTiposInstrumento = new HashMap<Integer, Mantenedor>();
 		selectedTipoInstrumento = null;
-		catalogoUnidades = new HashMap<Long, Item>();
+		catalogoUnidades = new ArrayList<Item>();
 		selectedUnidad = null;
 		contacto = new Contacto();
+		selectedCertificacion = null;
+		catalogoCertificaciones = new ArrayList<Item>();
 	}
 	
 	@PostConstruct
 	private void init(){
-		catalogoTiposInstrumento = service.getCatalogoTiposInstrumento();
 		contacto = controller.getContacto();
+		catalogoTiposInstrumento = service.getCatalogoTiposInstrumento();
+		catalogoCertificaciones = service.getCertificacionesItem(contacto.getEntidadId());
 		configurarInstrumento();
 	}
 	
@@ -98,6 +112,28 @@ public class InstrumentoManagedBean implements Serializable {
 	
 	public void setNombreCertificacion(String nombre){
 		this.nombreCertificacion = nombre;
+	}
+	
+	public List<Item> getCatalogoCertificaciones(){
+		return catalogoCertificaciones;
+	}
+	
+	//dchavez. 08/04/2014: agregando filtro de certificaciones
+	public void handleCertificacionesChange(){
+		if(selectedCertificacion != 0){
+			List<Item> unidades = service.getUnidadesItemByCertificacionId(selectedCertificacion);
+			setCatalogoUnidades(unidades);
+		}
+		else
+			setCatalogoUnidades(service.getUnidadesItemByCertificacionId(null));
+	}
+	
+	public void setSelectedCertificacion(Long id){
+		this.selectedCertificacion = id;
+	}
+	
+	public Long getSelectedCertificacion(){
+		return selectedCertificacion;
 	}
 
 	public Instrumento getInstrumento() {
@@ -153,7 +189,11 @@ public class InstrumentoManagedBean implements Serializable {
 	}
 
 	public List<Item> getCatalogoUnidades() {
-		return new ArrayList<Item>(catalogoUnidades.values());
+		return catalogoUnidades;
+	}
+	
+	public void setCatalogoUnidades(List<Item> unidades){
+		this.catalogoUnidades= unidades;
 	}
 
 	public Long getSelectedUnidad() {
@@ -169,9 +209,7 @@ public class InstrumentoManagedBean implements Serializable {
 		this.idCertificacion = idCertificacion;
 		this.nombreCertificacion = nombreCertificacion;
 			
-		List<Long> unidades = service.getUnidadesByCertificacionId(idCertificacion);
-		for(int i=0; i<unidades.size(); i++)
-			this.catalogoUnidades.put(unidades.get(i), new Item(unidades.get(i),service.getCompetenciaDescripcion(unidades.get(i))));
+		this.catalogoUnidades = service.getUnidadesItemByCertificacionId(idCertificacion);
 		this.instrumentos = service.getInstrumentosByCertificacionId(idCertificacion);
 
 		return "/modulos/planificacion/instrumentos?faces-redirect=true";
@@ -182,7 +220,7 @@ public class InstrumentoManagedBean implements Serializable {
 		this.idCertificacion = null;
 		this.nombreCertificacion = "";
 		
-		this.catalogoUnidades = service.getCatalogoUnidades();
+		this.catalogoUnidades = service.getUnidadesItemByCertificacionId(null);
 		this.instrumentos = service.getInstrumentos(controller.getEntidadUsuario());
 
 		return "/modulos/planificacion/instrumentos?faces-redirect=true";
@@ -215,7 +253,8 @@ public class InstrumentoManagedBean implements Serializable {
 	public void editarInstrumento(Instrumento instrumento){
 		this.setInstrumento(instrumento);
 		setSelectedTipoInstrumento(instrumento.getTipo().getId());
-		setSelectedUnidad(catalogoUnidades.get(instrumento.getUnidad()).getId());
+		//setSelectedUnidad(catalogoUnidades.get(instrumento.getUnidad()).getId());
+		setSelectedUnidad(instrumento.getUnidad());
 	}
 
 	public String aceptar(){
@@ -256,14 +295,14 @@ public class InstrumentoManagedBean implements Serializable {
 	public void onRowSelect(SelectEvent event) {
 		setSelectedInstrumento((Instrumento) event.getObject());
 		setSelectedTipoInstrumento(selectedInstrumento.getTipo().getId());
-		setSelectedUnidad(catalogoUnidades.get(selectedInstrumento.getUnidad()).getId());
+		//setSelectedUnidad(catalogoUnidades.get(selectedInstrumento.getUnidad()).getId());
+		setSelectedUnidad(selectedInstrumento.getUnidad());
     }
   
     public void onRowUnselect(UnselectEvent event) {
     }
     
     public String getCompetenciaDescripcion(Long codigo){
-    	System.out.println("El codigo es: "+codigo);
     	return service.getCompetenciaDescripcion(codigo);
     }
     

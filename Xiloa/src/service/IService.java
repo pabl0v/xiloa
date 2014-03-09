@@ -527,6 +527,13 @@ public interface IService {
 	 */
 	
 	public List<Long> getUnidadesByCertificacionId(Long certificacionId);
+	
+	/**
+	 * @return el listado de las unidades de competencia de la certificación indicada
+	 * @param el id de la certificación
+	 */
+	
+	public List<Item> getUnidadesItemByCertificacionId(Long certificacionId);
 
 	/**
 	 * @return el listado de los instrumentos de la certificación indicada
@@ -815,4 +822,12 @@ public interface IService {
 	 */
 
 	public Solicitud anularSolicitud(Solicitud solicitud);
+	
+	/*
+	 * @return obtiene el listado de certificaciones ofertadas en un centro
+	 * @param código del centro
+	 * 
+	 */
+
+	public List<Item> getCertificacionesItem(Integer entidadId);
 }

@@ -87,11 +87,11 @@
 		<h:panelGrid id="modal1" columns="3" cellpadding="4">
 		<h:form id="guiaDialogo"> 
 		  	<h:outputLabel styleClass="estilo_label" value="Pregunta:" />  
-            <p:inputText id="codigo1" value="#{instrumentoManagedBean.guia.pregunta}" required="true" requiredMessage="La pregunta es requerida" /> 
+            <p:inputText id="codigo1" size="200" value="#{instrumentoManagedBean.guia.pregunta}" required="true" requiredMessage="La pregunta es requerida" /> 
             <p:message for="codigo1" display="text"  />
             <br/>
             <h:outputLabel styleClass="estilo_label" value="Respuesta:" />
-            <p:inputText id="codigo2" value="#{instrumentoManagedBean.guia.respuesta}" required="true" requiredMessage="La respuesta es requerida" />
+            <p:inputText id="codigo2" size="200" value="#{instrumentoManagedBean.guia.respuesta}" required="true" requiredMessage="La respuesta es requerida" />
             <p:message for="codigo2" display="text"  />
             <br/>
             <h:outputLabel rendered="#{instrumentoManagedBean.guia.instrumento.cualitativo}" styleClass="estilo_label" value="Peso:" />
@@ -105,7 +105,7 @@
             <h:outputLabel styleClass="estilo_label" value="Activo:" />
 			<p:selectBooleanCheckbox value="#{instrumentoManagedBean.guia.estatus}" />
 			<br/>	
-			<div class="contenedor_botones" style="margin-top:40px;">
+			<div class="contenedor_botones" style="margin-top:32px;">
 	            <p:commandButton value="Cancelar" oncomplete="PF('dlg1').hide();" immediate="true" /> 
 				<p:commandButton value="Aceptar" oncomplete="if (!args.validationFailed) dlg1.hide()" update=":guias:display, :growl, :guiaDialogo" action="#{instrumentoManagedBean.guardarGuia(instrumentoManagedBean.guia)}" ajax="true" />
 			</div>
@@ -115,7 +115,7 @@
 	</p:dialog>	
 	
 	<div id="contenedor_dialogoactividades">
-	<p:dialog id="modalDialog2" styleClass="estilo_dialogoactividades" header="Edición de Instrumento:" widgetVar="dlg2" modal="true" resizable="false" width="450" height="480">
+	<p:dialog id="modalDialog2" styleClass="estilo_dialogoactividades" header="Edición de Instrumento:" widgetVar="dlg2" modal="true" resizable="false" width="450" height="520">
 		<h:panelGrid id="modal2" columns="3" cellpadding="5">
 		<h:form id="instrumentoDialogo">
 		  	<h:outputLabel styleClass="estilo_label" value="Instrumento:" />
@@ -125,12 +125,20 @@
 			</p:selectOneMenu>
 			<p:message for="selector_estatus1" display="text"  />
             <br/>	
+            <h:outputLabel styleClass="estilo_label" value="Certificacion:" />
+			<p:selectOneMenu id="selector_estatus2" required="false" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedCertificacion}" >  
+				<f:selectItem itemLabel="Todas..." itemValue="0" />
+				<f:selectItems value="#{instrumentoManagedBean.catalogoCertificaciones}" var="certificacion" itemLabel="#{certificacion.descripcion}" itemValue="#{certificacion.id}" />
+				<p:ajax update="selector_estatus3" listener="#{instrumentoManagedBean.handleCertificacionesChange}" />
+			</p:selectOneMenu>
+			<p:message for="selector_estatus2" display="text" />
+            <br/>
             <h:outputLabel styleClass="estilo_label" value="Unidad:" />
-			<p:selectOneMenu id="selector_estatus2" required="true" requiredMessage="Debe seleccionar la unidad" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedUnidad}" >  
+			<p:selectOneMenu id="selector_estatus3" required="true" requiredMessage="Debe seleccionar la unidad" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedUnidad}" >  
 				<f:selectItem itemLabel="Seleccione..." itemValue="" />
 				<f:selectItems value="#{instrumentoManagedBean.catalogoUnidades}" var="unidad" itemLabel="#{unidad.descripcion}" itemValue="#{unidad.id}" />
 			</p:selectOneMenu>
-			<p:message for="selector_estatus2" display="text" />
+			<p:message for="selector_estatus3" display="text" />
             <br/>
             <h:outputLabel styleClass="estilo_label" value="Cualitativo:" />
             <p:selectBooleanCheckbox value="#{instrumentoManagedBean.instrumento.cualitativo}">

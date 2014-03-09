@@ -1,5 +1,6 @@
 package service;
 
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -98,6 +99,8 @@ public class ServiceImp implements IService {
 	private IDao<EvaluacionGuia> evaluacionGuiaDao;
 	@Autowired
 	private IDao<Long> longDao;
+	@Autowired
+	private IDao<BigInteger> bigIntegerDao;
 	@Autowired
 	private IDao<Bitacora> bitacoraDao;
 	@Autowired
@@ -353,7 +356,6 @@ public class ServiceImp implements IService {
 
 	@Override
 	public String getCompetenciaDescripcion(Long codigo){
-		System.out.println("Tamano del catalogo de unidades: "+catalogoUnidades.size());
 		return catalogoUnidades.get(codigo).getDescripcion();
 	}
 	
@@ -380,14 +382,26 @@ public class ServiceImp implements IService {
 	}
 	
 	/*
-	 * @return obtiene el listado de certificaciones de una unidad de competencia
-	 * @param código de la unidad de competencia
+	 * @return obtiene el listado de certificaciones ofertadas en un centro
+	 * @param código del centro
 	 * 
 	 */
 	
 	@Override
 	public List<Certificacion> getCertificaciones(Integer entidadId){
 		return certificacionDao.findAllByNamedQueryParam("Certificacion.findByIfpId", new Object[] {entidadId});
+	}
+
+	/*
+	 * @return obtiene el listado de certificaciones ofertadas en un centro
+	 * @param código del centro
+	 * 
+	 */
+
+	//dchavez. 08/04/2014. Para agregar filtro de unidades de competencia por certificacion 
+	
+	public List<Item> getCertificacionesItem(Integer entidadId){
+		return itemDao.findAllByNamedQueryParam("Certificacion.findItemsByIfpId", new Object[] {entidadId});
 	}
 	
 	/*
@@ -975,8 +989,30 @@ public class ServiceImp implements IService {
 
 	@Override
 	public List<Long> getUnidadesByCertificacionId(Long certificacionId) {
-		Certificacion certificacion = (Certificacion) certificacionDao.findOneByQuery("select c from certificaciones c where c.id="+certificacionId);
-		return new ArrayList<Long>(certificacion.getUnidades());		
+		if(certificacionId!=null)
+			return longDao.findAllByNativeQuery("select unidad_id from sccl.certificacion_unidades where certificacion_id="+certificacionId);
+		else
+			return longDao.findAllByNativeQuery("select distinct unidad_id from sccl.certificacion_unidades");
+	}
+	
+	/**
+	 * @return el listado de las unidades de competencia de la certificación indicada
+	 * @param el id de la certificación
+	 */
+	
+	public List<Item> getUnidadesItemByCertificacionId(Long certificacionId){
+		List<BigInteger> codigos = new ArrayList<BigInteger>();
+		List<Item> unidades = new ArrayList<Item>();
+		
+		if(certificacionId!=null)
+			codigos = bigIntegerDao.findAllByNativeQuery("select unidad_id from sccl.certificacion_unidades where certificacion_id="+certificacionId);
+		else
+			return new ArrayList<Item>(catalogoUnidades.values());
+		
+		for(int i=0; i<codigos.size(); i++)
+			unidades.add(catalogoUnidades.get(codigos.get(i).longValue()));
+
+		return unidades;
 	}
 
 	/**
@@ -1520,13 +1556,13 @@ public class ServiceImp implements IService {
 
 	@Override
 	public boolean validaListoInscripcion(Solicitud solicitud){
-		String     tipoMantenedor = null;
+		//String     tipoMantenedor = null;
 		Integer     proximoEstado  = null;
 		boolean    pasa = true;
 		Mantenedor ultimoEstado = null;
 		Mantenedor estadoActual = null;
 		System.out.println("Entra al servicio validaListoInscripcion");
-		tipoMantenedor = solicitud.getTipomantenedorestado();
+		//tipoMantenedor = solicitud.getTipomantenedorestado();
 		estadoActual  = solicitud.getEstatus();
 		proximoEstado = (estadoActual.getProximo() != null) ? Integer.valueOf(estadoActual.getProximo()) : null; 
 		
@@ -1697,7 +1733,7 @@ public class ServiceImp implements IService {
 	public boolean validaEvaluacionAprobada(Solicitud solicitud, boolean diagnostica, Long ucl){
 		Object [] objs = null;	
 		boolean pasa = true;
-		boolean aprobado = true;
+		//boolean aprobado = true;
 		List<Instrumento> listaInstrumento = null;
 		Certificacion c = solicitud.getCertificacion();
 		Integer idTipoInstrumento = diagnostica ? 17 : null;
@@ -1851,7 +1887,7 @@ public class ServiceImp implements IService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Evaluacion actualizaEvaluacion(Evaluacion evaluacion, boolean valida){
-		boolean val = false;
+		//boolean val = false;
 		Evaluacion eval = null;		
 		System.out.println("En el servicio, revisa si pasa a validar " + valida);
 		
@@ -1859,7 +1895,8 @@ public class ServiceImp implements IService {
 		
 		if (eval != null){
 			if (valida) //Evaluacion Completada 
-				val = validaEvaluacionAprobada(eval.getSolicitud(), false, eval.getUnidad());
+				//val = validaEvaluacionAprobada(eval.getSolicitud(), false, eval.getUnidad());
+				validaEvaluacionAprobada(eval.getSolicitud(), false, eval.getUnidad());
 		}
 		return eval;
 		

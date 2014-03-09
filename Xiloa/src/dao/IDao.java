@@ -105,6 +105,15 @@ public interface IDao <T extends Object>{
 	public List<T> findAllByNamedQuery(String named);
 	
 	/**
+	 * Esta clase busca en la BD la lista de todas las instancias retornadas por la namedQuery sin parametros 
+	 * 
+	 * @param el nombre de la namedQuery a ejecutar
+	 * @return List<T> la lista de instancias encontradas
+	 */
+	
+	public List<T> findAllByNativeQuery(String named);
+	
+	/**
 	 * Esta clase busca y retorna la conexion actual 
 	 * 
 	 * @return Connection retorna la conexion actual

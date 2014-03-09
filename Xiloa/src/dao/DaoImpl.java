@@ -225,6 +225,26 @@ public class DaoImpl<T extends Object> implements IDao<T>{
 	}
 	
 	/**
+	 * Esta clase busca en la BD la lista de todas las instancias retornadas por la namedQuery sin parametros 
+	 * 
+	 * @param el nombre de la namedQuery a ejecutar
+	 * @return List<T> la lista de instancias encontradas
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findAllByNativeQuery(String named){
+		List<T> result;
+		Query q = em.createNativeQuery(named);
+		
+		try {
+			result = q.getResultList();
+		} catch (NoResultException e) {
+			result = null;
+		}		
+		return result;
+	}
+	
+	/**
 	 * Esta clase busca y retorna la conexion actual 
 	 * 
 	 * @return Connection retorna la conexion actual
