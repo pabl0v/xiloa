@@ -1990,5 +1990,5 @@ public class ServiceImp implements IService {
 		solicitud.setEstatus(catalogoEstadoSolicitud.get(40));
 		System.out.println("Anular solicitud: "+solicitud.getEstatus().getValor()+" mantenedor-->"+catalogoEstadoSolicitud.get(40).getValor());
 		return solicitudDao.save(solicitud);
-	}
+	}	
 }

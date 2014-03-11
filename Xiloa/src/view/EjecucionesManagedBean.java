@@ -32,7 +32,7 @@ import service.IService;
  */
 
 @Component
-@Scope("request")
+@Scope("view")
 public class EjecucionesManagedBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -177,5 +177,10 @@ public class EjecucionesManagedBean implements Serializable {
 		this.selectedActividad = actividad;
 		System.out.println("Editar actividad: "+actividad.getNombre());
 		return "/modulos/planificacion/edicion_actividad?faces-redirect=true";
-	}	
+	}
+	
+	public void completarActividad(Actividad actividad){
+		actividad.setEstado(catalogoEstatusActividad.get(39));
+		service.guardar(actividad);
+	}
 }

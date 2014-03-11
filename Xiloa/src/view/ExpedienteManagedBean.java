@@ -43,7 +43,7 @@ import util.ValidatorUtil;
 
 //Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Bean asociado al facet expediente.xhtml
 @Component
-@Scope(value="request")
+@Scope(value="view")
 public class ExpedienteManagedBean implements Serializable  {
 	
 	private static final long serialVersionUID = 1L;
@@ -391,7 +391,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	
 	public List<Evaluacion> getListBeanEvalFormacion() {
 		if (this.solicitudExp != null)
-		{			
+		{
 			listBeanEvalFormacion = getListadoEvaluacionesByParam(this.solicitudExp, false);
 		} 
 		else

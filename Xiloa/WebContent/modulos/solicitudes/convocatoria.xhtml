@@ -23,36 +23,14 @@
             <h2>Solicitudes Activas</h2>
        </div>
         
-        <div id="contenedor_filtro">            
-	            <p style="margin-left:5px;margin-bottom: 12px;">Buscar:</p>
-	            <p:selectOneMenu styleClass="selectores" id="selector_buscarByAll" value="#{convocatoriaManagedBean.selectedBuscarByAll}">
-	            	<f:selectItems value="#{convocatoriaManagedBean.listBuscarByAll}"/>	            			        
-			    </p:selectOneMenu>
-		        <p:inputText style="margin-right:10px;" id="filtro_buscarByAll" value="#{convocatoriaManagedBean.buscarByAllValue}">
-		        	<p:ajax event="keyup" update="dtSolicitud" listener="#{convocatoriaManagedBean.handleBuscar}" process="@form" />
-		        </p:inputText>
-		        <span style="display:inline-block; margin-left:5px">
-		            <p>Centro evaluador:</p>
-		            <p:selectOneMenu styleClass="selectores selector_centrosBySolicitudEstilo" id="selector_centrosBySolicitud" value="#{convocatoriaManagedBean.selectedIdIfpSolicitud}" >			        
-				        <f:selectItems value="#{convocatoriaManagedBean.listCentrosBySolicitud}"/>
-				        <p:ajax update="selector_certificacionByCentro, dtSolicitud"  listener="#{convocatoriaManagedBean.handleCertByCentro}" />
-				    </p:selectOneMenu>
-			    </span>
-			    <span style="display:inline-block; margin-left:5px">
-				    <p>Certificaciones:</p>
-		            <p:selectOneMenu styleClass="selectores selector_certificacionByCentroEstilo" id="selector_certificacionByCentro" value="#{convocatoriaManagedBean.selectedIdCertByCentro}" >			        
-				        <f:selectItems value="#{convocatoriaManagedBean.listCertByCentro}" />
-				        <p:ajax update="dtSolicitud" listener="#{convocatoriaManagedBean.handleBuscar}" />  
-				    </p:selectOneMenu>	
-			    </span>	
-
+        <div id="contenedor_filtro">
 			    <p:commandButton id="aplicarSeguimiento" value="Aplicar Seguimiento"
 			                     action="#{convocatoriaManagedBean.handleSeguimiento}" 	            	                             				     
 	           	                 icon="ui-icon-disk" title="Aplicar Seguimiento"
 	           	                 update=":formConvocatoria:dtSolicitud, :formConvocatoria:msgConvocatoria"  />   	           		 
 			    	  
-        </div>              
-        <div id="contenedor_tabla_solicitudes">           
+        </div>
+        <div id="contenedor_tabla_solicitudes">
         	<p:messages id="msgConvocatoria" showDetail="true" autoUpdate="true" closable="true" />
         	<p:dataTable id="dtSolicitud" widgetVar="dtSolicitudes" emptyMessage="No existen solicitudes activas" var="varSolicitudI" 
         	             value="#{convocatoriaManagedBean.listaSolicitudes}" 
