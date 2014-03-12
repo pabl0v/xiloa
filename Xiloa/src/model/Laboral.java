@@ -83,7 +83,7 @@ public class Laboral implements Serializable {
 	private Date fechaInicia;
 	
 	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "laboral_fecha_finaliza", nullable = false)
+	@Column(name = "laboral_fecha_finaliza", nullable = true)
 	@Temporal(TemporalType.DATE)
 	private Date fechaFinaliza;
 

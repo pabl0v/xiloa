@@ -22,7 +22,7 @@
     		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO"> 
     			<p:commandButton id="enviarSolicitud" value="Enviar Solicitud" title="Solicitar Certificacion" 
 	    		                 icon="ui-icon-star" style="display:inline-block;"
-	    		                 actionListener="#{expedienteManagedBean.solicitarCertificacion}" 
+	    		                 action="#{expedienteManagedBean.solicitarCertificacion}" 
 	    					     update=":formExpediente:msgExpediente" 
 	    					     rendered="#{expedienteManagedBean.verEnviarSolicitud}"   					        					       
 	             				/>       		

@@ -88,7 +88,7 @@ public class Evaluacion implements Serializable {
 	@Column(name = "evaluacion_puntaje", nullable = false)
 	private Integer puntaje;
 
-	@Column(name = "evaluacion_observaciones", nullable = false)
+	@Column(name = "evaluacion_observaciones", nullable = true)
 	private String observaciones;
 			
 	@Column(name = "evaluacion_aprobado", nullable = true)

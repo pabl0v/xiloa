@@ -79,13 +79,13 @@ public class Solicitud implements Serializable {
 	@Temporal(TemporalType.DATE)	
 	private Date fechaMatricula;
 	
-	@Column(name = "experiencia", nullable = false)
-	private int experiencia;
+	@Column(name = "experiencia", nullable = true)
+	private Integer experiencia;
 	
-	@Column(name = "ocupacion", nullable = false)
+	@Column(name = "ocupacion", nullable = true)
 	private String ocupacion;
 	
-	@Column(name = "oficio", nullable = false)
+	@Column(name = "oficio", nullable = true)
 	private String oficio;
 	
 	@Column(name = "escolaridad_id", nullable = false)
@@ -184,11 +184,11 @@ public class Solicitud implements Serializable {
 		this.fechaMatricula = fechaMatricula;
 	}
 
-	public int getExperiencia() {
+	public Integer getExperiencia() {
 		return experiencia;
 	}
 
-	public void setExperiencia(int experiencia) {
+	public void setExperiencia(Integer experiencia) {
 		this.experiencia = experiencia;
 	}
 

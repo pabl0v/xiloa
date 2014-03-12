@@ -390,7 +390,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	}*/
 	
 	public List<Evaluacion> getListBeanEvalFormacion() {
-		if (this.solicitudExp != null)
+		/*if (this.solicitudExp != null)
 		{
 			listBeanEvalFormacion = getListadoEvaluacionesByParam(this.solicitudExp, false);
 		} 
@@ -401,7 +401,7 @@ public class ExpedienteManagedBean implements Serializable  {
 				//para este contacto, obtener las evaluaciones de la primera solicitud no concluida				
 				listBeanEvalFormacion = service.getEvaluacionesPendientesByContactoId(this.contactoExp);
 			}
-		}
+		}*/
 		return listBeanEvalFormacion;
 	}
 
@@ -850,6 +850,20 @@ public class ExpedienteManagedBean implements Serializable  {
 			this.listMunicipioByDptos.add(new SelectItem(null, "Seleccion un Municipio"));
 		}
 		
+		//llenando listado de evaluaciones
+		
+		if (this.solicitudExp != null)
+		{
+			listBeanEvalFormacion = getListadoEvaluacionesByParam(this.solicitudExp, false);
+		} 
+		else
+		{
+			if (this.contactoExp != null)
+			{
+				//para este contacto, obtener las evaluaciones de la primera solicitud no concluida				
+				listBeanEvalFormacion = service.getEvaluacionesPendientesByContactoId(this.contactoExp);
+			}
+		}
 	}
 	
 	/**
@@ -988,7 +1002,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	}	
 
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Asigna el estatus Registrado.
-	public void solicitarCertificacion (){
+	public String solicitarCertificacion (){
 		Integer    proxEstado = null;
 		Mantenedor estadoActual = null;		 		
 		Mantenedor proximoEstado = null;
@@ -1011,13 +1025,14 @@ public class ExpedienteManagedBean implements Serializable  {
 					enabledDisableButton(3);
 					enabledDisableButton(4);
 					
-					FacesUtil.getMensaje("SCCL - Mensaje: ", "La solicitud a sido registrada exitosamente !!", false);					
+					FacesUtil.getMensaje("SCCL - Mensaje: ", "La solicitud a sido registrada exitosamente !!", false);
+					return "/modulos/solicitudes/solicitudes?faces-redirect=true";
 				} else {
 					FacesUtil.getMensaje("SCCL - Mensaje: ", "Error al registrar la solicitud. Favor revisar...", true);					
 				}
 			}
 		}		
-		
+		return null;
 	}
 		
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Actualiza o aplica los cambios en datos generales del contacto.

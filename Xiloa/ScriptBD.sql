@@ -259,3 +259,11 @@ set mantenedor_anterior=null,
 mantenedor_proximo=null,
 mantenedor_valor='Verificado no Aprobado'
 where mantenedor_id=27
+
+--columnas que ahora son null
+
+alter table sccl.solicitudes alter column experiencia drop not null
+alter table sccl.solicitudes alter column ocupacion drop not null
+alter table sccl.solicitudes alter column oficio drop not null
+alter table sccl.laborales alter column laboral_fecha_finaliza drop not null
+alter table sccl.evaluaciones alter column evaluacion_observaciones drop not null

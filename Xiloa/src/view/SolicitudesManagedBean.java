@@ -54,7 +54,7 @@ public class SolicitudesManagedBean implements Serializable {
 	private String segundoApellido;
 	private String numeroIdentificacion;
 	private String descEmpresaLabora;
-	private int    experiencia;
+	private Integer experiencia;
 	private String ocupacion;
 	private boolean indicaTrabaja;
 	
@@ -183,11 +183,11 @@ public class SolicitudesManagedBean implements Serializable {
 		this.descEmpresaLabora = descEmpresaLabora;
 	}
 
-	public int getExperiencia() {
+	public Integer getExperiencia() {
 		return experiencia;
 	}
 	
-	public void setExperiencia(int experiencia) {
+	public void setExperiencia(Integer experiencia) {
 		this.experiencia = experiencia;
 	}
 
@@ -327,7 +327,7 @@ public class SolicitudesManagedBean implements Serializable {
 	}
 			
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Guarda la solicitud por usuario interno del inatec.
-	public void guardar(){
+	public String guardar(){
 				
 		FacesContext context = FacesContext.getCurrentInstance();
 		
@@ -335,11 +335,11 @@ public class SolicitudesManagedBean implements Serializable {
 		
 		if ( sol != null) {        
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje", "La solicitud ha sido registrada exitosamente. El número es: " + sol.getTicket()));
+			return "/modulos/solicitudes/solicitudes?faces-redirect=true";
 		}else {
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje", "Error al grabar la solicitud. Favor revisar..."));
 		}
-          
-		
+		return null;
 	}
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Guarda la solicitud por el usuario externo via OpenId.
