@@ -10,7 +10,6 @@ import javax.faces.context.FacesContext;
 
 import model.Certificacion;
 import model.Contacto;
-import model.Mantenedor;
 import model.Solicitud;
 import model.Usuario;
 
@@ -110,7 +109,13 @@ public class InicioManagedBean implements Serializable {
 			List<Solicitud> listaSolicitudes = service.getSolicitudesByNQParam("Solicitud.findByIdContacto", objs);
 			
 			for (Solicitud dato : listaSolicitudes){
-				if (dato.getEstatus().getId() != 37){
+				
+				if(dato.getCertificacion().getId() == selectedCertificacion.getId() && dato.getEstatus().getId() != 40){
+					solicitudActiva = true;
+					break;
+				}
+					
+				if (dato.getEstatus().getId() != 37 && dato.getEstatus().getId() != 40){
 					solicitudActiva = true;
 					break;
 				}

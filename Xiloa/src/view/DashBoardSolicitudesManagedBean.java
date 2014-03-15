@@ -604,5 +604,12 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 			estatus[i+1] = new SelectItem(estatusList.get(i).getValor(),estatusList.get(i).getValor());
 		
 		return estatus;
-	}	
+	}
+	
+	/**/
+	
+	public void anulaSolicitud(Solicitud solicitud){
+		solicitud.setEstatus(service.getCatalogoEstadoSolicitud().get(40));
+		selectedSolicitud = (Solicitud)service.guardar(solicitud);
+	}
 }
