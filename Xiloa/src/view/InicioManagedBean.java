@@ -110,6 +110,8 @@ public class InicioManagedBean implements Serializable {
 			
 			for (Solicitud dato : listaSolicitudes){
 				
+				//dchavez 15/03/2014. considerar pendiente todo lo que no esta concluido o anulado. No permitir una nueva solicitud sobre un curso concluido.
+				
 				if(dato.getCertificacion().getId() == selectedCertificacion.getId() && dato.getEstatus().getId() != 40){
 					solicitudActiva = true;
 					break;
