@@ -90,13 +90,13 @@
                 </p:column>                      
                 <p:column id="candidatoColumn" exportable="true" filterBy="#{varSolicitudI.contacto.nombreCompleto}"  filterMatchMode="contains">
                 	<f:facet name="header">  
-            			<h:outputText value="Nombre del candidato" />  
+            			<h:outputText value="Candidato" />  
         			</f:facet> 
                 	<h:outputText value="#{varSolicitudI.contacto.nombreCompleto}" />
                  </p:column>  
                 <p:column id="certificacionColumn" exportable="true" filterBy="#{varSolicitudI.certificacion.nombre}" filterMatchMode="contains">
                 	<f:facet name="header">  
-            			<h:outputText value="Certificacion a evaluar" />  
+            			<h:outputText value="Certificacion" />  
         			</f:facet> 
                 	<h:outputText value="#{varSolicitudI.certificacion.nombre}"/>
                 </p:column>  

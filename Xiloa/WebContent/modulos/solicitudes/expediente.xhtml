@@ -30,31 +30,31 @@
     	<div>
     		<p:messages id="msgExpediente" showDetail="true" autoUpdate="true" closable="true" />
     	</div>    	
-    	<h3>Datos del solicitante/Candidato</h3>
+    	<h3>Datos del Solicitante/Candidato</h3>
     	<div id="seccion_datossolicitante" class="seccion_expediente" style="padding:10px;">   		 	  
-    		<h:outputLabel styleClass="estilo_label" for="nombreCandidato" value="Nombre del candidato:" />
+    		<h:outputLabel styleClass="estilo_label" for="nombreCandidato" value="Nombre del candidato (*):" />
     		<h:outputText styleClass="estilo_span" id="nombreCandidato" value="#{expedienteManagedBean.contactoExp.nombreCompleto}" />            
-            <h:outputLabel styleClass="estilo_label" for="numeroIdentificacion" value="Numero de identificacion:" />
+            <h:outputLabel styleClass="estilo_label" for="numeroIdentificacion" value="Numero de identificacion (*):" />
             <h:outputText styleClass="estilo_span" id="numeroIdentificacion" value="#{expedienteManagedBean.contactoExp.numeroIdentificacion}" />
-            <h:outputLabel styleClass="estilo_label" for="fechaNacimiento" value="Fecha de nacimiento:" />
+            <h:outputLabel styleClass="estilo_label" for="fechaNacimiento" value="Fecha de nacimiento (*):" />
             <p:calendar value="#{expedienteManagedBean.contactoExp.fechaNacimiento}" pattern="dd/MM/yyyy" 
                         id="fechaNacimiento" showOn="button">
 						<p:ajax event="dateSelect" update="growlFechaNacimiento" />
 			</p:calendar>				
 			<p:growl id="growlFechaNacimiento" showDetail="true"/>
-            <h:outputLabel styleClass="estilo_label" for="genero" value="Genero:" />  
+            <h:outputLabel styleClass="estilo_label" for="genero" value="Genero (*):" />  
             <p:selectOneMenu id="genero" styleClass="selectores selector_genero" value="#{expedienteManagedBean.contactoExp.sexo}" >                 
-	       		 <f:selectItems value="#{expedienteManagedBean.listGenero}"/>  			                         
+	       		 <f:selectItems value="#{expedienteManagedBean.listGenero}" var="tipo" itemLabel="#{tipo.descripcion}" itemValue="#{tipo.value}"/>  			                         
 			</p:selectOneMenu>
-            <h:outputLabel styleClass="estilo_label" for="telefono" value="Telefono:" />  
+            <h:outputLabel styleClass="estilo_label" for="telefono" value="Telefono (*):" />  
             <p:inputText id="telefono" value="#{expedienteManagedBean.contactoExp.telefono1}" />
             <h:outputLabel styleClass="estilo_label" for="celular" value="Celular:" />  
             <p:inputText id="celular" value="#{expedienteManagedBean.contactoExp.telefono2}" />
-            <h:outputLabel styleClass="estilo_label" for="email1" value="Correo electronico:" />  
+            <h:outputLabel styleClass="estilo_label" for="email1" value="Correo electronico (*):" />  
             <p:inputText id="email1" value="#{expedienteManagedBean.contactoExp.correo1}" />
             <h:outputLabel styleClass="estilo_label" for="direccionActual" value="Direccion actual:" />  
             <p:inputText id="direccionActual" value="#{expedienteManagedBean.contactoExp.direccionActual}" />
-            <h:outputLabel styleClass="estilo_label" for="selector_nacionalidad" value="Nacionalidad:" />          	     
+            <h:outputLabel styleClass="estilo_label" for="selector_nacionalidad" value="Nacionalidad (*):" />          	     
           	<p:selectOneMenu id="selector_nacionalidad" styleClass="selector_status_estilo"
             				 value="#{expedienteManagedBean.contactoExp.nacionalidadId}"                              
                              style="position: relative;top: 7px;margin-right: 5px;">
@@ -75,9 +75,9 @@
 	       		  <f:selectItems value="#{expedienteManagedBean.listMunicipioByDptos}"/>	       		   	       		  		  	       		  			                         
 			</p:selectOneMenu>     	
             <p:commandButton id="btnActualizaContacto" disabled="#{expedienteManagedBean.disabledBtnActualizaContacto}"
-                             style="display:block;" value="Aplicar Cambios" icon="ui-icon-disk"
-                             update=":formExpediente:msgExpediente" 
-                             action="#{expedienteManagedBean.actualizarContacto}" />          
+                             style="display:block;" value="Aplicar Cambios" icon="ui-icon-disk" 
+                             action="#{expedienteManagedBean.actualizarContacto(expedienteManagedBean.contactoExp)}" 
+							 update=":formExpediente:msgExpediente" process="@form"/>          
     	</div>
     	<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO">
     	<p:panel rendered="#{expedienteManagedBean.verEnviarSolicitud}" styleClass="panel_barra_azul">
