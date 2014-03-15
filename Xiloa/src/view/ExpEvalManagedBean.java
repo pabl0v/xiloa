@@ -1413,6 +1413,9 @@ public class ExpEvalManagedBean implements Serializable  {
 					
 			this.solicitudExp.setEstatus(this.getEstadoSiguiente());
 			
+			//dchavez 14/03/2014. Agregando fecha de convocatoria
+			this.solicitudExp.setFechaConvocatoria(new Date());
+			
 			this.solicitudExp = (Solicitud) service.guardar(this.solicitudExp);
 			
 			if (this.solicitudExp != null){
@@ -1501,6 +1504,10 @@ public class ExpEvalManagedBean implements Serializable  {
 				isError = true;
 			}else {
 				sol.setEstatus(this.getEstadoSiguiente());
+				
+				//dchavez. 14/03/2014. Se agrega fecha de asesoramiento
+				sol.setFechaAsesoramiento(new Date());
+				
 				sol = (Solicitud) service.guardar(sol);
 				
 				if (sol != null)					
