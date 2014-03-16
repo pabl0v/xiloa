@@ -332,7 +332,7 @@ public class Solicitud implements Serializable {
 	}
 	
 	public boolean isEditable(){
-		if(this.estatus.getId()==40)
+		if(this.estatus.getId()==40 || this.estatus.getId()==37)
 			return false;
 		else
 			return true;

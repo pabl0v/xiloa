@@ -675,7 +675,7 @@ public class ServiceImp implements IService {
 		    }
 		}
 		
-		sqlSolicitud = "select s from solicitudes s " + ((sqlWhere == null) ? "" : sqlWhere);
+		sqlSolicitud = "select s from solicitudes s " + ((sqlWhere == null) ? "" : sqlWhere + " order by s.id desc");
 		//sqlSolicitud = "select s from solicitudes s " + ((sqlWhere == null) ? " where s.estatus.id != 40 " : sqlWhere + " and s.estatus.id != 40 ") ;
 		
 		return solicitudDao.findAllByQuery(sqlSolicitud+" order by 1");

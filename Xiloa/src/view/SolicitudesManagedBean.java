@@ -470,9 +470,8 @@ public class SolicitudesManagedBean implements Serializable {
 				titulo = "Error al grabar el contacto: ";
 				isError = true;
 				
-				e.printStackTrace();		
-				
-			}	
+				e.printStackTrace();
+			}
 					
 			if (solicitante != null) {
 				s = new Solicitud ();
