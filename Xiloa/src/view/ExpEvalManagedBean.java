@@ -750,11 +750,12 @@ public class ExpEvalManagedBean implements Serializable  {
 			actualEstado = this.getSolicitudExp().getEstatus();
 			
 			proxKey = Integer.valueOf(actualEstado.getProximo());
+			//proxKey = actualEstado.getProximo()==null?null:Integer.valueOf(actualEstado.getProximo());
 			
-			if (proxKey != null){				
+			if (proxKey != null){
 				proximoEstado = service.getCatalogoEstadoSolicitud().get(proxKey);
 									
-				estadoSiguiente = (proximoEstado == null) ? actualEstado : proximoEstado;								
+				estadoSiguiente = (proximoEstado == null) ? actualEstado : proximoEstado;				
 			} else {
 				estadoSiguiente = actualEstado;
 			}				

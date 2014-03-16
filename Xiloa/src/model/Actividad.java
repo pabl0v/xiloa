@@ -267,6 +267,13 @@ public class Actividad implements Serializable {
 		this.estado = estado;
 	}
 	
+	public boolean isCompleted(){
+		if(this.estado.getId()==39)
+			return true;
+		else
+			return false;
+	}
+	
 	public Actividad() {
 		super();
 		involucrados = new HashMap<Integer, Contacto>();

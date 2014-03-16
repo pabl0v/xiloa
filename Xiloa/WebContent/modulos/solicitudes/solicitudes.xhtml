@@ -122,13 +122,13 @@
                 </p:column>
                 <sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO">                
 	                <p:column style="width:4%" exportable="false">                  
-		            	<p:commandButton id="selectButton" action="#{dashBoardSolicitudesManagedBean.editaSolicitud}" icon="ui-icon-pencil" title="Editar Solicitud" >
+		            	<p:commandButton id="selectButton" action="#{dashBoardSolicitudesManagedBean.editaSolicitud}" icon="ui-icon-pencil" title="Editar Solicitud" disabled="#{!varSolicitudI.editable}">
 		   	            	<f:setPropertyActionListener value="#{varSolicitudI}" target="#{dashBoardSolicitudesManagedBean.selectedSolicitud}" />
 		            	</p:commandButton>		            	           
 	    			</p:column>
     			</sec:authorize>
 				<p:column style="width:4%" exportable="false">                  
-					<p:commandButton id="anulaButton" action="#{dashBoardSolicitudesManagedBean.anulaSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" icon="ui-icon-pencil" title="Anular Solicitud" update=":formSolicitudes:dtSolicitud"/>		            	           
+					<p:commandButton id="anulaButton" action="#{dashBoardSolicitudesManagedBean.anulaSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" icon="ui-icon-trash" title="Anular Solicitud" update=":formSolicitudes:dtSolicitud" disabled="#{!varSolicitudI.erasable}"/>	           
 	    		</p:column>    			
             </p:dataTable>            
         </div>

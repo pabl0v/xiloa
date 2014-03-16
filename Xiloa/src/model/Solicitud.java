@@ -323,4 +323,18 @@ public class Solicitud implements Serializable {
 	public void setFechaRemisionDiploma(Date fechaRemisionDiploma) {
 		this.fechaRemisionDiploma = fechaRemisionDiploma;
 	}
+	
+	public boolean isErasable(){
+		if(this.estatus.getId()==40 || this.estatus.getId()==37)
+			return false;
+		else
+			return true;
+	}
+	
+	public boolean isEditable(){
+		if(this.estatus.getId()==40)
+			return false;
+		else
+			return true;
+	}
 }

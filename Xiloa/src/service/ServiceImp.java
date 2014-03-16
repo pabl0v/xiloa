@@ -1720,6 +1720,9 @@ public class ServiceImp implements IService {
 			if(estadoActual.getId()==ultimoEstado.getId())
 				return true;
 			
+			//if(estadoActual.getId()==catalogoEstadoSolicitud.get(40).getId())
+				//return true;
+						
 			if (Integer.valueOf(estadoActual.getProximo()) == ultimoEstado.getId()){
 				idMatricula = solicitud.getIdMatricula();	
 				if (idMatricula == null)
