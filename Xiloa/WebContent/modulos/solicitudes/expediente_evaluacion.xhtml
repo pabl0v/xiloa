@@ -53,13 +53,11 @@
 	       		             action="#{expEvalManagedBean.runPlanCapacitacion}" update=":formExpediente:msgExpediente"  />	       			     			       			  
 	   		</p:splitButton>
 	   		
-	   		 <p:commandButton id="anularProcesoSolicitud" value="Anular" title="Anular Proceso de Solicitud" 
+	   		 <p:commandButton id="retornar" value="Salir" title="Salir" 
 							icon="ui-icon-arrowrefresh-1-w" style="display:inline-block;"
-							action="#{expEvalManagedBean.anularSolicitud}" 
-							update=":formExpediente:msgExpediente"    		
-							disabled="#{expEvalManagedBean.disabledAnulado}"        					       
+							action="#{expEvalManagedBean.retornar}"        					       
              />
-				    		    		
+ 				   		    		
     	<div>
     	<p:messages id="msgExpediente" showDetail="true" autoUpdate="true" closable="true" />
     	</div>

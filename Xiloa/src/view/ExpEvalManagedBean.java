@@ -1479,7 +1479,8 @@ public class ExpEvalManagedBean implements Serializable  {
 	}
 	
 	//dchavez 03/03/2014. Agregando opcion para anular solicitud
-	public String anularSolicitud(){
+	
+	/*public String anularSolicitud(){
 		if (solicitudExp != null && solicitudExp.getEstatus().getId()!=37){
 			solicitudExp = service.anularSolicitud(solicitudExp);
 			if(solicitudExp!=null)
@@ -1488,7 +1489,11 @@ public class ExpEvalManagedBean implements Serializable  {
 				return "Ocurrió un error, vuelva a intentarlo...";
 		}
 		return "Operación no permitida...";
-	}	
+	}*/
+	
+	public String retornar(){
+		return "/modulos/solicitudes/solicitudes?faces-redirect=true"; 
+	}
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Aplica cambio de estatus.
 	public Solicitud avanzaProceso (Solicitud sol, String nombreEstado, boolean pasa, String msgNoPasa){

@@ -1993,5 +1993,28 @@ public class ServiceImp implements IService {
 		solicitud.setEstatus(catalogoEstadoSolicitud.get(40));
 		System.out.println("Anular solicitud: "+solicitud.getEstatus().getValor()+" mantenedor-->"+catalogoEstadoSolicitud.get(40).getValor());
 		return solicitudDao.save(solicitud);
-	}	
+	}
+
+	/**
+	 * @return booleando que indica si el solicitante tiene solicitudes pendientes 
+	 * @param el numero de cedula y opcionalmente el id de la certificacion
+	 * 
+	 */
+
+	@Override
+	public boolean tieneSolicitudesPendientes(String cedula, Long certificacionId){
+		
+		//indica si el solicitante con cedula indicada tiene solicitudes pendientes o si la certificacion que solicita ya la tiene aprobada
+		
+		String query = 
+					" select solicitud_id from sccl.solicitudes where solicitud_estatus not in (37, 40) and contacto_id in (select contacto_id from sccl.contactos where numero_identificacion='"+cedula+"') "
+				+ 	" union"
+				+ 	" select solicitud_id from sccl.solicitudes where solicitud_estatus in (37) and contacto_id in (select contacto_id from sccl.contactos where numero_identificacion='"+cedula+"') and certificacion_id="+certificacionId;
+		
+		List<Long> pendientes = longDao.findAllByNativeQuery(query);
+		if(pendientes.isEmpty())
+			return false;
+		else
+			return true;
+	}
 }

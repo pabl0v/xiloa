@@ -125,7 +125,7 @@ public class Certificacion implements Serializable {
 	
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name="certificacion_creador_id")	
+	@JoinColumn(name="certificacion_creador_id", nullable = false)	
 	private Contacto creador;
 	
 	@ManyToOne
@@ -134,7 +134,7 @@ public class Certificacion implements Serializable {
 	
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name="certificacion_estatus")
+	@JoinColumn(name="certificacion_estatus", nullable = false)
 	private Mantenedor estatus;
 	
 	@Column(name = "certificacion_referencial", nullable = true)

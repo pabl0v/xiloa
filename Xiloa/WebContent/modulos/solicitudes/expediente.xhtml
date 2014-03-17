@@ -26,7 +26,7 @@
 	    					     update=":formExpediente:msgExpediente" 
 	    					     rendered="#{expedienteManagedBean.verEnviarSolicitud}"   					        					       
 	             				/>       		
-            </sec:authorize>				  		
+            </sec:authorize>	  		
     	<div>
     		<p:messages id="msgExpediente" showDetail="true" autoUpdate="true" closable="true" />
     	</div>    	
@@ -261,30 +261,30 @@
     	          modal="true" resizable="false" width="720" height="540" showEffect="clip" hideEffect="clip" >
     	   <div id="modal_laborales">					
 				<h3 style="margin-left: -11px;">Registro de Datos Laborales y Academicos</h3>					
-				<p style="margin-left: 4px;">Tipo dato laboral:</p>			
+				<p style="margin-left: 4px;">Tipo dato laboral (*):</p>			
 				<p:selectOneMenu styleClass="selectores bloque" id="selector_tipoDatoLaboral" value="#{expedienteManagedBean.tipoLaboral}" >				
 					<f:selectItems value="#{expedienteManagedBean.listTipoDatosLaborales}" />			        
 			    </p:selectOneMenu>					
 			    <div class="dialogoLaborales_secciones" >					
-					<p>Nombre de la institucion:</p>  
+					<p>Nombre de la institucion (*):</p>  
 	            	<p:inputText id="nombreInstitucion" value="#{expedienteManagedBean.nombreInstitucion}" />	            	
-	            	<p>Telefono contacto:</p>	                  
+	            	<p>Telefono contacto (*):</p>	                  
 	            	<p:inputText id="telefonoInstitucion" value="#{expedienteManagedBean.telefonoInstitucion}" />										
-					<p style="display:inline-block;width: 75px;">Pais:</p>    	
+					<p style="display:inline-block;width: 75px;">Pais (*):</p>    	
 	            	<p:selectOneMenu id="selector_paisLaboral" styleClass="selectores bloque inlinebloque"  
 	            	                 value="#{expedienteManagedBean.paisIdLaboral}" >				
 						<f:selectItems value="#{expedienteManagedBean.listPaises}" />			        
 			    	</p:selectOneMenu>	            	
-					<p style="margin-top: 30px;">Direccion de la institucion:</p>					  
+					<p style="margin-top: 30px;">Direccion de la institucion (*):</p>					  
             		<p:inputText id="institucionDireccion" value="#{expedienteManagedBean.institucionDireccion}" />
 				</div>				
 				<div class="dialogoLaborales_secciones" >
-					<p>Cargo:</p>	                  
+					<p>Cargo (*):</p>	                  
 	            	<p:inputText id="nombreCargo" value="#{expedienteManagedBean.nombreCargo}" />
-	            	<p>Descripcion Cargo:</p>	                  
+	            	<p>Descripcion Cargo (*):</p>	                  
 	            	<p:inputText id="descripcionCargo" value="#{expedienteManagedBean.descripcionCargo}" />
 	            	<p:growl id="growlFechaDesde" showDetail="true"/>
-	            	<p>Fecha Desde:</p>					
+	            	<p>Fecha Desde (*):</p>					
 					<p:calendar value="#{expedienteManagedBean.fechaDesde}" pattern="dd/MM/yyyy" id="popupButtonCal1" showOn="button">
 						<p:ajax event="dateSelect" update="growlFechaDesde" />
 					</p:calendar>				

@@ -324,15 +324,52 @@ public class SolicitudesManagedBean implements Serializable {
 	public String cancelarEdicion() {		
 		return "/modulos/solicitudes/solicitudes?faces-redirect=true";				
 	}
+
+	/*
+	public String guardar(){
+		FacesContext context = FacesContext.getCurrentInstance();
+		
+		if (this.getNumeroIdentificacion() == null){
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje", "Debe indicar el numero de cedula..."));
+			return null;
+		} 
+		
+		if (ValidatorUtil.validateCedula(this.getNumeroIdentificacion()) == false){
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje", "El número de cedula indicado es incorrecto. Favor revisar.... "));
+			return null;
+		}
+		
+		//validar que el usuario no tenga solicitudes pendientes
+		
+
+		return null;
+	}*/
 			
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Guarda la solicitud por usuario interno del inatec.
 	public String guardar(){
-				
+						
 		FacesContext context = FacesContext.getCurrentInstance();
 		
+		//validar que el solicitante no tenga solicitudes pendientes
+		
+		if (this.getNumeroIdentificacion() == null){
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje", "Debe indicar el número de cédula..."));
+			return null;
+		}
+		
+		if (ValidatorUtil.validateCedula(this.getNumeroIdentificacion()) == false){
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje", "El número de cedula indicado es incorrecto. Favor revisar.... "));
+			return null;
+		}
+		
+		if(service.tieneSolicitudesPendientes(this.numeroIdentificacion, this.selectedIdCertificacion)){
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "SCCL - Mensaje", "El candidato tiene solicitudes pendientes o ya posee esta certificacion..."));
+			return null;
+		}
+				
 		Solicitud sol = grabarSolicitud(new Integer(1));
 		
-		if ( sol != null) {        
+		if ( sol != null) {
 			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "SCCL - Mensaje", "La solicitud ha sido registrada exitosamente. El número es: " + sol.getTicket()));
 			return "/modulos/solicitudes/solicitudes?faces-redirect=true";
 		}else {
@@ -400,7 +437,8 @@ public class SolicitudesManagedBean implements Serializable {
 												
 				if (tipoGrabar == 2) {//Miriam Martinez Cano || Proyecto SCCL - INATEC || Se esta agregando una solicitud por usuario externo via OpenId
 					u = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
-					r = service.getRolById(u.getRol().getId());
+					//r = service.getRolById(u.getRol().getId());
+					r = u.getRol();
 					
 					if (u.getContacto() != null) 
 						contactoByUser = u.getContacto();					
@@ -410,7 +448,7 @@ public class SolicitudesManagedBean implements Serializable {
 				}			
 				
 				contactoByCedula = service.getContactoByCedula(this.getNumeroIdentificacion());
-								
+												
 				//Nuevo Contacto
 				if ((contactoByUser == null) && (contactoByCedula == null)) {
 					System.out.println("Usuario Indicado " + u);				
@@ -477,7 +515,8 @@ public class SolicitudesManagedBean implements Serializable {
 				s = new Solicitud ();
 				
 				//Asignando el estado inicial de la solicitud	
-				estadoInicialSolicitud = service.getMantenedorMinByTipo(s.getTipomantenedorestado());
+				//estadoInicialSolicitud = service.getMantenedorMinByTipo(s.getTipomantenedorestado());
+				estadoInicialSolicitud = service.getCatalogoEstadoSolicitud().get(20); //getMantenedorMinByTipo(s.getTipomantenedorestado());
 				
 				s.setNombre(c.getNombre()); // Nombre
 				s.setTicket("Ninguna");

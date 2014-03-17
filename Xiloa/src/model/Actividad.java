@@ -43,7 +43,7 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @Table(name = "actividades", schema = "sccl")
 @NamedQueries({
 	@NamedQuery(name="Actividad.findByCertificacionId", query="select a from actividades a where a.certificacion.id=?1"),
-	@NamedQuery(name="Actividad.findByEntidadId", query="select a from actividades a where a.certificacion.estatus.id!=9 and a.certificacion.ifpId = case ?1 when 1000 then a.certificacion.ifpId else ?1 end"),
+	@NamedQuery(name="Actividad.findByEntidadId", query="select a from actividades a where a.certificacion.estatus.id!=9 and a.certificacion.ifpId = case ?1 when 1000 then a.certificacion.ifpId else ?1 end order by a.id desc"),
 })
 public class Actividad implements Serializable {
 
@@ -56,7 +56,7 @@ public class Actividad implements Serializable {
 	
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name="certificacion_id")	
+	@JoinColumn(name="certificacion_id", nullable = false)	
 	private Certificacion certificacion;
 	
 	@NotNull
@@ -65,7 +65,7 @@ public class Actividad implements Serializable {
 	
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name="actividad_tipo_id")
+	@JoinColumn(name="actividad_tipo_id", nullable = false)
 	private Mantenedor tipo;
 	
 	@Column(name = "actividad_nombre", nullable = false)
@@ -101,7 +101,7 @@ public class Actividad implements Serializable {
 	
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name="actividad_creador_id")
+	@JoinColumn(name="actividad_creador_id", nullable = false)
 	private Contacto creador;
 	
 	@ManyToOne
@@ -124,7 +124,7 @@ public class Actividad implements Serializable {
 
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name="actividad_estado_id")
+	@JoinColumn(name="actividad_estado_id", nullable = false)
 	private Mantenedor estado;
 	
 	public Long getId() {

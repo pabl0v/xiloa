@@ -53,7 +53,7 @@ public class Laboral implements Serializable {
 	
 	@NotNull
 	@ManyToOne
-	@JoinColumn(name="contacto_id")
+	@JoinColumn(name="contacto_id", nullable = false)
 	private Contacto contacto;
 	
 	@NotNull
@@ -92,7 +92,7 @@ public class Laboral implements Serializable {
 	private String institucionDireccion;
 
 	@NotNull
-	@Column(name = "laboral_institucion_telefono", nullable = true)
+	@Column(name = "laboral_institucion_telefono", nullable = false)
 	private String institucionTelefono;
 
 	@NotNull

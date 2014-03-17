@@ -226,7 +226,7 @@ select 1858,41,0,'ROLE_RIGHT_MENU_CANDIDATOS','solicitudes/candidatos.xhtml','Ca
 
 update admon.roles set opciones='1838,1839,1840,1841,1842,1843,1844,1845,1846,1847,1848,1849,1850,1851,1852,1853,1855,1856,1857,1858' where id_rol=215
 update admon.roles set opciones='1838,1839,1840,1841,1842,1843,1844,1845,1846,1847,1848,1849,1850,1851,1852,1853,1855,1856,1857,1858' where id_rol=218
-update admon.roles set opciones='1840,1842,1843,1846,1847,1849,1850,1852,1854' where id_rol=217
+update admon.roles set opciones='1840,1842,1843,1846,1847,1849,1850,1852,1854,1856' where id_rol=217
 
 --actualizando el instrumento en evaluaciones existentes
 
@@ -267,3 +267,6 @@ alter table sccl.solicitudes alter column ocupacion drop not null
 alter table sccl.solicitudes alter column oficio drop not null
 alter table sccl.laborales alter column laboral_fecha_finaliza drop not null
 alter table sccl.evaluaciones alter column evaluacion_observaciones drop not null
+
+update sccl.certificaciones set certificacion_estatus=9 where certificacion_estatus is null
+update sccl.actividades set actividad_estado_id=12 where actividad_estado_id is null

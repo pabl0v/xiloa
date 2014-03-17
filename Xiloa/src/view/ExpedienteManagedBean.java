@@ -1173,8 +1173,6 @@ public class ExpedienteManagedBean implements Serializable  {
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Guarda los datos laborales.
 	public void guardarDatosLaborales() {
 		
-		System.out.println("Entra al metodo guardarDatosLaborales");
-		
 		String nombreCargoLaboral;
 		
 		this.idSeletedLaboral = (Long)FacesUtil.getParametroSession("idSelectedLaboral");

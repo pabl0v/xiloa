@@ -830,4 +830,12 @@ public interface IService {
 	 */
 
 	public List<Item> getCertificacionesItem(Integer entidadId);
+	
+	/**
+	 * @return booleando que indica si el solicitante tiene solicitudes pendientes 
+	 * @param el numero de cedula y opcionalmente el id de la certificacion
+	 * 
+	 */
+
+	public boolean tieneSolicitudesPendientes(String cedula, Long certificacionId);
 }
