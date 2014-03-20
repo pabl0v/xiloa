@@ -23,13 +23,13 @@
 		                     icon="ui-icon-star" style="display:inline-block;"
 		                     action="#{expEvalManagedBean.convocarCertificacion}" 
 		    			     update=":formExpediente:msgExpediente" 
-		    			     disabled="#{expEvalManagedBean.disabledConvocar}"> </p:commandButton> 
+		    			     disabled="#{expEvalManagedBean.disabledConvocar}" ajax="true"> </p:commandButton> 
 		            
             <p:commandButton id="asesarSolicitud" value="Asesorado" title="Indica Asesorado" 
     		                 icon="ui-icon-pencil" style="display:inline-block;"
     		                 action="#{expEvalManagedBean.asesorarCertificacion}" 
     					     update=":formExpediente:msgExpediente"    		
-    					     disabled="#{expEvalManagedBean.disabledAsesorar}" > </p:commandButton>
+    					     disabled="#{expEvalManagedBean.disabledAsesorar}" ajax="true"> </p:commandButton>
 		    		
     		<p:commandButton id="inscribirSolicitud" value="Inscripcion" title="Listo para Inscripcion" 
     		                 icon="ui-icon-arrowrefresh-1-w" style="display:inline-block;"
