@@ -22,7 +22,7 @@
 			<p:commandButton id="convocarSolicitud" value="Convocar" title="Convocar Candidato" 
 		                     icon="ui-icon-star" style="display:inline-block;"
 		                     action="#{expEvalManagedBean.convocarCertificacion}" 
-		    			     update=":formExpediente:msgExpediente" disabled="false"> </p:commandButton> 
+		    			     update=":formExpediente:msgExpediente" disabled="#{(expEvalManagedBean.disabledConvocar)}"> </p:commandButton> 
 		            
             <p:commandButton id="asesarSolicitud" value="Asesorado" title="Indica Asesorado" 
     		                 icon="ui-icon-pencil" style="display:inline-block;"
