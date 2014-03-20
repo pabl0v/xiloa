@@ -1578,18 +1578,37 @@ public class ExpEvalManagedBean implements Serializable  {
 	}
 	
 	public boolean getActivaConvocatoria(){
-		return solicitudExp.getEstatus().getId()==21?true:false; 
+		if(solicitudExp != null)
+			return solicitudExp.getEstatus().getId()==21?true:false;
+		else
+			return false;
 	}
 	
 	public boolean getActivaAsesorado(){
-		return solicitudExp.getEstatus().getId()==22?true:false; 
+		if(solicitudExp != null)
+			return solicitudExp.getEstatus().getId()==22?true:false;
+		else 
+			return false;
 	}
 	
 	public boolean getActivaInscrito(){
-		return solicitudExp.getEstatus().getId()==23?true:false; 
+		if(solicitudExp != null)
+			return solicitudExp.getEstatus().getId()==23?true:false;
+		else
+			return false;
 	}
 
 	public boolean getActivaConcluido(){
-		return solicitudExp.getEstatus().getId()==24?true:false; 
+		
+		if(solicitudExp == null)
+			return false;
+		
+		if(solicitudExp.getEstatus().getId()!=24)
+			return false;
+		
+		if(service.validaProcesoConcluido(solicitudExp, true))
+				return true;
+		else
+			return false;
 	}
 }
