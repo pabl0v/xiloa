@@ -138,9 +138,9 @@ public class ExpEvalManagedBean implements Serializable  {
 	private String nombreRealArchivoExp;
 	private String sizeArchivoExp;
 	
-	private Boolean disabledConvocar;
-	private Boolean disabledAsesorar;
-	private Boolean disabledCerrar;
+	private boolean disabledConvocar;
+	private boolean disabledAsesorar;
+	private boolean disabledCerrar;
 	
 	private Mantenedor generoContacto;
 	
@@ -1219,51 +1219,51 @@ public class ExpEvalManagedBean implements Serializable  {
 			case 1:				
 				if ((evaluarKey == convocaKey) && (evaluarKey != null))
 					//this.setDisabledConvocar(false);
-					disabledConvocar = Boolean.FALSE;
+					disabledConvocar = false;
 				else
 					//this.setDisabledConvocar(true);
-					disabledConvocar = Boolean.TRUE;
+					disabledConvocar = true;
 				break;
 			//Boton Asesorar
 			case 2:
 				if ((evaluarKey == asesoraKey) && (evaluarKey != null))
 					//this.setDisabledAsesorar(false);
-					disabledAsesorar = Boolean.FALSE;
+					disabledAsesorar = false;
 				else
 					//this.setDisabledAsesorar(true);
-					disabledAsesorar = Boolean.TRUE;
+					disabledAsesorar = true;
 				break;
 			//Boton Inscripcion
 			case 3:
 				if ((evaluarKey == Integer.valueOf(asesoraEstado.getProximo())) && (evaluarKey != null))
 					//this.setDisabledCerrar(false);
-					disabledCerrar = Boolean.FALSE;
+					disabledCerrar = false;
 				else
 					//this.setDisabledCerrar(true);
-					disabledCerrar = Boolean.TRUE;
+					disabledCerrar = true;
 				break;
 			//Boton Agregar Evaluacion
 			case 4:
 				if ((evaluarKey == Integer.valueOf(asesoraEstado.getProximo())) && (evaluarKey != null))
 					//this.setDisabledBtnAgregaEvaluacion(false);
-					disabledBtnAgregaEvaluacion = Boolean.FALSE;
+					disabledBtnAgregaEvaluacion = false;
 				else{
 					if (service.validaProcesoConcluido(sol, false))
 						//this.setDisabledBtnAgregaEvaluacion(false);
-						disabledBtnAgregaEvaluacion = Boolean.FALSE;
+						disabledBtnAgregaEvaluacion = false;
 					else
 						//this.setDisabledBtnAgregaEvaluacion(true);
-						disabledBtnAgregaEvaluacion = Boolean.TRUE;
+						disabledBtnAgregaEvaluacion = true;
 				}
 				break;
 			//Boton Proceso Concluido
 			case 5:
 				if (service.validaProcesoConcluido(sol, true))
 					//this.setDisabledConcluido(false);
-					disabledConcluido = Boolean.FALSE;
+					disabledConcluido = false;
 				else
 					//this.setDisabledConcluido(true);
-					disabledConcluido = Boolean.TRUE;
+					disabledConcluido = true;
 				break;
 			default: 
 				break;
