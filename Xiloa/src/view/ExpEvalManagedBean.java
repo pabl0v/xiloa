@@ -138,9 +138,13 @@ public class ExpEvalManagedBean implements Serializable  {
 	private String nombreRealArchivoExp;
 	private String sizeArchivoExp;
 	
-	private boolean disabledConvocar;
-	private boolean disabledAsesorar;
-	private boolean disabledCerrar;
+	//private boolean disabledConvocar;
+	//private boolean disabledAsesorar;
+	//private boolean disabledCerrar;
+	
+	private Boolean disabledConvocar;
+	private Boolean disabledAsesorar;
+	private Boolean disabledCerrar;
 	
 	private Mantenedor generoContacto;
 	
@@ -1219,28 +1223,34 @@ public class ExpEvalManagedBean implements Serializable  {
 			case 1:				
 				if ((evaluarKey == convocaKey) && (evaluarKey != null))
 					//this.setDisabledConvocar(false);
-					disabledConvocar = false;
+					//disabledConvocar = false;
+					disabledConvocar = Boolean.FALSE;
 				else
 					//this.setDisabledConvocar(true);
-					disabledConvocar = true;
+					//disabledConvocar = true;
+					disabledConvocar = Boolean.TRUE;
 				break;
 			//Boton Asesorar
 			case 2:
 				if ((evaluarKey == asesoraKey) && (evaluarKey != null))
 					//this.setDisabledAsesorar(false);
-					disabledAsesorar = false;
+					//disabledAsesorar = false;
+					disabledAsesorar = Boolean.FALSE;
 				else
 					//this.setDisabledAsesorar(true);
-					disabledAsesorar = true;
+					//disabledAsesorar = true;
+					disabledAsesorar = Boolean.TRUE;
 				break;
 			//Boton Inscripcion
 			case 3:
 				if ((evaluarKey == Integer.valueOf(asesoraEstado.getProximo())) && (evaluarKey != null))
 					//this.setDisabledCerrar(false);
-					disabledCerrar = false;
+					//disabledCerrar = false;
+					disabledCerrar = Boolean.FALSE;
 				else
 					//this.setDisabledCerrar(true);
-					disabledCerrar = true;
+					//disabledCerrar = true;
+					disabledCerrar = Boolean.TRUE;
 				break;
 			//Boton Agregar Evaluacion
 			case 4:
@@ -1260,10 +1270,12 @@ public class ExpEvalManagedBean implements Serializable  {
 			case 5:
 				if (service.validaProcesoConcluido(sol, true))
 					//this.setDisabledConcluido(false);
-					disabledConcluido = false;
+					//disabledConcluido = false;
+					disabledConcluido = Boolean.FALSE;
 				else
 					//this.setDisabledConcluido(true);
-					disabledConcluido = true;
+					//disabledConcluido = true;
+					disabledConcluido = Boolean.TRUE;
 				break;
 			default: 
 				break;

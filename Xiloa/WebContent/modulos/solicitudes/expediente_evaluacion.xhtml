@@ -19,29 +19,29 @@
 		<h:form id="formExpediente" enctype="multipart/form-data" > 
 			<h2 style="display:inline-block;">Expediente: <a>#{expEvalManagedBean.solicitudExp.id}</a></h2>
 			    		
-			<p:commandButton id="convocarSolicitud" value="Convocar" title="Convocar Candidato" 
+			<h:commandButton id="convocarSolicitud" value="Convocar" title="Convocar Candidato" 
 		                     icon="ui-icon-star" style="display:inline-block;"
 		                     action="#{expEvalManagedBean.convocarCertificacion}" 
 		    			     update=":formExpediente:msgExpediente" 
-		    			     disabled="#{expEvalManagedBean.disabledConvocar}" ajax="true"> </p:commandButton> 
+		    			     disabled="#{expEvalManagedBean.disabledConvocar}"> </h:commandButton> 
 		            
-            <p:commandButton id="asesarSolicitud" value="Asesorado" title="Indica Asesorado" 
+            <h:commandButton id="asesarSolicitud" value="Asesorado" title="Indica Asesorado" 
     		                 icon="ui-icon-pencil" style="display:inline-block;"
     		                 action="#{expEvalManagedBean.asesorarCertificacion}" 
     					     update=":formExpediente:msgExpediente"    		
-    					     disabled="#{expEvalManagedBean.disabledAsesorar}" ajax="true"> </p:commandButton>
+    					     disabled="#{expEvalManagedBean.disabledAsesorar}"> </h:commandButton>
 		    		
-    		<p:commandButton id="inscribirSolicitud" value="Inscripcion" title="Listo para Inscripcion" 
+    		<h:commandButton id="inscribirSolicitud" value="Inscripcion" title="Listo para Inscripcion" 
     		                 icon="ui-icon-arrowrefresh-1-w" style="display:inline-block;"
     		                 action="#{expEvalManagedBean.inscripcionCertificacion}" 
     					     update=":formExpediente:msgExpediente"    		
-    					     disabled="#{expEvalManagedBean.disabledCerrar}" > </p:commandButton> 
+    					     disabled="#{expEvalManagedBean.disabledCerrar}" > </h:commandButton> 
 		             
-             <p:commandButton id="concluirProcesoSolicitud" value="Finalizado" title="Concluir Proceso de Solicitud" 
+             <h:commandButton id="concluirProcesoSolicitud" value="Finalizado" title="Concluir Proceso de Solicitud" 
     		                 icon="ui-icon-arrowrefresh-1-w" style="display:inline-block;"
     		                 action="#{expEvalManagedBean.concluirCertificacion}" 
     					     update=":formExpediente:msgExpediente"    		
-    					     disabled="#{expEvalManagedBean.disabledConcluido}" > </p:commandButton>
+    					     disabled="#{expEvalManagedBean.disabledConcluido}" > </h:commandButton>
              				             							
             <p:splitButton value="Informe Asesor" icon="ui-icon-print" title="Generar Informe del Asesor" style="display:inline-block;"
 	        	           action="#{expEvalManagedBean.runInformeAsesor}"  update=":formExpediente:msgExpediente" >   
