@@ -1577,19 +1577,19 @@ public class ExpEvalManagedBean implements Serializable  {
     	  		
 	}
 	
-	public boolean activaConvocatoria(){
+	public boolean getActivaConvocatoria(){
 		return solicitudExp.getEstatus().getId()==21?true:false; 
 	}
 	
-	public boolean activaAsesorado(){
+	public boolean getActivaAsesorado(){
 		return solicitudExp.getEstatus().getId()==22?true:false; 
 	}
 	
-	public boolean activaInscrito(){
+	public boolean getActivaInscrito(){
 		return solicitudExp.getEstatus().getId()==23?true:false; 
 	}
 
-	public boolean activaConcluido(){
+	public boolean getActivaConcluido(){
 		return solicitudExp.getEstatus().getId()==24?true:false; 
 	}
 }
