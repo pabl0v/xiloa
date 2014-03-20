@@ -297,7 +297,7 @@ public class ExpEvalManagedBean implements Serializable  {
 
 
 	public boolean isDisabledConvocar() {
-		return disabledConvocar;
+		return this.disabledConvocar;
 	}
 
 
@@ -307,7 +307,7 @@ public class ExpEvalManagedBean implements Serializable  {
 
 
 	public boolean isDisabledAsesorar() {
-		return disabledAsesorar;
+		return this.disabledAsesorar;
 	}
 
 
@@ -317,7 +317,7 @@ public class ExpEvalManagedBean implements Serializable  {
 
 
 	public boolean isDisabledCerrar() {
-		return disabledCerrar;
+		return this.disabledCerrar;
 	}
 
 
