@@ -240,7 +240,7 @@
                     </p:tab>  
                     
                     <p:tab id="tab1" title="UC a evaluar" >                    	                   	 
-                    	 <p:commandButton id="btnAgregaEvaluacion" disabled="#{expEvalManagedBean.disabledBtnAgregaEvaluacion}" 
+                    	 <p:commandButton id="btnAgregaEvaluacion" disabled="#{expEvalManagedBean.activaEvaluacion}" 
                     	                  action="#{expEvalManagedBean.registrarEvaluacion}" value="Agregar" icon="ui-icon-document"   >
                     	 	<f:setPropertyActionListener value="#{expEvalManagedBean.solicitudExp}" target="#{evaluacionManagedBean.solicitudEval}" />                    	 
                     	 </p:commandButton>

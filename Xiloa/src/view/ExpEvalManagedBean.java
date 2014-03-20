@@ -1611,4 +1611,18 @@ public class ExpEvalManagedBean implements Serializable  {
 		else
 			return false;
 	}
+	
+	public boolean getActivaEvaluacion(){
+		
+		if(solicitudExp == null)
+			return false;
+		
+		if(solicitudExp.getEstatus().getId()!=23)		//estado asesorado
+			return false;
+		
+		if(service.validaProcesoConcluido(solicitudExp, true))
+			return false;
+		else
+			return true;
+	}
 }
