@@ -1216,54 +1216,58 @@ public class ExpEvalManagedBean implements Serializable  {
 				
 		switch(opcion) {
 		   //Boton Convocar
-			case 1:	{				
+			case 1:				
 				if ((evaluarKey == convocaKey) && (evaluarKey != null))
-					this.setDisabledConvocar(false);
+					//this.setDisabledConvocar(false);
+					disabledConvocar = false;
 				else
-					this.setDisabledConvocar(true);
-				break;	
-			}
+					//this.setDisabledConvocar(true);
+					disabledConvocar = true;
+				break;
 			//Boton Asesorar
-			case 2: {
+			case 2:
 				if ((evaluarKey == asesoraKey) && (evaluarKey != null))
-					this.setDisabledAsesorar(false);
+					//this.setDisabledAsesorar(false);
+					disabledAsesorar = false;
 				else
-					this.setDisabledAsesorar(true);
+					//this.setDisabledAsesorar(true);
+					disabledAsesorar = true;
 				break;
-			}
 			//Boton Inscripcion
-			case 3: {
+			case 3:
 				if ((evaluarKey == Integer.valueOf(asesoraEstado.getProximo())) && (evaluarKey != null))
-					this.setDisabledCerrar(false);
+					//this.setDisabledCerrar(false);
+					disabledCerrar = false;
 				else
-					this.setDisabledCerrar(true);				
+					//this.setDisabledCerrar(true);
+					disabledCerrar = true;
 				break;
-			}
 			//Boton Agregar Evaluacion
-			case 4: {
+			case 4:
 				if ((evaluarKey == Integer.valueOf(asesoraEstado.getProximo())) && (evaluarKey != null))
-					this.setDisabledBtnAgregaEvaluacion(false);
+					//this.setDisabledBtnAgregaEvaluacion(false);
+					disabledBtnAgregaEvaluacion = false;
 				else{
 					if (service.validaProcesoConcluido(sol, false))
-						this.setDisabledBtnAgregaEvaluacion(false);
+						//this.setDisabledBtnAgregaEvaluacion(false);
+						disabledBtnAgregaEvaluacion = false;
 					else
-						this.setDisabledBtnAgregaEvaluacion(true);
+						//this.setDisabledBtnAgregaEvaluacion(true);
+						disabledBtnAgregaEvaluacion = true;
 				}
-					
 				break;
-			}
 			//Boton Proceso Concluido
-			case 5: {
+			case 5:
 				if (service.validaProcesoConcluido(sol, true))
-					this.setDisabledConcluido(false);
+					//this.setDisabledConcluido(false);
+					disabledConcluido = false;
 				else
-					this.setDisabledConcluido(true);
-					
-			}
+					//this.setDisabledConcluido(true);
+					disabledConcluido = true;
+				break;
 			default: 
-				break;			
+				break;
 		}
-			
 	}
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Limpiar campos.
