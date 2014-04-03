@@ -1617,12 +1617,12 @@ public class ExpEvalManagedBean implements Serializable  {
 		if(solicitudExp == null)
 			return false;
 		
-		if(solicitudExp.getEstatus().getId()!=23)		//estado asesorado
-			return false;
-		
+		if(solicitudExp.getEstatus().getId()==23)		//estado asesorado
+			return true;
+				
 		if(service.validaProcesoConcluido(solicitudExp, true))
 			return false;
 		else
-			return true;
+			return true;		
 	}
 }
