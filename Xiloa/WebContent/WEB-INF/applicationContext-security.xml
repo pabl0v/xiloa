@@ -27,16 +27,23 @@
 				
 		<openid-login
 				login-page="/modulos/usuario/index.xhtml" 
-				authentication-failure-url="/modulos/usuario/index.xhtml" 
-				default-target-url="/modulos/usuario/visitante.xhtml"
+				authentication-failure-url="/modulos/usuario/index.xhtml"
+				authentication-success-handler-ref="successHandler"
 				user-service-ref="openIdUserService">
-			<attribute-exchange>
+
+			<attribute-exchange identifier-match="https://www.google.com/.*">
 				<openid-attribute name="email" type="http://axschema.org/contact/email" required="true" count="1"/>
 				<openid-attribute name="firstname" type="http://axschema.org/namePerson/first" required="true"/>
 				<openid-attribute name="lastname" type="http://axschema.org/namePerson/last" required="true"/>
+			</attribute-exchange>			
+			<attribute-exchange identifier-match=".*yahoo.com.*">
+				<openid-attribute name="email" type="http://axschema.org/contact/email" required="true" count="1"/>
+				<openid-attribute name="firstname" type="http://axschema.org/namePerson/first" required="true" />
+				<openid-attribute name="lastname" type="http://axschema.org/namePerson/last" required="true" />
 			</attribute-exchange>
 		</openid-login>
 
+		<!--  <logout invalidate-session="true" logout-url="https://www.google.com/accounts/Logout" logout-success-url="/modulos/usuario/index.xhtml"/>-->
 		<logout invalidate-session="true" logout-success-url="/modulos/usuario/index.xhtml"/>
 
 		<session-management invalid-session-url="/modulos/usuario/index.xhtml">
@@ -63,8 +70,13 @@
 		<beans:property name="postOnly" value="true" />
 	</beans:bean>
 
+	<!--
 	<beans:bean id="successHandler" class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
 		<beans:property name="defaultTargetUrl" value="/modulos/solicitudes/solicitudes.xhtml" />
+	</beans:bean>
+	-->
+
+	<beans:bean id="successHandler" class="security.SuccessHandler">
 	</beans:bean>
 	
 	<beans:bean id="failureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
