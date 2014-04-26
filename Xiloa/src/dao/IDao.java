@@ -21,8 +21,10 @@ public interface IDao <T extends Object>{
 	 * 
 	 * @param T, id cualquier clase con instancias en BD y su correspondiente id
 	 */
-
+	
 	public void remove(Class<T> classe, int id);
+
+	public void remove(Class<T> classe, Long id);
 	
 	/**
 	 * Esta clase elimina de la BD la instancia enviada por parametro 
@@ -40,6 +42,8 @@ public interface IDao <T extends Object>{
 	 */
 
 	public T findById(Class<T> classe, int id);
+	
+	public T findById(Class<T> classe, Long id);
 	
 	/**
 	 * Esta clase busca en la BD la lista de todas las instancias de la clase enviada por parametro 

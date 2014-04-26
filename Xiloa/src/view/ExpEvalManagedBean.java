@@ -1136,7 +1136,18 @@ public class ExpEvalManagedBean implements Serializable  {
 		}
 		
 		return "/modulos/solicitudes/registro_evaluacion?faces-redirect=true";		
-	}	
+	}
+	
+	public void anularEvaluacion(Evaluacion evaluacion){
+
+		// no permitir anular una prueba diagnostica de una solicitud inscrita. 
+		if(estadoActual.getId()>=24 && evaluacion.getInstrumento().getTipo().getId()==17)
+			return;
+		
+		service.anularEvaluacion(evaluacion);
+		listEvaluaciones = service.getEvaluaciones(solicitudExp);
+		listEvaluacionesUnidad = service.getListEvaluacionesUnidad (solicitudExp.getId());
+	}
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Registra nueva evaluacion.
 	public String registrarEvaluacion() {				
@@ -1624,5 +1635,5 @@ public class ExpEvalManagedBean implements Serializable  {
 			return false;
 		else
 			return true;		
-	}
+	}	
 }

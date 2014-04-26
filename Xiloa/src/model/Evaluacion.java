@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -81,7 +82,7 @@ public class Evaluacion implements Serializable {
 	@Column(name = "evaluacion_unidad_id", nullable = false)
 	private Long unidad;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.evaluacion")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.evaluacion", cascade = CascadeType.REMOVE)
 	private Set<EvaluacionGuia> guias;
 	
 	@NotNull
@@ -199,5 +200,5 @@ public class Evaluacion implements Serializable {
 		this.observaciones = observaciones;
 		this.aprobado = aprobado;
 		this.estado = estado;
-	}
+	}	
 }

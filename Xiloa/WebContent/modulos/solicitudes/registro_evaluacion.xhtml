@@ -76,7 +76,7 @@
 					<p:commandButton value="Retornar" action="#{evaluacionManagedBean.cancelarRegistro}" >
 						<f:setPropertyActionListener value="#{evaluacionManagedBean.solicitudEval}" target="#{expedienteManagedBean.solicitudExp}" />
 					</p:commandButton>
-					<p:commandButton value="Guardar" action="#{evaluacionManagedBean.guardarEvaluacion}" update=":formEvaluacion:msgEvaluacion, :formEvaluacion:dtGuiasEval" process="@form" />
+					<p:commandButton value="Guardar" action="#{evaluacionManagedBean.guardarEvaluacion}" update=":formEvaluacion:msgEvaluacion, :formEvaluacion:dtGuiasEval" process="@form" disabled="#{!evaluacionManagedBean.enableEditing}" />
 				</div>		
 				<div id="modal_Guias">
 					<h3>Detalle Evaluacion:</h3>

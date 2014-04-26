@@ -838,4 +838,13 @@ public interface IService {
 	 */
 
 	public boolean tieneSolicitudesPendientes(String cedula, Long certificacionId);
+
+	
+	/** 
+	 * @return booleando indica si la anulacion fue exitosa
+	 * @param la evaluacion a anular
+	 * 
+	 */
+
+	public boolean anularEvaluacion(Evaluacion evaluacion);
 }

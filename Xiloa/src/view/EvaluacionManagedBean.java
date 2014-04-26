@@ -72,6 +72,8 @@ public class EvaluacionManagedBean implements Serializable {
 	private boolean cualitativo; 
 	private boolean visualizaPuntaje;
 	
+	private boolean enableEditing = true;
+	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Constructor de la clase.
 	public EvaluacionManagedBean() {
 		super();
@@ -396,6 +398,7 @@ public class EvaluacionManagedBean implements Serializable {
 		if (eval != null){
 			this.setSelectedEvaluacion(eval);	
 			this.disableAgregaGuias = false;
+			enableEditing = false;
 		}else
 			this.setSelectedEvaluacion(null);
 		
@@ -756,5 +759,9 @@ public class EvaluacionManagedBean implements Serializable {
 		
 		if (suma > this.getPuntajeMaxEval())
 			FacesUtil.getMensaje("SCCL - Mensaje", "Favor revisar, ha excedido el puntaje maximo permitido...", true);			
+	}
+	
+	public boolean getEnableEditing(){
+		return enableEditing;
 	}
 }

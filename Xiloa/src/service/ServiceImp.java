@@ -2017,4 +2017,17 @@ public class ServiceImp implements IService {
 		else
 			return true;
 	}
+	
+	/** 
+	 * @return booleando indica si la anulacion fue exitosa
+	 * @param la evaluacion a anular
+	 * 
+	 */
+	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public boolean anularEvaluacion(Evaluacion evaluacion){
+		evaluacionDao.remove(Evaluacion.class, evaluacion.getId());
+		return true;
+	}
 }

@@ -64,6 +64,14 @@ public class DaoImpl<T extends Object> implements IDao<T>{
 		}		
 	}
 	
+	public void remove(Class<T> classe, Long id) {
+		log.debug("removing instance " + classe.getName() + " with id: " + id);
+		T pojo = findById(classe, id);
+		if(pojo != null) {
+			em.remove(pojo);
+		}		
+	}
+	
 	/**
 	 * Esta clase elimina de la BD la instancia enviada por parametro 
 	 * 
@@ -72,8 +80,9 @@ public class DaoImpl<T extends Object> implements IDao<T>{
 
 	public void remove(T pojo) {
 		log.debug("removing instance " + pojo.getClass().getName());
-		if(pojo != null)
+		if(pojo != null){
 			em.remove(pojo);
+		}
 	}
 	
 	/**
@@ -85,6 +94,12 @@ public class DaoImpl<T extends Object> implements IDao<T>{
 
 	@Override
 	public T findById(Class<T> classe, int id) {
+		log.debug("findById instance " + classe.getName() + " with id: " + id);
+		return (T) em.find(classe, id);
+	}
+	
+	@Override
+	public T findById(Class<T> classe, Long id) {
 		log.debug("findById instance " + classe.getName() + " with id: " + id);
 		return (T) em.find(classe, id);
 	}
