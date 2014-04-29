@@ -1138,9 +1138,11 @@ public class ExpEvalManagedBean implements Serializable  {
 		return "/modulos/solicitudes/registro_evaluacion?faces-redirect=true";		
 	}
 	
+	// dchavez 25/04/2014: metodo para anular una evaluacion
+	
 	public void anularEvaluacion(Evaluacion evaluacion){
 
-		// no permitir anular una prueba diagnostica de una solicitud inscrita. 
+		// no permitir anular una prueba diagnostica de una solicitud ya inscrita. 
 		if(estadoActual.getId()>=24 && evaluacion.getInstrumento().getTipo().getId()==17)
 			return;
 		

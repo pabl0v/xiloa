@@ -72,6 +72,7 @@ public class EvaluacionManagedBean implements Serializable {
 	private boolean cualitativo; 
 	private boolean visualizaPuntaje;
 	
+	//dchavez 25/04/2010: indica si la esta activa la edicion de una evaluacion. Por defecto SI. 
 	private boolean enableEditing = true;
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Constructor de la clase.
@@ -760,6 +761,9 @@ public class EvaluacionManagedBean implements Serializable {
 		if (suma > this.getPuntajeMaxEval())
 			FacesUtil.getMensaje("SCCL - Mensaje", "Favor revisar, ha excedido el puntaje maximo permitido...", true);			
 	}
+	
+	
+	//dchavez 25/04/2014: metodo para indicar si si esta habilitada la edicion de una evaluacion
 	
 	public boolean getEnableEditing(){
 		return enableEditing;

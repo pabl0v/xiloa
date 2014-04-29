@@ -1186,7 +1186,7 @@ public class ExpedienteManagedBean implements Serializable  {
 			this.selectedLaboral = new Laboral (this.getContactoExp(), // contacto, 
 									   this.tipoLaboral, // tipo, 
 									   nombreCargoLaboral.toUpperCase(), // nombre,
-									   this.descripcionCargo, // descripcion, 
+									   this.nombreCargo, // descripcion, 
 									   this.nombreInstitucion.toUpperCase(), // institucion, 
 									   this.paisInstitucion, // pais,
 									   this.fechaDesde, // fechaInicia, 
@@ -1205,7 +1205,8 @@ public class ExpedienteManagedBean implements Serializable  {
 			this.selectedLaboral.setCargo(this.nombreCargo.toUpperCase());		
 			this.selectedLaboral.setFechaInicia(this.fechaDesde);
 			this.selectedLaboral.setFechaFinaliza(this.fechaHasta);	
-			this.selectedLaboral.setDescripcion(this.descripcionCargo.toUpperCase());
+			//this.selectedLaboral.setDescripcion(this.descripcionCargo.toUpperCase());
+			this.selectedLaboral.setDescripcion(this.nombreCargo.toUpperCase());
 			this.selectedLaboral.setNombre(nombreCargoLaboral.toUpperCase());
 			this.selectedLaboral.setInstitucionTelefono(this.telefonoInstitucion.toUpperCase());
 			this.selectedLaboral.setPais(this.paisInstitucion);			

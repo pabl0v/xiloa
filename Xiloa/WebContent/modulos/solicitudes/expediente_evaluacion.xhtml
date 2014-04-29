@@ -329,47 +329,39 @@
                 </p:tabView>    		
     	</div>
     	    	     	
-    	<!-- Cuadro de dialogo emergente que registra datos laborales y académicos -->    	    	
+    	<!-- Cuadro de dialogo emergente que registra datos laborales y académicos -->    	    	    	    	
     	<p:dialog id="modalLaborales" styleClass="estilo_dialogoLaborales" header="Agregar Datos Laborales y Academicos:" widgetVar="dlg1" 
     	          modal="true" resizable="false" width="720" height="540" showEffect="clip" hideEffect="clip" >
-    	   <div id="modal_laborales">					
-				<h3 style="margin-left: -11px;">Registro de Datos Laborales y Academicos</h3>					
-				<p style="margin-left: 4px;">Tipo dato laboral:</p>			
-				<p:selectOneMenu styleClass="selectores bloque" id="selector_tipoDatoLaboral" value="#{expEvalManagedBean.tipoLaboral}" >				
+    	   <div>					
+				<h3>Registro de Datos Laborales y Academicos</h3>
+				<br/>
+				<h:panelGrid id="panel1_dlg1" columns="2" cellpadding="10" cellspacing="10">					
+				Tipo dato laboral:
+				<p:selectOneMenu size="50" id="selector_tipoDatoLaboral" value="#{expEvalManagedBean.tipoLaboral}" >				
 					<f:selectItems value="#{expEvalManagedBean.listTipoDatosLaborales}" />			        
-			    </p:selectOneMenu>					
-			    <div class="dialogoLaborales_secciones" >					
-					<p>Nombre de la institucion:</p>  
-	            	<p:inputText id="nombreInstitucion" value="#{expEvalManagedBean.nombreInstitucion}" />	            	
-	            	<p>Telefono contacto:</p>	                  
-	            	<p:inputText id="telefonoInstitucion" value="#{expEvalManagedBean.telefonoInstitucion}" />										
-					<p>Pais:</p>    	
-	            	<p:selectOneMenu id="selector_paisLaboral" styleClass="selectores bloque"  
-	            	                 value="#{expEvalManagedBean.paisIdLaboral}" >				
-						<f:selectItems value="#{expEvalManagedBean.listPaises}" />			        
-			    	</p:selectOneMenu>	            	
-					<p>Direccion de la institucion:</p>					  
-            		<p:inputText id="institucionDireccion" value="#{expEvalManagedBean.institucionDireccion}" />
-				</div>				
-				<div class="dialogoLaborales_secciones" >
-					<p>Cargo:</p>	                  
-	            	<p:inputText id="nombreCargo" value="#{expEvalManagedBean.nombreCargo}" />
-	            	<p>Descripcion Cargo:</p>	                  
-	            	<p:inputText id="descripcionCargo" value="#{expEvalManagedBean.descripcionCargo}" />
-	            	<p:growl id="growlFechaDesde" showDetail="true"/>
-	            	<p>Fecha Desde:</p>					
-					<p:calendar value="#{expEvalManagedBean.fechaDesde}" pattern="dd/MM/yyyy" id="popupButtonCal1" showOn="button">
-						<p:ajax event="dateSelect" update="growlFechaDesde" />
-					</p:calendar>				
-					<p:growl id="growlFechaHasta" showDetail="true"/>
-					<p>Fecha Hasta:</p>					
-					<p:calendar value="#{expEvalManagedBean.fechaHasta}" pattern="dd/MM/yyyy" id="popupButtonCal2" showOn="button">
-						<p:ajax event="dateSelect" update="growlFechaHasta" />
-					</p:calendar>
-				</div>				    	    							
-				<div style="float:right;">
-				<p:commandButton value="Cerrar" action="#{expEvalManagedBean.limpiarCampos}" 
-				                 oncomplete="PF('dlg1').hide();" />				
+			    </p:selectOneMenu>										
+				Nombre de la institucion: 
+				<p:inputText id="nombreInstitucion" size="50" value="#{expEvalManagedBean.nombreInstitucion}" />	            	
+	            Telefono contacto:	                  
+	           	<p:inputText id="telefonoInstitucion" size="50" value="#{expEvalManagedBean.telefonoInstitucion}" />										
+				Pais:    	
+	           	<p:selectOneMenu id="selector_paisLaboral" size="50" value="#{expEvalManagedBean.paisIdLaboral}" >				
+					<f:selectItems value="#{expEvalManagedBean.listPaises}" />			        
+			    </p:selectOneMenu>	            	
+				Direccion de la institucion:					  
+            	<p:inputText id="institucionDireccion" size="50" value="#{expEvalManagedBean.institucionDireccion}" />				
+				Cargo:
+	            <p:inputText id="nombreCargo" size="50" value="#{expEvalManagedBean.nombreCargo}" />
+	            Fecha Desde:					
+				<p:calendar value="#{expEvalManagedBean.fechaDesde}" size="15" pattern="dd/MM/yyyy" id="popupButtonCal1" showOn="button">
+				</p:calendar>
+				Fecha Hasta:
+				<p:calendar value="#{expEvalManagedBean.fechaHasta}" size="15" pattern="dd/MM/yyyy" id="popupButtonCal2" showOn="button">
+				</p:calendar>
+				</h:panelGrid>
+				<br/>			
+				<div>
+					<p:commandButton value="Cerrar" action="#{expEvalManagedBean.limpiarCampos}" oncomplete="PF('dlg1').hide();" />				
 				</div>
 				    
 				<p:dataTable id="dtPortafolioLaboral" emptyMessage="No hay datos"  var="varPortafolioLaboral" 
@@ -388,8 +380,7 @@
                </p:dataTable>
 		    </div>					
 		</p:dialog>    	
-    	<!--  Fin Cuadro de dialogo emergente que registra datos laborales y académicos -->
-    	
+    	<!--  Fin Cuadro de dialogo emergente que registra datos laborales y académicos -->    	
     	</h:form>
     </div> 
 </h:body>
