@@ -1577,7 +1577,7 @@ public class ServiceImp implements IService {
 		ultimoEstado = catalogoEstadoSolicitud.get(37);
 		System.out.println("Valores de los estados proximoEstado " + proximoEstado + " ultimo anterior " + ultimoEstado.getAnterior());	
 		//if ( (proximoEstado != null) && (ultimoEstado != null) && (proximoEstado == Integer.valueOf(ultimoEstado.getAnterior()))){
-		if ( (proximoEstado != null) && (ultimoEstado != null) && (proximoEstado == 24)){
+		if ( (proximoEstado != null) && (ultimoEstado != null) && (proximoEstado.toString().equalsIgnoreCase(ultimoEstado.getAnterior()))){
 			pasa = validaEvaluacionAprobada(solicitud, true, null);			
 		} else
 			pasa = false;		
