@@ -10,7 +10,7 @@
        <script type="text/javascript" src="../../resources/scripts/configuracion.js"></script>
     </h:head>
     <h:body>
-    <div id="contenedor">      
+    <div id="contenedor"> 
       	<div id="header">
             <ui:insert name="header" >
                 <ui:include src="../../modulos/compartido/paginamaestra.xhtml" />
@@ -19,7 +19,6 @@
 		
 		<h2>Configuraciones:</h2>
 		<div id="contenedor_panel_configuracion" class="contenedor_paneles">
-			<h:form>	
 				<p:panelGrid columns="2" >  
 				    <f:facet name="header">  
 				        Configuracion de variables del sistema:
@@ -36,13 +35,12 @@
 					    
 					<h:outputLabel value="Estados de la verificacion" />  
 					<p>Estados de la verificacion</p>	    
-				</p:panelGrid> 
-			</h:form>  
+				</p:panelGrid>
 		</div>
 		<div id="contenedor_panel_mantenedores" class="contenedor_paneles">
-			<p:tabView id="tabView1">  
+			<h:form id="form_mantenedores">
+			<p:tabView id="tabView1">
 	            <p:tab id="tab1" title="Mantenedores">
-	            	   <h:form id="form_mantenedores">
 					   <p:commandButton value="Agregar Mantenedor" style="margin-bottom: 5px" update=":mantenedorDialogo" action="#{configuracionManagedBean.nuevoMantenedor}" onclick="PF('dlg1').show();"/>  
 	                   <p:dataTable id="mantenedoresDataTable" emptyMessage="No hay datos para mostrar"  var="mantenedor" value="#{configuracionManagedBean.mantenedores}" selection="#{configuracionManagedBean.selectedMantenedor}" rowKey="#{mantenedor.id}" selectionMode="single" paginator="true" rows="10">
 							<p:ajax event="rowSelect" listener="#{configuracionManagedBean.onRowSelect}" />  
@@ -56,7 +54,6 @@
 							<p:commandButton id="selectButton" action="#{configuracionManagedBean.editarMantenedor(configuracionManagedBean.selectedMantenedor)}" update=":mantenedorDialogo" icon="ui-icon-pencil" title="Editar" onclick="PF('dlg1').show();"/>  
 						  </p:column>
 	                   </p:dataTable>
-	                   </h:form>
 	            </p:tab>
 	
 	            <p:tab id="tab2" title="Usuarios">  
@@ -75,35 +72,45 @@
 	                      <p:column headerText="Descripcion"><h:outputText value="#{rol.descripcion}" /></p:column>                   
 	                   </p:dataTable>    
 	            </p:tab> 
-	       </p:tabView>  
+	       </p:tabView>
+		   </h:form>
        </div>
     </div>
     
-	<p:dialog id="modalDialog1" styleClass="estilo_ediciondemantenedor" header="Edición de Mantenedor:" widgetVar="dlg1" modal="true" resizable="false" width="350" height="300">
-		<div id="contenedor_dialogoactividades">
-		<h:panelGrid id="modal1" columns="2" cellpadding="4">
+	<p:dialog id="modalDialog1" styleClass="estilo_ediciondemantenedor" header="Edición de Mantenedor:" widgetVar="dlg1" modal="true" resizable="false" width="500" height="250">
+		<div >
 		<h:form id="mantenedorDialogo">
+		<h:panelGrid id="modal1" columns="3" cellpadding="4">
 		  	<h:outputLabel styleClass="estilo_label" value="Tipo:" />
-            <p:inputText id="codigo1" value="#{configuracionManagedBean.mantenedor.tipo}" required="true" requiredMessage="El tipo es requerido"/>
-            <br/>	
-            <h:outputLabel styleClass="estilo_label" value="Etiqueta:" />
-            <p:inputText id="codigo2" value="#{configuracionManagedBean.mantenedor.etiqueta}" required="true" requiredMessage="La etiqueta es requerida"/>
-            <br/>	
+            <p:inputText id="codigo1" value="#{configuracionManagedBean.mantenedor.tipo}" required="true" requiredMessage="El tipo es requerido" validatorMessage="El tipo debe tener entre 1 y 3 caracteres" >
+            	<f:validateLength minimum="1" maximum="3" /> 
+            </p:inputText>
+            <p:message id="codigo1_msg" for="codigo1" display="text"  />	
+            <h:outputLabel styleClass="estilo_label" value="Nombre:" />
+            <p:inputText id="codigo2" value="#{configuracionManagedBean.mantenedor.etiqueta}" required="true" requiredMessage="El nombre es requerido" validatorMessage="El nombre debe tener entre 1 y 50 caracteres" >
+            	<f:validateLength minimum="1" maximum="50" />
+            </p:inputText>
+            <p:message id="codigo2_msg" for="codigo2" display="text"  />	
             <h:outputLabel styleClass="estilo_label" value="Valor:" />
-            <p:inputText id="codigo3" value="#{configuracionManagedBean.mantenedor.valor}" required="true" requiredMessage="El valor es requerido"/>
-            <br/>
+            <p:inputText id="codigo3" value="#{configuracionManagedBean.mantenedor.valor}" required="true" requiredMessage="El valor es requerido" validatorMessage="El valor debe tener entre 1 y 30 caracteres sin espacios en blanco" >
+				<f:validateRegex pattern="^[\S]*{0,29}$" />
+            </p:inputText>
+            <p:message id="codigo3_msg" for="codigo3" display="text"  />
             <h:outputLabel styleClass="estilo_label" value="Valor Anterior:" />
-            <p:inputText id="codigo4" value="#{configuracionManagedBean.mantenedor.anterior}" required="false" />
-			<br/>
-            <h:outputLabel styleClass="estilo_label" value="Valor Próximo:" />
-            <p:inputText id="codigo5" value="#{configuracionManagedBean.mantenedor.proximo}" required="false" />
-			<br/>	
-			<div class="contenedor_botones" style="margin-top:32px;">			
-	            <h:commandButton class="botones" value="Cancelar" onclick="PF('dlg1').hide();"/> 
-				<h:commandButton class="botones" value="Aceptar" update=":tab1:mantenedoresDataTable" action="#{configuracionManagedBean.guardarMantenedor(configuracionManagedBean.mantenedor)}" onclick="PF('dlg1').hide();"/>
-			</div>
+            <p:inputText id="codigo4" value="#{configuracionManagedBean.mantenedor.anterior}" required="false" validatorMessage="El valor debe ser numerico" converterMessage="El valor debe ser entero positivo" >
+            	<f:validateDoubleRange minimum="1"/>
+            </p:inputText>
+            <p:message id="codigo4_msg" for="codigo4" display="text"  />
+            <h:outputLabel styleClass="estilo_label" value="Valor Proximo:" />
+            <p:inputText id="codigo5" value="#{configuracionManagedBean.mantenedor.proximo}" required="false" validatorMessage="El valor debe ser numerico" converterMessage="El valor debe ser entero positivo" >
+            	<f:validateDoubleRange minimum="1"/>
+            </p:inputText>
+            <p:message id="codigo5_msg" for="codigo5" display="text"  />
+            </h:panelGrid>
+            <br/>			
+			<p:commandButton value="Cancelar" update="mantenedorDialogo" oncomplete="PF('dlg1').hide();" immediate="true" /> 
+			<p:commandButton value="Aceptar" oncomplete="if (!args.validationFailed) dlg1.hide()" update=":form_mantenedores:tabView1, codigo1_msg, codigo2_msg, codigo3_msg, codigo4_msg, codigo5_msg" action="#{configuracionManagedBean.guardarMantenedor(configuracionManagedBean.mantenedor)}" ajax="true" />
 		</h:form>
-		</h:panelGrid>
 		</div>
 	</p:dialog>	
          
