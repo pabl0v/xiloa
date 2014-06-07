@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="informeasesor" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="614"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -73,26 +73,26 @@ where s.solicitud_id = $P{idSolicitud}
 		<groupExpression><![CDATA[$F{candidato_nombre}]]></groupExpression>
 		<groupHeader>
 			<band height="338">
-				<textField>
+				<textField isBlankWhenNull="true">
 					<reportElement x="139" y="4" width="598" height="20"/>
 					<textElement>
 						<font isUnderline="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{candidato_nombre}]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField isBlankWhenNull="true">
 					<reportElement x="139" y="26" width="299" height="20"/>
 					<textElement>
 						<font isUnderline="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{candidato_identificacion}]]></textFieldExpression>
 				</textField>
-				<textField>
+				<textField isBlankWhenNull="true">
 					<reportElement x="139" y="49" width="598" height="20"/>
 					<textElement>
 						<font isUnderline="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{candidato_direccion}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{candidato_direccion}!="N/D"?$F{candidato_direccion}:"")]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="10" y="4" width="120" height="20"/>
@@ -119,7 +119,7 @@ where s.solicitud_id = $P{idSolicitud}
 					<textElement/>
 					<text><![CDATA[E-mail:]]></text>
 				</staticText>
-				<textField>
+				<textField isBlankWhenNull="true">
 					<reportElement x="482" y="72" width="255" height="20"/>
 					<textElement>
 						<font isUnderline="true"/>
@@ -173,23 +173,23 @@ where s.solicitud_id = $P{idSolicitud}
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{evaluador_nombre}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="143" y="145" width="301" height="20"/>
+					<reportElement x="143" y="145" width="600" height="20"/>
 					<textElement>
 						<font isUnderline="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{evaluador_identificacion}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{evaluador_identificacion}!="N/D"?$F{evaluador_identificacion}:"")]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="143" y="169" width="600" height="20"/>
 					<textElement>
 						<font isUnderline="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{evaluador_direccion}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{evaluador_direccion}!="N/D"?$F{evaluador_direccion}:"")]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="489" y="193" width="254" height="20"/>
 					<textElement>
-						<font isUnderline="true"/>
+						<font isBold="false" isUnderline="true"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{evaluador_email}]]></textFieldExpression>
 				</textField>
@@ -198,7 +198,7 @@ where s.solicitud_id = $P{idSolicitud}
 					<textElement>
 						<font isUnderline="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{evaluador_telefono} + " / " + $F{evaluador_celular}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[($F{evaluador_telefono}!="N/D"?$F{evaluador_telefono} + " / ":"") + ($F{evaluador_celular}!=null?$F{evaluador_celular}:"")]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="13" y="217" width="118" height="20"/>
@@ -257,7 +257,7 @@ where s.solicitud_id = $P{idSolicitud}
 		</band>
 	</title>
 	<pageHeader>
-		<band height="27" splitType="Stretch">
+		<band height="49" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="4" width="752" height="20"/>
 				<textElement textAlignment="Center">
@@ -265,6 +265,25 @@ where s.solicitud_id = $P{idSolicitud}
 				</textElement>
 				<text><![CDATA[INFORME DEL ASESOR]]></text>
 			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="693" y="24" width="50" height="20"/>
+				<textElement textAlignment="Left">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[" de " +  $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="655" y="24" width="39" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Pág. " +  $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement x="0" y="24" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>

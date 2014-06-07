@@ -110,28 +110,28 @@ where solicitud_id = $P{idSolicitud}
 	</pageHeader>
 	<columnHeader>
 		<band height="61" splitType="Stretch">
-			<textField pattern="">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement x="11" y="9" width="111" height="20"/>
 				<textElement textAlignment="Center" lineSpacing="Single">
 					<font isUnderline="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{contacto_apellido1}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="130" y="9" width="111" height="20"/>
 				<textElement textAlignment="Center">
 					<font isItalic="false" isUnderline="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{contacto_apellido2}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="248" y="9" width="111" height="20"/>
 				<textElement textAlignment="Center">
 					<font isUnderline="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{contacto_nombre1}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="372" y="9" width="111" height="20"/>
 				<textElement textAlignment="Center">
 					<font isUnderline="true"/>
@@ -312,7 +312,7 @@ where solicitud_id = $P{idSolicitud}
 				<textElement>
 					<font isBold="true" isUnderline="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{contacto_nombre1} + " " + $F{contacto_nombre2} + " " + $F{contacto_apellido1} + " " + $F{contacto_apellido2}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{contacto_nombre1} !=null?$F{contacto_nombre1}:"")+ " " +( $F{contacto_nombre2}!=null? $F{contacto_nombre2}:"") + " " + ($F{contacto_apellido1}!=null? $F{contacto_apellido1}:"") + " " +($F{contacto_apellido2}!=null?$F{contacto_apellido2}:"")]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="17" y="351" width="218" height="20"/>
