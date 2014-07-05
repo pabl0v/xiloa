@@ -15,6 +15,8 @@
         <link type="text/css" rel="stylesheet" href="../../resources/css/paginamaestra.css"></link>             
         <div id="barra_navegacion" class="mini">
             <h1>Sistema de <a>CCL</a></h1>
+            <div id="boton_inicio"  onclick="window.location='/Xiloa/modulos/compartido/inicio.xhtml';"  class="botones_navegacion"><p class="icono_calendario">Inicio</p></div>
+            <div id="boton_oferta"  onclick="window.location='/Xiloa/modulos/compartido/cursos.xhtml';"  class="botones_navegacion"><p class="icono_calendario">Cursos</p></div>
 			<sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_PLANIFICACIONES">
             	<div id="boton_planificacion"  onclick="window.location='/Xiloa/modulos/planificacion/planificacion.xhtml';"  class="botones_navegacion"><p class="icono_calendario">Planificaciones</p></div>				
 			</sec:authorize>
@@ -38,8 +40,6 @@
             </sec:authorize>
             <ul id="breadcrumbs" class="estilo_breadcrumbs">
                 <li>Inicio</li>
-                <li>Planificación</li>
-                <li>Editando planificación</li>
             </ul>
             <div id="opciones_usuario">
                 <div id="informacion_usuario">
