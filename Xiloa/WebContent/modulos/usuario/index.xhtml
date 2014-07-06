@@ -12,6 +12,7 @@
 		<link type="text/css" rel="stylesheet" href="../../resources/openidselector/css/openid.css" />
 		<script type="text/javascript" src="../../resources/openidselector/js/openid-jquery.js"></script>
 	    <script type="text/javascript" src="../../resources/openidselector/js/openid-en.js"></script>
+		<script type="text/javascript" src="../../resources/openidselector/jquery-1.2.6.min.js"></script>
 		<!-- ********************* -->
 	    <script type="text/javascript" src="../../resources/scripts/usuario.js"></script>
         <title>SCCL</title>
@@ -101,7 +102,7 @@
 				<h:form id="openid_form">
 					<input type="hidden" name="action" value="verify" />
 					<fieldset>
-						<h2>Acceda o registrese por OpenID</h2>
+						<h2>Acceda o registrese con OpenID</h2>
 						<div id="openid_choice">
 							<div id="openid_btns"></div>
 						</div>
@@ -115,9 +116,8 @@
 							Find out <a href="http://openid.net/what/">more about OpenID</a> and <a href="http://openid.net/get/">how to get an OpenID enabled account</a>.</p>
 						</noscript>
 					</fieldset>
-				</h:form>
+				</h:form>  
                 <!-- /******************************************/ -->
-               
 	            <p:tabView id="tabView">  
 	                <p:tab id="tab1" titleStyleClass="user" title="Ingresar">  
 	                    <h:form id="loginForm" prependId="false">

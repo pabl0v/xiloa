@@ -38,8 +38,8 @@
 			</attribute-exchange>			
 			<attribute-exchange identifier-match=".*yahoo.com.*">
 				<openid-attribute name="email" type="http://axschema.org/contact/email" required="true" count="1"/>
-				<openid-attribute name="firstname" type="http://axschema.org/namePerson/first" required="true" />
-				<openid-attribute name="lastname" type="http://axschema.org/namePerson/last" required="true" />
+				<openid-attribute name="firstname" type="http://axschema.org/namePerson" required="true" />
+				<openid-attribute name="lastname" type="http://axschema.org/namePerson" required="true" />
 			</attribute-exchange>
 		</openid-login>
 

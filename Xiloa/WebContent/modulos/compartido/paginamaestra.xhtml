@@ -17,6 +17,12 @@
             <h1>Sistema de <a>CCL</a></h1>
             <div id="boton_inicio"  onclick="window.location='/Xiloa/modulos/compartido/inicio.xhtml';"  class="botones_navegacion"><p class="icono_calendario">Inicio</p></div>
             <div id="boton_oferta"  onclick="window.location='/Xiloa/modulos/compartido/cursos.xhtml';"  class="botones_navegacion"><p class="icono_calendario">Cursos</p></div>
+			<sec:authorize ifAnyGranted="ROLE_RIGHT_MIS_SOLICITUDES">
+            	<div id="boton_solicitudes" onclick="window.location='/Xiloa/modulos/solicitudes/solicitudes.xhtml';" class="botones_navegacion"><p class="icono_flechas">Mis Solicitudes</p></div>
+            </sec:authorize>
+            <sec:authorize ifAnyGranted="ROLE_RIGHT_MI_PORTAFOLIO">
+            	<div id="boton_participante" onclick="window.location='/Xiloa/modulos/solicitudes/expediente.xhtml';" class="botones_navegacion"><p class="icono_flechas">Mi Expediente</p></div>
+            </sec:authorize>
 			<sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_PLANIFICACIONES">
             	<div id="boton_planificacion"  onclick="window.location='/Xiloa/modulos/planificacion/planificacion.xhtml';"  class="botones_navegacion"><p class="icono_calendario">Planificaciones</p></div>				
 			</sec:authorize>

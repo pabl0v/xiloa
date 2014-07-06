@@ -2,6 +2,8 @@ package security;
 
 import model.Usuario;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.User;
@@ -28,6 +30,7 @@ public class OpenIdUserService implements UserDetailsService, AuthenticationUser
 
 	@Autowired
 	private IService service;
+	protected final Log logger = LogFactory.getLog(getClass());
 
 	/**
 	 * @param el token de autenticación de OpenId
