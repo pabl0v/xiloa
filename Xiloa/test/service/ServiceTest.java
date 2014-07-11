@@ -42,12 +42,16 @@ public class ServiceTest {
 		
 		//creando mantenedores
 		
+		service.guardar(new Mantenedor("1","Tipo de Actividad","Divulgacion",null,null));
 		service.guardar(new Mantenedor("1","Tipo de Actividad","Prematricula",null,null));
-		service.guardar(new Mantenedor("1","Tipo de Actividad","Preseleccion",null,null));
+		service.guardar(new Mantenedor("1","Tipo de Actividad","Seleccion",null,null));
+		service.guardar(new Mantenedor("1","Tipo de Actividad","Publicación de Seleccion",null,null));
 		service.guardar(new Mantenedor("1","Tipo de Actividad","Matricula",null,null));
-		service.guardar(new Mantenedor("1","Tipo de Actividad","Asesoria grupal",null,null));
-		service.guardar(new Mantenedor("1","Tipo de Actividad","Asesoria individual",null,null));
+		service.guardar(new Mantenedor("1","Tipo de Actividad","Asesoria Grupal",null,null));
+		service.guardar(new Mantenedor("1","Tipo de Actividad","Asesoria Individual",null,null));
 		service.guardar(new Mantenedor("1","Tipo de Actividad","Evaluacion",null,null));
+		service.guardar(new Mantenedor("1","Tipo de Actividad","Dictamen de Evaluación",null,null));
+		service.guardar(new Mantenedor("1","Tipo de Actividad","Plan de Formacion",null,null));
 		service.guardar(new Mantenedor("1","Tipo de Actividad","Publicación de Resultados",null,null));
 		
 		service.guardar(new Mantenedor("2","Estatus actividad","Pendiente",null,null));
