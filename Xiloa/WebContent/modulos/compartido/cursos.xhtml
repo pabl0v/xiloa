@@ -7,8 +7,7 @@
       xmlns:p="http://primefaces.org/ui"
 	  xmlns:sec="http://www.springframework.org/security/tags">
     <h:head>
-        <link type="text/css" rel="stylesheet" href="../../resources/css/reset.css"></link>
-		<link type="text/css" rel="stylesheet" href="../../resources/css/visitante.css"></link>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/cursos.css"></link>
  		<!-- Requeridos por OpenID -->
 		<link type="text/css" rel="stylesheet" href="../../resources/openidselector/css/openid.css" />
 		<script type="text/javascript" src="../../resources/openidselector/js/openid-jquery.js"></script>
@@ -17,6 +16,7 @@
 	    <script type="text/javascript" src="../../resources/scripts/usuario.js"></script>
     </h:head>
     <h:body>
+    	<h:form id="cursos">
     	<div id="contenedor">
 			<div id="header">
 				<ui:insert name="header" >
@@ -24,36 +24,40 @@
 				</ui:insert>
 				<script type="text/javascript" src="../../resources/scripts/cursos.js"></script>
 			</div>
-         	<p:growl id="growl" showDetail="true"/>
-	        <div id="barra_buscar">
-	            <p>Buscar por</p>
-	            <h:form id="buscar">
-		            <p:selectOneMenu id="selector_filtro" styleClass="selector_status_estilo" value="#{inicioManagedBean.tipoFiltro}">  
-			            <f:selectItem itemLabel="Seleccione..." itemValue="" />
-			            <f:selectItem itemLabel="Nombre de la certificación:" itemValue="1" />
-			            <f:selectItem itemLabel="Centro donde está disponible:" itemValue="2" />
-			        </p:selectOneMenu>
-					<p:remoteCommand name="test" action="#{inicioManagedBean.buscar(inicioManagedBean.tipoFiltro,inicioManagedBean.textoBuscar)}" update=":cursos"/>
-					<p:inputText id="filtro_buscar" value="#{inicioManagedBean.textoBuscar}" onkeypress="if (event.keyCode == 13) { test(); return false; }"/>
-	            </h:form>
-	        </div>
-			<h:form id="cursos">
-	        <div class="contenedor_central" style="width:100%;">
-	        	<h2>Certificaciones de Competencias Laborales disponibles</h2>
-		        <p>Seleccione el nombre de la certificación para ver el detalle y solicitar la certifiacion</p>
-	        	<div id="contenedor_tabla_competencias">    
-		            <p:dataTable id="grid" emptyMessage="Información no disponible" var="certificacion" styleClass="tablaCompetencias" value="#{inicioManagedBean.certificaciones}" paginator="true" rows="10" 
-		                paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  
-		                rowsPerPageTemplate="5,10,15" rowKey="#{certificacion.id}" selection="#{inicioManagedBean.selectedCertificacion}" selectionMode="single">
-		     			<!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
-		                <p:ajax event="rowSelect" update=":cursos:panelDialogo" oncomplete="PF('modal_comp').show()" />
-		                <p:column style="display: none" headerText="Unidad de competencia"><h:outputText value="#{certificacion.id}" /></p:column>  
-		                <p:column headerText="Certificación"><h:outputText value="#{certificacion.nombre}" /></p:column>  
-		                <p:column headerText="Centro de Formación"><h:outputText value="#{certificacion.ifpNombre}" /></p:column>  
-		                <p:column headerText="Inicio de Solicitudes"><h:outputText value="#{certificacion.divulgacionInicia}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>  
-		            </p:dataTable> 
-	            </div>
-	        </div>      	      
+			<div id="cabezera">
+				<h2>Cursos de Certificación disponibles</h2>
+			</div>
+			
+	        <div id="contenedor_tabla_competencias"> 
+				<p:dataTable id="grid" emptyMessage="Información no disponible" var="certificacion" styleClass="tablaCompetencias" value="#{inicioManagedBean.certificaciones}" paginator="true" rows="10" 
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  
+					rowKey="#{certificacion.id}" selection="#{inicioManagedBean.selectedCertificacion}" selectionMode="single">
+					<!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
+					<p:ajax event="rowSelect" update=":cursos:panelDialogo" oncomplete="PF('modal_comp').show()" />
+					<p:column style="display: none" headerText="Unidad de competencia"><h:outputText value="#{certificacion.id}" /></p:column>
+					<p:column exportable="true" filterBy="#{certificacion.nombre}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="Certificación" />  
+						</f:facet> 
+						<h:outputText value="#{certificacion.nombre}" />
+					</p:column>
+					<p:column exportable="true" filterBy="#{certificacion.ifpNombre}" filterMatchMode="contains">
+						<f:facet name="header">  
+							<h:outputText value="Centro de Formación" />  
+						</f:facet> 
+						<h:outputText value="#{certificacion.ifpNombre}" />
+					</p:column>  
+					<p:column headerText="Prematriculas">
+						<h:outputText value="del "></h:outputText>
+						<h:outputText value="#{certificacion.divulgacionInicia}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>
+						<h:outputText value=" al "></h:outputText>
+						<h:outputText value="#{certificacion.divulgacionInicia}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>
+					</p:column>  
+					<p:column headerText="Cupo máximo"><h:outputText value="#{certificacion.disponibilidad} Personas" /></p:column>
+				</p:dataTable> 
+			</div>
+		</div>
+	                  	      
 	        <p:dialog id="modal_info_competencias" styleClass="modal_info_competencias" header="Detalle:" widgetVar="modal_comp" width="550" height="500">  
 		        <p:outputPanel id="panelDialogo">
 		        	<div class="seccion_detalle">
@@ -79,14 +83,9 @@
 		      			C$ <h:outputText value="#{inicioManagedBean.selectedCertificacion.costoFormateado}"></h:outputText>  		
 		          	</div>
 			          	<p:commandButton onclick="PF('modal_comp').hide()" value="Cancelar"/>
-			          	<p:commandButton id="registrarSolicitud" action="#{inicioManagedBean.indicaAplicar}" 
-			          					 value="Aplicar" oncomplete="PF('modal_comp').hide()" />			
+			          	<p:commandButton id="registrarSolicitud" action="#{inicioManagedBean.indicaAplicar}" value="Aplicar" oncomplete="PF('modal_comp').hide()" />
 		            </p:outputPanel>
-	    	</p:dialog>	    	
-        </h:form>
-        <footer>
-            <p>2013 &#174;Derechos reservados por INATEC --  Sistema de gestion de Certificaciones Laborales del INATEC</p>
-        </footer>
-        </div>
+	    	</p:dialog>
+	    </h:form>
 	</h:body>
 </html>

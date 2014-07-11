@@ -40,11 +40,17 @@ public class EvaluacionGuia implements Serializable {
 	@EmbeddedId
 	private EvaluacionGuiaId pk;
 	
-	@Column(name = "puntaje", nullable = true)	
-	private Integer puntaje;
+	@Column(name = "puntaje", nullable = false, precision=10, scale=2)	
+	private Float puntaje = new Float(0);
 	
-	@Column(name = "aprobado", nullable = true)	
-	private boolean aprobado;
+	@Column(name = "aprobado", nullable = false)	
+	private boolean aprobado = false;
+	
+	public EvaluacionGuia(){
+		this.pk =  new EvaluacionGuiaId();
+		this.puntaje = new Float(0);
+		this.aprobado = false;
+	}
 	
 	public boolean isAprobado() {
 		return aprobado;
@@ -62,11 +68,11 @@ public class EvaluacionGuia implements Serializable {
 		this.pk = pk;
 	}
 	
-	public Integer getPuntaje() {
+	public Float getPuntaje() {
 		return puntaje;
 	}
 	
-	public void setPuntaje(Integer puntaje) {
+	public void setPuntaje(Float puntaje) {
 		this.puntaje = puntaje;
 	}
 	

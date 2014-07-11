@@ -117,7 +117,7 @@ html {
 /*Estilo para botones*/
 .botones_navegacion {
     display: none;
-    width: 117px;
+    width: 100px;
     height: 73px;
     border: 1px solid #353434;
     text-align: center;

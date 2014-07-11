@@ -34,9 +34,10 @@ import javax.persistence.Table;
 	@NamedQuery(name="Instrumento.findAll", query="select i from instrumentos i order by 1 desc"),
 	@NamedQuery(name="Instrumento.findAllByEntidadId", query="select i from instrumentos i where i.entidadId = case ?1 when 1000 then i.entidadId else ?1 end order by 1 desc"),
 	@NamedQuery(name="Instrumento.findAllByUnidadId", query="select i from instrumentos i where i.unidad=?1 order by 1 desc"),
+	//@NamedQuery(name="Instrumento.findAllByCertificacionId", query="select i from instrumentos i where i.unidad in (select c.unidades from certificaciones c where c.id=?) and i.estatus='true' order by 1 desc"),
 	@NamedQuery(name="Instrumento.findById", query="select i from instrumentos i where i.id=?1"),
-	//@NamedQuery(name="Instrumento.findAllByCertificacionId", query="select i from instrumentos i, certificaciones c where i.unidad member of c.unidades and c.id=?1"),
-	@NamedQuery(name="Instrumento.findAllByCertificacionId", query="select i from instrumentos i where i.unidad in (select c.unidades from certificaciones c where c.id=?1)"),
+	@NamedQuery(name="Instrumento.findAllByCertificacionId", query="select i from instrumentos i, certificaciones c where i.unidad member of c.unidades and c.id=?1 and i.estatus='true' order by i.unidad, i.tipo"),
+	//@NamedQuery(name="Instrumento.findAllByCertificacionId", query="select i from instrumentos i where i.unidad in (select c.unidades from certificaciones c where c.id=?1)"),
 	@NamedQuery(name="Instrumento.findPendientesEvaluar", query="select i " +
 																  "from instrumentos i, mantenedores m " +
 																 "where m.id = i.tipo and m.tipo = ?1 " +

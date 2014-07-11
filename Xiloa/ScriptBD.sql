@@ -284,3 +284,16 @@ alter table sccl.evaluaciones alter column evaluacion_observaciones drop not nul
 
 update sccl.certificaciones set certificacion_estatus=9 where certificacion_estatus is null
 update sccl.actividades set actividad_estado_id=12 where actividad_estado_id is null
+
+--creando vistas
+
+CREATE OR REPLACE VIEW sccl.evaluaciones_view AS 
+ SELECT e.evaluacion_id, 
+        CASE
+            WHEN sum(COALESCE(eg.puntaje, 0::real)) >= 50::double precision THEN true
+            ELSE false
+        END AS aprobado, 
+    sum(COALESCE(eg.puntaje, 0::real)) AS puntaje
+   FROM sccl.evaluaciones e
+   LEFT JOIN sccl.evaluacion_guia eg ON e.evaluacion_id = eg.evaluacion_id
+  GROUP BY e.evaluacion_id;

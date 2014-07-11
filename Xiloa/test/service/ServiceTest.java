@@ -1,12 +1,9 @@
 package service;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import model.Contacto;
 import model.Mantenedor;
-import model.Perfil;
 import model.Rol;
 import model.Usuario;
 import model.Pais;
@@ -25,13 +22,8 @@ public class ServiceTest {
 
 	@Autowired
 	private IService service;
-	private static Mantenedor mantenedor1, mantenedor2, mantenedor3, mantenedor4, mantenedor5, mantenedor6, 
-	               mantenedor7, mantenedor8, mantenedor9, mantenedor10, mantenedor11, mantenedor12,
-	               mantenedor13, mantenedor14, mantenedor15, mantenedor16, mantenedor17, mantenedor18, mantenedor19,
-	               mantenedor20, mantenedor21, mantenedor22, mantenedor23, mantenedor24, mantenedor25, mantenedor26, 
-	               mantenedor27, mantenedor28, mantenedor29, mantenedor30, mantenedor31, mantenedor32, mantenedor33, 
-	               mantenedor34, mantenedor35, mantenedor36, mantenedor37, mantenedor38, mantenedor39, mantenedor40; 
-	               	
+
+	/*               	
 	private static Perfil perfil;
 	private static List<Perfil> perfiles;
 	private static Rol rolAdmin, rolSupervisor, rolVerificador, rolRegistrador, rolDocente, rolVisitante, rolEvaluador;
@@ -39,6 +31,7 @@ public class ServiceTest {
 	private static Contacto contactoLopez, contactoRuiz, contactoPerez, contactoArauz, contactoAdmin;
 	
 	private static Pais pais1, pais2, pais3, pais4, pais5, pais6;
+	*/
 	
 	@BeforeClass
 	public static void setUp() throws Exception {
@@ -49,6 +42,92 @@ public class ServiceTest {
 		
 		//creando mantenedores
 		
+		service.guardar(new Mantenedor("1","Tipo de Actividad","Prematricula",null,null));
+		service.guardar(new Mantenedor("1","Tipo de Actividad","Preseleccion",null,null));
+		service.guardar(new Mantenedor("1","Tipo de Actividad","Matricula",null,null));
+		service.guardar(new Mantenedor("1","Tipo de Actividad","Asesoria grupal",null,null));
+		service.guardar(new Mantenedor("1","Tipo de Actividad","Asesoria individual",null,null));
+		service.guardar(new Mantenedor("1","Tipo de Actividad","Evaluacion",null,null));
+		service.guardar(new Mantenedor("1","Tipo de Actividad","Publicación de Resultados",null,null));
+		
+		service.guardar(new Mantenedor("2","Estatus actividad","Pendiente",null,null));
+		service.guardar(new Mantenedor("2","Estatus actividad","Programada",null,null));
+		service.guardar(new Mantenedor("2","Estatus actividad","Anulada",null,null));
+		service.guardar(new Mantenedor("2","Estatus actividad","Completada",null,null));
+		
+		service.guardar(new Mantenedor("3","Estatus certificacion","Pendiente",null,null));
+		service.guardar(new Mantenedor("3","Estatus certificacion","Activa",null,null));
+		service.guardar(new Mantenedor("3","Estatus certificacion","Anulada",null,null));
+		service.guardar(new Mantenedor("3","Estatus certificacion","Completada",null,null));
+		
+		service.guardar(new Mantenedor("5","Tipo Datos Laborales","Experiencias",null,null));
+		service.guardar(new Mantenedor("5","Tipo Datos Laborales","Estudios",null,null));
+		service.guardar(new Mantenedor("5","Tipo Datos Laborales","Calificaciones",null,null));
+		service.guardar(new Mantenedor("5","Tipo Datos Laborales","Certificaciones",null,null));
+		
+		service.guardar(new Mantenedor("6","Tipo de Instrumento","Lectura-escritura",null,null));
+		service.guardar(new Mantenedor("6","Tipo de Instrumento","Diagnostico",null,null));
+		service.guardar(new Mantenedor("6","Tipo de Instrumento","Autoevaluacion",null,null));	
+		service.guardar(new Mantenedor("6","Tipo de Instrumento","Observacion",null,null));
+		service.guardar(new Mantenedor("6","Tipo de Instrumento","Simulacion",null,null));
+		service.guardar(new Mantenedor("6","Tipo de Instrumento","Entrevista",null,null));
+		service.guardar(new Mantenedor("6","Tipo de Instrumento","Guion inicial",null,null));
+		service.guardar(new Mantenedor("6","Tipo de Instrumento","Otro",null,null));
+		
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Registrada",null,null));	
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Autorizada",null,null));
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Rechazada",null,null));
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Matriculada",null,null));
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Asesorada",null,null));
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Evaluada",null,null));
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Aprobada",null,null));
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Reprobada",null,null));
+		
+		service.guardar(new Mantenedor("8","Estatus Evidencia","Registrada",null,null));
+		service.guardar(new Mantenedor("8","Estatus Evidencia","Valida",null,null));
+		service.guardar(new Mantenedor("8","Estatus Evidencia","No Valida",null,null));
+		service.guardar(new Mantenedor("8","Estatus Evidencia","Verificada",null,null));
+		
+		service.guardar(new Mantenedor("9","Estatus Evaluacion","Registrada",null, null));
+		service.guardar(new Mantenedor("9","Estatus Evaluacion","Aprobada",null,null));
+		service.guardar(new Mantenedor("9","Estatus Evaluacion","Reprobada",null,null));
+		
+		service.guardar(new Mantenedor("10","Email del administrador","sccl.inatec@gmail.com",null,null));
+		service.guardar(new Mantenedor("10","Password del email del administrador","sccl2013",null,null));
+		service.guardar(new Mantenedor("10","Host del servidor de correo","smtp.gmail.com",null,null));
+		service.guardar(new Mantenedor("10","Puerto del servidor de correo","587",null,null));
+		service.guardar(new Mantenedor("10","Email del encargado de incidencias","dnchavez@hotmail.com",null,null));
+		service.guardar(new Mantenedor("10","Ruta del directorio de archivos","c:\\archivos",null,null));
+		
+		//creadndo roles
+		
+		service.guardar(new Rol("coordinador","Coordinador",213,null,true));
+		service.guardar(new Rol("verificador","Verificador",214,null,true));
+		service.guardar(new Rol("tecnico_docente","Tecnico Docente",215,null,true));
+		service.guardar(new Rol("informante","Informante",216,null,true));
+		service.guardar(new Rol("visitante","Visitante",217,null,true));
+		Rol rolAdmin = (Rol)service.guardar(new Rol("admin","Administrador",218,null,true));
+		service.guardar(new Rol("evaluador","Evaluador",219,null,true));
+		service.guardar(new Rol("asesor","Asesor",220,null,true));
+		
+		//creando usuario administrador
+		
+		Usuario usuarioAdmin = (Usuario)service.guardar(new Usuario(null,"admin","d033e22ae348aeb5660fc2140aec35850c4da997",rolAdmin,false,true));
+		
+		//creando contacto del usuario administrador
+		
+		service.guardar(new Contacto(usuarioAdmin,null, rolAdmin, 1000,"Admin",null,"Admin",null,"Administrador",1,"admin@inatec.edu.ni",null,"00000000",null, 1, 1,"12345678901234","Managua",new Date(),new Date(), 1, 1, 1, "Managua", false, null,null,null));
+		
+		//catalogo de paises
+		
+		service.guardar(new Pais ("Nicaragua", "Nicaragua"));
+		service.guardar(new Pais ("Costa Rica", "Costa Rica"));
+		service.guardar(new Pais ("El Salvador", "El Salvador")); 
+		service.guardar(new Pais ("Panama", "Panama")); 
+		service.guardar(new Pais ("Honduras", "Honduras")); 
+		service.guardar(new Pais ("Guatemala", "Guatemala"));
+
+		/*
 		mantenedor1 = new Mantenedor("1","Tipo de Actividad","Divulgacion",null,null);
 		mantenedor2 = new Mantenedor("1","Tipo de Actividad","Verificacion",null,null);
 		mantenedor3 = new Mantenedor("1","Tipo de Actividad","Evaluacion",null,null);
@@ -61,7 +140,7 @@ public class ServiceTest {
 		mantenedor8 = new Mantenedor("3","Estatus certificaciones","Activo",null,null);
 		mantenedor9 = new Mantenedor("3","Estatus certificaciones","Anulado",null,null);
 		mantenedor38 = new Mantenedor("3","Estatus certificaciones","Cerrado",null,null);
-
+		
 		mantenedor10 = new Mantenedor("4","Estatus actividades","Pendiente",null,null);
 		mantenedor11 = new Mantenedor("4","Estatus actividades","Programada",null,null);
 		mantenedor12 = new Mantenedor("4","Estatus actividades","Anulada",null,null);
@@ -71,17 +150,17 @@ public class ServiceTest {
 		mantenedor14 = new Mantenedor("5","Tipos Datos Laborales","Estudios",null,null);
 		mantenedor15 = new Mantenedor("5","Tipos Datos Laborales","Calificaciones",null,null);
 		mantenedor16 = new Mantenedor("5","Tipos Datos Laborales","Certificaciones",null,null);
-		
+
 		mantenedor17 = new Mantenedor("6","Tipos de Instrumento","Prueba Diagnostica",null,null);
 		mantenedor18 = new Mantenedor("6","Tipos de Instrumento","Prueba Objetiva",null,null);
-		mantenedor19 = new Mantenedor("6","Tipos de Instrumento","Prueba de Desempleño",null,null);	
+		mantenedor19 = new Mantenedor("6","Tipos de Instrumento","Prueba de Desempleño",null,null);
 		
 		mantenedor20 = new Mantenedor("7","Estados Solicitud Certificacion","Valido",null,new String("21"));		
 		mantenedor21 = new Mantenedor("7","Estados Solicitud Certificacion","Registrada",new String("20"), new String("22"));
 		mantenedor22 = new Mantenedor("7","Estados Solicitud Certificacion","Convocado",new String("21"),new String("23"));
 		mantenedor23 = new Mantenedor("7","Estados Solicitud Certificacion","Asesorado",new String("22"),new String("24"));
 		mantenedor24 = new Mantenedor("7","Estados Solicitud Certificacion","Inscrito",new String("23"),new String("37"));
-		
+
 		mantenedor25 = new Mantenedor("8","Estados Portafolio Evidencia","Valido",null,new String("26"));		
 		mantenedor26 = new Mantenedor("8","Estados Portafolio Evidencia","Registrado",new String("25"), new String("27"));
 		mantenedor27 = new Mantenedor("8","Estados Portafolio Evidencia","Verificado",new String("26"),null);
@@ -141,10 +220,10 @@ public class ServiceTest {
 		service.guardar(mantenedor40);
 
 		//creando perfiles
-		perfil = new Perfil("admin","admin","all","all","all",true,true);
+		//perfil = new Perfil("admin","admin","all","all","all",true,true);
 		
 		//creando roles
-						
+
 		rolSupervisor = new Rol("supervisor","supervisor",213,null,true);
 		rolVerificador = new Rol("verificador","Verificador",214,null,true);
 		rolDocente = new Rol("tecnico_docente","Tecnico Docente",215,null,true);
@@ -214,5 +293,6 @@ public class ServiceTest {
 		pais4 = (Pais) service.guardar(pais4);
 		pais5 = (Pais) service.guardar(pais5);
 		pais6 = (Pais) service.guardar(pais6);
+		*/
 	}
 }

@@ -61,11 +61,11 @@ public class EvaluacionManagedBean implements Serializable {
 	
 	private String preguntaGuia;
 	private String respuestaGuia;
-	private Integer puntajeGuia;
+	private Float puntajeGuia;
 	private boolean disableAgregaGuias;
 	private Mantenedor solicitudAsesorado;
 	private boolean aprobadoGuia;
-	private Integer puntajeEval;
+	private Float puntajeEval;
 	private Float puntajeMinEval;
 	private List<SelectItem> listaAprobados;
 	private Float puntajeMaxEval;
@@ -135,11 +135,11 @@ public class EvaluacionManagedBean implements Serializable {
 		this.puntajeMinEval = puntajeMinEval;
 	}
 
-	public Integer getPuntajeEval() {
+	public Float getPuntajeEval() {
 		return puntajeEval;
 	}
 
-	public void setPuntajeEval(Integer puntajeEval) {
+	public void setPuntajeEval(Float puntajeEval) {
 		this.puntajeEval = puntajeEval;
 	}
 
@@ -183,11 +183,11 @@ public class EvaluacionManagedBean implements Serializable {
 		this.respuestaGuia = respuestaGuia;
 	}
 
-	public Integer getPuntajeGuia() {
+	public Float getPuntajeGuia() {
 		return puntajeGuia;
 	}
 
-	public void setPuntajeGuia(Integer puntajeGuia) {
+	public void setPuntajeGuia(Float puntajeGuia) {
 		this.puntajeGuia = puntajeGuia;
 	}
 
@@ -247,7 +247,8 @@ public class EvaluacionManagedBean implements Serializable {
 			this.setAprobado(selectedEvaluacion.isAprobado());
 			this.setEstado(selectedEvaluacion.getEstado());
 			this.setEstadoId(selectedEvaluacion.getEstado().getId());
-			this.setPuntajeEval(selectedEvaluacion.getPuntaje());
+			//Julio/2014
+			//this.setPuntajeEval(selectedEvaluacion.getPuntaje());
 		}
 	}
 
@@ -532,16 +533,17 @@ public class EvaluacionManagedBean implements Serializable {
 					isError = true;
 					mensaje = "El detalle indicado (Guias), segun su puntaje, es mayor al máximo permitido. Favor revisar...";
 				} else {
-					this.puntajeEval = new Integer(0);
+					this.puntajeEval = new Float(0);
 					eval = new Evaluacion (this.getSolicitudEval(), // solicitud
 										   this.getSelectedInstrumento(), // instrumento
 					   					   this.getFechaEvaluacion(), // fecha 
-										   this.getSelectedUnidad(), // unidad 
+										   //this.getSelectedUnidad(), // unidad 
 										   null , // Set<EvaluacionGuia> guias 
-										   this.puntajeEval, // puntaje, 
+										   //this.puntajeEval, // puntaje, 
 										   this.getObservaciones(), // observaciones 
-										   this.isAprobado(), // aprobado
-										   service.getMantenedorMinByTipo("9")
+										   //this.isAprobado(), // aprobado
+										   service.getMantenedorById(28), //getMantenedorMinByTipo("9"),
+										   true
 										   );
 					//String estadoTipo = eval.getTipoMantenedorEstado();
 					
@@ -565,7 +567,7 @@ public class EvaluacionManagedBean implements Serializable {
 			
 			eval = selectedEvaluacion;
 			estadoEval = eval.getEstado();
-			Integer  puntajeEvaluacion = eval.getPuntaje();
+			Float  puntajeEvaluacion = eval.getPuntaje();
 			validaEvalbyUnidad = true;
 			
 			if (this.aprobado == true){
@@ -589,7 +591,7 @@ public class EvaluacionManagedBean implements Serializable {
 			
 			if (isError == false){
 				eval.setObservaciones(this.observaciones);			
-				eval.setAprobado(this.aprobado);
+				//eval.setAprobado(this.aprobado);
 				
 				System.out.println("Actualiza la tabla " + validaEvalbyUnidad);	
 				
@@ -630,7 +632,7 @@ public class EvaluacionManagedBean implements Serializable {
 			if (this.puntajeGuia > puntajeByGuia){
 				FacesUtil.getMensaje("SCCL - Mensaje", "El puntaje indicado es mayor al puntaje maximo permitido por detalle. Favor revisar...", true);
 			} else {
-				this.selectedEvaluacionGuia.setPuntaje(this.puntajeGuia);
+				this.selectedEvaluacionGuia.setPuntaje(new Float(this.puntajeGuia));
 				this.selectedEvaluacionGuia.setAprobado(this.aprobadoGuia);
 							
 				this.selectedEvaluacionGuia = service.updateEvaluacionGuia(this.selectedEvaluacionGuia);	
@@ -661,7 +663,7 @@ public class EvaluacionManagedBean implements Serializable {
 		} else {
 			this.preguntaGuia = null;
 			this.respuestaGuia = null;
-			this.puntajeGuia = 0;
+			this.puntajeGuia = new Float(0);
 			this.cualitativo = false;
 			this.aprobadoGuia = false;
 		}
@@ -684,7 +686,7 @@ public class EvaluacionManagedBean implements Serializable {
 				EvaluacionGuia detalleEvaGuia = new EvaluacionGuia();
 				
 				detalleEvaGuia.setPk(pkDetalleGuia);
-				detalleEvaGuia.setPuntaje(new Integer(0));				
+				detalleEvaGuia.setPuntaje(new Float(0));				
 				
 				detalleEvaGuia = (EvaluacionGuia) service.guardar(detalleEvaGuia);
 				
@@ -700,7 +702,7 @@ public class EvaluacionManagedBean implements Serializable {
 		FacesUtil.setParamBySession("selectedEvaluacionGuia", null);
 		this.preguntaGuia = null;
 		this.respuestaGuia = null;
-		this.puntajeGuia = 0;
+		this.puntajeGuia = new Float(0);
 	}
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Inicializa valores en cero o null.

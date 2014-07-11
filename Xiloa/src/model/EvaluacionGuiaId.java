@@ -25,6 +25,11 @@ public class EvaluacionGuiaId implements Serializable {
 	@ManyToOne
 	private Guia guia;
 	
+	public EvaluacionGuiaId(){
+		this.evaluacion = new Evaluacion();
+		this.guia = new Guia();
+	}
+	
 	public Evaluacion getEvaluacion() {
 		return evaluacion;
 	}

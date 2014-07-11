@@ -15,6 +15,8 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -42,7 +44,7 @@ import model.Contacto;
 import model.Evaluacion;
 import model.EvaluacionGuia;
 import model.EvaluacionGuiaId;
-import model.EvaluacionUnidad;
+//import model.EvaluacionUnidad;
 import model.Guia;
 import model.Instrumento;
 import model.Laboral;
@@ -115,8 +117,8 @@ public class ServiceImp implements IService {
 	private IDao<Object> objectDao;
 	@Autowired
 	private IDao<Auditoria> auditoriaDao;
-	@Autowired
-	private IDao<EvaluacionUnidad> evaluacionUnidadDao;
+	//@Autowired
+	//private IDao<EvaluacionUnidad> evaluacionUnidadDao;
 	@Autowired
 	private IDao<Item> itemDao;
 	
@@ -135,6 +137,7 @@ public class ServiceImp implements IService {
 	private Map<Integer, Mantenedor> catalogoEstadosEvaluacion;
 	private Map<Long, Pais> catalogoPaises;
 	private Map<Integer, Departamento> catalogoDepartamentos;
+	protected final Log logger = LogFactory.getLog(getClass());
 	
 	/*
 	 * Constructor por defecto
@@ -424,36 +427,7 @@ public class ServiceImp implements IService {
 		}
 		return certificacionDao.findAllByNamedQuery("Certificacion.findActivas");
 	}	
-	
-	/*
-	 * @return la instancia de certificación registrada en base de datos
-	 * @param la certificación a guardar y su listado de sus requisitos
-	 * 
-	 */
 		
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public Certificacion guardarCertificacion(Certificacion certificacion, List<Requisito> requisitos) {
-		
-		certificacion = certificacionDao.save(certificacion);
-		
-		for(int i=0; i<requisitos.size(); i++){
-			requisitos.get(i).setCertificacion(certificacion);
-			requisitoDao.save(requisitos.get(i));
-		}
-				
-		Mantenedor estado = getMapMantenedoresByTipo("4").get(10);				//estatus pendiente
-		Map<Integer, Mantenedor> actividades = getMapMantenedoresByTipo("1");	//actualizar
-		Contacto creador = certificacion.getCreador();
-		
-		actividadDao.save(new Actividad(certificacion,0,actividades.get(1),"Divulgacion","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado));
-		actividadDao.save(new Actividad(certificacion,1,actividades.get(4),"Convocatoria","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado));
-		actividadDao.save(new Actividad(certificacion,2,actividades.get(3),"Evaluacion","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado));
-		actividadDao.save(new Actividad(certificacion,3,actividades.get(2),"Verificacion","A completar",null,null,null,new Date(),null,null,creador,null,null,null,estado));
-				
-		return certificacionDao.save(certificacion);
-	}
-	
 	/*
 	 * @return obtiene el listado de requisitos de la certificación solicitada
 	 * @param código de la certificación
@@ -541,7 +515,7 @@ public class ServiceImp implements IService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void RegistrarUsuarioOpenId(String login, String nombre, String apellido, String email) {
-		
+				
 		Usuario user = usuarioDao.save(new Usuario(null, login, "", rolDao.findById(Rol.class, 6), false, true));
 		
 		//registrando el contacto
@@ -550,11 +524,11 @@ public class ServiceImp implements IService {
 				new HashSet<Laboral>(), 
 				user.getRol(), 
 				null, 
-				nombre,
+				(nombre==null)?"N/D":nombre,
 				null,
-				apellido,
+				(apellido==null)?"N/D":apellido,
 				null,
-				nombre+" "+apellido, 
+				((nombre==null)?"N/D":nombre)+" "+((apellido==null)?"N/D":apellido), 
 				null,
 				email, 
 				null, 
@@ -740,6 +714,28 @@ public class ServiceImp implements IService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Object guardar (Object objeto) {
+		if(objeto instanceof Certificacion){
+
+			List<Requisito> requisitos = getRequisitos(((Certificacion)objeto).getCursoId(), ((Certificacion)objeto).getIfpId());
+			Map<Long, String> codigos = getUnidadesByEstructuraId(((Certificacion)objeto).getEstructuraId());
+			
+			((Certificacion)objeto).setUnidades(new HashSet<Long>(codigos.keySet()));
+
+			Certificacion certificacion = certificacionDao.save((Certificacion)objeto);
+			
+			for(int i=0; i<requisitos.size(); i++){
+				requisitos.get(i).setCertificacion(certificacion);
+				requisitoDao.save(requisitos.get(i));
+			}
+
+			List<Mantenedor> actividades = getMantenedoresByTipo(1);
+			
+			for(int i=0; i<actividades.size(); i++){
+				actividadDao.save(new Actividad(certificacion,i+1,actividades.get(i),actividades.get(i).getValor(),"A completar",null,null,null,new Date(),null,null,certificacion.getCreador(),null,null,null,getMantenedorById(8)));
+			}
+			
+			return certificacionDao.findById(Certificacion.class, certificacion.getId());
+		}
 		if (objeto instanceof Solicitud) {
 			return solicitudDao.save((Solicitud) objeto);
 		}
@@ -1506,7 +1502,8 @@ public class ServiceImp implements IService {
 					EvaluacionGuia detalleEvaGuia = new EvaluacionGuia();
 					
 					detalleEvaGuia.setPk(pkDetalleGuia);
-					detalleEvaGuia.setPuntaje(puntajeGuia);		
+					//julio/2014
+					//detalleEvaGuia.setPuntaje(puntajeGuia);		
 					detalleEvaGuia.setAprobado(false);
 					
 					detalleEvaGuia = evaluacionGuiaDao.save(detalleEvaGuia);						
@@ -1540,12 +1537,13 @@ public class ServiceImp implements IService {
 				evaluacion = detalleEvaluacion.getPk().getEvaluacion();
 				
 				listaEvalGuia = this.getEvaluacionGuiaByEvaluacionId(evaluacion.getId());
-				
+				//julio/2014
+				/*
 				for (EvaluacionGuia eG : listaEvalGuia) {
 					sumaPuntaje += (eG.getPuntaje() == null) ? 0 : eG.getPuntaje();
 				}
-				
 				evaluacion.setPuntaje(sumaPuntaje);
+				*/
 				
 				evaluacion = evaluacionDao.save(evaluacion);
 						
@@ -1568,14 +1566,14 @@ public class ServiceImp implements IService {
 		boolean    pasa = true;
 		Mantenedor ultimoEstado = null;
 		Mantenedor estadoActual = null;
-		System.out.println("Entra al servicio validaListoInscripcion");
+		logger.info("Entra al servicio validaListoInscripcion");
 		//tipoMantenedor = solicitud.getTipomantenedorestado();
 		estadoActual  = solicitud.getEstatus();
 		proximoEstado = (estadoActual.getProximo() != null) ? Integer.valueOf(estadoActual.getProximo()) : null; 
 		
 		//ultimoEstado = getMantenedorMaxByTipo(tipoMantenedor);
 		ultimoEstado = catalogoEstadoSolicitud.get(37);
-		System.out.println("Valores de los estados proximoEstado " + proximoEstado + " ultimo anterior " + ultimoEstado.getAnterior());	
+		logger.info("Valores de los estados proximoEstado " + proximoEstado + " ultimo anterior " + ultimoEstado.getAnterior());	
 		//if ( (proximoEstado != null) && (ultimoEstado != null) && (proximoEstado == Integer.valueOf(ultimoEstado.getAnterior()))){
 		if ( (proximoEstado != null) && (ultimoEstado != null) && (proximoEstado.toString().equalsIgnoreCase(ultimoEstado.getAnterior()))){
 			pasa = validaEvaluacionAprobada(solicitud, true, null);			
@@ -1609,7 +1607,7 @@ public class ServiceImp implements IService {
 						
 		try {			
 			Connection conn = getSqlConnection();
-			System.out.println("Conexion " + conn);											
+			logger.info("Conexion " + conn);											
 			ControlGenericoReporte.getInstancia().runReporteFisico(nombreReporte, parametros,formato, conn, visualiza);		
 			//String reporte = nombreReporte.toLowerCase() + "." + Global.EXPORT_PDF.toLowerCase();
 			//String reporte = nombreReporte + "." + formato.toLowerCase();
@@ -1640,11 +1638,11 @@ public class ServiceImp implements IService {
 		Contacto solicitante = null;
 		boolean enlistar = false;
 		
-		System.out.println("Dentro de service.filtroListaSolicitudes...");		
+		logger.info("Dentro de service.filtroListaSolicitudes...");		
 					
 		lista = getSolicitudesByParam(param);
 		
-		System.out.println("getSolicitudesByParam retorna " + lista.size() + " registros...");
+		logger.info("getSolicitudesByParam retorna " + lista.size() + " registros...");
 		
 		for (Solicitud dato : lista) {
 			solicitante = dato.getContacto();		
@@ -1664,13 +1662,13 @@ public class ServiceImp implements IService {
 			
 			switch(tipoFiltro){
 				case 1:{ //Pasa a Estado Convocado
-						System.out.println("Pasa a estado convocado en switch...");
+						logger.info("Pasa a estado convocado en switch...");
 					if (estadoSolicitud.getId() == prxEstadoKey.intValue()) 
 						enlistar = portafolioVerificado(solicitante, new String("8"));
 						//enlistar = true;
 					else
 						enlistar = false;
-					System.out.println("Sale de estado convocado en switch...");
+					logger.info("Sale de estado convocado en switch...");
 					break;
 				}
 				case 2:{ //Pasa a Asesorado
@@ -1773,16 +1771,16 @@ public class ServiceImp implements IService {
 				
 			}
 		}else { // Evalua por Unidad de compentencia
-			objs =  new Object [] {new String("6"), idTipoInstrumento, ucl, solicitud.getId()};	
-			System.out.println("PARAMETROS " + idTipoInstrumento + " ucl " + ucl + " solicitud " + solicitud.getId());
+			objs =  new Object [] {new String("6"), idTipoInstrumento, ucl, solicitud.getId()};
+			logger.info("PARAMETROS " + idTipoInstrumento + " ucl " + ucl + " solicitud " + solicitud.getId());
 			listaInstrumento = instrumentoDao.findAllByNamedQueryParam("Instrumento.findPendientesEvaluar", objs);
-			System.out.println("Indica si falta o no instrumentos " + listaInstrumento.size());
+			logger.info("Indica si falta o no instrumentos " + listaInstrumento.size());
 			//Existen evaluaciones pendientes por unidad de compentencia
 			if (listaInstrumento.size() > 0) {
 				pasa = false;				
 			} else { // La unidad de competencia ha sido evaluada		
 				if (diagnostica == false){
-					System.out.println("Debe agregar en la tabla ");
+					logger.info("Debe agregar en la tabla ");
 					pasa = validaEvalUnidad(solicitud, ucl);
 				}
 			}
@@ -1864,8 +1862,6 @@ public class ServiceImp implements IService {
 		boolean aprobado = true;
 		
 		List<Evaluacion> listaEval = this.getEvaluacionesBySolicitudUnidad(solicitud, ucl);
-		System.out.println("Existen evaluaciones " + listaEval.size());
-		System.out.println("Numero de Evaluaciones " + listaEval.size());
 		if (listaEval.size() == 0)// No existen evaluaciones para la unidad de compentencia
 			aprobado = false;
 		else {
@@ -1877,17 +1873,20 @@ public class ServiceImp implements IService {
 			}
 			
 			boolean existeEUcl = validaEvaluacionByUnidad(solicitud, ucl);
-			
-			EvaluacionUnidad eUcl = null;
+			//Julio/2014
+			//EvaluacionUnidad eUcl = null;
 			
 			if (existeEUcl == false){
 				Mantenedor estatusEval = this.getMantenedorById(29);
 				String     nombreUCL = getCompetenciaDescripcion(ucl);
+				//Julio/2014
+				/*
 				eUcl = new EvaluacionUnidad(solicitud, ucl, nombreUCL, aprobado, estatusEval);
-				System.out.println("AGREGAR EL REGISTRO " + estatusEval.getValor());
-				eUcl = evaluacionUnidadDao.save(eUcl);				
+				eUcl = evaluacionUnidadDao.save(eUcl);
+				*/				
 			}
-			aprobado = (eUcl == null) ? false : true;
+			//Julio/2014
+			//aprobado = (eUcl == null) ? false : true;
 		}
 		return aprobado;
 	}
@@ -1903,8 +1902,7 @@ public class ServiceImp implements IService {
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Evaluacion actualizaEvaluacion(Evaluacion evaluacion, boolean valida){
 		//boolean val = false;
-		Evaluacion eval = null;		
-		System.out.println("En el servicio, revisa si pasa a validar " + valida);
+		Evaluacion eval = null;
 		
 		eval = evaluacionDao.save(evaluacion);
 		
@@ -1923,12 +1921,13 @@ public class ServiceImp implements IService {
 	 * @param la unidad de competencia validada
 	 * 
 	 */
-
+	/*
 	@Override
 	public EvaluacionUnidad getEvaluacionUnidadBySolicitudUCL(Solicitud solicitud, Long unidad){
 		Object [] objs =  new Object [] {solicitud.getId(), unidad};
 		return evaluacionUnidadDao.findOneByNamedQueryParam("EvaluacionUnidad.findAllBySolicitudUCL", objs);		
 	}
+	*/
 	
 	/**
 	 * @return el indicador de validado de la unidad de competencia 
@@ -1941,12 +1940,15 @@ public class ServiceImp implements IService {
 	public boolean validaEvaluacionByUnidad(Solicitud solicitud, Long ucl){
 		boolean existe = true;
 		Certificacion c = null;
-		EvaluacionUnidad eUcl = null;
+		//Julio/2014
+		//EvaluacionUnidad eUcl = null;
 		c = solicitud.getCertificacion();
 				
 		if (ucl == null){ // Evalua por todas las unidades de competencia
 			List<Long> setUnidades =  getUnidadesByCertificacionId(c.getId());
 			
+			//Julio/2014
+			/*
 			for(Long unidad : setUnidades){
 				eUcl = null;
 				
@@ -1955,12 +1957,15 @@ public class ServiceImp implements IService {
 					existe = false;
 					break;
 				}					
-			}
-		} else {//Evalua por unidad de compentencia
+			}*/
+		} 
+		//Julio/2014
+		/*
+		else {//Evalua por unidad de compentencia
 			eUcl = null;
-			eUcl = getEvaluacionUnidadBySolicitudUCL(solicitud, ucl);
+			//eUcl = getEvaluacionUnidadBySolicitudUCL(solicitud, ucl);
 			existe = (eUcl == null) ? false : true;
-		}
+		}*/
 		
 		return existe;
 	}
@@ -1970,13 +1975,13 @@ public class ServiceImp implements IService {
 	 * @param el id de la solicitud cuyas unidades evaluadas se quiere conocer
 	 * 
 	 */
-
+	/*
 	@Override
 	public List<EvaluacionUnidad> getListEvalUnidad(Long idSolicitud){
 		Object [] objs =  new Object [] {idSolicitud};
 		return evaluacionUnidadDao.findAllByNamedQueryParam("EvaluacionUnidad.findAllBySolicitud", objs);		
 	}
-	
+	*/
 	public List<Item> getListEvaluacionesUnidad(Long idSolicitud){
 		Object [] objs =  new Object [] {idSolicitud};
 		return itemDao.findAllByNamedQueryParam("Evaluacion.findAllUnidadesBySolicitudId", objs);		
@@ -1992,7 +1997,6 @@ public class ServiceImp implements IService {
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Solicitud anularSolicitud(Solicitud solicitud){
 		solicitud.setEstatus(catalogoEstadoSolicitud.get(40));
-		System.out.println("Anular solicitud: "+solicitud.getEstatus().getValor()+" mantenedor-->"+catalogoEstadoSolicitud.get(40).getValor());
 		return solicitudDao.save(solicitud);
 	}
 
@@ -2030,5 +2034,34 @@ public class ServiceImp implements IService {
 	public boolean anularEvaluacion(Evaluacion evaluacion){
 		evaluacionDao.remove(Evaluacion.class, evaluacion.getId());
 		return true;
+	}
+	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void autorizarMatricula(Solicitud solicitud){
+		
+		//buscar los instrumentos para cada unidad de competencia
+
+		Object [] objs =  new Object [] {solicitud.getCertificacion().getId()};
+		
+		List<Instrumento> instrumentos = instrumentoDao.findAllByNamedQueryParam("Instrumento.findAllByCertificacionId", objs);
+		
+		List<Evaluacion> evaluaciones =  new ArrayList<Evaluacion>();
+
+		for(Instrumento instrumento : instrumentos){
+			Evaluacion evaluacion = new Evaluacion();
+			evaluacion.setInstrumento(instrumento);
+			evaluacion.setSolicitud(solicitud);
+			evaluacion.setFechaEvaluacion(new Date());
+			evaluacion.setActivo(true);
+			evaluacion.setEstado(getMantenedorById(28));
+			evaluacion=evaluacionDao.save(evaluacion);
+			evaluaciones.add(evaluacion);
+		}
+		
+		solicitud.setEvaluaciones(evaluaciones);
+		solicitud.setEstatus(getMantenedorById(24));		//estado inscrito
+
+		solicitudDao.save(solicitud);
 	}
 }

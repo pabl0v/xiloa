@@ -23,7 +23,7 @@ import model.Certificacion;
 import model.Contacto;
 import model.Evaluacion;
 import model.EvaluacionGuia;
-import model.EvaluacionUnidad;
+//import model.EvaluacionUnidad;
 import model.Guia;
 import model.Instrumento;
 import model.Laboral;
@@ -330,14 +330,6 @@ public interface IService {
 	 */
 	
 	public boolean isNuevoContactoInatec(String usuario);
-
-	/*
-	 * @return la instancia de certificación registrada en base de datos
-	 * @param la certificación a guardar y su listado de sus requisitos
-	 * 
-	 */
-	
-	public Certificacion guardarCertificacion(Certificacion certificacion, List<Requisito> requisitos);
 
 	/*
 	 * @return obtiene el listado de requisitos de la certificación solicitada
@@ -788,7 +780,7 @@ public interface IService {
 	 * 
 	 */
 	
-	public EvaluacionUnidad getEvaluacionUnidadBySolicitudUCL(Solicitud solicitud, Long unidad);
+	//public EvaluacionUnidad getEvaluacionUnidadBySolicitudUCL(Solicitud solicitud, Long unidad);
 
 	/**
 	 * @return el indicador de validado de la unidad de competencia 
@@ -805,7 +797,7 @@ public interface IService {
 	 * 
 	 */
 	
-	public List<EvaluacionUnidad> getListEvalUnidad(Long idSolicitud);
+	//public List<EvaluacionUnidad> getListEvalUnidad(Long idSolicitud);
 	
 	/**
 	 * @return la lista de unidades aprobadas o reprobadas a nivel global 
@@ -839,7 +831,6 @@ public interface IService {
 
 	public boolean tieneSolicitudesPendientes(String cedula, Long certificacionId);
 
-	
 	/** 
 	 * @return booleando indica si la anulacion fue exitosa
 	 * @param la evaluacion a anular
@@ -847,4 +838,11 @@ public interface IService {
 	 */
 
 	public boolean anularEvaluacion(Evaluacion evaluacion);
+
+	/** 
+	 * @param la solicitud cuya matricula se autoriza
+	 * 
+	 */
+
+	public void autorizarMatricula(Solicitud solicitud);
 }

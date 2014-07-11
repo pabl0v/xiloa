@@ -74,7 +74,7 @@ public class ActividadManagedBean implements Serializable {
 	@PostConstruct
 	private void init(){
 		catalogoTiposActividad = service.getMapMantenedoresByTipo("1");
-		catalogoEstatusActividad = service.getMapMantenedoresByTipo("4");
+		catalogoEstatusActividad = service.getMapMantenedoresByTipo("2");
 		contacto = controller.getContacto();
 		contactos = service.getContactosInatec(controller.getEntidadUsuario());
 	}

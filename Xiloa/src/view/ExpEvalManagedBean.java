@@ -19,7 +19,7 @@ import model.Archivo;
 import model.Certificacion;
 import model.Contacto;
 import model.Evaluacion;
-import model.EvaluacionUnidad;
+//import model.EvaluacionUnidad;
 import model.Laboral;
 import model.Mantenedor;
 import model.Pais;
@@ -51,10 +51,6 @@ public class ExpEvalManagedBean implements Serializable  {
 	private Contacto contactoExp;
 	
 	private Map<Integer, List<Laboral>> laborales;
-	//private List<Laboral> listDatosLaborales;
-	//private List<Laboral> listDatosEstudios;
-	//private List<Laboral> listDatosCalificacion;
-	//private List<Laboral> listDatosCertificaciones;
 
 	private List<Evaluacion> listEvaluaciones;
 	private List<Item> listEvaluacionesUnidad;
@@ -138,10 +134,6 @@ public class ExpEvalManagedBean implements Serializable  {
 	private String nombreRealArchivoExp;
 	private String sizeArchivoExp;
 	
-	//private boolean disabledConvocar;
-	//private boolean disabledAsesorar;
-	//private boolean disabledCerrar;
-	
 	private Boolean disabledConvocar;
 	private Boolean disabledAsesorar;
 	private Boolean disabledCerrar;
@@ -154,9 +146,9 @@ public class ExpEvalManagedBean implements Serializable  {
 	
 	private String tipoEstadosPortafolio;
 	
-	private List<EvaluacionUnidad> listaEvalUnidad;
+	//private List<EvaluacionUnidad> listaEvalUnidad;
 	
-	private EvaluacionUnidad selectedEvalUnidad;
+	//private EvaluacionUnidad selectedEvalUnidad;
 
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Constructor de la clase.
 	public ExpEvalManagedBean() {
@@ -204,15 +196,16 @@ public class ExpEvalManagedBean implements Serializable  {
 				
 		nuevoLaboral = new Laboral();
 		
-		listaEvalUnidad = new ArrayList<EvaluacionUnidad> ();
+		//listaEvalUnidad = new ArrayList<EvaluacionUnidad> ();
 		
 		//dchavez> 01/03/2014: lista que retorna el resumen de evaluaciones por unidad. Pestana "Evaluacion por Unidad"
 		listEvaluacionesUnidad = new ArrayList<Item>();
 		
-		selectedEvalUnidad = null;
+		//selectedEvalUnidad = null;
 		
 	}	
-	
+
+	/*
 	public EvaluacionUnidad getSelectedEvalUnidad() {
 		return selectedEvalUnidad;
 	}
@@ -220,6 +213,7 @@ public class ExpEvalManagedBean implements Serializable  {
 	public void setSelectedEvalUnidad(EvaluacionUnidad selectedEvalUnidad) {
 		this.selectedEvalUnidad = selectedEvalUnidad;
 	}
+	*/
 
 	/*public List<EvaluacionUnidad> getListaEvalUnidad() {
 		if (this.solicitudExp != null){
@@ -237,10 +231,10 @@ public class ExpEvalManagedBean implements Serializable  {
 	public List<Item> getListEvaluacionesUnidad() {
 		return listEvaluacionesUnidad;
 	}
-	
+	/*
 	public void setListaEvalUnidad(List<EvaluacionUnidad> listaEvalUnidad) {
 		this.listaEvalUnidad = listaEvalUnidad;
-	}
+	}*/
 
 	public boolean isDisabledConcluido() {
 		return disabledConcluido;
@@ -1480,6 +1474,7 @@ public class ExpEvalManagedBean implements Serializable  {
 	}
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Aplica estatus listo para inscripcion.
+	/*
 	public String inscripcionCertificacion (){
 		boolean listoInscripcion = false;	
 		String textoMsg = "La solicitud no cumple con las condiciones para proceder con la inscripcion. Favor revisar...";
@@ -1489,6 +1484,18 @@ public class ExpEvalManagedBean implements Serializable  {
 			solicitudExp = avanzaProceso (solicitudExp, "listo para inscripción", listoInscripcion, textoMsg);
 			if(solicitudExp!=null)
 				return "/modulos/solicitudes/solicitudes?faces-redirect=true";
+		}
+		return textoMsg;
+	}
+	*/
+	
+	public String inscripcionCertificacion(){
+		boolean listoInscripcion = false;	
+		String textoMsg = "La solicitud no cumple con las condiciones para proceder con la inscripcion. Favor revisar...";
+		
+		if (solicitudExp != null) {
+			service.autorizarMatricula(solicitudExp);
+			return "/modulos/solicitudes/solicitudes?faces-redirect=true";
 		}
 		return textoMsg;
 	}
@@ -1605,10 +1612,11 @@ public class ExpEvalManagedBean implements Serializable  {
 	}
 	
 	public boolean getActivaInscrito(){
-		if(solicitudExp != null)
+		return true;
+		/*if(solicitudExp != null)
 			return solicitudExp.getEstatus().getId()==23?true:false;
 		else
-			return false;
+			return false;*/
 	}
 
 	public boolean getActivaConcluido(){

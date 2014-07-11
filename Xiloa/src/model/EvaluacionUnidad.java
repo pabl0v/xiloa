@@ -1,4 +1,4 @@
-package model;
+/*package model;
 
 import java.io.Serializable;
 
@@ -14,7 +14,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
-
+*/
 /**
  * 
  * @author Denis Chavez, Miriam Martínez
@@ -24,7 +24,7 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
  * Esta clase se corresponde con la tabla sccl.evaluaciones_unidad 
  * 
  */
-
+/*
 @Entity(name = "evaluaciones_unidad")
 @Table(name = "evaluaciones_unidad", schema = "sccl")
 @NamedQueries({
@@ -117,4 +117,4 @@ public class EvaluacionUnidad implements Serializable {
 	}
 	
 	
-}
+}*/

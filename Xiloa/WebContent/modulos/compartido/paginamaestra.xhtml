@@ -6,44 +6,46 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:sec="http://www.springframework.org/security/tags">
-	 <!--Se declara un UI composition para despues agregar esto a las demas paginas
-	 y asi no repetir codigo.-->
+	 <!--Se declara un UI composition para despues agregar esto a las demas paginas y asi no repetir codigo.-->
      <ui:composition>  
         <title>SCCL</title>
         <script type="text/javascript" src="../../resources/scripts/paginamaestra.js"></script>
         <link type="text/css" rel="stylesheet" href="../../resources/css/reset.css"></link>
         <link type="text/css" rel="stylesheet" href="../../resources/css/paginamaestra.css"></link>             
         <div id="barra_navegacion" class="mini">
-            <h1>Sistema de <a>CCL</a></h1>
-            <div id="boton_inicio"  onclick="window.location='/Xiloa/modulos/compartido/inicio.xhtml';"  class="botones_navegacion"><p class="icono_calendario">Inicio</p></div>
+			<h1>Sistema de <a href="/Xiloa/modulos/compartido/inicio.xhtml">CCL</a></h1>
             <div id="boton_oferta"  onclick="window.location='/Xiloa/modulos/compartido/cursos.xhtml';"  class="botones_navegacion"><p class="icono_calendario">Cursos</p></div>
 			<sec:authorize ifAnyGranted="ROLE_RIGHT_MIS_SOLICITUDES">
             	<div id="boton_solicitudes" onclick="window.location='/Xiloa/modulos/solicitudes/solicitudes.xhtml';" class="botones_navegacion"><p class="icono_flechas">Mis Solicitudes</p></div>
             </sec:authorize>
-            <sec:authorize ifAnyGranted="ROLE_RIGHT_MI_PORTAFOLIO">
-            	<div id="boton_participante" onclick="window.location='/Xiloa/modulos/solicitudes/expediente.xhtml';" class="botones_navegacion"><p class="icono_flechas">Mi Expediente</p></div>
-            </sec:authorize>
-			<sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_PLANIFICACIONES">
-            	<div id="boton_planificacion"  onclick="window.location='/Xiloa/modulos/planificacion/planificacion.xhtml';"  class="botones_navegacion"><p class="icono_calendario">Planificaciones</p></div>				
-			</sec:authorize>
 			<sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_SOLICITUDES">
             	<div id="boton_solicitudes" onclick="window.location='/Xiloa/modulos/solicitudes/solicitudes.xhtml';" class="botones_navegacion"><p class="icono_flechas">Solicitudes</p></div>
             </sec:authorize>
-            <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_PARTICIPANTE">
-            	<div id="boton_participante" onclick="window.location='/Xiloa/modulos/solicitudes/expediente.xhtml';" class="botones_navegacion"><p class="icono_flechas">Participante</p></div>
+            <sec:authorize ifAnyGranted="ROLE_RIGHT_MI_PORTAFOLIO">
+            	<div id="boton_participante" onclick="window.location='/Xiloa/modulos/solicitudes/expediente.xhtml';" class="botones_navegacion"><p class="icono_flechas">Mi Expediente</p></div>
             </sec:authorize>
              <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_CANDIDATOS">
             	<div id="boton_candidatos" onclick="window.location='/Xiloa/modulos/solicitudes/candidatos.xhtml';" class="botones_navegacion"><p class="icono_flechas">Portafolio</p></div>
             </sec:authorize>
-            <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_EJECUCUIONES">
-            	<div id="boton_ejecuciones" onclick="window.location='/Xiloa/modulos/planificacion/ejecuciones.xhtml';" class="botones_navegacion"><p class="icono_ejecuciones">Ejecuciones</p></div>
+			<sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_PLANIFICACIONES">
+            	<div id="boton_planificacion"  onclick="window.location='/Xiloa/modulos/planificacion/planificacion.xhtml';"  class="botones_navegacion"><p class="icono_calendario">Planificación</p></div>				
+			</sec:authorize>
+            <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_PARTICIPANTE">
+            	<div id="boton_participante" onclick="window.location='/Xiloa/modulos/solicitudes/expediente.xhtml';" class="botones_navegacion"><p class="icono_flechas">Participante</p></div>
             </sec:authorize>
             <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_INSTRUMENTOS">
             	<div id="boton_instrumentos" onclick="window.location='/Xiloa/modulos/planificacion/instrumentos.xhtml';" class="botones_navegacion"><p class="icono_mantenedores">Instrumentos</p></div>
             </sec:authorize>
+            <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_EJECUCUIONES">
+            	<div id="boton_ejecuciones" onclick="window.location='/Xiloa/modulos/planificacion/ejecuciones.xhtml';" class="botones_navegacion"><p class="icono_ejecuciones">Ejecuciones</p></div>
+            </sec:authorize>
             <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_REPORTES">
             	<div id="boton_reportes" onclick="window.location='/Xiloa/modulos/reportes/reportes.xhtml';" class="botones_navegacion"><p class="icono_reportes">Reportes</p></div>
             </sec:authorize>
+            <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_CONFIGURACION">
+            	<div id="boton_configurar" onclick="window.location='/Xiloa/modulos/usuario/configuracion.xhtml';" class="botones_navegacion"><p class="icono_gear">Configurar</p></div>
+            </sec:authorize>
+           	<div id="boton_salir" class="botones_navegacion"><p class="icono_x">Salir</p></div>
             <ul id="breadcrumbs" class="estilo_breadcrumbs">
                 <li>Inicio</li>
             </ul>
@@ -51,14 +53,10 @@
                 <div id="informacion_usuario">
                   <h:form>
                     <p id="usuario"><h:outputText value="#{loginController.loggedUser}" /></p>
-                    <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_CONFIGURACION">
-                    	<div class="botones_navegacion" onclick="window.location='/Xiloa/modulos/usuario/configuracion.xhtml';"><p class="icono_gear">Config</p></div>
-                    </sec:authorize>                   
-                    <div class="botones_navegacion" ><a class="icono_x" href="#{request.contextPath}/j_spring_security_logout">Salir</a></div>
+                    <div class="botones_navegacion" ><a class="icono_x" href="#{request.contextPath}/j_spring_security_logout"></a></div>
                   </h:form>
                 </div>                
            </div>
         </div>
     </ui:composition>
 </html>
-
