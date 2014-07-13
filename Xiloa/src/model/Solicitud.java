@@ -325,7 +325,7 @@ public class Solicitud implements Serializable {
 	}
 	
 	public boolean isErasable(){
-		if(this.estatus.getId()==40 || this.estatus.getId()==37)
+		if(this.estatus.getId()==42 || this.estatus.getId()==43 || this.estatus.getId()==44)
 			return false;
 		else
 			return true;

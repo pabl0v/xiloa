@@ -78,7 +78,7 @@
 				<!--Las columnas de la tabla-->
                 <p:column id="expedienteColumn" exportable="true" filterBy="#{varSolicitudI.id}" filterMatchMode="contains">
                 	<f:facet name="header">  
-            			<h:outputText value="Expediente" />  
+            			<h:outputText value="Exp." />  
         			</f:facet> 
                 	<h:outputText value="#{varSolicitudI.id}" />
                 </p:column>
@@ -108,12 +108,6 @@
                 		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
                 	</h:outputText>
                 </p:column>               
-                <p:column id="evaluadorColumn" exportable="true">
-                	<f:facet name="header">  
-            			<h:outputText value="Evaluador" />  
-        			</f:facet>
-                	<h:outputText value="#{varSolicitudI.certificacion.getEvaluador().nombreCompleto} [ #{varSolicitudI.certificacion.getEvaluador().correo1} ]" />
-                </p:column>                
                 <p:column id="estadoColumn" exportable="true" filterBy="#{varSolicitudI.estatus.valor}" filterOptions="#{dashBoardSolicitudesManagedBean.listaEstatus}" filterMatchMode="exact">
                 	<f:facet name="header">
             			<h:outputText value="Estado" />  
@@ -127,9 +121,17 @@
 		            	</p:commandButton>		            	           
 	    			</p:column>
     			</sec:authorize>
-				<p:column style="width:4%" exportable="false">                  
-					<p:commandButton id="anulaButton" action="#{dashBoardSolicitudesManagedBean.anulaSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" icon="ui-icon-trash" title="Anular Solicitud" update=":formSolicitudes:dtSolicitud" disabled="#{!varSolicitudI.erasable}"/>	           
-	    		</p:column>    			
+				<p:column>
+					<p:splitButton value="Gestion" icon="ui-icon-pencil" title="Gestion del Candidato" style="display:inline-block;"  update=":formSolicitudes:dtSolicitud" >   
+	        	 		<p:separator />         		   
+	       		 		<p:menuitem value="Autorizar" icon="ui-icon-pencil" title="Autorizar Matricula" style="display:inline-block;" update=":formSolicitudes:dtSolicitud"  />
+	       		 		<p:menuitem value="Matricular" icon="ui-icon-pencil" title="Matricular Candidato" style="display:inline-block;" update=":formSolicitudes:dtSolicitud"  />
+	       		 		<p:menuitem value="Convocar" icon="ui-icon-pencil" title="Convocar Candidato" style="display:inline-block;" update=":formSolicitudes:dtSolicitud"  />
+	       		 		<p:menuitem value="Evaluar" icon="ui-icon-pencil" title="Evaluar Candidato" style="display:inline-block;" update=":formSolicitudes:dtSolicitud"  />
+	       		 		<p:menuitem value="Rechazar" icon="ui-icon-pencil" title="Rechazar Candidatura" style="display:inline-block;" update=":formSolicitudes:dtSolicitud"  />
+	       		 		<p:menuitem value="Anular" icon="ui-icon-pencil" title="Anular Candidatura" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.anulaSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" update=":formSolicitudes:dtSolicitud" disabled="#{!varSolicitudI.erasable}" />
+	   				</p:splitButton>
+				</p:column>
             </p:dataTable>            
         </div>
         <sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_SEGUIMIENTO">  

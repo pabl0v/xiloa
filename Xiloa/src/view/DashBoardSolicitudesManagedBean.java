@@ -612,11 +612,11 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	/*dchavez 15/03/2014. Anulacion de solicitud excepto cuando esta concluida o anulada*/
 	
 	public void anulaSolicitud(Solicitud solicitud){
-		if(solicitud.getEstatus().getId()==37 || solicitud.getEstatus().getId()==40)
+		if(solicitud.getEstatus().getId()==42 || solicitud.getEstatus().getId()==43 || solicitud.getEstatus().getId()==44)
 			return;
 		else
 		{
-			solicitud.setEstatus(service.getCatalogoEstadoSolicitud().get(40));
+			solicitud.setEstatus(service.getCatalogoEstadoSolicitud().get(44));
 			selectedSolicitud = (Solicitud)service.guardar(solicitud);
 		}
 	}
