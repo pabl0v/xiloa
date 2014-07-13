@@ -747,7 +747,12 @@ public class ExpEvalManagedBean implements Serializable  {
 			
 			actualEstado = this.getSolicitudExp().getEstatus();
 			
-			proxKey = Integer.valueOf(actualEstado.getProximo());
+			if(actualEstado.getId()>=35 && actualEstado.getId()>=41)
+				proxKey = actualEstado.getId() + 1;
+			else
+				proxKey = null;
+			 
+			//proxKey = Integer.valueOf(actualEstado.getProximo());
 			//proxKey = actualEstado.getProximo()==null?null:Integer.valueOf(actualEstado.getProximo());
 			
 			if (proxKey != null){
@@ -1184,8 +1189,15 @@ public class ExpEvalManagedBean implements Serializable  {
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Habilita y deshabilita botones.
 	public void enabledDisableButton(int opcion) {
 		
-		Solicitud sol = this.getSolicitudExp();
+		//Solicitud sol = this.getSolicitudExp();
 		
+		this.disabledConvocar = false;
+		this.disabledAsesorar = false;
+		this.disabledCerrar = false;
+		this.disabledBtnAgregaEvaluacion = false;
+		this.disabledConcluido = false;
+		
+		/*
 		Integer inicialKey, convocaKey, asesoraKey, siguienteKey, evaluarKey;
 		
 		Mantenedor inicialEstado, convocaEstado, asesoraEstado, siguienteEstado, evaluarEstado;				
@@ -1193,12 +1205,16 @@ public class ExpEvalManagedBean implements Serializable  {
 		if (sol != null){		
 			
 			//inicialEstado = service.getMantenedorMinByTipo(sol.getTipomantenedorestado());
-			inicialEstado = service.getCatalogoEstadoSolicitud().get(20);
+			//inicialEstado = service.getCatalogoEstadoSolicitud().get(20);
+
+			inicialEstado = service.getMantenedorById(32);
 			inicialKey = inicialEstado.getId();
 			
-			convocaKey = Integer.valueOf(inicialEstado.getProximo());
+			//convocaKey = Integer.valueOf(inicialEstado.getProximo());
+			//convocaEstado = service.getCatalogoEstadoSolicitud().get(convocaKey);
 			
-			convocaEstado = service.getCatalogoEstadoSolicitud().get(convocaKey);
+			convocaKey = Integer.valueOf(inicialEstado.getProximo());
+			convocaEstado = service.getMantenedorById(36);
 								
 			asesoraKey = Integer.valueOf(convocaEstado.getProximo());
 			
@@ -1224,11 +1240,13 @@ public class ExpEvalManagedBean implements Serializable  {
 			siguienteKey = null;			
 			siguienteEstado = null;		
 		}
-				
+		*/
+		/*		
 		switch(opcion) {
 		   //Boton Convocar
 			case 1:				
-				if ((evaluarKey == convocaKey) && (evaluarKey != null))
+				//if ((evaluarKey == convocaKey) && (evaluarKey != null))
+				if (sol.getEstatus().getId()==35)	//si esta matriculado puede convocarse
 					//this.setDisabledConvocar(false);
 					//disabledConvocar = false;
 					disabledConvocar = Boolean.FALSE;
@@ -1239,7 +1257,8 @@ public class ExpEvalManagedBean implements Serializable  {
 				break;
 			//Boton Asesorar
 			case 2:
-				if ((evaluarKey == asesoraKey) && (evaluarKey != null))
+				//if ((evaluarKey == asesoraKey) && (evaluarKey != null))
+				if (sol.getEstatus().getId()==35)
 					//this.setDisabledAsesorar(false);
 					//disabledAsesorar = false;
 					disabledAsesorar = Boolean.FALSE;
@@ -1287,6 +1306,8 @@ public class ExpEvalManagedBean implements Serializable  {
 			default: 
 				break;
 		}
+		*/
+		
 	}
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Limpiar campos.

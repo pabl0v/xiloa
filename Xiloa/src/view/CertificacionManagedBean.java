@@ -114,7 +114,7 @@ public class CertificacionManagedBean implements Serializable {
 	public void agregarActividad(Actividad actividad){
 		actividad.setCreador(controller.getContacto());
 		actividad.setFechaRegistro(new Date());
-		Mantenedor estado = service.getMapMantenedoresByTipo("4").get(10);		//estatus pendiente
+		Mantenedor estado = service.getMantenedorById(12); //service.getMapMantenedoresByTipo("4").get(10);		//estatus pendiente
 		actividad.setEstado(estado);
 		Integer indice;
 		if(certificacion.getActividades().isEmpty())

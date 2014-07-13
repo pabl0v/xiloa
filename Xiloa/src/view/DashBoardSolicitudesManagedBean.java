@@ -336,8 +336,11 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 			//estadoInicial = service.getMantenedorMinByTipo(estadoActualSolicitud.getTipo());
 			//estadoFinal = service.getMantenedorMaxByTipo(estadoActualSolicitud.getTipo());
 			
-			estadoInicial = service.getCatalogoEstadoSolicitud().get(20);
-			estadoFinal = service.getCatalogoEstadoSolicitud().get(37);
+			//estadoInicial = service.getCatalogoEstadoSolicitud().get(20);
+			//estadoFinal = service.getCatalogoEstadoSolicitud().get(37);
+			
+			estadoInicial = service.getMantenedorById(32);
+			estadoFinal = service.getMantenedorById(38);
 			
 			inicialEstadoKey = estadoInicial.getId();
 			finalEstadoKey = estadoFinal.getId();

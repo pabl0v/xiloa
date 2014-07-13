@@ -441,6 +441,15 @@ public interface IService {
 	 */
 	
 	public Contacto getContactoByCedula(String cedula);
+	
+	/*
+	 * @return la instancia de certificación registrada en base de datos
+	 * @param la certificación a guardar y su listado de sus requisitos
+	 * 
+	 */
+		
+	public Certificacion guardarCertificacion(Certificacion certificacion, List<Requisito> requisitos);
+
 
 	/**
 	 * @return la instancia del objeto registrado

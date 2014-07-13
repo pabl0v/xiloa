@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
@@ -12,6 +13,7 @@ import javax.faces.model.SelectItem;
 import model.Certificacion;
 import model.Contacto;
 import model.Mantenedor;
+import model.Requisito;
 
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,9 +102,15 @@ public class PlanificacionManagedBean implements Serializable {
 		certificacion.setIfpDireccion(competencia.getDireccion());
 		certificacion.setUnidades(new HashSet<Long>());
 		certificacion.setInvolucrados(new Contacto[] {});
-		certificacion.setEstatus(service.getMantenedorById(12));		//estatus pendiente
+		certificacion.setEstatus(service.getMantenedorById(16));		//estatus pendiente
 		
-		certificacion = (Certificacion)service.guardar(certificacion);
+		List<Requisito> requisitos = service.getRequisitos(certificacion.getCursoId(), certificacion.getIfpId());
+		Map<Long, String> codigos = service.getUnidadesByEstructuraId(certificacion.getEstructuraId());
+		
+		certificacion.setUnidades(new HashSet<Long>(codigos.keySet()));
+		
+		certificacion = service.guardarCertificacion(certificacion, requisitos);
+
 		certificaciones.add(0,certificacion);
 	}
 	

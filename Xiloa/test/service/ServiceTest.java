@@ -41,7 +41,7 @@ public class ServiceTest {
 	public void registrarMantenedores(){
 		
 		//creando mantenedores
-		
+
 		service.guardar(new Mantenedor("1","Tipo de Actividad","Divulgacion",null,null));
 		service.guardar(new Mantenedor("1","Tipo de Actividad","Prematricula",null,null));
 		service.guardar(new Mantenedor("1","Tipo de Actividad","Seleccion",null,null));
@@ -63,6 +63,10 @@ public class ServiceTest {
 		service.guardar(new Mantenedor("3","Estatus certificacion","Activa",null,null));
 		service.guardar(new Mantenedor("3","Estatus certificacion","Anulada",null,null));
 		service.guardar(new Mantenedor("3","Estatus certificacion","Completada",null,null));
+
+		service.guardar(new Mantenedor("4","Estatus Convocatoria","Programada",null,null));
+		service.guardar(new Mantenedor("4","Estatus Convocatoria","Cumplida",null,null));	
+		service.guardar(new Mantenedor("4","Estatus Convocatoria","No Cumplida",null,null));
 		
 		service.guardar(new Mantenedor("5","Tipo Datos Laborales","Experiencias",null,null));
 		service.guardar(new Mantenedor("5","Tipo Datos Laborales","Estudios",null,null));
@@ -80,12 +84,14 @@ public class ServiceTest {
 		
 		service.guardar(new Mantenedor("7","Estatus Solicitud","Registrada",null,null));	
 		service.guardar(new Mantenedor("7","Estatus Solicitud","Autorizada",null,null));
-		service.guardar(new Mantenedor("7","Estatus Solicitud","Rechazada",null,null));
 		service.guardar(new Mantenedor("7","Estatus Solicitud","Matriculada",null,null));
-		service.guardar(new Mantenedor("7","Estatus Solicitud","Asesorada",null,null));
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Asesoria Grupal",null,null));
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Asesoria Individual",null,null));
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Programada",null,null));
 		service.guardar(new Mantenedor("7","Estatus Solicitud","Evaluada",null,null));
 		service.guardar(new Mantenedor("7","Estatus Solicitud","Aprobada",null,null));
 		service.guardar(new Mantenedor("7","Estatus Solicitud","Reprobada",null,null));
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Rechazada",null,null));
 		
 		service.guardar(new Mantenedor("8","Estatus Evidencia","Registrada",null,null));
 		service.guardar(new Mantenedor("8","Estatus Evidencia","Valida",null,null));
@@ -102,9 +108,12 @@ public class ServiceTest {
 		service.guardar(new Mantenedor("10","Puerto del servidor de correo","587",null,null));
 		service.guardar(new Mantenedor("10","Email del encargado de incidencias","dnchavez@hotmail.com",null,null));
 		service.guardar(new Mantenedor("10","Ruta del directorio de archivos","c:\\archivos",null,null));
+
+		service.guardar(new Mantenedor("11","Catalogo de Generos","Masculino",null,null));
+		service.guardar(new Mantenedor("11","Catalogo de Generos","Feminino",null,null));
 		
 		//creadndo roles
-		
+
 		service.guardar(new Rol("coordinador","Coordinador",213,null,true));
 		service.guardar(new Rol("verificador","Verificador",214,null,true));
 		service.guardar(new Rol("tecnico_docente","Tecnico Docente",215,null,true));

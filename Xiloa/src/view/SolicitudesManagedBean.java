@@ -516,7 +516,8 @@ public class SolicitudesManagedBean implements Serializable {
 				
 				//Asignando el estado inicial de la solicitud	
 				//estadoInicialSolicitud = service.getMantenedorMinByTipo(s.getTipomantenedorestado());
-				estadoInicialSolicitud = service.getCatalogoEstadoSolicitud().get(20); //getMantenedorMinByTipo(s.getTipomantenedorestado());
+				//estadoInicialSolicitud = service.getCatalogoEstadoSolicitud().get(20); //getMantenedorMinByTipo(s.getTipomantenedorestado());
+				estadoInicialSolicitud = service.getMantenedorById(35);
 				
 				s.setNombre(c.getNombre()); // Nombre
 				s.setTicket("Ninguna");

@@ -198,7 +198,7 @@ public class ActividadManagedBean implements Serializable {
 	
 	public void completarActividad(Actividad actividad){
 		this.actividad = actividad;
-		this.actividad.setEstado(service.getMantenedorById(39));
+		this.actividad.setEstado(service.getMantenedorById(15));
 		this.actividad = (Actividad) service.guardar(this.actividad);
 	}
 		

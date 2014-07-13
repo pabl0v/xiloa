@@ -53,7 +53,7 @@ public class JavaEmailSender {
 	private void init(){
 		try
 		{
-			USER_NAME = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(47)}, String.class);
+			USER_NAME = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(52)}, String.class);
 		}
 		catch(EmptyResultDataAccessException e)
 		{
@@ -64,7 +64,7 @@ public class JavaEmailSender {
 
 		try
 		{		
-			PASSWORD = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(48)}, String.class);
+			PASSWORD = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(53)}, String.class);
 		}
 		catch(EmptyResultDataAccessException e)
 		{
@@ -73,7 +73,7 @@ public class JavaEmailSender {
 
 		try
 		{		
-			HOST = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(49)}, String.class);
+			HOST = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(54)}, String.class);
 		}
 		catch(EmptyResultDataAccessException e)
 		{
@@ -82,7 +82,7 @@ public class JavaEmailSender {
 
 		try
 		{		
-			PORT = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(50)}, String.class);
+			PORT = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(55)}, String.class);
 		}
 		catch(EmptyResultDataAccessException e)
 		{
@@ -91,7 +91,7 @@ public class JavaEmailSender {
 		
 		try
 		{
-			RESPONSIBLE = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(51)}, String.class);
+			RESPONSIBLE = (String) this.jdbcTemplate.queryForObject("select mantenedor_valor from sccl.mantenedores where mantenedor_id = ?", new Object[]{new Long(56)}, String.class);
 		}
 		catch(EmptyResultDataAccessException e)
 		{

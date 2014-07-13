@@ -179,17 +179,30 @@ public class ServiceImp implements IService {
 				case 1:
 				case 2:
 				case 3:
-				case 4: catalogoTiposActividad.put(mantenedor.getId(), mantenedor); break;
+				case 4:
+				case 5:
+				case 6:
 				case 7:
-				case 8:
-				case 9: catalogoEstatusCertificacion.put(mantenedor.getId(), mantenedor); break;
-				case 38: catalogoEstatusCertificacion.put(mantenedor.getId(), mantenedor); break;
+				case 8: 
+				case 9:
 				case 10:
-				case 11:
-				case 12: catalogoEstatusActividad.put(mantenedor.getId(), mantenedor); break;
+				case 11: catalogoTiposActividad.put(mantenedor.getId(), mantenedor); break;
+				case 12:
+				case 13:
+				case 14:
+				case 15: catalogoEstatusActividad.put(mantenedor.getId(), mantenedor); break;
+				case 16:
 				case 17:
 				case 18:
-				case 19: catalogoTiposInstrumento.put(mantenedor.getId(), mantenedor); break;
+				case 19: catalogoEstatusCertificacion.put(mantenedor.getId(), mantenedor); break;
+				case 27:
+				case 28:
+				case 29:
+				case 30:
+				case 31:
+				case 32:
+				case 33:
+				case 34: catalogoTiposInstrumento.put(mantenedor.getId(), mantenedor); break;
 			}
 			
 			tipoMantenedor = Integer.valueOf(mantenedor.getTipo()).intValue();
@@ -202,7 +215,7 @@ public class ServiceImp implements IService {
 				case 7: catalogoEstadoSolicitud.put(mantenedor.getId(), mantenedor); break;
 				case 8: catalogoPortafolio.put(mantenedor.getId(), mantenedor); break;
 				case 9: catalogoEstadosEvaluacion.put(mantenedor.getId(), mantenedor); break;
-				case 10: catalogoGenero.put(mantenedor.getId(), mantenedor); break;
+				case 11: catalogoGenero.put(mantenedor.getId(), mantenedor); break;
 			}
 			
 		}
@@ -706,6 +719,32 @@ public class ServiceImp implements IService {
 		return this.getMantenedoresByTipo(new Integer(3));
 	}
 	
+	/*
+	 * @return la instancia de certificación registrada en base de datos
+	 * @param la certificación a guardar y su listado de sus requisitos
+	 * 
+	 */
+		
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public Certificacion guardarCertificacion(Certificacion certificacion, List<Requisito> requisitos) {
+		
+		certificacion = certificacionDao.save(certificacion);
+		
+		for(int i=0; i<requisitos.size(); i++){
+			requisitos.get(i).setCertificacion(certificacion);
+			requisitoDao.save(requisitos.get(i));
+		}
+
+		List<Mantenedor> actividades = getMantenedoresByTipo(1);
+		
+		for(int i=0; i<actividades.size(); i++){
+			actividadDao.save(new Actividad(certificacion,i+1,actividades.get(i),actividades.get(i).getValor(),"A completar",null,null,null,new Date(),null,null,certificacion.getCreador(),null,null,null,getMantenedorById(12)));
+		}
+		
+		return certificacionDao.findById(Certificacion.class, certificacion.getId());
+	}
+	
 	/**
 	 * @return la instancia del objeto registrado
 	 * @param el objeto a guardar
@@ -714,28 +753,6 @@ public class ServiceImp implements IService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Object guardar (Object objeto) {
-		if(objeto instanceof Certificacion){
-
-			List<Requisito> requisitos = getRequisitos(((Certificacion)objeto).getCursoId(), ((Certificacion)objeto).getIfpId());
-			Map<Long, String> codigos = getUnidadesByEstructuraId(((Certificacion)objeto).getEstructuraId());
-			
-			((Certificacion)objeto).setUnidades(new HashSet<Long>(codigos.keySet()));
-
-			Certificacion certificacion = certificacionDao.save((Certificacion)objeto);
-			
-			for(int i=0; i<requisitos.size(); i++){
-				requisitos.get(i).setCertificacion(certificacion);
-				requisitoDao.save(requisitos.get(i));
-			}
-
-			List<Mantenedor> actividades = getMantenedoresByTipo(1);
-			
-			for(int i=0; i<actividades.size(); i++){
-				actividadDao.save(new Actividad(certificacion,i+1,actividades.get(i),actividades.get(i).getValor(),"A completar",null,null,null,new Date(),null,null,certificacion.getCreador(),null,null,null,getMantenedorById(8)));
-			}
-			
-			return certificacionDao.findById(Certificacion.class, certificacion.getId());
-		}
 		if (objeto instanceof Solicitud) {
 			return solicitudDao.save((Solicitud) objeto);
 		}
@@ -1651,14 +1668,26 @@ public class ServiceImp implements IService {
 			//inicialEstado = (inicialEstado == null) ? getMantenedorMinByTipo(dato.getTipomantenedorestado()) : inicialEstado;
 			//ultimoEstado = (ultimoEstado == null) ? getMantenedorMaxByTipo(dato.getTipomantenedorestado()) : ultimoEstado;
 			
-			inicialEstado = (inicialEstado == null) ? catalogoEstadoSolicitud.get(20) : inicialEstado;
-			ultimoEstado = (ultimoEstado == null) ? catalogoEstadoSolicitud.get(37) : ultimoEstado;
+			//inicialEstado = (inicialEstado == null) ? catalogoEstadoSolicitud.get(20) : inicialEstado;
+			//ultimoEstado = (ultimoEstado == null) ? catalogoEstadoSolicitud.get(37) : ultimoEstado;
 			
+			inicialEstado = (inicialEstado == null) ? getMantenedorById(32) : inicialEstado;
+			ultimoEstado = (ultimoEstado == null) ? getMantenedorById(38) : ultimoEstado;
+			
+			/*
 			prxEstadoKey = Integer.valueOf(inicialEstado.getProximo());
 			if (estadoSolicitud.getAnterior() != null)
 				anteriorEvaluarKey = Integer.valueOf(estadoSolicitud.getAnterior());
 			else
 				anteriorEvaluarKey = null;
+			*/
+			
+			if(inicialEstado.getId() == 32)
+				anteriorEvaluarKey = null;
+			else
+				anteriorEvaluarKey = inicialEstado.getId() - 1;
+			
+			prxEstadoKey = inicialEstado.getId()==38? null : inicialEstado.getId() + 1;
 			
 			switch(tipoFiltro){
 				case 1:{ //Pasa a Estado Convocado
@@ -1706,13 +1735,20 @@ public class ServiceImp implements IService {
 
 	@Override
 	public boolean validaProcesoConcluido(Solicitud solicitud, boolean validaEvaluacion){
+		
+		if(solicitud.getEstatus().getId()==42 || solicitud.getEstatus().getId()==43 || solicitud.getEstatus().getId()==44)
+			return true;
+		else
+			return false;
+		
+		/*
 		boolean pasaConcluido = false;
 		Mantenedor ultimoEstado = null;
 		Mantenedor estadoActual = solicitud.getEstatus();
 		Integer    idMatricula = null;
 		
 		//ultimoEstado = getMantenedorMaxByTipo(solicitud.getTipomantenedorestado());
-		ultimoEstado = catalogoEstadoSolicitud.get(37);
+		ultimoEstado = catalogoEstadoSolicitud.get(42);
 		
 		if (ultimoEstado != null){
 			
@@ -1732,6 +1768,7 @@ public class ServiceImp implements IService {
 			}
 		}
 		return pasaConcluido;
+		*/
 	}
 	
 	/**
