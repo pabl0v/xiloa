@@ -89,8 +89,8 @@ public class ServiceTest {
 		service.guardar(new Mantenedor("7","Estatus Solicitud","Asesoria Individual",null,null));
 		service.guardar(new Mantenedor("7","Estatus Solicitud","Programada",null,null));
 		service.guardar(new Mantenedor("7","Estatus Solicitud","Evaluada",null,null));
-		service.guardar(new Mantenedor("7","Estatus Solicitud","Aprobada",null,null));
-		service.guardar(new Mantenedor("7","Estatus Solicitud","Reprobada",null,null));
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Completada",null,null));
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Rechazada",null,null));
 		service.guardar(new Mantenedor("7","Estatus Solicitud","Anulada",null,null));
 		
 		service.guardar(new Mantenedor("8","Estatus Evidencia","Registrada",null,null));
