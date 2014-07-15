@@ -620,4 +620,8 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 			selectedSolicitud = (Solicitud)service.guardar(solicitud);
 		}
 	}
+	
+	public void resolverMatricula(Long id, boolean autoriza){
+		service.resolverMatricula(id, autoriza);
+	}
 }

@@ -854,4 +854,11 @@ public interface IService {
 	 */
 
 	public void autorizarMatricula(Solicitud solicitud);
+	
+	
+	/** 
+	 * @param la solicitud cuya matricula se resuelve y la autorizacion o negacion
+	 * 
+	 */	
+	public void resolverMatricula(Long id, boolean autoriza);
 }

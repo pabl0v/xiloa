@@ -2101,4 +2101,26 @@ public class ServiceImp implements IService {
 
 		solicitudDao.save(solicitud);
 	}
+	
+	/** 
+	 * @param la solicitud cuya matricula se resuelve y la el valor de autorizacion
+	 * 
+	 */
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void resolverMatricula(Long id, boolean autoriza){
+
+		Solicitud solicitud = solicitudDao.findById(Solicitud.class, id);
+		Mantenedor estado;
+		
+		if(autoriza)
+			estado = getMantenedorById(36);		//autoriza matricula
+		else
+			estado = getMantenedorById(43);		//rechaza solicitud
+		
+		solicitud.setEstatus(estado);
+		solicitud.setFechaActualiza(new Date());
+		
+		solicitudDao.save(solicitud);
+	}
 }

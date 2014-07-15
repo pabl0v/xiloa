@@ -124,11 +124,11 @@
 				<p:column>
 					<p:splitButton value="Gestion" icon="ui-icon-pencil" title="Gestion del Candidato" style="display:inline-block;"  update=":formSolicitudes:dtSolicitud" >   
 	        	 		<p:separator />         		   
-	       		 		<p:menuitem value="Autorizar" icon="ui-icon-pencil" title="Autorizar Matricula" style="display:inline-block;" update=":formSolicitudes:dtSolicitud"  />
+	       		 		<p:menuitem value="Autorizar" icon="ui-icon-pencil" title="Autorizar Matricula" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.resolverMatricula(dashBoardSolicitudesManagedBean.selectedSolicitud.id,true)}" update=":formSolicitudes"  />
 	       		 		<p:menuitem value="Matricular" icon="ui-icon-pencil" title="Matricular Candidato" style="display:inline-block;" update=":formSolicitudes:dtSolicitud"  />
 	       		 		<p:menuitem value="Convocar" icon="ui-icon-pencil" title="Convocar Candidato" style="display:inline-block;" update=":formSolicitudes:dtSolicitud"  />
 	       		 		<p:menuitem value="Evaluar" icon="ui-icon-pencil" title="Evaluar Candidato" style="display:inline-block;" update=":formSolicitudes:dtSolicitud"  />
-	       		 		<p:menuitem value="Rechazar" icon="ui-icon-pencil" title="Rechazar Candidatura" style="display:inline-block;" update=":formSolicitudes:dtSolicitud"  />
+	       		 		<p:menuitem value="Rechazar" icon="ui-icon-pencil" title="Rechazar Candidatura" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.resolverMatricula(dashBoardSolicitudesManagedBean.selectedSolicitud.id,false)}" update=":formSolicitudes"  />
 	       		 		<p:menuitem value="Anular" icon="ui-icon-pencil" title="Anular Candidatura" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.anulaSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" update=":formSolicitudes:dtSolicitud" disabled="#{!varSolicitudI.erasable}" />
 	   				</p:splitButton>
 				</p:column>

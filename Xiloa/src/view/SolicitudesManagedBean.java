@@ -588,5 +588,5 @@ public class SolicitudesManagedBean implements Serializable {
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Obtiene el listado de certificaciones.
 	public List<SelectItem> getCertificaciones() {
 		return new ArrayList<SelectItem>(certificaciones.values());
-	}
+	}	
 }

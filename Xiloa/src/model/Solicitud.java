@@ -75,6 +75,11 @@ public class Solicitud implements Serializable {
 	private Date fechaRegistro;
 	
 	@DateTimeFormat(iso = ISO.DATE)
+	@Column(name = "fecha_actualiza", nullable = true)
+	@Temporal(TemporalType.DATE)	
+	private Date fechaActualiza;
+	
+	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "fecha_matricula", nullable = true)
 	@Temporal(TemporalType.DATE)	
 	private Date fechaMatricula;
@@ -189,6 +194,14 @@ public class Solicitud implements Serializable {
 
 	public void setFechaRegistro(Date fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
+	}
+	
+	public Date getFechaActualiza() {
+		return fechaActualiza;
+	}
+
+	public void setFechaActualiza(Date fecha) {
+		this.fechaActualiza = fecha;
 	}
 
 	public Date getFechaMatricula() {
