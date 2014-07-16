@@ -857,8 +857,8 @@ public interface IService {
 	
 	
 	/** 
-	 * @param la solicitud cuya matricula se resuelve y la autorizacion o negacion
+	 * @param la solicitud cuyo estado se quiere cambiar y el indicador del nuevo estado
 	 * 
 	 */	
-	public void resolverMatricula(Long id, boolean autoriza);
+	public void actualizarEstadoSolicitud(Solicitud solicitud, int indicador);
 }

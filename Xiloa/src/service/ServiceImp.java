@@ -2108,19 +2108,27 @@ public class ServiceImp implements IService {
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void resolverMatricula(Long id, boolean autoriza){
+	public void actualizarEstadoSolicitud(Solicitud solicitud, int indicador){
 
-		Solicitud solicitud = solicitudDao.findById(Solicitud.class, id);
-		Mantenedor estado;
+		Mantenedor estado = null;
 		
-		if(autoriza)
-			estado = getMantenedorById(36);		//autoriza matricula
-		else
-			estado = getMantenedorById(43);		//rechaza solicitud
-		
-		solicitud.setEstatus(estado);
-		solicitud.setFechaActualiza(new Date());
-		
-		solicitudDao.save(solicitud);
+		switch(indicador){
+			case 1: estado = getMantenedorById(36); break; //autoriza matricula
+			case 2: estado = getMantenedorById(43); break; //rechaza matricula
+			case 3: estado = getMantenedorById(37); break; //matriculado
+			case 4: estado = getMantenedorById(38); break; //asesoria grupal
+			case 5: estado = getMantenedorById(39); break; //asesoria individual
+			case 6: estado = getMantenedorById(40); break; //programado
+			case 7: estado = getMantenedorById(41); break; //evaluado
+			case 8: estado = getMantenedorById(42); break; //completado
+			case 9: estado = getMantenedorById(44); break; //anulado
+			default: break;
+		}
+			
+		if(estado!=null){
+			solicitud.setEstatus(estado);
+			solicitud.setFechaActualiza(new Date());
+			solicitudDao.save(solicitud);
+		}
 	}
 }

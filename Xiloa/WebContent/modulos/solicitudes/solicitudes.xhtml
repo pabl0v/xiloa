@@ -114,22 +114,20 @@
         			</f:facet>
                 	<h:outputText value="#{varSolicitudI.estatus.valor}" />
                 </p:column>
-                <sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO">                
-	                <p:column style="width:4%" exportable="false">                  
-		            	<p:commandButton id="selectButton" action="#{dashBoardSolicitudesManagedBean.editaSolicitud}" icon="ui-icon-pencil" title="Editar Solicitud" disabled="#{!varSolicitudI.editable}">
-		   	            	<f:setPropertyActionListener value="#{varSolicitudI}" target="#{dashBoardSolicitudesManagedBean.selectedSolicitud}" />
-		            	</p:commandButton>		            	           
-	    			</p:column>
-    			</sec:authorize>
 				<p:column>
-					<p:splitButton value="Gestion" icon="ui-icon-pencil" title="Gestion del Candidato" style="display:inline-block;"  update=":formSolicitudes:dtSolicitud" >   
-	        	 		<p:separator />         		   
-	       		 		<p:menuitem value="Autorizar" icon="ui-icon-pencil" title="Autorizar Matricula" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.resolverMatricula(dashBoardSolicitudesManagedBean.selectedSolicitud.id,true)}" update=":formSolicitudes"  />
-	       		 		<p:menuitem value="Matricular" icon="ui-icon-pencil" title="Matricular Candidato" style="display:inline-block;" update=":formSolicitudes:dtSolicitud"  />
-	       		 		<p:menuitem value="Convocar" icon="ui-icon-pencil" title="Convocar Candidato" style="display:inline-block;" update=":formSolicitudes:dtSolicitud"  />
-	       		 		<p:menuitem value="Evaluar" icon="ui-icon-pencil" title="Evaluar Candidato" style="display:inline-block;" update=":formSolicitudes:dtSolicitud"  />
-	       		 		<p:menuitem value="Rechazar" icon="ui-icon-pencil" title="Rechazar Candidatura" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.resolverMatricula(dashBoardSolicitudesManagedBean.selectedSolicitud.id,false)}" update=":formSolicitudes"  />
-	       		 		<p:menuitem value="Anular" icon="ui-icon-pencil" title="Anular Candidatura" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.anulaSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" update=":formSolicitudes:dtSolicitud" disabled="#{!varSolicitudI.erasable}" />
+					<p:splitButton value="Gestión de Solicitud" icon="ui-icon-pencil" title="Gestion del Candidato" style="display:inline-block;"  update=":formSolicitudes:dtSolicitud" >   
+	        	 		<p:separator />
+                		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO">                  
+		            		<p:menuitem icon="ui-icon-pencil" value="Editar" title="Editar Solicitud" action="#{dashBoardSolicitudesManagedBean.editaSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" disabled="#{!varSolicitudI.editable}" />
+    					</sec:authorize>        	 		
+	        	 		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO">
+	       		 			<p:menuitem value="Autorizar" title="Autorizar Matricula" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,1)}" update=":formSolicitudes"  />
+	       		 		</sec:authorize>
+	       		 		<p:menuitem value="Rechazar" title="Rechazar Candidatura" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,2)}" update=":formSolicitudes"  />
+	       		 		<p:menuitem value="Matricular" title="Matricular Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,3)}" update=":formSolicitudes:dtSolicitud"  />
+	       		 		<p:menuitem value="Convocar" title="Convocar Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,4)}" update=":formSolicitudes:dtSolicitud"  />
+	       		 		<p:menuitem value="Evaluar" title="Evaluar Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,7)}" update=":formSolicitudes:dtSolicitud"  />
+	       		 		<p:menuitem value="Anular" title="Anular Candidatura" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,9)}" update=":formSolicitudes:dtSolicitud" disabled="#{!varSolicitudI.erasable}" />
 	   				</p:splitButton>
 				</p:column>
             </p:dataTable>            

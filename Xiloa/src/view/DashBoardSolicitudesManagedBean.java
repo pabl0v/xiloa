@@ -321,7 +321,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	}
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo utilizado para redireccionar a la edicion de la solicitud en dependencia del estatus en que se encuentra la solicitud seleccionada.
-	public String editaSolicitud(){
+	public String editaSolicitud(Solicitud solicitud){
 		String urlDestino = null;
 		Mantenedor estadoActualSolicitud = null;
 		
@@ -329,7 +329,9 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		Integer finalEstadoKey = null;
 		Mantenedor estadoInicial = null;
 		Mantenedor estadoFinal = null;
-				
+		
+		this.selectedSolicitud = solicitud;
+
 		estadoActualSolicitud = this.selectedSolicitud.getEstatus();
 		
 		if (estadoActualSolicitud != null) {
@@ -621,7 +623,20 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		}
 	}
 	
-	public void resolverMatricula(Long id, boolean autoriza){
-		service.resolverMatricula(id, autoriza);
+	public void actualizarEstadoSolicitud(Solicitud solicitud, int indicador){
+		
+		/*
+		 * 	1: autorizado para matricula
+		 *  2: rechazado para matricula
+		 *  3: matriculado
+		 *  4: asesoria grupal
+		 *  5: asesoria individual
+		 *  6: programada
+		 *  7: evaluada
+		 *  8: completada
+		 *  9: anulada
+		 */
+
+		service.actualizarEstadoSolicitud(solicitud, indicador);
 	}
 }
