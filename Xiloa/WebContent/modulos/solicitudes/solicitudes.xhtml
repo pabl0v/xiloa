@@ -130,7 +130,7 @@
 	       		 		<p:menuitem value="Anular" title="Anular Candidatura" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,9)}" update=":formSolicitudes:dtSolicitud" disabled="#{!varSolicitudI.erasable}" />
 	   				</p:splitButton>
 				</p:column>
-            </p:dataTable>            
+            </p:dataTable>
         </div>
         <sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_SEGUIMIENTO">  
 	        <div id="contenedor_exportar">

@@ -106,7 +106,7 @@
            	<div style="margin-bottom: 16px;">
            		<p:commandButton id="btnAgregaLaborales" disabled="#{expedienteManagedBean.disabledBtnAgregaLaborales}"
            		                 action="#{expedienteManagedBean.nuevoLaboral}" value="Agregar" icon="ui-icon-document"
-           		                 oncomplete="PF('dlg1').show();"  process="@form" update=":modalLaborales,:laboralesDialogo" />
+           		                 oncomplete="PF('dlg1').show();"  process="@form" update=":formLaborales,:modalLaborales,:laboralesDialogo" />
            	</div>       	    					
     		<p:tabView id="tabView_datosLaborales">
             	<p:tab id="tab1" title="Experiencia">                    	  

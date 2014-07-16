@@ -2113,15 +2113,15 @@ public class ServiceImp implements IService {
 		Mantenedor estado = null;
 		
 		switch(indicador){
-			case 1: estado = getMantenedorById(36); break; //autoriza matricula
-			case 2: estado = getMantenedorById(43); break; //rechaza matricula
-			case 3: estado = getMantenedorById(37); break; //matriculado
-			case 4: estado = getMantenedorById(38); break; //asesoria grupal
-			case 5: estado = getMantenedorById(39); break; //asesoria individual
-			case 6: estado = getMantenedorById(40); break; //programado
-			case 7: estado = getMantenedorById(41); break; //evaluado
-			case 8: estado = getMantenedorById(42); break; //completado
-			case 9: estado = getMantenedorById(44); break; //anulado
+			case 1: estado = getMantenedorById(37); break; //autoriza matricula
+			case 2: estado = getMantenedorById(44); break; //rechaza matricula
+			case 3: estado = getMantenedorById(38); break; //matriculado
+			case 4: estado = getMantenedorById(39); break; //asesoria grupal
+			case 5: estado = getMantenedorById(40); break; //asesoria individual
+			case 6: estado = getMantenedorById(41); break; //programado
+			case 7: estado = getMantenedorById(42); break; //evaluado
+			case 8: estado = getMantenedorById(43); break; //completado
+			case 9: estado = getMantenedorById(45); break; //anulado
 			default: break;
 		}
 			

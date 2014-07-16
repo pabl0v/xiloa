@@ -83,6 +83,7 @@ public class ServiceTest {
 		service.guardar(new Mantenedor("6","Tipo de Instrumento","Otro",null,null));
 		
 		service.guardar(new Mantenedor("7","Estatus Solicitud","Registrada",null,null));	
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Enviada",null,null));
 		service.guardar(new Mantenedor("7","Estatus Solicitud","Autorizada",null,null));
 		service.guardar(new Mantenedor("7","Estatus Solicitud","Matriculada",null,null));
 		service.guardar(new Mantenedor("7","Estatus Solicitud","Asesoria Grupal",null,null));

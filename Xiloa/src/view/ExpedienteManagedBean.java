@@ -512,7 +512,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 	public List<Laboral> getListDatosLaborales() {		
-		this.listDatosLaborales = (this.getContactoExp() != null) ? service.getListLaboralByTipo(new Integer(13), this.getContactoExp()) : this.listDatosLaborales;
+		this.listDatosLaborales = (this.getContactoExp() != null) ? service.getListLaboralByTipo(new Integer(23), this.getContactoExp()) : this.listDatosLaborales;
 		
 		return this.listDatosLaborales;
 	}
@@ -522,7 +522,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 	public List<Laboral> getListDatosEstudios() {
-		listDatosEstudios = (getContactoExp() != null) ? service.getListLaboralByTipo(new Integer(14), getContactoExp()) : listDatosEstudios;
+		listDatosEstudios = (getContactoExp() != null) ? service.getListLaboralByTipo(new Integer(24), getContactoExp()) : listDatosEstudios;
 		return listDatosEstudios;
 	}
 
@@ -531,7 +531,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 	public List<Laboral> getListDatosCalificacion() {
-		this.listDatosCalificacion = (getContactoExp() != null) ? service.getListLaboralByTipo(new Integer(15), getContactoExp()) : listDatosCalificacion;
+		this.listDatosCalificacion = (getContactoExp() != null) ? service.getListLaboralByTipo(new Integer(25), getContactoExp()) : listDatosCalificacion;
 		return listDatosCalificacion;
 	}
 
@@ -540,7 +540,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 	public List<Laboral> getListDatosCertificaciones() {
-		this.listDatosCertificaciones = (getContactoExp() != null) ? service.getListLaboralByTipo(new Integer(16), getContactoExp()) : listDatosCertificaciones;
+		this.listDatosCertificaciones = (getContactoExp() != null) ? service.getListLaboralByTipo(new Integer(26), getContactoExp()) : listDatosCertificaciones;
 		return listDatosCertificaciones;
 	}
 
