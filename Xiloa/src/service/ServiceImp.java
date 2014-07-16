@@ -171,53 +171,22 @@ public class ServiceImp implements IService {
 		mantenedores = mantenedorDao.findAllByNamedQuery("Mantenedor.findAll");
 		usuarios = usuarioDao.findAll(Usuario.class);
 		roles = rolDao.findAll(Rol.class);
-		int tipoMantenedor = 0;
 		
 		for(int i=0; i<mantenedores.size(); i++){
 			Mantenedor mantenedor = mantenedores.get(i);
-			switch(mantenedor.getId()){
-				case 1:
-				case 2:
-				case 3:
-				case 4:
-				case 5:
-				case 6:
-				case 7:
-				case 8: 
-				case 9:
-				case 10:
-				case 11: catalogoTiposActividad.put(mantenedor.getId(), mantenedor); break;
-				case 12:
-				case 13:
-				case 14:
-				case 15: catalogoEstatusActividad.put(mantenedor.getId(), mantenedor); break;
-				case 16:
-				case 17:
-				case 18:
-				case 19: catalogoEstatusCertificacion.put(mantenedor.getId(), mantenedor); break;
-				case 27:
-				case 28:
-				case 29:
-				case 30:
-				case 31:
-				case 32:
-				case 33:
-				case 34: catalogoTiposInstrumento.put(mantenedor.getId(), mantenedor); break;
-			}
 			
-			tipoMantenedor = Integer.valueOf(mantenedor.getTipo()).intValue();
-			switch (tipoMantenedor){
-				case 1:		
-				case 2:
-				case 3:
+			switch (Integer.valueOf(mantenedor.getTipo()).intValue()){
+				case 1: catalogoTiposActividad.put(mantenedor.getId(), mantenedor); break;		
+				case 2: catalogoEstatusActividad.put(mantenedor.getId(), mantenedor); break;
+				case 3: catalogoEstatusCertificacion.put(mantenedor.getId(), mantenedor); break;
 				case 4:
 				case 5: catalogoTiposDatosLaborales.put(mantenedor.getId(), mantenedor); break;
+				case 6: catalogoTiposInstrumento.put(mantenedor.getId(), mantenedor); break;
 				case 7: catalogoEstadoSolicitud.put(mantenedor.getId(), mantenedor); break;
 				case 8: catalogoPortafolio.put(mantenedor.getId(), mantenedor); break;
 				case 9: catalogoEstadosEvaluacion.put(mantenedor.getId(), mantenedor); break;
 				case 11: catalogoGenero.put(mantenedor.getId(), mantenedor); break;
 			}
-			
 		}
 		
 		catalogoUnidades = inatecDao.getCatalogoUnidades();
