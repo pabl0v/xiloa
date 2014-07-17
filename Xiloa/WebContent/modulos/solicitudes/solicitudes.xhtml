@@ -50,24 +50,20 @@
         <div id="contenedor_tabla_solicitudes">     
         	<p:messages id="msgSolicitudes" showDetail="true" autoUpdate="true" closable="true" />        	      
         	<p:dataTable id="dtSolicitud" widgetVar="dtSolicitudes" emptyMessage="No existen solicitudes activas" 
-        	             var="varSolicitudI" value="#{dashBoardSolicitudesManagedBean.listaSolicitudes}" 
-        	             selectionMode="single" rowKey="#{varSolicitudI.id}"
-        	             selection="#{dashBoardSolicitudesManagedBean.selectedSolicitud}"         	              
-        	             paginator="true" rows="12"  >
-        	    <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_PARTICIPANTE">     	      
-	        		<p:ajax event="rowSelect" listener="#{dashBoardSolicitudesManagedBean.onRowSelectDtSolicitudes}" update=":formSolicitudes:btnEnviarSolicitud" />  
-					<p:ajax event="rowUnselect" listener="#{dashBoardSolicitudesManagedBean.onRowUnSelectDtSolicitudes}" update=":formSolicitudes:btnEnviarSolicitud" />       		                               
-				</sec:authorize>
+							var="varSolicitudI" value="#{dashBoardSolicitudesManagedBean.listaSolicitudes}" 
+							selectionMode="single" rowKey="#{varSolicitudI.id}"
+							selection="#{dashBoardSolicitudesManagedBean.selectedSolicitud}"
+							paginator="true" rows="12"  >
 				<!--Las columnas de la tabla-->
                 <p:column id="expedienteColumn" exportable="true" filterBy="#{varSolicitudI.id}" filterMatchMode="contains">
                 	<f:facet name="header">  
-            			<h:outputText value="Exp." />  
+            			<h:outputText value="Ticket" />
         			</f:facet> 
                 	<h:outputText value="#{varSolicitudI.id}" />
                 </p:column>
                 <p:column id="centroColumn" exportable="true" filterBy="#{varSolicitudI.certificacion.ifpNombre}" filterOptions="#{dashBoardSolicitudesManagedBean.listaCentros}" filterMatchMode="exact">
                 	<f:facet name="header">  
-            			<h:outputText value="Centro evaluador" />  
+            			<h:outputText value="Centro Evaluador" />
         			</f:facet> 
                 	<h:outputText value="#{varSolicitudI.certificacion.ifpNombre}" />
                 </p:column>                      
@@ -79,13 +75,13 @@
                  </p:column>  
                 <p:column id="certificacionColumn" exportable="true" filterBy="#{varSolicitudI.certificacion.nombre}" filterMatchMode="contains">
                 	<f:facet name="header">  
-            			<h:outputText value="Certificacion" />  
+            			<h:outputText value="Certificación" />  
         			</f:facet> 
                 	<h:outputText value="#{varSolicitudI.certificacion.nombre}"/>
                 </p:column>  
                 <p:column id="fechaColumn" exportable="true">
                 	<f:facet name="header">  
-            			<h:outputText value="Fecha solicitud" />  
+            			<h:outputText value="Fecha Solicitud" />  
         			</f:facet> 
                 	<h:outputText value="#{varSolicitudI.fechaRegistro}" >
                 		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
@@ -98,22 +94,20 @@
                 	<h:outputText value="#{varSolicitudI.estatus.valor}" />
                 </p:column>
 				<p:column>
-					<p:splitButton value="Gestión de Solicitud" icon="ui-icon-pencil" title="Gestion del Candidato" style="display:inline-block;"  update=":formSolicitudes:dtSolicitud" >   
+					<p:splitButton value="Gestión de Solicitud" icon="ui-icon-pencil" title="Gestion de Solicitud" style="display:inline-block;"  update=":formSolicitudes:dtSolicitud" >   
 	        	 		<p:separator />
-						<sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_PARTICIPANTE">
-							<p:menuitem icon="ui-icon-pencil" value="Enviar" title="Enviar Solicitud" action="#{dashBoardSolicitudesManagedBeanactualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,1)}" update=":formSolicitudes" disabled="#{dashBoardSolicitudesManagedBean.disableEnviarSolicitud}" />       	 
-						</sec:authorize>  
+							<p:menuitem value="Enviar Solicitud" title="Enviar Solicitud" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,1)}" update=":formSolicitudes" />
                 		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO">                  
-		            		<p:menuitem icon="ui-icon-pencil" value="Editar" title="Editar Solicitud" action="#{dashBoardSolicitudesManagedBean.editaSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" disabled="#{!varSolicitudI.editable}" />
+		            		<p:menuitem icon="ui-icon-pencil" value="Editar Solicitud" title="Editar Solicitud" action="#{dashBoardSolicitudesManagedBean.editaSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" disabled="#{!varSolicitudI.editable}" />
     					</sec:authorize>        	 		
 	        	 		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO">
-	       		 			<p:menuitem value="Autorizar Matricula" title="Autorizar Matricula" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,2)}" update=":formSolicitudes"  />
+	       		 			<p:menuitem value="Autorizar Matricula" title="Autorizar Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,2)}" update=":formSolicitudes"  />
 	       		 		</sec:authorize>
 	       		 		<p:menuitem value="Rechazar Solicitud" title="Rechazar Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,3)}" update=":formSolicitudes"  />
 	       		 		<p:menuitem value="Matricular Candidato" title="Matricular Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,4)}" update=":formSolicitudes:dtSolicitud"  />
 	       		 		<p:menuitem value="Convocar Candidato" title="Convocar Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,5)}" update=":formSolicitudes:dtSolicitud"  />
 	       		 		<p:menuitem value="Evaluar Candidato" title="Evaluar Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,8)}" update=":formSolicitudes:dtSolicitud"  />
-	       		 		<p:menuitem value="Anular Solicitud" title="Anular Candidatura" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,10)}" update=":formSolicitudes:dtSolicitud" disabled="#{!varSolicitudI.erasable}" />
+	       		 		<p:menuitem value="Anular Solicitud" title="Anular Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,10)}" update=":formSolicitudes:dtSolicitud" disabled="#{!varSolicitudI.erasable}" />
 	   				</p:splitButton>
 				</p:column>
             </p:dataTable>
