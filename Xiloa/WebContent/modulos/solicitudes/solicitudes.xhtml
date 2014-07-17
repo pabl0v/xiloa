@@ -37,40 +37,23 @@
             </sec:authorize>
        </div>
             
-        <div id="contenedor_filtro">			    
-        		 <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_PARTICIPANTE">       	 
-		            <p:commandButton id="btnEnviarSolicitud" value="Enviar" title="Solicitar Certificacion" 
-	    		                 icon="ui-icon-star" style="display:inline-block;"
-	    		                 action="#{dashBoardSolicitudesManagedBean.solicitarCertificacion}" 
-	    					     update=":formSolicitudes:dtSolicitud" disabled="#{dashBoardSolicitudesManagedBean.disableEnviarSolicitud}" />
-             	</sec:authorize>  
-             	
-             <p:splitButton value="Solicitud Candidato" icon="ui-icon-print" title="Generar Solicitud Candidato" style="display:inline-block;"
-	        	           action="#{dashBoardSolicitudesManagedBean.runSolicitudCandidato}"  update=":formSolicitudes:msgSolicitudes" >   
-	        	 <p:separator />         		   
-	       		 <p:menuitem value="Pre-Matricula" icon="ui-icon-print" title="Generar Formato Pre-Matricula" style="display:inline-block;"  
-	       		             action="#{dashBoardSolicitudesManagedBean.runPreMatricula}" update=":formSolicitudes:msgSolicitudes"  />
-	       		             
-	       		 <p:menuitem value="Emisión Juicio" icon="ui-icon-print" title="Imprimir Emisión de Juicio y Reporte de Orientación" style="display:inline-block;"  
-	       		             action="#{dashBoardSolicitudesManagedBean.runEmisionJuicio}" update=":formSolicitudes:msgSolicitudes"  />
-	       		             
-				<p:menuitem value="Informe Asesor" icon="ui-icon-print" title="Generar Informe del Asesor" style="display:inline-block;"  
-	       		             action="#{dashBoardSolicitudesManagedBean.runInformeAsesor}" update=":formSolicitudes:msgSolicitudes"  />	       		 
-								       		   
-	       		 <p:menuitem value="Plan Capacitacion" icon="ui-icon-print" title="Generar Plan de Capacitacion" style="display:inline-block;"  
-	       		             action="#{dashBoardSolicitudesManagedBean.runPlanCapacitacion}" update=":formSolicitudes:msgSolicitudes"  />
-	       		 
-	       		 <p:menuitem value="Certificado" icon="ui-icon-print" title="Imprimir Certificado" style="display:inline-block;"  
-	       		             action="#{dashBoardSolicitudesManagedBean.runCertificado}" update=":formSolicitudes:msgSolicitudes"  />				       		         	   	       			     			       			  
-	   		</p:splitButton>           		    			    			    		   
-        </div>              
+		<div id="contenedor_filtro">             	
+			<p:splitButton value="Solicitud Candidato" icon="ui-icon-print" title="Generar Solicitud Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runSolicitudCandidato}"  update=":formSolicitudes:msgSolicitudes" >   
+				<p:separator />         		   
+				<p:menuitem value="Pre-Matricula" icon="ui-icon-print" title="Generar Formato Pre-Matricula" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runPreMatricula}" update=":formSolicitudes:msgSolicitudes"  />	       		             
+				<p:menuitem value="Emisión Juicio" icon="ui-icon-print" title="Imprimir Emisión de Juicio y Reporte de Orientación" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runEmisionJuicio}" update=":formSolicitudes:msgSolicitudes"  />	       		             
+				<p:menuitem value="Informe Asesor" icon="ui-icon-print" title="Generar Informe del Asesor" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runInformeAsesor}" update=":formSolicitudes:msgSolicitudes"  />	       		 					       		   
+				<p:menuitem value="Plan Capacitacion" icon="ui-icon-print" title="Generar Plan de Capacitacion" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runPlanCapacitacion}" update=":formSolicitudes:msgSolicitudes"  />	       		 
+				<p:menuitem value="Certificado" icon="ui-icon-print" title="Imprimir Certificado" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runCertificado}" update=":formSolicitudes:msgSolicitudes"  />				       		         	   	       			     			       			  
+			</p:splitButton>           		    			    			    		   
+		</div>
         <div id="contenedor_tabla_solicitudes">     
         	<p:messages id="msgSolicitudes" showDetail="true" autoUpdate="true" closable="true" />        	      
         	<p:dataTable id="dtSolicitud" widgetVar="dtSolicitudes" emptyMessage="No existen solicitudes activas" 
         	             var="varSolicitudI" value="#{dashBoardSolicitudesManagedBean.listaSolicitudes}" 
         	             selectionMode="single" rowKey="#{varSolicitudI.id}"
         	             selection="#{dashBoardSolicitudesManagedBean.selectedSolicitud}"         	              
-        	             paginator="true" rows="12"  >     
+        	             paginator="true" rows="12"  >
         	    <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_PARTICIPANTE">     	      
 	        		<p:ajax event="rowSelect" listener="#{dashBoardSolicitudesManagedBean.onRowSelectDtSolicitudes}" update=":formSolicitudes:btnEnviarSolicitud" />  
 					<p:ajax event="rowUnselect" listener="#{dashBoardSolicitudesManagedBean.onRowUnSelectDtSolicitudes}" update=":formSolicitudes:btnEnviarSolicitud" />       		                               
@@ -117,36 +100,25 @@
 				<p:column>
 					<p:splitButton value="Gestión de Solicitud" icon="ui-icon-pencil" title="Gestion del Candidato" style="display:inline-block;"  update=":formSolicitudes:dtSolicitud" >   
 	        	 		<p:separator />
+						<sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_PARTICIPANTE">
+							<p:menuitem icon="ui-icon-pencil" value="Enviar" title="Enviar Solicitud" action="#{dashBoardSolicitudesManagedBeanactualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,1)}" update=":formSolicitudes" disabled="#{dashBoardSolicitudesManagedBean.disableEnviarSolicitud}" />       	 
+						</sec:authorize>  
                 		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO">                  
 		            		<p:menuitem icon="ui-icon-pencil" value="Editar" title="Editar Solicitud" action="#{dashBoardSolicitudesManagedBean.editaSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" disabled="#{!varSolicitudI.editable}" />
     					</sec:authorize>        	 		
 	        	 		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO">
-	       		 			<p:menuitem value="Autorizar" title="Autorizar Matricula" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,1)}" update=":formSolicitudes"  />
+	       		 			<p:menuitem value="Autorizar Matricula" title="Autorizar Matricula" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,2)}" update=":formSolicitudes"  />
 	       		 		</sec:authorize>
-	       		 		<p:menuitem value="Rechazar" title="Rechazar Candidatura" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,2)}" update=":formSolicitudes"  />
-	       		 		<p:menuitem value="Matricular" title="Matricular Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,3)}" update=":formSolicitudes:dtSolicitud"  />
-	       		 		<p:menuitem value="Convocar" title="Convocar Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,4)}" update=":formSolicitudes:dtSolicitud"  />
-	       		 		<p:menuitem value="Evaluar" title="Evaluar Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,7)}" update=":formSolicitudes:dtSolicitud"  />
-	       		 		<p:menuitem value="Anular" title="Anular Candidatura" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,9)}" update=":formSolicitudes:dtSolicitud" disabled="#{!varSolicitudI.erasable}" />
+	       		 		<p:menuitem value="Rechazar Solicitud" title="Rechazar Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,3)}" update=":formSolicitudes"  />
+	       		 		<p:menuitem value="Matricular Candidato" title="Matricular Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,4)}" update=":formSolicitudes:dtSolicitud"  />
+	       		 		<p:menuitem value="Convocar Candidato" title="Convocar Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,5)}" update=":formSolicitudes:dtSolicitud"  />
+	       		 		<p:menuitem value="Evaluar Candidato" title="Evaluar Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,8)}" update=":formSolicitudes:dtSolicitud"  />
+	       		 		<p:menuitem value="Anular Solicitud" title="Anular Candidatura" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,10)}" update=":formSolicitudes:dtSolicitud" disabled="#{!varSolicitudI.erasable}" />
 	   				</p:splitButton>
 				</p:column>
             </p:dataTable>
         </div>
-        <sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_SEGUIMIENTO">  
-	        <div id="contenedor_exportar">
-	    		<p>Con seleccionado:</p>    		
-	        	<p:splitButton value="Convocar" icon="ui-icon-disk"
-	        	               action="#{dashBoardSolicitudesManagedBean.indicarConvocar}" >           		   
-	       			<p:menuitem value="Asesorar" icon="ui-icon-arrowrefresh-1-w"
-	       			            action="#{dashBoardSolicitudesManagedBean.indicarAsesorar}" />
-	       			<p:separator />  
-	       			<p:menuitem value="Listo para inscripcion" icon="ui-icon-star"
-	       			            action="#{dashBoardSolicitudesManagedBean.indicarInscribir}" />       			  
-	   			</p:splitButton> 	
-	    	</div>
-    	</sec:authorize>
      </h:form>
-    </div>        
-    
+    </div>    
 </h:body>
 </html>

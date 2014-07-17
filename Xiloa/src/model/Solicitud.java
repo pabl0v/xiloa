@@ -34,7 +34,8 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 @Entity(name = "solicitudes")
 @Table(name = "solicitudes", schema = "sccl")
-@NamedQueries ({	
+@NamedQueries ({
+	@NamedQuery(name="Solicitud.findAll", query="select s from solicitudes s where s.estatus.id != 45 and s.certificacion.ifpId = case ?1 when 1000 then s.certificacion.ifpId else ?1 end order by s.id desc"),
 	@NamedQuery(name="Solicitud.findById", query="select s from solicitudes s where s.id=?1 order by s.id desc"),
 	@NamedQuery(name="Solicitud.findByIdIfp", query="select s from solicitudes s where s.certificacion.ifpId=?1 order by s.id desc"),
 	@NamedQuery(name="Solicitud.findByIdCert", query="select s from solicitudes s where s.certificacion.id=?1 order by s.id desc"),

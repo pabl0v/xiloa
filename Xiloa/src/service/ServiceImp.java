@@ -2082,15 +2082,16 @@ public class ServiceImp implements IService {
 		Mantenedor estado = null;
 		
 		switch(indicador){
-			case 1: estado = getMantenedorById(37); break; //autoriza matricula
-			case 2: estado = getMantenedorById(44); break; //rechaza matricula
-			case 3: estado = getMantenedorById(38); break; //matriculado
-			case 4: estado = getMantenedorById(39); break; //asesoria grupal
-			case 5: estado = getMantenedorById(40); break; //asesoria individual
-			case 6: estado = getMantenedorById(41); break; //programado
-			case 7: estado = getMantenedorById(42); break; //evaluado
-			case 8: estado = getMantenedorById(43); break; //completado
-			case 9: estado = getMantenedorById(45); break; //anulado
+			case 1: estado = getMantenedorById(36); break; //enviar
+			case 2: estado = getMantenedorById(37); break; //autorizar matricula
+			case 3: estado = getMantenedorById(44); break; //rechazar matricula
+			case 4: estado = getMantenedorById(38); break; //matricular
+			case 5: estado = getMantenedorById(39); break; //asesoria grupal
+			case 6: estado = getMantenedorById(40); break; //asesoria individual
+			case 7: estado = getMantenedorById(41); break; //programar
+			case 8: estado = getMantenedorById(42); break; //evaluar
+			case 9: estado = getMantenedorById(43); break; //completar
+			case 10: estado = getMantenedorById(45); break; //anular
 			default: break;
 		}
 			
@@ -2099,5 +2100,15 @@ public class ServiceImp implements IService {
 			solicitud.setFechaActualiza(new Date());
 			solicitudDao.save(solicitud);
 		}
+	}
+
+	/** 
+	 * @param la entidad cuyo listado de solicitudes se desea
+	 * 
+	 */
+	@Override
+	public List<Solicitud> getSolicitudesByEntidadId(int entidadId){
+		Object [] objs =  new Object [] {entidadId};
+		return solicitudDao.findAllByNamedQueryParam("Solicitud.findAll", objs);
 	}
 }

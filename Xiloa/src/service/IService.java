@@ -855,10 +855,15 @@ public interface IService {
 
 	public void autorizarMatricula(Solicitud solicitud);
 	
-	
 	/** 
 	 * @param la solicitud cuyo estado se quiere cambiar y el indicador del nuevo estado
 	 * 
 	 */	
 	public void actualizarEstadoSolicitud(Solicitud solicitud, int indicador);
+
+	/** 
+	 * @param la entidad cuyo listado de solicitudes se desea
+	 * 
+	 */
+	public List<Solicitud> getSolicitudesByEntidadId(int entidadId);
 }

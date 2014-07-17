@@ -44,28 +44,28 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	
 	private Solicitud selectedSolicitud;
 	
-	private Long selectedSolicitudId;
+	//private Long selectedSolicitudId;
 	
-	private String selectedBuscarByAll;
-	private String buscarByAllValue;
+	//private String selectedBuscarByAll;
+	//private String buscarByAllValue;
 	
-	private Integer selectedIdIfpSolicitud;
+	//private Integer selectedIdIfpSolicitud;
 		
 	//Implementacion SelectItems	
-	private List<SelectItem> listBuscarByAll;
-	private List<SelectItem> listCentrosBySolicitud;				
+	//private List<SelectItem> listBuscarByAll;
+	//private List<SelectItem> listCentrosBySolicitud;				
 	
-	private List<SelectItem> listCertByCentro;
+	//private List<SelectItem> listCertByCentro;
 	
-	private List<SelectItem> listAccionConvo;
-	private Integer selectedIdIfp;
+	//private List<SelectItem> listAccionConvo;
+	//private Integer selectedIdIfp;
 	
-	private Long selectedIdCertificacion;
-	private Long selectedIdCertByCentro;	
+	//private Long selectedIdCertificacion;
+	//private Long selectedIdCertByCentro;	
 			
-	private List<Solicitud> filterSolicitudes;
+	//private List<Solicitud> filterSolicitudes;
 	
-	private Mantenedor estadoInicialSolicitud;
+	//private Mantenedor estadoInicialSolicitud;
 	
 	private boolean disableEnviarSolicitud;
 	
@@ -76,32 +76,30 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		
 		listaSolicitudes = new ArrayList<Solicitud> ();				
 			
-		listCentrosBySolicitud = new ArrayList<SelectItem>();
-		listCertByCentro = new ArrayList<SelectItem>();
-		listBuscarByAll = new ArrayList<SelectItem> ();
-		listAccionConvo = new ArrayList<SelectItem> ();
-		filterSolicitudes = new ArrayList<Solicitud> ();
+		//listCentrosBySolicitud = new ArrayList<SelectItem>();
+		//listCertByCentro = new ArrayList<SelectItem>();
+		//listBuscarByAll = new ArrayList<SelectItem> ();
+		//listAccionConvo = new ArrayList<SelectItem> ();
+		//filterSolicitudes = new ArrayList<Solicitud> ();
 		
-		selectedIdIfpSolicitud = null;		
-		selectedIdCertByCentro = null;	
+		//selectedIdIfpSolicitud = null;		
+		//selectedIdCertByCentro = null;	
 		
-		selectedBuscarByAll = null;	
+		//selectedBuscarByAll = null;	
 		
 		disableEnviarSolicitud = true;
 					
 	}	
-
 	
 	public boolean isDisableEnviarSolicitud() {
 		return disableEnviarSolicitud;
 	}
 
-
 	public void setDisableEnviarSolicitud(boolean disableEnviarSolicitud) {
 		this.disableEnviarSolicitud = disableEnviarSolicitud;
 	}
 
-
+	/*
 	public Mantenedor getEstadoInicialSolicitud() {
 		return estadoInicialSolicitud;
 	}
@@ -111,7 +109,6 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		this.estadoInicialSolicitud = estadoInicialSolicitud;
 	}
 
-
 	public Long getSelectedSolicitudId() {
 		return selectedSolicitudId;
 	}
@@ -119,7 +116,9 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	public void setSelectedSolicitudId(Long selectedSolicitudId) {
 		this.selectedSolicitudId = selectedSolicitudId;
 	}
+	*/
 
+	/*
 	public List<Solicitud> getFilterSolicitudes() {
 		return filterSolicitudes;
 	}
@@ -127,7 +126,9 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	public void setFilterSolicitudes(List<Solicitud> filterSolicitudes) {
 		this.filterSolicitudes = filterSolicitudes;
 	}
+	*/
 
+	/*
 	public Integer getSelectedIdIfp() {
 		return selectedIdIfp;
 	}
@@ -158,8 +159,10 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 
 	public void setSelectedIdCertByCentro(Long selectedIdCertByCentro) {
 		this.selectedIdCertByCentro = selectedIdCertByCentro;
-	}	
-	
+	}
+	*/
+
+	/*
 	public String getSelectedBuscarByAll() {
 		return selectedBuscarByAll;
 	}
@@ -200,21 +203,25 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		this.listAccionConvo = listAccionConvo;
 	}
 
+	/*
 	public String getBuscarByAllValue() {
 		return buscarByAllValue;
 	}
 
 	public void setBuscarByAllValue(String buscarByAllValue) {
 		this.buscarByAllValue = buscarByAllValue;
-	}	
+	}
+	*/
 	
-	public List<Solicitud> getListaSolicitudes() {		
-		return this.listaSolicitudes;
+	public List<Solicitud> getListaSolicitudes() {
+		return service.getSolicitudesByEntidadId(login.getEntidadUsuario());
 	}
 	
+	/*
 	public void setListaSolicitudes(List<Solicitud> listaSolicitudes) {
 		this.listaSolicitudes = listaSolicitudes;
 	}
+	*/
 		
 	public Solicitud getSelectedSolicitud() {
 		return selectedSolicitud;
@@ -223,7 +230,8 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	public void setSelectedSolicitud(Solicitud selectedSolicitud) {
 		this.selectedSolicitud = selectedSolicitud;
 	}	
-	
+
+	/*
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo utilizado para llenar la lista del selector utilizado para filtrar por cualquier campo
 	public void llenarListBuscarByAll () {
 		this.listBuscarByAll.add(new SelectItem(null, "Todos los campos"));
@@ -234,7 +242,9 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		this.listBuscarByAll.add(new SelectItem("s.contacto.correo1", "Evaluador"));
 		this.listBuscarByAll.add(new SelectItem("s.estatus.valor", "Estado"));		
 	}
-				
+	*/
+
+	/*
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo que se ejecuta posterior al constructor. Se utiliza para inicializar valores.
 	@PostConstruct
 	private void initBeanDBSolicitudes(){
@@ -256,9 +266,10 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		//Asigna el estado inicial de la Solicitud
 		//this.estadoInicialSolicitud = service.getMantenedorMinByTipo(new String("7"));
 		this.estadoInicialSolicitud = service.getCatalogoEstadoSolicitud().get(20);
-		
 	}
+	*/
 	
+	/*
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Método utilizado para consultar las certificaciones disponibles por el centro de formacion profesional seleccionado.
 	public void handleCertByCentro() {
 		List<Certificacion> certificacionList = service.getCertificacionesByIdIfp(this.getSelectedIdIfpSolicitud());
@@ -277,7 +288,9 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		this.listaSolicitudes = filtraSolicitudes(); //service.getSolicitudesByParam(asignaParams ());
 		this.filterSolicitudes = this.listaSolicitudes;
 	}
-	
+	*/
+
+	/*
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo utilizado para asignar los parametros de busqueda segun lo que se ha seleccionado en los filtros de lista de solicitudes.
 	public HashMap<String, Object> asignaParams () {
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -314,6 +327,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		
 		return service.filtraListaSolicitudes(asignaParams (), tipoFiltro);				
 	}
+	*/
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo que redireccion al facet registro_solicitudes.xhtml que permite agregar nueva solicitudes.
 	public String nuevaSolicitud(){		
@@ -335,11 +349,6 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		estadoActualSolicitud = this.selectedSolicitud.getEstatus();
 		
 		if (estadoActualSolicitud != null) {
-			//estadoInicial = service.getMantenedorMinByTipo(estadoActualSolicitud.getTipo());
-			//estadoFinal = service.getMantenedorMaxByTipo(estadoActualSolicitud.getTipo());
-			
-			//estadoInicial = service.getCatalogoEstadoSolicitud().get(20);
-			//estadoFinal = service.getCatalogoEstadoSolicitud().get(37);
 			
 			estadoInicial = service.getMantenedorById(32);
 			estadoFinal = service.getMantenedorById(38);
@@ -364,6 +373,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		return urlDestino;
 	}
 	
+	/*
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo que redirecciona al facet solicitudes.xhtml.
 	public String cancelarEdicion() {		
 		return "/modulos/solicitudes/solicitudes?faces-redirect=true";				
@@ -386,7 +396,9 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		FacesUtil.setParamBySession("tipoFiltro", new Integer(3));
 		return "/modulos/solicitudes/convocatoria?faces-redirect=true";
 	}
+	*/
 	
+	/*
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Asigna el estatus de solicitar certificacion.
 	public void solicitarCertificacion (){
 		
@@ -428,10 +440,10 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 			
 		} else
 			FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe seleccionar una solicitud.", true);
-		
-		
 	}
+	*/
 	
+	/*
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || funcion que valida las condiciones necesarias para que la solicitud pase a estatus registrada.
 	public boolean validaRegistroCV (Solicitud solicitud){
 		String        textMsg = "";
@@ -478,8 +490,8 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		}		
 		
 		return isValido;
-		
 	}
+	*/
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Método o listener asociado al evento select de registro en el dataTable dtSolicitudes.
 	public void onRowSelectDtSolicitudes(SelectEvent event) {
@@ -487,11 +499,17 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		
 		Mantenedor estadoActual = this.getSelectedSolicitud().getEstatus();
 		
+		if(estadoActual.getId()==36)
+			setDisableEnviarSolicitud(false);
+		else
+			setDisableEnviarSolicitud(true);
+		
+		/*
 		if (estadoActual.getId() == this.getEstadoInicialSolicitud().getId())
 			this.setDisableEnviarSolicitud(false);
 		else
 			this.setDisableEnviarSolicitud(true);
-		
+		*/
     }
   
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Método o listener asociado al evento unSelect del dataTable dtSolicitudes.
@@ -612,7 +630,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	}
 	
 	/*dchavez 15/03/2014. Anulacion de solicitud excepto cuando esta concluida o anulada*/
-	
+	/*
 	public void anulaSolicitud(Solicitud solicitud){
 		if(solicitud.getEstatus().getId()==43 || solicitud.getEstatus().getId()==44 || solicitud.getEstatus().getId()==45)
 			return;
@@ -622,19 +640,21 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 			selectedSolicitud = (Solicitud)service.guardar(solicitud);
 		}
 	}
+	*/
 	
 	public void actualizarEstadoSolicitud(Solicitud solicitud, int indicador){
 		
 		/*
-		 * 	1: autorizado para matricula
-		 *  2: rechazado para matricula
-		 *  3: matriculado
-		 *  4: asesoria grupal
-		 *  5: asesoria individual
-		 *  6: programada
-		 *  7: evaluada
-		 *  8: completada
-		 *  9: anulada
+		 * 	1: enviar solicitud
+		 *  2: autorizar para matricula
+		 *  3: rechazar para matricula
+		 *  4: matricular
+		 *  5: asesoria grupal
+		 *  6: asesoria individual
+		 *  7: programar
+		 *  8: evaluar
+		 *  9: completar
+		 *  10: anular
 		 */
 
 		service.actualizarEstadoSolicitud(solicitud, indicador);
