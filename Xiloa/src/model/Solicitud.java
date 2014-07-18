@@ -136,6 +136,9 @@ public class Solicitud implements Serializable {
 	
 	@Column(name = "situacion_laboral", nullable = true)
 	private boolean situacion_laboral = false;
+	
+	@Column(name = "recibo_matricula", nullable = true)
+	private String reciboMatricula;
 		
 	public boolean isSituacion_laboral() {
 		return situacion_laboral;
@@ -350,5 +353,13 @@ public class Solicitud implements Serializable {
 			return false;
 		else
 			return true;
+	}
+
+	public String getReciboMatricula() {
+		return reciboMatricula;
+	}
+
+	public void setReciboMatricula(String reciboMatricula) {
+		this.reciboMatricula = reciboMatricula;
 	}
 }

@@ -2,6 +2,7 @@ package view;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.Map;
 import javax.faces.model.SelectItem;
 
 import model.Certificacion;
+import model.Convocatoria;
 import model.Mantenedor;
 import model.Solicitud;
 
@@ -20,6 +22,7 @@ import controller.LoginController;
 import service.IService;
 import support.Ifp;
 import support.FacesUtil;
+import support.Item;
 import util.Global;
 
 //Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Bean asociada al facet solicitudes.xhtml
@@ -33,12 +36,19 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	private IService service;
 	@Autowired
 	private LoginController login;
-	private Solicitud selectedSolicitud;	
+	private Solicitud selectedSolicitud;
+	private Convocatoria selectedConvocatoria;
+	private Item selectedActividad;
+	private Item selectedInvolucrado;
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Constructor de la clase
 	public DashBoardSolicitudesManagedBean() {		
-		super();			
-	}		
+		super();
+		selectedActividad = new Item();
+		selectedInvolucrado = new Item();
+		selectedConvocatoria = new Convocatoria();
+		selectedSolicitud = new Solicitud();
+	}
 	
 	public List<Solicitud> getListaSolicitudes() {
 		return service.getSolicitudesByEntidadId(login.getEntidadUsuario());
@@ -213,5 +223,51 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		 */
 
 		service.actualizarEstadoSolicitud(solicitud, indicador);
+	}
+	
+	public void registrarMatricula(Date fecha, String recibo){
+		selectedSolicitud.setFechaMatricula(fecha);
+		selectedSolicitud.setReciboMatricula(recibo);
+		actualizarEstadoSolicitud(selectedSolicitud,4);
+	}
+
+	public Convocatoria getSelectedConvocatoria() {
+		return selectedConvocatoria;
+	}
+
+	public void setSelectedConvocatoria(Convocatoria selectedConvocatoria) {
+		this.selectedConvocatoria = selectedConvocatoria;
+	}
+
+	public List<Item> getActividades() {
+		List<Item> actividades = new ArrayList<Item>();
+		actividades.add(new Item(new Long(1),"Actividad 1"));
+		actividades.add(new Item(new Long(2),"Actividad 2"));
+		actividades.add(new Item(new Long(3),"Actividad 3"));
+		return actividades;
+	}
+
+	public List<Item> getInvolucrados() {
+		List<Item> involucrados = new ArrayList<Item>();
+		involucrados.add(new Item(new Long(1),"Involucrado 1"));
+		involucrados.add(new Item(new Long(2),"Involucrado 2"));
+		involucrados.add(new Item(new Long(3),"Involucrado 3"));
+		return involucrados;
+	}
+
+	public Item getSelectedActividad() {
+		return selectedActividad;
+	}
+
+	public void setSelectedActividad(Item selectedActividad) {
+		this.selectedActividad = selectedActividad;
+	}
+
+	public Item getSelectedInvolucrado() {
+		return selectedInvolucrado;
+	}
+
+	public void setSelectedInvolucrado(Item selectedInvolucrado) {
+		this.selectedInvolucrado = selectedInvolucrado;
 	}
 }
