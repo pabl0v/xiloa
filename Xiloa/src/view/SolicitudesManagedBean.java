@@ -37,7 +37,7 @@ import util.ValidatorUtil;
 public class SolicitudesManagedBean implements Serializable {
 	
 	/**
-	 * 
+	 **** 
 	 */
 	private static final long serialVersionUID = 1L;
 
