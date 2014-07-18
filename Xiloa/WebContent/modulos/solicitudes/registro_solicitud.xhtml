@@ -37,15 +37,15 @@
 	       		
 		
                 <h:outputLabel styleClass="estilo_label" for="primerNombre" value="Primer nombre (*):" /> 
-                <p:inputText id="primerNombre" value="#{solicitudesManagedBean.primerNombre}"  />  
+                <p:inputText id="primerNombre" value="#{solicitudesManagedBean.solicitante.primerNombre}"  />  
                 <h:outputLabel styleClass="estilo_label" for="segundoNombre" value="Segundo nombre:" />  
-                <p:inputText id="segundoNombre" value="#{solicitudesManagedBean.segundoNombre}" />  
+                <p:inputText id="segundoNombre" value="#{solicitudesManagedBean.solicitante.segundoNombre}" />  
                 <h:outputLabel styleClass="estilo_label" for="primerApellido" value="Primer apellido (*):" />  
-                <p:inputText id="primerApellido" value="#{solicitudesManagedBean.primerApellido}" />  
+                <p:inputText id="primerApellido" value="#{solicitudesManagedBean.solicitante.primerApellido}" />  
                 <h:outputLabel styleClass="estilo_label" for="segundoApellido" value="Segundo apellido:" />  
-                <p:inputText id="segundoApellido" value="#{solicitudesManagedBean.segundoApellido}" />  
+                <p:inputText id="segundoApellido" value="#{solicitudesManagedBean.solicitante.segundoApellido}" />  
                 <h:outputLabel styleClass="estilo_label" for="numeroIdentificacion" value="Cedula (*):" />
-                <p:inputMask id="numeroIdentificacion" value="#{solicitudesManagedBean.numeroIdentificacion}" mask="999-999999-9999a"/>                
+                <p:inputMask id="numeroIdentificacion" value="#{solicitudesManagedBean.solicitante.numeroIdentificacion}" mask="999-999999-9999a"/>                
          	</div>           
              <div class="seccion_detalle">
 		        <h:outputText value="Trabaja actualmente? (*): " />  

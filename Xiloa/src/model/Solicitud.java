@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -113,7 +114,7 @@ public class Solicitud implements Serializable {
 	private int escolaridad;
 
 	@NotNull
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="contacto_id", nullable = false)
 	private Contacto contacto;
 	

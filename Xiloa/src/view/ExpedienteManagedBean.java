@@ -1424,8 +1424,8 @@ public class ExpedienteManagedBean implements Serializable  {
 		FacesMessage msg;   
 	    
 		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-		
-	    String directorio = ec.getRealPath("/portafolio");	    
+		//Obtener nombre del directorio fisico del mantenedor de archivo 
+	    String directorio = service.getMantenedorById(58).getValor();	   
 	    String nombreFile;
 	    String nombrePropietario;
 	    Long   sizeArchivo;
