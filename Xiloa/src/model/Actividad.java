@@ -3,21 +3,15 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -43,7 +37,8 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @Table(name = "actividades", schema = "sccl")
 @NamedQueries({
 	@NamedQuery(name="Actividad.findByCertificacionId", query="select a from actividades a where a.certificacion.id=?1"),
-	@NamedQuery(name="Actividad.findByEntidadId", query="select a from actividades a where a.certificacion.estatus.id!=9 and a.certificacion.ifpId = case ?1 when 1000 then a.certificacion.ifpId else ?1 end order by a.id desc"),
+	@NamedQuery(name="Actividad.findByEntidadId", query="select a from actividades a where a.certificacion.estatus.id!=18 and a.certificacion.ifpId = case ?1 when 1000 then a.certificacion.ifpId else ?1 end order by a.id desc"),
+	@NamedQuery(name="Actividad.findItemsBySolicitudId", query="select new support.Item(a.id, a.nombre) from actividades a, certificaciones c, solicitudes s where a.certificacion.id=c.id and a.tipo.id in (6,7,8) and s.certificacion.id=c.id and s.id=?1 order by a.id desc")
 })
 public class Actividad implements Serializable {
 
@@ -107,7 +102,8 @@ public class Actividad implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="actividad_ejecutor_id")
 	private Contacto ejecutor;
-			
+		
+	/*
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable
 	(
@@ -117,6 +113,11 @@ public class Actividad implements Serializable {
 	)
 	@MapKeyColumn(name="id_rol")
 	private Map<Integer, Contacto> involucrados;
+	*/
+	
+	@OneToMany
+	@JoinColumn(name="actividad_id", referencedColumnName="actividad_id")
+	private List<Involucrado> involucrados;
 	
 	@OneToMany
 	@JoinColumn(name="actividad_id", referencedColumnName="actividad_id")
@@ -239,6 +240,7 @@ public class Actividad implements Serializable {
 		this.ejecutor = ejecutor;
 	}
 
+	/*
 	public List<Contacto> getInvolucrados() {
 		return new ArrayList<Contacto>(involucrados.values());
 	}
@@ -248,6 +250,22 @@ public class Actividad implements Serializable {
 		this.involucrados.clear();
 		for(int i=0; i<involucrados.length; i++){
 			this.involucrados.put(involucrados[i].getRol().getId(), involucrados[i]);
+		}
+	}
+	*/
+
+	public List<Involucrado> getInvolucrados(){
+		return involucrados;
+	}
+	
+	public void setInvolucrados(List<Involucrado> involucrados){
+		this.involucrados = involucrados;
+	}
+	
+	public void addInvolucrado(Contacto[] involucrados){
+		this.involucrados.clear();
+		for(int i=0; i<involucrados.length; i++){
+			this.involucrados.add(new Involucrado(this, involucrados[i], true));
 		}
 	}
 	
@@ -276,7 +294,8 @@ public class Actividad implements Serializable {
 	
 	public Actividad() {
 		super();
-		involucrados = new HashMap<Integer, Contacto>();
+		//involucrados = new HashMap<Integer, Contacto>();
+		involucrados = new ArrayList<Involucrado>();
 		bitacoras = new ArrayList<Bitacora>();
 	}
 	
@@ -293,7 +312,8 @@ public class Actividad implements Serializable {
 						Date fechaFinal, 
 						Contacto creador,
 						Contacto ejecutor, 
-						Map<Integer,Contacto> involucrados,
+						//Map<Integer,Contacto> involucrados,
+						List<Involucrado> involucrados,
 						List<Bitacora> bitacoras,
 						Mantenedor estado) {
 		super();

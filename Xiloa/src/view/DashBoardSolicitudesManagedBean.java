@@ -37,17 +37,15 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	@Autowired
 	private LoginController login;
 	private Solicitud selectedSolicitud;
-	private Convocatoria selectedConvocatoria;
-	private Item selectedActividad;
-	private Item selectedInvolucrado;
+	private Convocatoria selectedConvocatoria;		
+	private List<Item> involucrados;
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Constructor de la clase
 	public DashBoardSolicitudesManagedBean() {		
 		super();
-		selectedActividad = new Item();
-		selectedInvolucrado = new Item();
 		selectedConvocatoria = new Convocatoria();
 		selectedSolicitud = new Solicitud();
+		involucrados = new ArrayList<Item>();
 	}
 	
 	public List<Solicitud> getListaSolicitudes() {
@@ -63,7 +61,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	}	
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo que redireccion al facet registro_solicitudes.xhtml que permite agregar nueva solicitudes.
-	public String nuevaSolicitud(){		
+	public String nuevaSolicitud(){
 		return "/modulos/solicitudes/registro_solicitud?faces-redirect=true";
 	}
 	
@@ -225,7 +223,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		service.actualizarEstadoSolicitud(solicitud, indicador);
 	}
 	
-	public void registrarMatricula(Date fecha, String recibo){
+	public void registrarMatricula(Date fecha, String recibo) {
 		selectedSolicitud.setFechaMatricula(fecha);
 		selectedSolicitud.setReciboMatricula(recibo);
 		actualizarEstadoSolicitud(selectedSolicitud,4);
@@ -240,34 +238,35 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	}
 
 	public List<Item> getActividades() {
-		List<Item> actividades = new ArrayList<Item>();
-		actividades.add(new Item(new Long(1),"Actividad 1"));
-		actividades.add(new Item(new Long(2),"Actividad 2"));
-		actividades.add(new Item(new Long(3),"Actividad 3"));
-		return actividades;
+		return service.getActividadesItemBySolicitudId(selectedSolicitud.getId());
+	}
+	
+	public void handleActividadesChange(){
+		if(selectedConvocatoria.getActividadId() != null){
+			involucrados = service.getInvolucradosItemByActividadId(selectedConvocatoria.getActividadId());
+		}
 	}
 
 	public List<Item> getInvolucrados() {
-		List<Item> involucrados = new ArrayList<Item>();
-		involucrados.add(new Item(new Long(1),"Involucrado 1"));
-		involucrados.add(new Item(new Long(2),"Involucrado 2"));
-		involucrados.add(new Item(new Long(3),"Involucrado 3"));
 		return involucrados;
 	}
-
-	public Item getSelectedActividad() {
-		return selectedActividad;
+		
+	public List<Mantenedor> getEstados(){
+		return service.getMantenedoresByTipo(4);
 	}
-
-	public void setSelectedActividad(Item selectedActividad) {
-		this.selectedActividad = selectedActividad;
+	
+	public List<Convocatoria> getConvocatorias(){
+		return service.getConvocatoriasBySolicitudId(selectedSolicitud.getId());
 	}
-
-	public Item getSelectedInvolucrado() {
-		return selectedInvolucrado;
+	
+	public void registrarConvocatoria(Convocatoria convocatoria) {
+		convocatoria.setSolicitudId(selectedSolicitud.getId());
+		service.guardar(convocatoria);
+		nuevaConvocatoria();
 	}
-
-	public void setSelectedInvolucrado(Item selectedInvolucrado) {
-		this.selectedInvolucrado = selectedInvolucrado;
+	
+	public void nuevaConvocatoria(){
+		this.selectedConvocatoria = new Convocatoria();
+		this.selectedConvocatoria.setSolicitudId(selectedSolicitud.getId());
 	}
 }

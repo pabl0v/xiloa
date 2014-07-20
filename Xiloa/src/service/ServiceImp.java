@@ -3,6 +3,7 @@ package service;
 import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -41,6 +42,7 @@ import model.Auditoria;
 import model.Bitacora;
 import model.Certificacion;
 import model.Contacto;
+import model.Convocatoria;
 import model.Evaluacion;
 import model.EvaluacionGuia;
 import model.EvaluacionGuiaId;
@@ -117,11 +119,11 @@ public class ServiceImp implements IService {
 	private IDao<Object> objectDao;
 	@Autowired
 	private IDao<Auditoria> auditoriaDao;
-	//@Autowired
-	//private IDao<EvaluacionUnidad> evaluacionUnidadDao;
 	@Autowired
 	private IDao<Item> itemDao;
-	
+	@Autowired
+	private IDao<Convocatoria> convocatoriaDao;
+
 	private List<Mantenedor> mantenedores;
 	private Map<Integer, Mantenedor> catalogoEstatusCertificacion;
 	private Map<Integer, Mantenedor> catalogoTiposActividad;
@@ -722,6 +724,9 @@ public class ServiceImp implements IService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Object guardar (Object objeto) {
+		if (objeto instanceof Convocatoria) {
+			return convocatoriaDao.save((Convocatoria) objeto);
+		}
 		if (objeto instanceof Solicitud) {
 			return solicitudDao.save((Solicitud) objeto);
 		}
@@ -2111,4 +2116,61 @@ public class ServiceImp implements IService {
 		Object [] objs =  new Object [] {entidadId};
 		return solicitudDao.findAllByNamedQueryParam("Solicitud.findAll", objs);
 	}
+	
+	/** 
+	 * @param el id de la solicitud cuyas convocatorias se desean obtener
+	 * 
+	 */
+	@Override
+	public List<Convocatoria> getConvocatoriasBySolicitudId(Long solicitudId){
+		Object [] objs =  new Object [] {solicitudId};
+		return convocatoriaDao.findAllByNamedQueryParam("Convocatoria.findAllBySolicitudId", objs);
+	}
+	
+	/** 
+	 * @param el id de la solicitud cuyas actividades se desean obtener
+	 * 
+	 */
+	@Override
+	public List<Item> getActividadesItemBySolicitudId(Long solicitudId){
+		Object [] objs =  new Object [] {solicitudId};
+		return itemDao.findAllByNamedQueryParam("Actividad.findItemsBySolicitudId", objs);
+	}
+	
+	/** 
+	 * @param el id de la actividad cuyos involucrados se desean obtener
+	 * 
+	 */
+	@Override
+	public List<Item> getInvolucradosItemByActividadId(Long actividadId){
+		Object [] objs =  new Object [] {actividadId};
+		return itemDao.findAllByNamedQueryParam("Involucrado.findItemsByActividadId", objs);
+	}
+	
+	/** 
+	 * @param el id de la certificacion cuyos involucrados se desean obtener agrupados por actividad id
+	 * 
+	 */
+	@Override
+	public Map<Long, List<Item>> getInvolucradosItemByCertificacionId(Long certificacionId){
+		return null;
+	}
+	
+	/** 
+	 * @param el id del contacto a recuperar
+	 * 
+	 */	
+	@Override
+	public Contacto getContactoById(Long id){
+		return contactoDao.findById(Contacto.class, id);
+	}
+	
+	/** 
+	 * @param el id de la actividad a recuperar
+	 * 
+	 */	
+	@Override
+	public Actividad getActividadById(Long id){
+		return actividadDao.findById(Actividad.class, id);
+	}	
 }

@@ -7,9 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import security.Authority;
 import support.Departamento;
 import support.Ifp;
@@ -24,9 +21,9 @@ import model.Auditoria;
 import model.Bitacora;
 import model.Certificacion;
 import model.Contacto;
+import model.Convocatoria;
 import model.Evaluacion;
 import model.EvaluacionGuia;
-//import model.EvaluacionUnidad;
 import model.Guia;
 import model.Instrumento;
 import model.Laboral;
@@ -869,4 +866,40 @@ public interface IService {
 	 * 
 	 */
 	public List<Solicitud> getSolicitudesByEntidadId(int entidadId);
+	
+	/** 
+	 * @param el id de la solicitud cuyas convocatorias se desean obtener
+	 * 
+	 */
+	public List<Convocatoria> getConvocatoriasBySolicitudId(Long solicitudId);
+	
+	/** 
+	 * @param el id de la solicitud cuyas actividades se desean obtener
+	 * 
+	 */
+	public List<Item> getActividadesItemBySolicitudId(Long solicitudId);
+
+	/** 
+	 * @param el id de la actividad cuyos involucrados se desean obtener
+	 * 
+	 */
+	public List<Item> getInvolucradosItemByActividadId(Long actividadId);
+	
+	/** 
+	 * @param el id de la certificacion cuyos involucrados se desean obtener agrupados por actividad id
+	 * 
+	 */
+	public Map<Long,List<Item>> getInvolucradosItemByCertificacionId(Long certificacionId);
+	
+	/** 
+	 * @param el id del contacto a recuperar
+	 * 
+	 */	
+	public Contacto getContactoById(Long id);
+	
+	/** 
+	 * @param el id de la actividad a recuperar
+	 * 
+	 */	
+	public Actividad getActividadById(Long id);
 }

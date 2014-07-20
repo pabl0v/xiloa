@@ -43,6 +43,11 @@
 		<param-value>Production</param-value>
 	</context-param>
 	
+	<context-param>
+		<param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
 	<!-- This will prevent the model values get littered with empty strings when the enduser leaves input fields empty. It is linked to annotations in the model, like @NotNull(message = "Please enter username") -->
 	<context-param>
 		<param-name>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>

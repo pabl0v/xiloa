@@ -9,13 +9,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
-/*
 @Entity(name = "involucrados")
 @Table(name = "involucrados", schema = "sccl")
+@NamedQueries({
+	@NamedQuery(name="Involucrado.findItemsByActividadId", query="select new support.Item(i.contacto.id, i.contacto.nombreCompleto) from actividades a, involucrados i where a.id=i.actividad.id and a.id=?1 and i.activo=true order by i.id desc")
+})
 public class Involucrado implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -36,19 +40,18 @@ public class Involucrado implements Serializable {
 	private Contacto contacto;
 	
 	@NotNull
-	@ManyToOne
-	@JoinColumn(name="estatus_id", nullable = false)	
-	private Mantenedor estado;
+	@Column(name = "activo", nullable = false)	
+	private boolean activo;
 	
 	public Involucrado(){
 		super();
 	}
 	
-	public Involucrado(Actividad actividad, Contacto contacto, Mantenedor estado){
+	public Involucrado(Actividad actividad, Contacto contacto, boolean activo){
 		super();
 		this.actividad = actividad;
 		this.contacto = contacto;
-		this.estado = estado;
+		this.activo = activo;
 	}
 
 	public Long getId() {
@@ -75,11 +78,11 @@ public class Involucrado implements Serializable {
 		this.contacto = contacto;
 	}
 
-	public Mantenedor getEstado() {
-		return estado;
+	public boolean getActivo() {
+		return activo;
 	}
 
-	public void setEstado(Mantenedor estado) {
-		this.estado = estado;
+	public void setActivo(boolean activo) {
+		this.activo = activo;
 	}
-}*/
+}

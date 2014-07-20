@@ -18,7 +18,7 @@
 	    	</ui:insert>
 	    	 <script type="text/javascript" src="../../resources/scripts/solicitudes.js"></script>
 		</div>	
-		<h:form id="formSolicitudes">	            
+		<h:form id="formSolicitudes">
         <div id="cabezera">
             <h2>Solicitudes Activas</h2>
             <sec:authorize ifAnyGranted="ROLE_RIGHT_EDITAR_PORTAFOLIO">                  
@@ -105,7 +105,7 @@
 	       		 		</sec:authorize>
 	       		 		<p:menuitem value="Rechazar Solicitud" title="Rechazar Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,3)}" update=":formSolicitudes"  />
 	       		 		<p:menuitem value="Matricular Candidato" title="Matricular Candidato" style="display:inline-block;" onclick="PF('dlg1').show();" update=":matriculaForm" />
-	       		 		<p:menuitem value="Convocar Candidato" title="Convocar Candidato" style="display:inline-block;" onclick="PF('dlg2').show();" update=":convocatoriaForm"  />
+	       		 		<p:menuitem value="Convocar Candidato" title="Convocar Candidato" style="display:inline-block;" onclick="PF('dlg2').show();" update=":convocatoriaForm, :convocatoriaDataTableForm"  />
 	       		 		<p:menuitem value="Evaluar Candidato" title="Evaluar Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,8)}" update=":formSolicitudes:dtSolicitud"  />
 	       		 		<p:menuitem value="Anular Solicitud" title="Anular Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,10)}" update=":formSolicitudes:dtSolicitud" disabled="#{!varSolicitudI.erasable}" />
 	   				</p:splitButton>
@@ -114,59 +114,74 @@
         </div>
      </h:form>
     </div>
-	<p:dialog id="modalMatricula" styleClass="estilo_dialogoactividades" header="Registro de Matricula:" widgetVar="dlg1" modal="true" resizable="false" width="400" height="150">
+	<p:dialog id="modalMatricula" styleClass="estilo_dialogoactividades" header="Registro de Matricula:" widgetVar="dlg1" modal="true" resizable="false" width="480" height="150">
 		<h:form id="matriculaForm">
-			<h:panelGrid id="modal1" columns="3" cellpadding="5">
-				<br/>
-				<br/>
-				<br/>
+			<br/>
+			<br/>
+			<h:panelGrid id="modal1" columns="3" cellpadding="15" cellspacing="10" >
             	<h:outputLabel styleClass="estilo_label" value="Fecha de Matricula:" />
-				<p:inputText id="codigo1" value="#{dashBoardSolicitudesManagedBean.selectedSolicitud.fechaMatricula}" required="true" requiredMessage="La fecha es requerida" validatorMessage="La fecha es invalida" >
-					<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
-				</p:inputText>
+				<p:calendar id="codigo1" value="#{dashBoardSolicitudesManagedBean.selectedSolicitud.fechaMatricula}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" maxdate="31/12/2014" required="true" requiredMessage="Fecha requerida" validatorMessage="Fecha invalida" />
             	<p:message for="codigo1" display="text"  />		
             	<h:outputLabel styleClass="estilo_label" value="Número de Recibo:" />
-            	<p:inputText id="codigo2" value="#{dashBoardSolicitudesManagedBean.selectedSolicitud.reciboMatricula}" required="true" requiredMessage="El recibo es requerido" />
+            	<p:inputText id="codigo2" value="#{dashBoardSolicitudesManagedBean.selectedSolicitud.reciboMatricula}" required="true" requiredMessage="Recibo requerido" />
             	<p:message for="codigo2" display="text"  />
-				</h:panelGrid>
-				<div class="contenedor_botones" style="margin-top:32px;">
-	            	<p:commandButton value="Cancelar" onclick="PF('dlg1').hide();" immediate="true" update=":matriculaForm" /> 
-					<p:commandButton value="Aceptar" oncomplete="if(!args.validationFailed) {dlg1.hide()} else {dlg1.show()}" update=":matriculaForm,:formSolicitudes" action="#{dashBoardSolicitudesManagedBean.registrarMatricula(dashBoardSolicitudesManagedBean.selectedSolicitud.fechaMatricula,dashBoardSolicitudesManagedBean.selectedSolicitud.reciboMatricula)}" />
-				</div>
+			</h:panelGrid>
+			<div class="contenedor_botones" style="margin-top:32px;">
+				<p:commandButton value="Cancelar" onclick="PF('dlg1').hide();" immediate="true" update=":matriculaForm" /> 
+				<p:commandButton value="Aceptar" oncomplete="if(!args.validationFailed) {dlg1.hide()} else {dlg1.show()}" update=":matriculaForm,:formSolicitudes" action="#{dashBoardSolicitudesManagedBean.registrarMatricula(dashBoardSolicitudesManagedBean.selectedSolicitud.fechaMatricula,dashBoardSolicitudesManagedBean.selectedSolicitud.reciboMatricula)}" />
+			</div>
 		</h:form>
 	</p:dialog>
-	<p:dialog id="modalConvocatoria" styleClass="estilo_dialogoactividades" header="Registro de Convocatorias:" widgetVar="dlg2" modal="true" resizable="false" width="350" height="400">
+	<p:dialog id="modalConvocatoria" styleClass="estilo_dialogoactividades" header="Registro de Convocatorias:" widgetVar="dlg2" modal="true" resizable="false" width="700" height="550">
 		<h:form id="convocatoriaForm">
-			<h:panelGrid id="modal2" columns="3" cellpadding="5">
-				<br/>
-				<br/>
-				<br/>
-            	<h:outputLabel styleClass="estilo_label" value="Fecha:" />
-				<p:inputText id="codigo3" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.fecha}" required="true" requiredMessage="La fecha es requerida" validatorMessage="La fecha es invalida" >
-					<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
-				</p:inputText>
+			<br/>
+			<br/>
+			<p:inputText rendered="false" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.id}" />
+			<h:panelGrid id="modal2" columns="3" cellpadding="15" cellspacing="10" >
+            	<h:outputLabel styleClass="estilo_label" value="Fecha/Hora:" />
+            	<p:calendar id="codigo3" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.fecha}" showOn="button" pattern="dd/MM/yyyy hh:mm a" mindate="01/06/2014" disabledWeekends="true" minHour="8" maxHour="17" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
             	<p:message for="codigo3" display="text"  />
-            	<h:outputLabel styleClass="estilo_label" value="Hora:" />
-				<p:inputText id="codigo4" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.fecha}" required="true" requiredMessage="La hora es requerida" validatorMessage="La hora es invalida" />
-            	<p:message for="codigo4" display="text"  />
 				<h:outputLabel styleClass="estilo_label" value="Actividad:" />
-				<p:selectOneMenu id="selector_estatus1" required="true" requiredMessage="Debe seleccionar la actividad" styleClass="selector_status_estilo" value="#{dashBoardSolicitudesManagedBean.selectedActividad}" >  
-					<f:selectItem itemLabel="Seleccione..." itemValue="" />
+				<p:selectOneMenu id="selector_estatus1" required="true" requiredMessage="Seleccione la actividad" styleClass="selector_status_estilo" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.actividadId}" >  
+					<f:selectItem itemLabel="Seleccione la actividad" itemValue="" />
 					<f:selectItems value="#{dashBoardSolicitudesManagedBean.actividades}" var="actividad" itemLabel="#{actividad.descripcion}" itemValue="#{actividad.id}" />
+					<p:ajax update="selector_estatus2" event="change" listener="#{dashBoardSolicitudesManagedBean.handleActividadesChange}" />
 				</p:selectOneMenu>
 				<p:message for="selector_estatus1" display="text" />
 				<h:outputLabel styleClass="estilo_label" value="Responsable:" />
-				<p:selectOneMenu id="selector_estatus2" required="true" requiredMessage="Debe seleccionar al involucrado" styleClass="selector_status_estilo" value="#{dashBoardSolicitudesManagedBean.selectedInvolucrado}" >  
-					<f:selectItem itemLabel="Seleccione..." itemValue="" />
+				<p:selectOneMenu id="selector_estatus2" required="true" requiredMessage="Seleccione al involucrado" styleClass="selector_status_estilo" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.contactoId}" >  
+					<f:selectItem itemLabel="Seleccione al responsable" itemValue="" />
 					<f:selectItems value="#{dashBoardSolicitudesManagedBean.involucrados}" var="involucrado" itemLabel="#{involucrado.descripcion}" itemValue="#{involucrado.id}" />
 				</p:selectOneMenu>
-				<p:message for="selector_estatus2" display="text" />            	
-				</h:panelGrid>
-				<div class="contenedor_botones" style="margin-top:32px;">
-	            	<p:commandButton value="Cancelar" onclick="PF('dlg2').hide();" immediate="true" update=":convocatoriaForm" /> 
-					<p:commandButton value="Aceptar" oncomplete="if(!args.validationFailed) {dlg2.hide()} else {dlg2.show()}" update=":convocatoriaForm,:formSolicitudes" action="#{dashBoardSolicitudesManagedBean.registrarMatricula(dashBoardSolicitudesManagedBean.selectedSolicitud.fechaMatricula,dashBoardSolicitudesManagedBean.selectedSolicitud.reciboMatricula)}" />
-				</div>
+				<p:message for="selector_estatus2" display="text" />
+				<h:outputLabel styleClass="estilo_label" value="Estado:" />
+				<p:selectOneMenu id="selector_estatus3" required="true" requiredMessage="Seleccione el estado" styleClass="selector_status_estilo" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.estadoId}" >  
+					<f:selectItem itemLabel="Seleccione el estado" itemValue="" />
+					<f:selectItems value="#{dashBoardSolicitudesManagedBean.estados}" var="estado" itemLabel="#{estado.valor}" itemValue="#{estado.id}" />
+				</p:selectOneMenu>
+				<p:message for="selector_estatus3" display="text" />
+			</h:panelGrid>
+			<div class="contenedor_botones" style="margin-top:32px;">
+				<p:commandButton value="Aceptar" oncomplete="if(args.validationFailed) {dlg2.show()}" update=":convocatoriaForm, :convocatoriaDataTableForm" action="#{dashBoardSolicitudesManagedBean.registrarConvocatoria(dashBoardSolicitudesManagedBean.selectedConvocatoria)}" />
+				<p:commandButton value="Nuevo" update=":convocatoriaForm" action="#{dashBoardSolicitudesManagedBean.nuevaConvocatoria}" />
+			</div>
 		</h:form>
-	</p:dialog>  
+			<br/>
+		<h:form id="convocatoriaDataTableForm">
+			<p:dataTable id="convocatoriasDataTable" emptyMessage="No hay datos para mostrar" var="convocatoria" value="#{dashBoardSolicitudesManagedBean.convocatorias}" paginator="true" rows="5" rowKey="#{convocatoria.id}" selectionMode="single" selection="#{dashBoardSolicitudesManagedBean.selectedConvocatoria}">
+				<p:ajax event="rowSelect" update=":convocatoriaForm" />
+				<f:facet name="header">
+					Convocatorias del Candidato
+				</f:facet>
+				<p:column headerText="Convocatoria"><h:outputText value="#{convocatoria.actividadNombre}" /></p:column>
+				<p:column headerText="Fecha/Hora"><h:outputText value="#{convocatoria.fecha}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy hh:mm a"/></h:outputText></p:column>
+				<p:column headerText="Responsable"><h:outputText value="#{convocatoria.contactoNombre}" /></p:column>
+				<p:column headerText="Estado"><h:outputText value="#{convocatoria.estadoNombre}" /></p:column>
+			</p:dataTable>
+			<div class="contenedor_botones" style="margin-top:32px;">
+				<p:commandButton value="Cancelar" onclick="PF('dlg2').hide();" immediate="true" /> 
+			</div>
+		</h:form>
+	</p:dialog>
 </h:body>
 </html>

@@ -97,7 +97,7 @@ public class ActividadManagedBean implements Serializable {
 	
 	public void setSelectedContactos(Contacto[] selectedContactos) {
 		this.selectedContactos = selectedContactos;
-		this.actividad.setInvolucrados(selectedContactos);
+		//this.actividad.setInvolucrados(selectedContactos);
 	}
 	
 	public Contacto getSelectedContacto() {
@@ -106,7 +106,8 @@ public class ActividadManagedBean implements Serializable {
 
 	public void setSelectedContacto(Contacto selectedContacto) {
 		this.selectedContacto = selectedContacto;
-		this.actividad.setInvolucrados(new Contacto[] {selectedContacto});
+		//this.actividad.setInvolucrados(new Contacto[] {selectedContacto});
+		this.actividad.addInvolucrado(new Contacto[] {selectedContacto});
 	}
 
 	public void reset(){
