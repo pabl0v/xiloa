@@ -11,7 +11,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import model.Contacto;
 import model.Guia;
 import model.Instrumento;
 import model.Mantenedor;
@@ -43,34 +42,19 @@ public class InstrumentoManagedBean implements Serializable {
 	
 	@Autowired
 	private IService service;
-	
 	@Autowired
 	private LoginController controller;
-	
-	/* dchavez. 08/04/2014: agregar filtro de unidades de competencia por certificacion
-	 * 
-	 * */
-	
-	private Long idCertificacion;
-	private String nombreCertificacion;
+
 	private Long selectedCertificacion;
-	private List<Item> catalogoCertificaciones;
 	private Map<Long,Item> mapCertificaciones;
-	
-	/*
-	 * fin del cambio
-	 */
-	
 	private Instrumento instrumento;
 	private Instrumento selectedInstrumento;
 	private Guia guia;
-	private Guia selectedGuia;
-	private List<Instrumento> instrumentos;	
+	private Guia selectedGuia;	
 	private Map<Integer,Mantenedor> catalogoTiposInstrumento;
 	private Integer selectedTipoInstrumento;
 	private List<Item> catalogoUnidades;
 	private Long selectedUnidad;
-	private Contacto contacto;
 
 	public InstrumentoManagedBean(){
 		super();
@@ -86,43 +70,25 @@ public class InstrumentoManagedBean implements Serializable {
 		selectedTipoInstrumento = null;
 		catalogoUnidades = new ArrayList<Item>();
 		selectedUnidad = null;
-		contacto = new Contacto();
 		selectedCertificacion = null;
-		catalogoCertificaciones = new ArrayList<Item>();
 		mapCertificaciones = new HashMap<Long, Item>();
 	}
 	
 	@PostConstruct
 	private void init(){
-		contacto = controller.getContacto();
 		catalogoTiposInstrumento = service.getCatalogoTiposInstrumento();
-		catalogoCertificaciones = service.getCertificacionesItem(contacto.getEntidadId());
-		for(int i=0; i<catalogoCertificaciones.size(); i++)
-			mapCertificaciones.put(catalogoCertificaciones.get(0).getId(), catalogoCertificaciones.get(0));
-		configurarInstrumento();
+
+		for(Item item : service.getCertificacionesItem(controller.getEntidadUsuario())){
+			mapCertificaciones.put(item.getId(), item);
+		}
+		
+		catalogoUnidades = service.getUnidadesItemByCertificacionId(null);
 	}
-	
-	public Long getIdCertificacion(){
-		return idCertificacion;
-	}
-	
-	public void setIdCertificacion(Long id){
-		this.idCertificacion = id;
-	}
-	
-	public String getNombreCertificacion() {
-		return nombreCertificacion;
-	}
-	
-	public void setNombreCertificacion(String nombre){
-		this.nombreCertificacion = nombre;
-	}
-	
+		
 	public List<Item> getCatalogoCertificaciones(){
-		return catalogoCertificaciones;
+		return new ArrayList<Item>(mapCertificaciones.values());
 	}
-	
-	//dchavez. 08/04/2014: agregando filtro de certificaciones
+
 	public void handleCertificacionesChange(){
 		if(selectedCertificacion != 0){
 			List<Item> unidades = service.getUnidadesItemByCertificacionId(selectedCertificacion);
@@ -154,8 +120,7 @@ public class InstrumentoManagedBean implements Serializable {
 
 	public void setSelectedInstrumento(Instrumento instrumento) {
 		this.selectedInstrumento = instrumento;
-		Object [] objs =  new Object [] {instrumento.getId()};
-		this.selectedInstrumento.setGuias(service.getGuiaByParam("Guia.findByIdInstrumento", objs));				
+		this.selectedInstrumento.setGuias(service.getGuiaByParam("Guia.findByIdInstrumento", new Object [] {instrumento.getId()}));				
 	}
 		
 	public Guia getGuia() {
@@ -176,12 +141,6 @@ public class InstrumentoManagedBean implements Serializable {
 
 	public List<Mantenedor> getCatalogoTiposInstrumento() {
 		return new ArrayList<Mantenedor>(catalogoTiposInstrumento.values());
-	}
-
-	public void setCatalogoTiposInstrumento(List<Mantenedor> catalogoTiposInstrumento) {
-		for(int i=0; i<catalogoTiposInstrumento.size(); i++){
-			this.catalogoTiposInstrumento.put(catalogoTiposInstrumento.get(i).getId(), catalogoTiposInstrumento.get(i));
-		}
 	}
 
 	public Integer getSelectedTipoInstrumento() {
@@ -208,41 +167,22 @@ public class InstrumentoManagedBean implements Serializable {
 		this.selectedUnidad = selectedUnidad;
 	}
 	
-	public String configurarInstrumento(Long idCertificacion, String nombreCertificacion){
-		
-		this.idCertificacion = idCertificacion;
-		this.nombreCertificacion = nombreCertificacion;
-			
-		this.catalogoUnidades = service.getUnidadesItemByCertificacionId(idCertificacion);
-		this.instrumentos = service.getInstrumentosByCertificacionId(idCertificacion);
-
-		return "/modulos/planificacion/instrumentos?faces-redirect=true";
-	}
-	
 	public String configurarInstrumento(){
-		
-		this.idCertificacion = null;
-		this.nombreCertificacion = "";
-		
-		this.catalogoUnidades = service.getUnidadesItemByCertificacionId(null);
-		this.instrumentos = service.getInstrumentos(controller.getEntidadUsuario());
-
 		return "/modulos/planificacion/instrumentos?faces-redirect=true";
 	}
 		
 	public void guardarInstrumento(Instrumento instrumento){		
 		instrumento.setTipo(catalogoTiposInstrumento.get(selectedTipoInstrumento));
 		instrumento.setUnidad(selectedUnidad);
-		instrumento.setEntidadId(contacto.getEntidadId());
+		instrumento.setEntidadId(controller.getEntidadUsuario());
 		instrumento.setCertificacionId(selectedCertificacion);
 
 		if(instrumento.isCualitativo()){
 			instrumento.setPuntajeMaximo(new Float(100));
 			instrumento.setPuntajeMinimo(new Float(100 - ((100/instrumento.getCantidadPreguntas())*instrumento.getRespuestasFallidas())));
 		}
-			
+
 		Instrumento i = (Instrumento) service.guardar(instrumento);
-		instrumentos = service.getInstrumentos(controller.getEntidadUsuario());
 		setSelectedInstrumento(i);
 
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Instrumento registrado exitosamente"));			
@@ -259,7 +199,6 @@ public class InstrumentoManagedBean implements Serializable {
 	public void editarInstrumento(Instrumento instrumento){
 		this.setInstrumento(instrumento);
 		setSelectedTipoInstrumento(instrumento.getTipo().getId());
-		//setSelectedUnidad(catalogoUnidades.get(instrumento.getUnidad()).getId());
 		setSelectedUnidad(instrumento.getUnidad());
 		setSelectedCertificacion(instrumento.getCertificacionId());
 	}
@@ -296,17 +235,12 @@ public class InstrumentoManagedBean implements Serializable {
 	}
 	
 	public List<Instrumento> getInstrumentos() {
-		return instrumentos;
-	}
-
-	public void setInstrumentos(List<Instrumento> instrumentos) {
-		this.instrumentos = instrumentos;
+		return service.getInstrumentos(controller.getEntidadUsuario());
 	}
 		
 	public void onRowSelect(SelectEvent event) {
 		setSelectedInstrumento((Instrumento) event.getObject());
 		setSelectedTipoInstrumento(selectedInstrumento.getTipo().getId());
-		//setSelectedUnidad(catalogoUnidades.get(selectedInstrumento.getUnidad()).getId());
 		setSelectedUnidad(selectedInstrumento.getUnidad());
     }
   

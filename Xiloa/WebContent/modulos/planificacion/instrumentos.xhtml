@@ -43,7 +43,7 @@
 							<p:column headerText="Instrumento"><h:outputText value="#{var.tipo.valor}" /></p:column>
 	                        <p:column filterBy="#{var.certificacionId}" filterOptions="#{instrumentoManagedBean.listaCertificaciones}" filterMatchMode="exact">
     	                    	<f:facet name="header">  
-        	    					<h:outputText value="Certificaciones" />  
+        	    					<h:outputText value="Certificación" />  
         						</f:facet> 
                 	        	<h:outputText value="#{instrumentoManagedBean.getCertificacionDescripcion(var.certificacionId)}" />
                     	    </p:column>
@@ -132,7 +132,7 @@
 			</p:selectOneMenu>
 			<p:message for="selector_estatus1" display="text"  />
             <br/>	
-            <h:outputLabel styleClass="estilo_label" value="Certificacion:" />
+            <h:outputLabel styleClass="estilo_label" value="Certificación:" />
 			<p:selectOneMenu id="selector_estatus2" required="false" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedCertificacion}" >  
 				<f:selectItem itemLabel="Seleccione..." itemValue="" />
 				<f:selectItems value="#{instrumentoManagedBean.catalogoCertificaciones}" var="certificacion" itemLabel="#{certificacion.descripcion}" itemValue="#{certificacion.id}" />
