@@ -30,14 +30,11 @@ import javax.persistence.Table;
 @Table(name = "instrumentos", schema = "sccl")
 @NamedQueries({
 	@NamedQuery(name="Instrumento.findInstrumentosByEvaluacionId", query="select e.instrumento from evaluaciones e where e.id=?1"),
-	//@NamedQuery(name="Instrumento.findInstrumentosByEvaluacionId", query="select distinct i from instrumentos i, guias g, evaluacion_guia eg where i.id=g.instrumento.id and g.id=eg.pk.guia.id and eg.pk.evaluacion.id=?"),
 	@NamedQuery(name="Instrumento.findAll", query="select i from instrumentos i order by 1 desc"),
 	@NamedQuery(name="Instrumento.findAllByEntidadId", query="select i from instrumentos i where i.entidadId = case ?1 when 1000 then i.entidadId else ?1 end order by 1 desc"),
 	@NamedQuery(name="Instrumento.findAllByUnidadId", query="select i from instrumentos i where i.unidad=?1 order by 1 desc"),
-	//@NamedQuery(name="Instrumento.findAllByCertificacionId", query="select i from instrumentos i where i.unidad in (select c.unidades from certificaciones c where c.id=?) and i.estatus='true' order by 1 desc"),
 	@NamedQuery(name="Instrumento.findById", query="select i from instrumentos i where i.id=?1"),
-	@NamedQuery(name="Instrumento.findAllByCertificacionId", query="select i from instrumentos i, certificaciones c where i.unidad member of c.unidades and c.id=?1 and i.estatus='true' order by i.unidad, i.tipo"),
-	//@NamedQuery(name="Instrumento.findAllByCertificacionId", query="select i from instrumentos i where i.unidad in (select c.unidades from certificaciones c where c.id=?1)"),
+	@NamedQuery(name="Instrumento.findAllByCertificacionId", query="select i from instrumentos i where i.certificacionId=?1 and i.estatus='true' order by i.certificacionId, i.tipo"),
 	@NamedQuery(name="Instrumento.findPendientesEvaluar", query="select i " +
 																  "from instrumentos i, mantenedores m " +
 																 "where m.id = i.tipo and m.tipo = ?1 " +
@@ -46,7 +43,7 @@ import javax.persistence.Table;
 																   "and not exists (select 1 " +
 																				  	 "from evaluacion_guia eg, guias g, evaluaciones e " +
 																					 "where e.solicitud.id = ?4 "+
-																					   "and e.estado.id = 29 " +
+																					   "and e.estado.id = 51 " +
 																					   "and eg.pk.evaluacion.id = e.id " +
 																					   "and g.id = eg.pk.guia.id " +        
 																					   "and i.id = g.instrumento.id  " +    
@@ -60,28 +57,25 @@ public class Instrumento implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "instrumento_id", nullable = false)
 	private Long id;
-	
-	//@NotNull(message="La unidad es requerida")
-	@Column(name="instrumento_unidad_id", nullable = false)
+
+	@Column(name="instrumento_certificacion_id", nullable = false)
+	private Long certificacionId;
+
+	@Column(name="instrumento_unidad_id", nullable = true)
 	private Long unidad;
 	
-	//@NotNull(message="El código es requerido")
 	@Column(name = "instrumento_codigo", nullable = false)	
 	private String codigo;
 	
-	//@NotNull(message="El tipo de instrumento es requerido")
 	@ManyToOne
 	@JoinColumn(name="instrumento_tipo", nullable = false)
 	private Mantenedor tipo;
 	
-	//@NotNull
 	@Column(name = "instrumento_cualitativo", nullable = false)	
 	private boolean cualitativo;
 		
-	//@NotNull(message="El nombre es requerido")
 	@Column(name = "instrumento_nombre", nullable = false)	
 	private String nombre;
-	
 	
 	@Column(name = "instrumento_puntaje_minimo", nullable = false, precision=10, scale=2)	
 	private Float puntajeMinimo;
@@ -89,26 +83,41 @@ public class Instrumento implements Serializable {
 	@Column(name = "instrumento_puntaje_maximo", nullable = false, precision=10, scale=2)	
 	private Float puntajeMaximo;
 
-	//@Min( value = 0, message = "La cantidad de preguntas debe ser > 0")
-	//@Max( value = 100, message = "La cantidad de preguntas debe ser < 100")	
 	@Column(name = "instrumento_cantidad_preguntas", nullable = true)
 	private Integer cantidadPreguntas;
 
-	//@Min( value = 0, message = "Las respuestas fallidas deben ser > 0")
-	//@Max( value = 100, message = "Las respuestas fallidas deben ser < 100")	
 	@Column(name = "instrumento_respuestas_fallidas", nullable = true)
 	private Integer respuestasFallidas;
 	
 	@OneToMany(mappedBy="instrumento")
 	private List<Guia> guias;
 
-	//@NotNull
 	@Column(name = "instrumento_entidad_id", nullable = false)	
 	private Integer entidadId;
 
-	//@NotNull
 	@Column(name = "instrumento_estatus", nullable = false)	
 	private boolean estatus;
+
+	public Instrumento(){
+		super();
+		this.guias = new ArrayList<Guia>();
+		this.cualitativo = false;
+	}
+	
+	public Instrumento(Long certificacion, Long unidad, String codigo, Mantenedor tipo, boolean cualitativo, String nombre, Float puntajeMinimo, Float puntajeMaximo, List<Guia> guias, Integer entidadId, boolean estatus){
+		super();
+		this.certificacionId = certificacion;
+		this.unidad = unidad;
+		this.codigo = codigo;
+		this.tipo = tipo;
+		this.cualitativo = cualitativo;
+		this.nombre = nombre;
+		this.puntajeMinimo = puntajeMinimo;
+		this.puntajeMaximo = puntajeMaximo;
+		this.guias = guias;
+		this.entidadId = entidadId;
+		this.estatus = estatus;
+	}	
 	
 	public Long getId() {
 		return id;
@@ -126,6 +135,14 @@ public class Instrumento implements Serializable {
 		this.unidad = unidad;
 	}
 
+	public Long getCertificacionId() {
+		return certificacionId;
+	}
+
+	public void setCertificacionId(Long certificacion) {
+		this.certificacionId = certificacion;
+	}
+	
 	public String getCodigo() {
 		return codigo;
 	}
@@ -251,7 +268,7 @@ public class Instrumento implements Serializable {
 	
 		String cadena = "Tabla instrumentos -> ";
 		
-		//cadena = cadena + "instrumento_id=" + getId().toString() + ", ";
+		cadena = cadena + "instrumento_certificacion_id=" + getCertificacionId().toString() + ", ";
 		cadena = cadena + "instrumento_unidad_id=" + getUnidad().toString() + ", ";
 		cadena = cadena + "instrumento_codigo=" + getCodigo() + ", ";
 		cadena = cadena + "instrumento_tipo=" + getTipo().getId() + ", ";
@@ -265,25 +282,5 @@ public class Instrumento implements Serializable {
 		cadena = cadena + "instrumento_estatus=" + Boolean.toString(getEstatus()) + " ";
 
 		return cadena;
-	}
-	
-	public Instrumento(){
-		super();
-		this.guias = new ArrayList<Guia>();
-	}
-	
-	public Instrumento(Long unidad, String codigo, Mantenedor tipo, boolean cualitativo, String nombre, Float puntajeMinimo, Float puntajeMaximo, List<Guia> guias, Integer entidadId, boolean estatus){
-		super();
-		
-		this.unidad = unidad;
-		this.codigo = codigo;
-		this.tipo = tipo;
-		this.cualitativo = cualitativo;
-		this.nombre = nombre;
-		this.puntajeMinimo = puntajeMinimo;
-		this.puntajeMaximo = puntajeMaximo;
-		this.guias = guias;
-		this.entidadId = entidadId;
-		this.estatus = estatus;
 	}	
 }

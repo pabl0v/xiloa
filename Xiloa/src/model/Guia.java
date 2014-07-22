@@ -37,26 +37,37 @@ public class Guia implements Serializable {
 	@Column(name = "guia_id", nullable = false)
 	private Long id;
 	
+	@Column(name = "guia_unidad_id", nullable = true)
+	private Long unidadId;
+	
 	@ManyToOne
-	@JoinColumn(name="instrumento_id")
+	@JoinColumn(name="instrumento_id", nullable = false)
 	private Instrumento instrumento;
 	
-	//@NotNull(message = "La pregunta es Requerida")
 	@Column(name = "guia_pregunta", nullable = false)	
 	private String pregunta;
 	
-	//@NotNull(message = "La respuesta es Requerida")
 	@Column(name = "guia_respuesta", nullable = false)
 	private String respuesta;
 
-	//@Min( value = 0, message = "0 < puntaje <= 100")
-	//@Max( value = 100, message = "0 < puntaje <= 100")
 	@Column(name = "guia_puntaje", nullable = false, precision=10, scale=2)
 	private Float puntaje;
 
-	//@NotNull
 	@Column(name = "guia_estatus", nullable = false)
 	private boolean estatus;
+	
+	public Guia(){
+		super();
+	}
+	
+	public Guia(Long unidad, Instrumento instrumento, String pregunta, String respuesta, Float puntaje, boolean estatus){
+		this.unidadId = unidad;
+		this.instrumento = instrumento;
+		this.pregunta = pregunta;
+		this.respuesta = respuesta;
+		this.puntaje = puntaje;
+		this.estatus = estatus;
+	}
 	
 	public Long getId() {
 		return id;
@@ -64,6 +75,14 @@ public class Guia implements Serializable {
 	
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public Long getUnidadId() {
+		return unidadId;
+	}
+	
+	public void setUnidadId(Long id) {
+		this.unidadId = id;
 	}
 	
 	public Instrumento getInstrumento() {
@@ -125,24 +144,11 @@ public class Guia implements Serializable {
 	
 		String cadena = "Tabla guias -> ";
 		
-		//cadena = cadena + "guia_id=" + getId().toString() + ", ";
 		cadena = cadena + "instrumento_id=" + getInstrumento().getId() + ", ";
 		cadena = cadena + "guia_pregunta=" + getPregunta() + ", ";
 		cadena = cadena + "guia_respuesta=" + getRespuesta() + ", ";
 		cadena = cadena + "guia_estatus=" + Boolean.toString(getEstatus()) + " ";
 		
 		return cadena;
-	}
-	
-	public Guia(){
-		super();
-	}
-	
-	public Guia(Instrumento instrumento, String pregunta, String respuesta, Float puntaje, boolean estatus){
-		this.instrumento = instrumento;
-		this.pregunta = pregunta;
-		this.respuesta = respuesta;
-		this.puntaje = puntaje;
-		this.estatus = estatus;
 	}	
 }

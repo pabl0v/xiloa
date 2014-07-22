@@ -54,7 +54,8 @@ public class InstrumentoManagedBean implements Serializable {
 	private Long idCertificacion;
 	private String nombreCertificacion;
 	private Long selectedCertificacion;
-	private List<Item> catalogoCertificaciones; 
+	private List<Item> catalogoCertificaciones;
+	private Map<Long,Item> mapCertificaciones;
 	
 	/*
 	 * fin del cambio
@@ -88,6 +89,7 @@ public class InstrumentoManagedBean implements Serializable {
 		contacto = new Contacto();
 		selectedCertificacion = null;
 		catalogoCertificaciones = new ArrayList<Item>();
+		mapCertificaciones = new HashMap<Long, Item>();
 	}
 	
 	@PostConstruct
@@ -95,6 +97,8 @@ public class InstrumentoManagedBean implements Serializable {
 		contacto = controller.getContacto();
 		catalogoTiposInstrumento = service.getCatalogoTiposInstrumento();
 		catalogoCertificaciones = service.getCertificacionesItem(contacto.getEntidadId());
+		for(int i=0; i<catalogoCertificaciones.size(); i++)
+			mapCertificaciones.put(catalogoCertificaciones.get(0).getId(), catalogoCertificaciones.get(0));
 		configurarInstrumento();
 	}
 	
@@ -230,6 +234,7 @@ public class InstrumentoManagedBean implements Serializable {
 		instrumento.setTipo(catalogoTiposInstrumento.get(selectedTipoInstrumento));
 		instrumento.setUnidad(selectedUnidad);
 		instrumento.setEntidadId(contacto.getEntidadId());
+		instrumento.setCertificacionId(selectedCertificacion);
 
 		if(instrumento.isCualitativo()){
 			instrumento.setPuntajeMaximo(new Float(100));
@@ -248,6 +253,7 @@ public class InstrumentoManagedBean implements Serializable {
 		instrumento.setEstatus(true);
 		selectedTipoInstrumento = null;
 		selectedUnidad = null;
+		selectedCertificacion = null;
 	}
 	
 	public void editarInstrumento(Instrumento instrumento){
@@ -255,12 +261,14 @@ public class InstrumentoManagedBean implements Serializable {
 		setSelectedTipoInstrumento(instrumento.getTipo().getId());
 		//setSelectedUnidad(catalogoUnidades.get(instrumento.getUnidad()).getId());
 		setSelectedUnidad(instrumento.getUnidad());
+		setSelectedCertificacion(instrumento.getCertificacionId());
 	}
 
 	public String aceptar(){
 		selectedInstrumento = new Instrumento();
 		selectedTipoInstrumento = null;
 		selectedUnidad = null;
+		selectedCertificacion = null;
 		return "/modulos/planificacion/planificacion?faces-redirect=true";
 	}
 	
@@ -268,17 +276,20 @@ public class InstrumentoManagedBean implements Serializable {
 		guia = new Guia();
 		guia.setEstatus(true);
 		guia.setInstrumento(selectedInstrumento);
+		selectedUnidad = null;
 	}
 	
 	public void editarGuia(Guia guia){
 		this.guia = guia;
+		selectedUnidad = guia.getUnidadId();
 	}
 		
 	public void guardarGuia(Guia guia){		
 		if(guia.getInstrumento().isCualitativo()){
 			guia.setPuntaje(new Float(100/guia.getInstrumento().getCantidadPreguntas()));
 		}
-
+		
+		guia.setUnidadId(selectedUnidad);
 		service.guardar(guia);
 		setSelectedInstrumento(selectedInstrumento);
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Guia registrada exitosamente"));
@@ -303,9 +314,16 @@ public class InstrumentoManagedBean implements Serializable {
     }
     
     public String getCompetenciaDescripcion(Long codigo){
-    	return service.getCompetenciaDescripcion(codigo);
+    	if(codigo != null && codigo != 0)
+    		return service.getCompetenciaDescripcion(codigo);
+    	else
+    		return "N/D";
     }
     
+    public String getCertificacionDescripcion(Long codigo){
+    	return mapCertificaciones.get(codigo).getDescripcion();
+    }
+
 	public SelectItem[] getListaUC(){
 		List<Item> unidades = new ArrayList<Item>(service.getCatalogoUnidades().values());
 	
@@ -313,6 +331,16 @@ public class InstrumentoManagedBean implements Serializable {
 		opciones[0] = new SelectItem("","Seleccione");
 		for(int i=0; i<unidades.size(); i++)
 			opciones[i+1] = new SelectItem(unidades.get(i).getId(),unidades.get(i).getDescripcion());
+		return opciones;
+	}
+	
+	public SelectItem[] getListaCertificaciones(){
+		List<Item> certificaciones = new ArrayList<Item>(service.getCertificacionesItem(controller.getEntidadUsuario()));
+		
+		SelectItem[] opciones = new SelectItem[certificaciones.size()+1];
+		opciones[0] = new SelectItem("","Seleccione");
+		for(int i=0; i<certificaciones.size(); i++)
+			opciones[i+1] = new SelectItem(certificaciones.get(i).getId(),certificaciones.get(i).getDescripcion());
 		return opciones;
 	}
 }
