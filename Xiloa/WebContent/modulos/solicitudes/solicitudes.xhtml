@@ -98,7 +98,7 @@
 	        	 		<p:separator />
 							<p:menuitem value="Enviar Solicitud" title="Enviar Solicitud" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,1)}" update=":formSolicitudes" />
                 		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO">                  
-		            		<p:menuitem icon="ui-icon-pencil" value="Editar Solicitud" title="Editar Solicitud" action="#{dashBoardSolicitudesManagedBean.editaSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" disabled="#{!varSolicitudI.editable}" />
+		            		<p:menuitem value="Editar Solicitud" title="Editar Solicitud" action="#{dashBoardSolicitudesManagedBean.editaSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" disabled="#{!varSolicitudI.editable}" />
     					</sec:authorize>        	 		
 	        	 		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO">
 	       		 			<p:menuitem value="Autorizar Matricula" title="Autorizar Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,2)}" update=":formSolicitudes"  />

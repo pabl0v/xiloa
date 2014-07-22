@@ -222,6 +222,7 @@ public class InstrumentoManagedBean implements Serializable {
 	public void editarGuia(Guia guia){
 		this.guia = guia;
 		selectedUnidad = guia.getUnidadId();
+		setCatalogoUnidades(service.getUnidadesItemByCertificacionId(guia.getInstrumento().getCertificacionId()));
 	}
 		
 	public void guardarGuia(Guia guia){		
