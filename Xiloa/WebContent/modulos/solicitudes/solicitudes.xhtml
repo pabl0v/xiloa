@@ -106,7 +106,7 @@
 	       		 		<p:menuitem value="Rechazar Solicitud" title="Rechazar Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,3)}" update=":formSolicitudes"  />
 	       		 		<p:menuitem value="Matricular Candidato" title="Matricular Candidato" style="display:inline-block;" onclick="PF('dlg1').show();" update=":matriculaForm" />
 	       		 		<p:menuitem value="Convocar Candidato" title="Convocar Candidato" style="display:inline-block;" onclick="PF('dlg2').show();" update=":convocatoriaForm, :convocatoriaDataTableForm"  />
-	       		 		<p:menuitem value="Evaluar Candidato" title="Evaluar Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,8)}" update=":formSolicitudes:dtSolicitud"  />
+	       		 		<p:menuitem value="Evaluar Candidato" title="Evaluar Candidato" style="display:inline-block;" onclick="PF('dlg3').show();" update=":evaluacionForm" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,8)}" />
 	       		 		<p:menuitem value="Anular Solicitud" title="Anular Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,10)}" update=":formSolicitudes:dtSolicitud" disabled="#{!varSolicitudI.erasable}" />
 	   				</p:splitButton>
 				</p:column>
@@ -180,6 +180,23 @@
 			</p:dataTable>
 			<div class="contenedor_botones" style="margin-top:32px;">
 				<p:commandButton value="Cancelar" onclick="PF('dlg2').hide();" immediate="true" /> 
+			</div>
+		</h:form>
+	</p:dialog>
+	<p:dialog id="modalEvaluacion" styleClass="estilo_dialogoactividades" header="Registro de Evaluaciones:" widgetVar="dlg3" modal="true" resizable="false" width="700" height="550">
+		<h:form id="evaluacionForm">
+			<br/>
+			<h:panelGrid id="modal3" columns="2" cellpadding="10" cellspacing="2" >
+				<h:outputLabel styleClass="estilo_label" value="Certificación:" />
+				<p:inputText disabled="true" size="80" value="#{dashBoardSolicitudesManagedBean.selectedSolicitud.certificacion.nombre}" />
+				<h:outputLabel styleClass="estilo_label" value="Candidato:" />
+				<p:inputText disabled="true" size="80" value="#{dashBoardSolicitudesManagedBean.selectedSolicitud.nombre}" />
+				<h:outputLabel styleClass="estilo_label" value="Estado:" />
+				<p:inputText disabled="true" size="10" value="#{dashBoardSolicitudesManagedBean.selectedSolicitud.estatus.valor}" />
+			</h:panelGrid>
+			<div class="contenedor_botones" style="margin-top:32px;">
+				<p:commandButton value="Aceptar" oncomplete="if(args.validationFailed) {dlg3.show()}" update=":evaluacionForm, :formSolicitudes" />
+				<p:commandButton value="Cancelar" onclick="PF('dlg3').hide();" immediate="true" />
 			</div>
 		</h:form>
 	</p:dialog>
