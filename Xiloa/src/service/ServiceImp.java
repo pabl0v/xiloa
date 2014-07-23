@@ -2172,5 +2172,46 @@ public class ServiceImp implements IService {
 	@Override
 	public Actividad getActividadById(Long id){
 		return actividadDao.findById(Actividad.class, id);
-	}	
+	}
+	
+	/** 
+	 * @param el id de la solicitud cuyas evaluaciones se quiere obtener
+	 * 
+	 */
+	@Override
+	public List<Evaluacion> getEvaluacionesBySolicitudId(Long solicitudId){
+		return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllBySolicitudId", new Object [] {solicitudId});
+	}
+	
+	/** 
+	 * @param la solicitud a evaluar
+	 * 
+	 */	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void evaluarSolicitud(Solicitud solicitud){
+		List<Instrumento> instrumentos = instrumentoDao.findAllByQuery("select i from instrumentos i, solicitudes s where i.certificacionId=s.certificacion.id and i.estatus=true and s.id="+solicitud.getId()+" and not exists (select 1 from evaluaciones e where e.solicitud.id=s.id and e.instrumento.id=i.id and e.estado.id!=52) order by i.id desc");
+		
+		for(Instrumento instrumento : instrumentos){
+			Evaluacion evaluacion = new Evaluacion();
+			evaluacion.setInstrumento(instrumento);
+			evaluacion.setSolicitud(solicitud);
+			evaluacion.setEstado(getMantenedorById(50));	//registrada
+			evaluacion.setFechaEvaluacion(new Date());
+			evaluacion.setActivo(true);
+			
+			evaluacion = evaluacionDao.save(evaluacion);
+			
+			List<Guia> guias = guiaDao.findAllByNamedQueryParam("Guia.findByIdInstrumento", new Object [] {instrumento.getId()});
+			for(Guia guia : guias){
+				EvaluacionGuia eg = new EvaluacionGuia();
+				eg.setEvaluacion(evaluacion);
+				eg.setGuia(guia);
+				eg.setPuntaje(new Float(0));
+				eg.setAprobado(false);
+				
+				evaluacionGuiaDao.save(eg);
+			}
+		}
+	}
 }

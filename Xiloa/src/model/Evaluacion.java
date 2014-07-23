@@ -42,7 +42,8 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @NamedQueries({
 	@NamedQuery(name="Evaluacion.findAllPendientesByFirstSolicitudByContactoId", query="select e from evaluaciones e where e.solicitud.contacto.id=?1 and e.solicitud.id=(select min(x.id) from solicitudes x where x.contacto=e.solicitud.contacto and x.estatus.id!=76) order by e.id desc"),
 	@NamedQuery(name="Evaluacion.findAllPendientesBySolicitudId", query="select e from evaluaciones e inner join fetch e.solicitud s where e.aprobado=false and s.id=?1 order by e.id desc"),
-	@NamedQuery(name="Evaluacion.findAllBySolicitudId", query="select e from evaluaciones e inner join fetch e.solicitud s where s.id=?1 order by e.id desc"),
+	//@NamedQuery(name="Evaluacion.findAllBySolicitudId", query="select e from evaluaciones e inner join fetch e.solicitud s where s.id=?1 order by e.id desc"),
+	@NamedQuery(name="Evaluacion.findAllBySolicitudId", query="select e from evaluaciones e where e.solicitud.id=?1 and e.estado.id!=52 order by e.id desc"),
 	@NamedQuery(name="Evaluacion.findById", query="select e from evaluaciones e where e.id=?1"),
 	@NamedQuery(name="Evaluacion.findAllBySolicitudUCL", query="select e from evaluaciones e inner join fetch e.solicitud s where s.id=?1 and e.instrumento.unidad=?2"),
 	//dchavez: 01/03/2014. NamedQuery para obtener el resumen de aprobado/reprobado por cada unidad de competencia evaluada en una solicitud.

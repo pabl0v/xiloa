@@ -902,4 +902,16 @@ public interface IService {
 	 * 
 	 */	
 	public Actividad getActividadById(Long id);
+	
+	/** 
+	 * @param el id de la solicitud cuyas evaluaciones se quiere obtener
+	 * 
+	 */	
+	public List<Evaluacion> getEvaluacionesBySolicitudId(Long solicitudId);
+	
+	/** 
+	 * @param la solicitud a evaluar
+	 * 
+	 */	
+	public void evaluarSolicitud(Solicitud solicitud);	
 }

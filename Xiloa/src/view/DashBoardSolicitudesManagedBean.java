@@ -11,9 +11,13 @@ import javax.faces.model.SelectItem;
 
 import model.Certificacion;
 import model.Convocatoria;
+import model.Evaluacion;
+import model.EvaluacionGuia;
 import model.Mantenedor;
 import model.Solicitud;
 
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -39,6 +43,9 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	private Solicitud selectedSolicitud;
 	private Convocatoria selectedConvocatoria;		
 	private List<Item> involucrados;
+	private Long selectedEvaluacionId;
+	private EvaluacionGuia selectedEvaluacionGuia;
+	private List<EvaluacionGuia> evaluacionGuias;
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Constructor de la clase
 	public DashBoardSolicitudesManagedBean() {		
@@ -46,6 +53,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		selectedConvocatoria = new Convocatoria();
 		selectedSolicitud = new Solicitud();
 		involucrados = new ArrayList<Item>();
+		evaluacionGuias = new ArrayList<EvaluacionGuia>();
 	}
 	
 	public List<Solicitud> getListaSolicitudes() {
@@ -236,6 +244,35 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	public void setSelectedConvocatoria(Convocatoria selectedConvocatoria) {
 		this.selectedConvocatoria = selectedConvocatoria;
 	}
+	
+	public Long getSelectedEvaluacionId() {
+		return selectedEvaluacionId;
+	}
+
+	public void setSelectedEvaluacionId(Long selectedEvaluacionId) {
+		this.selectedEvaluacionId = selectedEvaluacionId;
+	}
+	
+	public List<Evaluacion> getEvaluaciones(Long solicitudId){
+		return service.getEvaluacionesBySolicitudId(solicitudId);
+	}
+	
+	public EvaluacionGuia getSelectedEvaluacionGuia() {
+		return selectedEvaluacionGuia;
+	}
+
+	public void setSelectedEvaluacionGuia(EvaluacionGuia evaluacionGuia) {
+		this.selectedEvaluacionGuia = evaluacionGuia;
+	}
+	
+	public List<EvaluacionGuia> getEvaluacionGuias(Long evaluacionId){
+		//return service.getEvaluacionGuiaByEvaluacionId(evaluacionId);
+		return evaluacionGuias;
+	}
+	
+	public void setEvaluacionGuias(List<EvaluacionGuia> guias){
+		this.evaluacionGuias = guias;
+	}
 
 	public List<Item> getActividades() {
 		return service.getActividadesItemBySolicitudId(selectedSolicitud.getId());
@@ -269,4 +306,19 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		this.selectedConvocatoria = new Convocatoria();
 		this.selectedConvocatoria.setSolicitudId(selectedSolicitud.getId());
 	}
+	
+	public void evaluarSolicitud(Solicitud solicitud){
+		service.evaluarSolicitud(solicitud);
+	}
+	
+	public void onRowSelect(SelectEvent event) {
+		//setSelectedEvaluacionId((Long)event.getObject());
+		//setEvaluacionGuias(service.getEvaluacionGuiaByEvaluacionId(selectedEvaluacionId));
+		//setSelectedInstrumento((Instrumento) event.getObject());
+		//setSelectedTipoInstrumento(selectedInstrumento.getTipo().getId());
+		//setSelectedUnidad(selectedInstrumento.getUnidad());
+    }
+  
+    public void onRowUnselect(UnselectEvent event) {
+    }
 }
