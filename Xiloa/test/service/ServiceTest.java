@@ -73,13 +73,13 @@ public class ServiceTest {
 		service.guardar(new Mantenedor("5","Tipo Datos Laborales","Calificaciones",null,null));
 		service.guardar(new Mantenedor("5","Tipo Datos Laborales","Certificaciones",null,null));
 		
-		service.guardar(new Mantenedor("6","Tipo de Instrumento","Lectura-escritura",null,null));
+		service.guardar(new Mantenedor("6","Tipo de Instrumento","Lectura-Escritura",null,null));
 		service.guardar(new Mantenedor("6","Tipo de Instrumento","Diagnostico",null,null));
 		service.guardar(new Mantenedor("6","Tipo de Instrumento","Autoevaluacion",null,null));	
 		service.guardar(new Mantenedor("6","Tipo de Instrumento","Observacion",null,null));
 		service.guardar(new Mantenedor("6","Tipo de Instrumento","Simulacion",null,null));
-		service.guardar(new Mantenedor("6","Tipo de Instrumento","Entrevista",null,null));
-		service.guardar(new Mantenedor("6","Tipo de Instrumento","Guion inicial",null,null));
+		service.guardar(new Mantenedor("6","Tipo de Instrumento","Guion Entrevista",null,null));
+		service.guardar(new Mantenedor("6","Tipo de Instrumento","No Definido",null,null));
 		service.guardar(new Mantenedor("6","Tipo de Instrumento","Otro",null,null));
 		
 		service.guardar(new Mantenedor("7","Estatus Solicitud","Registrada",null,null));	
@@ -100,8 +100,8 @@ public class ServiceTest {
 		service.guardar(new Mantenedor("8","Estatus Evidencia","Verificada",null,null));
 		
 		service.guardar(new Mantenedor("9","Estatus Evaluacion","Registrada",null, null));
-		service.guardar(new Mantenedor("9","Estatus Evaluacion","Aprobada",null,null));
-		service.guardar(new Mantenedor("9","Estatus Evaluacion","Reprobada",null,null));
+		service.guardar(new Mantenedor("9","Estatus Evaluacion","Completada",null,null));
+		service.guardar(new Mantenedor("9","Estatus Evaluacion","Anulada",null,null));
 		
 		service.guardar(new Mantenedor("10","Email del administrador","sccl.inatec@gmail.com",null,null));
 		service.guardar(new Mantenedor("10","Password del email del administrador","sccl2013",null,null));

@@ -47,6 +47,12 @@
         						</f:facet> 
                 	        	<h:outputText value="#{instrumentoManagedBean.getCertificacionDescripcion(var.certificacionId)}" />
                     	    </p:column>
+	                        <p:column filterBy="#{var.unidad}" filterOptions="#{instrumentoManagedBean.listaUC}" filterMatchMode="exact">
+    	                    	<f:facet name="header">
+        	    					<h:outputText value="Unidad de Competencia" />  
+        						</f:facet> 
+                	        	<h:outputText value="#{instrumentoManagedBean.getCompetenciaDescripcion(var.unidad)}" />
+                    	    </p:column>
 							<p:column headerText="Código"><h:outputText value="#{var.codigo}" /></p:column>
 							<p:column headerText="Cualitativo"><h:outputText value="#{var.cualitativoLabel}" /></p:column>  
 							<p:column headerText="Nombre"><h:outputText value="#{var.nombre}" /></p:column>  
@@ -66,8 +72,7 @@
 		                </h:form>
 						<div class="seccion_interna">
 						<h:form id="guias">
-		                   <p:dataTable id="display" emptyMessage="No hay datos para mostrar"  var="guia" value="#{instrumentoManagedBean.selectedInstrumento.guias}" selection="#{instrumentoManagedBean.selectedGuia}" paginator="true" rows="10" rowKey="#{guia.id}" selectionMode="single">
-		                   		<p:column headerText="Unidad de Competencia"><h:outputText value="#{instrumentoManagedBean.getCompetenciaDescripcion(guia.unidadId)}" /></p:column>  
+		                   <p:dataTable id="display" emptyMessage="No hay datos para mostrar"  var="guia" value="#{instrumentoManagedBean.selectedInstrumento.guias}" selection="#{instrumentoManagedBean.selectedGuia}" paginator="true" rows="10" rowKey="#{guia.id}" selectionMode="single">  
 		                        <p:column headerText="Pregunta"><h:outputText value="#{guia.pregunta}" /></p:column>  
 		                        <p:column headerText="Respuesta"><h:outputText value="#{guia.respuesta}" /></p:column>  
 		                        <p:column headerText="Puntaje"><h:outputText rendered="#{guia.instrumento.cualitativo}" value="#{guia.pesoPregunta}" /><h:outputText rendered="#{!guia.instrumento.cualitativo}" value="#{guia.puntaje}" /></p:column>  
@@ -82,17 +87,10 @@
 		</div>
 	</div>
 
-	<p:dialog id="modalDialog1" styleClass="estilo_dialogoactividades" header="Edicion de Guia:" widgetVar="dlg1" modal="true" resizable="false" width="420" height="370">
+	<p:dialog id="modalDialog1" styleClass="estilo_dialogoactividades" header="Edicion de Guia:" widgetVar="dlg1" modal="true" resizable="false" width="420" height="330">
 		<div id="contenedor_dialogoactividades">
 		<h:panelGrid id="modal1" columns="3" cellpadding="4">
-		<h:form id="guiaDialogo">
-            <h:outputLabel styleClass="estilo_label" value="Unidad:" />
-			<p:selectOneMenu id="selector_unidad" required="false" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedUnidad}" >  
-				<f:selectItem itemLabel="Seleccione..." itemValue="" />
-				<f:selectItems value="#{instrumentoManagedBean.catalogoUnidades}" var="unidad" itemLabel="#{unidad.descripcion}" itemValue="#{unidad.id}" />
-			</p:selectOneMenu>
-			<p:message for="selector_unidad" display="text" />
-			<br/> 
+		<h:form id="guiaDialogo"> 
 		  	<h:outputLabel styleClass="estilo_label" value="Pregunta:" />  
             <p:inputText id="codigo1" size="200" value="#{instrumentoManagedBean.guia.pregunta}" required="true" requiredMessage="La pregunta es requerida" /> 
             <p:message for="codigo1" display="text"  />
@@ -122,7 +120,7 @@
 	</p:dialog>	
 	
 	<div id="contenedor_dialogoactividades">
-	<p:dialog id="modalDialog2" styleClass="estilo_dialogoactividades" header="Edición de Instrumento:" widgetVar="dlg2" modal="true" resizable="false" width="450" height="520">
+	<p:dialog id="modalDialog2" styleClass="estilo_dialogoactividades" header="Edición de Instrumento:" widgetVar="dlg2" modal="true" resizable="false" width="450" height="560">
 		<h:panelGrid id="modal2" columns="3" cellpadding="5">
 		<h:form id="instrumentoDialogo">
 		  	<h:outputLabel styleClass="estilo_label" value="Instrumento:" />
@@ -136,8 +134,16 @@
 			<p:selectOneMenu id="selector_estatus2" required="false" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedCertificacion}" >  
 				<f:selectItem itemLabel="Seleccione..." itemValue="" />
 				<f:selectItems value="#{instrumentoManagedBean.catalogoCertificaciones}" var="certificacion" itemLabel="#{certificacion.descripcion}" itemValue="#{certificacion.id}" />
+				<p:ajax update="selector_estatus3" listener="#{instrumentoManagedBean.handleCertificacionesChange}" />
 			</p:selectOneMenu>
 			<p:message for="selector_estatus2" display="text" />
+            <br/>
+            <h:outputLabel styleClass="estilo_label" value="Unidad:" />
+			<p:selectOneMenu id="selector_estatus3" required="true" requiredMessage="Debe seleccionar la unidad" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedUnidad}" >  
+				<f:selectItem itemLabel="Seleccione..." itemValue="" />
+				<f:selectItems value="#{instrumentoManagedBean.catalogoUnidades}" var="unidad" itemLabel="#{unidad.descripcion}" itemValue="#{unidad.id}" />
+			</p:selectOneMenu>
+			<p:message for="selector_estatus3" display="text" />
             <br/>
             <h:outputLabel styleClass="estilo_label" value="Cualitativo:" />
             <p:selectBooleanCheckbox disabled="true" value="#{instrumentoManagedBean.instrumento.cualitativo}">
