@@ -3,9 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,16 +14,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.Formula;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 /**
  * 
@@ -38,7 +34,7 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
  */
 
 @Entity(name = "evaluaciones")
-@Table(name = "evaluaciones", schema = "sccl")
+@Table(name = "evaluaciones", schema = "sccl", uniqueConstraints=@UniqueConstraint(columnNames={"evaluacion_solicitud_id", "evaluacion_instrumento_id"}))
 @NamedQueries({
 	@NamedQuery(name="Evaluacion.findAllPendientesByFirstSolicitudByContactoId", query="select e from evaluaciones e where e.solicitud.contacto.id=?1 and e.solicitud.id=(select min(x.id) from solicitudes x where x.contacto=e.solicitud.contacto and x.estatus.id!=76) order by e.id desc"),
 	@NamedQuery(name="Evaluacion.findAllPendientesBySolicitudId", query="select e from evaluaciones e inner join fetch e.solicitud s where e.aprobado=false and s.id=?1 order by e.id desc"),
@@ -53,34 +49,28 @@ public class Evaluacion implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private final String tipoMantenedorEstado = new String("9");
-
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "evaluacion_id", nullable = false)
 	private Long id;
 	
-	/**
-	 * dchavez, 16/02/2014: agregando instrumento a la entidad evaluacion
-	 */
-	
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name="evaluacion_instrumento_id")
-	private Instrumento instrumento;
-	
-	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="evaluacion_solicitud_id")
+	@JoinColumn(name="evaluacion_solicitud_id", nullable = false)
 	private Solicitud solicitud;
+
+	@ManyToOne
+	@JoinColumn(name="evaluacion_instrumento_id", nullable = false)
+	private Instrumento instrumento;
 				
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "evaluacion_fecha", nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Date fechaEvaluacion;
-		
+	
+	/*
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "pk.evaluacion", cascade = CascadeType.REMOVE)
 	private List<EvaluacionGuia> guias;
+	*/
 
 	@Column(name = "evaluacion_observaciones", nullable = true)
 	private String observaciones;
@@ -88,36 +78,34 @@ public class Evaluacion implements Serializable {
 	@Column(name = "evaluacion_activo", nullable = false)
 	private boolean activo = true;
 	
-	//agregar usuario que inactiva
-	//agregar fecha de inactivacion
+	@Formula("(select min(g.aprobado) from sccl.evaluacion_guia g where g.evaluacion_id = evaluacion_id)")
+	private boolean aprobado;
 	
-	@NotNull
+	@Formula("(select sum(g.puntaje) from sccl.evaluacion_guia g where g.evaluacion_id = evaluacion_id)")
+	private Float puntaje;
+
 	@ManyToOne
 	@JoinColumn(name="evaluacion_estado", nullable=false)	
 	private Mantenedor estado;
 	
-	@OneToOne
-	@PrimaryKeyJoinColumn(name="id")
-	private EvaluacionView derived;
-	
-	@Column(name = "aprobado", nullable = false)
-	private boolean aprobado=false;
-	
-	@Column(name = "puntaje", nullable = false, precision=10, scale=2)
-	private Float puntaje=new Float(0);
-	
-	public Mantenedor getEstado() {
-		return estado;
+	public Evaluacion() {
+		super();
+		this.activo = true;
+		this.aprobado = false;
+		this.puntaje = new Float(0);
 	}
 
-	public void setEstado(Mantenedor estado) {
+	public Evaluacion(Solicitud solicitud, Instrumento instrumento, Date fecha, ArrayList<EvaluacionGuia> guias, String observaciones, Mantenedor estado, boolean activo) {
+		super();		
+		this.solicitud = solicitud;
+		this.instrumento = instrumento;
+		this.fechaEvaluacion = fecha;
+		//this.guias = guias;
+		this.observaciones = observaciones;
 		this.estado = estado;
-	}
-
-	public String getTipoMantenedorEstado() {
-		return tipoMantenedorEstado;
-	}
-
+		this.activo = activo;
+	}	
+	
 	public Long getId() {
 		return id;
 	}
@@ -149,22 +137,12 @@ public class Evaluacion implements Serializable {
 	public void setFechaEvaluacion(Date fecha) {
 		this.fechaEvaluacion = fecha;
 	}
-		
+	
+	/*
 	public List<EvaluacionGuia> getGuias() {
 		return guias;
 	}
-
-	public void setGuias(List<EvaluacionGuia> guias) {
-		this.guias = guias;
-	}
-
-	public Float getPuntaje(){
-		return this.puntaje;
-	}
-
-	public Long getUnidad() {
-		return this.instrumento.getUnidad();
-	}
+	*/
 	
 	public String getObservaciones(){
 		return observaciones;
@@ -172,10 +150,6 @@ public class Evaluacion implements Serializable {
 	
 	public void setObservaciones(String observaciones){
 		this.observaciones = observaciones;
-	}
-
-	public boolean isAprobado() {
-		return this.aprobado;
 	}
 	
 	public void setActivo(boolean activo) {
@@ -185,24 +159,24 @@ public class Evaluacion implements Serializable {
 	public boolean getActivo() {
 		return this.activo;
 	}	
-		
-	public Evaluacion() {
-		super();
-		this.guias = new ArrayList<EvaluacionGuia>();
-		this.activo = true;
+	
+	public boolean isAprobado() {
+		return this.aprobado;
+	}
+	
+	public Float getPuntaje(){
+		return this.puntaje;
 	}
 
-	public Evaluacion(Solicitud solicitud, Instrumento instrumento, Date fecha, /*Long unidad,*/ ArrayList<EvaluacionGuia> guias, /*Float puntaje,*/ String observaciones, /*boolean aprobado,*/ Mantenedor estado, boolean activo) {
-		super();		
-		this.solicitud = solicitud;
-		this.instrumento = instrumento;
-		this.fechaEvaluacion = fecha;
-		//this.unidad = unidad;
-		this.guias = guias;
-		//this.puntaje = puntaje;
-		this.observaciones = observaciones;
-		//this.aprobado = aprobado;
+	public Long getUnidad() {
+		return this.instrumento.getUnidad();
+	}
+		
+	public Mantenedor getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Mantenedor estado) {
 		this.estado = estado;
-		this.activo = activo;
-	}	
+	}			
 }

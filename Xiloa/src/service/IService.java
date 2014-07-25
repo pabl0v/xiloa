@@ -184,6 +184,15 @@ public interface IService {
 	 */
 	
 	public List<Instrumento> getInstrumentos(Integer entidadId);
+	
+	/**
+	 * @return lista de instrumentos de evaluación 
+	 * @param el id de la certificacion
+	 * 
+	 */
+	
+	public List<Item> getInstrumentosItemByCertificacionId(Long id);
+
 
 	/**
 	 * @return indica si el usuario existe o no 
@@ -599,6 +608,13 @@ public interface IService {
 	 */
 	
 	public List<Guia> getGuiaByParam(String namedString, Object [] parametros);
+	
+	/**
+	 * @return lista de guias de evaluación 
+	 * @param el id del instrumento
+	 */
+	
+	public List<Guia> getGuiasByInstrumentoId(Long instrumento);
 
 	/**
 	 * @return lista de archivos de un portafolio 

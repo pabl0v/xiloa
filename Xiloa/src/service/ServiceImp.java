@@ -2,6 +2,7 @@ package service;
 
 import java.math.BigInteger;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -19,6 +20,9 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -123,6 +127,8 @@ public class ServiceImp implements IService {
 	private IDao<Item> itemDao;
 	@Autowired
 	private IDao<Convocatoria> convocatoriaDao;
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
 	private List<Mantenedor> mantenedores;
 	private Map<Integer, Mantenedor> catalogoEstatusCertificacion;
@@ -922,8 +928,49 @@ public class ServiceImp implements IService {
 
 	@Override
 	public List<Evaluacion> getEvaluaciones(Solicitud solicitud) {
-		Object [] objs =  new Object [] {solicitud.getId()};
-		return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllBySolicitudId", objs);
+		//Object [] objs =  new Object [] {solicitud.getId()};
+		//return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllBySolicitudId", objs);
+		
+		final Solicitud sol = solicitud;
+		
+		String query =
+				"select	a.id, "+
+				"a.solicitud_id, "+
+				"a.instrumento_id, "+
+				"a.fecha, "+
+				"a.observaciones, "+
+				"a.activo, "+
+				"a.estado "+
+			"from	(select null id, null solicitud_id, i.instrumento_id instrumento_id, current_date fecha, null observaciones, true activo, 52 estado from sccl.instrumentos i where i.instrumento_estatus='true' and not exists (select 1 from sccl.evaluaciones e where e.evaluacion_solicitud_id="+solicitud.getId()+" and e.evaluacion_instrumento_id=i.instrumento_id and e.evaluacion_estado!=52) "+
+					"union "+
+					"select e.evaluacion_id id, e.evaluacion_solicitud_id solicitud_id, e.evaluacion_instrumento_id instrumento_id, e.evaluacion_fecha fecha, e.evaluacion_observaciones observaciones, e.evaluacion_activo activo, e.evaluacion_estado estado from sccl.evaluaciones e where e.evaluacion_solicitud_id="+solicitud.getId()+" and e.evaluacion_activo=true) a "+
+			"order by a.instrumento_id";
+
+			List<Evaluacion> evaluaciones = new ArrayList<Evaluacion>();
+			try
+			{
+			evaluaciones = jdbcTemplate.query(
+					query,
+					new RowMapper<Evaluacion>() {
+						public Evaluacion mapRow(ResultSet rs, int rowNum) throws SQLException {
+							Evaluacion evaluacion = new Evaluacion();
+							evaluacion.setId(rs.getLong("id"));
+							evaluacion.setInstrumento(getInstrumentoById(rs.getLong("instrumento_id")));
+							evaluacion.setSolicitud(sol);
+							evaluacion.setFechaEvaluacion(rs.getDate("fecha"));
+							evaluacion.setObservaciones(rs.getString("observaciones"));
+							evaluacion.setActivo(rs.getBoolean("activo"));
+							evaluacion.setEstado(getMantenedorById(rs.getInt("estado")));
+							return evaluacion;
+						}
+					});
+			}
+			catch(EmptyResultDataAccessException e)
+			{
+				return null;
+			}
+
+			return evaluaciones;
 	}
 
 	/**
@@ -1338,6 +1385,16 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Instrumento> getInstrumentos(Integer entidadId) {
 		return instrumentoDao.findAllByNamedQueryParam("Instrumento.findAllByEntidadId", new Object[] {entidadId});
+	}
+	
+	/**
+	 * @return lista de instrumentos de evaluación 
+	 * @param el id de la certificacion
+	 * 
+	 */
+	@Override
+	public List<Item> getInstrumentosItemByCertificacionId(Long id){
+		return itemDao.findAllByQuery("select new support.Item(i.id,i.nombre) from instrumentos i where i.estatus='true' and i.certificacionId=" + id + " order by i.id desc");
 	}
 
 	/**
@@ -2180,7 +2237,7 @@ public class ServiceImp implements IService {
 	 */
 	@Override
 	public List<Evaluacion> getEvaluacionesBySolicitudId(Long solicitudId){
-		return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllBySolicitudId", new Object [] {solicitudId});
+		return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllBySolicitudId", new Object [] {solicitudId});		
 	}
 	
 	/** 
@@ -2213,5 +2270,14 @@ public class ServiceImp implements IService {
 				evaluacionGuiaDao.save(eg);
 			}
 		}
+	}
+	
+	/**
+	 * @return lista de guias de evaluación 
+	 * @param el id del instrumento
+	 */
+
+	public List<Guia> getGuiasByInstrumentoId(Long instrumento){
+		return guiaDao.findAllByQuery("select g from guias g where g.instrumento.id="+instrumento+" order by g.id desc");
 	}
 }

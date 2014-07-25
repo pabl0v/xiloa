@@ -106,7 +106,7 @@
 	       		 		<p:menuitem value="Rechazar Solicitud" title="Rechazar Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,3)}" update=":formSolicitudes"  />
 	       		 		<p:menuitem value="Matricular Candidato" title="Matricular Candidato" style="display:inline-block;" onclick="PF('dlg1').show();" update=":matriculaForm" />
 	       		 		<p:menuitem value="Convocar Candidato" title="Convocar Candidato" style="display:inline-block;" onclick="PF('dlg2').show();" update=":convocatoriaForm, :convocatoriaDataTableForm"  />
-	       		 		<p:menuitem value="Evaluar Candidato" title="Evaluar Candidato" style="display:inline-block;" onclick="PF('dlg3').show();" update=":evaluacionesForm" action="#{dashBoardSolicitudesManagedBean.evaluarSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" />
+	       		 		<p:menuitem value="Evaluar Candidato" title="Evaluar Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.evaluarSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" />
 	       		 		<p:menuitem value="Anular Solicitud" title="Anular Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,10)}" update=":formSolicitudes:dtSolicitud" disabled="#{!varSolicitudI.erasable}" />
 	   				</p:splitButton>
 				</p:column>
@@ -180,47 +180,6 @@
 			</p:dataTable>
 			<div class="contenedor_botones" style="margin-top:32px;">
 				<p:commandButton value="Cancelar" onclick="PF('dlg2').hide();" immediate="true" /> 
-			</div>
-		</h:form>
-	</p:dialog>
-	<p:dialog id="modalEvaluacion" styleClass="estilo_dialogoactividades" header="Registro de Evaluaciones:" widgetVar="dlg3" modal="true" resizable="false" width="700" height="550">
-		<h:form id="evaluacionesForm">
-			<br/>
-			<h:panelGrid id="modal3" columns="2" cellpadding="10" cellspacing="2" >
-				<h:outputLabel styleClass="estilo_label" value="Certificación:" />
-				<p:inputText disabled="true" size="80" value="#{dashBoardSolicitudesManagedBean.selectedSolicitud.certificacion.nombre}" />
-				<h:outputLabel styleClass="estilo_label" value="Candidato:" />
-				<p:inputText disabled="true" size="80" value="#{dashBoardSolicitudesManagedBean.selectedSolicitud.nombre}" />
-				<h:outputLabel styleClass="estilo_label" value="Estado:" />
-				<p:inputText disabled="true" size="10" value="#{dashBoardSolicitudesManagedBean.selectedSolicitud.estatus.valor}" />
-			</h:panelGrid>
-			<br/>
-			<p:dataTable id="evaluacionesDataTable" emptyMessage="No hay datos para mostrar" var="evaluacion" value="#{dashBoardSolicitudesManagedBean.getEvaluaciones(dashBoardSolicitudesManagedBean.selectedSolicitud.id)}" paginator="true" rows="3" rowKey="#{evaluacion.id}" selectionMode="single" selection="#{dashBoardSolicitudesManagedBean.selectedEvaluacionId}">
-				<p:ajax event="rowSelect" update=":guiasForm" />  
-				<p:ajax event="rowUnselect" update=":guiasForm" />
-				<f:facet name="header">Evaluaciones Disponibles</f:facet>
-				<p:column headerText="Instrumento"><h:outputText value="#{evaluacion.instrumento.nombre}" /></p:column>
-				<p:column headerText="Fecha"><h:outputText value="#{evaluacion.fechaEvaluacion}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>
-				<p:column headerText="Estado"><h:outputText value="#{evaluacion.estado.valor}" /></p:column>
-				<p:column headerText="Puntaje"><h:outputText value="#{evaluacion.puntaje}" /></p:column>
-				<p:column headerText="Aprobado"><h:outputText value="#{evaluacion.aprobado}" /></p:column>
-			</p:dataTable>
-		</h:form>
-		<br/>
-		<br/>
-		<h:form id="guiasForm">
-			<p:dataTable id="guiasDataTable" emptyMessage="No hay datos para mostrar" var="guia" value="#{dashBoardSolicitudesManagedBean.getEvaluacionGuias(dashBoardSolicitudesManagedBean.selectedEvaluacionId)}" paginator="true" rows="5" rowKey="#{guia.EvaluacionGuiaId}" selectionMode="single" selection="#{dashBoardSolicitudesManagedBean.selectedEvaluacionGuia}">
-				<f:facet name="header">Preguntas Disponibles</f:facet>
-				<p:column headerText="Unidad"><h:outputText value="#{guia.EvaluacionGuiaId.guia.unidad}" /></p:column>
-				<p:column headerText="Pregunta"><h:outputText value="#{guia.EvaluacionGuiaId.guia.pregunta}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>
-				<p:column headerText="Respuesta"><h:outputText value="#{guia.EvaluacionGuiaId.guia.respuesta}" /></p:column>
-				<p:column headerText="Puntaje"><h:outputText value="#{guia.puntaje}" /></p:column>
-				<p:column headerText="Aprobado"><h:outputText value="#{guia.aprobado}" /></p:column>
-			</p:dataTable>
-			<br/>
-			<div class="contenedor_botones" style="margin-top:32px;">
-				<p:commandButton value="Aceptar" oncomplete="if(args.validationFailed) {dlg3.show()}" update=":evaluacionesForm, :formSolicitudes" />
-				<p:commandButton value="Cancelar" onclick="PF('dlg3').hide();" immediate="true" />
 			</div>
 		</h:form>
 	</p:dialog>

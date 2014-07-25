@@ -307,8 +307,14 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		this.selectedConvocatoria.setSolicitudId(selectedSolicitud.getId());
 	}
 	
+	/*
 	public void evaluarSolicitud(Solicitud solicitud){
 		service.evaluarSolicitud(solicitud);
+	}
+	*/
+	
+	public String evaluarSolicitud(Solicitud solicitud){
+		return "/modulos/solicitudes/registro_evaluacion?faces-redirect=true";
 	}
 	
 	public void onRowSelect(SelectEvent event) {
