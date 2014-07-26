@@ -24,14 +24,14 @@
 			    	<h:form id="formEvaluaciones">
 					<p:dataTable id="dtEvaluaciones" emptyMessage="No hay datos para mostrar"  var="evaluacion" value="#{evaluacionManagedBean.evaluaciones}" 
 						rowKey="#{evaluacion.instrumento.id}" selectionMode="single" paginator="true" rows="5" >
-							<p:ajax event="rowSelect" listener="#{evaluacionManagedBean.onEvaluacionSelect}" update=":formGuias:dtGuias"/>  
+						<p:ajax event="rowSelect" listener="#{evaluacionManagedBean.onEvaluacionSelect}" update=":formGuias:dtGuias"/>  
 						<p:column headerText="Instrumento"><h:outputText value="#{evaluacion.instrumento.nombre}" /></p:column>  
 						<p:column headerText="Unidad"><h:outputText value="#{evaluacionManagedBean.getUnidad(evaluacion.instrumento.unidad).descripcion}" /></p:column>  
 						<p:column headerText="Fecha" ><h:outputText value="#{evaluacion.fechaEvaluacion}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>
-						<p:column headerText="Puntaje"></p:column>
-						<p:column headerText="Aprobado"></p:column>
+						<p:column headerText="Puntaje"><h:outputText value="#{evaluacion.puntaje}" /></p:column>
+						<p:column headerText="Aprobado"><h:outputText value="#{evaluacion.aprobado}" /></p:column>
 						<p:column exportable="false" style="width:4%" >
-							<p:commandButton id="aplicarButton" action="#{evaluacionManagedBean.aplicarEvaluacion(evaluacionManagedBean.selectedEvaluacion)}" icon="ui-icon-pencil" title="Aplicar" update=":formPrincipal:msgEvaluacion,:formEvaluaciones:dtEvaluaciones,:formGuias:dtGuias" />  
+							<p:commandButton id="aplicarButton" action="#{evaluacionManagedBean.guardarEvaluacion(evaluacionManagedBean.selectedEvaluacion)}" icon="ui-icon-pencil" title="Aplicar" update=":formPrincipal:msgEvaluacion,:formEvaluaciones:dtEvaluaciones,:formGuias:dtGuias" />  
 				        </p:column>
 	            	</p:dataTable>
 	            </h:form>
@@ -40,12 +40,16 @@
 				<div id="modal_Guias">
 					<h3>Detalle de la Evaluación:</h3>
 					<h:form id="formGuias">
-					<p:dataTable id="dtGuias" emptyMessage="No hay datos para mostrar"  var="guia" value="#{evaluacionManagedBean.evaluacionGuias}" 
-		     		              rowKey="#{guia.pk}" selection="#{evaluacionManagedBean.selectedEvaluacionGuia}" selectionMode="single" paginator="true" rows="5" >  
+					<p:dataTable id="dtGuias" emptyMessage="No hay datos para mostrar" var="guia" value="#{evaluacionManagedBean.evaluacionGuias}" selectionMode="single" selection="#{evaluacionManagedBean.selectedEvaluacionGuia}" editable="true" editMode="cell" rowKey="#{guia.pk}" paginator="true" rows="5" >
+						<p:ajax event="cellEdit" listener="#{evaluacionManagedBean.onCellEdit}" update=":formPrincipal:msgEvaluacion" />  
 		             	<p:column headerText="Pregunta"><h:outputText value="#{guia.pk.guia.pregunta}" /></p:column>  
 		                <p:column headerText="Respuesta"><h:outputText value="#{guia.pk.guia.respuesta}" /></p:column>  
-		                <p:column headerText="Puntaje"><h:outputText value="#{guia.puntaje}" /></p:column>
-		                <p:column headerText="Aprobado" ><p:selectBooleanCheckbox disabled="true" value="#{guia.aprobado}" /></p:column>		                
+		                <p:column headerText="Puntaje">
+		                	<p:cellEditor>
+								<f:facet name="output"><h:outputText value="#{guia.puntaje}" /></f:facet>
+		                		<f:facet name="input"><p:inputText value="#{guia.puntaje}" style="width:96%" label="Puntaje" /></f:facet>
+		                	</p:cellEditor>
+		                </p:column>		                
 		            </p:dataTable>
 		            </h:form>		
 	            </div>		

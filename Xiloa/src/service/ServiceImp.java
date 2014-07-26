@@ -941,7 +941,7 @@ public class ServiceImp implements IService {
 				"a.observaciones, "+
 				"a.activo, "+
 				"a.estado "+
-			"from	(select null id, null solicitud_id, i.instrumento_id instrumento_id, current_date fecha, null observaciones, true activo, 52 estado from sccl.instrumentos i where i.instrumento_estatus='true' and not exists (select 1 from sccl.evaluaciones e where e.evaluacion_solicitud_id="+solicitud.getId()+" and e.evaluacion_instrumento_id=i.instrumento_id and e.evaluacion_estado!=52) "+
+			"from	(select null id, null solicitud_id, i.instrumento_id instrumento_id, current_date fecha, null observaciones, true activo, 50 estado from sccl.instrumentos i where i.instrumento_estatus='true' and not exists (select 1 from sccl.evaluaciones e where e.evaluacion_solicitud_id="+solicitud.getId()+" and e.evaluacion_instrumento_id=i.instrumento_id and e.evaluacion_estado!=52) "+
 					"union "+
 					"select e.evaluacion_id id, e.evaluacion_solicitud_id solicitud_id, e.evaluacion_instrumento_id instrumento_id, e.evaluacion_fecha fecha, e.evaluacion_observaciones observaciones, e.evaluacion_activo activo, e.evaluacion_estado estado from sccl.evaluaciones e where e.evaluacion_solicitud_id="+solicitud.getId()+" and e.evaluacion_activo=true) a "+
 			"order by a.instrumento_id";
@@ -1517,119 +1517,6 @@ public class ServiceImp implements IService {
 		else
 			return 	contactoDao.findOneByNamedQueryParam("Contacto.findByLogin", new Object[] {login});
 	}
-	
-	/**
-	 * @return la instancia de evaluación registrada 
-	 * @param la evaluación a registrar
-	 * @param las guías usadas en la evaluación
-	 * 
-	 */
-	
-	//Miriam Martinez Cano || Proyecto Xiloa - INATEC || Procedimiento que registra nueva evaluacion y su detalle (EvaluacionGuia)
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public Evaluacion guardarEvaluacion(Evaluacion eval, Guia [] guias) {		
-		Evaluacion evaluacion = null;
-		Integer    puntajeGuia = new Integer (0);
-		Set<EvaluacionGuia> setEvalGuia = null;
-		
-		//Se registra nueva evaluacion
-		if (eval != null){				
-			evaluacion = evaluacionDao.save(eval);
-				
-			if (evaluacion != null) {
-				setEvalGuia = new HashSet<EvaluacionGuia> ();
-					
-				for (Guia g : guias) {
-													
-					EvaluacionGuiaId pkDetalleGuia = new EvaluacionGuiaId();
-					
-					pkDetalleGuia.setEvaluacion(evaluacion);
-					pkDetalleGuia.setGuia(g);
-					
-					EvaluacionGuia detalleEvaGuia = new EvaluacionGuia();
-					
-					detalleEvaGuia.setPk(pkDetalleGuia);
-					//julio/2014
-					//detalleEvaGuia.setPuntaje(puntajeGuia);		
-					detalleEvaGuia.setAprobado(false);
-					
-					detalleEvaGuia = evaluacionGuiaDao.save(detalleEvaGuia);						
-					
-					setEvalGuia.add(detalleEvaGuia);
-				}
-			}			
-				
-		}
-		return evaluacion;		
-	}
-	
-	/**
-	 * @return la instancia de la evaluación-guia guardada o actualizada 
-	 * @param la evaluación-guia a guardar o actualizar
-	 * 
-	 */	
-
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public EvaluacionGuia updateEvaluacionGuia(EvaluacionGuia evalGuia){				
-		Integer   			 sumaPuntaje = new Integer(0);
-		Evaluacion 			 evaluacion = null;
-		List<EvaluacionGuia> listaEvalGuia = null;
-		EvaluacionGuia       detalleEvaluacion = null;
-				
-		if (evalGuia != null) {			
-			detalleEvaluacion = evaluacionGuiaDao.save(evalGuia);
-			
-			if (detalleEvaluacion != null){
-				evaluacion = detalleEvaluacion.getPk().getEvaluacion();
-				
-				listaEvalGuia = this.getEvaluacionGuiaByEvaluacionId(evaluacion.getId());
-				//julio/2014
-				/*
-				for (EvaluacionGuia eG : listaEvalGuia) {
-					sumaPuntaje += (eG.getPuntaje() == null) ? 0 : eG.getPuntaje();
-				}
-				evaluacion.setPuntaje(sumaPuntaje);
-				*/
-				
-				evaluacion = evaluacionDao.save(evaluacion);
-						
-			}
-		}
-		
-		return detalleEvaluacion;
-	}
-	
-	/**
-	 * @return indica si está listo para la inscripción o no 
-	 * @param la solicitud a validar para inscripción
-	 * 
-	 */
-
-	@Override
-	public boolean validaListoInscripcion(Solicitud solicitud){
-		//String     tipoMantenedor = null;
-		Integer     proximoEstado  = null;
-		boolean    pasa = true;
-		Mantenedor ultimoEstado = null;
-		Mantenedor estadoActual = null;
-		logger.info("Entra al servicio validaListoInscripcion");
-		//tipoMantenedor = solicitud.getTipomantenedorestado();
-		estadoActual  = solicitud.getEstatus();
-		proximoEstado = (estadoActual.getProximo() != null) ? Integer.valueOf(estadoActual.getProximo()) : null; 
-		
-		//ultimoEstado = getMantenedorMaxByTipo(tipoMantenedor);
-		ultimoEstado = catalogoEstadoSolicitud.get(37);
-		logger.info("Valores de los estados proximoEstado " + proximoEstado + " ultimo anterior " + ultimoEstado.getAnterior());	
-		//if ( (proximoEstado != null) && (ultimoEstado != null) && (proximoEstado == Integer.valueOf(ultimoEstado.getAnterior()))){
-		if ( (proximoEstado != null) && (ultimoEstado != null) && (proximoEstado.toString().equalsIgnoreCase(ultimoEstado.getAnterior()))){
-			pasa = validaEvaluacionAprobada(solicitud, true, null);			
-		} else
-			pasa = false;		
-		
-		return pasa;
-	}
 
 	/**
 	 * @return la instancia de conexión a la base de datos 
@@ -1664,97 +1551,6 @@ public class ServiceImp implements IService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * @return la lista de solicitudes filtradas 
-	 * @param los parámetros de la búsqueda
-	 * @parm el tipo de filtro a aplicar a la búsqueda
-	 * 
-	 */
-
-	@Override
-	public List<Solicitud> filtraListaSolicitudes(HashMap<String, Object> param, Integer tipoFiltro){
-		List<Solicitud> lista = new ArrayList<Solicitud> ();
-		List<Solicitud> listaFiltrada = new ArrayList<Solicitud> ();
-		Mantenedor inicialEstado = null;
-		Mantenedor ultimoEstado = null;
-		Mantenedor estadoSolicitud = null;		
-		Integer    prxEstadoKey;
-		Integer    anteriorEvaluarKey;
-		
-		Contacto solicitante = null;
-		boolean enlistar = false;
-		
-		logger.info("Dentro de service.filtroListaSolicitudes...");		
-					
-		lista = getSolicitudesByParam(param);
-		
-		logger.info("getSolicitudesByParam retorna " + lista.size() + " registros...");
-		
-		for (Solicitud dato : lista) {
-			solicitante = dato.getContacto();		
-			estadoSolicitud = dato.getEstatus();
-			
-			//inicialEstado = (inicialEstado == null) ? getMantenedorMinByTipo(dato.getTipomantenedorestado()) : inicialEstado;
-			//ultimoEstado = (ultimoEstado == null) ? getMantenedorMaxByTipo(dato.getTipomantenedorestado()) : ultimoEstado;
-			
-			//inicialEstado = (inicialEstado == null) ? catalogoEstadoSolicitud.get(20) : inicialEstado;
-			//ultimoEstado = (ultimoEstado == null) ? catalogoEstadoSolicitud.get(37) : ultimoEstado;
-			
-			inicialEstado = (inicialEstado == null) ? getMantenedorById(32) : inicialEstado;
-			ultimoEstado = (ultimoEstado == null) ? getMantenedorById(38) : ultimoEstado;
-			
-			/*
-			prxEstadoKey = Integer.valueOf(inicialEstado.getProximo());
-			if (estadoSolicitud.getAnterior() != null)
-				anteriorEvaluarKey = Integer.valueOf(estadoSolicitud.getAnterior());
-			else
-				anteriorEvaluarKey = null;
-			*/
-			
-			if(inicialEstado.getId() == 32)
-				anteriorEvaluarKey = null;
-			else
-				anteriorEvaluarKey = inicialEstado.getId() - 1;
-			
-			prxEstadoKey = inicialEstado.getId()==38? null : inicialEstado.getId() + 1;
-			
-			switch(tipoFiltro){
-				case 1:{ //Pasa a Estado Convocado
-						logger.info("Pasa a estado convocado en switch...");
-					if (estadoSolicitud.getId() == prxEstadoKey.intValue()) 
-						enlistar = portafolioVerificado(solicitante, new String("8"));
-						//enlistar = true;
-					else
-						enlistar = false;
-					logger.info("Sale de estado convocado en switch...");
-					break;
-				}
-				case 2:{ //Pasa a Asesorado
-					if ((anteriorEvaluarKey == prxEstadoKey) && (anteriorEvaluarKey != null))
-						enlistar = true;
-					else
-						enlistar = false;
-					
-					break;
-				}
-				case 3: { //Pasa a Listo para Inscripcion					
-					enlistar = validaListoInscripcion(dato);
-					break;
-				}
-				default:{
-					enlistar = true;
-					break;
-				}
-			}			
-								
-			if (enlistar == true)
-				listaFiltrada.add(dato);
-		}
-		
-		return listaFiltrada;
-		
 	}
 	
 	/**
@@ -2240,44 +2036,29 @@ public class ServiceImp implements IService {
 		return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllBySolicitudId", new Object [] {solicitudId});		
 	}
 	
-	/** 
-	 * @param la solicitud a evaluar
-	 * 
-	 */	
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void evaluarSolicitud(Solicitud solicitud){
-		List<Instrumento> instrumentos = instrumentoDao.findAllByQuery("select i from instrumentos i, solicitudes s where i.certificacionId=s.certificacion.id and i.estatus=true and s.id="+solicitud.getId()+" and not exists (select 1 from evaluaciones e where e.solicitud.id=s.id and e.instrumento.id=i.id and e.estado.id!=52) order by i.id desc");
-		
-		for(Instrumento instrumento : instrumentos){
-			Evaluacion evaluacion = new Evaluacion();
-			evaluacion.setInstrumento(instrumento);
-			evaluacion.setSolicitud(solicitud);
-			evaluacion.setEstado(getMantenedorById(50));	//registrada
-			evaluacion.setFechaEvaluacion(new Date());
-			evaluacion.setActivo(true);
-			
-			evaluacion = evaluacionDao.save(evaluacion);
-			
-			List<Guia> guias = guiaDao.findAllByNamedQueryParam("Guia.findByIdInstrumento", new Object [] {instrumento.getId()});
-			for(Guia guia : guias){
-				EvaluacionGuia eg = new EvaluacionGuia();
-				eg.setEvaluacion(evaluacion);
-				eg.setGuia(guia);
-				eg.setPuntaje(new Float(0));
-				eg.setAprobado(false);
-				
-				evaluacionGuiaDao.save(eg);
-			}
-		}
-	}
-	
 	/**
 	 * @return lista de guias de evaluación 
 	 * @param el id del instrumento
 	 */
-
+	@Override
 	public List<Guia> getGuiasByInstrumentoId(Long instrumento){
 		return guiaDao.findAllByQuery("select g from guias g where g.instrumento.id="+instrumento+" order by g.id desc");
+	}
+	
+	/** 
+	 * @param la solicitud a evaluar
+	 * 
+	 */
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public Evaluacion guardarEvaluacion(Evaluacion evaluacion){
+
+		evaluacion = evaluacionDao.save(evaluacion);
+		
+		for(Guia guia : getGuiasByInstrumentoId(evaluacion.getInstrumento().getId())){
+			evaluacionGuiaDao.save(new EvaluacionGuia(evaluacion, guia, new Float(0)));
+		}
+		
+		return evaluacion;
 	}
 }

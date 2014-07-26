@@ -78,11 +78,11 @@ public class Evaluacion implements Serializable {
 	@Column(name = "evaluacion_activo", nullable = false)
 	private boolean activo = true;
 	
-	@Formula("(select min(g.aprobado) from sccl.evaluacion_guia g where g.evaluacion_id = evaluacion_id)")
-	private boolean aprobado;
+	@Formula("(select case when sum(g.puntaje)>=i.instrumento_puntaje_minimo then 'true' else 'false' end from sccl.evaluacion_guia g inner join sccl.evaluaciones e on e.evaluacion_id=g.evaluacion_id and e.evaluacion_estado!=52 inner join sccl.instrumentos i on e.evaluacion_instrumento_id=i.instrumento_id and i.instrumento_estatus='true' and g.evaluacion_id = evaluacion_id group by i.instrumento_puntaje_minimo)")
+	private boolean aprobado = false;
 	
 	@Formula("(select sum(g.puntaje) from sccl.evaluacion_guia g where g.evaluacion_id = evaluacion_id)")
-	private Float puntaje;
+	private Float puntaje = new Float(0);
 
 	@ManyToOne
 	@JoinColumn(name="evaluacion_estado", nullable=false)	
@@ -100,9 +100,10 @@ public class Evaluacion implements Serializable {
 		this.solicitud = solicitud;
 		this.instrumento = instrumento;
 		this.fechaEvaluacion = fecha;
-		//this.guias = guias;
 		this.observaciones = observaciones;
 		this.estado = estado;
+		this.activo = false;
+		this.puntaje = new Float(0);
 		this.activo = activo;
 	}	
 	

@@ -312,8 +312,8 @@ public class ConvocatoriaManagedBean implements Serializable {
 		System.out.println("Dentro de filtraSolicitudes...");
 		System.out.println("asignaParams ->..."+asignaParams().size() + " tipoFiltro ->... "+tipoFiltro);
 		
-		return service.filtraListaSolicitudes(asignaParams (), tipoFiltro);	
-		
+		//return service.filtraListaSolicitudes(asignaParams (), tipoFiltro);
+		return null;
 	}
 			
 		

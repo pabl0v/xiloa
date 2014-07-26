@@ -42,24 +42,21 @@ public class EvaluacionGuia implements Serializable {
 	
 	@Column(name = "puntaje", nullable = false, precision=10, scale=2)	
 	private Float puntaje = new Float(0);
-	
-	@Column(name = "aprobado", nullable = false)	
-	private boolean aprobado = false;
-	
+		
 	public EvaluacionGuia(){
+		super();
 		this.pk =  new EvaluacionGuiaId();
 		this.puntaje = new Float(0);
-		this.aprobado = false;
 	}
 	
-	public boolean isAprobado() {
-		return aprobado;
+	public EvaluacionGuia(Evaluacion evaluacion, Guia guia, Float puntaje){
+		super();
+		this.pk = new EvaluacionGuiaId();
+		this.pk.setEvaluacion(evaluacion);
+		this.pk.setGuia(guia);
+		this.puntaje = puntaje;
 	}
-
-	public void setAprobado(boolean aprobado) {
-		this.aprobado = aprobado;
-	}
-
+	
 	public EvaluacionGuiaId getPk() {
 		return pk;
 	}

@@ -678,31 +678,6 @@ public interface IService {
 	public boolean portafolioVerificado(Contacto contacto, String tipoEstadoPortafolio);
 
 	/**
-	 * @return la instancia de evaluación registrada 
-	 * @param la evaluación a registrar
-	 * @param las guías usadas en la evaluación
-	 * 
-	 */
-	
-	public Evaluacion guardarEvaluacion(Evaluacion eval, Guia [] guias);
-
-	/**
-	 * @return la instancia de la evaluación-guia guardada o actualizada 
-	 * @param la evaluación-guia a guardar o actualizar
-	 * 
-	 */	
-	
-	public EvaluacionGuia updateEvaluacionGuia(EvaluacionGuia evalGuia);
-
-	/**
-	 * @return indica si está listo para la inscripción o no 
-	 * @param la solicitud a validar para inscripción
-	 * 
-	 */
-	
-	public boolean validaListoInscripcion(Solicitud solicitud);
-
-	/**
 	 * @return la instancia de conexión a la base de datos 
 	 * 
 	 */
@@ -718,15 +693,6 @@ public interface IService {
 	 */
 	
 	public void imprimirReporte(String nombreReporte, Map<String,Object> parametros, String formato, boolean visualiza) throws SQLException;
-
-	/**
-	 * @return la lista de solicitudes filtradas 
-	 * @param los parámetros de la búsqueda
-	 * @parm el tipo de filtro a aplicar a la búsqueda
-	 * 
-	 */
-	
-	public List<Solicitud> filtraListaSolicitudes(HashMap<String, Object> param, Integer tipoFiltro);
 	
 	/**
 	 * @return indica si el proceso de evaluación está concluido o no 
@@ -924,10 +890,10 @@ public interface IService {
 	 * 
 	 */	
 	public List<Evaluacion> getEvaluacionesBySolicitudId(Long solicitudId);
-	
+		
 	/** 
 	 * @param la solicitud a evaluar
 	 * 
 	 */	
-	public void evaluarSolicitud(Solicitud solicitud);	
+	public Evaluacion guardarEvaluacion(Evaluacion evaluacion);	
 }
