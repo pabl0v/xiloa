@@ -123,23 +123,24 @@
 	<p:dialog id="modalDialog2" styleClass="estilo_dialogoactividades" header="Edición de Instrumento:" widgetVar="dlg2" modal="true" resizable="false" width="450" height="560">
 		<h:panelGrid id="modal2" columns="3" cellpadding="5">
 		<h:form id="instrumentoDialogo">
-		  	<h:outputLabel styleClass="estilo_label" value="Instrumento:" />
-			<p:selectOneMenu id="selector_estatus1" required="true" requiredMessage="Debe seleccionar el tipo de instrumento" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedTipoInstrumento}" >  
-				<f:selectItem itemLabel="Seleccione..." itemValue="" />
-				<f:selectItems value="#{instrumentoManagedBean.catalogoTiposInstrumento}" var="tipo" itemLabel="#{tipo.valor}" itemValue="#{tipo.id}" />
-			</p:selectOneMenu>
-			<p:message for="selector_estatus1" display="text"  />
-            <br/>	
             <h:outputLabel styleClass="estilo_label" value="Certificación:" />
-			<p:selectOneMenu id="selector_estatus2" required="false" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedCertificacion}" >  
+			<p:selectOneMenu id="selector_estatus1" required="false" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedCertificacion}" >  
 				<f:selectItem itemLabel="Seleccione..." itemValue="" />
 				<f:selectItems value="#{instrumentoManagedBean.catalogoCertificaciones}" var="certificacion" itemLabel="#{certificacion.descripcion}" itemValue="#{certificacion.id}" />
 				<p:ajax update="selector_estatus3" listener="#{instrumentoManagedBean.handleCertificacionesChange}" />
 			</p:selectOneMenu>
-			<p:message for="selector_estatus2" display="text" />
+			<p:message for="selector_estatus1" display="text" />
             <br/>
+		  	<h:outputLabel styleClass="estilo_label" value="Instrumento:" />
+			<p:selectOneMenu id="selector_estatus2" required="true" requiredMessage="Debe seleccionar el tipo de instrumento" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedTipoInstrumento}" >  
+				<f:selectItem itemLabel="Seleccione..." itemValue="" />
+				<f:selectItems value="#{instrumentoManagedBean.catalogoTiposInstrumento}" var="tipo" itemLabel="#{tipo.valor}" itemValue="#{tipo.id}" />
+				<p:ajax update="selector_estatus3" listener="#{instrumentoManagedBean.handleInstrumentosChange}" />
+			</p:selectOneMenu>
+			<p:message for="selector_estatus2" display="text"  />
+            <br/>	
             <h:outputLabel styleClass="estilo_label" value="Unidad:" />
-			<p:selectOneMenu id="selector_estatus3" required="true" requiredMessage="Debe seleccionar la unidad" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedUnidad}" >  
+			<p:selectOneMenu disabled="#{instrumentoManagedBean.disabledUnidad}" id="selector_estatus3" required="false" requiredMessage="Debe seleccionar la unidad" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedUnidad}" >  
 				<f:selectItem itemLabel="Seleccione..." itemValue="" />
 				<f:selectItems value="#{instrumentoManagedBean.catalogoUnidades}" var="unidad" itemLabel="#{unidad.descripcion}" itemValue="#{unidad.id}" />
 			</p:selectOneMenu>

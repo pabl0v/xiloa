@@ -55,6 +55,7 @@ public class InstrumentoManagedBean implements Serializable {
 	private Integer selectedTipoInstrumento;
 	private List<Item> catalogoUnidades;
 	private Long selectedUnidad;
+	private boolean disabledUnidad;
 
 	public InstrumentoManagedBean(){
 		super();
@@ -72,6 +73,7 @@ public class InstrumentoManagedBean implements Serializable {
 		selectedUnidad = null;
 		selectedCertificacion = null;
 		mapCertificaciones = new HashMap<Long, Item>();
+		setDisabledUnidad(false);
 	}
 	
 	@PostConstruct
@@ -96,6 +98,25 @@ public class InstrumentoManagedBean implements Serializable {
 		}
 		else
 			setCatalogoUnidades(service.getUnidadesItemByCertificacionId(null));
+	}
+	
+	public void handleInstrumentosChange(){
+		if(selectedTipoInstrumento==27)		//si es prueba lectura-escritura deshabilitar la unidad de competencia
+		{
+			setSelectedUnidad(null);
+			selectedInstrumento.setUnidad(null);
+			setDisabledUnidad(true);
+		}
+		else
+			setDisabledUnidad(false);
+	}
+	
+	public boolean getDisabledUnidad(){
+		return disabledUnidad;
+	}
+	
+	public void setDisabledUnidad(boolean valor){
+		this.disabledUnidad = valor;
 	}
 	
 	public void setSelectedCertificacion(Long id){
@@ -181,7 +202,7 @@ public class InstrumentoManagedBean implements Serializable {
 			instrumento.setPuntajeMaximo(new Float(100));
 			instrumento.setPuntajeMinimo(new Float(100 - ((100/instrumento.getCantidadPreguntas())*instrumento.getRespuestasFallidas())));
 		}
-
+		
 		Instrumento i = (Instrumento) service.guardar(instrumento);
 		setSelectedInstrumento(i);
 
@@ -194,6 +215,7 @@ public class InstrumentoManagedBean implements Serializable {
 		selectedTipoInstrumento = null;
 		selectedUnidad = null;
 		selectedCertificacion = null;
+		setDisabledUnidad(false);
 	}
 	
 	public void editarInstrumento(Instrumento instrumento){
@@ -201,6 +223,10 @@ public class InstrumentoManagedBean implements Serializable {
 		setSelectedTipoInstrumento(instrumento.getTipo().getId());
 		setSelectedUnidad(instrumento.getUnidad());
 		setSelectedCertificacion(instrumento.getCertificacionId());
+		if(instrumento.getTipo().getId()==27)
+			setDisabledUnidad(true);
+		else
+			setDisabledUnidad(false);
 	}
 
 	public String aceptar(){
