@@ -18,8 +18,19 @@
 		</div>
 		<h:form id="formPrincipal">
 			<p:messages id="msgEvaluacion" showDetail="true" autoUpdate="true" closable="true" />
-		</h:form>       		
-   			<div class="seccion_detalle" style="width:94%">   				
+		</h:form>		
+   			<div class="seccion_detalle" style="width:94%">
+   				<h:form>
+				<h:panelGrid id="modal_encabezado" columns="2" cellpadding="5" cellspacing="25" >
+					<h4><b>Certificación:</b></h4>
+					<p:inputText readonly="true" size="80" value="#{evaluacionManagedBean.solicitud.certificacion.nombre}" />
+					<h4><b>Candidato:</b></h4>
+					<p:inputText readonly="true" size="80" value="#{evaluacionManagedBean.solicitud.nombre}" />
+					<h4><b>Estado:</b></h4>
+					<p:inputText readonly="true" size="10" value="#{evaluacionManagedBean.solicitud.estatus.valor}" />
+				</h:panelGrid>
+ 				<br/>
+				</h:form>   			   				
 			    <h3>Instrumentos Aplicados:</h3>
 			    	<h:form id="formEvaluaciones">
 					<p:dataTable id="dtEvaluaciones" emptyMessage="No hay datos para mostrar"  var="evaluacion" value="#{evaluacionManagedBean.evaluaciones}" 

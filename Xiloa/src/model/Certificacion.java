@@ -51,12 +51,12 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @Table(name = "certificaciones", schema = "sccl")
 @NamedQueries({
 	@NamedQuery(name="Certificacion.findAll", query="select c from certificaciones c order by c.id desc"),
-	@NamedQuery(name="Certificacion.findActivas", query="select c from certificaciones c where c.estatus.id=8 order by c.id desc"),
-	@NamedQuery(name="Certificacion.findByIfpId", query="select c from certificaciones c where c.estatus.id!=9 and c.ifpId = case ?1 when 1000 then c.ifpId else ?1 end"),
+	@NamedQuery(name="Certificacion.findActivas", query="select c from certificaciones c where c.estatus.id=17 order by c.id desc"),
+	@NamedQuery(name="Certificacion.findByIfpId", query="select c from certificaciones c where c.estatus.id!=18 and c.ifpId = case ?1 when 1000 then c.ifpId else ?1 end"),
 	@NamedQuery(name="Certificacion.findById", query="select c from certificaciones c where c.id=?1"),
-	@NamedQuery(name="Certificacion.findAllByNombre", query="select c from certificaciones c where c.estatus.id=8 and c.nombre like ?1 order by c.id desc"),
-	@NamedQuery(name="Certificacion.findAllByCentro", query="select c from certificaciones c where c.estatus.id=8 and c.ifpNombre like ?1 order by c.id desc"),
-	@NamedQuery(name="Certificacion.findItemsByIfpId", query="select new support.Item(c.id, c.nombre) from certificaciones c where c.estatus.id!=9 and c.ifpId = case ?1 when 1000 then c.ifpId else ?1 end"),
+	@NamedQuery(name="Certificacion.findAllByNombre", query="select c from certificaciones c where c.estatus.id=17 and c.nombre like ?1 order by c.id desc"),
+	@NamedQuery(name="Certificacion.findAllByCentro", query="select c from certificaciones c where c.estatus.id=17 and c.ifpNombre like ?1 order by c.id desc"),
+	@NamedQuery(name="Certificacion.findItemsByIfpId", query="select new support.Item(c.id, c.nombre) from certificaciones c where c.estatus.id!=18 and c.ifpId = case ?1 when 1000 then c.ifpId else ?1 end"),
 })
 public class Certificacion implements Serializable {
 
@@ -336,35 +336,43 @@ public class Certificacion implements Serializable {
 	}
 
 	public Date getDivulgacionInicia() {
-		return actividades.get(0).getFechaInicial();
+		//return actividades.get(0).getFechaInicial();
+		return null;
 	}
 
 	public Date getDivulgacionFinaliza() {
-		return actividades.get(0).getFechaFinal();
+		//return actividades.get(0).getFechaFinal();
+		return null;
 	}
 
 	public Date getConvocatoriaInicia() {
-		return actividades.get(1).getFechaInicial();
+		//return actividades.get(1).getFechaInicial();
+		return null;
 	}
 	
 	public Date getConvocatoriaFinaliza() {
-		return actividades.get(1).getFechaFinal();
+		//return actividades.get(1).getFechaFinal();
+		return null;
 	}
 
 	public Date getEvaluacionInicia() {
-		return actividades.get(2).getFechaInicial();
+		//return actividades.get(2).getFechaInicial();
+		return null;
 	}
 
 	public Date getEvaluacionFinaliza() {
-		return actividades.get(2).getFechaFinal();
+		//return actividades.get(2).getFechaFinal();
+		return null;
 	}
 	
 	public Date getVerificacionInicia() {
-		return actividades.get(3).getFechaInicial();
+		//return actividades.get(3).getFechaInicial();
+		return null;
 	}
 
 	public Date getVerificacionFinaliza() {
-		return actividades.get(3).getFechaFinal();
+		//return actividades.get(3).getFechaFinal();
+		return null;
 	}
 
 	public Contacto getCreador() {

@@ -82,17 +82,17 @@ public class ServiceTest {
 		service.guardar(new Mantenedor("6","Tipo de Instrumento","No Definido",null,null));
 		service.guardar(new Mantenedor("6","Tipo de Instrumento","Otro",null,null));
 		
-		service.guardar(new Mantenedor("7","Estatus Solicitud","Registrada",null,null));	
-		service.guardar(new Mantenedor("7","Estatus Solicitud","Enviada",null,null));
-		service.guardar(new Mantenedor("7","Estatus Solicitud","Autorizada",null,null));
-		service.guardar(new Mantenedor("7","Estatus Solicitud","Matriculada",null,null));
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Registrado",null,null));	
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Enviado",null,null));
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Autorizado",null,null));
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Matriculado",null,null));
 		service.guardar(new Mantenedor("7","Estatus Solicitud","Asesoria Grupal",null,null));
 		service.guardar(new Mantenedor("7","Estatus Solicitud","Asesoria Individual",null,null));
-		service.guardar(new Mantenedor("7","Estatus Solicitud","Programada",null,null));
-		service.guardar(new Mantenedor("7","Estatus Solicitud","Evaluada",null,null));
-		service.guardar(new Mantenedor("7","Estatus Solicitud","Completada",null,null));
-		service.guardar(new Mantenedor("7","Estatus Solicitud","Rechazada",null,null));
-		service.guardar(new Mantenedor("7","Estatus Solicitud","Anulada",null,null));
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Programado",null,null));
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Evaluado",null,null));
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Completado",null,null));
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Rechazado",null,null));
+		service.guardar(new Mantenedor("7","Estatus Solicitud","Anulado",null,null));
 		
 		service.guardar(new Mantenedor("8","Estatus Evidencia","Registrada",null,null));
 		service.guardar(new Mantenedor("8","Estatus Evidencia","Valida",null,null));

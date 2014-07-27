@@ -34,6 +34,7 @@ public class EvaluacionManagedBean implements Serializable {
 	private Map<Long, Item> unidades;
 	private List<EvaluacionGuia> evaluacionGuias;
 	private EvaluacionGuia selectedEvaluacionGuia;
+	private List<Evaluacion> evaluaciones;
 	private Evaluacion selectedEvaluacion;
 	
 	public EvaluacionManagedBean() {
@@ -42,14 +43,16 @@ public class EvaluacionManagedBean implements Serializable {
 		instrumentos = new HashMap<Long, Item>();
 		unidades = new HashMap<Long, Item>();
 		evaluacionGuias = new ArrayList<EvaluacionGuia>();
-		selectedEvaluacion = null;
 		selectedEvaluacionGuia = null;
+		evaluaciones = new ArrayList<Evaluacion>();
+		selectedEvaluacion = null;
 	}
 	
 	@PostConstruct
 	private void init(){
 
 		solicitud = service.getSolicitudById(new Long(1));
+		setEvaluaciones(service.getEvaluaciones(solicitud));
 		
 		for(Item instrumento : service.getInstrumentosItemByCertificacionId(solicitud.getCertificacion().getId())){
 			instrumentos.put(instrumento.getId(), instrumento);
@@ -85,7 +88,11 @@ public class EvaluacionManagedBean implements Serializable {
 	}
 	
 	public List<Evaluacion> getEvaluaciones(){
-		return service.getEvaluaciones(solicitud);
+		return evaluaciones;
+	}
+	
+	public void setEvaluaciones(List<Evaluacion> evaluaciones){
+		this.evaluaciones = evaluaciones;
 	}
 	
 	public Evaluacion getSelectedEvaluacion(){
@@ -115,6 +122,7 @@ public class EvaluacionManagedBean implements Serializable {
 	public void guardarEvaluacion(Evaluacion evaluacion){
 		evaluacion = service.guardarEvaluacion(evaluacion);
 		setSelectedEvaluacion(evaluacion);
+		setEvaluaciones(service.getEvaluaciones(solicitud));
 		setEvaluacionGuias(service.getEvaluacionGuiaByEvaluacionId(selectedEvaluacion.getId()));
 		FacesUtil.getMensaje("SCCL - Mensaje", "La evaluación ha sido agregada...", false);
 	}

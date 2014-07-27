@@ -53,8 +53,7 @@
         						</f:facet> 
                 	        	<h:outputText value="#{instrumentoManagedBean.getCompetenciaDescripcion(var.unidad)}" />
                     	    </p:column>
-							<p:column headerText="Código"><h:outputText value="#{var.codigo}" /></p:column>
-							<p:column headerText="Cualitativo"><h:outputText value="#{var.cualitativoLabel}" /></p:column>  
+							<p:column headerText="Código"><h:outputText value="#{var.codigo}" /></p:column>  
 							<p:column headerText="Nombre"><h:outputText value="#{var.nombre}" /></p:column>  
 							<p:column headerText="Puntaje Mínimo"><h:outputText rendered="#{var.cualitativo}" value="#{var.puntajeMinimoCualitativo}" /><h:outputText rendered="#{!var.cualitativo}" value="#{var.puntajeMinimo}" /></p:column>  
 							<p:column headerText="Puntaje Máximo"><h:outputText rendered="#{var.cualitativo}" value="#{var.puntajeMaximoCualitativo}" /><h:outputText rendered="#{!var.cualitativo}" value="#{var.puntajeMaximo}" /></p:column>
@@ -140,7 +139,7 @@
 			<p:message for="selector_estatus2" display="text"  />
             <br/>	
             <h:outputLabel styleClass="estilo_label" value="Unidad:" />
-			<p:selectOneMenu disabled="#{instrumentoManagedBean.disabledUnidad}" id="selector_estatus3" required="false" requiredMessage="Debe seleccionar la unidad" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedUnidad}" >  
+			<p:selectOneMenu disabled="#{instrumentoManagedBean.disabledUnidad}" id="selector_estatus3" required="true" requiredMessage="Debe seleccionar la unidad" styleClass="selector_status_estilo" value="#{instrumentoManagedBean.selectedUnidad}" >  
 				<f:selectItem itemLabel="Seleccione..." itemValue="" />
 				<f:selectItems value="#{instrumentoManagedBean.catalogoUnidades}" var="unidad" itemLabel="#{unidad.descripcion}" itemValue="#{unidad.id}" />
 			</p:selectOneMenu>

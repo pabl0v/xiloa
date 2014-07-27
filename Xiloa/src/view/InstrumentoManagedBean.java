@@ -49,6 +49,7 @@ public class InstrumentoManagedBean implements Serializable {
 	private Map<Long,Item> mapCertificaciones;
 	private Instrumento instrumento;
 	private Instrumento selectedInstrumento;
+	private List<Instrumento> instrumentos;
 	private Guia guia;
 	private Guia selectedGuia;	
 	private Map<Integer,Mantenedor> catalogoTiposInstrumento;
@@ -59,6 +60,7 @@ public class InstrumentoManagedBean implements Serializable {
 
 	public InstrumentoManagedBean(){
 		super();
+		instrumentos = new ArrayList<Instrumento>();
 		instrumento = new Instrumento();
 		instrumento.setEstatus(true);
 		selectedInstrumento = new Instrumento();
@@ -78,13 +80,15 @@ public class InstrumentoManagedBean implements Serializable {
 	
 	@PostConstruct
 	private void init(){
+
 		catalogoTiposInstrumento = service.getCatalogoTiposInstrumento();
+		catalogoUnidades = service.getUnidadesItemByCertificacionId(null);
+		
+		setInstrumentos(service.getInstrumentos(controller.getEntidadUsuario()));
 
 		for(Item item : service.getCertificacionesItem(controller.getEntidadUsuario())){
 			mapCertificaciones.put(item.getId(), item);
 		}
-		
-		catalogoUnidades = service.getUnidadesItemByCertificacionId(null);
 	}
 		
 	public List<Item> getCatalogoCertificaciones(){
@@ -205,6 +209,7 @@ public class InstrumentoManagedBean implements Serializable {
 		
 		Instrumento i = (Instrumento) service.guardar(instrumento);
 		setSelectedInstrumento(i);
+		setInstrumentos(service.getInstrumentos(controller.getEntidadUsuario()));
 
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "", "Instrumento registrado exitosamente"));			
 	}
@@ -263,7 +268,11 @@ public class InstrumentoManagedBean implements Serializable {
 	}
 	
 	public List<Instrumento> getInstrumentos() {
-		return service.getInstrumentos(controller.getEntidadUsuario());
+		return instrumentos;
+	}
+	
+	public void setInstrumentos(List<Instrumento> instrumentos){
+		this.instrumentos = instrumentos;
 	}
 		
 	public void onRowSelect(SelectEvent event) {
