@@ -41,7 +41,7 @@ public class EvaluacionGuia implements Serializable {
 	private EvaluacionGuiaId pk;
 	
 	@Column(name = "puntaje", nullable = false, precision=10, scale=2)	
-	private Float puntaje = new Float(0);
+	private Float puntaje;
 		
 	public EvaluacionGuia(){
 		super();

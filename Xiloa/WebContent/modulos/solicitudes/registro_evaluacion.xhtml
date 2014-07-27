@@ -17,7 +17,7 @@
 	    	<script type="text/javascript" src="../../resources/scripts/registro_evaluacion.js"></script>
 		</div>
 		<h:form id="formPrincipal">
-			<p:messages id="msgEvaluacion" showDetail="true" autoUpdate="true" closable="true" />
+			<p:messages id="msgEvaluacion" showDetail="true" autoUpdate="false" closable="true" />
 		</h:form>		
    			<div class="seccion_detalle" style="width:94%">
    				<h:form>
@@ -30,19 +30,20 @@
 					<p:inputText readonly="true" size="10" value="#{evaluacionManagedBean.solicitud.estatus.valor}" />
 				</h:panelGrid>
  				<br/>
-				</h:form>   			   				
-			    <h3>Instrumentos Aplicados:</h3>
-			    	<h:form id="formEvaluaciones">
+				</h:form>
+				<h:form id="formEvaluaciones">
+				<p:commandButton value="Agregar Evaluación" style="margin-bottom: 5px" update=":formAgregarEvaluacion" onclick="PF('dlg2').show();"/>	
+			    <h3>Instrumentos Aplicados:</h3>			 
 					<p:dataTable id="dtEvaluaciones" emptyMessage="No hay datos para mostrar"  var="evaluacion" value="#{evaluacionManagedBean.evaluaciones}" 
 						rowKey="#{evaluacion.instrumento.id}" selectionMode="single" paginator="true" rows="5" >
 						<p:ajax event="rowSelect" listener="#{evaluacionManagedBean.onEvaluacionSelect}" update=":formGuias:dtGuias"/>  
 						<p:column headerText="Instrumento"><h:outputText value="#{evaluacion.instrumento.nombre}" /></p:column>  
 						<p:column headerText="Unidad"><h:outputText value="#{evaluacionManagedBean.getUnidad(evaluacion.instrumento.unidad).descripcion}" /></p:column>  
 						<p:column headerText="Fecha" ><h:outputText value="#{evaluacion.fechaEvaluacion}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>
-						<p:column headerText="Puntaje"><h:outputText value="#{evaluacion.puntaje}" /></p:column>
+						<p:column headerText="Puntaje"><h:outputText value="#{evaluacion.puntajeObtenido}" /></p:column>
 						<p:column headerText="Aprobado"><h:outputText value="#{evaluacion.aprobado}" /></p:column>
 						<p:column exportable="false" style="width:4%" >
-							<p:commandButton id="aplicarButton" action="#{evaluacionManagedBean.guardarEvaluacion(evaluacionManagedBean.selectedEvaluacion)}" icon="ui-icon-pencil" title="Aplicar" update=":formPrincipal:msgEvaluacion,:formEvaluaciones:dtEvaluaciones,:formGuias:dtGuias" />  
+							<p:commandButton id="editarButton" onclick="PF('dlg3').show();" icon="ui-icon-pencil" title="Editar" update=":formEditarEvaluacion" />  
 				        </p:column>
 	            	</p:dataTable>
 	            </h:form>
@@ -51,20 +52,103 @@
 				<div id="modal_Guias">
 					<h3>Detalle de la Evaluación:</h3>
 					<h:form id="formGuias">
-					<p:dataTable id="dtGuias" emptyMessage="No hay datos para mostrar" var="guia" value="#{evaluacionManagedBean.evaluacionGuias}" selectionMode="single" selection="#{evaluacionManagedBean.selectedEvaluacionGuia}" editable="true" editMode="cell" rowKey="#{guia.pk}" paginator="true" rows="5" >
-						<p:ajax event="cellEdit" listener="#{evaluacionManagedBean.onCellEdit}" update=":formPrincipal:msgEvaluacion" />  
+					<p:dataTable id="dtGuias" emptyMessage="No hay datos para mostrar" var="guia" value="#{evaluacionManagedBean.evaluacionGuias}" selectionMode="single" selection="#{evaluacionManagedBean.selectedEvaluacionGuia}" editable="true" editMode="cell" rowKey="#{guia.pk}" paginator="true" rows="5" >  
 		             	<p:column headerText="Pregunta"><h:outputText value="#{guia.pk.guia.pregunta}" /></p:column>  
 		                <p:column headerText="Respuesta"><h:outputText value="#{guia.pk.guia.respuesta}" /></p:column>  
-		                <p:column headerText="Puntaje">
-		                	<p:cellEditor>
-								<f:facet name="output"><h:outputText value="#{guia.puntaje}" /></f:facet>
-		                		<f:facet name="input"><p:inputText value="#{guia.puntaje}" style="width:96%" label="Puntaje" /></f:facet>
-		                	</p:cellEditor>
-		                </p:column>		                
+		                <p:column headerText="Puntaje"><h:outputText value="#{guia.puntaje}" /></p:column>
+						<p:column exportable="false" style="width:4%" >
+							<p:commandButton id="editarGuiaButton" onclick="PF('dlg1').show();" icon="ui-icon-pencil" title="Editar" update=":guiaDialogo" />  
+				        </p:column>
 		            </p:dataTable>
 		            </h:form>		
 	            </div>		
 			</div>		      
-	</div>  
+	</div>
+	<p:dialog id="modalGuia" header="Detalle de la Evaluación:" widgetVar="dlg1" modal="true" resizable="false" width="550" height="270">
+		<div id="contenedor_dialogoactividades">
+		<h:form id="guiaDialogo">
+			<br/>
+			<h:panelGrid columns="2" cellpadding="4">
+		  	<h:outputLabel value="Pregunta:" />
+            <p:inputText id="codigo1" size="50" readonly="true" value="#{evaluacionManagedBean.selectedEvaluacionGuia.pk.guia.pregunta}" />
+            <p:message for="codigo1" display="text" />
+            <br/> 
+            <h:outputLabel value="Respuesta:" />
+            <p:inputText id="codigo2" size="50" readonly="true" value="#{evaluacionManagedBean.selectedEvaluacionGuia.pk.guia.respuesta}" />
+            <p:message for="codigo2" display="text" />
+            <br/>
+            <h:outputLabel value="Puntaje Máximo:  " />
+            <p:inputText id="codigo3" size="15" readonly="true" value="#{evaluacionManagedBean.selectedEvaluacionGuia.pk.guia.puntaje}" />
+            <p:message for="codigo3" display="text" />
+            <br/>
+            <h:outputLabel value="Puntaje Obtenido:" />
+            <p:inputText id="codigo4" size="15" value="#{evaluacionManagedBean.selectedEvaluacionGuia.puntaje}" required="true" requiredMessage="El puntaje es requerido" validatorMessage="Puntaje fuera de rango" converterMessage="El puntaje debe ser numerico" >
+				<f:validateDoubleRange minimum="0" maximum="100" />
+            </p:inputText>
+			<p:message for="codigo4" display="text" />
+			</h:panelGrid>
+			<div class="contenedor_botones" style="margin-top:32px;">
+	            <p:commandButton value="Cancelar" oncomplete="PF('dlg1').hide();" immediate="true" /> 
+				<p:commandButton value="Aceptar" oncomplete="if (!args.validationFailed) dlg1.hide()" update=":formGuias:dtGuias, :formEvaluaciones:dtEvaluaciones, :guiaDialogo" action="#{evaluacionManagedBean.editarEvaluacionGuia(evaluacionManagedBean.selectedEvaluacionGuia)}" />
+			</div>
+		</h:form>
+		</div>
+	</p:dialog>
+	<div id="contenedor_dialogoevaluaciones">
+	<p:dialog header="Nueva Evaluación:" widgetVar="dlg2" modal="true" resizable="false" width="450" height="180">
+		<h:form id="formAgregarEvaluacion">
+			<br/>
+			<h:panelGrid columns="2" cellpadding="4">
+		  	<h:outputLabel styleClass="estilo_label" value="Unidad:" />
+			<p:selectOneMenu id="selector_unidad" styleClass="selector_status_estilo" required="false" requiredMessage="Debe seleccionar la unidad" value="#{evaluacionManagedBean.selectedUnidad}" >  
+				<f:selectItem itemLabel="Seleccione..." itemValue="" />
+				<f:selectItems value="#{evaluacionManagedBean.unidades}" var="unidad" itemLabel="#{unidad.descripcion}" itemValue="#{unidad.id}" />
+			</p:selectOneMenu>
+			<p:message for="selector_unidad" display="text" />
+			<br/> 
+            <h:outputLabel styleClass="estilo_label" value="Instrumento:" />
+			<p:selectOneMenu id="selector_instrumento" styleClass="selector_status_estilo" required="true" requiredMessage="Debe seleccionar un instrumento" value="#{evaluacionManagedBean.selectedInstrumento}" >  
+				<f:selectItem itemLabel="Seleccione..." itemValue="" />
+				<f:selectItems value="#{evaluacionManagedBean.instrumentos}" var="instrumento" itemLabel="#{instrumento.descripcion}" itemValue="#{instrumento.id}" />
+			</p:selectOneMenu>
+			<p:message for="selector_instrumento" display="text"  />
+			</h:panelGrid>
+			<div class="contenedor_botones" style="margin-top:32px;">
+	            <p:commandButton value="Cancelar" oncomplete="PF('dlg2').hide();" immediate="true" /> 
+				<p:commandButton value="Aceptar" oncomplete="if (!args.validationFailed) dlg2.hide()" update=":formEvaluaciones:dtEvaluaciones,:formAgregarEvaluacion" action="#{evaluacionManagedBean.agregarEvaluacion(evaluacionManagedBean.selectedInstrumento)}" />
+			</div>
+		</h:form>
+	</p:dialog>
+	</div>
+	<p:dialog header="Editando la Evaluación:" widgetVar="dlg3" modal="true" resizable="false" width="450" height="280">
+		<h:form id="formEditarEvaluacion">
+			<br/>
+			<h:panelGrid columns="2" cellpadding="4">
+			<h:outputLabel value="Unidad:" />
+			<p:inputText id="codigo5" size="50" readonly="true" value="#{evaluacionManagedBean.getUnidad(evaluacionManagedBean.selectedEvaluacion.instrumento.unidad).descripcion}" />
+			<p:message for="codigo5" display="text"  />
+			<br/>
+			<h:outputLabel value="Tipo:" />
+			<p:inputText id="codigo6" size="50" readonly="true" value="#{evaluacionManagedBean.selectedEvaluacion.instrumento.tipo.valor}" />
+			<p:message for="codigo6" display="text"  />
+			<br/>
+			<h:outputLabel value="Instrumento:" />
+			<p:inputText id="codigo7" size="50" readonly="true" value="#{evaluacionManagedBean.selectedEvaluacion.instrumento.nombre}" />
+			<p:message for="codigo7" display="text"  />
+			<br/>
+		  	<h:outputLabel value="Fecha:" />
+			<p:calendar id="codigo8" value="#{evaluacionManagedBean.selectedEvaluacion.fechaEvaluacion}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
+            <p:message for="codigo8" display="text"  />
+            <br/> 
+            <h:outputLabel value="Activa:" />
+			<p:selectBooleanCheckbox id="selector_activo" value="#{evaluacionManagedBean.selectedEvaluacion.activo}" />
+			<p:message for="selector_activo" display="text"  />
+			</h:panelGrid>
+			<div class="contenedor_botones" style="margin-top:32px;">
+	            <p:commandButton value="Cancelar" oncomplete="PF('dlg3').hide();" immediate="true" /> 
+				<p:commandButton value="Aceptar" oncomplete="if (!args.validationFailed) dlg3.hide()" update=":formEvaluaciones:dtEvaluaciones,:formGuias:dtGuias" action="#{evaluacionManagedBean.editarEvaluacion(evaluacionManagedBean.selectedEvaluacion)}" />
+			</div>
+		</h:form>
+	</p:dialog>
 </h:body>
 </html>
