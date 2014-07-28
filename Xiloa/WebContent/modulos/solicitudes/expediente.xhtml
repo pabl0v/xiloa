@@ -243,26 +243,71 @@
            </p:tabView> 
            </h:form> 		
     	</div>
-   	    <div id="contenedor_tab_planes" class="seccion_expediente" style="width:98%">
-	   	    <p:dataTable emptyMessage="No hay datos"  var="dtEvaluaciones" value="#{expedienteManagedBean.listBeanEvalFormacion}"
-                         selection="#{expedienteManagedBean.selectedBeanEvaluacion}" rowKey="#{dtEvaluaciones}" 
-             			 selectionMode="single" paginator="true" rows="4" >   
-             	 <f:facet name="header">Detalle de Evaluaciones</f:facet>                        	 
-                 <!--<p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{dtEvaluaciones.unidadCompetenciaDescripcion}" /></p:column>  -->
-                 <p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{expedienteManagedBean.getUCDescripcion(dtEvaluaciones.unidad)}" /></p:column>
-                 <p:column headerText="Tecnica o instrumento de evaluacion"><h:outputText value="#{dtEvaluaciones.instrumento.nombre} [ #{dtEvaluaciones.instrumento.tipo.valor} ]" /></p:column>                               
-                 <p:column headerText="Observaciones"><h:outputText value="#{dtEvaluaciones.observaciones}" /></p:column>                                  
-                 <p:column headerText="Fecha">
-                 	<h:outputText value="#{dtEvaluaciones.fechaEvaluacion}" pattern="dd/MM/yyyy" >
-                 		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-                 	</h:outputText>
-                 </p:column>
-                 <p:column headerText="Aprobado"><p:selectBooleanCheckbox value="#{dtEvaluaciones.aprobado}" disabled="true" /></p:column>    
-                 <p:column headerText="Estado"><h:outputText value="#{dtEvaluaciones.estado.valor}" /></p:column>
-	         </p:dataTable>
-   	    </div>    	
-    	<!-- Cuadro de dialogo emergente que registra datos laborales y académicos -->    	    	
-    	<p:dialog id="modalLaborales" styleClass="estilo_dialogoLaborales" header="Agregar Datos Laborales y Academicos:" widgetVar="dlg1" modal="true" resizable="false" width="720" height="540" showEffect="clip" hideEffect="clip" >
+		<div id="contenedor_tab_planes" class="seccion_expediente"
+			style="width: 98%">
+			<p:tabView id="idTabPlanesExpediente">
+			<p:tab id="tabPortafolioEvidencias" title="Portafolio de Evidencias">
+					<p:dataTable id="dtPortafolioLaboralEnPlanes"
+						emptyMessage="No hay datos" var="varPortafolioLaboral"
+						value="#{expedienteManagedBean.listPortafolioLaboral}"
+						selection="#{expedienteManagedBean.selectedArchivoId}"
+						selectionMode="single" rowKey="#{varPortafolioLaboral}"
+						paginator="true" rows="3" style="margin-top:8px;">
+						<f:facet name="header">Portafolio de Evidencias</f:facet>
+						<p:column headerText="Documento de soporte o evidencia">
+							<h:outputText value="#{varPortafolioLaboral.nombre}" />
+						</p:column>
+						<p:column headerText="Descripcion">
+							<h:outputText value="#{varPortafolioLaboral.descripcion}" />
+						</p:column>
+						<p:column headerText="Respaldo de">
+							<h:outputText value="#{varPortafolioLaboral.laboral.nombre}" />
+						</p:column>
+						<p:column headerText="Estado">
+							<h:outputText value="#{varPortafolioLaboral.estado.valor}" />
+						</p:column>
+					</p:dataTable>
+				</p:tab>
+				<p:tab id="tabDetalleEvaluaciones" title="Detalle de Evaluaciones">
+					<p:dataTable emptyMessage="No hay datos" var="dtEvaluaciones"
+						value="#{expedienteManagedBean.listBeanEvalFormacion}"
+						selection="#{expedienteManagedBean.selectedBeanEvaluacion}"
+						rowKey="#{dtEvaluaciones}" selectionMode="single" paginator="true"
+						rows="4">
+						<f:facet name="header">Detalle de Evaluaciones</f:facet>
+						<!--<p:column headerText="Elemento de Competencia o Realizacion Profesional"><h:outputText value="#{dtEvaluaciones.unidadCompetenciaDescripcion}" /></p:column>  -->
+						<p:column
+							headerText="Elemento de Competencia o Realizacion Profesional">
+							<h:outputText
+								value="#{expedienteManagedBean.getUCDescripcion(dtEvaluaciones.unidad)}" />
+						</p:column>
+						<p:column headerText="Tecnica o instrumento de evaluacion">
+							<h:outputText
+								value="#{dtEvaluaciones.instrumento.nombre} [ #{dtEvaluaciones.instrumento.tipo.valor} ]" />
+						</p:column>
+						<p:column headerText="Observaciones">
+							<h:outputText value="#{dtEvaluaciones.observaciones}" />
+						</p:column>
+						<p:column headerText="Fecha">
+							<h:outputText value="#{dtEvaluaciones.fechaEvaluacion}"
+								pattern="dd/MM/yyyy">
+								<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Aprobado">
+							<p:selectBooleanCheckbox value="#{dtEvaluaciones.aprobado}"
+								disabled="true" />
+						</p:column>
+						<p:column headerText="Estado">
+							<h:outputText value="#{dtEvaluaciones.estado.valor}" />
+						</p:column>
+					</p:dataTable>
+				</p:tab>
+				
+			</p:tabView>
+		</div>
+		<!-- Cuadro de dialogo emergente que registra datos laborales y académicos -->
+		<p:dialog id="modalLaborales" styleClass="estilo_dialogoLaborales" header="Agregar Datos Laborales y Academicos:" widgetVar="dlg1" modal="true" resizable="false" width="720" height="540" showEffect="clip" hideEffect="clip" >
     	   <div>
     	   		<br/>
 				<h3>Registro de Datos Laborales y Academicos</h3>

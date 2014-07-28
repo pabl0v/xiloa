@@ -27,7 +27,7 @@
        m.nombre as contacto_municipio,
        g.mantenedor_valor
 from sccl.solicitudes s, sccl.certificaciones c, sccl.contactos cu, public.municipio m,
-     (select mant.* from sccl.mantenedores mant where mant.mantenedor_tipo = '10') g
+     (select mant.* from sccl.mantenedores mant where mant.mantenedor_tipo = '11') g
 where solicitud_id = $P{idSolicitud}
  and c.certificacion_id = s.certificacion_id
  and cu.contacto_id = s.contacto_id

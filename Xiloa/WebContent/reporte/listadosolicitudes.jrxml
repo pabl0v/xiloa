@@ -47,7 +47,7 @@
        g.genero_nombre as genero,
        p.pais_nacionalidad
 from sccl.solicitudes s, sccl.certificaciones c, sccl.contactos cu,
-     (select m.mantenedor_id as genero_id, m.mantenedor_valor as genero_nombre from sccl.mantenedores m where m.mantenedor_tipo = '10') g,
+     (select m.mantenedor_id as genero_id, m.mantenedor_valor as genero_nombre from sccl.mantenedores m where m.mantenedor_tipo = '11') g,
      public.municipio mun, sccl.paises p,
      sccl.mantenedores est
 where (c.certificacion_id = $P{certificacionid} or $P{certificacionid} is null)

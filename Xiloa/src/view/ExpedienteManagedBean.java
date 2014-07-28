@@ -791,7 +791,10 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.listNacionalidades = new ArrayList<SelectItem> ();
 		this.listPaises.add(new SelectItem(null, "Seleccione un pais"));
 		this.listNacionalidades.add(new SelectItem(null, "Indique la nacionalidad"));
+		
+		System.out.println("se encontraron paises : " + paises.size());
 		for (Pais p : paises){
+			System.out.println("se encontraron pais : " + p.getNombre());
 			this.listPaises.add(new SelectItem(p.getId(), p.getNombre()));
 			this.listNacionalidades.add(new SelectItem(p.getId(), p.getNacionalidad()));
 		}

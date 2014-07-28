@@ -316,14 +316,7 @@ public class SolicitudesManagedBean implements Serializable {
 			if (solicitante != null) {
 
 				s = new Solicitud();
-				// Asignando el estado inicial de la solicitud
-				// estadoInicialSolicitud =
-				// service.getMavalidarDatos()ntenedorMinByTipo(s.getTipomantenedorestado());
-				// estadoInicialSolicitud =
-				// service.getCatalogoEstadoSolicitud().get(20);
-				// //getMantenedorMinByTipo(s.getTipomantenedorestado());
-				// ccarvajal:Linea de codigo temporal para mientras se termina
-				// el ajuste de los mantenedores
+			
 				Mantenedor estadoInicialSolicitud = service
 						.getMantenedorById(35);
 
@@ -378,6 +371,10 @@ public class SolicitudesManagedBean implements Serializable {
 		} else if (solicitante.getNumeroIdentificacion() == null) {
 			mensaje = "Debe indicar el numero de cedula. ";
 			titulo = "Informacion incompleta: ";
+			isError = true;
+		} else if (this.getExperiencia()<3) {
+			mensaje = "El Solicitante debe tener m\u00e1s de 3 a\u00f1os de experiencia ";
+			titulo = "Informaci\u00f3n no aceptada: ";
 			isError = true;
 		} // else if
 			// (ValidatorUtil.validateCedula(solicitante.getNumeroIdentificacion())){

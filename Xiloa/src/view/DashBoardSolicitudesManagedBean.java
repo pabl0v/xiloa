@@ -118,75 +118,22 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
     	runReporte(rptNombre, true);
     }
     
-  //Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Ejecuta reporte solicitud del candidato.
+    //Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Ejecuta reporte solicitud del candidato.
     public void runSolicitudCandidato() throws Exception{
     	String rptNombre = "solicitud_candidato";
     	runReporte(rptNombre, true);
     }
     
-  //Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Ejecuta reporte Emision del Juicio.
-    public void runEmisionJuicio() throws Exception{
-    	Map<String,Object> params = new HashMap<String,Object>();
-    	Certificacion cert = null;
-    	String rptNombre = "emision_juicio";    	
-
-    	if (this.selectedSolicitud != null){    		
-    		cert = this.selectedSolicitud.getCertificacion();    		
-    		params.put("idSolicitud",this.selectedSolicitud.getId());
-    		if (cert.getEvaluador() != null){
-    			params.put("idEvaluador",cert.getEvaluador().getId());
-    			if (cert.getVerificador() != null){
-        			params.put("idVerificador", cert.getVerificador().getId());
-        			service.imprimirReporte(rptNombre, params, Global.EXPORT_PDF, true);
-    			} else
-    				FacesUtil.getMensaje("SCCL - Mensaje: ", "No existen datos del verificador. Favor comuníquese al Departamento de Informatica del INATEC.", true);
-    			
-    		} else
-    			FacesUtil.getMensaje("SCCL - Mensaje: ", "No existen datos del evaluador. Favor comuníquese al Departamento de Informatica del INATEC.", true);
-    		    		
-    	}else
-    		FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe seleccionar una solicitud.", true);
-    }
-
-  //Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Ejecuta reporte Certificado.
-    public void runCertificado() throws Exception{
-    	Map<String,Object> params = new HashMap<String,Object>();
-    	
-    	if (this.selectedSolicitud != null){
-    		Certificacion cert = this.selectedSolicitud.getCertificacion();
-    		params.put("idSolicitud",this.selectedSolicitud.getId());
-    		params.put("idCentro", String.valueOf(cert.getIfpId()));
-    		service.imprimirReporte("certificado", params, Global.EXPORT_PDF, true);
-    	}else
-    		FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe seleccionar una solicitud.", true);
-    }
-    
-  //Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Ejecuta reporte Informe Asesor.
-    public void runInformeAsesor() throws Exception{
-		String rptNombre = "informeasesor";
-		runReporte(rptNombre, true);
-	}
-	
-  //Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Ejecuta reporte Plan de Capacitacion.
-	public void runPlanCapacitacion() throws Exception{
-		String rptNombre = "plancapacitacion";
-		runReporte(rptNombre, true);
-	}
+ 
 	    
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo generico que permite ejecutar reporte.
     public void runReporte(String nombreReporte, boolean desplegar) throws Exception {
     	Map<String,Object> params = new HashMap<String,Object>();
-    	Certificacion cert = null;
-    	
-    	if (this.selectedSolicitud != null){
-    		cert = this.selectedSolicitud.getCertificacion();
-    		params.put("idSolicitud",this.selectedSolicitud.getId());
-    		if (cert.getEvaluador() != null)
-    			params.put("idEvaluador",cert.getEvaluador().getId());
-    		if (cert.getVerificador() != null)
-    			params.put("idVerificador", cert.getVerificador().getId());
+        	
+    	if (this.selectedSolicitud != null){    		
+    		params.put("idSolicitud",this.selectedSolicitud.getId());    	
     		service.imprimirReporte(nombreReporte, params, Global.EXPORT_PDF, desplegar);
-    	}else
+    	} else
     		FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe seleccionar una solicitud.", true);
 				
 	}
