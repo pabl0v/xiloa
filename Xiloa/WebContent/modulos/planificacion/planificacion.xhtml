@@ -40,27 +40,39 @@
         <div id="contenedor_tabla_planificacion" style="margin-top:10px;">
                 <p:dataTable id="certificaciones" widgetVar="certificaciones" emptyMessage="No hay datos para mostrar" var="certificacion" value="#{planificacionManagedBean.certificaciones}" selection="#{planificacionManagedBean.selectedCertificacion}" paginator="true" rows="12" rowKey="#{certificacion.id}" selectionMode="single">  
                         <!--Las columnas de la tabla-->
-                        <p:column exportable="true" >
+                        <p:column exportable="true">
                         	<f:facet name="header">  
-            					<h:outputText value="Registrado" />  
+            					<h:outputText value="Id" />
         					</f:facet> 
-                        	<h:outputText value="#{certificacion.fechaRegistro}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>
-                        </p:column>  
-                        <p:column exportable="true" filterBy="#{certificacion.ifpNombre}" filterOptions="#{planificacionManagedBean.listaCentros}" filterMatchMode="exact">
-                        	<f:facet name="header">  
-            					<h:outputText value="Centro de Formación" />  
-        					</f:facet> 
-                        	<h:outputText value="#{certificacion.ifpNombre}" />
-                        </p:column>  
+                        	<h:outputText value="#{certificacion.id}"/>
+                        </p:column>
                         <p:column exportable="true" filterBy="#{certificacion.nombre}"  filterMatchMode="contains">
                         	<f:facet name="header">  
-            					<h:outputText value="Certificación" />  
+            					<h:outputText value="Certificación" />
         					</f:facet> 
                         	<h:outputText value="#{certificacion.nombre}"/>
                         </p:column>
+                        <p:column exportable="true" filterBy="#{certificacion.ifpNombre}" filterOptions="#{planificacionManagedBean.listaCentros}" filterMatchMode="exact">
+                        	<f:facet name="header">  
+            					<h:outputText value="Centro de Formación" />
+        					</f:facet> 
+                        	<h:outputText value="#{certificacion.ifpNombre}" />
+                        </p:column>  
                         <p:column exportable="true" >
                         	<f:facet name="header">  
-            					<h:outputText value="Disponible" />  
+            					<h:outputText value="Inicia" />
+        					</f:facet> 
+                        	<h:outputText value="#{certificacion.inicia}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>
+                        </p:column>
+                        <p:column exportable="true" >
+                        	<f:facet name="header">  
+            					<h:outputText value="Finaliza" />
+        					</f:facet> 
+                        	<h:outputText value="#{certificacion.finaliza}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>
+                        </p:column>
+                        <p:column exportable="true" >
+                        	<f:facet name="header">  
+            					<h:outputText value="Cupo Máx." />
         					</f:facet> 
                         	<h:outputText value="#{certificacion.disponibilidad}" />
                         </p:column>                
@@ -72,18 +84,18 @@
                         </p:column>                
                         <p:column exportable="true" >
                         	<f:facet name="header">  
-            					<h:outputText value="Evalua" />  
+            					<h:outputText value="Informante" />  
         					</f:facet> 
                         	<h:outputText value="#{certificacion.evaluador.nombreCompleto}" />
                         </p:column>
                         <p:column exportable="true" filterBy="#{certificacion.estatus.valor}" filterOptions="#{planificacionManagedBean.listaEstatus}" filterMatchMode="exact">
                         	<f:facet name="header">  
-            					<h:outputText value="Estatus" />  
+            					<h:outputText value="Estatus" />
         					</f:facet> 
                         	<h:outputText value="#{certificacion.estatus.valor}" />
                         </p:column>               
                         <p:column exportable="false" style="width:4%" rendered="#{sec:areAnyGranted('ROLE_RIGHT_EDITAR_PLANIFICACIONES')}">
-							<p:commandButton id="editarButton" action="#{certificacionManagedBean.editarCertificacion(planificacionManagedBean.selectedCertificacion)}" icon="ui-icon-pencil" title="Editar"/>  
+							<p:commandButton id="editarButton" action="#{planificacionManagedBean.editarCertificacion(planificacionManagedBean.selectedCertificacion)}" icon="ui-icon-pencil" title="Editar"/>  
 				        </p:column>
                 </p:dataTable>
 			</div>
@@ -100,8 +112,8 @@
                     <p:column headerText="Disponibilidad"><h:outputText value="#{competencia.disponibilidad}"/></p:column>  
                 </p:dataTable>
              </div>
-             <p:commandButton value="Cancelar" onclick="PF('dlg2').hide();" styleClass="boton_azul"/>
-             <p:commandButton value="Aceptar" update=":formCertificaciones:certificaciones" action="#{planificacionManagedBean.nuevaCertificacion(planificacionManagedBean.selectedCompetencia)}" oncomplete="PF('dlg2').hide();" styleClass="boton_azul"/>
+             <p:commandButton value="Cancelar" onclick="PF('dlg2').hide();"/>
+             <p:commandButton value="Aceptar" update=":formCertificaciones:certificaciones" action="#{planificacionManagedBean.nuevaCertificacion(planificacionManagedBean.selectedCompetencia)}" oncomplete="PF('dlg2').hide();"/>
          </h:form>   
     </p:dialog>  
 </h:body>

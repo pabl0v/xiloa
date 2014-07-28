@@ -15,6 +15,7 @@ import model.Actividad;
 import model.Bitacora;
 import model.Certificacion;
 import model.Contacto;
+import model.Involucrado;
 import model.Mantenedor;
 
 import org.primefaces.event.SelectEvent;
@@ -33,42 +34,38 @@ import service.IService;
  * e interacciona con la capa de servicio (paquete service)
  */
 @Component
-@Scope("session")
+@Scope(value="view")
 public class ActividadManagedBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private IService service;
-	
+	private IService service;	
 	@Autowired
 	private LoginController controller;
-
 	private Certificacion certificacion;
-	@SuppressWarnings("unused")
-	private Integer indiceActividad;
 	private Integer selectedTipoActividad;
 	private Map<Integer,Mantenedor> catalogoTiposActividad;
 	private Integer selectedEstatusActividad;
 	private Map<Integer,Mantenedor> catalogoEstatusActividad;
 	private Actividad actividad;
 	private Bitacora bitacora;
-	private Contacto contacto;
-	
+	private Contacto contacto;	
 	private List<Contacto> contactos;
 	private Contacto[] selectedContactos;
 	private Contacto selectedContacto;
+	private List<Involucrado> involucrados;
 	
 	public ActividadManagedBean(){
 		super();
 		actividad = new Actividad();
 		actividad.setFechaRegistro(new Date());
-		indiceActividad = 0;
 		contactos = new ArrayList<Contacto>();
 		catalogoTiposActividad = new HashMap<Integer,Mantenedor>();
 		catalogoEstatusActividad = new HashMap<Integer,Mantenedor>();
 		bitacora = new Bitacora();
 		contacto = new Contacto();
+		involucrados = new ArrayList<Involucrado>();
 	}
 
 	@PostConstruct
@@ -105,9 +102,8 @@ public class ActividadManagedBean implements Serializable {
 	}
 
 	public void setSelectedContacto(Contacto selectedContacto) {
-		this.selectedContacto = selectedContacto;
-		//this.actividad.setInvolucrados(new Contacto[] {selectedContacto});
-		this.actividad.addInvolucrado(new Contacto[] {selectedContacto});
+		//this.selectedContacto = selectedContacto;
+		//this.actividad.addInvolucrado(new Contacto[] {selectedContacto});
 	}
 
 	public void reset(){
@@ -131,14 +127,14 @@ public class ActividadManagedBean implements Serializable {
 
 	public void setSelectedEstatusActividad(Integer selectedEstatusActividad) {
 		
-		if(selectedEstatusActividad == 11 && (actividad.getInvolucrados().isEmpty() || actividad.getFechaInicial() == null || actividad.getFechaFinal() == null )){
+		/*if(selectedEstatusActividad == 11 && (actividad.getInvolucrados().isEmpty() || actividad.getFechaInicial() == null || actividad.getFechaFinal() == null )){
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN , "", "Debe completar las fechas y los involucrados"));
 		}
-		else{
+		else{*/
 		
 			this.selectedEstatusActividad = selectedEstatusActividad;
 			this.actividad.setEstado(catalogoEstatusActividad.get(selectedEstatusActividad));
-		}
+		//}
 	}
 	
 	public Actividad getActividad(){
@@ -184,7 +180,7 @@ public class ActividadManagedBean implements Serializable {
 	public String editarActividad(Certificacion certificacion, Actividad actividad){
 		this.certificacion = certificacion;
 		this.actividad = actividad;
-		this.indiceActividad = certificacion.getActividades().indexOf(actividad);
+		//this.indiceActividad = certificacion.getActividades().indexOf(actividad);
 		this.selectedEstatusActividad = actividad.getEstado().getId();
 		return "/modulos/planificacion/edicion_actividad?faces-redirect=true";
 	}
@@ -192,7 +188,7 @@ public class ActividadManagedBean implements Serializable {
 	public String ejecuciones(Actividad actividad){
 		this.actividad = actividad;
 		this.certificacion = actividad.getCertificacion();
-		this.indiceActividad = certificacion.getActividades().indexOf(actividad);
+		//this.indiceActividad = certificacion.getActividades().indexOf(actividad);
 		this.selectedEstatusActividad = actividad.getEstado().getId();
 		return "/modulos/planificacion/bitacoras?faces-redirect=true";
 	}

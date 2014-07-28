@@ -1,12 +1,11 @@
 package model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,14 +13,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 /**
  * 
@@ -49,16 +46,10 @@ public class Actividad implements Serializable {
 	@Column(name = "actividad_id", nullable = false)
 	private Long id;
 	
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name="certificacion_id", nullable = false)	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="actividad_certificacion_id", nullable = false)
 	private Certificacion certificacion;
-	
-	@NotNull
-	@JoinColumn(name="actividad_indice")
-	private Integer indice;
-	
-	@NotNull
+		
 	@ManyToOne
 	@JoinColumn(name="actividad_tipo_id", nullable = false)
 	private Mantenedor tipo;
@@ -66,7 +57,6 @@ public class Actividad implements Serializable {
 	@Column(name = "actividad_nombre", nullable = false)
 	private String nombre;
 	
-	@NotNull
 	@Column(name = "actividad_destino", nullable = false)
 	private String destino;
 	
@@ -94,40 +84,45 @@ public class Actividad implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date fechaFinal;
 	
-	@NotNull
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="actividad_creador_id", nullable = false)
 	private Contacto creador;
-	
-	@ManyToOne
-	@JoinColumn(name="actividad_ejecutor_id")
-	private Contacto ejecutor;
-		
-	/*
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable
-	(
-			name = "sccl.ainvolucrados",
-			joinColumns = @JoinColumn(name = "actividad_id", unique = false),
-			inverseJoinColumns = @JoinColumn(name = "contacto_id", unique = false)
-	)
-	@MapKeyColumn(name="id_rol")
-	private Map<Integer, Contacto> involucrados;
-	*/
-	
-	@OneToMany
-	@JoinColumn(name="actividad_id", referencedColumnName="actividad_id")
-	private List<Involucrado> involucrados;
-	
-	@OneToMany
-	@JoinColumn(name="actividad_id", referencedColumnName="actividad_id")
-	private List<Bitacora> bitacoras;
 
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name="actividad_estado_id", nullable = false)
 	private Mantenedor estado;
 	
+	public Actividad() {
+		super();
+	}
+	
+	public Actividad(	Certificacion certificacion,
+						Mantenedor tipo,
+						String nombre, 
+						String destino,
+						String hora,
+						String alcance,
+						String materiales,
+						Date fechaRegistro,
+						Date fechaInicial, 
+						Date fechaFinal, 
+						Contacto creador,
+						Mantenedor estado) {
+		super();
+		this.certificacion = certificacion;
+		this.tipo = tipo;
+		this.nombre = nombre;
+		this.destino = destino;
+		this.hora = hora;
+		this.alcance = alcance;
+		this.materiales = materiales;
+		this.fechaRegistro = fechaRegistro;
+		this.fechaInicial = fechaInicial;
+		this.fechaFinal = fechaFinal;
+		this.creador = creador;
+		this.estado = estado;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -142,14 +137,6 @@ public class Actividad implements Serializable {
 
 	public void setCertificacion(Certificacion certificacion) {
 		this.certificacion = certificacion;
-	}
-
-	public Integer getIndice(){
-		return indice;
-	}
-	
-	public void setIndice(Integer indice){
-		this.indice = indice;
 	}
 
 	public Mantenedor getTipo() {
@@ -232,51 +219,6 @@ public class Actividad implements Serializable {
 		this.creador = creador;
 	}
 
-	public Contacto getEjecutor() {
-		return ejecutor;
-	}
-
-	public void setEjecutor(Contacto ejecutor) {
-		this.ejecutor = ejecutor;
-	}
-
-	/*
-	public List<Contacto> getInvolucrados() {
-		return new ArrayList<Contacto>(involucrados.values());
-	}
-	
-	public void setInvolucrados(Contacto[] involucrados) {
-		setEjecutor(involucrados[0]);
-		this.involucrados.clear();
-		for(int i=0; i<involucrados.length; i++){
-			this.involucrados.put(involucrados[i].getRol().getId(), involucrados[i]);
-		}
-	}
-	*/
-
-	public List<Involucrado> getInvolucrados(){
-		return involucrados;
-	}
-	
-	public void setInvolucrados(List<Involucrado> involucrados){
-		this.involucrados = involucrados;
-	}
-	
-	public void addInvolucrado(Contacto[] involucrados){
-		this.involucrados.clear();
-		for(int i=0; i<involucrados.length; i++){
-			this.involucrados.add(new Involucrado(this, involucrados[i], true));
-		}
-	}
-	
-	public List<Bitacora> getBitacoras() {
-		return bitacoras;
-	}
-
-	public void setBitacoras(List<Bitacora> bitacoras) {
-		this.bitacoras = bitacoras;
-	}
-
 	public Mantenedor getEstado() {
 		return estado;
 	}
@@ -286,52 +228,9 @@ public class Actividad implements Serializable {
 	}
 	
 	public boolean isCompleted(){
-		if(this.estado.getId()==39)
+		if(this.estado.getId()==15)
 			return true;
 		else
 			return false;
-	}
-	
-	public Actividad() {
-		super();
-		//involucrados = new HashMap<Integer, Contacto>();
-		involucrados = new ArrayList<Involucrado>();
-		bitacoras = new ArrayList<Bitacora>();
-	}
-	
-	public Actividad(	Certificacion certificacion,
-						Integer indice,
-						Mantenedor tipo,
-						String nombre, 
-						String destino,
-						String hora,
-						String alcance,
-						String materiales,
-						Date fechaRegistro,
-						Date fechaInicial, 
-						Date fechaFinal, 
-						Contacto creador,
-						Contacto ejecutor, 
-						//Map<Integer,Contacto> involucrados,
-						List<Involucrado> involucrados,
-						List<Bitacora> bitacoras,
-						Mantenedor estado) {
-		super();
-		this.certificacion = certificacion;
-		this.indice = indice;
-		this.tipo = tipo;
-		this.nombre = nombre;
-		this.destino = destino;
-		this.hora = hora;
-		this.alcance = alcance;
-		this.materiales = materiales;
-		this.fechaRegistro = fechaRegistro;
-		this.fechaInicial = fechaInicial;
-		this.fechaFinal = fechaFinal;
-		this.creador = creador;
-		this.ejecutor = ejecutor;
-		this.involucrados = involucrados;
-		this.bitacoras = bitacoras;
-		this.estado = estado;
 	}
 }

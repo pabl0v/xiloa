@@ -714,7 +714,7 @@ public class ServiceImp implements IService {
 		List<Mantenedor> actividades = getMantenedoresByTipo(1);
 		
 		for(int i=0; i<actividades.size(); i++){
-			actividadDao.save(new Actividad(certificacion,i+1,actividades.get(i),actividades.get(i).getValor(),"A completar",null,null,null,new Date(),null,null,certificacion.getCreador(),null,null,null,getMantenedorById(12)));
+			actividadDao.save(new Actividad(certificacion,actividades.get(i),actividades.get(i).getValor(),"A completar",null,null,null,new Date(),null,null,certificacion.getCreador(),getMantenedorById(12)));
 		}
 		
 		return certificacionDao.findById(Certificacion.class, certificacion.getId());

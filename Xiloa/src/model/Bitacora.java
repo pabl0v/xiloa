@@ -18,7 +18,6 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 /**
  * 
@@ -33,7 +32,7 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 @Entity(name = "bitacoras")
 @Table(name = "bitacoras", schema = "sccl")
 @NamedQueries({
-	@NamedQuery(name="Bitacoras.findAllByActividadId", query="select b from bitacoras b, actividades a where b member of a.bitacoras and a.id=?1")
+	@NamedQuery(name="Bitacoras.findAllByActividadId", query="select b from bitacoras b where b.actividad.id=?1")
 })
 public class Bitacora implements Serializable {
 
@@ -44,17 +43,14 @@ public class Bitacora implements Serializable {
 	@Column(name = "bitacora_id", nullable = false)
 	private Long id;
 	
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name="actividad_id")	
 	private Actividad actividad;
 
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name="bitacora_usuario_id")
 	private Contacto usuario;
 	
-	@NotNull
 	@Column(name = "bitacora_observaciones", nullable = false)	
 	private String observaciones;
 	

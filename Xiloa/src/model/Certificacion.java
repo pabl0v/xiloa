@@ -23,7 +23,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapKey;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -71,7 +70,7 @@ public class Certificacion implements Serializable {
 	private Integer ofertaId;	
 	
 	@Column(name = "certificacion_estructura_id", nullable = false)
-	private Integer estructuraId;	
+	private Integer estructuraId;
 	
 	@Column(name = "certificacion_curso_id", nullable = false)
 	private int cursoId;
@@ -88,12 +87,11 @@ public class Certificacion implements Serializable {
 	@Column(name = "certificacion_costo", nullable = true)
 	private Float costo;
 	
-	@NotNull
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "certificacion_fecha_registro", nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Date fechaRegistro;
-	
+
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "certificacion_fecha_actualiza", nullable = true)
 	@Temporal(TemporalType.DATE)
@@ -118,21 +116,20 @@ public class Certificacion implements Serializable {
 	@Column(name = "certificacion_ifp_nombre", nullable = false)
 	private String ifpNombre;
 	
-	@NotNull
+	/*
 	@ManyToOne
 	@JoinColumn(name="certificacion_programador_id")	
 	private Contacto programador;
+	*/
 	
-	@NotNull
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="certificacion_creador_id", nullable = false)	
 	private Contacto creador;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="certificacion_actualiza_id")	
 	private Contacto actualiza;
 	
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name="certificacion_estatus", nullable = false)
 	private Mantenedor estatus;
@@ -144,7 +141,7 @@ public class Certificacion implements Serializable {
 	private int nivelCompetencia;
 	
 	@NotNull
-	@ElementCollection(fetch = FetchType.EAGER)
+	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(
 			name="sccl.certificacion_unidades",
 	        joinColumns=@JoinColumn(name="certificacion_id"),
@@ -153,12 +150,13 @@ public class Certificacion implements Serializable {
 	@Column(name="unidad_id", nullable = false)
 	private Set<Long> unidades;
 	
-	@OneToMany(mappedBy = "certificacion",fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "certificacion",fetch = FetchType.LAZY)
 	private List<Requisito> requisitos;
 		
-	@OneToMany(mappedBy = "certificacion",fetch = FetchType.EAGER)
-	@MapKey(name = "indice")
-	private Map<Integer,Actividad> actividades;	
+	@OneToMany(mappedBy = "certificacion",fetch = FetchType.LAZY)
+	//@MapKey(name = "indice")
+	//private Map<Integer,Actividad> actividades;
+	private List<Actividad> actividades;
 		
 	@OneToMany(mappedBy = "certificacion")
 	private List<Solicitud> solicitudes;
@@ -182,15 +180,18 @@ public class Certificacion implements Serializable {
 	}
 
 	public Contacto getCoordinador(){
-		return involucrados.get(2);
+		//return involucrados.get(2);
+		return null;
 	}
 	
 	public Contacto getVerificador(){
-		return involucrados.get(3);
+		//return involucrados.get(3);
+		return null;
 	}
 	
 	public Contacto getEvaluador(){
-		return involucrados.get(7);
+		//return involucrados.get(7);
+		return null;
 	}
 	
 	public Certificacion(){
@@ -198,7 +199,8 @@ public class Certificacion implements Serializable {
 		this.requisitos = new ArrayList<Requisito>();
 		this.unidades = new HashSet<Long>();
 		this.disponibilidad = null;
-		this.actividades = new HashMap<Integer,Actividad>();
+		//this.actividades = new HashMap<Integer,Actividad>();
+		this.actividades = new ArrayList<Actividad>();
 		this.solicitudes = new ArrayList<Solicitud>();
 		this.involucrados = new HashMap<Integer, Contacto>();
 	}
@@ -327,6 +329,7 @@ public class Certificacion implements Serializable {
 		this.ifpNombre = ifpNombre;
 	}
 
+	/*
 	public Contacto getProgramador() {
 		return programador;
 	}
@@ -334,6 +337,7 @@ public class Certificacion implements Serializable {
 	public void setProgramador(Contacto programador) {
 		this.programador = programador;
 	}
+	*/
 
 	public Date getDivulgacionInicia() {
 		//return actividades.get(0).getFechaInicial();
@@ -436,10 +440,12 @@ public class Certificacion implements Serializable {
 	}
 
 	public List<Actividad> getActividades() {
-		return new ArrayList<Actividad>(actividades.values());
+		//return new ArrayList<Actividad>(actividades.values());
+		return actividades;
 	}
 	
 	public void addActividad(Actividad actividad){
+		/*
 		Integer indice;
 		if(actividades.isEmpty())
 			indice = 0;
@@ -447,6 +453,8 @@ public class Certificacion implements Serializable {
 			indice = actividades.size();
 		actividad.setIndice(indice);
 		this.actividades.put(indice, actividad);
+		*/
+		actividades.add(actividad);
 	}
 	
 	public List<Solicitud> getSolicitudes() {
@@ -478,7 +486,7 @@ public class Certificacion implements Serializable {
 							int ifpId, 
 							String ifpDireccion, 
 							String ifpNombre,
-							Contacto programador, 
+							//Contacto programador, 
 							Contacto creador,
 							Mantenedor estatus, 
 							String referencial, 
@@ -499,7 +507,7 @@ public class Certificacion implements Serializable {
 		this.ifpId = ifpId;
 		this.ifpDireccion = ifpDireccion;
 		this.ifpNombre = ifpNombre;
-		this.programador = programador;
+		//this.programador = programador;
 		this.creador = creador;
 		this.estatus = estatus;
 		this.referencial = referencial;

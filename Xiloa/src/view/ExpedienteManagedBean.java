@@ -1590,6 +1590,12 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 		
 	public String getUCDescripcion(Long id){
-		return service.getCatalogoUnidades().get(id).getDescripcion();
+		/*
+		if(id != null)
+			return service.getCatalogoUnidades().get(id).getDescripcion();
+		else
+			return "";
+		*/
+		return "test";
 	}	
 }

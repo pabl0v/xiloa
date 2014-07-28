@@ -13,8 +13,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
-
 @Entity(name = "involucrados")
 @Table(name = "involucrados", schema = "sccl")
 @NamedQueries({
@@ -29,17 +27,14 @@ public class Involucrado implements Serializable {
 	@Column(name = "involucrado_id", nullable = false)
 	private Long id;
 
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name="actividad_id", nullable = false)	
 	private Actividad actividad;
 	
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name="contacto_id", nullable = false)	
 	private Contacto contacto;
 	
-	@NotNull
 	@Column(name = "activo", nullable = false)	
 	private boolean activo;
 	

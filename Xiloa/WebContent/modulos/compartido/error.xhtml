@@ -1,0 +1,30 @@
+<?xml version='1.0' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+	  xmlns:sec="http://www.springframework.org/security/tags">
+    <h:head>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/cursos.css"></link>
+ 		<!-- Requeridos por OpenID -->
+		<link type="text/css" rel="stylesheet" href="../../resources/openidselector/css/openid.css" />
+		<script type="text/javascript" src="../../resources/openidselector/js/openid-jquery.js"></script>
+	    <script type="text/javascript" src="../../resources/openidselector/js/openid-en.js"></script>
+		<!-- ********************* -->
+	    <script type="text/javascript" src="../../resources/scripts/usuario.js"></script>
+    </h:head>
+    <h:body>
+		<h:head>       
+        <title>Error</title>
+    	</h:head>
+    <div id="contenedor">
+		<h2>Por razones técnicas su petición no puede ser atendida en estos momentos...</h2> 
+		<h2>Comuniquese con el Administrador del Sistema.....</h2> 
+		<h:form id="formError">
+			<p:commandButton id="btnError" value="    Regresar" onclick="window.history.back();"/>
+		</h:form>
+	</div>
+    </h:body>
+</html>

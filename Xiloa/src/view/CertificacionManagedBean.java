@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import controller.LoginController;
 import service.IService;
+import support.FacesUtil;
 
 /**
  * 
@@ -31,7 +32,7 @@ import service.IService;
  */
 
 @Component
-@Scope(value="session")
+@Scope(value="view")
 public class CertificacionManagedBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -46,19 +47,26 @@ public class CertificacionManagedBean implements Serializable {
 	private Contacto[] selectedContactos;
 	private Map<Integer, Mantenedor> catalogoEstatusCertificacion;
 	private Integer selectedEstatusCertificacion;
+	private List<Actividad> actividades;
 	private Actividad selectedActividad;
 	
 	public CertificacionManagedBean(){
 		super();
 		certificacion = new Certificacion();
 		contactos = new ArrayList<Contacto>();
+		actividades = new ArrayList<Actividad>();
 		selectedActividad = new Actividad();
 		catalogoEstatusCertificacion = new HashMap<Integer, Mantenedor>();
 	}
 	
 	@PostConstruct
 	private void init(){
-		System.out.println("Entidad del usaurio: "+controller.getEntidadUsuario() );
+		
+		Long certificacionId = (Long)FacesUtil.getParametroSession("certificacionId");
+		setCertificacion(service.getCertificacionById(certificacionId));
+		
+		setActividades(service.getActividades(certificacionId));
+		
 		contactos = service.getContactosInatec(controller.getEntidadUsuario());
 		catalogoEstatusCertificacion = service.getMapMantenedoresByTipo("3");
 	}
@@ -69,6 +77,14 @@ public class CertificacionManagedBean implements Serializable {
 	
 	public void setCertificacion(Certificacion certificacion){
 		this.certificacion = certificacion;
+	}
+	
+	public List<Actividad> getActividades(){
+		return this.actividades;
+	}
+	
+	public void setActividades(List<Actividad> actividades){
+		this.actividades = actividades;
 	}
 	
 	public List<Contacto> getContactos() {
@@ -104,7 +120,7 @@ public class CertificacionManagedBean implements Serializable {
 		
 		certificacion.setFechaRegistro(new Date());
 		certificacion.setCreador(controller.getContacto());
-		certificacion.setProgramador(controller.getContacto());
+		//certificacion.setProgramador(controller.getContacto());
 		certificacion.setReferencial("N/D");
 		certificacion = (Certificacion) service.guardar(certificacion);
 		certificacion = new Certificacion();
@@ -116,22 +132,27 @@ public class CertificacionManagedBean implements Serializable {
 		actividad.setFechaRegistro(new Date());
 		Mantenedor estado = service.getMantenedorById(12); //service.getMapMantenedoresByTipo("4").get(10);		//estatus pendiente
 		actividad.setEstado(estado);
+		/*
 		Integer indice;
 		if(certificacion.getActividades().isEmpty())
 			indice = 0;
 		else
 			indice = certificacion.getActividades().size();
 		actividad.setIndice(indice);
+		*/
 		actividad.setCertificacion(certificacion);
 		actividad = (Actividad)service.guardar(actividad);
 		certificacion.addActividad(actividad);
 	}
 		
+	/*
 	public String editarCertificacion(Certificacion certificacion){
-		this.certificacion = certificacion;
-		this.selectedEstatusCertificacion = certificacion.getEstatus().getId();
+		//this.certificacion = certificacion;
+		//this.selectedEstatusCertificacion = certificacion.getEstatus().getId();
+		FacesUtil.setParamBySession("certificacionId", certificacion.getId());
 		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
 	}
+	*/
 	
 	public Integer getSelectedEstatusCertificacion() {
 		return selectedEstatusCertificacion;

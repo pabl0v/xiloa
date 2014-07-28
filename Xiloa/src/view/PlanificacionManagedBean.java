@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 
 import controller.LoginController;
 import service.IService;
+import support.FacesUtil;
 import support.Ifp;
 import support.UCompetencia;
 
@@ -114,8 +115,9 @@ public class PlanificacionManagedBean implements Serializable {
 		certificaciones.add(0,certificacion);
 	}
 	
-	public String configurarInstrumento(Certificacion certificacion){
-		return "/modulos/planificacion/instrumentos?faces-redirect=true";
+	public String editarCertificacion(Certificacion certificacion){
+		FacesUtil.setParamBySession("certificacionId", certificacion.getId());
+		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
 	}
 	
 	public void onRowSelectCompetencia(SelectEvent event) {  
