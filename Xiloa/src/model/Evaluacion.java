@@ -16,7 +16,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Formula;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,7 +32,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
  */
 
 @Entity(name = "evaluaciones")
-@Table(name = "evaluaciones", schema = "sccl", uniqueConstraints=@UniqueConstraint(columnNames={"evaluacion_solicitud_id", "evaluacion_instrumento_id"}))
+@Table(name = "evaluaciones", schema = "sccl")
 @NamedQueries({
 	@NamedQuery(name="Evaluacion.findAllPendientesByFirstSolicitudByContactoId", query="select e from evaluaciones e where e.solicitud.contacto.id=?1 and e.solicitud.id=(select min(x.id) from solicitudes x where x.contacto=e.solicitud.contacto and x.estatus.id!=76) order by e.id desc"),
 	@NamedQuery(name="Evaluacion.findAllPendientesBySolicitudId", query="select e from evaluaciones e inner join fetch e.solicitud s where e.aprobado=false and s.id=?1 order by e.id desc"),
@@ -140,6 +139,10 @@ public class Evaluacion implements Serializable {
 	public Float getPuntajeMinimo() {
 		return puntajeMinimo;
 	}
+	
+	public String getPuntajeMinimoLabel(){
+		return String.format("%.2f", (double)puntajeMinimo);
+	}
 
 	public void setPuntajeMinimo(Float puntajeMinimo) {
 		this.puntajeMinimo = puntajeMinimo;
@@ -147,6 +150,10 @@ public class Evaluacion implements Serializable {
 	
 	public Float getPuntajeMaximo() {
 		return puntajeMaximo;
+	}
+	
+	public String getPuntajeMaximoLabel(){
+		return String.format("%.2f", (double)puntajeMaximo);
 	}
 
 	public void setPuntajeMaximo(Float puntajeMaximo) {
@@ -173,8 +180,19 @@ public class Evaluacion implements Serializable {
 		return this.aprobado;
 	}
 	
+	public String getAprobadoLabel(){
+		if(this.aprobado)
+			return "SI";
+		else
+			return "NO";
+	}
+	
 	public Float getPuntajeObtenido(){
 		return this.puntajeObtenido;
+	}
+	
+	public String getPuntajeObtenidoLabel(){
+		return String.format("%.2f", (double)puntajeObtenido);
 	}
 
 	public Long getUnidad() {

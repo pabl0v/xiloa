@@ -127,8 +127,6 @@ public class ServiceImp implements IService {
 	private IDao<Item> itemDao;
 	@Autowired
 	private IDao<Convocatoria> convocatoriaDao;
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
 
 	private List<Mantenedor> mantenedores;
 	private Map<Integer, Mantenedor> catalogoEstatusCertificacion;
@@ -2058,5 +2056,13 @@ public class ServiceImp implements IService {
 		}
 		
 		return evaluacion;
+	}
+	
+	/** 
+	 * @param la solicitud cuyos instrumentos pendientes se quiere obtener
+	 * @return la lista de instrumentos
+	 */	
+	public List<Item> getInstrumentosPendientesBySolicitud(Solicitud solicitud, Long unidad){
+		return itemDao.findAllByQuery("select new support.Item(i.id,i.nombre) from instrumentos i where i.unidad=case when "+unidad+" is null then i.unidad else "+unidad+" end and i.estatus='true' and i.certificacionId="+solicitud.getCertificacion().getId()+" and not exists (select 1 from evaluaciones e where e.instrumento.id=i.id and e.activo='true' and e.solicitud.id="+solicitud.getId()+")");
 	}
 }

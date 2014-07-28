@@ -895,5 +895,11 @@ public interface IService {
 	 * @param la solicitud a evaluar
 	 * 
 	 */	
-	public Evaluacion guardarEvaluacion(Evaluacion evaluacion);	
+	public Evaluacion guardarEvaluacion(Evaluacion evaluacion);
+	
+	/** 
+	 * @param la solicitud y unidad de competencia cuyos instrumentos pendientes se quiere obtener
+	 * @return la lista de instrumentos
+	 */	
+	public List<Item> getInstrumentosPendientesBySolicitud(Solicitud solicitud, Long unidad);	
 }

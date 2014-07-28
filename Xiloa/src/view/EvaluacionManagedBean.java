@@ -61,7 +61,7 @@ public class EvaluacionManagedBean implements Serializable {
 
 		setEvaluaciones(service.getEvaluacionesBySolicitudId(solicitud.getId()));
 		
-		setInstrumentos();
+		setInstrumentos(null);
 		setUnidades();		
 	}
 	
@@ -101,8 +101,9 @@ public class EvaluacionManagedBean implements Serializable {
 		return new ArrayList<Item>(instrumentos.values());
 	}
 	
-	public void setInstrumentos(){
-		for(Item instrumento : service.getInstrumentosItemByCertificacionId(solicitud.getCertificacion().getId())){
+	public void setInstrumentos(Long unidad){
+		instrumentos.clear();
+		for(Item instrumento : service.getInstrumentosPendientesBySolicitud(solicitud, unidad)){
 			instrumentos.put(instrumento.getId(), instrumento);
 		}
 	}
@@ -115,6 +116,13 @@ public class EvaluacionManagedBean implements Serializable {
 		for(Item unidad : service.getUnidadesItemByCertificacionId(solicitud.getCertificacion().getId())){
 			unidades.put(unidad.getId(), unidad);
 		}
+	}
+	
+	public void handleUnidadesChange(){
+		if(selectedUnidad != 0 && selectedUnidad != null)
+			setInstrumentos(selectedUnidad);
+		else
+			setInstrumentos(null);
 	}
 	
 	public List<Evaluacion> getEvaluaciones(){
@@ -162,7 +170,9 @@ public class EvaluacionManagedBean implements Serializable {
 		evaluacion = service.guardarEvaluacion(evaluacion);
 		setSelectedEvaluacion(evaluacion);
 		setEvaluaciones(service.getEvaluacionesBySolicitudId(solicitud.getId()));
-		setEvaluacionGuias(service.getEvaluacionGuiaByEvaluacionId(selectedEvaluacion.getId()));		
+		setEvaluacionGuias(service.getEvaluacionGuiaByEvaluacionId(selectedEvaluacion.getId()));
+		setSelectedUnidad(null);
+		setSelectedInstrumento(null);
 	}
 	
 	public void editarEvaluacion(Evaluacion evaluacion){

@@ -69,6 +69,10 @@ public class EvaluacionGuia implements Serializable {
 		return puntaje;
 	}
 	
+	public String getPuntajeLabel(){
+		return String.format("%.2f", (double)puntaje);
+	}
+	
 	public void setPuntaje(Float puntaje) {
 		this.puntaje = puntaje;
 	}
