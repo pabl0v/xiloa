@@ -55,3 +55,12 @@ html {
 #modal_detalleGuias div {
 	margin: 10px 0;
 }
+
+#contenedor_dialogoaevaluaciones .estilo_label{
+		margin-top: 25px;
+	display: inline-block;
+	width: 150px;
+}
+#contenedor_dialogoevaluaciones .selector_status_estilo{
+	width: 200px!important;
+}

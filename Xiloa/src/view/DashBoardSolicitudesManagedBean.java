@@ -261,6 +261,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	*/
 	
 	public String evaluarSolicitud(Solicitud solicitud){
+		FacesUtil.setParamBySession("solicitudId", solicitud.getId());
 		return "/modulos/solicitudes/registro_evaluacion?faces-redirect=true";
 	}
 	

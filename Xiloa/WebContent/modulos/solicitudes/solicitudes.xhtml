@@ -103,8 +103,8 @@
 	       		 		<p:menuitem value="Rechazar Solicitud" title="Rechazar Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,3)}" update=":formSolicitudes"  />
 	       		 		<p:menuitem value="Matricular Candidato" title="Matricular Candidato" style="display:inline-block;" onclick="PF('dlg1').show();" update=":matriculaForm" />
 	       		 		<p:menuitem value="Convocar Candidato" title="Convocar Candidato" style="display:inline-block;" onclick="PF('dlg2').show();" update=":convocatoriaForm, :convocatoriaDataTableForm"  />
-	       		 		<p:menuitem value="Evaluar Candidato" title="Evaluar Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.evaluarSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" />
-	       		 		<p:menuitem value="Anular Solicitud" title="Anular Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,10)}" update=":formSolicitudes:dtSolicitud" disabled="#{!varSolicitudI.erasable}" />
+						<p:menuitem value="Evaluar Candidato" title="Evaluar Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.evaluarSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" />	       		 		
+						<p:menuitem value="Anular Solicitud" title="Anular Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,10)}" update=":formSolicitudes:dtSolicitud" disabled="#{!varSolicitudI.erasable}" />
 	   				</p:splitButton>
 				</p:column>
             </p:dataTable>

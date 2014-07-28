@@ -2,13 +2,13 @@ package view;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -19,6 +19,7 @@ import support.FacesUtil;
 import support.Item;
 import model.Evaluacion;
 import model.EvaluacionGuia;
+import model.Instrumento;
 import model.Solicitud;
 
 @Component
@@ -31,7 +32,9 @@ public class EvaluacionManagedBean implements Serializable {
 	private IService service;
 	private Solicitud solicitud;
 	private Map<Long, Item> instrumentos;
+	private Long selectedInstrumento;
 	private Map<Long, Item> unidades;
+	private Long selectedUnidad;
 	private List<EvaluacionGuia> evaluacionGuias;
 	private EvaluacionGuia selectedEvaluacionGuia;
 	private List<Evaluacion> evaluaciones;
@@ -46,22 +49,37 @@ public class EvaluacionManagedBean implements Serializable {
 		selectedEvaluacionGuia = null;
 		evaluaciones = new ArrayList<Evaluacion>();
 		selectedEvaluacion = null;
+		selectedInstrumento = null;
+		selectedUnidad = null;
 	}
 	
 	@PostConstruct
 	private void init(){
 
-		solicitud = service.getSolicitudById(new Long(1));
-		setEvaluaciones(service.getEvaluaciones(solicitud));
+		Long solicitudId = (Long)FacesUtil.getParametroSession("solicitudId");
+		solicitud = service.getSolicitudById(solicitudId);
+
+		setEvaluaciones(service.getEvaluacionesBySolicitudId(solicitud.getId()));
 		
-		for(Item instrumento : service.getInstrumentosItemByCertificacionId(solicitud.getCertificacion().getId())){
-			instrumentos.put(instrumento.getId(), instrumento);
-		}
-		
-		for(Item unidad : service.getUnidadesItemByCertificacionId(solicitud.getCertificacion().getId())){
-			unidades.put(unidad.getId(), unidad);
-		}
+		setInstrumentos();
+		setUnidades();		
 	}
+	
+	public Long getSelectedInstrumento(){
+		return selectedInstrumento;
+	}
+	
+	public void setSelectedInstrumento(Long instrumento){
+		this.selectedInstrumento = instrumento;
+	}
+	
+	public Long getSelectedUnidad(){
+		return selectedUnidad;
+	}
+	
+	public void setSelectedUnidad(Long unidad){
+		this.selectedUnidad = unidad;
+	}	
 	
 	public Solicitud getSolicitud(){
 		return solicitud;
@@ -83,8 +101,20 @@ public class EvaluacionManagedBean implements Serializable {
 		return new ArrayList<Item>(instrumentos.values());
 	}
 	
+	public void setInstrumentos(){
+		for(Item instrumento : service.getInstrumentosItemByCertificacionId(solicitud.getCertificacion().getId())){
+			instrumentos.put(instrumento.getId(), instrumento);
+		}
+	}
+	
 	public List<Item> getUnidades(){
 		return new ArrayList<Item>(unidades.values());
+	}
+	
+	public void setUnidades(){
+		for(Item unidad : service.getUnidadesItemByCertificacionId(solicitud.getCertificacion().getId())){
+			unidades.put(unidad.getId(), unidad);
+		}
 	}
 	
 	public List<Evaluacion> getEvaluaciones(){
@@ -118,35 +148,33 @@ public class EvaluacionManagedBean implements Serializable {
 	public void setSelectedEvaluacionGuia(EvaluacionGuia guia){
 		this.selectedEvaluacionGuia = guia;
 	}
-			
-	public void guardarEvaluacion(Evaluacion evaluacion){
-		evaluacion = service.guardarEvaluacion(evaluacion);
-		setSelectedEvaluacion(evaluacion);
-		setEvaluaciones(service.getEvaluaciones(solicitud));
-		setEvaluacionGuias(service.getEvaluacionGuiaByEvaluacionId(selectedEvaluacion.getId()));
-		FacesUtil.getMensaje("SCCL - Mensaje", "La evaluación ha sido agregada...", false);
-	}
-	
-	public boolean getAplicar(){
-		//if(selectedEvaluacion.getId()!=null)
-			//return true;
-		//else
-			return false;
-	}
 	
 	public void onEvaluacionSelect(SelectEvent event) {
 		setSelectedEvaluacion((Evaluacion) event.getObject());
 		setEvaluacionGuias(service.getEvaluacionGuiaByEvaluacionId(selectedEvaluacion.getId()));
     }
 	
-	public void onCellEdit(CellEditEvent event) {
-        Float oldValue = (Float)event.getOldValue();
-        Float newValue = (Float)event.getNewValue();
-         
-        if(newValue != null && !newValue.equals(oldValue)) {
-        	selectedEvaluacionGuia.setPuntaje(newValue);
-        	service.guardar(selectedEvaluacionGuia);
-        	FacesUtil.getMensaje("SCCL - Mensaje", "Actualización exitosa...", false);
-        }
-    }
+	public void agregarEvaluacion(Long instrumentoId){
+		
+		Instrumento instrumento = service.getInstrumentoById(instrumentoId);
+		Evaluacion evaluacion = new Evaluacion(solicitud,instrumento,new Date(),instrumento.getPuntajeMinimo(),instrumento.getPuntajeMaximo(),null,true);
+		
+		evaluacion = service.guardarEvaluacion(evaluacion);
+		setSelectedEvaluacion(evaluacion);
+		setEvaluaciones(service.getEvaluacionesBySolicitudId(solicitud.getId()));
+		setEvaluacionGuias(service.getEvaluacionGuiaByEvaluacionId(selectedEvaluacion.getId()));		
+	}
+	
+	public void editarEvaluacion(Evaluacion evaluacion){
+		evaluacion = (Evaluacion)service.guardar(evaluacion);
+		setSelectedEvaluacion(evaluacion);
+		setEvaluaciones(service.getEvaluacionesBySolicitudId(solicitud.getId()));
+		setEvaluacionGuias(service.getEvaluacionGuiaByEvaluacionId(selectedEvaluacion.getId()));
+	}
+	
+	public void editarEvaluacionGuia(EvaluacionGuia guia){
+		selectedEvaluacionGuia = guia;
+		selectedEvaluacionGuia = (EvaluacionGuia)service.guardar(guia);
+		setEvaluaciones(service.getEvaluacionesBySolicitudId(solicitud.getId()));
+	}
 }

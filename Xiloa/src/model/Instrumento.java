@@ -43,7 +43,7 @@ import javax.persistence.Table;
 																   "and not exists (select 1 " +
 																				  	 "from evaluacion_guia eg, guias g, evaluaciones e " +
 																					 "where e.solicitud.id = ?4 "+
-																					   "and e.estado.id = 51 " +
+																					   "and e.activo = 'true' " +
 																					   "and eg.pk.evaluacion.id = e.id " +
 																					   "and g.id = eg.pk.guia.id " +        
 																					   "and i.id = g.instrumento.id  " +    

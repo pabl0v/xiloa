@@ -928,9 +928,9 @@ public class ServiceImp implements IService {
 
 	@Override
 	public List<Evaluacion> getEvaluaciones(Solicitud solicitud) {
-		//Object [] objs =  new Object [] {solicitud.getId()};
-		//return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllBySolicitudId", objs);
-		
+		Object [] objs =  new Object [] {solicitud.getId()};
+		return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllBySolicitudId", objs);
+		/*
 		final Solicitud sol = solicitud;
 		
 		String query =
@@ -971,6 +971,7 @@ public class ServiceImp implements IService {
 			}
 
 			return evaluaciones;
+		*/
 	}
 
 	/**
@@ -1730,7 +1731,7 @@ public class ServiceImp implements IService {
 			aprobado = false;
 		else {
 			for (Evaluacion eval : listaEval){
-				if (eval.isAprobado() != true){
+				if (eval.getAprobado() != true){
 					aprobado = false;
 					break;
 				}
@@ -1913,12 +1914,9 @@ public class ServiceImp implements IService {
 		List<Evaluacion> evaluaciones =  new ArrayList<Evaluacion>();
 
 		for(Instrumento instrumento : instrumentos){
-			Evaluacion evaluacion = new Evaluacion();
-			evaluacion.setInstrumento(instrumento);
-			evaluacion.setSolicitud(solicitud);
-			evaluacion.setFechaEvaluacion(new Date());
-			evaluacion.setActivo(true);
-			evaluacion.setEstado(getMantenedorById(28));
+			
+			Evaluacion evaluacion = new Evaluacion(solicitud,instrumento,new Date(),instrumento.getPuntajeMinimo(),instrumento.getPuntajeMaximo(),null,true);
+			
 			evaluacion=evaluacionDao.save(evaluacion);
 			evaluaciones.add(evaluacion);
 		}
