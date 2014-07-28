@@ -9,7 +9,6 @@ import java.util.Map;
 
 import javax.faces.model.SelectItem;
 
-import model.Certificacion;
 import model.Convocatoria;
 import model.Evaluacion;
 import model.EvaluacionGuia;
@@ -254,11 +253,13 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		this.selectedConvocatoria.setSolicitudId(selectedSolicitud.getId());
 	}
 	
-	/*
-	public void evaluarSolicitud(Solicitud solicitud){
-		service.evaluarSolicitud(solicitud);
+	public void enviarSolicitud(Solicitud solicitud){
+		service.enviarSolicitud(solicitud);
 	}
-	*/
+	
+	public void autorizarMatricula(Solicitud solicitud){
+		service.autorizarMatricula(solicitud);
+	}
 	
 	public String evaluarSolicitud(Solicitud solicitud){
 		FacesUtil.setParamBySession("solicitudId", solicitud.getId());

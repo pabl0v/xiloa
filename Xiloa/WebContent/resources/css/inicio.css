@@ -1,0 +1,8 @@
+/*Estilo para la pagina inicio*/
+.logo_central {
+	background: url("../../resources/imagenes/portadasccl.png") no-repeat center;
+    width: 1000px;
+    height: 600px;
+    padding-top: 150px;
+    margin-left: 180px;
+	}

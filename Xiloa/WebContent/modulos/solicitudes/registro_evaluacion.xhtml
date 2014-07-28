@@ -28,11 +28,13 @@
 					<p:inputText readonly="true" size="80" value="#{evaluacionManagedBean.solicitud.nombre}" />
 					<h4><b>Estado:</b></h4>
 					<p:inputText readonly="true" size="10" value="#{evaluacionManagedBean.solicitud.estatus.valor}" />
+					<h4><b>Evaluado:</b></h4>
+					<p:selectBooleanCheckbox value="true" />
 				</h:panelGrid>
  				<br/>
 				</h:form>
 				<h:form id="formEvaluaciones">
-				<p:commandButton value="Agregar Evaluación" style="float:right; margin-bottom: 5px;" update=":formAgregarEvaluacion" onclick="PF('dlg2').show();" action="#{evaluacionManagedBean.setInstrumentos(null)}" />	
+				<p:commandButton value="Agregar Evaluación" style="float:right; margin-bottom: 5px; margin-top: 5px;" update=":formAgregarEvaluacion" onclick="PF('dlg2').show();" action="#{evaluacionManagedBean.setInstrumentos(null)}" />	
 			    <h3>Instrumentos Aplicados:</h3>			 
 					<p:dataTable id="dtEvaluaciones" emptyMessage="No hay datos para mostrar"  var="evaluacion" value="#{evaluacionManagedBean.evaluaciones}" 
 						rowKey="#{evaluacion.instrumento.id}" selectionMode="single" paginator="true" rows="5" >

@@ -1845,6 +1845,7 @@ public class ServiceImp implements IService {
 		return evaluacionUnidadDao.findAllByNamedQueryParam("EvaluacionUnidad.findAllBySolicitud", objs);		
 	}
 	*/
+	@Override
 	public List<Item> getListEvaluacionesUnidad(Long idSolicitud){
 		Object [] objs =  new Object [] {idSolicitud};
 		return itemDao.findAllByNamedQueryParam("Evaluacion.findAllUnidadesBySolicitudId", objs);		
@@ -1898,31 +1899,29 @@ public class ServiceImp implements IService {
 		evaluacionDao.remove(Evaluacion.class, evaluacion.getId());
 		return true;
 	}
-	
+
+	/** 
+	 * @param la solicitud cuya matricula se autoriza. La autorizacion valida que las pruebas de lectura-escritura y diagnostica estén aprobadas
+	 * 
+	 */
+
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void autorizarMatricula(Solicitud solicitud){
 		
-		//buscar los instrumentos para cada unidad de competencia
-
-		Object [] objs =  new Object [] {solicitud.getCertificacion().getId()};
+		//si el estado de la solicitud es enviado
+		if(solicitud.getEstatus().getId()==36){
 		
-		List<Instrumento> instrumentos = instrumentoDao.findAllByNamedQueryParam("Instrumento.findAllByCertificacionId", objs);
+			// buscando instrumentos pendientes de evaluar y que no estén aprobados
+			List<Instrumento> instrumentosPendientes = instrumentoDao.findAllByQuery("select i from instrumentos i where i.estatus='true' and i.certificacionId="+solicitud.getCertificacion().getId()+" and i.tipo.id in (27,28) and not exists (select 1 from evaluaciones e where e.activo='true' and e.aprobado='true' and e.instrumento.id=i.id and e.solicitud.id="+solicitud.getId()+")");
 		
-		List<Evaluacion> evaluaciones =  new ArrayList<Evaluacion>();
-
-		for(Instrumento instrumento : instrumentos){
+			// si no hay instrumentos pendientes de evaluar (prueba de lectura-escritura o diagnostica), autorizar matricula		
+			if(instrumentosPendientes.isEmpty()){
 			
-			Evaluacion evaluacion = new Evaluacion(solicitud,instrumento,new Date(),instrumento.getPuntajeMinimo(),instrumento.getPuntajeMaximo(),null,true);
-			
-			evaluacion=evaluacionDao.save(evaluacion);
-			evaluaciones.add(evaluacion);
+				//actualiza estado de solicitud a autorizado para matricula			
+				actualizarEstadoSolicitud(solicitud, 2);
+			}
 		}
-		
-		solicitud.setEvaluaciones(evaluaciones);
-		solicitud.setEstatus(getMantenedorById(24));		//estado inscrito
-
-		solicitudDao.save(solicitud);
 	}
 	
 	/** 
@@ -2062,7 +2061,35 @@ public class ServiceImp implements IService {
 	 * @param la solicitud cuyos instrumentos pendientes se quiere obtener
 	 * @return la lista de instrumentos
 	 */	
+	@Override
 	public List<Item> getInstrumentosPendientesBySolicitud(Solicitud solicitud, Long unidad){
 		return itemDao.findAllByQuery("select new support.Item(i.id,i.nombre) from instrumentos i where i.unidad=case when "+unidad+" is null then i.unidad else "+unidad+" end and i.estatus='true' and i.certificacionId="+solicitud.getCertificacion().getId()+" and not exists (select 1 from evaluaciones e where e.instrumento.id=i.id and e.activo='true' and e.solicitud.id="+solicitud.getId()+")");
+	}
+	
+	/** 
+	 * @param la solicitud que se desea enviar
+	 */	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void enviarSolicitud(Solicitud solicitud){
+		
+		if(solicitud.getEstatus().getId()==35){		// si el estatus de la solicitud es registrada
+		
+			// obtiene los instrumentos de lectura-escritura y diagnostico
+		
+			List<Instrumento> instrumentos = instrumentoDao.findAllByQuery("select i from instrumentos i where i.tipo.id in (27,28) and i.estatus='true' and i.certificacionId="+solicitud.getCertificacion().getId()+" and not exists (select 1 from evaluaciones e where e.instrumento.id=i.id and e.activo='true' and e.solicitud.id="+solicitud.getId()+")");
+		
+			// registra automaticamente las evaluaciones para las pruebas de lectura-escritura y diagnostica
+		
+			for(Instrumento instrumento : instrumentos){
+				Evaluacion evaluacion = new Evaluacion(solicitud,instrumento,new Date(),instrumento.getPuntajeMinimo(),instrumento.getPuntajeMaximo(),null,true);
+			
+				guardarEvaluacion(evaluacion);	
+			}
+		
+			//actualiza estado de solicitud a enviado
+		
+			actualizarEstadoSolicitud(solicitud, 1);
+		}
 	}
 }

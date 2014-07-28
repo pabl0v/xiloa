@@ -93,12 +93,12 @@
 				<p:column>
 					<p:splitButton value="Gestión de Solicitud" icon="ui-icon-pencil" title="Gestion de Solicitud" style="display:inline-block;"  update=":formSolicitudes:dtSolicitud" >   
 	        	 		<p:separator />
-							<p:menuitem value="Enviar Solicitud" title="Enviar Solicitud" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,1)}" update=":formSolicitudes" />
+							<p:menuitem value="Enviar Solicitud" title="Enviar Solicitud" action="#{dashBoardSolicitudesManagedBean.enviarSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" update=":formSolicitudes" />
                 		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO">                  
 		            		<p:menuitem value="Editar Solicitud" title="Editar Solicitud" action="#{dashBoardSolicitudesManagedBean.editaSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" disabled="#{!varSolicitudI.editable}" />
     					</sec:authorize>        	 		
 	        	 		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITA_EXPEDIENTE_CONTACTO">
-	       		 			<p:menuitem value="Autorizar Matricula" title="Autorizar Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,2)}" update=":formSolicitudes"  />
+	       		 			<p:menuitem value="Autorizar Matricula" title="Autorizar Matricula" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.autorizarMatricula(dashBoardSolicitudesManagedBean.selectedSolicitud)}" update=":formSolicitudes"  />
 	       		 		</sec:authorize>
 	       		 		<p:menuitem value="Rechazar Solicitud" title="Rechazar Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,3)}" update=":formSolicitudes"  />
 	       		 		<p:menuitem value="Matricular Candidato" title="Matricular Candidato" style="display:inline-block;" onclick="PF('dlg1').show();" update=":matriculaForm" />

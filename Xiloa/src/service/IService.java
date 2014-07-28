@@ -831,10 +831,9 @@ public interface IService {
 	public boolean anularEvaluacion(Evaluacion evaluacion);
 
 	/** 
-	 * @param la solicitud cuya matricula se autoriza
+	 * @param la solicitud cuya matricula se autoriza. La autorizacion valida que las pruebas de lectura-escritura y diagnostica estén aprobadas
 	 * 
 	 */
-
 	public void autorizarMatricula(Solicitud solicitud);
 	
 	/** 
@@ -901,5 +900,11 @@ public interface IService {
 	 * @param la solicitud y unidad de competencia cuyos instrumentos pendientes se quiere obtener
 	 * @return la lista de instrumentos
 	 */	
-	public List<Item> getInstrumentosPendientesBySolicitud(Solicitud solicitud, Long unidad);	
+	public List<Item> getInstrumentosPendientesBySolicitud(Solicitud solicitud, Long unidad);
+	
+
+	/** 
+	 * @param la solicitud que se desea enviar
+	 */	
+	public void enviarSolicitud(Solicitud solicitud);
 }
