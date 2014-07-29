@@ -720,9 +720,9 @@ public class ServiceImp implements IService {
 		// guarda las unidades de competencia de la certificacion
 		Map<Long, String> codigos = getUnidadesByEstructuraId(certificacion.getEstructuraId());
 		for(Long codigo : codigos.keySet()){
-			unidadDao.save(new Unidad(certificacion, codigo));
+			unidadDao.save(new Unidad(certificacion.getId(), codigo));
 		}
-
+		
 		// guarda las actividades de la certificacion
 		List<Mantenedor> actividades = getMantenedoresByTipo(1);
 		for(Mantenedor actividad : actividades){
@@ -1056,7 +1056,7 @@ public class ServiceImp implements IService {
 		List<Item> items = new ArrayList<Item>();
 		
 		for(Unidad unidad : unidades){
-			items.add(new Item(unidad.getUnidadId(), unidad.getUnidadNombre()));
+			items.add(catalogoUnidades.get(unidad.getUnidadId()));
 		}
 		
 		return items;
