@@ -3,17 +3,13 @@ package view;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 
 import model.Certificacion;
-import model.Contacto;
 import model.Mantenedor;
-import model.Requisito;
 
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,30 +84,28 @@ public class PlanificacionManagedBean implements Serializable {
 	
 	public void nuevaCertificacion(UCompetencia competencia){
 				
-		Certificacion certificacion = new Certificacion();
-		certificacion.setOfertaId(competencia.getOfertaId());
-		certificacion.setEstructuraId(competencia.getEstructuraId());
-		certificacion.setCursoId(competencia.getIdUCompetencia());
-		certificacion.setNombre(competencia.getNombreUCompetencia());
-		certificacion.setDescripcion(competencia.getNombreUCompetencia());
-		certificacion.setDisponibilidad(competencia.getDisponibilidad());
-		certificacion.setCosto(competencia.getCosto());
-		certificacion.setCreador(controller.getContacto());
-		certificacion.setFechaRegistro(new Date());
-		certificacion.setIfpId(competencia.getIdCentro());
-		certificacion.setIfpNombre(competencia.getNombreCentro());
-		certificacion.setIfpDireccion(competencia.getDireccion());
-		certificacion.setUnidades(new HashSet<Long>());
-		certificacion.setInvolucrados(new Contacto[] {});
-		certificacion.setEstatus(service.getMantenedorById(16));		//estatus pendiente
-		
-		List<Requisito> requisitos = service.getRequisitos(certificacion.getCursoId(), certificacion.getIfpId());
-		Map<Long, String> codigos = service.getUnidadesByEstructuraId(certificacion.getEstructuraId());
-		
-		certificacion.setUnidades(new HashSet<Long>(codigos.keySet()));
-		
-		certificacion = service.guardarCertificacion(certificacion, requisitos);
+		Certificacion certificacion = new Certificacion(
+				competencia.getOfertaId(), 
+				competencia.getEstructuraId(), 
+				competencia.getIdUCompetencia(), 
+				competencia.getNombreUCompetencia(), 
+				competencia.getNombreUCompetencia(), 
+				competencia.getDisponibilidad(),
+				competencia.getCosto(), 
+				new Date(), 
+				null, 
+				null, 
+				competencia.getIdCentro(), 
+				competencia.getNombreCentro(), 
+				competencia.getDireccion(), 
+				null, 
+				null, 
+				controller.getContacto(), 
+				null, 
+				null, 
+				service.getMantenedorById(16));		// estatus pendiente
 
+		certificacion = service.guardarCertificacion(certificacion);
 		certificaciones.add(0,certificacion);
 	}
 	

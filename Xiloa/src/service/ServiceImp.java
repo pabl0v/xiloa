@@ -60,6 +60,7 @@ import model.Perfil;
 import model.Requisito;
 import model.Rol;
 import model.Solicitud;
+import model.Unidad;
 import model.Usuario;
 
 /**
@@ -127,6 +128,8 @@ public class ServiceImp implements IService {
 	private IDao<Item> itemDao;
 	@Autowired
 	private IDao<Convocatoria> convocatoriaDao;
+	@Autowired
+	private IDao<Unidad> unidadDao;
 
 	private List<Mantenedor> mantenedores;
 	private Map<Integer, Mantenedor> catalogoEstatusCertificacion;
@@ -702,22 +705,31 @@ public class ServiceImp implements IService {
 		
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public Certificacion guardarCertificacion(Certificacion certificacion, List<Requisito> requisitos) {
+	public Certificacion guardarCertificacion(Certificacion certificacion) {
 		
+		// guarda la certificacion
 		certificacion = certificacionDao.save(certificacion);
 		
-		for(int i=0; i<requisitos.size(); i++){
-			requisitos.get(i).setCertificacion(certificacion);
-			requisitoDao.save(requisitos.get(i));
+		// guarda los requisitos de la certificacion
+		List<Requisito> requisitos = getRequisitos(certificacion.getCursoId(), certificacion.getIfpId());
+		for(Requisito requisito : requisitos){
+			requisito.setCertificacion(certificacion);
+			requisitoDao.save(requisito);
+		}
+		
+		// guarda las unidades de competencia de la certificacion
+		Map<Long, String> codigos = getUnidadesByEstructuraId(certificacion.getEstructuraId());
+		for(Long codigo : codigos.keySet()){
+			unidadDao.save(new Unidad(certificacion, codigo));
 		}
 
+		// guarda las actividades de la certificacion
 		List<Mantenedor> actividades = getMantenedoresByTipo(1);
-		
-		for(int i=0; i<actividades.size(); i++){
-			actividadDao.save(new Actividad(certificacion,actividades.get(i),actividades.get(i).getValor(),"A completar",null,null,null,new Date(),null,null,certificacion.getCreador(),getMantenedorById(12)));
+		for(Mantenedor actividad : actividades){
+			actividadDao.save(new Actividad(certificacion, actividad, actividad.getValor(),"A completar",null,null,null,new Date(),null,null,certificacion.getCreador(),getMantenedorById(12)));
 		}
-		
-		return certificacionDao.findById(Certificacion.class, certificacion.getId());
+				
+		return certificacion;
 	}
 	
 	/**
@@ -1021,18 +1033,9 @@ public class ServiceImp implements IService {
 	 */
 
 	@Override
-	public List<Long> getUnidadesByCertificacionId(Long certificacionId) {
-		List<BigInteger> unidades = new ArrayList<BigInteger>();
-		List<Long> unidadesLong = new ArrayList<Long>();
-		if(certificacionId!=null)
-			unidades = bigIntegerDao.findAllByNativeQuery("select unidad_id from sccl.certificacion_unidades where certificacion_id="+certificacionId+" order by 1");
-		else
-			unidades = bigIntegerDao.findAllByNativeQuery("select distinct unidad_id from sccl.certificacion_unidades order by 1");
-		
-		for(int i=0; i<unidades.size(); i++)
-			unidadesLong.add(unidades.get(i).longValue());
-		
-		return unidadesLong;
+	public List<Unidad> getUnidadesByCertificacionId(Long certificacionId) {
+		Object [] objs =  new Object [] {certificacionId};
+		return unidadDao.findAllByNamedQueryParam("findAllByCertificacionId", objs);
 	}
 	
 	/**
@@ -1041,6 +1044,24 @@ public class ServiceImp implements IService {
 	 */
 	
 	public List<Item> getUnidadesItemByCertificacionId(Long certificacionId){
+		Object [] objs =  new Object [] {certificacionId};
+		
+		List<Unidad> unidades = new ArrayList<Unidad>();
+		
+		if(certificacionId != null)
+			unidades = unidadDao.findAllByNamedQueryParam("unidad.findAllByCertificacionId", objs);
+		else
+			unidades = unidadDao.findAllByNamedQuery("unidad.findAll");
+			
+		List<Item> items = new ArrayList<Item>();
+		
+		for(Unidad unidad : unidades){
+			items.add(new Item(unidad.getUnidadId(), unidad.getUnidadNombre()));
+		}
+		
+		return items;
+
+		/*
 		List<BigInteger> codigos = new ArrayList<BigInteger>();
 		List<Item> unidades = new ArrayList<Item>();
 		
@@ -1053,6 +1074,7 @@ public class ServiceImp implements IService {
 			unidades.add(catalogoUnidades.get(codigos.get(i).longValue()));
 
 		return unidades;
+		*/
 	}
 
 	/**
@@ -1605,8 +1627,9 @@ public class ServiceImp implements IService {
 	 * 
 	 */
 
-	@Override	
+	@Override
 	public boolean validaEvaluacionAprobada(Solicitud solicitud, boolean diagnostica, Long ucl){
+		/*
 		Object [] objs = null;	
 		boolean pasa = true;
 		//boolean aprobado = true;
@@ -1650,6 +1673,8 @@ public class ServiceImp implements IService {
 		}		
 		
 		return pasa;
+		*/
+		return false;
 	}
 
 	/**
@@ -1808,7 +1833,7 @@ public class ServiceImp implements IService {
 		c = solicitud.getCertificacion();
 				
 		if (ucl == null){ // Evalua por todas las unidades de competencia
-			List<Long> setUnidades =  getUnidadesByCertificacionId(c.getId());
+			//List<Long> setUnidades =  getUnidadesByCertificacionId(c.getId());
 			
 			//Julio/2014
 			/*

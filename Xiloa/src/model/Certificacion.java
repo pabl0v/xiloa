@@ -2,39 +2,25 @@ package model;
 
 import java.io.Serializable;
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.UniqueConstraint;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 /**
  * 
@@ -73,7 +59,7 @@ public class Certificacion implements Serializable {
 	private Integer estructuraId;
 	
 	@Column(name = "certificacion_curso_id", nullable = false)
-	private int cursoId;
+	private Integer cursoId;
 	
 	@Column(name = "certificacion_nombre", nullable = false)
 	private String nombre;
@@ -108,102 +94,87 @@ public class Certificacion implements Serializable {
 	private Date finaliza;
 	
 	@Column(name = "certificacion_ifp_id", nullable = false)
-	private int ifpId;
-	
-	@Column(name = "certificacion_ifp_direccion", nullable = true)
-	private String ifpDireccion;
+	private Integer ifpId;
 	
 	@Column(name = "certificacion_ifp_nombre", nullable = false)
 	private String ifpNombre;
-	
-	/*
-	@ManyToOne
-	@JoinColumn(name="certificacion_programador_id")	
-	private Contacto programador;
-	*/
+
+	@Column(name = "certificacion_ifp_direccion", nullable = true)
+	private String ifpDireccion;
+			
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="certificacion_coordinador_id", nullable = true)	
+	private Contacto coordinador;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="certificacion_creador_id", nullable = false)	
+	@JoinColumn(name="certificacion_informante_id", nullable = true)	
+	private Contacto informante;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="certificacion_creador_id", nullable = false)
 	private Contacto creador;
-	
+		
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="certificacion_actualiza_id")	
+	@JoinColumn(name="certificacion_actualiza_id", nullable = true)
 	private Contacto actualiza;
+		
+	@Column(name = "certificacion_referencial", nullable = true)
+	private String referencial;
+	
+	@Column(name = "certificacion_nivel_competencia", nullable = true)
+	private Integer nivelCompetencia;
 	
 	@ManyToOne
 	@JoinColumn(name="certificacion_estatus", nullable = false)
 	private Mantenedor estatus;
 	
-	@Column(name = "certificacion_referencial", nullable = true)
-	private String referencial;
-	
-	@Column(name = "certificacion_nivel_competencia", nullable = true)
-	private int nivelCompetencia;
-	
-	@NotNull
-	@ElementCollection(fetch = FetchType.LAZY)
-	@CollectionTable(
-			name="sccl.certificacion_unidades",
-	        joinColumns=@JoinColumn(name="certificacion_id"),
-	        uniqueConstraints = @UniqueConstraint(columnNames = {"certificacion_id", "unidad_id"})
-	)
-	@Column(name="unidad_id", nullable = false)
-	private Set<Long> unidades;
-	
-	@OneToMany(mappedBy = "certificacion",fetch = FetchType.LAZY)
-	private List<Requisito> requisitos;
-		
-	@OneToMany(mappedBy = "certificacion",fetch = FetchType.LAZY)
-	//@MapKey(name = "indice")
-	//private Map<Integer,Actividad> actividades;
-	private List<Actividad> actividades;
-		
-	@OneToMany(mappedBy = "certificacion")
-	private List<Solicitud> solicitudes;
-	
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable
-	(
-			name = "sccl.pinvolucrados",
-			joinColumns = @JoinColumn(name = "certificacion_id", unique = false),
-			inverseJoinColumns = @JoinColumn(name = "contacto_id", unique = false)
-	)
-	@MapKeyColumn(name="id_rol")
-	private Map<Integer, Contacto> involucrados;
-	
-	public Integer getOfertaId() {
-		return ofertaId;
-	}
-
-	public void setOfertaId(Integer ofertaId) {
-		this.ofertaId = ofertaId;
-	}
-
-	public Contacto getCoordinador(){
-		//return involucrados.get(2);
-		return null;
-	}
-	
-	public Contacto getVerificador(){
-		//return involucrados.get(3);
-		return null;
-	}
-	
-	public Contacto getEvaluador(){
-		//return involucrados.get(7);
-		return null;
-	}
-	
 	public Certificacion(){
 		super();
-		this.requisitos = new ArrayList<Requisito>();
-		this.unidades = new HashSet<Long>();
-		this.disponibilidad = null;
-		//this.actividades = new HashMap<Integer,Actividad>();
-		this.actividades = new ArrayList<Actividad>();
-		this.solicitudes = new ArrayList<Solicitud>();
-		this.involucrados = new HashMap<Integer, Contacto>();
 	}
+	
+	public Certificacion(	Integer ofertaId,
+							Integer estructuraId,
+							Integer cursoId,
+							String nombre, 
+							String descripcion,
+							Integer disponibilidad,
+							Float costo,
+							Date fechaRegistro,
+							Date inicia,
+							Date finaliza, 
+							Integer ifpId,
+							String ifpNombre,
+							String ifpDireccion,
+							Contacto coordinador,
+							Contacto informante,
+							Contacto creador,
+							String referencial, 
+							Integer nivelCompetencia,
+							Mantenedor estatus)
+		{
+			super();
+			this.ofertaId = ofertaId;
+			this.estructuraId = estructuraId;
+			this.cursoId = cursoId;
+			this.nombre = nombre;
+			this.descripcion = descripcion;
+			this.disponibilidad = disponibilidad;
+			this.costo = costo;
+			this.fechaRegistro = fechaRegistro;
+			this.fechaActualiza = null;
+			this.inicia = inicia;
+			this.finaliza = finaliza;
+			this.ifpId = ifpId;
+			this.ifpNombre = ifpNombre;
+			this.ifpDireccion = ifpDireccion;
+			this.coordinador = coordinador;
+			this.informante = informante;
+			this.creador = creador;
+			this.actualiza = null;
+			this.referencial = referencial;
+			this.nivelCompetencia = nivelCompetencia;
+			this.estatus = estatus;
+		}
 
 	public Long getId() {
 		return id;
@@ -212,7 +183,15 @@ public class Certificacion implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+	public Integer getOfertaId() {
+		return ofertaId;
+	}
 
+	public void setOfertaId(Integer ofertaId) {
+		this.ofertaId = ofertaId;
+	}
+	
 	public Integer getEstructuraId() {
 		return estructuraId;
 	}
@@ -221,11 +200,11 @@ public class Certificacion implements Serializable {
 		this.estructuraId = estructuraId;
 	}
 
-	public int getCursoId() {
+	public Integer getCursoId() {
 		return cursoId;
 	}
 
-	public void setCursoId(int cursoId) {
+	public void setCursoId(Integer cursoId) {
 		this.cursoId = cursoId;
 	}
 
@@ -305,12 +284,20 @@ public class Certificacion implements Serializable {
 		this.finaliza = finaliza;
 	}
 
-	public int getIfpId() {
+	public Integer getIfpId() {
 		return ifpId;
 	}
 
-	public void setIfpId(int ifpId) {
+	public void setIfpId(Integer ifpId) {
 		this.ifpId = ifpId;
+	}
+	
+	public String getIfpNombre() {
+		return ifpNombre;
+	}
+
+	public void setIfpNombre(String ifpNombre) {
+		this.ifpNombre = ifpNombre;
 	}
 
 	public String getIfpDireccion() {
@@ -320,63 +307,21 @@ public class Certificacion implements Serializable {
 	public void setIfpDireccion(String ifpDireccion) {
 		this.ifpDireccion = ifpDireccion;
 	}
-
-	public String getIfpNombre() {
-		return ifpNombre;
-	}
-
-	public void setIfpNombre(String ifpNombre) {
-		this.ifpNombre = ifpNombre;
-	}
-
-	/*
-	public Contacto getProgramador() {
-		return programador;
-	}
-
-	public void setProgramador(Contacto programador) {
-		this.programador = programador;
-	}
-	*/
-
-	public Date getDivulgacionInicia() {
-		//return actividades.get(0).getFechaInicial();
-		return null;
-	}
-
-	public Date getDivulgacionFinaliza() {
-		//return actividades.get(0).getFechaFinal();
-		return null;
-	}
-
-	public Date getConvocatoriaInicia() {
-		//return actividades.get(1).getFechaInicial();
-		return null;
-	}
 	
-	public Date getConvocatoriaFinaliza() {
-		//return actividades.get(1).getFechaFinal();
-		return null;
+	public Contacto getCoordinador() {
+		return coordinador;
 	}
 
-	public Date getEvaluacionInicia() {
-		//return actividades.get(2).getFechaInicial();
-		return null;
+	public void setCoordinador(Contacto coordinador) {
+		this.coordinador = coordinador;
 	}
 
-	public Date getEvaluacionFinaliza() {
-		//return actividades.get(2).getFechaFinal();
-		return null;
-	}
-	
-	public Date getVerificacionInicia() {
-		//return actividades.get(3).getFechaInicial();
-		return null;
+	public Contacto getInformante() {
+		return informante;
 	}
 
-	public Date getVerificacionFinaliza() {
-		//return actividades.get(3).getFechaFinal();
-		return null;
+	public void setInformante(Contacto informante) {
+		this.informante = informante;
 	}
 
 	public Contacto getCreador() {
@@ -394,15 +339,7 @@ public class Certificacion implements Serializable {
 	public void setActualiza(Contacto actualiza) {
 		this.actualiza = actualiza;
 	}
-
-	public Mantenedor getEstatus() {
-		return estatus;
-	}
-
-	public void setEstatus(Mantenedor estatus) {
-		this.estatus = estatus;
-	}
-
+	
 	public String getReferencial() {
 		return referencial;
 	}
@@ -411,110 +348,19 @@ public class Certificacion implements Serializable {
 		this.referencial = referencial;
 	}
 
-	public int getNivelCompetencia() {
+	public Integer getNivelCompetencia() {
 		return nivelCompetencia;
 	}
 
-	public void setNivelCompetencia(int nivelCompetencia) {
+	public void setNivelCompetencia(Integer nivelCompetencia) {
 		this.nivelCompetencia = nivelCompetencia;
 	}
 
-	public List<Requisito> getRequisitos() {
-		return requisitos;
+	public Mantenedor getEstatus() {
+		return estatus;
 	}
 
-	public void setRequisitos(List<Requisito> requisitos) {
-		this.requisitos = requisitos;
-	}
-
-	public Set<Long> getUnidades() {
-		return unidades;
-	}
-
-	public void setUnidades(Set<Long> unidades) {
-		this.unidades = unidades;
-	}
-	
-	public void addUnidad(Long unidad){
-		this.unidades.add(unidad);
-	}
-
-	public List<Actividad> getActividades() {
-		//return new ArrayList<Actividad>(actividades.values());
-		return actividades;
-	}
-	
-	public void addActividad(Actividad actividad){
-		/*
-		Integer indice;
-		if(actividades.isEmpty())
-			indice = 0;
-		else
-			indice = actividades.size();
-		actividad.setIndice(indice);
-		this.actividades.put(indice, actividad);
-		*/
-		actividades.add(actividad);
-	}
-	
-	public List<Solicitud> getSolicitudes() {
-		return solicitudes;
-	}
-
-	public void setSolicitudes(List<Solicitud> solicitudes) {
-		this.solicitudes = solicitudes;
-	}
-	
-	public List<Contacto> getInvolucrados() {
-		return new ArrayList<Contacto>(involucrados.values());
-	}	
-
-	public void setInvolucrados(Contacto[] involucrados) {
-		for(int i=0; i<involucrados.length; i++){
-			this.involucrados.put(involucrados[i].getRol().getId(), involucrados[i]);
-		}
-	}
-
-	public Certificacion(	Integer ofertaId,
-							Integer estructuraId,
-							int cursoId,
-							String nombre, 
-							String descripcion,
-							int disponibilidad,
-							Date inicia,
-							Date finaliza, 
-							int ifpId, 
-							String ifpDireccion, 
-							String ifpNombre,
-							//Contacto programador, 
-							Contacto creador,
-							Mantenedor estatus, 
-							String referencial, 
-							int nivelCompetencia,
-							List<Requisito> requisitos, 
-							Set<Long> unidades, 
-							List<Solicitud> solicitudes,
-							Map<Integer, Contacto> involucrados) {
-		super();
-		this.ofertaId = ofertaId;
-		this.estructuraId = estructuraId;
-		this.cursoId = cursoId;
-		this.nombre = nombre;
-		this.descripcion = descripcion;
-		this.disponibilidad = disponibilidad;
-		this.inicia = inicia;
-		this.finaliza = finaliza;
-		this.ifpId = ifpId;
-		this.ifpDireccion = ifpDireccion;
-		this.ifpNombre = ifpNombre;
-		//this.programador = programador;
-		this.creador = creador;
+	public void setEstatus(Mantenedor estatus) {
 		this.estatus = estatus;
-		this.referencial = referencial;
-		this.nivelCompetencia = nivelCompetencia;
-		this.requisitos = requisitos;
-		this.unidades = unidades;
-		this.solicitudes = solicitudes;
-		this.involucrados = involucrados;
 	}
 }

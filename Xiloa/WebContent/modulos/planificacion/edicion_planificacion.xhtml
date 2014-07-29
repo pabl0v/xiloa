@@ -16,38 +16,16 @@
 		    </ui:insert>
 		    <script type="text/javascript" src="../../resources/scripts/edicion_planificacion.js"></script>
 		</div>
-        <h2>Nombre de la Certificacion:  <h:outputText value="#{certificacionManagedBean.certificacion.nombre}" /> </h2>
+        <h2>Certificacion:<h:outputText value="#{certificacionManagedBean.certificacion.nombre}" /> </h2>
         <div id="contenedor_secciones">                   
-            <div class="seccion_edicion">
-                <h3>Descripcion de la Certificacion</h3>
-				<div>
-					<p:editor id="editor2" value="#{certificacionManagedBean.certificacion.descripcion}" height="190"/>   
-				</div>
-            </div>          
-            <div class="seccion_edicion">
-                <h3>Involucrados</h3>
-                <h:form styleClass="formulario_inline">
-                    <p:commandButton value="Agregar involucrados" onclick="PF('dlg2').show();"/> 
-                </h:form>    
-                <h:form id="form">
-                   <div class="seccion_interna">
-                   <p:dataTable id="display" emptyMessage="No hay datos para mostrar"  var="contacto" value="#{certificacionManagedBean.certificacion.involucrados}">  
-                        <p:column headerText="Nombre"><h:outputText value="#{contacto.nombreCompleto}" /></p:column>  
-                        <p:column headerText="Funcion"><h:outputText value="#{contacto.rol.descripcion}" /></p:column>  
-                        <p:column headerText="Correo electronico"><h:outputText value="#{contacto.correo1}" /></p:column>  
-                    </p:dataTable> 
-                    </div>
-                </h:form>
-            </div>
-
 			<h:form id="dataForm">
 				<div id="info_competencia" class="seccion_edicion" style="height: 260px;font-size:15px;">
-					<p>Nombre del centro:</p>
+					<p>Oferente:</p>
 					<div style="display:inline-block;"><h:outputText value="#{certificacionManagedBean.certificacion.ifpNombre}"/></div>
-	
-					<p style="display:block;">Direccion del centro:</p>
-					<div><h:outputText value="#{certificacionManagedBean.certificacion.ifpDireccion}" /></div>
-
+					<br/>	
+					<p>Direccion:</p>
+					<div style="display:inline-block;"><h:outputText value="#{certificacionManagedBean.certificacion.ifpDireccion}" /></div>
+					<br/>
 					<p>Arancel:</p>
 					<div style="display:inline-block;">C$ <h:outputText value="#{certificacionManagedBean.certificacion.costoFormateado}" /></div>				
 				</div>
@@ -75,7 +53,7 @@
 							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
 							</p:commandButton>
 							<h:panelGroup id="contenidoActividades" style="border:0">
-								<p:dataTable id="actividadesDataTable" emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" selection="#{certificacionManagedBean.selectedActividad}" paginator="true" rows="10" rowKey="#{actividad.id}" selectionMode="single">  
+								<p:dataTable id="actividadesDataTable" emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" selection="#{certificacionManagedBean.selectedActividad}" paginator="true" rows="6" rowKey="#{actividad.id}" selectionMode="single">  
 									<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>    
 									<p:column headerText="Lugar/Medio"><h:outputText value="#{actividad.destino}" /></p:column>  
 									<p:column headerText="Inicia"><h:outputText value="#{actividad.fechaInicial}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>  
@@ -112,21 +90,6 @@
 				</div>
 			</h:form>
 		</div>
-	</p:dialog>
-	
-	<!-- Dialogo 2 -->
-    
-     <p:dialog id="modalDialog2" styleClass="estilo_dialogoactividades" header="Agregar involucrados:" widgetVar="dlg2" modal="true" resizable="false" width="550" height="400">
-     	<h:form>
-     		<h3>Agregue intregantes de esta lista:</h3>
-     		 <p:dataTable emptyMessage="No hay datos para mostrar"  var="contacto" value="#{certificacionManagedBean.contactos}" rowKey="#{contacto.id}" selection="#{certificacionManagedBean.selectedContactos}" selectionMode="multiple">  
-                        <p:column headerText="Nombre"><h:outputText value="#{contacto.nombreCompleto}" /></p:column>  
-                        <p:column headerText="Funcion"><h:outputText value="#{contacto.rol.descripcion}" /></p:column>  
-                        <p:column headerText="Correo electronico"><h:outputText value="#{contacto.correo1}" /></p:column>  
-                    </p:dataTable> 
-	        <p:commandButton value="Cancelar" onclick="PF('dlg2').hide();"/> 
-	        <p:commandButton value="Aceptar" update=":form:display" oncomplete="PF('dlg2').hide();"/> 
-	    </h:form>   
-     </p:dialog> 
+	</p:dialog>	
 </h:body>
 </html>

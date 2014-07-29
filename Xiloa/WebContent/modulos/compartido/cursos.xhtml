@@ -49,9 +49,9 @@
 					</p:column>  
 					<p:column headerText="Prematriculas">
 						<h:outputText value="del "></h:outputText>
-						<h:outputText value="#{certificacion.divulgacionInicia}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>
+						<h:outputText value="#{certificacion.inicia}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>
 						<h:outputText value=" al "></h:outputText>
-						<h:outputText value="#{certificacion.divulgacionInicia}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>
+						<h:outputText value="#{certificacion.finaliza}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>
 					</p:column>  
 					<p:column headerText="Cupo máximo"><h:outputText value="#{certificacion.disponibilidad} Personas" /></p:column>
 				</p:dataTable> 
@@ -66,7 +66,7 @@
 		          	</div>
 		          	<div class="seccion_detalle">
 		      			<p>Ultimo dia para solicitar evaluación:</p>
-		      			<h:outputText value="#{inicioManagedBean.selectedCertificacion.convocatoriaFinaliza}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>  		
+		      			<h:outputText value="#{inicioManagedBean.selectedCertificacion.finaliza}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>  		
 		          	</div>
 		          	<div class="seccion_detalle">
 		      			<p>Direccion del Centro evaluador:</p>
@@ -82,8 +82,10 @@
 		      			<p>Arancel:</p>
 		      			C$ <h:outputText value="#{inicioManagedBean.selectedCertificacion.costoFormateado}"></h:outputText>  		
 		          	</div>
+		          	<div>
 			          	<p:commandButton onclick="PF('modal_comp').hide()" value="Cancelar"/>
 			          	<p:commandButton id="registrarSolicitud" action="#{inicioManagedBean.indicaAplicar}" value="Aplicar" oncomplete="PF('modal_comp').hide()" />
+		            </div>
 		            </p:outputPanel>
 	    	</p:dialog>
 	    </h:form>

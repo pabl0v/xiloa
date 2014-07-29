@@ -1605,6 +1605,7 @@ public class ExpEvalManagedBean implements Serializable  {
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Ejecuta reporte generico.
 	public void runReporte(String nombreReporte) throws Exception {
+		/*
     	Map<String,Object> params = new HashMap<String,Object>();
     	Certificacion cert = this.solicitudExp.getCertificacion();
     	
@@ -1615,7 +1616,7 @@ public class ExpEvalManagedBean implements Serializable  {
         	service.imprimirReporte(nombreReporte, params, Global.EXPORT_PDF, true);
     	}else
     		FacesUtil.getMensaje("Mensaje SCCL ", "Error al consultar los datos del evaluador. Favor comuníquese con el Departamento de Tecnología del INATEC", true);
-    	  		
+    	  */		
 	}
 	
 	public boolean getActivaConvocatoria(){

@@ -48,7 +48,7 @@
 	                <p:column style="display: none" headerText="Unidad de competencia"><h:outputText value="#{certificacion.id}" /></p:column>  
 	                <p:column headerText="Certificación"><h:outputText value="#{certificacion.nombre}" /></p:column>  
 	                <p:column headerText="Centro de Formación"><h:outputText value="#{certificacion.ifpNombre}" /></p:column>  
-	                <p:column headerText="Inicio de Solicitudes"><h:outputText value="#{certificacion.divulgacionInicia}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>  
+	                <p:column headerText="Inicio de Solicitudes"><h:outputText value="#{certificacion.inicia}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>  
 	            </p:dataTable> 
             </div>
         </div>
@@ -61,7 +61,7 @@
           	</div>
           	<div class="seccion_detalle">
       			<p>Ultimo dia para solicitar evaluación:</p>
-      			<h:outputText value="#{inicioManagedBean.selectedCertificacion.evaluacionFinaliza}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>
+      			<h:outputText value="#{inicioManagedBean.selectedCertificacion.finaliza}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>
           	</div>
           	<div class="seccion_detalle">
       			<p>Dirección del Centro evaluador:</p>

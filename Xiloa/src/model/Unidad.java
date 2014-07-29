@@ -4,14 +4,18 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Formula;
-
 
 /**
  * 
@@ -25,6 +29,10 @@ import org.hibernate.annotations.Formula;
 
 @Entity(name = "unidades")
 @Table(name = "unidades", uniqueConstraints=@UniqueConstraint(columnNames={"certificacion_id", "unidad_id"}), schema = "sccl")
+@NamedQueries({
+	@NamedQuery(name="Unidad.findAll", query="select u from unidades u order by u.id desc"),
+	@NamedQuery(name="Unidad.findAllByCertificacionId", query="select u from unidades u where u.certificacion.id=?1 order by u.id desc")
+})
 public class Unidad implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -34,8 +42,9 @@ public class Unidad implements Serializable {
 	@Column(name = "id", nullable = false)
 	private Long id;
 
-	@Column(name="certificacion_id", nullable = false)
-	private Long certificacionId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="certificacion_id", nullable = false)
+	private Certificacion certificacion;
 	
 	@Column(name="unidad_id", nullable = false)
 	private Long unidadId;
@@ -47,8 +56,8 @@ public class Unidad implements Serializable {
 		super();
 	}
 	
-	public Unidad(Long certificacion, Long unidad){
-		this.certificacionId = certificacion;
+	public Unidad(Certificacion certificacion, Long unidad){
+		this.certificacion = certificacion;
 		this.unidadId = unidad;
 	}
 
@@ -60,12 +69,12 @@ public class Unidad implements Serializable {
 		this.id = id;
 	}
 
-	public Long getCertificacionId() {
-		return certificacionId;
+	public Certificacion getCertificacion() {
+		return certificacion;
 	}
 
-	public void setCertificacionId(Long certificacionId) {
-		this.certificacionId = certificacionId;
+	public void setCertificacion(Certificacion certificacion) {
+		this.certificacion = certificacion;
 	}
 
 	public Long getUnidadId() {

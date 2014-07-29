@@ -96,8 +96,8 @@ public class CertificacionManagedBean implements Serializable {
 	}
 	
 	public void setSelectedContactos(Contacto[] selectedContactos) {
-		this.selectedContactos = selectedContactos;
-		this.certificacion.setInvolucrados(selectedContactos);
+		//this.selectedContactos = selectedContactos;
+		//this.certificacion.setInvolucrados(selectedContactos);
 	}
 		
 	public String cancelar(){
@@ -130,19 +130,11 @@ public class CertificacionManagedBean implements Serializable {
 	public void agregarActividad(Actividad actividad){
 		actividad.setCreador(controller.getContacto());
 		actividad.setFechaRegistro(new Date());
-		Mantenedor estado = service.getMantenedorById(12); //service.getMapMantenedoresByTipo("4").get(10);		//estatus pendiente
+		Mantenedor estado = service.getMantenedorById(12); //estatus pendiente
 		actividad.setEstado(estado);
-		/*
-		Integer indice;
-		if(certificacion.getActividades().isEmpty())
-			indice = 0;
-		else
-			indice = certificacion.getActividades().size();
-		actividad.setIndice(indice);
-		*/
 		actividad.setCertificacion(certificacion);
 		actividad = (Actividad)service.guardar(actividad);
-		certificacion.addActividad(actividad);
+		//certificacion.addActividad(actividad);
 	}
 		
 	/*

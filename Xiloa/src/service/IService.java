@@ -32,6 +32,7 @@ import model.Pais;
 import model.Requisito;
 import model.Rol;
 import model.Solicitud;
+import model.Unidad;
 import model.Usuario;
 
 /**
@@ -453,11 +454,11 @@ public interface IService {
 	
 	/*
 	 * @return la instancia de certificación registrada en base de datos
-	 * @param la certificación a guardar y su listado de sus requisitos
+	 * @param la certificación a guardar
 	 * 
 	 */
 		
-	public Certificacion guardarCertificacion(Certificacion certificacion, List<Requisito> requisitos);
+	public Certificacion guardarCertificacion(Certificacion certificacion);
 
 
 	/**
@@ -536,7 +537,7 @@ public interface IService {
 	 * @param el id de la certificación
 	 */
 	
-	public List<Long> getUnidadesByCertificacionId(Long certificacionId);
+	public List<Unidad> getUnidadesByCertificacionId(Long certificacionId);
 	
 	/**
 	 * @return el listado de las unidades de competencia de la certificación indicada
