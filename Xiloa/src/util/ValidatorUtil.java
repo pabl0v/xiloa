@@ -1,5 +1,9 @@
 package util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -7,7 +11,7 @@ import java.util.regex.Pattern;
 public class ValidatorUtil {
 	
 	private static final String PATTERN_EMAIL = "^[\\w-]+(\\.[\\w-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-	private static final String PATTERN_CEDULA = "^[\\d]{13}[A-Za-z]{1}$";
+	private static final String PATTERN_CEDULA = "(\\d{3}-)(\\d{6}-)\\d{4}[a-zA-Z]"; 
 	private static final String [] letras = new String[] {"A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y"};
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Funcion que valida por expresion regular el formato de email.   
@@ -23,57 +27,77 @@ public class ValidatorUtil {
     }
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Funcion que valida el formato de cedula, así como el digito verificador.
-	public static boolean validateCedula(String cedula){
-		String cedulaSinGuion = null;
-		boolean formato = false;
-		String [] partes  = null;
-		Long num_ced = null;
-		String caracter = null;
-		Double aux = null;
-		Long temp = null;
-	    Long digito = null;
-	   	String num_cadena = null;
-	   	
+	public static boolean validateCedula(String cedula) {
+
 		Pattern pat = null;
 		Matcher mat = null;
-		
+
 		if (cedula.length() != 16)
-			formato = false;
+			return false;
 		else {
-			partes = cedula.split("[-]");
-			cedulaSinGuion = "";
-			
-			for(int i = 0; i<partes.length; i++){
-				cedulaSinGuion = cedulaSinGuion + partes[i];		       
-		     }
-						
+
 			pat = Pattern.compile(PATTERN_CEDULA);
-			mat = pat.matcher(cedulaSinGuion);
-			
-			formato = mat.matches();
-			
-			if (formato) {
-				num_cadena = partes[0] + partes[1] + partes[2].substring(0,4);			
-			    
-				num_ced = Long.valueOf(num_cadena);
-				
-				caracter = partes[2].substring(4).toUpperCase().trim();
-				aux  = new Double(num_ced / 23);
-				temp  = (Long) aux.longValue();
-				digito = Math.abs(num_ced-temp*23);
-				
-				if (letras[digito.intValue()].trim().equals(caracter)){
-					formato =  true;
-				}else{					
-								
-					formato = false;
-				}
-				
+			mat = pat.matcher(cedula);
+
+			if (mat.matches() && validarDiaMesAno(cedula)) {
+				return true;
 			}
-			
-			
+
 		}
-			
-		return formato;
+		return false;
+	}
+
+	private static boolean validarDiaMesAno(String cedula) {
+		int dia, mes, ano;
+		
+		dia=Integer.valueOf(cedula.substring(4, 6));
+	    mes=Integer.valueOf(cedula.substring(6, 8));
+	    ano=Integer.valueOf(cedula.substring(8, 10));  
+	    
+	    
+	    if ((mes==2 || mes==4 || mes==6|| mes==9|| mes==11) && dia==31)
+	      return false;
+	    
+	    if (mes==2 && ano%4!=0 && dia>=29)  //no es año bisiesto
+	    	return false;
+	    
+	    if (ano%4==0 && mes==2 && dia>=30)  // es año bisiesto
+	    	return false;
+	    
+	    return ((dia>=1 && dia<=31) && 
+	    		(mes>=1 && mes<=12));
+	}
+
+	public static Date obtenerFechaNacimientoDeCedula(String cedula) {
+
+		if (!validateCedula(cedula))
+			return null;
+		else {
+			try {
+
+				Integer digitosAnoCedula = Integer.valueOf(cedula.substring(8, 10));
+				int anoRealFechaNacimiento;
+				int anoActual=Calendar.getInstance().get(Calendar.YEAR);
+
+				if ( digitosAnoCedula> (anoActual-2000)   &&  digitosAnoCedula <=99 )
+					anoRealFechaNacimiento = 1900 + digitosAnoCedula;
+				else
+					anoRealFechaNacimiento = 2000 + digitosAnoCedula;
+
+				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+				
+				String dateInString = cedula.substring(4, 6) + "-" 	+ cedula.substring(6, 8) + "-"
+						+ anoRealFechaNacimiento;
+				
+				Date fechaNacimiento = formatter.parse(dateInString);
+				return fechaNacimiento;
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+		return null;
+
 	}
 }

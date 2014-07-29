@@ -2,7 +2,9 @@ package view;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -320,7 +322,7 @@ public class SolicitudesManagedBean implements Serializable {
 				Mantenedor estadoInicialSolicitud = service
 						.getMantenedorById(35);
 
-				s.setNombre(solicitante.getNombreCompleto()); // Nombre
+				s.setNombre(solicitante.getNombreCompleto()); 
 				s.setTicket("Ninguna");
 				s.setEstatus(estadoInicialSolicitud);
 				s.setFechaRegistro(new Date());
@@ -356,9 +358,7 @@ public class SolicitudesManagedBean implements Serializable {
 
 			mensaje = "El candidato tiene solicitudes pendientes o ya posee esta certificacion... ";
 			titulo = "Informacion Pendiente: ";
-
 			isError = true;
-
 		}
 		if (solicitante.getPrimerNombre() == null) {
 			mensaje = "Debe indicar el primer nombre. ";
@@ -372,28 +372,41 @@ public class SolicitudesManagedBean implements Serializable {
 			mensaje = "Debe indicar el numero de cedula. ";
 			titulo = "Informacion incompleta: ";
 			isError = true;
-		} else if (this.getExperiencia()<3) {
+		} else if (this.indicaTrabaja && (this.getExperiencia()!=null && this.getExperiencia()<3)) {
 			mensaje = "El Solicitante debe tener m\u00e1s de 3 a\u00f1os de experiencia ";
 			titulo = "Informaci\u00f3n no aceptada: ";
 			isError = true;
-		} // else if
-			// (ValidatorUtil.validateCedula(solicitante.getNumeroIdentificacion())){
-			// mensaje =
-			// "El número de cedula indicado es incorrecto!. Favor revisar.... ";
-			// titulo = "Formato de Cedula Incorrecto: ";
-			// isError = true;
-		// }
-		// System.out.println("error al validar cedula "
-		// +ValidatorUtil.validateCedula(solicitante.getNumeroIdentificacion())
-		// + "para " +solicitante.getNumeroIdentificacion());
-
+		}  else if  (!(ValidatorUtil.validateCedula(solicitante.getNumeroIdentificacion()))){
+			 mensaje = "El número de cedula indicado es incorrecto!. Favor revisar. ";
+			 titulo = "Formato de Cedula Incorrecto: ";
+			 isError = true;
+		 } else if (!validarEdadSolicitante()){
+			 mensaje = "La edad del Solicitante debe estar comprendida entre los 18 y 45 a\u00f1os. Favor revisar. ";
+		 titulo = "Edad del Solicitante: ";
+		 isError = true;
+		 }	
+		
+	
 		return isError;
 
 	}
 
-	private Contacto definirSolicitante(int tipoGrabar) {
+private boolean validarEdadSolicitante() {
+	Calendar date = Calendar.getInstance();
+	int anoActual = date.get(Calendar.YEAR);
+	solicitante.setFechaNacimiento(ValidatorUtil.obtenerFechaNacimientoDeCedula(solicitante.getNumeroIdentificacion()));
 
-		Certificacion certificacion;
+	Calendar cal=Calendar.getInstance();
+	cal.setTime(solicitante.getFechaNacimiento());
+	int anoNacimiento=cal.get(Calendar.YEAR);
+	int edad=Math.abs(anoActual-anoNacimiento );
+	
+	return  (edad>=18 && edad<=45); 
+	
+}
+
+	private Contacto definirSolicitante(int tipoGrabar) {
+		
 		Usuario usuario = null;
 		Rol rol;
 
@@ -455,23 +468,24 @@ public class SolicitudesManagedBean implements Serializable {
 		solicitante.setPrimerApellido(solicitante.getPrimerApellido().toUpperCase().trim());
 
 		solicitante.setNombreCompleto(solicitante.getPrimerNombre() + " " + solicitante.getSegundoNombre() + " " +
-		                              solicitante.getPrimerApellido() + " " + solicitante.getSegundoApellido()); // NombreCompleto
+		                              solicitante.getPrimerApellido() + " " + solicitante.getSegundoApellido()); 
 
-		solicitante.setCorreo1("");// correo1
-		solicitante.setCorreo2(""); // correo2
-		solicitante.setTelefono1(""); // telefono1
-		solicitante.setTelefono2(""); // telefono2
+		solicitante.setCorreo1("");
+		solicitante.setCorreo2(""); 
+		solicitante.setTelefono1(""); 
+		solicitante.setTelefono2(""); 
 
 		solicitante.setNumeroIdentificacion(solicitante
 				.getNumeroIdentificacion().toUpperCase().trim());
-		solicitante.setDireccionActual(""); // direccionActual
+		solicitante.setDireccionActual(""); 
 
-		solicitante.setFechaRegistro(new Date()); // fechaRegistro
+		solicitante.setFechaRegistro(new Date()); 
 
-		solicitante.setLugarNacimiento(""); // lugarNacimiento
-		solicitante.setInatec(false); // inatec
+		solicitante.setLugarNacimiento(""); 
+		solicitante.setInatec(false); 
 
-		solicitante.setFuncion(""); // funcion
+		solicitante.setFuncion(""); 
+		solicitante.setFechaNacimiento(ValidatorUtil.obtenerFechaNacimientoDeCedula(solicitante.getNumeroIdentificacion()));
 
 	}
 
@@ -482,11 +496,8 @@ public class SolicitudesManagedBean implements Serializable {
 		if (this.usuarioSolicitante != null) {
 
 			if (this.usuarioSolicitante.getContacto() != null) {
-				// ccarvajal: innecesario >>Contacto contacto =
-				// this.usuarioSolicitante.getContacto();
-
-				this.userSolicitante = this.usuarioSolicitante.getContacto();
-				
+	
+				this.userSolicitante = this.usuarioSolicitante.getContacto();				
 				this.solicitante = this.userSolicitante;
 
 			}
@@ -498,7 +509,7 @@ public class SolicitudesManagedBean implements Serializable {
 		}
 
 		this.setDescEmpresaLabora("");
-		this.setExperiencia(new Integer(0));
+		this.setExperiencia(0);
 		this.setOcupacion("");
 	}
 
