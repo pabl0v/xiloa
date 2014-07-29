@@ -719,9 +719,12 @@ public class ServiceImp implements IService {
 		
 		// guarda las unidades de competencia de la certificacion
 		Map<Long, String> codigos = getUnidadesByEstructuraId(certificacion.getEstructuraId());
-		for(Long codigo : codigos.keySet()){
+		for(Long codigo : new ArrayList<Long>(codigos.keySet())){
 			unidadDao.save(new Unidad(certificacion.getId(), codigo));
 		}
+		
+		// para los instrumentos sin unidad de competencia
+		unidadDao.save(new Unidad(certificacion.getId(), null));
 		
 		// guarda las actividades de la certificacion
 		List<Mantenedor> actividades = getMantenedoresByTipo(1);
@@ -1049,9 +1052,9 @@ public class ServiceImp implements IService {
 		List<Unidad> unidades = new ArrayList<Unidad>();
 		
 		if(certificacionId != null)
-			unidades = unidadDao.findAllByNamedQueryParam("unidad.findAllByCertificacionId", objs);
+			unidades = unidadDao.findAllByNamedQueryParam("Unidad.findAllByCertificacionId", objs);
 		else
-			unidades = unidadDao.findAllByNamedQuery("unidad.findAll");
+			unidades = unidadDao.findAllByNamedQuery("Unidad.findAll");
 			
 		List<Item> items = new ArrayList<Item>();
 		

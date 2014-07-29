@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -30,12 +32,15 @@ import org.hibernate.annotations.Formula;
 public class Unidad implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id", nullable = false)
+	private Long id;
+
 	@Column(name="certificacion_id", nullable = false)
 	private Long certificacionId;
 	
-	@Id
 	@Column(name="unidad_id", nullable = false)
 	private Long unidadId;
 	
@@ -50,6 +55,14 @@ public class Unidad implements Serializable {
 		super();
 		this.certificacionId = certificacion;
 		this.unidadId = unidad;
+	}
+	
+	public Long getId(){
+		return id;
+	}
+	
+	public void setId(Long id){
+		this.id = id;
 	}
 
 	public Long getCertificacionId() {
