@@ -722,10 +722,7 @@ public class ServiceImp implements IService {
 		for(Long codigo : new ArrayList<Long>(codigos.keySet())){
 			unidadDao.save(new Unidad(certificacion.getId(), codigo));
 		}
-		
-		// para los instrumentos sin unidad de competencia
-		unidadDao.save(new Unidad(certificacion.getId(), null));
-		
+	
 		// guarda las actividades de la certificacion
 		List<Mantenedor> actividades = getMantenedoresByTipo(1);
 		for(Mantenedor actividad : actividades){
@@ -1049,20 +1046,22 @@ public class ServiceImp implements IService {
 	public List<Item> getUnidadesItemByCertificacionId(Long certificacionId){
 		Object [] objs =  new Object [] {certificacionId};
 		
-		List<Unidad> unidades = new ArrayList<Unidad>();
+		//List<Unidad> unidades = new ArrayList<Unidad>();
 		
 		if(certificacionId != null)
-			unidades = unidadDao.findAllByNamedQueryParam("Unidad.findAllByCertificacionId", objs);
+			return itemDao.findAllByNamedQueryParam("Unidad.findAllItemsByCertificacionId", objs);
 		else
-			unidades = unidadDao.findAllByNamedQuery("Unidad.findAll");
+			return itemDao.findAllByNamedQuery("Unidad.findAllItems");
 			
-		List<Item> items = new ArrayList<Item>();
-		
+		//List<Item> items = new ArrayList<Item>();
+		/*
 		for(Unidad unidad : unidades){
-			items.add(catalogoUnidades.get(unidad.getUnidadId()));
+			//items.add(catalogoUnidades.get(unidad.getUnidadId()));
+			items.add(new Item(unidad.getUnidadId(),unidad.getUnidadNombre()));
 		}
 		
 		return items;
+		*/
 
 		/*
 		List<BigInteger> codigos = new ArrayList<BigInteger>();

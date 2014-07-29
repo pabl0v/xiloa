@@ -27,7 +27,9 @@ import org.hibernate.annotations.Formula;
 @Table(name = "unidades", schema = "sccl")
 @NamedQueries({
 	@NamedQuery(name="Unidad.findAll", query="select u from unidades u order by u.id desc"),
-	@NamedQuery(name="Unidad.findAllByCertificacionId", query="select u from unidades u where u.certificacionId=?1 order by u.unidadId desc")
+	@NamedQuery(name="Unidad.findAllItems", query="select new support.Item(u.unidadId,u.unidadNombre) from unidades u group by u.unidadId, u.unidadNombre order by u.unidadId desc"),
+	@NamedQuery(name="Unidad.findAllByCertificacionId", query="select u from unidades u where u.certificacionId=?1 order by u.unidadId desc"),
+	@NamedQuery(name="Unidad.findAllItemsByCertificacionId", query="select new support.Item(u.unidadId,u.unidadNombre) from unidades u where u.certificacionId=?1 order by u.unidadId desc")
 })
 public class Unidad implements Serializable {
 
@@ -44,7 +46,7 @@ public class Unidad implements Serializable {
 	@Column(name="unidad_id", nullable = false)
 	private Long unidadId;
 	
-	@Formula("(select u.descripcion from registro_cobranza.cu_cat_uc u where u.id = unidad_id)")
+	@Formula("(select coalesce((select u.descripcion from registro_cobranza.cu_cat_uc u where u.id = unidad_id),'N/D'))")
 	private String unidadNombre;
 	
 	public Unidad(){

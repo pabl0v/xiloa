@@ -60,7 +60,7 @@
 									<p:column headerText="Finaliza"><h:outputText value="#{actividad.fechaFinal}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>
 									<p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>
 									<p:column style="width:4%">
-										<p:commandButton id="selectButtonTab1" action="#{actividadManagedBean.editarActividad(certificacionManagedBean.certificacion,certificacionManagedBean.selectedActividad)}" icon="ui-icon-pencil" title="Editar"/>  
+										<p:commandButton action="#{certificacionManagedBean.editarActividad(certificacionManagedBean.selectedActividad)}" icon="ui-icon-pencil" title="Editar" update=":formEditarActividad" onclick="PF('dlg2').show();" />  
 									</p:column>
 								</p:dataTable> 
 							</h:panelGroup>
@@ -68,8 +68,7 @@
 			</div>
 		</div>
     </div>
-        
-	<p:dialog id="modalDialog" styleClass="estilo_dialogoactividades" header="Agregar actividades:" widgetVar="dlg1" modal="true" resizable="false" width="550" height="400">
+	<p:dialog id="modalDialog1" styleClass="estilo_dialogoactividades" header="Agregar actividades:" widgetVar="dlg1" modal="true" resizable="false" width="550" height="400">
 		<div id="contenedor_dialogoactividades">
 			<h:form id="formDialogo1">
 				<h3>Planificacion de actividades</h3>
@@ -90,6 +89,40 @@
 				</div>
 			</h:form>
 		</div>
-	</p:dialog>	
+	</p:dialog>
+	<p:dialog header="Editando la Actividad:" widgetVar="dlg2" modal="true" resizable="false" width="500" height="400">
+		<h:form id="formEditarActividad">
+			<br/>
+			<h:panelGrid columns="2" cellpadding="4">
+			<h:outputLabel value="Nombre:" />
+			<p:inputText id="codigo1" size="30" readonly="true" value="#{certificacionManagedBean.selectedActividad.nombre}" />
+			<p:message for="codigo1" display="text"  />
+			<br/>
+		  	<h:outputLabel value="Fecha Inicia:" />
+			<p:calendar id="codigo2" value="#{certificacionManagedBean.selectedActividad.fechaInicial}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
+            <p:message for="codigo2" display="text"  />
+            <br/> 
+		  	<h:outputLabel value="Fecha Final:" />
+			<p:calendar id="codigo3" value="#{certificacionManagedBean.selectedActividad.fechaFinal}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
+            <p:message for="codigo3" display="text"  />
+            <br/> 
+			<h:outputLabel value="Materiales:" />
+			<p:inputText id="codigo4" size="30" value="#{certificacionManagedBean.selectedActividad.materiales}" />
+			<p:message for="codigo4" display="text"  />
+			<br/>
+            <h:outputLabel value="Estado:" />
+			<p:selectOneMenu id="selector_estado" styleClass="selector_status_estilo" required="true" requiredMessage="Debe seleccionar el estado" value="#{certificacionManagedBean.selectedEstatusActividad}" >  
+				<f:selectItem itemLabel="Seleccione..." itemValue="0" />
+				<f:selectItems value="#{certificacionManagedBean.catalogoEstatusActividad}" var="estado" itemLabel="#{estado.valor}" itemValue="#{estado.id}" />
+			</p:selectOneMenu>
+			<p:message for="selector_estado" display="text"  />
+			</h:panelGrid>
+			<br/>
+			<div>
+	            <p:commandButton value="Cancelar" oncomplete="PF('dlg2').hide();" immediate="true" /> 
+				<p:commandButton value="Aceptar" oncomplete="if (!args.validationFailed) dlg2.hide()" update=":actividadesForm" action="#{certificacionManagedBean.editarActividad(certificacionManagedBean.selectedActividad)}" />
+			</div>
+		</h:form>
+	</p:dialog>
 </h:body>
 </html>

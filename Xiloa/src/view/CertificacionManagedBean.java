@@ -47,6 +47,8 @@ public class CertificacionManagedBean implements Serializable {
 	private Contacto[] selectedContactos;
 	private Map<Integer, Mantenedor> catalogoEstatusCertificacion;
 	private Integer selectedEstatusCertificacion;
+	private Map<Integer, Mantenedor> catalogoEstatusActividad;
+	private Integer selectedEstatusActividad;
 	private List<Actividad> actividades;
 	private Actividad selectedActividad;
 	
@@ -57,6 +59,7 @@ public class CertificacionManagedBean implements Serializable {
 		actividades = new ArrayList<Actividad>();
 		selectedActividad = new Actividad();
 		catalogoEstatusCertificacion = new HashMap<Integer, Mantenedor>();
+		catalogoEstatusActividad = new HashMap<Integer, Mantenedor>();
 	}
 	
 	@PostConstruct
@@ -69,6 +72,7 @@ public class CertificacionManagedBean implements Serializable {
 		
 		contactos = service.getContactosInatec(controller.getEntidadUsuario());
 		catalogoEstatusCertificacion = service.getMapMantenedoresByTipo("3");
+		catalogoEstatusActividad = service.getMapMantenedoresByTipo("2");
 	}
 	
 	public Certificacion getCertificacion(){
@@ -120,7 +124,6 @@ public class CertificacionManagedBean implements Serializable {
 		
 		certificacion.setFechaRegistro(new Date());
 		certificacion.setCreador(controller.getContacto());
-		//certificacion.setProgramador(controller.getContacto());
 		certificacion.setReferencial("N/D");
 		certificacion = (Certificacion) service.guardar(certificacion);
 		certificacion = new Certificacion();
@@ -134,17 +137,7 @@ public class CertificacionManagedBean implements Serializable {
 		actividad.setEstado(estado);
 		actividad.setCertificacion(certificacion);
 		actividad = (Actividad)service.guardar(actividad);
-		//certificacion.addActividad(actividad);
 	}
-		
-	/*
-	public String editarCertificacion(Certificacion certificacion){
-		//this.certificacion = certificacion;
-		//this.selectedEstatusCertificacion = certificacion.getEstatus().getId();
-		FacesUtil.setParamBySession("certificacionId", certificacion.getId());
-		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
-	}
-	*/
 	
 	public Integer getSelectedEstatusCertificacion() {
 		return selectedEstatusCertificacion;
@@ -159,11 +152,28 @@ public class CertificacionManagedBean implements Serializable {
 		return new ArrayList<Mantenedor>(this.catalogoEstatusCertificacion.values());
 	}
 	
+	public Integer getSelectedEstatusActividad() {
+		return selectedEstatusActividad;
+	}
+
+	public void setSelectedEstatusActividad(Integer selectedEstatusActividad) {
+		this.selectedEstatusActividad = selectedEstatusActividad;
+		selectedActividad.setEstado(catalogoEstatusActividad.get(selectedEstatusActividad));
+	}
+	
+	public List<Mantenedor> getCatalogoEstatusActividad() {
+		return new ArrayList<Mantenedor>(this.catalogoEstatusActividad.values());
+	}
+	
 	public Actividad getSelectedActividad(){
 		return this.selectedActividad;
 	}
 	
 	public void setSelectedActividad(Actividad actividad){
 		this.selectedActividad = actividad;
+	}
+	
+	public void editarActividad(Actividad actividad){
+		
 	}
 }
