@@ -32,29 +32,26 @@ import support.UCompetencia;
  */
 
 @Component
-@Scope(value="request")
+@Scope(value="view")
 public class PlanificacionManagedBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
 	private IService service;
-	private List<Certificacion> certificaciones;
-	private List<UCompetencia> competencias;
-	private UCompetencia selectedCompetencia;
-	private Certificacion selectedCertificacion;
 	@Autowired
 	private LoginController controller;
+	private List<Certificacion> certificaciones;
+	private UCompetencia selectedCompetencia;
+	private Certificacion selectedCertificacion;
 	
 	public PlanificacionManagedBean(){
 		super();
 		certificaciones = new ArrayList<Certificacion>();
-		competencias = new ArrayList<UCompetencia>();
 	}
 	
 	@PostConstruct
 	private void init(){
-		competencias = service.getUcompetenciaSinPlanificar(controller.getEntidadUsuario());
 		certificaciones = service.getCertificaciones(controller.getEntidadUsuario());
 	}
 	
@@ -63,7 +60,7 @@ public class PlanificacionManagedBean implements Serializable {
 	}
 		
 	public List<UCompetencia> getCompetencias(){
-		return competencias;
+		return service.getUcompetenciaSinPlanificar(controller.getEntidadUsuario());
 	}
 		
 	public Certificacion getSelectedCertificacion() {
@@ -106,7 +103,8 @@ public class PlanificacionManagedBean implements Serializable {
 				service.getMantenedorById(16));		// estatus pendiente
 
 		certificacion = service.guardarCertificacion(certificacion);
-		certificaciones.add(0,certificacion);
+		
+		certificaciones = service.getCertificaciones(controller.getEntidadUsuario());
 	}
 	
 	public String editarCertificacion(Certificacion certificacion){

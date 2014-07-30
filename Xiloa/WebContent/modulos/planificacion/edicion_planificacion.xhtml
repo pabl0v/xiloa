@@ -16,42 +16,51 @@
 		    </ui:insert>
 		    <script type="text/javascript" src="../../resources/scripts/edicion_planificacion.js"></script>
 		</div>
-        <h2>Certificacion:<h:outputText value="#{certificacionManagedBean.certificacion.nombre}" /> </h2>
-        <div id="contenedor_secciones">                   
+        <div id="contenedor_secciones">    
 			<h:form id="dataForm">
-				<div id="info_competencia" class="seccion_edicion" style="height: 260px;font-size:15px;">
-					<p>Oferente:</p>
-					<div style="display:inline-block;"><h:outputText value="#{certificacionManagedBean.certificacion.ifpNombre}"/></div>
-					<br/>	
-					<p>Direccion:</p>
-					<div style="display:inline-block;"><h:outputText value="#{certificacionManagedBean.certificacion.ifpDireccion}" /></div>
-					<br/>
-					<p>Arancel:</p>
-					<div style="display:inline-block;">C$ <h:outputText value="#{certificacionManagedBean.certificacion.costoFormateado}" /></div>				
+				<h:panelGrid columns="3" cellpadding="5" cellspacing="25" >
+        			<h4><b>Certificación:</b></h4>
+        			<p:inputText id="codigo1" size="50" value="#{certificacionManagedBean.certificacion.nombre}" required="true" requiredMessage="El nombre es requerido"  />
+        			<p:message for="codigo1" display="text"  />
+					<h4><b>Oferente:</b></h4>
+					<p:inputText id="codigo2" size="50" value="#{certificacionManagedBean.certificacion.ifpNombre}" required="true" requiredMessage="El Oferente es requerido"  />
+					<p:message for="codigo2" display="text"  />
+					<h4><b>Dirección:</b></h4>
+					<p:inputText  id="codigo3" size="50" value="#{certificacionManagedBean.certificacion.ifpDireccion}" required="true" requiredMessage="La dirección es requerida" />
+					<p:message for="codigo3" display="text"  />
+					<h4><b>Coordinador:</b></h4>
+					<p:inputText  id="codigo4" size="50" required="true" requiredMessage="El coordinador es requerido" />
+					<p:message for="codigo4" display="text"  />
+					<h4><b>Informante:</b></h4>
+					<p:inputText  id="codigo5" size="50" required="true" requiredMessage="El informante es requerido" />
+					<p:message for="codigo5" display="text"  />
+					<h4><b>Inicia:</b></h4>
+					<p:calendar id="codigo6" value="#{certificacionManagedBean.certificacion.inicia}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
+					<p:message for="codigo6" display="text"  />
+					<h4><b>Finaliza:</b></h4>
+					<p:calendar id="codigo7" value="#{certificacionManagedBean.certificacion.finaliza}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
+					<p:message for="codigo7" display="text"  />
+					<h4><b>Cupo Máximo:</b></h4>
+					<p:inputText id="codigo8" size="20" value="#{certificacionManagedBean.certificacion.disponibilidad}" required="true" requiredMessage="El cupo es requerido" />
+					<p:message for="codigo8" display="text"  />
+					<h4><b>Arancel C$:</b></h4>
+					<p:inputText id="codigo9" size="20" value="#{certificacionManagedBean.certificacion.costo}" required="true" requiredMessage="El arancel es requerido" />
+					<p:message for="codigo9" display="text"  />
+					<h4><b>Estatus:</b></h4>
+					<p:selectOneMenu id="selector_estatus" style="width:44%;" value="#{certificacionManagedBean.selectedEstatusCertificacion}" required="true" requiredMessage="Debe seleccionar el estatus" >  
+						<f:selectItem itemLabel="Seleccione..." itemValue="" />
+						<f:selectItems value="#{certificacionManagedBean.catalogoEstatusCertificacion}" var="estatus" itemLabel="#{estatus.valor}" itemValue="#{estatus.id}" />
+					</p:selectOneMenu>
+					<p:message for="selector_estatus" display="text"  />			
+				</h:panelGrid>
+				<br/>
+				<div>
+					<h:commandButton value="Cancelar" action="/modulos/planificacion/planificacion?faces-redirect=true" /> 
+					<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardarEdicion}"/>
 				</div>
-				<div class="seccion_edicion">
-					
-				 </div>
-				<div class="seccion_edicion" style="height: 1px"></div>
-				<div class="seccion_edicion" style="height: 1px">
-					<div style="float:left;position: relative;top: -173px;">
-						<p>Estatus</p>				
-						<p:selectOneMenu id="selector_estatus" styleClass="selector_status_estilo" value="#{certificacionManagedBean.selectedEstatusCertificacion}" >  
-							<f:selectItem itemLabel="Seleccione..." itemValue="" />
-							<f:selectItems value="#{certificacionManagedBean.catalogoEstatusCertificacion}" var="estatus" itemLabel="#{estatus.valor}" itemValue="#{estatus.id}" />
-						</p:selectOneMenu>	
-						</div>
-					<div class="contenedor_botones">
-						<h:commandButton value="Cancelar" onclick="$('#prueba').disabled=true;" action="#{certificacionManagedBean.cancelar}"/> 
-						<h:commandButton value="Aceptar" action="#{certificacionManagedBean.guardarEdicion}"/>
-					</div>
-            	</div>
             </h:form>
-
-			<div id="tab_contenedor">
+			<div>
 						<h:form id="actividadesForm">
-							<p:commandButton value="Agregar" style="margin-bottom: 5px" action="#{actividadManagedBean.reset}" update=":formDialogo1" onclick="PF('dlg1').show();">
-							</p:commandButton>
 							<h:panelGroup id="contenidoActividades" style="border:0">
 								<p:dataTable id="actividadesDataTable" emptyMessage="No hay datos para mostrar" var="actividad" value="#{certificacionManagedBean.actividades}" selection="#{certificacionManagedBean.selectedActividad}" paginator="true" rows="6" rowKey="#{actividad.id}" selectionMode="single">  
 									<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>    

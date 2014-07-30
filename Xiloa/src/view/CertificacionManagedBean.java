@@ -67,6 +67,7 @@ public class CertificacionManagedBean implements Serializable {
 		
 		Long certificacionId = (Long)FacesUtil.getParametroSession("certificacionId");
 		setCertificacion(service.getCertificacionById(certificacionId));
+		setSelectedEstatusCertificacion(certificacion.getEstatus().getId());
 		
 		setActividades(service.getActividades(certificacionId));
 		

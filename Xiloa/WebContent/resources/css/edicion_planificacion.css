@@ -170,3 +170,6 @@ h2{
 	font-weight: bold;
 	margin-bottom: 1px;
 }
+#contenedor_edicion .selector_status{
+	width: 200px!important;
+}

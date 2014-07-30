@@ -54,7 +54,7 @@
                         </p:column>
                         <p:column exportable="true" filterBy="#{certificacion.ifpNombre}" filterOptions="#{planificacionManagedBean.listaCentros}" filterMatchMode="exact">
                         	<f:facet name="header">  
-            					<h:outputText value="Centro de Formación" />
+            					<h:outputText value="Oferente" />
         					</f:facet> 
                         	<h:outputText value="#{certificacion.ifpNombre}" />
                         </p:column>  
@@ -101,7 +101,6 @@
 			</div>
 		</h:form>
     </div>
-
     <p:dialog id="modalDialog" header="Seleccione la Unidad de Competencia a Planificar:" widgetVar="dlg2" modal="true" width="740" height="480">  
          <h:form id="cursosDialogo" >  
              <div id="contenedor_tabla_unidadcomp">
@@ -112,8 +111,8 @@
                     <p:column headerText="Disponibilidad"><h:outputText value="#{competencia.disponibilidad}"/></p:column>  
                 </p:dataTable>
              </div>
-             <p:commandButton value="Cancelar" onclick="PF('dlg2').hide();"/>
-             <p:commandButton value="Aceptar" update=":formCertificaciones:certificaciones" action="#{planificacionManagedBean.nuevaCertificacion(planificacionManagedBean.selectedCompetencia)}" oncomplete="PF('dlg2').hide();"/>
+             <p:commandButton value="Cancelar" onclick="PF('dlg2').hide();" update=":cursosDialogo" />
+             <p:commandButton value="Aceptar" update=":formCertificaciones:certificaciones, :cursosDialogo" action="#{planificacionManagedBean.nuevaCertificacion(planificacionManagedBean.selectedCompetencia)}" oncomplete="PF('dlg2').hide();"/>
          </h:form>   
     </p:dialog>  
 </h:body>

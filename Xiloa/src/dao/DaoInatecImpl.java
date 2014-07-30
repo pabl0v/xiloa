@@ -114,7 +114,7 @@ public class DaoInatecImpl implements IDaoInatec {
 			+ " inner join public.centros_inatec ci on (ci.centroid=ccc.id_centro ) " 
 		+ "where	forma.id_tipo_estructura in (3,5) "
 			+ " and (horas=0 or horas=null) " 
-			+ " and not exists (select 1 from sccl.certificaciones x where cast(x.certificacion_curso_id as bigint) = cc.id_curso and cast(x.certificacion_ifp_id as varchar) = ci.centroid and x.certificacion_estatus in (7,8)) ";
+			+ " and not exists (select 1 from sccl.certificaciones x where cast(x.certificacion_curso_id as bigint) = cc.id_curso and cast(x.certificacion_ifp_id as varchar) = ci.centroid and x.certificacion_estatus in (16,17)) ";
 	
 	private static final String SQL_SELECT_UNIDADES_COMPETENCIA = 
 		"select	distinct "+
