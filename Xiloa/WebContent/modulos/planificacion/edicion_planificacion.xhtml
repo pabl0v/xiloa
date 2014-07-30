@@ -20,38 +20,59 @@
 			<h:form id="dataForm">
 				<h:panelGrid columns="3" cellpadding="5" cellspacing="25" >
         			<h4><b>Certificación:</b></h4>
-        			<p:inputText id="codigo1" size="50" value="#{certificacionManagedBean.certificacion.nombre}" required="true" requiredMessage="El nombre es requerido"  />
-        			<p:message for="codigo1" display="text"  />
+        			<p:inputText id="codigo1" size="50" value="#{certificacionManagedBean.certificacion.nombre}" required="true" requiredMessage="El nombre es requerido" >
+        				<f:ajax event="blur" render="codigo1Message" />
+        			</p:inputText>
+        			<p:message id="codigo1Message" for="codigo1" display="text"  />
 					<h4><b>Oferente:</b></h4>
-					<p:inputText id="codigo2" size="50" value="#{certificacionManagedBean.certificacion.ifpNombre}" required="true" requiredMessage="El Oferente es requerido"  />
-					<p:message for="codigo2" display="text"  />
+					<p:inputText id="codigo2" size="50" value="#{certificacionManagedBean.certificacion.ifpNombre}" required="true" requiredMessage="El Oferente es requerido">
+						<f:ajax event="blur" render="codigo2Message" />
+					</p:inputText>
+					<p:message id="codigo2Message" for="codigo2" display="text"  />
 					<h4><b>Dirección:</b></h4>
-					<p:inputText  id="codigo3" size="50" value="#{certificacionManagedBean.certificacion.ifpDireccion}" required="true" requiredMessage="La dirección es requerida" />
-					<p:message for="codigo3" display="text"  />
+					<p:inputText  id="codigo3" size="50" value="#{certificacionManagedBean.certificacion.ifpDireccion}" required="true" requiredMessage="La dirección es requerida" >
+						<f:ajax event="blur" render="codigo3Message" />
+					</p:inputText>
+					<p:message id="codigo3Message" for="codigo3" display="text"  />
 					<h4><b>Coordinador:</b></h4>
-					<p:inputText  id="codigo4" size="50" value="#{certificacionManagedBean.certificacion.coordinador}" required="true" requiredMessage="El coordinador es requerido" />
-					<p:message for="codigo4" display="text"  />
+					<p:inputText  id="codigo4" size="50" value="#{certificacionManagedBean.certificacion.coordinador}" required="true" requiredMessage="El coordinador es requerido" >
+						<f:ajax event="blur" render="codigo4Message" />
+					</p:inputText>
+					<p:message id="codigo4Message" for="codigo4" display="text"  />
 					<h4><b>Informante:</b></h4>
-					<p:inputText  id="codigo5" size="50" value="#{certificacionManagedBean.certificacion.informante}" required="true" requiredMessage="El informante es requerido" />
-					<p:message for="codigo5" display="text"  />
+					<p:inputText  id="codigo5" size="50" value="#{certificacionManagedBean.certificacion.informante}" required="true" requiredMessage="El informante es requerido" >
+							<f:ajax event="blur" render="codigo5Message" />
+					</p:inputText>
+					<p:message id="codigo5Message" for="codigo5" display="text"  />
 					<h4><b>Inicia:</b></h4>
-					<p:calendar id="codigo6" value="#{certificacionManagedBean.certificacion.inicia}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
-					<p:message for="codigo6" display="text"  />
+					<p:calendar id="codigo6" value="#{certificacionManagedBean.certificacion.inicia}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" >
+						<f:ajax event="blur" render="codigo6Message" />
+					</p:calendar>
+					<p:message id="codigo6Message" for="codigo6" display="text"  />
 					<h4><b>Finaliza:</b></h4>
-					<p:calendar id="codigo7" value="#{certificacionManagedBean.certificacion.finaliza}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
-					<p:message for="codigo7" display="text"  />
+					<p:calendar id="codigo7" value="#{certificacionManagedBean.certificacion.finaliza}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" >
+						<f:ajax event="blur" render="codigo7Message" />
+					</p:calendar>
+					<p:message id="codigo7Message" for="codigo7" display="text"  />
 					<h4><b>Cupo Máximo:</b></h4>
-					<p:inputText id="codigo8" size="20" value="#{certificacionManagedBean.certificacion.disponibilidad}" required="true" requiredMessage="El cupo es requerido" />
-					<p:message for="codigo8" display="text"  />
+					<p:inputText id="codigo8" size="20" value="#{certificacionManagedBean.certificacion.disponibilidad}" required="true" requiredMessage="El cupo es requerido" converterMessage="El cupo debe ser numerico" >
+						<f:convertNumber integerOnly="true" type="number" maxFractionDigits="0" />
+						<f:ajax event="blur" render="codigo8Message" />
+					</p:inputText>
+					<p:message id="codigo8Message" for="codigo8" display="text"  />
 					<h4><b>Arancel C$:</b></h4>
-					<p:inputText id="codigo9" size="20" value="#{certificacionManagedBean.certificacion.costo}" required="true" requiredMessage="El arancel es requerido" />
-					<p:message for="codigo9" display="text"  />
+					<p:inputText id="codigo9" size="20" value="#{certificacionManagedBean.certificacion.costo}" required="true" requiredMessage="El arancel es requerido" converterMessage="El arancel debe ser numerico" >
+						<f:convertNumber integerOnly="false" type="number" maxFractionDigits="2" />
+						<f:ajax event="blur" render="codigo9Message" />
+					</p:inputText>
+					<p:message id="codigo9Message" for="codigo9" display="text"  />
 					<h4><b>Estatus:</b></h4>
 					<p:selectOneMenu id="selector_estatus" style="width:44%;" value="#{certificacionManagedBean.selectedEstatusCertificacion}" required="true" requiredMessage="Debe seleccionar el estatus" >  
-						<f:selectItem itemLabel="Seleccione..." itemValue="" />
+						<f:selectItem itemLabel="Seleccione..." itemValue="0" noSelectionOption="true" />
 						<f:selectItems value="#{certificacionManagedBean.catalogoEstatusCertificacion}" var="estatus" itemLabel="#{estatus.valor}" itemValue="#{estatus.id}" />
+						<f:ajax event="blur" render="selectorMessage" />
 					</p:selectOneMenu>
-					<p:message for="selector_estatus" display="text"  />			
+					<p:message id="selectorMessage" for="selector_estatus" display="text"  />			
 				</h:panelGrid>
 				<br/>
 				<div>
@@ -99,39 +120,37 @@
 			</h:form>
 		</div>
 	</p:dialog>
-	<p:dialog header="Editando la Actividad:" widgetVar="dlg2" modal="true" resizable="false" width="500" height="400">
+	<div id="contenedor_dialogoactividades" >
+	<p:dialog header="Editando la Actividad:" widgetVar="dlg2" modal="true" resizable="false" width="550" height="300">
 		<h:form id="formEditarActividad">
-			<br/>
-			<h:panelGrid columns="2" cellpadding="4">
-			<h:outputLabel value="Nombre:" />
-			<p:inputText id="codigo1" size="30" readonly="true" value="#{certificacionManagedBean.selectedActividad.nombre}" />
+			<h:panelGrid columns="3" cellpadding="4">
+			<h:outputLabel styleClass="estilo_label" value="Nombre:" />
+			<p:inputText id="codigo1" readonly="true" value="#{certificacionManagedBean.selectedActividad.nombre}" />
 			<p:message for="codigo1" display="text"  />
-			<br/>
-		  	<h:outputLabel value="Fecha Inicia:" />
+		  	<h:outputLabel styleClass="estilo_label" value="Fecha Inicia:" />
 			<p:calendar id="codigo2" value="#{certificacionManagedBean.selectedActividad.fechaInicial}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
             <p:message for="codigo2" display="text"  />
-            <br/> 
-		  	<h:outputLabel value="Fecha Final:" />
+		  	<h:outputLabel styleClass="estilo_label" value="Fecha Final:" />
 			<p:calendar id="codigo3" value="#{certificacionManagedBean.selectedActividad.fechaFinal}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
             <p:message for="codigo3" display="text"  />
-            <br/> 
-			<h:outputLabel value="Materiales:" />
-			<p:inputText id="codigo4" size="30" value="#{certificacionManagedBean.selectedActividad.materiales}" />
+			<h:outputLabel styleClass="estilo_label" value="Materiales:" />
+			<p:inputText id="codigo4" value="#{certificacionManagedBean.selectedActividad.materiales}" />
 			<p:message for="codigo4" display="text"  />
-			<br/>
-            <h:outputLabel value="Estado:" />
-			<p:selectOneMenu id="selector_estado" styleClass="selector_status_estilo" required="true" requiredMessage="Debe seleccionar el estado" value="#{certificacionManagedBean.selectedEstatusActividad}" >  
+            <h:outputLabel styleClass="estilo_label" value="Estado:" />
+			<p:selectOneMenu id="selector_estado" style="width:50%;" styleClass="selector_status_estilo" required="true" requiredMessage="Debe seleccionar el estado" value="#{certificacionManagedBean.selectedEstatusActividad}" >  
 				<f:selectItem itemLabel="Seleccione..." itemValue="0" />
 				<f:selectItems value="#{certificacionManagedBean.catalogoEstatusActividad}" var="estado" itemLabel="#{estado.valor}" itemValue="#{estado.id}" />
 			</p:selectOneMenu>
 			<p:message for="selector_estado" display="text"  />
 			</h:panelGrid>
 			<br/>
+			<br/>
 			<div>
 	            <p:commandButton value="Cancelar" oncomplete="PF('dlg2').hide();" immediate="true" /> 
-				<p:commandButton value="Aceptar" oncomplete="if (!args.validationFailed) dlg2.hide()" update=":actividadesForm" action="#{certificacionManagedBean.editarActividad(certificacionManagedBean.selectedActividad)}" />
+				<p:commandButton value="Aceptar" oncomplete="if (!args.validationFailed) dlg2.hide()" update=":actividadesForm, :formEditarActividad" action="#{certificacionManagedBean.editarActividad(certificacionManagedBean.selectedActividad)}" />
 			</div>
 		</h:form>
 	</p:dialog>
+	</div>
 </h:body>
 </html>

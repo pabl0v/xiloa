@@ -172,6 +172,7 @@ public class CertificacionManagedBean implements Serializable {
 	
 	public void setSelectedActividad(Actividad actividad){
 		this.selectedActividad = actividad;
+		setSelectedEstatusActividad(selectedActividad.getEstado().getId());
 	}
 	
 	public void editarActividad(Actividad actividad){

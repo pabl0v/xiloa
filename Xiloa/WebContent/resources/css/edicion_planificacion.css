@@ -89,12 +89,6 @@ h2{
 	text-decoration: none !important;
 	cursor: pointer;
 }
-.selector_status_estilo {
-	position: relative;
-	top: 9px;
-	left: 9px;
-	margin-right: 50px;
-	}
 .selector_nombrecentro_estilo {
 	position: relative;
 	top: 0px;
@@ -152,6 +146,14 @@ h2{
 }
 #dialogoactividades_botones{
 	display: inline-block;	
+}
+#contenedor_dialogoactividades .estilo_label{
+		margin-top: 25px;
+	display: inline-block;
+	width: 145px;
+}
+#contenedor_dialogoactividades .selector_status_estilo{
+	width: 140px!important;
 }
 #tab_contenedor .ui-tabs{
 	height: 440px;
