@@ -80,13 +80,13 @@
                         	<f:facet name="header">  
             					<h:outputText value="Coordinador" />  
         					</f:facet> 
-                        	<h:outputText value="#{certificacion.coordinador.nombreCompleto}" />
+                        	<h:outputText value="#{certificacion.coordinador}" />
                         </p:column>                
                         <p:column exportable="true" >
                         	<f:facet name="header">  
             					<h:outputText value="Informante" />  
         					</f:facet> 
-                        	<h:outputText value="#{certificacion.informante.nombreCompleto}" />
+                        	<h:outputText value="#{certificacion.informante}" />
                         </p:column>
                         <p:column exportable="true" filterBy="#{certificacion.estatus.valor}" filterOptions="#{planificacionManagedBean.listaEstatus}" filterMatchMode="exact">
                         	<f:facet name="header">  

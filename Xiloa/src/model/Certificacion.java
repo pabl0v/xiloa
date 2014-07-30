@@ -101,14 +101,12 @@ public class Certificacion implements Serializable {
 
 	@Column(name = "certificacion_ifp_direccion", nullable = true)
 	private String ifpDireccion;
-			
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="certificacion_coordinador_id", nullable = true)	
-	private Contacto coordinador;
+
+	@Column(name = "certificacion_coordinador", nullable = true)
+	private String coordinador;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="certificacion_informante_id", nullable = true)	
-	private Contacto informante;
+	@Column(name = "certificacion_informante", nullable = true)
+	private String informante;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="certificacion_creador_id", nullable = false)
@@ -145,8 +143,8 @@ public class Certificacion implements Serializable {
 							Integer ifpId,
 							String ifpNombre,
 							String ifpDireccion,
-							Contacto coordinador,
-							Contacto informante,
+							String coordinador,
+							String informante,
 							Contacto creador,
 							String referencial, 
 							Integer nivelCompetencia,
@@ -308,19 +306,19 @@ public class Certificacion implements Serializable {
 		this.ifpDireccion = ifpDireccion;
 	}
 	
-	public Contacto getCoordinador() {
+	public String getCoordinador() {
 		return coordinador;
 	}
 
-	public void setCoordinador(Contacto coordinador) {
+	public void setCoordinador(String coordinador) {
 		this.coordinador = coordinador;
 	}
 
-	public Contacto getInformante() {
+	public String getInformante() {
 		return informante;
 	}
 
-	public void setInformante(Contacto informante) {
+	public void setInformante(String informante) {
 		this.informante = informante;
 	}
 
