@@ -45,18 +45,10 @@
             <sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_CONFIGURACION">
             	<div id="boton_configurar" onclick="window.location='/Xiloa/modulos/usuario/configuracion.xhtml';" class="botones_navegacion"><p class="icono_gear">Configurar</p></div>
             </sec:authorize>
-           	<div id="boton_salir" class="botones_navegacion"><p class="icono_x">Salir</p></div>
-            <ul id="breadcrumbs" class="estilo_breadcrumbs">
-                <li>Inicio</li>
-            </ul>
-            <div id="opciones_usuario">
-                <div id="informacion_usuario">
-                  <h:form>
-                    <p id="usuario"><h:outputText value="#{loginController.loggedUser}" /></p>
-                    <div class="botones_navegacion" ><a class="icono_x" href="#{request.contextPath}/j_spring_security_logout"></a></div>
-                  </h:form>
-                </div>                
-           </div>
-        </div>
+			<div id="boton_salir" class="botones_navegacion" onclick="window.location='#{request.contextPath}/j_spring_security_logout';"><p class="icono_x">Salir</p></div>
+				<ul id="breadcrumbs" class="estilo_breadcrumbs" >
+					<li>Inicio</li>
+				</ul>  
+        	</div>
     </ui:composition>
 </html>
