@@ -14,6 +14,7 @@ import model.Certificacion;
 import model.Contacto;
 import model.Mantenedor;
 
+import org.primefaces.model.DualListModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;  
@@ -51,6 +52,7 @@ public class CertificacionManagedBean implements Serializable {
 	private Integer selectedEstatusActividad;
 	private List<Actividad> actividades;
 	private Actividad selectedActividad;
+	private DualListModel<Contacto> involucrados;
 	
 	public CertificacionManagedBean(){
 		super();
@@ -59,7 +61,7 @@ public class CertificacionManagedBean implements Serializable {
 		actividades = new ArrayList<Actividad>();
 		selectedActividad = new Actividad();
 		catalogoEstatusCertificacion = new HashMap<Integer, Mantenedor>();
-		catalogoEstatusActividad = new HashMap<Integer, Mantenedor>();
+		catalogoEstatusActividad = new HashMap<Integer, Mantenedor>(); 
 	}
 	
 	@PostConstruct
@@ -71,9 +73,12 @@ public class CertificacionManagedBean implements Serializable {
 		
 		setActividades(service.getActividades(certificacionId));
 		
-		contactos = service.getContactosInatec(controller.getEntidadUsuario());
+		//contactos = service.getContactosInatec(controller.getEntidadUsuario());
+		contactos.add(service.getContactoById(new Long(2)));
 		catalogoEstatusCertificacion = service.getMapMantenedoresByTipo("3");
 		catalogoEstatusActividad = service.getMapMantenedoresByTipo("2");
+		
+		involucrados =  new DualListModel<Contacto>(contactos, new ArrayList<Contacto>());
 	}
 	
 	public Certificacion getCertificacion(){
@@ -92,6 +97,15 @@ public class CertificacionManagedBean implements Serializable {
 		this.actividades = actividades;
 	}
 	
+	public DualListModel<Contacto> getInvolucrados(){
+		return involucrados;
+	}
+	
+	public void setInvolucrados(DualListModel<Contacto> involucrados){
+		this.involucrados = involucrados;
+	}
+	
+	/*
 	public List<Contacto> getContactos() {
 		return contactos;
 	}
@@ -104,6 +118,7 @@ public class CertificacionManagedBean implements Serializable {
 		//this.selectedContactos = selectedContactos;
 		//this.certificacion.setInvolucrados(selectedContactos);
 	}
+	*/
 		
 	public String cancelar(){
 		certificacion = new Certificacion();

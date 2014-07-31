@@ -42,7 +42,7 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 	@NamedQuery(name="Contacto.findByCedulaId", query="select c from contactos c where upper(c.numeroIdentificacion) = upper(?1)"),
 	@NamedQuery(name="Contacto.findByLogin", query="select c from contactos c where c.usuario.usuarioAlias =?1"),
 	@NamedQuery(name="Contacto.findByLoginInatec", query="select c from contactos c where c.inatec = 'true' and c.usuarioInatec =?1"),
-	@NamedQuery(name="Contacto.findInvolucradosInatec", query="Select c from contactos c where c.inatec='true' and c.rol.idRolInatec in (213,214,215,216,219) and c.entidadId is not null and c.entidadId = case ?1 when 1000 then c.entidadId else ?1 end"),
+	@NamedQuery(name="Contacto.findInvolucradosInatec", query="Select c from contactos c where c.inatec='true' and c.rol.idRolInatec in (213,214,215,216,219,220) and c.entidadId is not null and c.entidadId = case ?1 when 1000 then c.entidadId else ?1 end"),
 	@NamedQuery(name="Contacto.findAllPortafolio", query="select c from contactos c where exists (select 1 from solicitudes s where s.contacto.id = c.id and (s.certificacion.ifpId = case ?1 when 1000 then s.certificacion.ifpId else ?1 end)) order by 1 desc")
 })
 public class Contacto implements Serializable {

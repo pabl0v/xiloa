@@ -121,28 +121,36 @@
 		</div>
 	</p:dialog>
 	<div id="contenedor_dialogoactividades" >
-	<p:dialog header="Editando la Actividad:" widgetVar="dlg2" modal="true" resizable="false" width="550" height="300">
+	<p:dialog header="Editando la Actividad:" widgetVar="dlg2" modal="true" resizable="false" width="500" height="550">
 		<h:form id="formEditarActividad">
-			<h:panelGrid columns="3" cellpadding="4">
-			<h:outputLabel styleClass="estilo_label" value="Nombre:" />
-			<p:inputText id="codigo1" readonly="true" value="#{certificacionManagedBean.selectedActividad.nombre}" />
+			<br/>
+			<h:panelGrid columns="2" cellpadding="4">
+			<h:outputLabel value="Nombre:" />
+			<p:inputText id="codigo1" style="width:200%;" readonly="true" value="#{certificacionManagedBean.selectedActividad.nombre}" />
 			<p:message for="codigo1" display="text"  />
-		  	<h:outputLabel styleClass="estilo_label" value="Fecha Inicia:" />
+			<br/>
+		  	<h:outputLabel value="Fecha Inicia:" />
 			<p:calendar id="codigo2" value="#{certificacionManagedBean.selectedActividad.fechaInicial}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
             <p:message for="codigo2" display="text"  />
-		  	<h:outputLabel styleClass="estilo_label" value="Fecha Final:" />
+            <br/>
+		  	<h:outputLabel value="Fecha Final:" />
 			<p:calendar id="codigo3" value="#{certificacionManagedBean.selectedActividad.fechaFinal}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
             <p:message for="codigo3" display="text"  />
-			<h:outputLabel styleClass="estilo_label" value="Materiales:" />
-			<p:inputText id="codigo4" value="#{certificacionManagedBean.selectedActividad.materiales}" />
+            <br/>
+			<h:outputLabel value="Materiales:" />
+			<p:inputText id="codigo4" style="width:200%;" value="#{certificacionManagedBean.selectedActividad.materiales}" />
 			<p:message for="codigo4" display="text"  />
-            <h:outputLabel styleClass="estilo_label" value="Estado:" />
-			<p:selectOneMenu id="selector_estado" style="width:50%;" styleClass="selector_status_estilo" required="true" requiredMessage="Debe seleccionar el estado" value="#{certificacionManagedBean.selectedEstatusActividad}" >  
+			<br/>
+            <h:outputLabel value="Estado:" />
+			<p:selectOneMenu id="selector_estado" style="width:98%; height:25px;" required="true" requiredMessage="Debe seleccionar el estado" value="#{certificacionManagedBean.selectedEstatusActividad}" >  
 				<f:selectItem itemLabel="Seleccione..." itemValue="0" />
 				<f:selectItems value="#{certificacionManagedBean.catalogoEstatusActividad}" var="estado" itemLabel="#{estado.valor}" itemValue="#{estado.id}" />
 			</p:selectOneMenu>
 			<p:message for="selector_estado" display="text"  />
 			</h:panelGrid>
+			<br/>
+			<h3 style="margin-top: 0">Involucrados</h3>
+			<p:pickList id="pickList" value="#{certificacionManagedBean.involucrados}" var="involucrado" itemLabel="#{involucrado.nombreCompleto}" itemValue="#{involucrado.id}" />
 			<br/>
 			<br/>
 			<div>
