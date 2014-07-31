@@ -26,6 +26,7 @@ import model.Evaluacion;
 import model.EvaluacionGuia;
 import model.Guia;
 import model.Instrumento;
+import model.Involucrado;
 import model.Laboral;
 import model.Mantenedor;
 import model.Pais;
@@ -908,4 +909,21 @@ public interface IService {
 	 * @param la solicitud que se desea enviar
 	 */	
 	public void enviarSolicitud(Solicitud solicitud);
+	
+	/** 
+	 * @param el id de la actividad cuyos involucrados se quiere recuperar
+	 * @return la lista de involucrados
+	 */	
+	public List<Involucrado> getInvolucradosInActividadId(Long actividadId);	
+	
+	/** 
+	 * @param el id de la actividad cuyos no involucrados se quiere recuperar
+	 * @return la lista de no involucrados
+	 */	
+	public List<Involucrado> getInvolucradosNotInActividadId(Long actividadId);
+	
+	/** 
+	 * @param la actividad y sus involucrados
+	 */	
+	public void actualizarActividad(Actividad actividad, List<Involucrado> involucrados);	
 }

@@ -16,7 +16,25 @@ import javax.persistence.Table;
 @Entity(name = "involucrados")
 @Table(name = "involucrados", schema = "sccl")
 @NamedQueries({
-	@NamedQuery(name="Involucrado.findItemsByActividadId", query="select new support.Item(i.contacto.id, i.contacto.nombreCompleto) from actividades a, involucrados i where a.id=i.actividad.id and a.id=?1 and i.activo=true order by i.id desc")
+	@NamedQuery(name="Involucrado.findItemsByActividadId", query="select new support.Item(i.contacto.id, i.contacto.nombreCompleto) from actividades a, involucrados i where a.id=i.actividad.id and a.id=?1 and i.activo=true order by i.id desc"),
+	@NamedQuery(name="Involucrado.findByActividadId", query="select i from involucrados i where i.actividad.id=?1 order by i.id desc"),
+	@NamedQuery(name="Involucrado.findNotInActividadId",
+	query=	
+	"select new model.Involucrado(a,c) "+
+	"from	contactos c, actividades a, certificaciones x "+
+	"where	a.id=?1 "+
+			"and a.certificacion.id=x.id "+
+			"and c.inatec=true "+
+			"and c.rol.id=	case "+
+						"when a.tipo.id in (8,9,10,11) then 8	"+	//evaluador evalua
+						"when a.tipo.id in (6,7) then 7 "+			//evaluador evalua
+						"when a.tipo.id in (5) then 3	"+			//tecnico docente matricula
+						"when a.tipo.id in (1,2,3,4) then 4 "+		//informante prematricula y selecciona
+						"else 0 end "+
+			"and c.entidadId=x.ifpId "+
+			"and not exists (select 1 from involucrados i where i.activo=true and i.contacto.id=c.id and i.actividad.id=a.id) "+
+			"order by c.id desc"
+	)
 })
 public class Involucrado implements Serializable {
 	
@@ -42,11 +60,11 @@ public class Involucrado implements Serializable {
 		super();
 	}
 	
-	public Involucrado(Actividad actividad, Contacto contacto, boolean activo){
+	public Involucrado(Actividad actividad, Contacto contacto){
 		super();
 		this.actividad = actividad;
 		this.contacto = contacto;
-		this.activo = activo;
+		this.activo = true;
 	}
 
 	public Long getId() {

@@ -53,6 +53,7 @@ import model.EvaluacionGuiaId;
 //import model.EvaluacionUnidad;
 import model.Guia;
 import model.Instrumento;
+import model.Involucrado;
 import model.Laboral;
 import model.Mantenedor;
 import model.Pais;
@@ -130,6 +131,8 @@ public class ServiceImp implements IService {
 	private IDao<Convocatoria> convocatoriaDao;
 	@Autowired
 	private IDao<Unidad> unidadDao;
+	@Autowired
+	private IDao<Involucrado> involucradoDao;
 
 	private List<Mantenedor> mantenedores;
 	private Map<Integer, Mantenedor> catalogoEstatusCertificacion;
@@ -2117,6 +2120,38 @@ public class ServiceImp implements IService {
 			//actualiza estado de solicitud a enviado
 		
 			actualizarEstadoSolicitud(solicitud, 1);
+		}
+	}
+	
+	/** 
+	 * @param el id de la actividad cuyos involucrados se quiere recuperar
+	 * @return la lista de involucrados
+	 */	
+	@Override
+	public List<Involucrado> getInvolucradosInActividadId(Long actividadId){
+		return involucradoDao.findAllByNamedQueryParam("Involucrado.findByActividadId", new Object [] {actividadId});
+	}
+	
+	/** 
+	 * @param el id de la actividad cuyos no involucrados se quiere recuperar
+	 * @return la lista de no involucrados
+	 */	
+	@Override
+	public List<Involucrado> getInvolucradosNotInActividadId(Long actividadId){
+		return involucradoDao.findAllByNamedQueryParam("Involucrado.findNotInActividadId", new Object [] {actividadId});
+	}
+	
+	/** 
+	 * @param la actividad y sus involucrados
+	 */	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void actualizarActividad(Actividad actividad, List<Involucrado> involucrados){
+		actividad = (Actividad) guardar(actividad);
+		
+		for(Involucrado involucrado : involucrados){
+			if(involucrado.getId()==null)
+				involucradoDao.save(involucrado);
 		}
 	}
 }

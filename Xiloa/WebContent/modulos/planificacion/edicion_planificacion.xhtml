@@ -90,7 +90,7 @@
 									<p:column headerText="Finaliza"><h:outputText value="#{actividad.fechaFinal}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>
 									<p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>
 									<p:column style="width:4%">
-										<p:commandButton action="#{certificacionManagedBean.editarActividad(certificacionManagedBean.selectedActividad)}" icon="ui-icon-pencil" title="Editar" update=":formEditarActividad" onclick="PF('dlg2').show();" />  
+										<p:commandButton icon="ui-icon-pencil" title="Editar" update=":formEditarActividad" onclick="PF('dlg2').show();" />  
 									</p:column>
 								</p:dataTable> 
 							</h:panelGroup>
@@ -121,7 +121,7 @@
 		</div>
 	</p:dialog>
 	<div id="contenedor_dialogoactividades" >
-	<p:dialog header="Editando la Actividad:" widgetVar="dlg2" modal="true" resizable="false" width="500" height="550">
+	<p:dialog header="Editando la Actividad:" widgetVar="dlg2" modal="true" resizable="false" width="520" height="550">
 		<h:form id="formEditarActividad">
 			<br/>
 			<h:panelGrid columns="2" cellpadding="4">
@@ -150,12 +150,12 @@
 			</h:panelGrid>
 			<br/>
 			<h3 style="margin-top: 0">Involucrados</h3>
-			<p:pickList id="pickList" value="#{certificacionManagedBean.involucrados}" var="involucrado" itemLabel="#{involucrado.nombreCompleto}" itemValue="#{involucrado.id}" />
+			<p:pickList id="pickList" value="#{certificacionManagedBean.involucrados}" var="involucrado" itemLabel="#{involucrado.contacto.nombreCompleto}" itemValue="#{involucrado}" />
 			<br/>
 			<br/>
 			<div>
 	            <p:commandButton value="Cancelar" oncomplete="PF('dlg2').hide();" immediate="true" /> 
-				<p:commandButton value="Aceptar" oncomplete="if (!args.validationFailed) dlg2.hide()" update=":actividadesForm, :formEditarActividad" action="#{certificacionManagedBean.editarActividad(certificacionManagedBean.selectedActividad)}" />
+				<p:commandButton value="Aceptar" oncomplete="if (!args.validationFailed) dlg2.hide()" update=":actividadesForm, :formEditarActividad" action="#{certificacionManagedBean.actualizarActividad(certificacionManagedBean.selectedActividad)}" />
 			</div>
 		</h:form>
 	</p:dialog>
