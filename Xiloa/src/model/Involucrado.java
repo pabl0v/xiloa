@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Table(name = "involucrados", schema = "sccl")
 @NamedQueries({
 	@NamedQuery(name="Involucrado.findItemsByActividadId", query="select new support.Item(i.contacto.id, i.contacto.nombreCompleto) from actividades a, involucrados i where a.id=i.actividad.id and a.id=?1 and i.activo=true order by i.id desc"),
-	@NamedQuery(name="Involucrado.findByActividadId", query="select i from involucrados i where i.actividad.id=?1 order by i.id desc"),
+	@NamedQuery(name="Involucrado.findByActividadId", query="select i from involucrados i where i.actividad.id=?1 and i.activo=true order by i.id desc"),
 	@NamedQuery(name="Involucrado.findNotInActividadId",
 	query=	
 	"select new model.Involucrado(a,c) "+
@@ -34,7 +34,8 @@ import javax.persistence.Table;
 			"and c.entidadId=x.ifpId "+
 			"and not exists (select 1 from involucrados i where i.activo=true and i.contacto.id=c.id and i.actividad.id=a.id) "+
 			"order by c.id desc"
-	)
+	),
+	@NamedQuery(name="Involucrado.findByActividadIdAndContactoId", query="select i from involucrados i where i.actividad.id=?1 and i.contacto.id=?2 and i.activo=true order by i.id desc")
 })
 public class Involucrado implements Serializable {
 	

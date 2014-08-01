@@ -923,7 +923,7 @@ public interface IService {
 	public List<Involucrado> getInvolucradosNotInActividadId(Long actividadId);
 	
 	/** 
-	 * @param la actividad y sus involucrados
+	 * @param la actividad y el contacto a inactivar
 	 */	
-	public void actualizarActividad(Actividad actividad, List<Involucrado> involucrados);	
+	public void inactivarInvolucrado(Long actividad, Long contacto);	
 }

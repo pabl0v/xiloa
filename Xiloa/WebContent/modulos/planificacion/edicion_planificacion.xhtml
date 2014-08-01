@@ -19,7 +19,7 @@
         <div id="contenedor_secciones">    
 			<h:form id="dataForm">
 				<h:panelGrid columns="3" cellpadding="5" cellspacing="25" >
-        			<h4><b>Certificación:</b></h4>
+        			<h4><b>CertificaciÃ³n:</b></h4>
         			<p:inputText id="codigo1" size="50" value="#{certificacionManagedBean.certificacion.nombre}" required="true" requiredMessage="El nombre es requerido" >
         				<f:ajax event="blur" render="codigo1Message" />
         			</p:inputText>
@@ -29,8 +29,8 @@
 						<f:ajax event="blur" render="codigo2Message" />
 					</p:inputText>
 					<p:message id="codigo2Message" for="codigo2" display="text"  />
-					<h4><b>Dirección:</b></h4>
-					<p:inputText  id="codigo3" size="50" value="#{certificacionManagedBean.certificacion.ifpDireccion}" required="true" requiredMessage="La dirección es requerida" >
+					<h4><b>DirecciÃ³n:</b></h4>
+					<p:inputText  id="codigo3" size="50" value="#{certificacionManagedBean.certificacion.ifpDireccion}" required="true" requiredMessage="La direcciÃ³n es requerida" >
 						<f:ajax event="blur" render="codigo3Message" />
 					</p:inputText>
 					<p:message id="codigo3Message" for="codigo3" display="text"  />
@@ -54,7 +54,7 @@
 						<f:ajax event="blur" render="codigo7Message" />
 					</p:calendar>
 					<p:message id="codigo7Message" for="codigo7" display="text"  />
-					<h4><b>Cupo Máximo:</b></h4>
+					<h4><b>Cupo MÃ¡ximo:</b></h4>
 					<p:inputText id="codigo8" size="20" value="#{certificacionManagedBean.certificacion.disponibilidad}" required="true" requiredMessage="El cupo es requerido" converterMessage="El cupo debe ser numerico" >
 						<f:convertNumber integerOnly="true" type="number" maxFractionDigits="0" />
 						<f:ajax event="blur" render="codigo8Message" />
@@ -90,7 +90,7 @@
 									<p:column headerText="Finaliza"><h:outputText value="#{actividad.fechaFinal}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>
 									<p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>
 									<p:column style="width:4%">
-										<p:commandButton icon="ui-icon-pencil" title="Editar" update=":formEditarActividad" onclick="PF('dlg2').show();" />  
+										<p:commandButton action="#{certificacionManagedBean.editarActividad(certificacionManagedBean.selectedActividad)}" icon="ui-icon-pencil" title="Editar" update=":formEditarActividad" onclick="PF('dlg2').show();" />  
 									</p:column>
 								</p:dataTable> 
 							</h:panelGroup>
@@ -121,7 +121,7 @@
 		</div>
 	</p:dialog>
 	<div id="contenedor_dialogoactividades" >
-	<p:dialog header="Editando la Actividad:" widgetVar="dlg2" modal="true" resizable="false" width="520" height="550">
+	<p:dialog header="Editando la Actividad:" widgetVar="dlg2" modal="true" resizable="false" width="500" height="550">
 		<h:form id="formEditarActividad">
 			<br/>
 			<h:panelGrid columns="2" cellpadding="4">
@@ -150,12 +150,14 @@
 			</h:panelGrid>
 			<br/>
 			<h3 style="margin-top: 0">Involucrados</h3>
-			<p:pickList id="pickList" value="#{certificacionManagedBean.involucrados}" var="involucrado" itemLabel="#{involucrado.contacto.nombreCompleto}" itemValue="#{involucrado}" />
+			<p:pickList id="pickList" value="#{certificacionManagedBean.involucrados}" var="involucrado" itemLabel="#{involucrado.nombreCompleto}" itemValue="#{involucrado}" converter="pickListConverter" >
+				<p:ajax event="transfer" listener="#{certificacionManagedBean.onElementTransfer}" update="pickList" />
+			</p:pickList>
 			<br/>
 			<br/>
 			<div>
 	            <p:commandButton value="Cancelar" oncomplete="PF('dlg2').hide();" immediate="true" /> 
-				<p:commandButton value="Aceptar" oncomplete="if (!args.validationFailed) dlg2.hide()" update=":actividadesForm, :formEditarActividad" action="#{certificacionManagedBean.actualizarActividad(certificacionManagedBean.selectedActividad)}" />
+				<p:commandButton value="Aceptar" oncomplete="if (!args.validationFailed) dlg2.hide()" update=":actividadesForm, :formEditarActividad" action="#{certificacionManagedBean.editarActividad(certificacionManagedBean.selectedActividad)}" />
 			</div>
 		</h:form>
 	</p:dialog>

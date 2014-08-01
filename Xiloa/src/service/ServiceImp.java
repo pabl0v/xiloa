@@ -743,6 +743,9 @@ public class ServiceImp implements IService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Object guardar (Object objeto) {
+		if (objeto instanceof Involucrado) {
+			return involucradoDao.save((Involucrado) objeto);
+		}
 		if (objeto instanceof Convocatoria) {
 			return convocatoriaDao.save((Convocatoria) objeto);
 		}
@@ -2142,16 +2145,16 @@ public class ServiceImp implements IService {
 	}
 	
 	/** 
-	 * @param la actividad y sus involucrados
-	 */	
+	 * @param la actividad y el contacto a inactivar
+	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void actualizarActividad(Actividad actividad, List<Involucrado> involucrados){
-		actividad = (Actividad) guardar(actividad);
+	public void inactivarInvolucrado(Long actividadId, Long contactoId){
+		List<Involucrado> involucrados = involucradoDao.findAllByNamedQueryParam("Involucrado.findByActividadIdAndContactoId",new Object [] {actividadId,contactoId});
 		
 		for(Involucrado involucrado : involucrados){
-			if(involucrado.getId()==null)
-				involucradoDao.save(involucrado);
+			involucrado.setActivo(false);
+			involucradoDao.save(involucrado);
 		}
 	}
 }
