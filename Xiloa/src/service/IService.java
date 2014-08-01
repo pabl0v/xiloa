@@ -26,7 +26,6 @@ import model.Evaluacion;
 import model.EvaluacionGuia;
 import model.Guia;
 import model.Instrumento;
-import model.Involucrado;
 import model.Laboral;
 import model.Mantenedor;
 import model.Pais;
@@ -914,13 +913,13 @@ public interface IService {
 	 * @param el id de la actividad cuyos involucrados se quiere recuperar
 	 * @return la lista de involucrados
 	 */	
-	public List<Involucrado> getInvolucradosInActividadId(Long actividadId);	
+	public List<Contacto> getInvolucradosInActividadId(Long actividadId);	
 	
 	/** 
 	 * @param el id de la actividad cuyos no involucrados se quiere recuperar
 	 * @return la lista de no involucrados
 	 */	
-	public List<Involucrado> getInvolucradosNotInActividadId(Long actividadId);
+	public List<Contacto> getInvolucradosNotInActividadId(Long actividadId);
 	
 	/** 
 	 * @param la actividad y el contacto a inactivar

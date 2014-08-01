@@ -844,7 +844,7 @@ public class ServiceImp implements IService {
 	public List<Actividad> getActividades(Long certificacionId) {
 			return actividadDao.findAllByNamedQueryParam("Actividad.findByCertificacionId", new Object[] {certificacionId});
 	}
-	
+
 	/**
 	 * @return el listado de mantenedores
 	 * @param el tipo del mantenedores que se quiere buscar
@@ -2131,8 +2131,8 @@ public class ServiceImp implements IService {
 	 * @return la lista de involucrados
 	 */	
 	@Override
-	public List<Involucrado> getInvolucradosInActividadId(Long actividadId){
-		return involucradoDao.findAllByNamedQueryParam("Involucrado.findByActividadId", new Object [] {actividadId});
+	public List<Contacto> getInvolucradosInActividadId(Long actividadId){
+		return contactoDao.findAllByNamedQueryParam("Contacto.findByActividadId", new Object [] {actividadId});
 	}
 	
 	/** 
@@ -2140,8 +2140,8 @@ public class ServiceImp implements IService {
 	 * @return la lista de no involucrados
 	 */	
 	@Override
-	public List<Involucrado> getInvolucradosNotInActividadId(Long actividadId){
-		return involucradoDao.findAllByNamedQueryParam("Involucrado.findNotInActividadId", new Object [] {actividadId});
+	public List<Contacto> getInvolucradosNotInActividadId(Long actividadId){
+		return contactoDao.findAllByNamedQueryParam("Contacto.findNotInActividadId", new Object [] {actividadId});
 	}
 	
 	/** 

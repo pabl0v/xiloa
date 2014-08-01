@@ -15,7 +15,7 @@ import model.Contacto;
 import model.Involucrado;
 import model.Mantenedor;
 
-import org.primefaces.component.picklist.PickList;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +47,6 @@ public class CertificacionManagedBean implements Serializable {
 	private LoginController controller;
 	
 	private Certificacion certificacion;
-	private List<Contacto> contactos;
-	private Contacto[] selectedContactos;
 	private Map<Integer, Mantenedor> catalogoEstatusCertificacion;
 	private Integer selectedEstatusCertificacion;
 	private Map<Integer, Mantenedor> catalogoEstatusActividad;
@@ -60,11 +58,11 @@ public class CertificacionManagedBean implements Serializable {
 	public CertificacionManagedBean(){
 		super();
 		certificacion = new Certificacion();
-		contactos = new ArrayList<Contacto>();
 		actividades = new ArrayList<Actividad>();
 		selectedActividad = new Actividad();
 		catalogoEstatusCertificacion = new HashMap<Integer, Mantenedor>();
-		catalogoEstatusActividad = new HashMap<Integer, Mantenedor>(); 
+		catalogoEstatusActividad = new HashMap<Integer, Mantenedor>();
+		involucrados = new DualListModel<Contacto>();
 	}
 	
 	@PostConstruct
@@ -75,13 +73,11 @@ public class CertificacionManagedBean implements Serializable {
 		setSelectedEstatusCertificacion(certificacion.getEstatus().getId());
 		
 		setActividades(service.getActividades(certificacionId));
-		
-		//contactos = service.getContactosInatec(controller.getEntidadUsuario());
-		contactos.add(service.getContactoById(new Long(2)));
+
 		catalogoEstatusCertificacion = service.getMapMantenedoresByTipo("3");
 		catalogoEstatusActividad = service.getMapMantenedoresByTipo("2");
 		
-		involucrados =  new DualListModel<Contacto>(contactos, new ArrayList<Contacto>());
+		setInvolucrados(new DualListModel<Contacto>(new ArrayList<Contacto>(), new ArrayList<Contacto>()));
 	}
 	
 	public Certificacion getCertificacion(){
@@ -107,21 +103,6 @@ public class CertificacionManagedBean implements Serializable {
 	public void setInvolucrados(DualListModel<Contacto> involucrados){
 		this.involucrados = involucrados;
 	}
-	
-	/*
-	public List<Contacto> getContactos() {
-		return contactos;
-	}
-	
-	public Contacto[] getSelectedContactos() {
-		return selectedContactos;
-	}
-	
-	public void setSelectedContactos(Contacto[] selectedContactos) {
-		//this.selectedContactos = selectedContactos;
-		//this.certificacion.setInvolucrados(selectedContactos);
-	}
-	*/
 		
 	public String cancelar(){
 		certificacion = new Certificacion();
@@ -129,8 +110,7 @@ public class CertificacionManagedBean implements Serializable {
 	}
 	
 	public String guardarEdicion(){
-		
-		//certificacion.setFechaRegistro(new Date());
+
 		certificacion.setFechaActualiza(new Date());
 		certificacion.setActualiza(controller.getContacto());
 		certificacion.setReferencial("N/D");
@@ -190,11 +170,19 @@ public class CertificacionManagedBean implements Serializable {
 	
 	public void setSelectedActividad(Actividad actividad){
 		this.selectedActividad = actividad;
-		setSelectedEstatusActividad(selectedActividad.getEstado().getId());
 	}
 	
-	public void editarActividad(Actividad actividad){
-		
+	public void onActividadSelect(SelectEvent event){
+		setSelectedActividad((Actividad) event.getObject());
+		setSelectedEstatusActividad(selectedActividad.getEstado().getId());
+		setInvolucrados(new DualListModel<Contacto>(service.getInvolucradosNotInActividadId(selectedActividad.getId()), service.getInvolucradosInActividadId(selectedActividad.getId())));		
+	}
+	
+	public void onActividadUnselect(SelectEvent event){		
+	}
+	
+	public void guardarActividad(){
+		service.guardar(selectedEstatusActividad);
 	}
 	
 	public void onElementTransfer(TransferEvent event){
