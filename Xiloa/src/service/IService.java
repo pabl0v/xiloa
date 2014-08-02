@@ -929,5 +929,17 @@ public interface IService {
 	/** 
 	 * @param la convocatoria que se programa
 	 */	
-	public void convocarCandidato(Convocatoria convocatoria);	
+	public void convocarCandidato(Convocatoria convocatoria);
+	
+	/** 
+	 * @param la solicicitua en cuestion
+	 * @return lista de unidades sin evaluar
+	 */	
+	public List<Unidad> getUnidadesSinEvaluar(Long solicitudId);
+	
+	/** 
+	 * @param la solicicitua en cuestion
+	 * @return lista de evaluaciones reprobadas
+	 */	
+	public List<Evaluacion> getEvaluacionesReprobadas(Long solicitudId);
 }

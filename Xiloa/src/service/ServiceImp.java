@@ -1762,7 +1762,7 @@ public class ServiceImp implements IService {
 			aprobado = false;
 		else {
 			for (Evaluacion eval : listaEval){
-				if (eval.getAprobado() != true){
+				if (eval.getAprobado() != 1){
 					aprobado = false;
 					break;
 				}
@@ -2199,5 +2199,23 @@ public class ServiceImp implements IService {
 			actualizarEstadoSolicitud(solicitud, 7);
 			convocatoriaDao.save(convocatoria);
 		}
+	}
+	
+	/** 
+	 * @param la solicicitua en cuestion
+	 * @return lista de unidades sin evaluar
+	 */
+	@Override
+	public List<Unidad> getUnidadesSinEvaluar(Long solicitudId){
+		return unidadDao.findAllByNamedQueryParam("Unidad.findAllSinEvaluarBySolicitudId", new Object [] {solicitudId});
+	}
+	
+	/** 
+	 * @param la solicicitua en cuestion
+	 * @return lista de evaluaciones reprobadas
+	 */	
+	@Override
+	public List<Evaluacion> getEvaluacionesReprobadas(Long solicitudId){
+		return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllPendientesBySolicitudId", new Object [] {solicitudId});
 	}
 }

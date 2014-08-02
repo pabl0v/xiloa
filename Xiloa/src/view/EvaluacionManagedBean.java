@@ -21,6 +21,7 @@ import model.Evaluacion;
 import model.EvaluacionGuia;
 import model.Instrumento;
 import model.Solicitud;
+import model.Unidad;
 
 @Component
 @Scope(value="view")
@@ -209,8 +210,24 @@ public class EvaluacionManagedBean implements Serializable {
 		return "/modulos/solicitudes/solicitudes?faces-redirect=true";
 	}
 	
-	public void evaluar(){
-		FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe completar todas las evaluaciones.", true);
-		//service.actualizarEstadoSolicitud(solicitud, 8);
+	public String evaluar(){
+		
+		List<Unidad> unidades = service.getUnidadesSinEvaluar(solicitud.getId());
+		
+		if(!unidades.isEmpty()){
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "Quedan unidades de competencia sin evaluar.", true);
+			return null;
+		}
+		
+		/*
+		List<Evaluacion> evaluaciones = service.getEvaluacionesReprobadas(solicitud.getId());
+		
+		if(!evaluaciones.isEmpty()){
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "Quedan unidades de competencia sin aprobar.", true);
+			return null;			
+		}*/
+		
+		service.actualizarEstadoSolicitud(solicitud, 8);
+		return "/modulos/solicitudes/solicitudes?faces-redirect=true";
 	}
 }

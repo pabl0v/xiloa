@@ -35,7 +35,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 @Table(name = "evaluaciones", schema = "sccl")
 @NamedQueries({
 	@NamedQuery(name="Evaluacion.findAllPendientesByFirstSolicitudByContactoId", query="select e from evaluaciones e where e.solicitud.contacto.id=?1 and e.solicitud.id=(select min(x.id) from solicitudes x where x.contacto=e.solicitud.contacto and x.estatus.id!=76) order by e.id desc"),
-	@NamedQuery(name="Evaluacion.findAllPendientesBySolicitudId", query="select e from evaluaciones e inner join fetch e.solicitud s where e.aprobado=false and s.id=?1 order by e.id desc"),
+	@NamedQuery(name="Evaluacion.findAllPendientesBySolicitudId", query="select e from evaluaciones e where e.solicitud.id=?1 and e.aprobado=1 and e.activo=true order by e.id desc"),
 	@NamedQuery(name="Evaluacion.findAllBySolicitudId", query="select e from evaluaciones e where e.solicitud.id=?1 and e.activo='true' order by e.id desc"),
 	@NamedQuery(name="Evaluacion.findById", query="select e from evaluaciones e where e.id=?1"),
 	@NamedQuery(name="Evaluacion.findAllBySolicitudUCL", query="select e from evaluaciones e inner join fetch e.solicitud s where s.id=?1 and e.instrumento.unidad=?2"),
@@ -73,8 +73,8 @@ public class Evaluacion implements Serializable {
 	@Formula("(select coalesce(sum(coalesce(g.puntaje,0)),0) from sccl.evaluacion_guia g where g.evaluacion_id = evaluacion_id)")
 	private Float puntajeObtenido;
 	
-	@Formula("(select coalesce(case when sum(coalesce(g.puntaje,0))>=evaluacion_puntaje_minimo then 'true' else 'false' end, 'false') from sccl.evaluacion_guia g where g.evaluacion_id = evaluacion_id)")
-	private boolean aprobado;
+	@Formula("(select coalesce(case when sum(coalesce(g.puntaje,0))>=evaluacion_puntaje_minimo then 1 else 0 end, 0) from sccl.evaluacion_guia g where g.evaluacion_id = evaluacion_id)")
+	private Integer aprobado;
 
 	@Column(name = "evaluacion_observaciones", nullable = true)
 	private String observaciones;
@@ -85,7 +85,7 @@ public class Evaluacion implements Serializable {
 	public Evaluacion() {
 		super();
 		this.activo = true;
-		this.aprobado = false;
+		this.aprobado = 0;
 		this.puntajeMinimo = new Float(0);
 		this.puntajeMaximo = new Float(0);
 		this.puntajeObtenido = new Float(0);
@@ -99,7 +99,7 @@ public class Evaluacion implements Serializable {
 		this.puntajeMinimo = puntajeMinimo;
 		this.puntajeMaximo = puntajeMaximo;
 		this.puntajeObtenido = new Float(0);
-		this.aprobado = false;
+		this.aprobado = 0;
 		this.observaciones = observaciones;
 		this.activo = activo;
 	}	
@@ -176,12 +176,12 @@ public class Evaluacion implements Serializable {
 		return this.activo;
 	}	
 	
-	public boolean getAprobado() {
+	public Integer getAprobado() {
 		return this.aprobado;
 	}
 	
 	public String getAprobadoLabel(){
-		if(this.aprobado)
+		if(this.aprobado==1)
 			return "SI";
 		else
 			return "NO";
