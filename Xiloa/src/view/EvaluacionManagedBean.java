@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.event.AjaxBehaviorEvent;
 
-import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -41,6 +39,7 @@ public class EvaluacionManagedBean implements Serializable {
 	private EvaluacionGuia selectedEvaluacionGuia;
 	private List<Evaluacion> evaluaciones;
 	private Evaluacion selectedEvaluacion;
+	private boolean habilitarEvaluacion;
 	
 	public EvaluacionManagedBean() {
 		super();
@@ -53,6 +52,7 @@ public class EvaluacionManagedBean implements Serializable {
 		selectedEvaluacion = null;
 		selectedInstrumento = null;
 		selectedUnidad = null;
+		habilitarEvaluacion = false;
 	}
 	
 	@PostConstruct
@@ -60,11 +60,17 @@ public class EvaluacionManagedBean implements Serializable {
 
 		Long solicitudId = (Long)FacesUtil.getParametroSession("solicitudId");
 		solicitud = service.getSolicitudById(solicitudId);
+		
+		// si la solicitud esta programada habilitar la evaluacion
+		if(solicitud.getEstatus().getId()==41)
+			setHabilitarEvaluacion(true);
+		else
+			setHabilitarEvaluacion(false);
 
 		setEvaluaciones(service.getEvaluacionesBySolicitudId(solicitud.getId()));
 		
 		setInstrumentos(null);
-		setUnidades();		
+		setUnidades();
 	}
 	
 	public Long getSelectedInstrumento(){
@@ -189,16 +195,22 @@ public class EvaluacionManagedBean implements Serializable {
 		selectedEvaluacionGuia = (EvaluacionGuia)service.guardar(guia);
 		setEvaluaciones(service.getEvaluacionesBySolicitudId(solicitud.getId()));
 	}
+		
+	public boolean getHabilitarEvaluacion(){
+		return habilitarEvaluacion;
+	}
 	
-	public void concluirEvaluacion(AjaxBehaviorEvent event){
-		SelectBooleanCheckbox permit = (SelectBooleanCheckbox) event.getComponent();
-	    boolean checked = (Boolean) permit.getValue();
-	    
-	    //validar si hay pruebas pendientes
-	    
-	    if (checked)
-	    	service.actualizarEstadoSolicitud(solicitud, 8);
-	    else
-	    	service.actualizarEstadoSolicitud(solicitud, 7);
+	public void setHabilitarEvaluacion(boolean habilitar){
+		this.habilitarEvaluacion = habilitar;
+	}
+		
+	public String retornar(){
+		FacesUtil.setParamBySession("solicitudId", null);
+		return "/modulos/solicitudes/solicitudes?faces-redirect=true";
+	}
+	
+	public void evaluar(){
+		FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe completar todas las evaluaciones.", true);
+		//service.actualizarEstadoSolicitud(solicitud, 8);
 	}
 }
