@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.event.AjaxBehaviorEvent;
 
+import org.primefaces.component.selectbooleancheckbox.SelectBooleanCheckbox;
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -186,5 +188,17 @@ public class EvaluacionManagedBean implements Serializable {
 		selectedEvaluacionGuia = guia;
 		selectedEvaluacionGuia = (EvaluacionGuia)service.guardar(guia);
 		setEvaluaciones(service.getEvaluacionesBySolicitudId(solicitud.getId()));
+	}
+	
+	public void concluirEvaluacion(AjaxBehaviorEvent event){
+		SelectBooleanCheckbox permit = (SelectBooleanCheckbox) event.getComponent();
+	    boolean checked = (Boolean) permit.getValue();
+	    
+	    //validar si hay pruebas pendientes
+	    
+	    if (checked)
+	    	service.actualizarEstadoSolicitud(solicitud, 8);
+	    else
+	    	service.actualizarEstadoSolicitud(solicitud, 7);
 	}
 }

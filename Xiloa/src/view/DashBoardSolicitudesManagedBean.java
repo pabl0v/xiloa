@@ -243,8 +243,14 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	}
 	
 	public void registrarConvocatoria(Convocatoria convocatoria) {
+
 		convocatoria.setSolicitudId(selectedSolicitud.getId());
-		service.guardar(convocatoria);
+
+		if(convocatoria.getId()!=null)
+			service.guardar(convocatoria);
+		else
+			service.convocarCandidato(convocatoria);
+		
 		nuevaConvocatoria();
 	}
 	

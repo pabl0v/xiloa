@@ -152,7 +152,7 @@
 			</h:panelGrid>
 			<br/>
 			<h3 style="margin-top: 0">Involucrados</h3>
-			<p:pickList id="pickList" value="#{certificacionManagedBean.involucrados}" var="involucrado" itemLabel="#{involucrado.nombreCompleto}" itemValue="#{involucrado}" converter="pickListConverter" >
+			<p:pickList id="pickList" value="#{certificacionManagedBean.involucrados}" addLabel="Agregar" addAllLabel="Agregar todo" removeLabel="Eliminar" removeAllLabel="Eliminar todo" var="involucrado" itemLabel="#{involucrado.nombreCompleto}" itemValue="#{involucrado}" converter="pickListConverter" >
 				<p:ajax event="transfer" listener="#{certificacionManagedBean.onElementTransfer}" update="pickList" />
 			</p:pickList>
 			<br/>

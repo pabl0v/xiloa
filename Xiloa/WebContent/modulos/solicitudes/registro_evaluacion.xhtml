@@ -29,7 +29,9 @@
 					<h4><b>Estado:</b></h4>
 					<p:inputText readonly="true" size="10" value="#{evaluacionManagedBean.solicitud.estatus.valor}" />
 					<h4><b>Evaluado:</b></h4>
-					<p:selectBooleanCheckbox value="true" />
+					<p:selectBooleanCheckbox value="true" >
+						<p:ajax event="click" listener="#{evaluacionManagedBean.concluirEvaluacion}" />
+					</p:selectBooleanCheckbox>
 				</h:panelGrid>
  				<br/>
 				</h:form>

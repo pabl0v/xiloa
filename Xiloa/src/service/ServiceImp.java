@@ -2157,4 +2157,47 @@ public class ServiceImp implements IService {
 			involucradoDao.save(involucrado);
 		}
 	}
+	
+	/** 
+	 * @param la convocatoria que se programa
+	 */
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void convocarCandidato(Convocatoria convocatoria){
+		
+		//si la convocatoria tiene estatus no cumplida no hacer nada
+		if(convocatoria.getEstadoId()==22){
+			return;
+		}
+		
+		Solicitud solicitud = getSolicitudById(convocatoria.getSolicitudId());
+		
+		//si se convoca a asesoria grupal y esta matriculado, actualiza estatus a reunion grupal
+		if(convocatoria.getActividadId()==6 && solicitud.getEstatus().getId()==38){
+			actualizarEstadoSolicitud(solicitud, 5);
+			convocatoriaDao.save(convocatoria);
+		}
+		
+		//si se convoca a asesoria individual y esta en asesoria grupal, actualizar estatus a asesoria individual y se registra la prueba de autoevaluacion
+		if(convocatoria.getActividadId()==7 && solicitud.getEstatus().getId()==39){
+			actualizarEstadoSolicitud(solicitud, 6);
+			
+			// obtiene los instrumentos de autoevaluacion
+			List<Instrumento> instrumentos = instrumentoDao.findAllByQuery("select i from instrumentos i where i.tipo.id in (29) and i.estatus='true' and i.certificacionId="+solicitud.getCertificacion().getId()+" and not exists (select 1 from evaluaciones e where e.instrumento.id=i.id and e.activo='true' and e.solicitud.id="+solicitud.getId()+")");
+		
+			// registra automaticamente las evaluaciones para las pruebas de autoevaluacion
+			for(Instrumento instrumento : instrumentos){
+				Evaluacion evaluacion = new Evaluacion(solicitud,instrumento,new Date(),instrumento.getPuntajeMinimo(),instrumento.getPuntajeMaximo(),null,true);
+				guardarEvaluacion(evaluacion);	
+			}
+			
+			convocatoriaDao.save(convocatoria);
+		}
+		
+		//si se convoca para evaluacion y esta en asesoria individual, actualizar estatus a programado
+		if(convocatoria.getActividadId()==8 && solicitud.getEstatus().getId()==40){
+			actualizarEstadoSolicitud(solicitud, 7);
+			convocatoriaDao.save(convocatoria);
+		}
+	}
 }

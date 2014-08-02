@@ -924,5 +924,10 @@ public interface IService {
 	/** 
 	 * @param la actividad y el contacto a inactivar
 	 */	
-	public void inactivarInvolucrado(Long actividad, Long contacto);	
+	public void inactivarInvolucrado(Long actividad, Long contacto);
+	
+	/** 
+	 * @param la convocatoria que se programa
+	 */	
+	public void convocarCandidato(Convocatoria convocatoria);	
 }

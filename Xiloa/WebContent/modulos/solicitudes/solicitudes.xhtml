@@ -129,54 +129,50 @@
 			</div>
 		</h:form>
 	</p:dialog>
-	<p:dialog id="modalConvocatoria" styleClass="estilo_dialogoactividades" header="Registro de Convocatorias:" widgetVar="dlg2" modal="true" resizable="false" width="700" height="550">
+	<p:dialog id="modalConvocatoria" header="Registro de Convocatorias:" widgetVar="dlg2" modal="true" resizable="false" width="700" height="480">
 		<h:form id="convocatoriaForm">
-			<br/>
 			<br/>
 			<p:inputText rendered="false" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.id}" />
 			<h:panelGrid id="modal2" columns="3" cellpadding="15" cellspacing="10" >
-            	<h:outputLabel styleClass="estilo_label" value="Fecha/Hora:" />
-            	<p:calendar id="codigo3" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.fecha}" showOn="button" pattern="dd/MM/yyyy hh:mm a" mindate="01/06/2014" disabledWeekends="true" minHour="8" maxHour="17" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
+            	<h:outputLabel value="Fecha/Hora:" />
+            	<p:calendar id="codigo3" size="30" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.fecha}" showOn="button" pattern="dd/MM/yyyy hh:mm a" mindate="01/06/2014" disabledWeekends="true" minHour="8" maxHour="17" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
             	<p:message for="codigo3" display="text"  />
-				<h:outputLabel styleClass="estilo_label" value="Actividad:" />
-				<p:selectOneMenu id="selector_estatus1" required="true" requiredMessage="Seleccione la actividad" styleClass="selector_status_estilo" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.actividadId}" >  
-					<f:selectItem itemLabel="Seleccione la actividad" itemValue="" />
+				<h:outputLabel value="Actividad:" />
+				<p:selectOneMenu id="selector_estatus1" style="width:100%;" required="true" requiredMessage="Seleccione la actividad" styleClass="selector_status_estilo" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.actividadId}" >  
+					<f:selectItem itemLabel="Seleccione..." itemValue="" noSelectionOption="true" />
 					<f:selectItems value="#{dashBoardSolicitudesManagedBean.actividades}" var="actividad" itemLabel="#{actividad.descripcion}" itemValue="#{actividad.id}" />
 					<p:ajax update="selector_estatus2" event="change" listener="#{dashBoardSolicitudesManagedBean.handleActividadesChange}" />
 				</p:selectOneMenu>
 				<p:message for="selector_estatus1" display="text" />
-				<h:outputLabel styleClass="estilo_label" value="Responsable:" />
-				<p:selectOneMenu id="selector_estatus2" required="true" requiredMessage="Seleccione al involucrado" styleClass="selector_status_estilo" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.contactoId}" >  
-					<f:selectItem itemLabel="Seleccione al responsable" itemValue="" />
+				<h:outputLabel value="Responsable:" />
+				<p:selectOneMenu id="selector_estatus2" style="width:100%;" required="true" requiredMessage="Seleccione al involucrado" styleClass="selector_status_estilo" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.contactoId}" >  
+					<f:selectItem itemLabel="Seleccione..." itemValue="" noSelectionOption="true" />
 					<f:selectItems value="#{dashBoardSolicitudesManagedBean.involucrados}" var="involucrado" itemLabel="#{involucrado.descripcion}" itemValue="#{involucrado.id}" />
 				</p:selectOneMenu>
 				<p:message for="selector_estatus2" display="text" />
-				<h:outputLabel styleClass="estilo_label" value="Estado:" />
-				<p:selectOneMenu id="selector_estatus3" required="true" requiredMessage="Seleccione el estado" styleClass="selector_status_estilo" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.estadoId}" >  
-					<f:selectItem itemLabel="Seleccione el estado" itemValue="" />
+				<h:outputLabel value="Estado:" />
+				<p:selectOneMenu id="selector_estatus3" style="width:100%;" required="true" requiredMessage="Seleccione el estado" styleClass="selector_status_estilo" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.estadoId}" >  
+					<f:selectItem itemLabel="Seleccione..." itemValue="" noSelectionOption="true" />
 					<f:selectItems value="#{dashBoardSolicitudesManagedBean.estados}" var="estado" itemLabel="#{estado.valor}" itemValue="#{estado.id}" />
 				</p:selectOneMenu>
 				<p:message for="selector_estatus3" display="text" />
 			</h:panelGrid>
 			<div class="contenedor_botones" style="margin-top:32px;">
-				<p:commandButton value="Aceptar" oncomplete="if(args.validationFailed) {dlg2.show()}" update=":convocatoriaForm, :convocatoriaDataTableForm" action="#{dashBoardSolicitudesManagedBean.registrarConvocatoria(dashBoardSolicitudesManagedBean.selectedConvocatoria)}" />
-				<p:commandButton value="Nuevo" update=":convocatoriaForm" action="#{dashBoardSolicitudesManagedBean.nuevaConvocatoria}" />
+				<p:commandButton value="Aceptar" style="width:80px;height:30px" oncomplete="if(args.validationFailed) {dlg2.show()}" update=":convocatoriaForm, :convocatoriaDataTableForm" action="#{dashBoardSolicitudesManagedBean.registrarConvocatoria(dashBoardSolicitudesManagedBean.selectedConvocatoria)}" />
+				<p:commandButton value="Nuevo" style="width:80px;height:30px" update=":convocatoriaForm" action="#{dashBoardSolicitudesManagedBean.nuevaConvocatoria}" />
 			</div>
 		</h:form>
 			<br/>
 		<h:form id="convocatoriaDataTableForm">
-			<p:dataTable id="convocatoriasDataTable" emptyMessage="No hay datos para mostrar" var="convocatoria" value="#{dashBoardSolicitudesManagedBean.convocatorias}" paginator="true" rows="5" rowKey="#{convocatoria.id}" selectionMode="single" selection="#{dashBoardSolicitudesManagedBean.selectedConvocatoria}">
+			<p:dataTable id="convocatoriasDataTable" paginatorPosition="bottom" emptyMessage="No hay datos para mostrar" var="convocatoria" value="#{dashBoardSolicitudesManagedBean.convocatorias}" paginator="true" rows="5" rowKey="#{convocatoria.id}" selectionMode="single" selection="#{dashBoardSolicitudesManagedBean.selectedConvocatoria}">
 				<p:ajax event="rowSelect" update=":convocatoriaForm" />
-				<f:facet name="header">
-					Convocatorias del Candidato
-				</f:facet>
 				<p:column headerText="Convocatoria"><h:outputText value="#{convocatoria.actividadNombre}" /></p:column>
 				<p:column headerText="Fecha/Hora"><h:outputText value="#{convocatoria.fecha}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy hh:mm a"/></h:outputText></p:column>
 				<p:column headerText="Responsable"><h:outputText value="#{convocatoria.contactoNombre}" /></p:column>
 				<p:column headerText="Estado"><h:outputText value="#{convocatoria.estadoNombre}" /></p:column>
 			</p:dataTable>
 			<div class="contenedor_botones" style="margin-top:32px;">
-				<p:commandButton value="Cancelar" onclick="PF('dlg2').hide();" immediate="true" /> 
+				<p:commandButton value="Cerrar" style="width:80px;height:30px" update=":formSolicitudes:dtSolicitud" onclick="PF('dlg2').hide();" immediate="true" /> 
 			</div>
 		</h:form>
 	</p:dialog>
