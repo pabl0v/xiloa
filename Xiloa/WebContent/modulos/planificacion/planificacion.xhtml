@@ -202,7 +202,7 @@
 			</div>
 		</h:form>
 		<h:form id="actividadesDataTableForm">
-			<p:dataTable id="actividadesDataTable" paginatorPosition="bottom" emptyMessage="No hay datos para mostrar" var="actividad" value="#{planificacionManagedBean.actividades}" paginator="true" rows="3" rowKey="#{actividad.id}" selectionMode="single" selection="#{planificacionManagedBean.selectedActividad}">
+			<p:dataTable id="actividadesDataTable" paginatorPosition="bottom" emptyMessage="No hay datos para mostrar" var="actividad" value="#{planificacionManagedBean.actividades}" paginator="true" rows="3" rowKey="#{actividad.id}" selectionMode="single">
 				<p:ajax event="rowSelect" listener="#{planificacionManagedBean.onActividadSelect}" update=":actividadesForm" />  
 				<p:ajax event="rowUnselect" listener="#{planificacionManagedBean.onActividadUnselect}" />
 				<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>
