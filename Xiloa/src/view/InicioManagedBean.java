@@ -9,17 +9,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 import model.Certificacion;
-import model.Contacto;
-import model.Solicitud;
-import model.Usuario;
+import model.Requisito;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import service.IService;
-import support.FacesUtil;
 import support.UsuarioExterno;
 
 /**
@@ -70,6 +66,10 @@ public class InicioManagedBean implements Serializable {
 		this.selectedCertificacion = selectedCertificacion;
 	}
 	
+	public List<Requisito> getRequisitos(Long certificacionId){
+		return service.getRequisitos(certificacionId);
+	}
+	
 	public int getTipoFiltro() {
 		return tipoFiltro;
 	}
@@ -86,6 +86,7 @@ public class InicioManagedBean implements Serializable {
 		this.textoBuscar = textoBuscar;
 	}
 
+	/*
 	public String indicaAplicar(){
 		
 		Usuario u = service.getUsuarioLocal(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -123,13 +124,13 @@ public class InicioManagedBean implements Serializable {
 				}
 			}
 			
-			/*
-			for (Solicitud dato : listaSolicitudes){
-				if (!estadoSol.equals(dato.getEstatus())){
-					solicitudActiva = true;
-					break;
-				}
-			}*/
+			
+			//for (Solicitud dato : listaSolicitudes){
+				//if (!estadoSol.equals(dato.getEstatus())){
+					//solicitudActiva = true;
+					//break;
+				//}
+			//}
 		}
 		
 		if (solicitudActiva) {
@@ -140,12 +141,10 @@ public class InicioManagedBean implements Serializable {
 		
 		return url;
 	}
+	*/
 	
 	public void buscar(int filtro, String texto){
 		certificaciones = service.getCertificacionesActivas(filtro,texto);
-		System.out.println("filtro: "+filtro);
-		System.out.println("texto: "+texto);
-		System.out.println("buscar..."+certificaciones.size());
 	}
 	
 	public UsuarioExterno getUsuarioExterno() {

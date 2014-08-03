@@ -429,8 +429,8 @@ public class ServiceImp implements IService {
 	 */
 	
 	@Override
-	public List<Requisito> getRequisitos(int certificacionId) {
-		return requisitoDao.findAll(Requisito.class);
+	public List<Requisito> getRequisitos(Long certificacionId) {
+		return requisitoDao.findAllByNamedQueryParam("Requisito.findAllByCertificacionId", new Object[] {certificacionId});
 	}
 	
 	/*
@@ -1041,7 +1041,7 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Unidad> getUnidadesByCertificacionId(Long certificacionId) {
 		Object [] objs =  new Object [] {certificacionId};
-		return unidadDao.findAllByNamedQueryParam("findAllByCertificacionId", objs);
+		return unidadDao.findAllByNamedQueryParam("Unidad.findAllByCertificacionId", objs);
 	}
 	
 	/**

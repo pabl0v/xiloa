@@ -15,6 +15,8 @@ import model.Certificacion;
 import model.Contacto;
 import model.Involucrado;
 import model.Mantenedor;
+import model.Requisito;
+import model.Unidad;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.TransferEvent;
@@ -231,15 +233,16 @@ public class PlanificacionManagedBean implements Serializable {
 		service.guardar(certificacion);
 	}
 	
-	/*
-	public String editarActividades(Certificacion certificacion){
-		FacesUtil.setParamBySession("certificacionId", certificacion.getId());
-		return "/modulos/planificacion/edicion_planificacion?faces-redirect=true";
-	}
-	*/
-	
 	public void onRowSelectCompetencia(SelectEvent event) {  
     }
+	
+	public List<Requisito> getRequisitos(Long certificacionId){
+		return service.getRequisitos(certificacionId);
+	}
+	
+	public List<Unidad> getUnidades(Long certificacionId){
+		return service.getUnidadesByCertificacionId(certificacionId);
+	}
 	
 	public SelectItem[] getListaCentros(){
 		List<Ifp> centros = service.getIfpByInatec(controller.getEntidadUsuario());

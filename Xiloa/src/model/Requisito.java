@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -24,6 +26,10 @@ import javax.persistence.Table;
 
 @Entity(name = "requisitos")
 @Table(name = "requisitos", schema = "sccl")
+@NamedQueries({
+	@NamedQuery(name="Requisito.findAll", query="select r from requisitos r order by r.id desc"),
+	@NamedQuery(name="Requisito.findAllByCertificacionId", query="select r from requisitos r where r.certificacion.id=?1 order by r.id desc")
+})
 public class Requisito implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

@@ -347,7 +347,7 @@ public interface IService {
 	 * 
 	 */
 	
-	public List<Requisito> getRequisitos(int certificacionId);
+	public List<Requisito> getRequisitos(Long certificacionId);
 	
 	/*
 	 * @param el requisito a guardar

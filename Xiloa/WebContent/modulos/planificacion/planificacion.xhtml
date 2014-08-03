@@ -20,7 +20,7 @@
 		</div>
         <h:form id="formCertificaciones">
         <div id="cabezera">
-            <h2>Planificación Actual</h2>
+            <h2>Planificaciones</h2>
             <sec:authorize ifAnyGranted="ROLE_RIGHT_CREAR_PLANIFICACIONES">
             	<div id="botones_filtro_contenedor">
                 	<div class="botones_filtro" onclick="PF('dlg2').show();" >
@@ -95,13 +95,24 @@
             					<h:outputText value="Estatus" />
         					</f:facet> 
                         	<h:outputText value="#{certificacion.estatus.valor}" />
-                        </p:column>               
-                        <p:column exportable="false" style="width:4%" rendered="#{sec:areAnyGranted('ROLE_RIGHT_EDITAR_PLANIFICACIONES')}">
-							<p:commandButton onclick="PF('dlg1').show();" update=":planificacionForm" icon="ui-icon-pencil" title="Editar Certificación"/>
-				        </p:column>
-                        <p:column exportable="false" style="width:4%" rendered="#{sec:areAnyGranted('ROLE_RIGHT_EDITAR_PLANIFICACIONES')}">
-							<p:commandButton onclick="PF('dlg3').show();" update=":actividadesForm,:actividadesDataTableForm" icon="ui-icon-pencil" title="Editar Actividades"/>
-				        </p:column>
+                        </p:column>
+						<p:column>
+							<p:splitButton value="Planificar" icon="ui-icon-pencil" title="Gestion de la Planificación" style="display:inline-block;"  >   
+			        	 		<p:separator />
+		                		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITAR_PLANIFICACIONES">                  
+				            		<p:menuitem value="Certificación" onclick="PF('dlg1').show();" update=":planificacionForm" title="Editar Certificación" />
+		    					</sec:authorize>
+		                		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITAR_PLANIFICACIONES">                  
+				            		<p:menuitem value="Requisitos" onclick="PF('dlg4').show();" update=":requisitosForm" title="Ver Requisitos" />
+		    					</sec:authorize>
+		                		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITAR_PLANIFICACIONES">                  
+				            		<p:menuitem value="Unidades" onclick="PF('dlg5').show();" update=":unidadesForm" title="Ver Unidades de Competencia" />
+		    					</sec:authorize>
+		                		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITAR_PLANIFICACIONES">                  
+				            		<p:menuitem value="Actividades" onclick="PF('dlg3').show();" update=":actividadesForm,:actividadesDataTableForm" title="Editar Actividades" />
+		    					</sec:authorize>
+			   				</p:splitButton>
+						</p:column>
                 </p:dataTable>
 			</div>
 		</h:form>
@@ -136,13 +147,13 @@
 				<h:outputLabel value="Coordinador:" />
 				<p:inputText  id="codigo4" size="50" value="#{planificacionManagedBean.selectedCertificacion.coordinador}" required="true" requiredMessage="El coordinador es requerido" />
 				<p:message for="codigo4" display="text" />
-				<h:outputLabel value="Informante:" />
+				<h:outputLabel value="Contacto:" />
 				<p:inputText  id="codigo5" size="50" value="#{planificacionManagedBean.selectedCertificacion.informante}" required="true" requiredMessage="El informante es requerido" />
 				<p:message for="codigo5" display="text" />
-				<h:outputLabel value="Inicia:" />
+				<h:outputLabel value="Inicio de Prematrículas:" />
 				<p:calendar id="codigo6" value="#{planificacionManagedBean.selectedCertificacion.inicia}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
 				<p:message for="codigo6" display="text" />
-				<h:outputLabel value="Finaliza:" />
+				<h:outputLabel value="Fin de Prematrículas:" />
 				<p:calendar id="codigo7" value="#{planificacionManagedBean.selectedCertificacion.finaliza}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
 				<p:message for="codigo7" display="text" />
 				<h:outputLabel value="Cupo Máximo:" />
@@ -174,10 +185,10 @@
 				<h:outputLabel value="Nombre:" />
 				<p:inputText id="codigo20" style="width:225%;" readonly="true" value="#{planificacionManagedBean.selectedActividad.nombre}" />
 				<p:message for="codigo20" display="text"  />
-			  	<h:outputLabel value="Fecha Inicia:" />
+			  	<h:outputLabel value="Fecha Inicio:" />
 				<p:calendar id="codigo21" value="#{planificacionManagedBean.selectedActividad.fechaInicial}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
         	    <p:message for="codigo21" display="text"  />
-		  		<h:outputLabel value="Fecha Final:" />
+		  		<h:outputLabel value="Fecha Fin:" />
 				<p:calendar id="codigo22" value="#{planificacionManagedBean.selectedActividad.fechaFinal}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
             	<p:message for="codigo22" display="text"  />
 				<h:outputLabel value="Materiales:" />
@@ -210,6 +221,32 @@
 				<p:column headerText="Fin"><h:outputText value="#{actividad.fechaFinal}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>
 				<p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>
 			</p:dataTable>
+		</h:form>
+	</p:dialog>
+	<p:dialog id="modalRequisitos" header="Requisitos de la Certificación:" widgetVar="dlg4" modal="true" resizable="false" width="600" height="200">
+		<h:form id="requisitosForm">
+			<br/>
+            <b><h:outputLabel value="Requisitos:" /></b>
+            <br/>
+			<p:dataList emptyMessage="Lista no disponible" value="#{planificacionManagedBean.getRequisitos(planificacionManagedBean.selectedCertificacion.id)}" var="requisito" type="ordered">  
+				<ul><li>* #{requisito.descripcion}</li></ul>
+			</p:dataList>
+			<div class="contenedor_botones" style="margin-top:20px;">
+				<p:commandButton value="Cerrar" style="width:80px;height:30px" onclick="PF('dlg4').hide();" immediate="true" />
+			</div>
+		</h:form>
+	</p:dialog>
+	<p:dialog id="modalUnidades" header="Unidades de Competencia:" widgetVar="dlg5" modal="true" resizable="false" width="750" height="200">
+		<h:form id="unidadesForm">
+			<br/>
+            <b><h:outputLabel value="Unidades:" /></b>
+            <br/>
+			<p:dataList emptyMessage="Lista no disponible" value="#{planificacionManagedBean.getUnidades(planificacionManagedBean.selectedCertificacion.id)}" var="unidad" type="ordered">  
+				<ul><li>* #{unidad.unidadNombre}</li></ul>
+			</p:dataList>
+			<div class="contenedor_botones" style="margin-top:20px;">
+				<p:commandButton value="Cerrar" style="width:80px;height:30px" onclick="PF('dlg5').hide();" immediate="true" />
+			</div>
 		</h:form>
 	</p:dialog>
 </h:body>

@@ -24,7 +24,6 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 /**
  * 
@@ -72,30 +71,26 @@ public class Contacto implements Serializable {
 	@Column(name = "contacto_id", nullable = false)	
 	private Long id;
 	
-	//@OneToOne(fetch = FetchType.LAZY)
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="usuario_id")
 	private Usuario usuario;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy="contacto", cascade = CascadeType.ALL)
 	private Set<Laboral> laborales;
 	
-	//@ManyToOne(fetch = FetchType.LAZY)
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="rol_id")
 	private Rol rol;
 	
 	@Column(name = "entidad_id", nullable = true)	
 	private Integer entidadId;
 	
-	@NotNull
 	@Column(name = "primer_nombre", nullable = false)
 	private String primerNombre;
 	
 	@Column(name = "segundo_nombre", nullable = true)	
 	private String segundoNombre;
 
-	@NotNull
 	@Column(name = "primer_apellido", nullable = false)	
 	private String primerApellido;
 
@@ -108,14 +103,12 @@ public class Contacto implements Serializable {
 	@Column(name = "sexo_id", nullable = true)
 	private Integer sexo;
 	
-	@NotNull
 	@Column(name = "correo1", nullable = false)
 	private String correo1;
 	
 	@Column(name = "correo2", nullable = true)
 	private String correo2;
 	
-	@NotNull
 	@Column(name = "telefono1", nullable = false)	
 	private String telefono1;
 	
@@ -128,11 +121,9 @@ public class Contacto implements Serializable {
 	@Column(name = "tipo_identificacion", nullable = true)	
 	private Integer tipoIdentificacion;
 	
-	@NotNull
 	@Column(name = "numero_identificacion", nullable = false)
 	private String numeroIdentificacion;
 
-	@NotNull
 	@Column(name = "direccion_actual", nullable = false)	
 	private String direccionActual;
 	

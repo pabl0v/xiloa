@@ -20,7 +20,7 @@
     <h:body>
         <div id="contenedor"> 
         <header id="barra_login">
-            <h1>Sistema de gestión de Certificación de competencias laborales</h1>
+            <h1>Sistema de Gestión de Certificación de Competencias Laborales</h1>
             <p>No ha ingresado</p>
         </header>
         <div id="barra_buscar">
@@ -56,32 +56,37 @@
 		<p:dialog id="modal_info_competenciasid" styleClass="modal_info_competencias" header="Detalle:" widgetVar="modal_comp" width="550" height="500">
 			<p:outputPanel id="dialogo">  
         	<div class="seccion_detalle">
-      			<p>Nombre de la certificación</p>
-      			<h:outputText value="#{inicioManagedBean.selectedCertificacion.nombre}"></h:outputText>  		
+      			<b><h:outputText value="Nombre de la Certificación: " /></b><h:outputText value="#{inicioManagedBean.selectedCertificacion.nombre}"></h:outputText>  		
           	</div>
           	<div class="seccion_detalle">
-      			<p>Ultimo dia para solicitar evaluación:</p>
-      			<h:outputText value="#{inicioManagedBean.selectedCertificacion.finaliza}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>
+      			<b><h:outputText value="Centro Oferente: " /></b><h:outputText value="#{inicioManagedBean.selectedCertificacion.ifpNombre}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>
           	</div>
           	<div class="seccion_detalle">
-      			<p>Dirección del Centro evaluador:</p>
-      			<h:outputText value="#{inicioManagedBean.selectedCertificacion.ifpDireccion}"></h:outputText>  		
+      			<b><h:outputText value="Dirección: " /></b><h:outputText value="#{inicioManagedBean.selectedCertificacion.ifpDireccion}"></h:outputText>  		
           	</div>
           	<div class="seccion_detalle">
-      			<p>Requisitos para aplicar a la evaluación:</p>
-				<p:dataList emptyMessage="Lista no disponible" value="#{inicioManagedBean.selectedCertificacion.requisitos}" var="requisito" type="ordered">  
+      			<b><h:outputText value="Contacto: " /></b><h:outputText value="#{inicioManagedBean.selectedCertificacion.informante}"></h:outputText>  		
+          	</div>
+          	<div class="seccion_detalle">
+      			<b><h:outputText value="Inicio de Prematrículas: " /></b><h:outputText value="#{inicioManagedBean.selectedCertificacion.inicia}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>
+          	</div>
+          	<div class="seccion_detalle">
+      			<b><h:outputText value="Fin de Prematrículas: " /></b><h:outputText value="#{inicioManagedBean.selectedCertificacion.finaliza}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>
+          	</div>
+          	<div class="seccion_detalle">
+      			<b><h:outputText value="Arancel C$: " /></b><h:outputText value="#{inicioManagedBean.selectedCertificacion.costoFormateado}"></h:outputText>  		
+          	</div>
+          	<div class="seccion_detalle">
+      			<p>Requisitos:</p>
+				<p:dataList emptyMessage="Lista no disponible" value="#{inicioManagedBean.getRequisitos(inicioManagedBean.selectedCertificacion.id)}" var="requisito" type="ordered">  
 					<ul><li>#{requisito.descripcion}</li></ul>
 				</p:dataList>
           	</div>
-          	<div class="seccion_detalle">
-      			<p>Arancel:</p>
-      			C$ <h:outputText value="#{inicioManagedBean.selectedCertificacion.costoFormateado}"></h:outputText>  		
-          	</div>
-	        <p:commandButton onclick="PF('modal_comp').hide()" value="Cancelar"/> 
+	        <p:commandButton onclick="PF('modal_comp').hide()" value="Cerrar"/> 
 	        <p:commandButton onclick="PF('modal_solicitud').show()" value="Aplicar"/>
 	        </p:outputPanel>
     	</p:dialog>
-        </h:form>        
+        </h:form>
         
         <div class="contenedor_central">
           <div id="contenedor_tabs">  
@@ -134,18 +139,18 @@
 	                    <div id="opciones_openid"></div>
 	                </p:tab>  
 	
-	                <p:tab id="tab2" titleStyleClass="llave" title="Olvido de contraseña">  
+	                <p:tab id="tab2" titleStyleClass="llave" title="Olvido de Contraseña">  
 	                    <h:form>
 	                        <h2>¿Olvidó su contraseña?</h2>
-	                        <p>Si olvidó su contraseña, ingrese aquí su nombre de usuario y le enviaremos un correo que le permitira cambiar la contraseña</p>
+	                        <p>Ingrese aquí su nombre de usuario y le enviaremos un correo con una nueva contraseña</p>
 	                        <p style="font-weight:bold; display: inline-block; margin-right:10px;">Nombre de usuario:</p>
 	                        <p:inputText id="usuarioReset" required="true" requiredMessage="El usuario es requerido." value="#{inicioManagedBean.usuarioReset}" />
 	                        <br/>
 							<p:commandButton process="@all" styleClass="boton_verde" value="Enviar correo" action="#{inicioManagedBean.resetearPassword(inicioManagedBean.usuarioReset)}" />	                        
 	                    </h:form>
-	                </p:tab>  
+	                </p:tab>
 	
-	                <p:tab id="tab3" titleStyleClass="nuevo" title="Registrar nueva cuenta">  
+	                <p:tab id="tab3" titleStyleClass="nuevo" title="Nueva Cuenta">  
 	                    <h:form id="formulario">
 	                    	<h2>Registrar una nueva cuenta</h2>
 	                    	<p>Para registrarse, complete la información inferior por favor.</p>
