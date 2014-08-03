@@ -38,7 +38,9 @@
         </div>
       
         <div id="contenedor_tabla_planificacion" style="margin-top:10px;">
-                <p:dataTable id="certificaciones" widgetVar="certificaciones" emptyMessage="No hay datos para mostrar" var="certificacion" value="#{planificacionManagedBean.certificaciones}" selection="#{planificacionManagedBean.selectedCertificacion}" paginator="true" rows="12" rowKey="#{certificacion.id}" selectionMode="single">  
+                <p:dataTable id="certificaciones" widgetVar="certificaciones" emptyMessage="No hay datos para mostrar" var="certificacion" value="#{planificacionManagedBean.certificaciones}" paginator="true" rows="12" rowKey="#{certificacion.id}" selectionMode="single">
+						<p:ajax event="rowSelect" listener="#{planificacionManagedBean.onCertificacionSelect}" />  
+						<p:ajax event="rowUnselect" listener="#{planificacionManagedBean.onCertificacionUnselect}" />
                         <!--Las columnas de la tabla-->
                         <p:column exportable="true">
                         	<f:facet name="header">  
@@ -95,7 +97,10 @@
                         	<h:outputText value="#{certificacion.estatus.valor}" />
                         </p:column>               
                         <p:column exportable="false" style="width:4%" rendered="#{sec:areAnyGranted('ROLE_RIGHT_EDITAR_PLANIFICACIONES')}">
-							<p:commandButton id="editarButton" action="#{planificacionManagedBean.editarCertificacion(planificacionManagedBean.selectedCertificacion)}" icon="ui-icon-pencil" title="Editar"/>  
+							<p:commandButton onclick="PF('dlg1').show();" update=":planificacionForm" icon="ui-icon-pencil" title="Editar Certificación"/>
+				        </p:column>
+                        <p:column exportable="false" style="width:4%" rendered="#{sec:areAnyGranted('ROLE_RIGHT_EDITAR_PLANIFICACIONES')}">
+							<p:commandButton onclick="PF('dlg3').show();" update=":actividadesForm,:actividadesDataTableForm" icon="ui-icon-pencil" title="Editar Actividades"/>
 				        </p:column>
                 </p:dataTable>
 			</div>
@@ -114,6 +119,98 @@
              <p:commandButton value="Cancelar" onclick="PF('dlg2').hide();" update=":cursosDialogo" />
              <p:commandButton value="Aceptar" update=":formCertificaciones:certificaciones, :cursosDialogo" action="#{planificacionManagedBean.nuevaCertificacion(planificacionManagedBean.selectedCompetencia)}" oncomplete="PF('dlg2').hide();"/>
          </h:form>   
-    </p:dialog>  
+    </p:dialog>
+	<p:dialog id="modalPlanificacion" header="Edición de Planificación:" widgetVar="dlg1" modal="true" resizable="false" width="650" height="360">
+		<h:form id="planificacionForm">
+			<br/>
+			<h:panelGrid id="modal2" columns="3" cellpadding="15" cellspacing="10" >
+            	<h:outputLabel value="Certificación:" />
+            	<p:inputText id="codigo1" size="50" value="#{planificacionManagedBean.selectedCertificacion.nombre}" required="true" requiredMessage="El nombre es requerido" />
+            	<p:message for="codigo1" display="text"  />
+				<h:outputLabel value="Oferente:" />
+				<p:inputText id="codigo2" size="50" value="#{planificacionManagedBean.selectedCertificacion.ifpNombre}" required="true" requiredMessage="El Oferente es requerido" />
+				<p:message for="codigo2" display="text"  />
+				<h:outputLabel value="Dirección:" />
+				<p:inputText  id="codigo3" size="50" value="#{planificacionManagedBean.selectedCertificacion.ifpDireccion}" required="true" requiredMessage="La dirección es requerida" />
+				<p:message for="codigo3" display="text" />
+				<h:outputLabel value="Coordinador:" />
+				<p:inputText  id="codigo4" size="50" value="#{planificacionManagedBean.selectedCertificacion.coordinador}" required="true" requiredMessage="El coordinador es requerido" />
+				<p:message for="codigo4" display="text" />
+				<h:outputLabel value="Informante:" />
+				<p:inputText  id="codigo5" size="50" value="#{planificacionManagedBean.selectedCertificacion.informante}" required="true" requiredMessage="El informante es requerido" />
+				<p:message for="codigo5" display="text" />
+				<h:outputLabel value="Inicia:" />
+				<p:calendar id="codigo6" value="#{planificacionManagedBean.selectedCertificacion.inicia}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
+				<p:message for="codigo6" display="text" />
+				<h:outputLabel value="Finaliza:" />
+				<p:calendar id="codigo7" value="#{planificacionManagedBean.selectedCertificacion.finaliza}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
+				<p:message for="codigo7" display="text" />
+				<h:outputLabel value="Cupo Máximo:" />
+				<p:inputText id="codigo8" size="20" value="#{planificacionManagedBean.selectedCertificacion.disponibilidad}" required="true" requiredMessage="El cupo es requerido" converterMessage="El cupo debe ser numerico" >
+					<f:convertNumber integerOnly="true" type="number" maxFractionDigits="0" />
+				</p:inputText>
+				<p:message for="codigo8" display="text" />
+				<h:outputLabel value="Arancel C$:" />
+				<p:inputText id="codigo9" size="20" value="#{planificacionManagedBean.selectedCertificacion.costo}" required="true" requiredMessage="El arancel es requerido" converterMessage="El arancel debe ser numerico" >
+					<f:convertNumber integerOnly="false" type="number" maxFractionDigits="2" />
+				</p:inputText>
+				<p:message for="codigo9" display="text" />
+				<h:outputLabel value="Estado:" />
+				<p:selectOneMenu id="selector_estatus" style="width:44%;" value="#{planificacionManagedBean.selectedEstatusCertificacion}" required="true" requiredMessage="Debe seleccionar el estatus" >  
+					<f:selectItem itemLabel="Seleccione..." itemValue="0" noSelectionOption="true" />
+					<f:selectItems value="#{planificacionManagedBean.catalogoEstatusCertificacion}" var="estatus" itemLabel="#{estatus.valor}" itemValue="#{estatus.id}" />
+				</p:selectOneMenu>
+				<p:message id="selectorMessage" for="selector_estatus" display="text"  />			
+			</h:panelGrid>
+			<div class="contenedor_botones" style="margin-top:32px;">
+				<p:commandButton value="Cancelar" style="width:80px;height:30px" onclick="PF('dlg1').hide();" immediate="true" />
+				<p:commandButton value="Aceptar" style="width:80px;height:30px" oncomplete="if(!args.validationFailed) {dlg1.hide()} else {dlg1.show()}" update=":formCertificaciones:certificaciones, :planificacionForm" action="#{planificacionManagedBean.actualizarCertificacion(planificacionManagedBean.selectedCertificacion)}" />
+			</div>
+		</h:form>
+	</p:dialog>
+	<p:dialog id="modalActividades" header="Edición de Actividades:" widgetVar="dlg3" modal="true" resizable="false" width="650" height="580" >
+		<h:form id="actividadesForm">
+			<h:panelGrid id="modal2" columns="3" cellpadding="15" cellspacing="10" >
+				<h:outputLabel value="Nombre:" />
+				<p:inputText id="codigo20" style="width:225%;" readonly="true" value="#{planificacionManagedBean.selectedActividad.nombre}" />
+				<p:message for="codigo20" display="text"  />
+			  	<h:outputLabel value="Fecha Inicia:" />
+				<p:calendar id="codigo21" value="#{planificacionManagedBean.selectedActividad.fechaInicial}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
+        	    <p:message for="codigo21" display="text"  />
+		  		<h:outputLabel value="Fecha Final:" />
+				<p:calendar id="codigo22" value="#{planificacionManagedBean.selectedActividad.fechaFinal}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
+            	<p:message for="codigo22" display="text"  />
+				<h:outputLabel value="Materiales:" />
+				<p:inputText id="codigo23" style="width:225%;" value="#{planificacionManagedBean.selectedActividad.materiales}" />
+				<p:message for="codigo23" display="text"  />
+	            <h:outputLabel value="Estado:" />
+				<p:selectOneMenu id="estado_actividad" style="width:98%; height:25px;" required="true" requiredMessage="Debe seleccionar el estado" value="#{planificacionManagedBean.selectedEstatusActividad}" >  
+					<f:selectItem itemLabel="Seleccione..." itemValue="0" noSelectionOption="true" />
+					<f:selectItems value="#{planificacionManagedBean.catalogoEstatusActividad}" var="estado" itemLabel="#{estado.valor}" itemValue="#{estado.id}" />
+				</p:selectOneMenu>
+				<p:message for="estado_actividad" display="text"  />
+			</h:panelGrid>
+			<h:panelGrid id="modal3" columns="2" cellpadding="15" cellspacing="10" >
+			<h:outputLabel value="Involucrados:" />
+			<p:pickList id="pickList" style="width:50%;" value="#{planificacionManagedBean.involucrados}" addLabel="Agregar" addAllLabel="Agregar todo" removeLabel="Eliminar" removeAllLabel="Eliminar todo" var="involucrado" itemLabel="#{involucrado.nombreCompleto}" itemValue="#{involucrado}" converter="pickListConverter" >
+				<p:ajax event="transfer" listener="#{planificacionManagedBean.onElementTransfer}" update="pickList" />
+			</p:pickList>
+			</h:panelGrid>
+			<div class="contenedor_botones" style="margin-top:20px;margin-bottom:20px;">
+				<p:commandButton value="Cancelar" style="width:80px;height:30px" onclick="PF('dlg3').hide();" immediate="true" />
+				<p:commandButton value="Aceptar" style="width:80px;height:30px" oncomplete="if(!args.validationFailed) {dlg3.hide()} else {dlg3.show()}" update=":actividadesForm, :actividadesDataTableForm" action="#{planificacionManagedBean.actualizarActividad(planificacionManagedBean.selectedActividad)}" />
+			</div>
+		</h:form>
+		<h:form id="actividadesDataTableForm">
+			<p:dataTable id="actividadesDataTable" paginatorPosition="bottom" emptyMessage="No hay datos para mostrar" var="actividad" value="#{planificacionManagedBean.actividades}" paginator="true" rows="3" rowKey="#{actividad.id}" selectionMode="single" selection="#{planificacionManagedBean.selectedActividad}">
+				<p:ajax event="rowSelect" listener="#{planificacionManagedBean.onActividadSelect}" update=":actividadesForm" />  
+				<p:ajax event="rowUnselect" listener="#{planificacionManagedBean.onActividadUnselect}" />
+				<p:column headerText="Tipo"><h:outputText value="#{actividad.tipo.valor}" /></p:column>
+				<p:column headerText="Inicio"><h:outputText value="#{actividad.fechaInicial}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>
+				<p:column headerText="Fin"><h:outputText value="#{actividad.fechaFinal}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>
+				<p:column headerText="Estado"><h:outputText value="#{actividad.estado.valor}" /></p:column>
+			</p:dataTable>
+		</h:form>
+	</p:dialog>
 </h:body>
 </html>
