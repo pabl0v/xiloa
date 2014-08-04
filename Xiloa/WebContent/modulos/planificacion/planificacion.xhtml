@@ -99,16 +99,16 @@
 						<p:column>
 							<p:splitButton value="Planificar" icon="ui-icon-pencil" title="Gestion de la Planificación" style="display:inline-block;"  >   
 			        	 		<p:separator />
-		                		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITAR_PLANIFICACIONES">                  
+		                		<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_PLANIFICACIONES">                  
 				            		<p:menuitem value="Certificación" onclick="PF('dlg1').show();" update=":planificacionForm" title="Editar Certificación" />
 		    					</sec:authorize>
-		                		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITAR_PLANIFICACIONES">                  
+		                		<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_PLANIFICACIONES">                  
 				            		<p:menuitem value="Requisitos" onclick="PF('dlg4').show();" update=":requisitosForm" title="Ver Requisitos" />
 		    					</sec:authorize>
-		                		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITAR_PLANIFICACIONES">                  
+		                		<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_PLANIFICACIONES">                  
 				            		<p:menuitem value="Unidades" onclick="PF('dlg5').show();" update=":unidadesForm" title="Ver Unidades de Competencia" />
 		    					</sec:authorize>
-		                		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITAR_PLANIFICACIONES">                  
+		                		<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_PLANIFICACIONES">                  
 				            		<p:menuitem value="Actividades" onclick="PF('dlg3').show();" update=":actividadesForm,:actividadesDataTableForm" title="Editar Actividades" />
 		    					</sec:authorize>
 			   				</p:splitButton>
@@ -175,7 +175,9 @@
 			</h:panelGrid>
 			<div class="contenedor_botones" style="margin-top:32px;">
 				<p:commandButton value="Cancelar" style="width:80px;height:30px" onclick="PF('dlg1').hide();" immediate="true" />
-				<p:commandButton value="Aceptar" style="width:80px;height:30px" oncomplete="if(!args.validationFailed) {dlg1.hide()} else {dlg1.show()}" update=":formCertificaciones:certificaciones, :planificacionForm" action="#{planificacionManagedBean.actualizarCertificacion(planificacionManagedBean.selectedCertificacion)}" />
+				<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_PLANIFICACIONES">
+					<p:commandButton value="Aceptar" style="width:80px;height:30px" oncomplete="if(!args.validationFailed) {dlg1.hide()} else {dlg1.show()}" update=":formCertificaciones:certificaciones, :planificacionForm" action="#{planificacionManagedBean.actualizarCertificacion(planificacionManagedBean.selectedCertificacion)}" />
+				</sec:authorize>
 			</div>
 		</h:form>
 	</p:dialog>
@@ -204,12 +206,16 @@
 			<h:panelGrid id="modal3" columns="2" cellpadding="15" cellspacing="10" >
 			<h:outputLabel value="Involucrados:" />
 			<p:pickList id="pickList" style="width:50%;" value="#{planificacionManagedBean.involucrados}" addLabel="Agregar" addAllLabel="Agregar todo" removeLabel="Eliminar" removeAllLabel="Eliminar todo" var="involucrado" itemLabel="#{involucrado.nombreCompleto}" itemValue="#{involucrado}" converter="pickListConverter" >
-				<p:ajax event="transfer" listener="#{planificacionManagedBean.onElementTransfer}" update="pickList" />
+				<sec:authorize ifAnyGranted="ROLE_RIGHT_CREAR_PLANIFICACIONES">
+					<p:ajax event="transfer" listener="#{planificacionManagedBean.onElementTransfer}" update="pickList" />
+				</sec:authorize>/
 			</p:pickList>
 			</h:panelGrid>
 			<div class="contenedor_botones" style="margin-top:20px;margin-bottom:20px;">
 				<p:commandButton value="Cancelar" style="width:80px;height:30px" onclick="PF('dlg3').hide();" immediate="true" />
-				<p:commandButton value="Aceptar" style="width:80px;height:30px" oncomplete="if(!args.validationFailed) {dlg3.hide()} else {dlg3.show()}" update=":actividadesForm, :actividadesDataTableForm" action="#{planificacionManagedBean.actualizarActividad(planificacionManagedBean.selectedActividad)}" />
+				<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_PLANIFICACIONES">
+					<p:commandButton value="Aceptar" style="width:80px;height:30px" oncomplete="if(!args.validationFailed) {dlg3.hide()} else {dlg3.show()}" update=":actividadesForm, :actividadesDataTableForm" action="#{planificacionManagedBean.actualizarActividad(planificacionManagedBean.selectedActividad)}" />
+				</sec:authorize>
 			</div>
 		</h:form>
 		<h:form id="actividadesDataTableForm">

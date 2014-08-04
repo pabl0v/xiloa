@@ -62,8 +62,8 @@ public class EvaluacionManagedBean implements Serializable {
 		Long solicitudId = (Long)FacesUtil.getParametroSession("solicitudId");
 		solicitud = service.getSolicitudById(solicitudId);
 		
-		// si la solicitud esta programada habilitar la evaluacion
-		if(solicitud.getEstatus().getId()==41)
+		// si la solicitud esta enviada, asesoria individual o programada habilitar la evaluacion
+		if(solicitud.getEstatus().getId()==36 || solicitud.getEstatus().getId()==40 || solicitud.getEstatus().getId()==41)
 			setHabilitarEvaluacion(true);
 		else
 			setHabilitarEvaluacion(false);

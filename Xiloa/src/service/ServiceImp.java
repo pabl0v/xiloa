@@ -2,9 +2,7 @@ package service;
 
 import java.math.BigInteger;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -13,16 +11,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,15 +43,12 @@ import model.Contacto;
 import model.Convocatoria;
 import model.Evaluacion;
 import model.EvaluacionGuia;
-import model.EvaluacionGuiaId;
-//import model.EvaluacionUnidad;
 import model.Guia;
 import model.Instrumento;
 import model.Involucrado;
 import model.Laboral;
 import model.Mantenedor;
 import model.Pais;
-import model.Perfil;
 import model.Requisito;
 import model.Rol;
 import model.Solicitud;
@@ -93,8 +84,6 @@ public class ServiceImp implements IService {
 	private IDao<Mantenedor> mantenedorDao;
 	@Autowired
 	private IDao<Actividad> actividadDao;
-	@Autowired	
-	private IDao<Perfil> perfilDao;
 	@Autowired	
 	private IDao<Guia> guiaDao;
 	@Autowired	
@@ -769,8 +758,6 @@ public class ServiceImp implements IService {
 		}
 		if(objeto instanceof Mantenedor)
 			return mantenedorDao.save((Mantenedor)objeto);
-		if(objeto instanceof Perfil)
-			return perfilDao.save((Perfil)objeto);
 		if(objeto instanceof Rol)
 			return rolDao.save((Rol)objeto);
 		if(objeto instanceof Contacto){
@@ -1946,7 +1933,7 @@ public class ServiceImp implements IService {
 		if(solicitud.getEstatus().getId()==36){
 		
 			// buscando instrumentos pendientes de evaluar y que no estén aprobados
-			List<Instrumento> instrumentosPendientes = instrumentoDao.findAllByQuery("select i from instrumentos i where i.estatus='true' and i.certificacionId="+solicitud.getCertificacion().getId()+" and i.tipo.id in (27,28) and not exists (select 1 from evaluaciones e where e.activo='true' and e.aprobado='true' and e.instrumento.id=i.id and e.solicitud.id="+solicitud.getId()+")");
+			List<Instrumento> instrumentosPendientes = instrumentoDao.findAllByQuery("select i from instrumentos i where i.estatus='true' and i.certificacionId="+solicitud.getCertificacion().getId()+" and i.tipo.id in (27,28) and not exists (select 1 from evaluaciones e where e.activo='true' and e.aprobado=1 and e.instrumento.id=i.id and e.solicitud.id="+solicitud.getId()+")");
 		
 			// si no hay instrumentos pendientes de evaluar (prueba de lectura-escritura o diagnostica), autorizar matricula		
 			if(instrumentosPendientes.isEmpty()){

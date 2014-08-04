@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags">
     <h:head>
        <link type="text/css" rel="stylesheet" href="../../resources/css/registro_evaluacion.css"></link>
     </h:head>
@@ -34,8 +35,10 @@
 				<p:messages id="msgEvaluaciones" showDetail="true" autoUpdate="true" closable="true" />				
 				<h:form id="formEvaluaciones">
 					<div class="contenedor_botones" style="margin-top:5px;margin-bottom:20px;float:right;">
-						<p:commandButton value="Agregar" icon="ui-icon-pencil" disabled="#{!evaluacionManagedBean.habilitarEvaluacion}" update=":formAgregarEvaluacion" onclick="PF('dlg2').show();" action="#{evaluacionManagedBean.setInstrumentos(null)}" />
-						<p:commandButton value="Evaluar" icon="ui-icon-star" disabled="#{!evaluacionManagedBean.habilitarEvaluacion}" action="#{evaluacionManagedBean.evaluar}" />
+						<sec:authorize ifAnyGranted="ROLE_RIGHT_AGREGAR_EVALUACIONES">
+							<p:commandButton value="Agregar" icon="ui-icon-pencil" disabled="#{!evaluacionManagedBean.habilitarEvaluacion}" update=":formAgregarEvaluacion" onclick="PF('dlg2').show();" action="#{evaluacionManagedBean.setInstrumentos(null)}" />
+							<p:commandButton value="Evaluar" icon="ui-icon-star" disabled="#{!evaluacionManagedBean.habilitarEvaluacion}" action="#{evaluacionManagedBean.evaluar}" />
+						</sec:authorize>
 						<p:commandButton value="Retornar" icon="ui-icon-arrowrefresh-1-w" action="#{evaluacionManagedBean.retornar}" immediate="true" />
 					</div>
 					<p:dataTable id="dtEvaluaciones" emptyMessage="No hay datos para mostrar"  var="evaluacion" value="#{evaluacionManagedBean.evaluaciones}" rowKey="#{evaluacion.instrumento.id}" selectionMode="single" paginator="true" rows="5" >
@@ -45,9 +48,11 @@
 						<p:column headerText="Fecha" ><h:outputText value="#{evaluacion.fechaEvaluacion}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>
 						<p:column headerText="Puntaje"><h:outputText value="#{evaluacion.puntajeObtenidoLabel}" /></p:column>
 						<p:column headerText="Aprobado"><h:outputText value="#{evaluacion.aprobadoLabel}" /></p:column>
-						<p:column exportable="false" style="width:4%" >
-							<p:commandButton id="editarButton" disabled="#{!evaluacionManagedBean.habilitarEvaluacion}" onclick="PF('dlg3').show();" icon="ui-icon-pencil" title="Editar" update=":formEditarEvaluacion" />  
-				        </p:column>
+						<sec:authorize ifAnyGranted="ROLE_RIGHT_AGREGAR_EVALUACIONES">
+							<p:column exportable="false" style="width:4%" >
+								<p:commandButton id="editarButton" disabled="#{!evaluacionManagedBean.habilitarEvaluacion}" onclick="PF('dlg3').show();" icon="ui-icon-pencil" title="Editar" update=":formEditarEvaluacion" />  
+				        	</p:column>
+				        </sec:authorize>
 	            	</p:dataTable>
 	            </h:form>
 				</div>
@@ -60,9 +65,11 @@
 		             	<p:column headerText="Pregunta"><h:outputText value="#{guia.pk.guia.pregunta}" /></p:column>  
 		                <p:column headerText="Respuesta"><h:outputText value="#{guia.pk.guia.respuesta}" /></p:column>  
 		                <p:column headerText="Puntaje"><h:outputText value="#{guia.puntajeLabel}" /></p:column>
-						<p:column exportable="false" style="width:4%" >
-							<p:commandButton id="editarGuiaButton" disabled="#{!evaluacionManagedBean.habilitarEvaluacion}" onclick="PF('dlg1').show();" icon="ui-icon-pencil" title="Editar" update=":guiaDialogo" />  
-				        </p:column>
+						<sec:authorize ifAnyGranted="ROLE_RIGHT_AGREGAR_EVALUACIONES">
+							<p:column exportable="false" style="width:4%" >
+								<p:commandButton id="editarGuiaButton" disabled="#{!evaluacionManagedBean.habilitarEvaluacion}" onclick="PF('dlg1').show();" icon="ui-icon-pencil" title="Editar" update=":guiaDialogo" />  
+				        	</p:column>
+				        </sec:authorize>
 		            </p:dataTable>
 		            </h:form>		
 	            </div>		

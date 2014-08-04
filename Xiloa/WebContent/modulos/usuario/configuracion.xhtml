@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags">
     <h:head>
        <link type="text/css" rel="stylesheet" href="../../resources/css/configuracion.css"></link>
        <script type="text/javascript" src="../../resources/scripts/configuracion.js"></script>
@@ -41,7 +42,9 @@
 			<h:form id="form_mantenedores">
 			<p:tabView id="tabView1">
 	            <p:tab id="tab1" title="Mantenedores">
-					   <p:commandButton value="Agregar Mantenedor" style="margin-bottom: 5px" update=":mantenedorDialogo" action="#{configuracionManagedBean.nuevoMantenedor}" onclick="PF('dlg1').show();"/>  
+	            		<sec:authorize ifAnyGranted="ROLE_RIGHT_CONFIGURAR_MANTENEDORES">
+							<p:commandButton value="Agregar Mantenedor" style="margin-bottom: 5px" update=":mantenedorDialogo" action="#{configuracionManagedBean.nuevoMantenedor}" onclick="PF('dlg1').show();"/>
+						</sec:authorize>  
 	                   <p:dataTable id="mantenedoresDataTable" emptyMessage="No hay datos para mostrar"  var="mantenedor" value="#{configuracionManagedBean.mantenedores}" selection="#{configuracionManagedBean.selectedMantenedor}" rowKey="#{mantenedor.id}" selectionMode="single" paginator="true" rows="10">
 							<p:ajax event="rowSelect" listener="#{configuracionManagedBean.onRowSelect}" />  
 							<p:ajax event="rowUnselect" listener="#{configuracionManagedBean.onRowUnselect}" />
@@ -50,9 +53,11 @@
 	                      <p:column headerText="Valor"><h:outputText value="#{mantenedor.valor}" /></p:column>
 	                      <p:column headerText="Anterior"><h:outputText value="#{mantenedor.anterior}" /></p:column>
 	                      <p:column headerText="Próximo"><h:outputText value="#{mantenedor.proximo}" /></p:column>
-						  <p:column headerText="Editar" style="width:4%">
-							<p:commandButton id="selectButton" action="#{configuracionManagedBean.editarMantenedor(configuracionManagedBean.selectedMantenedor)}" update=":mantenedorDialogo" icon="ui-icon-pencil" title="Editar" onclick="PF('dlg1').show();"/>  
-						  </p:column>
+	                      <sec:authorize ifAnyGranted="ROLE_RIGHT_CONFIGURAR_MANTENEDORES">
+						  	<p:column headerText="Editar" style="width:4%">
+								<p:commandButton id="selectButton" action="#{configuracionManagedBean.editarMantenedor(configuracionManagedBean.selectedMantenedor)}" update=":mantenedorDialogo" icon="ui-icon-pencil" title="Editar" onclick="PF('dlg1').show();"/>  
+						  	</p:column>
+						  </sec:authorize>
 	                   </p:dataTable>
 	            </p:tab>
 	

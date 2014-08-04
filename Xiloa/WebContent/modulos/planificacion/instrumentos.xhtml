@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags">
     <h:head>
         <link type="text/css" rel="stylesheet" href="../../resources/css/instrumentos.css"></link>
         <script type="text/javascript">  
@@ -33,7 +34,9 @@
         
          <div class="seccion_edicion" style="width: 93%;">
 		          		<h:form id="instrumentos">
-		          		<p:commandButton value="Agregar Instrumento" style="margin-bottom: 5px" update=":modalDialog1, :instrumentoDialogo, :modal2" action="#{instrumentoManagedBean.nuevoInstrumento}" onclick="PF('dlg2').show();"/>
+		          		<sec:authorize ifAnyGranted="ROLE_RIGHT_CONFIGURAR_INSTRUMENTOS">
+		          			<p:commandButton value="Agregar Instrumento" style="margin-bottom: 5px" update=":modalDialog1, :instrumentoDialogo, :modal2" action="#{instrumentoManagedBean.nuevoInstrumento}" onclick="PF('dlg2').show();"/>
+		          		</sec:authorize>
 						<p:dataTable id="instrumentosDataTable" emptyMessage="No hay datos para mostrar" var="var" value="#{instrumentoManagedBean.instrumentos}" paginator="true" rows="4" rowKey="#{var.id}" selectionMode="single">
 							<p:ajax event="rowSelect" listener="#{instrumentoManagedBean.onRowSelect}" update=":guias:display"/>  
 							<p:ajax event="rowUnselect" listener="#{instrumentoManagedBean.onRowUnselect}" update=":guias:display"/>    
@@ -58,16 +61,20 @@
 							<p:column headerText="Puntaje Mínimo"><h:outputText rendered="#{var.cualitativo}" value="#{var.puntajeMinimoCualitativo}" /><h:outputText rendered="#{!var.cualitativo}" value="#{var.puntajeMinimo}" /></p:column>  
 							<p:column headerText="Puntaje Máximo"><h:outputText rendered="#{var.cualitativo}" value="#{var.puntajeMaximoCualitativo}" /><h:outputText rendered="#{!var.cualitativo}" value="#{var.puntajeMaximo}" /></p:column>
 							<p:column headerText="Estado"><h:outputText value="#{var.estatusLabel}" /></p:column>
-							<p:column headerText="Editar" style="width:4%">
-								<p:commandButton id="selectButton" action="#{instrumentoManagedBean.editarInstrumento(instrumentoManagedBean.selectedInstrumento)}" update=":instrumentoDialogo" icon="ui-icon-pencil" title="Editar" onclick="PF('dlg2').show();"/>  
-							</p:column>
+							<sec:authorize ifAnyGranted="ROLE_RIGHT_CONFIGURAR_INSTRUMENTOS">
+								<p:column headerText="Editar" style="width:4%">
+									<p:commandButton id="selectButton" action="#{instrumentoManagedBean.editarInstrumento(instrumentoManagedBean.selectedInstrumento)}" update=":instrumentoDialogo" icon="ui-icon-pencil" title="Editar" onclick="PF('dlg2').show();"/>  
+								</p:column>
+							</sec:authorize>
 						</p:dataTable>
 						</h:form>
 		          </div>
         
 		            <div class="seccion_edicion" style="width: 93%;margin-top:15px">
 		                <h:form styleClass="formulario_inline">
-		                    <p:commandButton value="Agregar guía" update=":guiaDialogo" action="#{instrumentoManagedBean.nuevaGuia}" onclick="PF('dlg1').show();"/> 
+		                	<sec:authorize ifAnyGranted="ROLE_RIGHT_CONFIGURAR_INSTRUMENTOS">
+		                    	<p:commandButton value="Agregar guía" update=":guiaDialogo" action="#{instrumentoManagedBean.nuevaGuia}" onclick="PF('dlg1').show();"/>
+		                    </sec:authorize> 
 		                </h:form>
 						<div class="seccion_interna">
 						<h:form id="guias">
@@ -76,9 +83,11 @@
 		                        <p:column headerText="Respuesta"><h:outputText value="#{guia.respuesta}" /></p:column>  
 		                        <p:column headerText="Puntaje"><h:outputText rendered="#{guia.instrumento.cualitativo}" value="#{guia.pesoPregunta}" /><h:outputText rendered="#{!guia.instrumento.cualitativo}" value="#{guia.puntaje}" /></p:column>  
 		                        <p:column headerText="Estado"><h:outputText value="#{guia.estatusLabel}" /></p:column>
-								<p:column headerText="Editar" style="width:4%">
-									<p:commandButton id="selectButton" action="#{instrumentoManagedBean.editarGuia(instrumentoManagedBean.selectedGuia)}" update=":guiaDialogo" icon="ui-icon-pencil" title="Editar" onclick="PF('dlg1').show();"/>  
-								</p:column>		                        
+								<sec:authorize ifAnyGranted="ROLE_RIGHT_CONFIGURAR_INSTRUMENTOS">
+									<p:column headerText="Editar" style="width:4%">
+										<p:commandButton id="selectButton" action="#{instrumentoManagedBean.editarGuia(instrumentoManagedBean.selectedGuia)}" update=":guiaDialogo" icon="ui-icon-pencil" title="Editar" onclick="PF('dlg1').show();"/>  
+									</p:column>
+								</sec:authorize>		                        
 		                    </p:dataTable>
 		                </h:form>
 		                </div>
