@@ -175,7 +175,7 @@
 			</h:panelGrid>
 			<div class="contenedor_botones" style="margin-top:32px;">
 				<p:commandButton value="Cancelar" style="width:80px;height:30px" onclick="PF('dlg1').hide();" immediate="true" />
-				<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_PLANIFICACIONES">
+				<sec:authorize ifAnyGranted="ROLE_RIGHT_CREAR_PLANIFICACIONES">
 					<p:commandButton value="Aceptar" style="width:80px;height:30px" oncomplete="if(!args.validationFailed) {dlg1.hide()} else {dlg1.show()}" update=":formCertificaciones:certificaciones, :planificacionForm" action="#{planificacionManagedBean.actualizarCertificacion(planificacionManagedBean.selectedCertificacion)}" />
 				</sec:authorize>
 			</div>
@@ -208,12 +208,12 @@
 			<p:pickList id="pickList" style="width:50%;" value="#{planificacionManagedBean.involucrados}" addLabel="Agregar" addAllLabel="Agregar todo" removeLabel="Eliminar" removeAllLabel="Eliminar todo" var="involucrado" itemLabel="#{involucrado.nombreCompleto}" itemValue="#{involucrado}" converter="pickListConverter" >
 				<sec:authorize ifAnyGranted="ROLE_RIGHT_CREAR_PLANIFICACIONES">
 					<p:ajax event="transfer" listener="#{planificacionManagedBean.onElementTransfer}" update="pickList" />
-				</sec:authorize>/
+				</sec:authorize>
 			</p:pickList>
 			</h:panelGrid>
 			<div class="contenedor_botones" style="margin-top:20px;margin-bottom:20px;">
 				<p:commandButton value="Cancelar" style="width:80px;height:30px" onclick="PF('dlg3').hide();" immediate="true" />
-				<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_PLANIFICACIONES">
+				<sec:authorize ifAnyGranted="ROLE_RIGHT_CREAR_PLANIFICACIONES">
 					<p:commandButton value="Aceptar" style="width:80px;height:30px" oncomplete="if(!args.validationFailed) {dlg3.hide()} else {dlg3.show()}" update=":actividadesForm, :actividadesDataTableForm" action="#{planificacionManagedBean.actualizarActividad(planificacionManagedBean.selectedActividad)}" />
 				</sec:authorize>
 			</div>

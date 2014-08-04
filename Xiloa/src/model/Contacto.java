@@ -52,8 +52,8 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 			"and a.certificacion.id=x.id "+
 			"and c.inatec=true "+
 			"and c.rol.id=	case "+
-						"when a.tipo.id in (8,9,10,11) then 8	"+	//evaluador evalua
-						"when a.tipo.id in (6,7) then 7 "+			//evaluador evalua
+						"when a.tipo.id in (8,9,10,11) then 7	"+	//evaluador evalua
+						"when a.tipo.id in (6,7) then 1 "+			//asesor con asesoria grupal e individual
 						"when a.tipo.id in (5) then 3	"+			//tecnico docente matricula
 						"when a.tipo.id in (1,2,3,4) then 4 "+		//informante prematricula y selecciona
 						"else 0 end "+
