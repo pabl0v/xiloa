@@ -113,7 +113,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	
   //Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Ejecuta reporte pre-matricula.
     public void runPreMatricula () throws Exception{
-    	String rptNombre = "pre_matricula";    	
+    	String rptNombre = "prematricula";    	
     	runReporte(rptNombre, true);
     }
     
@@ -128,13 +128,15 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Metodo generico que permite ejecutar reporte.
     public void runReporte(String nombreReporte, boolean desplegar) throws Exception {
     	Map<String,Object> params = new HashMap<String,Object>();
-        	
+        
+    	/*
     	if (this.selectedSolicitud != null){    		
     		params.put("idSolicitud",this.selectedSolicitud.getId());    	
     		service.imprimirReporte(nombreReporte, params, Global.EXPORT_PDF, desplegar);
     	} else
     		FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe seleccionar una solicitud.", true);
-				
+    		*/
+    	service.imprimirReporte(nombreReporte, params, Global.EXPORT_PDF, desplegar);
 	}
     
 	public SelectItem[] getListaCentros(){
@@ -273,11 +275,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	}
 	
 	public void onRowSelect(SelectEvent event) {
-		//setSelectedEvaluacionId((Long)event.getObject());
-		//setEvaluacionGuias(service.getEvaluacionGuiaByEvaluacionId(selectedEvaluacionId));
-		//setSelectedInstrumento((Instrumento) event.getObject());
-		//setSelectedTipoInstrumento(selectedInstrumento.getTipo().getId());
-		//setSelectedUnidad(selectedInstrumento.getUnidad());
+		setSelectedSolicitud((Solicitud) event.getObject());
     }
   
     public void onRowUnselect(UnselectEvent event) {

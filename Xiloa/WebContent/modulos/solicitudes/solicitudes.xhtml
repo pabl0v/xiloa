@@ -20,7 +20,7 @@
 		</div>	
 		<h:form id="formSolicitudes">
         <div id="cabezera">
-            <h2>Solicitudes</h2>
+            <h2>Gestión de Solicitudes</h2>
             <sec:authorize ifAnyGranted="ROLE_RIGHT_CREAR_SOLICITUDES">                  
             <div id="botones_filtro_contenedor">                 
                 <div class="botones_filtro" onclick="window.location='/Xiloa/modulos/solicitudes/registro_solicitud.xhtml'" >
@@ -36,25 +36,48 @@
             </div>
             </sec:authorize>
        </div>
-            
-		<div id="contenedor_filtro">             	
-			<p:splitButton value="Solicitud Candidato" icon="ui-icon-print" title="Generar Solicitud Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runSolicitudCandidato}"  update=":formSolicitudes:msgSolicitudes" >   
+		<div id="contenedor_filtro">
+				<p:splitButton id="accionSplit" value="Acción" icon="ui-icon-pencil" title="Acción a Realizar" style="display:inline-block;"  update=":formSolicitudes:dtSolicitud" >   
+	        		<p:separator />
+	        		<sec:authorize ifAnyGranted="ROLE_RIGHT_CREAR_SOLICITUDES">
+						<p:menuitem value="Enviar Solicitud" title="Enviar Solicitud" action="#{dashBoardSolicitudesManagedBean.enviarSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" update=":formSolicitudes" />
+					</sec:authorize>
+                	<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITAR_PORTAFOLIO">                  
+		            	<p:menuitem value="Editar Solicitud" title="Editar Solicitud" action="#{dashBoardSolicitudesManagedBean.editaSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" disabled="#{!varSolicitudI.editable}" />
+    				</sec:authorize>        	 		
+	        	 	<sec:authorize ifAnyGranted="ROLE_RIGHT_SELECCION">
+	       		 		<p:menuitem value="Autorizar Matricula" title="Autorizar Matricula" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.autorizarMatricula(dashBoardSolicitudesManagedBean.selectedSolicitud)}" update=":formSolicitudes"  />
+	       		 	</sec:authorize>
+	       		 	<sec:authorize ifAnyGranted="ROLE_RIGHT_SELECCION">
+	       		 		<p:menuitem value="Rechazar Solicitud" title="Rechazar Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,3)}" update=":formSolicitudes"  />
+	       		 	</sec:authorize>
+	       		 	<sec:authorize ifAnyGranted="ROLE_RIGHT_SELECCION">
+	       		 		<p:menuitem value="Matricular Candidato" title="Matricular Candidato" style="display:inline-block;" onclick="PF('dlg1').show();" update=":matriculaForm" />
+	       		 	</sec:authorize>
+	       		 	<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_CONVOCATORIA">
+	       		 		<p:menuitem value="Convocar Candidato" title="Convocar Candidato" style="display:inline-block;" onclick="PF('dlg2').show();" update=":convocatoriaForm, :convocatoriaDataTableForm"  />
+	       		 	</sec:authorize>
+	       		 	<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_EVALUACIONES">
+						<p:menuitem value="Evaluar Candidato" title="Evaluar Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.evaluarSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" />
+					</sec:authorize>
+					<sec:authorize ifAnyGranted="ROLE_RIGHT_CREAR_SOLICITUDES">	       		 		
+						<p:menuitem value="Anular Solicitud" title="Anular Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,10)}" update=":formSolicitudes:dtSolicitud" disabled="#{!varSolicitudI.erasable}" />
+					</sec:authorize>
+	   				</p:splitButton>
+			<p:splitButton id="reportesSplit" value="Reportes" icon="ui-icon-print" title="Reportes del Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runSolicitudCandidato}"  update=":formSolicitudes:msgSolicitudes" >   
 				<p:separator />         		   
-				<p:menuitem value="Pre-Matricula" icon="ui-icon-print" title="Generar Formato Pre-Matricula" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runPreMatricula}" update=":formSolicitudes:msgSolicitudes"  />	       		             
-			       		         	   	       			     			       			  
-			</p:splitButton>           		    			    			    		   
+				<p:menuitem value="Pre-Matricula" icon="ui-icon-print" title="Generar Formato Pre-Matricula" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runPreMatricula}" update=":formSolicitudes:msgSolicitudes"  />			       		         	   	       			     			       			  
+			</p:splitButton>
 		</div>
         <div id="contenedor_tabla_solicitudes">     
         	<p:messages id="msgSolicitudes" showDetail="true" autoUpdate="false" closable="true" />        	      
-        	<p:dataTable id="dtSolicitud" widgetVar="dtSolicitudes" emptyMessage="No existen solicitudes activas" 
-							var="varSolicitudI" value="#{dashBoardSolicitudesManagedBean.listaSolicitudes}" 
-							selectionMode="single" rowKey="#{varSolicitudI.id}"
-							selection="#{dashBoardSolicitudesManagedBean.selectedSolicitud}"
-							paginator="true" rows="12"  >
+        	<p:dataTable id="dtSolicitud" widgetVar="dtSolicitudes" emptyMessage="No existen solicitudes activas" var="varSolicitudI" value="#{dashBoardSolicitudesManagedBean.listaSolicitudes}" selectionMode="single" rowKey="#{varSolicitudI.id}" paginator="true" rows="12"  >
+				<p:ajax event="rowSelect" listener="#{dashBoardSolicitudesManagedBean.onRowSelect}" />
+				<p:ajax event="rowUnselect" listener="#{dashBoardSolicitudesManagedBean.onRowUnselect}"/>
 				<!--Las columnas de la tabla-->
-                <p:column id="expedienteColumn" exportable="true" filterBy="#{varSolicitudI.id}" filterMatchMode="contains">
+                <p:column id="expedienteColumn" exportable="true">
                 	<f:facet name="header">  
-            			<h:outputText value="Ticket" />
+            			<h:outputText value="Id" />
         			</f:facet> 
                 	<h:outputText value="#{varSolicitudI.id}" />
                 </p:column>
@@ -90,33 +113,6 @@
         			</f:facet>
                 	<h:outputText value="#{varSolicitudI.estatus.valor}" />
                 </p:column>
-				<p:column>
-					<p:splitButton value="Gestión de Solicitud" icon="ui-icon-pencil" title="Gestion de Solicitud" style="display:inline-block;"  update=":formSolicitudes:dtSolicitud" >   
-	        	 		<p:separator />
-	        	 		<sec:authorize ifAnyGranted="ROLE_RIGHT_CREAR_SOLICITUDES">
-							<p:menuitem value="Enviar Solicitud" title="Enviar Solicitud" action="#{dashBoardSolicitudesManagedBean.enviarSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" update=":formSolicitudes" />
-						</sec:authorize>
-                		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITAR_PORTAFOLIO">                  
-		            		<p:menuitem value="Editar Solicitud" title="Editar Solicitud" action="#{dashBoardSolicitudesManagedBean.editaSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" disabled="#{!varSolicitudI.editable}" />
-    					</sec:authorize>        	 		
-	        	 		<sec:authorize ifAnyGranted="ROLE_RIGHT_SELECCION">
-	       		 			<p:menuitem value="Autorizar Matricula" title="Autorizar Matricula" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.autorizarMatricula(dashBoardSolicitudesManagedBean.selectedSolicitud)}" update=":formSolicitudes"  />
-	       		 		</sec:authorize>
-	       		 		<sec:authorize ifAnyGranted="ROLE_RIGHT_SELECCION">
-	       		 			<p:menuitem value="Rechazar Solicitud" title="Rechazar Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,3)}" update=":formSolicitudes"  />
-	       		 		</sec:authorize>
-	       		 		<sec:authorize ifAnyGranted="ROLE_RIGHT_SELECCION">
-	       		 			<p:menuitem value="Matricular Candidato" title="Matricular Candidato" style="display:inline-block;" onclick="PF('dlg1').show();" update=":matriculaForm" />
-	       		 		</sec:authorize>
-	       		 		<p:menuitem value="Convocar Candidato" title="Convocar Candidato" style="display:inline-block;" onclick="PF('dlg2').show();" update=":convocatoriaForm, :convocatoriaDataTableForm"  />
-	       		 		<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_EVALUACIONES">
-							<p:menuitem value="Evaluar Candidato" title="Evaluar Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.evaluarSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" />
-						</sec:authorize>
-						<sec:authorize ifAnyGranted="ROLE_RIGHT_CREAR_SOLICITUDES">	       		 		
-							<p:menuitem value="Anular Solicitud" title="Anular Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,10)}" update=":formSolicitudes:dtSolicitud" disabled="#{!varSolicitudI.erasable}" />
-						</sec:authorize>
-	   				</p:splitButton>
-				</p:column>
             </p:dataTable>
         </div>
      </h:form>
@@ -168,8 +164,10 @@
 				<p:message for="selector_estatus3" display="text" />
 			</h:panelGrid>
 			<div class="contenedor_botones" style="margin-top:32px;">
-				<p:commandButton value="Aceptar" style="width:80px;height:30px" oncomplete="if(args.validationFailed) {dlg2.show()}" update=":convocatoriaForm, :convocatoriaDataTableForm" action="#{dashBoardSolicitudesManagedBean.registrarConvocatoria(dashBoardSolicitudesManagedBean.selectedConvocatoria)}" />
-				<p:commandButton value="Nuevo" style="width:80px;height:30px" update=":convocatoriaForm" action="#{dashBoardSolicitudesManagedBean.nuevaConvocatoria}" />
+				<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITAR_CONVOCATORIA">
+					<p:commandButton value="Nuevo" style="width:80px;height:30px" update=":convocatoriaForm" action="#{dashBoardSolicitudesManagedBean.nuevaConvocatoria}" />
+					<p:commandButton value="Aceptar" style="width:80px;height:30px" oncomplete="if(args.validationFailed) {dlg2.show()}" update=":convocatoriaForm, :convocatoriaDataTableForm" action="#{dashBoardSolicitudesManagedBean.registrarConvocatoria(dashBoardSolicitudesManagedBean.selectedConvocatoria)}" />
+				</sec:authorize>
 			</div>
 		</h:form>
 			<br/>

@@ -30,7 +30,6 @@ import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;  
-import net.sf.jasperreports.view.JasperViewer;
 
 @Component
 @Scope(value="request")
@@ -48,35 +47,27 @@ public class ControlGenericoReporte implements java.io.Serializable{
 	private Connection conn;
 	
 	public ControlGenericoReporte (){
-		
 	}
-	
 	
 	public Connection getConn() {
 		return conn;
 	}
 
-
 	public void setConn(Connection conn) {
 		this.conn = conn;
 	}
-
 
 	public String getReportFile() {
 		return reportFile;
 	}
 
-	
-
 	public File getFile() {
 		return file;
 	}
 
-
 	public void setFile(File file) {
 		this.file = file;
 	}
-
 
 	public void setReportFile(String reportFile) {
 		this.reportFile = reportFile;
@@ -87,7 +78,7 @@ public class ControlGenericoReporte implements java.io.Serializable{
 		Map<String,Object> parametro = params;
 	try {	    
 		parametro.put("logoinatec", new String("../../resources/imagenes/logo INATEC.png")); //Parametro que contiene la ubicacion del logo de INATEC
-		reportFile = path  + "/" + nombreReporte;		
+		reportFile = path + "\\" + nombreReporte;		
 		System.out.println("Imprime el reporte: " + reportFile);
 		formatoAplicacion = getContentType(formato);		
 		exportMode = formato;
