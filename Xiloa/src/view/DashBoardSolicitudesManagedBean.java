@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.faces.model.SelectItem;
 
+import model.Contacto;
 import model.Convocatoria;
 import model.Evaluacion;
 import model.EvaluacionGuia;
@@ -45,6 +46,10 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	private Long selectedEvaluacionId;
 	private EvaluacionGuia selectedEvaluacionGuia;
 	private List<EvaluacionGuia> evaluacionGuias;
+	private Solicitud solicitud;
+	private Contacto solicitante;
+	private Map<Integer, Item> centros;
+	private Map<Long, Item> certificaciones;
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Constructor de la clase
 	public DashBoardSolicitudesManagedBean() {		
@@ -53,6 +58,34 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		selectedSolicitud = new Solicitud();
 		involucrados = new ArrayList<Item>();
 		evaluacionGuias = new ArrayList<EvaluacionGuia>();
+		solicitud = new Solicitud();
+		solicitante = new Contacto();
+		centros = new HashMap<Integer, Item>();
+		certificaciones = new HashMap<Long, Item>();
+	}
+	
+	public List<Item> getCentros(){
+		return new ArrayList<Item>(centros.values());
+	}
+	
+	public List<Item> getCertificaciones(){
+		return new ArrayList<Item>(certificaciones.values());
+	}
+	
+	public Contacto getSolicitante(){
+		return solicitante;
+	}
+	
+	public void setSolicitante(Contacto solicitante){
+		this.solicitante = solicitante;
+	}
+	
+	public Solicitud getSolicitud(){
+		return solicitud;
+	}
+	
+	public void setSolicitud(Solicitud solicitud){
+		this.solicitud = solicitud;
 	}
 	
 	public List<Solicitud> getListaSolicitudes() {
@@ -214,7 +247,6 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	}
 	
 	public List<EvaluacionGuia> getEvaluacionGuias(Long evaluacionId){
-		//return service.getEvaluacionGuiaByEvaluacionId(evaluacionId);
 		return evaluacionGuias;
 	}
 	
@@ -279,5 +311,8 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
     }
   
     public void onRowUnselect(UnselectEvent event) {
+    }
+    
+    public void registrarSolicitud(Solicitud solicitud, Contacto solicitante){
     }
 }
