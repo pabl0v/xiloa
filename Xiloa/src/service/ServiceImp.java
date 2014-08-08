@@ -1749,7 +1749,7 @@ public class ServiceImp implements IService {
 			aprobado = false;
 		else {
 			for (Evaluacion eval : listaEval){
-				if (eval.getAprobado() != 1){
+				if (eval.getAprobado() != true){
 					aprobado = false;
 					break;
 				}

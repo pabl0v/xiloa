@@ -13,11 +13,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.Formula;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -35,12 +36,10 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 @Table(name = "evaluaciones", schema = "sccl")
 @NamedQueries({
 	@NamedQuery(name="Evaluacion.findAllPendientesByFirstSolicitudByContactoId", query="select e from evaluaciones e where e.solicitud.contacto.id=?1 and e.solicitud.id=(select min(x.id) from solicitudes x where x.contacto=e.solicitud.contacto and x.estatus.id!=76) order by e.id desc"),
-	@NamedQuery(name="Evaluacion.findAllPendientesBySolicitudId", query="select e from evaluaciones e where e.solicitud.id=?1 and e.aprobado=1 and e.activo=true order by e.id desc"),
+	@NamedQuery(name="Evaluacion.findAllPendientesBySolicitudId", query="select e from evaluaciones e where e.solicitud.id=?1 and e.vista.aprobado=true and e.activo=true order by e.id desc"),
 	@NamedQuery(name="Evaluacion.findAllBySolicitudId", query="select e from evaluaciones e where e.solicitud.id=?1 and e.activo='true' order by e.id desc"),
 	@NamedQuery(name="Evaluacion.findById", query="select e from evaluaciones e where e.id=?1"),
-	@NamedQuery(name="Evaluacion.findAllBySolicitudUCL", query="select e from evaluaciones e inner join fetch e.solicitud s where s.id=?1 and e.instrumento.unidad=?2"),
-	//dchavez: 01/03/2014. NamedQuery para obtener el resumen de aprobado/reprobado por cada unidad de competencia evaluada en una solicitud.
-	@NamedQuery(name="Evaluacion.findAllUnidadesBySolicitudId", query="select new support.Item(e.instrumento.unidad, min(case e.aprobado when true then '1' else '0' end)) from evaluaciones e where e.solicitud.id=?1 group by e.instrumento.unidad having count(e.id)>2 order by 1")
+	@NamedQuery(name="Evaluacion.findAllBySolicitudUCL", query="select e from evaluaciones e inner join fetch e.solicitud s where s.id=?1 and e.instrumento.unidad=?2")
 })
 public class Evaluacion implements Serializable {
 
@@ -52,43 +51,39 @@ public class Evaluacion implements Serializable {
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="evaluacion_solicitud_id", nullable = false)
+	@JoinColumn(name="solicitud_id", nullable = false)
 	private Solicitud solicitud;
 
 	@ManyToOne
-	@JoinColumn(name="evaluacion_instrumento_id", nullable = false)
+	@JoinColumn(name="instrumento_id", nullable = false)
 	private Instrumento instrumento;
 				
 	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "evaluacion_fecha", nullable = false)
+	@Column(name = "fecha", nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Date fechaEvaluacion;
 	
-	@Column(name = "evaluacion_puntaje_minimo", nullable = false, precision=10, scale=2)	
+	@Column(name = "puntaje_minimo", nullable = false, precision=10, scale=2)	
 	private Float puntajeMinimo;
 	
-	@Column(name = "evaluacion_puntaje_maximo", nullable = false, precision=10, scale=2)	
+	@Column(name = "puntaje_maximo", nullable = false, precision=10, scale=2)	
 	private Float puntajeMaximo;
 	
-	@Formula("(select coalesce(sum(coalesce(g.puntaje,0)),0) from sccl.evaluacion_guia g where g.evaluacion_id = evaluacion_id)")
-	private Float puntajeObtenido;
+	@OneToOne
+	@PrimaryKeyJoinColumn(name="evaluacion_id")
+	private VistaEvaluacion vista;
 	
-	@Formula("(select coalesce(case when sum(coalesce(g.puntaje,0))>=evaluacion_puntaje_minimo then 1 else 0 end, 0) from sccl.evaluacion_guia g where g.evaluacion_id = evaluacion_id)")
-	private Integer aprobado;
-
-	@Column(name = "evaluacion_observaciones", nullable = true)
+	@Column(name = "observaciones", nullable = true)
 	private String observaciones;
 	
-	@Column(name = "evaluacion_activo", nullable = false)
+	@Column(name = "activo", nullable = false)
 	private boolean activo = true;
 			
 	public Evaluacion() {
 		super();
 		this.activo = true;
-		this.aprobado = 0;
 		this.puntajeMinimo = new Float(0);
 		this.puntajeMaximo = new Float(0);
-		this.puntajeObtenido = new Float(0);
 	}
 
 	public Evaluacion(Solicitud solicitud, Instrumento instrumento, Date fecha, Float puntajeMinimo, Float puntajeMaximo, String observaciones, boolean activo) {
@@ -98,8 +93,6 @@ public class Evaluacion implements Serializable {
 		this.fechaEvaluacion = fecha;
 		this.puntajeMinimo = puntajeMinimo;
 		this.puntajeMaximo = puntajeMaximo;
-		this.puntajeObtenido = new Float(0);
-		this.aprobado = 0;
 		this.observaciones = observaciones;
 		this.activo = activo;
 	}	
@@ -160,6 +153,10 @@ public class Evaluacion implements Serializable {
 		this.puntajeMaximo = puntajeMaximo;
 	}
 	
+	public VistaEvaluacion getVistaEvaluacion(){
+		return vista;
+	}
+	
 	public String getObservaciones(){
 		return observaciones;
 	}
@@ -176,23 +173,23 @@ public class Evaluacion implements Serializable {
 		return this.activo;
 	}	
 	
-	public Integer getAprobado() {
-		return this.aprobado;
+	public boolean getAprobado() {
+		return this.vista.isAprobado();
 	}
 	
 	public String getAprobadoLabel(){
-		if(this.aprobado==1)
+		if(this.vista.isAprobado())
 			return "SI";
 		else
 			return "NO";
 	}
 	
 	public Float getPuntajeObtenido(){
-		return this.puntajeObtenido;
+		return this.vista.getPuntajeObtenido();
 	}
 	
 	public String getPuntajeObtenidoLabel(){
-		return String.format("%.2f", (double)puntajeObtenido);
+		return String.format("%.2f", (double)this.vista.getPuntajeObtenido());
 	}
 
 	public Long getUnidad() {

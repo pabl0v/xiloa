@@ -135,7 +135,7 @@
 			</div>
 		</h:form>
 	</p:dialog>
-	<p:dialog id="modalConvocatoria" header="Registro de Convocatorias:" widgetVar="dlg2" modal="true" resizable="false" width="700" height="480">
+	<p:dialog id="modalConvocatoria" header="Registro de Convocatorias:" widgetVar="dlg2" modal="true" resizable="false" width="700" height="500">
 		<h:form id="convocatoriaForm">
 			<br/>
 			<p:inputText rendered="false" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.id}" />
@@ -156,6 +156,12 @@
 					<f:selectItems value="#{dashBoardSolicitudesManagedBean.involucrados}" var="involucrado" itemLabel="#{involucrado.descripcion}" itemValue="#{involucrado.id}" />
 				</p:selectOneMenu>
 				<p:message for="selector_estatus2" display="text" />
+				<h:outputLabel value="Centro:" />
+				<p:inputText id="centro" style="width:98%;" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.centro}" required="true" requiredMessage="Centro requerido" />
+				<p:message for="centro" display="text" />
+				<h:outputLabel value="Lugar:" />
+				<p:inputText id="lugar" style="width:98%;" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.lugar}" required="true" requiredMessage="Lugar requerido" />
+				<p:message for="lugar" display="text" />				
 				<h:outputLabel value="Estado:" />
 				<p:selectOneMenu id="selector_estatus3" style="width:100%;" required="true" requiredMessage="Seleccione el estado" styleClass="selector_status_estilo" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.estadoId}" >  
 					<f:selectItem itemLabel="Seleccione..." itemValue="" noSelectionOption="true" />

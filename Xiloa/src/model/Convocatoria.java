@@ -17,7 +17,6 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.Formula;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 /**
  * 
@@ -43,19 +42,16 @@ public class Convocatoria implements Serializable {
 	@Column(name = "convocatoria_id", nullable = false)
 	private Long id;
 	
-	@NotNull
-	@Column(name="solicitud_id", nullable = false)	
+	@Column(name="solicitud_id", nullable = false)
 	private Long solicitudId;
 	
-	@NotNull
-	@Column(name="actividad_id", nullable = false)	
+	@Column(name="actividad_id", nullable = false)
 	private Long actividadId;
 	
 	@Formula("(select a.actividad_nombre from sccl.actividades a where a.actividad_id = actividad_id)")
 	private String actividadNombre;
 	
-	@NotNull
-	@Column(name="contacto_id", nullable = false)	
+	@Column(name="contacto_id", nullable = false)
 	private Long contactoId;
 	
 	@Formula("(select c.nombre_completo from sccl.contactos c where c.contacto_id = contacto_id)")
@@ -65,9 +61,14 @@ public class Convocatoria implements Serializable {
 	@Column(name = "fecha_programacion", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fecha;
+	
+	@Column(name="centro", nullable = false)
+	private String centro;
+	
+	@Column(name="lugar", nullable = false)
+	private String lugar;
 
-	@NotNull
-	@Column(name="estado_id", nullable = false)	
+	@Column(name="estado_id", nullable = false)
 	private Integer estadoId;
 
 	@Formula("(select m.mantenedor_valor from sccl.mantenedores m where m.mantenedor_id = estado_id)")
@@ -77,11 +78,13 @@ public class Convocatoria implements Serializable {
 		super();
 	}
 
-	public Convocatoria(Long solicitud, Long actividad, Long contacto, Date fecha, Integer estado){
+	public Convocatoria(Long solicitud, Long actividad, Long contacto, Date fecha, String centro, String lugar, Integer estado){
 		this.solicitudId = solicitud;
 		this.actividadId = actividad;
 		this.contactoId = contacto;
 		this.fecha = fecha;
+		this.centro = centro;
+		this.lugar = lugar;
 		this.estadoId = estado;
 	}
 	
@@ -131,6 +134,22 @@ public class Convocatoria implements Serializable {
 
 	public void setFecha(Date fecha) {
 		this.fecha = fecha;
+	}
+	
+	public String getCentro(){
+		return centro;
+	}
+	
+	public void setCentro(String centro){
+		this.centro = centro;
+	}
+	
+	public String getLugar(){
+		return lugar;
+	}
+	
+	public void setLugar(String lugar){
+		this.lugar = lugar;
 	}
 
 	public Integer getEstadoId() {
