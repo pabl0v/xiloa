@@ -36,11 +36,27 @@
             	</div>
             </sec:authorize>
         </div>
-      
+		<div>
+			<p:splitButton id="planificarSplit" value="Planificar" disabled="#{!planificacionManagedBean.habilitarMenu}" icon="ui-icon-pencil" title="Gestion de la Planificación" style="display:inline-block;"  >   
+				<p:separator />
+					<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_PLANIFICACIONES">                  
+						<p:menuitem value="Certificación" onclick="PF('dlg1').show();" update=":planificacionForm" title="Editar Certificación" />
+					</sec:authorize>
+					<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_PLANIFICACIONES">                  
+						<p:menuitem value="Requisitos" onclick="PF('dlg4').show();" update=":requisitosForm" title="Ver Requisitos" />
+					</sec:authorize>
+					<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_PLANIFICACIONES">                  
+						<p:menuitem value="Unidades" onclick="PF('dlg5').show();" update=":unidadesForm" title="Ver Unidades de Competencia" />
+					</sec:authorize>
+					<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_PLANIFICACIONES">                  
+						<p:menuitem value="Actividades" onclick="PF('dlg3').show();" update=":actividadesForm,:actividadesDataTableForm" title="Editar Actividades" />
+					</sec:authorize>
+			</p:splitButton>
+		</div>
         <div id="contenedor_tabla_planificacion" style="margin-top:10px;">
                 <p:dataTable id="certificaciones" widgetVar="certificaciones" emptyMessage="No hay datos para mostrar" var="certificacion" value="#{planificacionManagedBean.certificaciones}" paginator="true" rows="12" rowKey="#{certificacion.id}" selectionMode="single">
-						<p:ajax event="rowSelect" listener="#{planificacionManagedBean.onCertificacionSelect}" />  
-						<p:ajax event="rowUnselect" listener="#{planificacionManagedBean.onCertificacionUnselect}" />
+						<p:ajax event="rowSelect" listener="#{planificacionManagedBean.onCertificacionSelect}" update=":formCertificaciones:planificarSplit" />  
+						<p:ajax event="rowUnselect" listener="#{planificacionManagedBean.onCertificacionUnselect}" update=":formCertificaciones:planificarSplit" />
                         <!--Las columnas de la tabla-->
                         <p:column exportable="true">
                         	<f:facet name="header">  
@@ -96,23 +112,6 @@
         					</f:facet> 
                         	<h:outputText value="#{certificacion.estatus.valor}" />
                         </p:column>
-						<p:column>
-							<p:splitButton value="Planificar" icon="ui-icon-pencil" title="Gestion de la Planificación" style="display:inline-block;"  >   
-			        	 		<p:separator />
-		                		<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_PLANIFICACIONES">                  
-				            		<p:menuitem value="Certificación" onclick="PF('dlg1').show();" update=":planificacionForm" title="Editar Certificación" />
-		    					</sec:authorize>
-		                		<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_PLANIFICACIONES">                  
-				            		<p:menuitem value="Requisitos" onclick="PF('dlg4').show();" update=":requisitosForm" title="Ver Requisitos" />
-		    					</sec:authorize>
-		                		<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_PLANIFICACIONES">                  
-				            		<p:menuitem value="Unidades" onclick="PF('dlg5').show();" update=":unidadesForm" title="Ver Unidades de Competencia" />
-		    					</sec:authorize>
-		                		<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_PLANIFICACIONES">                  
-				            		<p:menuitem value="Actividades" onclick="PF('dlg3').show();" update=":actividadesForm,:actividadesDataTableForm" title="Editar Actividades" />
-		    					</sec:authorize>
-			   				</p:splitButton>
-						</p:column>
                 </p:dataTable>
 			</div>
 		</h:form>
@@ -197,11 +196,8 @@
 				<p:inputText id="codigo23" style="width:225%;" value="#{planificacionManagedBean.selectedActividad.materiales}" />
 				<p:message for="codigo23" display="text"  />
 	            <h:outputLabel value="Estado:" />
-				<p:selectOneMenu id="estado_actividad" style="width:98%; height:25px;" required="true" requiredMessage="Debe seleccionar el estado" value="#{planificacionManagedBean.selectedEstatusActividad}" >  
-					<f:selectItem itemLabel="Seleccione..." itemValue="0" noSelectionOption="true" />
-					<f:selectItems value="#{planificacionManagedBean.catalogoEstatusActividad}" var="estado" itemLabel="#{estado.valor}" itemValue="#{estado.id}" />
-				</p:selectOneMenu>
-				<p:message for="estado_actividad" display="text"  />
+				<p:inputText id="codigo24" readonly="true" style="width:100%;" value="#{planificacionManagedBean.selectedActividad.estado.valor}" />	            
+				<p:message for="codigo24" display="text"  />
 			</h:panelGrid>
 			<h:panelGrid id="modal3" columns="2" cellpadding="15" cellspacing="10" >
 			<h:outputLabel value="Involucrados:" />

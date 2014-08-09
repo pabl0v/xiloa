@@ -50,6 +50,8 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	private Contacto solicitante;
 	private Map<Integer, Item> centros;
 	private Map<Long, Item> certificaciones;
+	private boolean habilitarAcciones;
+	private boolean habilitarReportes;
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Constructor de la clase
 	public DashBoardSolicitudesManagedBean() {		
@@ -62,6 +64,8 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		solicitante = new Contacto();
 		centros = new HashMap<Integer, Item>();
 		certificaciones = new HashMap<Long, Item>();
+		setHabilitarAcciones(false);
+		setHabilitarReportes(false);
 	}
 	
 	public List<Item> getCentros(){
@@ -306,11 +310,31 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		return "/modulos/solicitudes/registro_evaluacion?faces-redirect=true";
 	}
 	
+	public boolean getHabilitarAcciones(){
+		return habilitarAcciones;
+	}
+	
+	public void setHabilitarAcciones(boolean accion){
+		this.habilitarAcciones = accion;
+	}
+	
+	public boolean getHabilitarReportes(){
+		return habilitarReportes;
+	}
+	
+	public void setHabilitarReportes(boolean accion){
+		this.habilitarReportes = accion;
+	}
+	
 	public void onRowSelect(SelectEvent event) {
 		setSelectedSolicitud((Solicitud) event.getObject());
+		setHabilitarAcciones(true);
+		setHabilitarReportes(true);
     }
   
     public void onRowUnselect(UnselectEvent event) {
+    	setHabilitarAcciones(false);
+    	setHabilitarReportes(false);
     }
     
     public void registrarSolicitud(Solicitud solicitud, Contacto solicitante){

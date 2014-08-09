@@ -56,24 +56,22 @@ public class PlanificacionManagedBean implements Serializable {
 	private Integer selectedEstatusCertificacion;
 	private List<Actividad> actividades;
 	private Actividad selectedActividad;
-	private Map<Integer, Mantenedor> catalogoEstatusActividad;
-	private Integer selectedEstatusActividad;
 	private DualListModel<Contacto> involucrados;
+	private boolean habilitarMenu;
 
 	public PlanificacionManagedBean(){
 		super();
 		certificaciones = new ArrayList<Certificacion>();
 		catalogoEstatusCertificacion = new HashMap<Integer, Mantenedor>();
-		catalogoEstatusActividad = new HashMap<Integer, Mantenedor>();
 		actividades = new ArrayList<Actividad>();
 		involucrados = new DualListModel<Contacto>();
+		setHabilitarMenu(false);
 	}
 	
 	@PostConstruct
 	private void init(){
 		certificaciones = service.getCertificaciones(controller.getEntidadUsuario());
 		catalogoEstatusCertificacion = service.getMapMantenedoresByTipo("3");
-		catalogoEstatusActividad = service.getMapMantenedoresByTipo("2");
 		setInvolucrados(new DualListModel<Contacto>(new ArrayList<Contacto>(), new ArrayList<Contacto>()));
 	}
 	
@@ -113,18 +111,6 @@ public class PlanificacionManagedBean implements Serializable {
 		this.selectedCompetencia = selectedCompetencia;
 	}
 	
-	public List<Mantenedor> getCatalogoEstatusActividad() {
-		return new ArrayList<Mantenedor>(this.catalogoEstatusActividad.values());
-	}
-	
-	public Integer getSelectedEstatusActividad() {
-		return selectedEstatusActividad;
-	}
-	
-	public void setSelectedEstatusActividad(Integer estatus){
-		this.selectedEstatusActividad = estatus;
-	}
-	
 	public List<Actividad> getActividades(){
 		return actividades;
 	}
@@ -139,10 +125,6 @@ public class PlanificacionManagedBean implements Serializable {
 	
 	public void setSelectedActividad(Actividad actividad){
 		this.selectedActividad = actividad;
-		if(selectedActividad.getId() == null)
-			setSelectedEstatusActividad(null);
-		else
-			setSelectedEstatusActividad(selectedActividad.getEstado().getId());
 	}
 	
 	public DualListModel<Contacto> getInvolucrados(){
@@ -155,11 +137,18 @@ public class PlanificacionManagedBean implements Serializable {
 	
 	public void onActividadSelect(SelectEvent event){
 		setSelectedActividad((Actividad) event.getObject());
-		setSelectedEstatusActividad(selectedActividad.getEstado().getId());
 		setInvolucrados(new DualListModel<Contacto>(service.getInvolucradosNotInActividadId(selectedActividad.getId()), service.getInvolucradosInActividadId(selectedActividad.getId())));		
 	}
 	
 	public void onActividadUnselect(SelectEvent event){		
+	}
+	
+	public boolean getHabilitarMenu(){
+		return habilitarMenu;
+	}
+	
+	public void setHabilitarMenu(boolean accion){
+		this.habilitarMenu = accion;
 	}
 	
 	public void onCertificacionSelect(SelectEvent event){
@@ -167,9 +156,11 @@ public class PlanificacionManagedBean implements Serializable {
 		setSelectedEstatusCertificacion(selectedCertificacion.getEstatus().getId());
 		setActividades(service.getActividades(selectedCertificacion.getId()));
 		setSelectedActividad(new Actividad());
+		setHabilitarMenu(true);
 	}
 	
-	public void onCertificacionUnselect(SelectEvent event){		
+	public void onCertificacionUnselect(SelectEvent event){
+		setHabilitarMenu(false);
 	}
 	
 	public void onElementTransfer(TransferEvent event){
@@ -196,7 +187,6 @@ public class PlanificacionManagedBean implements Serializable {
 	}
 	
 	public void actualizarActividad(Actividad actividad){
-		actividad.setEstado(catalogoEstatusActividad.get(selectedEstatusActividad));
 		service.guardar(actividad);
 	}
 	
@@ -232,10 +222,7 @@ public class PlanificacionManagedBean implements Serializable {
 		certificacion.setEstatus(catalogoEstatusCertificacion.get(selectedEstatusCertificacion));
 		service.guardar(certificacion);
 	}
-	
-	public void onRowSelectCompetencia(SelectEvent event) {  
-    }
-	
+			
 	public List<Requisito> getRequisitos(Long certificacionId){
 		return service.getRequisitos(certificacionId);
 	}

@@ -13,7 +13,7 @@ import org.hibernate.annotations.Immutable;
  * 
  * Entity Bean anotado con JPA para el manejo del mapeo Objeto/Relacional y la persistencia en BD
  * Esta clase es usada extensivamente por el servicio (paquete service)
- * Esta clase se corresponde con la vista sccl.evaluaciones_view 
+ * Esta clase se corresponde con la vista sccl.vista_evaluaciones 
  * 
  */
 

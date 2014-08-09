@@ -718,7 +718,7 @@ public class ServiceImp implements IService {
 		// guarda las actividades de la certificacion
 		List<Mantenedor> actividades = getMantenedoresByTipo(1);
 		for(Mantenedor actividad : actividades){
-			actividadDao.save(new Actividad(certificacion, actividad, actividad.getValor(),"A completar",null,null,null,new Date(),null,null,certificacion.getCreador(),getMantenedorById(12)));
+			actividadDao.save(new Actividad(certificacion, actividad, actividad.getValor(),"A completar",null,null,null,new Date(),null,null,certificacion.getCreador(),getMantenedorById(13)));
 		}
 				
 		return certificacion;

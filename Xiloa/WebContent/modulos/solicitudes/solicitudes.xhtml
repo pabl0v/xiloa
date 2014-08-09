@@ -37,7 +37,7 @@
             </sec:authorize>
        </div>
 		<div id="contenedor_filtro">
-				<p:splitButton id="accionSplit" value="Acción" icon="ui-icon-pencil" title="Acción a Realizar" style="display:inline-block;"  update=":formSolicitudes:dtSolicitud" >   
+			<p:splitButton id="accionSplit" disabled="#{!dashBoardSolicitudesManagedBean.habilitarAcciones}" value="Acciones" icon="ui-icon-pencil" title="Acción a Realizar" style="display:inline-block;"  update=":formSolicitudes:dtSolicitud" >   
 	        		<p:separator />
 	        		<sec:authorize ifAnyGranted="ROLE_RIGHT_CREAR_SOLICITUDES">
 						<p:menuitem value="Enviar Solicitud" title="Enviar Solicitud" action="#{dashBoardSolicitudesManagedBean.enviarSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" update=":formSolicitudes" />
@@ -63,8 +63,8 @@
 					<sec:authorize ifAnyGranted="ROLE_RIGHT_CREAR_SOLICITUDES">	       		 		
 						<p:menuitem value="Anular Solicitud" title="Anular Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,10)}" update=":formSolicitudes:dtSolicitud" disabled="#{!varSolicitudI.erasable}" />
 					</sec:authorize>
-	   				</p:splitButton>
-			<p:splitButton id="reportesSplit" value="Reportes" icon="ui-icon-print" title="Reportes del Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runSolicitudCandidato}"  update=":formSolicitudes:msgSolicitudes" >   
+	   		</p:splitButton>
+			<p:splitButton id="reportesSplit" disabled="#{!dashBoardSolicitudesManagedBean.habilitarReportes}" value="Reportes" icon="ui-icon-print" title="Reportes del Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runSolicitudCandidato}"  update=":formSolicitudes:msgSolicitudes" >   
 				<p:separator />         		   
 				<p:menuitem value="Pre-Matricula" icon="ui-icon-print" title="Generar Formato Pre-Matricula" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runPreMatricula}" update=":formSolicitudes:msgSolicitudes"  />			       		         	   	       			     			       			  
 			</p:splitButton>
@@ -72,8 +72,8 @@
         <div id="contenedor_tabla_solicitudes">     
         	<p:messages id="msgSolicitudes" showDetail="true" autoUpdate="false" closable="true" />        	      
         	<p:dataTable id="dtSolicitud" widgetVar="dtSolicitudes" emptyMessage="No existen solicitudes activas" var="varSolicitudI" value="#{dashBoardSolicitudesManagedBean.listaSolicitudes}" selectionMode="single" rowKey="#{varSolicitudI.id}" paginator="true" rows="12"  >
-				<p:ajax event="rowSelect" listener="#{dashBoardSolicitudesManagedBean.onRowSelect}" />
-				<p:ajax event="rowUnselect" listener="#{dashBoardSolicitudesManagedBean.onRowUnselect}"/>
+				<p:ajax event="rowSelect" listener="#{dashBoardSolicitudesManagedBean.onRowSelect}" update=":formSolicitudes:accionSplit,:formSolicitudes:reportesSplit" />
+				<p:ajax event="rowUnselect" listener="#{dashBoardSolicitudesManagedBean.onRowUnselect}" update=":formSolicitudes:accionSplit,:formSolicitudes:reportesSplit" />
 				<!--Las columnas de la tabla-->
                 <p:column id="expedienteColumn" exportable="true">
                 	<f:facet name="header">  
