@@ -295,7 +295,10 @@ select	p.certificacion_ifp_id centro_id,
 	d.nombre departamento,
 	c.direccion_actual direccion,
 	case when c.sexo_id=1 then 'F' else 'M' end sexo,
+	p.certificacion_id certificacion_id,
 	p.certificacion_nombre certificacion,
+	p.certificacion_curso_id curso_id,
+	p.certificacion_estructura_id estructura_id,
 	n.descripcion_nivel nivel,
 	s.experiencia experiencia,
 	s.situacion_laboral labora
@@ -318,6 +321,39 @@ from	sccl.solicitudes s
 	inner join
 	registro_cobranza.catalogo_nivel_academico n
 	on n.id_nivel_academico=s.escolaridad_id
+
+--buscando al asesor grupal, asesor individual, evaluador y verificador de una solicitud
+
+create view sccl.vista_involucrados as
+select	s.solicitud_id solicitud_id,
+	a.actividad_tipo_id actividad_tipo_id,
+	x.contacto_id contacto_id,
+	x.nombre_completo nombre
+from	sccl.solicitudes s
+	inner join
+	sccl.certificaciones c
+	on s.certificacion_id=c.certificacion_id
+	inner join
+	sccl.actividades a
+	on a.actividad_certificacion_id=c.certificacion_id
+	and a.actividad_tipo_id in (6,7,8,12)		--asesor grupal, individual, evaluador y verificador
+	and s.solicitud_estatus not in (35,44,45)
+	inner join
+	sccl.involucrados i
+	on a.actividad_id=i.actividad_id
+	and i.activo=true
+	inner join
+	sccl.contactos x
+	on i.contacto_id=x.contacto_id
+
+--requisitos de una solicitud
+
+create or replace view sccl.vista_requisitos_certificacion as
+select	r.certificacion_id certificacion_id,
+	r.requisito_codigo codigo,
+	r.requisito_codigo_acreditacion codigo_acreditacion,
+	r.requisito_descripcion descripcion
+from	sccl.requisitos r
 
 --convocatoria de una solicitud
 
@@ -347,7 +383,7 @@ from	sccl.contactos a
 	inner join
 	sccl.actividades x
 	on cv.actividad_id=x.actividad_id
-	and x.actividad_tipo_id in (6,7)	--asesoramiento grupal e individual
+	and x.actividad_tipo_id in (6,7,8)	--asesoramiento grupal, individual y evaluacion
 	and x.actividad_certificacion_id=s.certificacion_id
 	and x.actividad_estado_id!=14		--actidad activa
 	inner join
@@ -371,11 +407,75 @@ from	sccl.solicitudes s
 order by
 	2
 
---ajustando los mantenedores eliminamos los estados que no seran utilizados
+--evaluaciones x unidad
 
-delete from sccl.mantenedores where mantenedor_id in (12,14)		--estatus de actividad pendiente y anulado
-delete from sccl.mantenedores where mantenedor_id in (33)			--tipo de instrumento no definido
-delete from sccl.mantenedores where mantenedor_id in (59,60)		--catalogo de generos
+create or replace view sccl.vista_evaluacion_unidades as
+select	e.solicitud_id solicitud_id,
+	e.evaluacion_id evaluacion_id,
+	e.instrumento_id instrumento_id,
+	i.instrumento_codigo instrumento_codigo,
+	i.instrumento_nombre instrumento_nombre,
+	u.codigo unidad_codigo,
+	u.descripcion unidad_descripcion,
+	e.requiere_evidencia evidencia,
+	ve.puntaje_obtenido puntaje,
+	ve.aprobado aprobado,
+	e.observaciones observaciones
+from	sccl.evaluaciones e
+	inner join
+	sccl.vista_evaluaciones ve
+	on e.evaluacion_id=ve.evaluacion_id
+	inner join
+	sccl.instrumentos i
+	on e.instrumento_id=i.instrumento_id
+	left join
+	sccl.vista_unidades_solicitud u
+	on u.unidad_id=i.instrumento_unidad_id
+order by
+	i.instrumento_id
+
+--datos laborales y academicos
+
+create or replace view sccl.vista_laborales as
+select	l.contacto_id contacto_id,
+	l.laboral_institucion institucion,
+	l.laboral_institucion_direccion direccion,
+	l.laboral_institucion_telefono telefono,
+	null tipo_empresa,
+	l.laboral_institucion_cargo cargo,
+	l.laboral_descripcion descripcion_cargo,
+	l.laboral_fecha_inicia inicio,
+	l.laboral_fecha_finaliza fin,
+	l.laboral_nombre diploma,
+	l.laboral_tipo tipo
+from	sccl.laborales l
+	inner join
+	sccl.solicitudes s
+	on s.contacto_id=l.contacto_id
+	and l.laboral_tipo in (23,24,25,26)
+
+--vista instrumentos previstos
+
+create or replace view sccl.instrumentos_previstos as
+select	e.solicitud_id solicitud_id,
+	m.mantenedor_valor tipo
+from	sccl.evaluaciones e
+	inner join
+	sccl.instrumentos i
+	on e.instrumento_id=i.instrumento_id
+	and e.activo=true
+	inner join
+	sccl.mantenedores m
+	on i.instrumento_tipo=m.mantenedor_id
+group by
+	e.solicitud_id,
+	m.mantenedor_valor
+
+--ajustando los mantenedores eliminamos los estados que no seran utilizados o que seran reconvertidos
+	
+delete from sccl.mantenedores where mantenedor_id in (14)		--estatus de actividad anulada
+delete from sccl.mantenedores where mantenedor_id in (33)		--tipo de instrumento no definido
+delete from sccl.mantenedores where mantenedor_id in (59,60)	--catalogo de generos
 	
 -------------------------------------fin script nuevo para produccion----------------------------------------------
 

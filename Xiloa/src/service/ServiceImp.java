@@ -2102,7 +2102,7 @@ public class ServiceImp implements IService {
 			// registra automaticamente las evaluaciones para las pruebas de lectura-escritura y diagnostica
 		
 			for(Instrumento instrumento : instrumentos){
-				Evaluacion evaluacion = new Evaluacion(solicitud,instrumento,new Date(),instrumento.getPuntajeMinimo(),instrumento.getPuntajeMaximo(),null,true);
+				Evaluacion evaluacion = new Evaluacion(solicitud,instrumento,new Date(),instrumento.getPuntajeMinimo(),instrumento.getPuntajeMaximo(),false,null,true);
 			
 				guardarEvaluacion(evaluacion);	
 			}
@@ -2174,7 +2174,7 @@ public class ServiceImp implements IService {
 		
 			// registra automaticamente las evaluaciones para las pruebas de autoevaluacion
 			for(Instrumento instrumento : instrumentos){
-				Evaluacion evaluacion = new Evaluacion(solicitud,instrumento,new Date(),instrumento.getPuntajeMinimo(),instrumento.getPuntajeMaximo(),null,true);
+				Evaluacion evaluacion = new Evaluacion(solicitud,instrumento,new Date(),instrumento.getPuntajeMinimo(),instrumento.getPuntajeMaximo(),false,null,true);
 				guardarEvaluacion(evaluacion);	
 			}
 			

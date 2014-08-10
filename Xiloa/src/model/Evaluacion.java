@@ -73,6 +73,9 @@ public class Evaluacion implements Serializable {
 	@PrimaryKeyJoinColumn(name="evaluacion_id")
 	private VistaEvaluacion vista;
 	
+	@Column(name = "requiere_evidencia", nullable = false)
+	private boolean requiereEvidencia;
+	
 	@Column(name = "observaciones", nullable = true)
 	private String observaciones;
 	
@@ -84,15 +87,17 @@ public class Evaluacion implements Serializable {
 		this.activo = true;
 		this.puntajeMinimo = new Float(0);
 		this.puntajeMaximo = new Float(0);
+		this.requiereEvidencia = false;
 	}
 
-	public Evaluacion(Solicitud solicitud, Instrumento instrumento, Date fecha, Float puntajeMinimo, Float puntajeMaximo, String observaciones, boolean activo) {
+	public Evaluacion(Solicitud solicitud, Instrumento instrumento, Date fecha, Float puntajeMinimo, Float puntajeMaximo, boolean evidencia, String observaciones, boolean activo) {
 		super();
 		this.solicitud = solicitud;
 		this.instrumento = instrumento;
 		this.fechaEvaluacion = fecha;
 		this.puntajeMinimo = puntajeMinimo;
 		this.puntajeMaximo = puntajeMaximo;
+		this.requiereEvidencia = evidencia;
 		this.observaciones = observaciones;
 		this.activo = activo;
 	}	
@@ -155,6 +160,14 @@ public class Evaluacion implements Serializable {
 	
 	public VistaEvaluacion getVistaEvaluacion(){
 		return vista;
+	}
+	
+	public boolean getRequiereEvidencia(){
+		return requiereEvidencia;
+	}
+	
+	public void setRequiereEvidencia(boolean evidencia){
+		this.requiereEvidencia = evidencia;
 	}
 	
 	public String getObservaciones(){

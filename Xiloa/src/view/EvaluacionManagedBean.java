@@ -174,7 +174,7 @@ public class EvaluacionManagedBean implements Serializable {
 	public void agregarEvaluacion(Long instrumentoId){
 		
 		Instrumento instrumento = service.getInstrumentoById(instrumentoId);
-		Evaluacion evaluacion = new Evaluacion(solicitud,instrumento,new Date(),instrumento.getPuntajeMinimo(),instrumento.getPuntajeMaximo(),null,true);
+		Evaluacion evaluacion = new Evaluacion(solicitud,instrumento,new Date(),instrumento.getPuntajeMinimo(),instrumento.getPuntajeMaximo(),false,null,true);
 		
 		evaluacion = service.guardarEvaluacion(evaluacion);
 		setSelectedEvaluacion(evaluacion);
