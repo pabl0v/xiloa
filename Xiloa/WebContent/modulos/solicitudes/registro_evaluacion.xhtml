@@ -45,7 +45,7 @@
 						<p:ajax event="rowSelect" listener="#{evaluacionManagedBean.onEvaluacionSelect}" update=":formGuias:dtGuias"/>
 						<p:column headerText="Instrumento"><h:outputText value="#{evaluacion.instrumento.nombre}" /></p:column>  
 						<p:column headerText="Unidad"><h:outputText value="#{evaluacionManagedBean.getUnidad(evaluacion.instrumento.unidad).descripcion}" /></p:column>  
-						<p:column headerText="Fecha" ><h:outputText value="#{evaluacion.fechaEvaluacion}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>
+						<p:column headerText="Fecha" ><h:outputText value="#{evaluacion.fechaEvaluacion}"><f:convertDateTime type="date" pattern="dd/MM/yyyy hh:mm a"/></h:outputText></p:column>
 						<p:column headerText="Puntaje"><h:outputText value="#{evaluacion.puntajeObtenidoLabel}" /></p:column>
 						<p:column headerText="Aprobado"><h:outputText value="#{evaluacion.aprobadoLabel}" /></p:column>
 						<sec:authorize ifAnyGranted="ROLE_RIGHT_AGREGAR_EVALUACIONES">
@@ -133,7 +133,7 @@
 		</h:form>
 	</p:dialog>
 	</div>
-	<p:dialog header="Editando la Evaluación:" widgetVar="dlg3" modal="true" resizable="false" width="450" height="280">
+	<p:dialog header="Editando la Evaluación:" widgetVar="dlg3" modal="true" resizable="false" width="500" height="380">
 		<h:form id="formEditarEvaluacion">
 			<br/>
 			<h:panelGrid columns="2" cellpadding="4">
@@ -150,9 +150,17 @@
 			<p:message for="codigo7" display="text"  />
 			<br/>
 		  	<h:outputLabel value="Fecha:" />
-			<p:calendar id="codigo8" value="#{evaluacionManagedBean.selectedEvaluacion.fechaEvaluacion}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
+			<p:calendar id="codigo8" value="#{evaluacionManagedBean.selectedEvaluacion.fechaEvaluacion}" showOn="button" pattern="dd/MM/yyyy hh:mm a" mindate="01/06/2014" disabledWeekends="true" minHour="8" maxHour="17" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
             <p:message for="codigo8" display="text"  />
-            <br/> 
+            <br/>
+            <h:outputLabel value="Evidencia Insuficiente:" />
+			<p:selectBooleanCheckbox id="selector_evidencia" value="#{evaluacionManagedBean.selectedEvaluacion.requiereEvidencia}" />
+			<p:message for="selector_evidencia" display="text"  />
+			<br/>
+			<h:outputLabel value="Observaciones:" />
+			<p:inputText id="codigo9" size="50" required="false" value="#{evaluacionManagedBean.selectedEvaluacion.observaciones}" />
+			<p:message for="codigo9" display="text"  />
+			<br/> 
             <h:outputLabel value="Activa:" />
 			<p:selectBooleanCheckbox id="selector_activo" value="#{evaluacionManagedBean.selectedEvaluacion.activo}" />
 			<p:message for="selector_activo" display="text"  />

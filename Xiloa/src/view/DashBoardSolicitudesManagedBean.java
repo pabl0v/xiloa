@@ -29,7 +29,6 @@ import support.FacesUtil;
 import support.Item;
 import util.Global;
 
-//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Bean asociada al facet solicitudes.xhtml
 @Component
 @Scope(value="view")
 public class DashBoardSolicitudesManagedBean implements Serializable {
@@ -41,27 +40,22 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	@Autowired
 	private LoginController login;
 	private Solicitud selectedSolicitud;
-	private Convocatoria selectedConvocatoria;		
+	private Convocatoria selectedConvocatoria;
 	private List<Item> involucrados;
 	private Long selectedEvaluacionId;
 	private EvaluacionGuia selectedEvaluacionGuia;
 	private List<EvaluacionGuia> evaluacionGuias;
-	private Solicitud solicitud;
-	private Contacto solicitante;
 	private Map<Integer, Item> centros;
 	private Map<Long, Item> certificaciones;
 	private boolean habilitarAcciones;
 	private boolean habilitarReportes;
-	
-	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Constructor de la clase
+
 	public DashBoardSolicitudesManagedBean() {		
 		super();
 		selectedConvocatoria = new Convocatoria();
 		selectedSolicitud = new Solicitud();
 		involucrados = new ArrayList<Item>();
 		evaluacionGuias = new ArrayList<EvaluacionGuia>();
-		solicitud = new Solicitud();
-		solicitante = new Contacto();
 		centros = new HashMap<Integer, Item>();
 		certificaciones = new HashMap<Long, Item>();
 		setHabilitarAcciones(false);
@@ -74,22 +68,6 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	
 	public List<Item> getCertificaciones(){
 		return new ArrayList<Item>(certificaciones.values());
-	}
-	
-	public Contacto getSolicitante(){
-		return solicitante;
-	}
-	
-	public void setSolicitante(Contacto solicitante){
-		this.solicitante = solicitante;
-	}
-	
-	public Solicitud getSolicitud(){
-		return solicitud;
-	}
-	
-	public void setSolicitud(Solicitud solicitud){
-		this.solicitud = solicitud;
 	}
 	
 	public List<Solicitud> getListaSolicitudes() {
@@ -335,8 +313,5 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
     public void onRowUnselect(UnselectEvent event) {
     	setHabilitarAcciones(false);
     	setHabilitarReportes(false);
-    }
-    
-    public void registrarSolicitud(Solicitud solicitud, Contacto solicitante){
-    }
+    }    
 }

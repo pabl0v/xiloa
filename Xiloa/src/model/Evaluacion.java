@@ -57,10 +57,10 @@ public class Evaluacion implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="instrumento_id", nullable = false)
 	private Instrumento instrumento;
-				
+	
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "fecha", nullable = false)
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaEvaluacion;
 	
 	@Column(name = "puntaje_minimo", nullable = false, precision=10, scale=2)	

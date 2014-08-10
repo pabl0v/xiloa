@@ -16,7 +16,6 @@
 	    <script type="text/javascript" src="../../resources/scripts/usuario.js"></script>
     </h:head>
     <h:body>
-    	<h:form id="cursos">
     	<div id="contenedor">
 			<div id="header">
 				<ui:insert name="header" >
@@ -25,69 +24,137 @@
 				<script type="text/javascript" src="../../resources/scripts/cursos.js"></script>
 			</div>
 			<div id="cabezera">
-				<h2>Cursos de Certificación disponibles</h2>
+				<h2>Certificaciones</h2>
 			</div>
 			
+			<h:form id="certificacionesForm">
 	        <div id="contenedor_tabla_competencias"> 
-				<p:dataTable id="grid" emptyMessage="Información no disponible" var="certificacion" styleClass="tablaCompetencias" value="#{inicioManagedBean.certificaciones}" paginator="true" rows="10" 
-					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"  
-					rowKey="#{certificacion.id}" selection="#{inicioManagedBean.selectedCertificacion}" selectionMode="single">
-					<!-- Este ajax permite mostrar el modal al hacer click en las filas de la tabla -->            
-					<p:ajax event="rowSelect" update=":cursos:panelDialogo" oncomplete="PF('modal_comp').show()" />
-					<p:column style="display: none" headerText="Unidad de competencia"><h:outputText value="#{certificacion.id}" /></p:column>
+				<p:dataTable id="grid" emptyMessage="Información no disponible" var="certificacion" value="#{certificacionesManagedBean.certificaciones}" paginator="true" rows="12"  rowKey="#{certificacion.id}" selectionMode="single">            
+					<p:ajax event="rowSelect" listener="#{certificacionesManagedBean.onRowSelect}" />
+					<p:ajax event="rowUnselect" listener="#{certificacionesManagedBean.onRowUnselect}" />
 					<p:column exportable="true" filterBy="#{certificacion.nombre}" filterMatchMode="contains">
 						<f:facet name="header">
-							<h:outputText value="Certificación" />  
+							<h:outputText value="Certificación" />
 						</f:facet> 
 						<h:outputText value="#{certificacion.nombre}" />
 					</p:column>
 					<p:column exportable="true" filterBy="#{certificacion.ifpNombre}" filterMatchMode="contains">
 						<f:facet name="header">  
-							<h:outputText value="Centro de Formación" />  
+							<h:outputText value="Oferente" />  
 						</f:facet> 
 						<h:outputText value="#{certificacion.ifpNombre}" />
 					</p:column>  
-					<p:column headerText="Prematriculas">
-						<h:outputText value="del "></h:outputText>
+					<p:column headerText="Inicio Prematriculas">
+						<h:outputText value="Del "></h:outputText>
 						<h:outputText value="#{certificacion.inicia}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>
 						<h:outputText value=" al "></h:outputText>
 						<h:outputText value="#{certificacion.finaliza}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>
 					</p:column>  
 					<p:column headerText="Cupo máximo"><h:outputText value="#{certificacion.disponibilidad} Personas" /></p:column>
+					<p:column headerText="Requisitos" style="width:4%">
+						<p:commandButton id="requisitosButton" update=":requisitosForm" icon="ui-icon-pencil" title="Requisitos" onclick="PF('requisitos_dlg').show();"/>  
+					</p:column>
+					<p:column headerText="Aplicar" style="width:4%">
+						<p:commandButton id="solicitudesButton" update=":solicitudForm" icon="ui-icon-pencil" title="Registrar Solicitud" onclick="PF('solicitud_dlg').show();"/>  
+					</p:column>
 				</p:dataTable> 
 			</div>
+			</h:form>
 		</div>
 	                  	      
-	        <p:dialog id="modal_info_competencias" styleClass="modal_info_competencias" header="Detalle:" widgetVar="modal_comp" width="550" height="500">  
-		        <p:outputPanel id="panelDialogo">
-		        	<div class="seccion_detalle">
-		      			<p>Nombre de la certificacion</p>
-		      			<h:outputText value="#{inicioManagedBean.selectedCertificacion.nombre}"></h:outputText>  		
-		          	</div>
-		          	<div class="seccion_detalle">
-		      			<p>Ultimo dia para solicitar evaluación:</p>
-		      			<h:outputText value="#{inicioManagedBean.selectedCertificacion.finaliza}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText>  		
-		          	</div>
-		          	<div class="seccion_detalle">
-		      			<p>Direccion del Centro evaluador:</p>
-		      			<h:outputText value="#{inicioManagedBean.selectedCertificacion.ifpDireccion}"></h:outputText>  		
-		          	</div>
-		          	<div class="seccion_detalle">
-		      			<p>Requisitos para aplicar a la evaluacion:</p>
-						<p:dataList emptyMessage="Lista no disponible" value="#{inicioManagedBean.selectedCertificacion.requisitos}" var="requisito" type="ordered">  
-							<ul><li>#{requisito.descripcion}</li></ul>
-						</p:dataList>
-		          	</div>
-		          	<div class="seccion_detalle">
-		      			<p>Arancel:</p>
-		      			C$ <h:outputText value="#{inicioManagedBean.selectedCertificacion.costoFormateado}"></h:outputText>  		
-		          	</div>
-		          	<div>
-			          	<p:commandButton onclick="PF('modal_comp').hide()" value="Cancelar"/>
-			          	<p:commandButton id="registrarSolicitud" action="#{inicioManagedBean.indicaAplicar}" value="Aplicar" oncomplete="PF('modal_comp').hide()" />
-		            </div>
-		            </p:outputPanel>
-	    	</p:dialog>
-	    </h:form>
+		<p:dialog header="Requisitos:" widgetVar="requisitos_dlg" modal="true" resizable="false" width="570" height="400">
+			<h:form id="requisitosForm">
+			<h:panelGrid columns="2" cellpadding="15" cellspacing="10">
+			<h:outputLabel value="Certificación: " />
+			<p:inputText readonly="true" style="width:49%;" value="#{certificacionesManagedBean.selectedCertificacion.nombre}" />
+      		<h:outputLabel value="Centro Oferente: " />
+      		<p:inputText readonly="true" style="width:49%;" value="#{certificacionesManagedBean.selectedCertificacion.ifpNombre}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></p:inputText>
+			<h:outputLabel value="Dirección: " />
+			<p:inputText readonly="true" style="width:49%;" value="#{certificacionesManagedBean.selectedCertificacion.ifpDireccion}" />  		
+			<h:outputLabel value="Contacto: " />
+			<p:inputText readonly="true" style="width:49%;" value="#{certificacionesManagedBean.selectedCertificacion.informante}" />
+			<h:outputLabel value="Inicio de Prematrículas: " />
+			<p:inputText readonly="true" style="width:49%;" value="#{certificacionesManagedBean.selectedCertificacion.inicia}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></p:inputText>
+			<h:outputLabel value="Fin de Prematrículas: " />
+			<p:inputText readonly="true" style="width:49%;" value="#{certificacionesManagedBean.selectedCertificacion.finaliza}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></p:inputText>
+			<h:outputLabel value="Cupo Máx: " />
+			<p:inputText readonly="true" style="width:49%;" value="#{certificacionesManagedBean.selectedCertificacion.disponibilidad}" />
+			<h:outputLabel value="Arancel C$: " />
+			<p:inputText readonly="true" style="width:49%;" value="#{certificacionesManagedBean.selectedCertificacion.costoFormateado}" />
+      		<h:outputLabel value="Requisitos: " />
+			<p:dataList style="width:100%;" emptyMessage="Lista no disponible" value="#{certificacionesManagedBean.getRequisitos(certificacionesManagedBean.selectedCertificacion.id)}" var="requisito" type="ordered">  
+				<ul><li>#{requisito.descripcion}</li></ul>
+			</p:dataList>
+			</h:panelGrid>
+			<div class="contenedor_botones" style="margin-top:20px;">
+	        	<p:commandButton onclick="PF('requisitos_dlg').hide()" value="Cerrar"/>
+	        </div> 
+	        </h:form>
+    	</p:dialog>
+    	
+		<p:dialog header="Registro de Solicitud:" widgetVar="solicitud_dlg" modal="true" resizable="false" width="550" height="550">
+			<h:form id="solicitudForm">
+				<h:panelGrid id="modal3" columns="3" cellpadding="15" cellspacing="10" >
+					<h:outputLabel for="centro" value="Centro (*):" /> 
+					<p:inputText id="centro" value="#{certificacionesManagedBean.solicitante.primerNombre}" required="true" requiredMessage="Campo obligatorio" />
+					<p:message for="centro" display="text" />
+					<h:outputLabel for="certificacion" value="Certificacion (*):" /> 
+					<p:inputText id="certificacion" value="#{certificacionesManagedBean.solicitante.primerNombre}" required="true" requiredMessage="Campo obligatorio" />
+					<p:message for="certificacion" display="text" />
+					<h:outputLabel for="primerNombre" value="Primer nombre (*):" /> 
+					<p:inputText id="primerNombre" value="#{certificacionesManagedBean.solicitante.primerNombre}" required="true" requiredMessage="Campo obligatorio" />
+					<p:message for="primerNombre" display="text" />
+					<h:outputLabel value="Segundo nombre:" /> 
+					<p:inputText for="segundoNombre" id="segundoNombre" value="#{certificacionesManagedBean.solicitante.segundoNombre}" required="false" />
+					<p:message for="segundoNombre" display="text" />
+					<h:outputLabel for="primerApellido" value="Primer apellido (*):" /> 
+					<p:inputText id="primerApellido" value="#{certificacionesManagedBean.solicitante.primerApellido}" required="true" requiredMessage="Campo obligatorio" />
+					<p:message for="primerApellido" display="text" />
+					<h:outputLabel for="segundoApellido" value="Segundo apellido:" /> 
+					<p:inputText id="segundoApellido" value="#{certificacionesManagedBean.solicitante.segundoApellido}" required="false" requiredMessage="Campo obligatorio" />
+					<p:message for="segundoApellido" display="text" />
+					<h:outputLabel for="numeroIdentificacion" value="Cedula (*):" />
+					<p:inputMask id="numeroIdentificacion" value="#{certificacionesManagedBean.solicitante.numeroIdentificacion}" required="true" requiredMessage="Campo obligatorio" mask="999-999999-9999a"/>
+					<p:message for="numeroIdentificacion" display="text" />
+					<h:outputLabel for="sexo" value="Sexo (*):" />
+					<p:inputText id="sexo" value="#{certificacionesManagedBean.solicitante.sexo}" required="true" requiredMessage="Campo obligatorio" />
+					<p:message for="sexo" display="text" />
+					<h:outputLabel for="telefono" value="Teléfono (*):" />
+					<p:inputText id="telefono" value="#{certificacionesManagedBean.solicitante.telefono1}" required="true" requiredMessage="Campo obligatorio" />
+					<p:message for="telefono" display="text" />
+					<h:outputLabel for="celular" value="Celular:" />
+					<p:inputText id="celular" value="#{certificacionesManagedBean.solicitante.telefono2}" required="false" requiredMessage="Campo obligatorio" />
+					<p:message for="celular" display="text" />
+					<h:outputLabel for="email" value="Email (*):" />
+					<p:inputText id="email" value="#{certificacionesManagedBean.solicitante.correo1}" required="true" requiredMessage="Campo obligatorio" />
+					<p:message for="email" display="text" />
+					<h:outputLabel for="direccion" value="Dirección (*):" />
+					<p:inputText id="direccion" value="#{certificacionesManagedBean.solicitante.direccionActual}" required="true" requiredMessage="Campo obligatorio" />
+					<p:message for="direccion" display="text" />
+					<h:outputLabel for="departamento" value="Departamento (*):" />
+					<p:inputText id="departamento" value="#{certificacionesManagedBean.solicitante.departamentoId}" required="true" requiredMessage="Campo obligatorio" />
+					<p:message for="departamento" display="text" />
+					<h:outputLabel for="municipio" value="Municipio (*):" />
+					<p:inputText id="municipio" value="#{certificacionesManagedBean.solicitante.municipioId}" required="true" requiredMessage="Campo obligatorio" />
+					<p:message for="municipio" display="text" />
+					<h:outputText for="ckTrabaja" value="Trabaja actualmente? (*): " />  
+					<p:selectBooleanCheckbox id="ckTrabaja" value="#{certificacionesManagedBean.solicitud.situacion_laboral}" />
+					<p:message for="ckTrabaja" display="text" />
+					<h:outputLabel for="descEmpresaLabora" value="Empresa:" />  
+					<p:inputText id="descEmpresaLabora" value="#{certificacionesManagedBean.solicitud.empresa}" />  
+					<p:message for="descEmpresaLabora" display="text" />
+					<h:outputLabel for="experiencia" value="Años de experiencia?:" required="false" />  
+					<p:inputText id="experiencia" value="#{certificacionesManagedBean.solicitud.experiencia}" />
+					<p:message for="experiencia" display="text" />
+					<h:outputLabel for="ocupacion" value="Ocupación actual:" />
+					<p:inputText id="ocupacion" value="#{certificacionesManagedBean.solicitud.ocupacion}" required="false" />				
+					<p:message for="ocupacion" display="text" />
+				</h:panelGrid>
+					<div class="contenedor_botones" style="margin-top:32px;">
+						<p:commandButton value="Cancelar" style="width:80px;height:30px" onclick="PF('solicitud_dlg').hide();" immediate="true" />
+						<p:commandButton value="Aceptar" style="width:80px;height:30px" oncomplete="if(!args.validationFailed) {solicitud_dlg.hide()} else {solicitud_dlg.show()}" update=":solicitudForm" action="#{certificacionesManagedBean.registrarSolicitud(certificacionesManagedBean.solicitud,certificacionesManagedBean.solicitante)}" />
+					</div>
+				</h:form>
+			</p:dialog>
 	</h:body>
 </html>

@@ -23,7 +23,7 @@
             <h2>Gestión de Solicitudes</h2>
             <sec:authorize ifAnyGranted="ROLE_RIGHT_CREAR_SOLICITUDES">                  
             <div id="botones_filtro_contenedor">                 
-                <div class="botones_filtro" onclick="window.location='/Xiloa/modulos/solicitudes/registro_solicitud.xhtml'"  >
+                <div class="botones_filtro"  >
                 	<p class="icono_nuevo">Nueva solicitud</p>
                 </div>                           
                 <div class="botones_filtro">
@@ -32,7 +32,7 @@
             			<h:outputText value="Descargar" />   
             			<p:dataExporter type="xls" target="dtSolicitud" fileName="ReporteSolicitudes" />           		
         			</h:commandLink>
-        		</div>                
+        		</div>
             </div>
             </sec:authorize>
        </div>
@@ -187,43 +187,6 @@
 			</p:dataTable>
 			<div class="contenedor_botones" style="margin-top:32px;">
 				<p:commandButton value="Cerrar" style="width:80px;height:30px" update=":formSolicitudes:dtSolicitud" onclick="PF('dlg2').hide();" immediate="true" /> 
-			</div>
-		</h:form>
-	</p:dialog>
-	<p:dialog id="modalSolicitud" header="Registro de Solicitud:" widgetVar="dlg3" modal="true" resizable="false" width="550" height="500">
-		<h:form id="solicitudForm">
-			<h:panelGrid id="modal3" columns="3" cellpadding="15" cellspacing="10" >
-                <h:outputLabel for="primerNombre" value="Primer nombre (*):" /> 
-                <p:inputText id="primerNombre" value="#{dashBoardSolicitudesManagedBean.solicitante.primerNombre}" required="true" requiredMessage="Campo obligatorio" />
-                <p:message for="primerNombre" display="text" />
-                <h:outputLabel value="Segundo nombre:" /> 
-                <p:inputText for="segundoNombre" id="segundoNombre" value="#{dashBoardSolicitudesManagedBean.solicitante.segundoNombre}" required="false" />
-				<p:message for="segundoNombre" display="text" />
-                <h:outputLabel for="primerApellido" value="Primer apellido (*):" /> 
-                <p:inputText id="primerApellido" value="#{dashBoardSolicitudesManagedBean.solicitante.primerApellido}" required="true" requiredMessage="Campo obligatorio" />
-                <p:message for="primerApellido" display="text" />
-                <h:outputLabel for="segundoApellido" value="Segundo apellido:" /> 
-                <p:inputText id="segundoApellido" value="#{dashBoardSolicitudesManagedBean.solicitante.segundoApellido}" required="false" requiredMessage="Campo obligatorio" />
-                <p:message for="segundoApellido" display="text" />
-                <h:outputLabel for="numeroIdentificacion" value="Cedula (*):" />
-                <p:inputMask id="numeroIdentificacion" value="#{dashBoearSolicitudesManagedBean.solicitante.numeroIdentificacion}" required="true" requiredMessage="Campo obligatorio" mask="999-999999-9999a"/>
-                <p:message for="numeroIdentificacion" display="text" />
-		        <h:outputText for="ckTrabaja" value="Trabaja actualmente? (*): " />  
-		        <p:selectBooleanCheckbox id="ckTrabaja" value="#{dashBoardSolicitudesManagedBean.solicitud.situacion_laboral}" />
-				<p:message for="ckTrabaja" display="text" />
-                <h:outputLabel for="descEmpresaLabora" value="Empresa:" />  
-                <p:inputText id="descEmpresaLabora" value="#{dashBoardSolicitudesManagedBean.solicitud.empresa}" />  
-                <p:message for="descEmpresaLabora" display="text" />
-                <h:outputLabel for="experiencia" value="Años de experiencia?:" required="false" />  
-                <p:inputText id="experiencia" value="#{dashBoearSolicitudesManagedBean.solicitud.experiencia}" />
-                <p:message for="experiencia" display="text" />
-                <h:outputLabel for="ocupacion" value="Ocupación actual:" />
-				<p:inputText id="ocupacion" value="#{dashBoardSolicitudesManagedBean.solicitud.ocupacion}" required="false" />				
-				<p:message for="ocupacion" display="text" />
-			</h:panelGrid>
-			<div class="contenedor_botones" style="margin-top:32px;">
-				<p:commandButton value="Cancelar" style="width:80px;height:30px" onclick="PF('dlg3').hide();" immediate="true" />
-				<p:commandButton value="Aceptar" style="width:80px;height:30px" oncomplete="if(!args.validationFailed) {dlg3.hide()} else {dlg3.show()}" action="#{dashBoardSolicitudesManagedBean.registrarSolicitud(dashBoardSolicitudesManagedBean.solicitud,dashBoardSolicitudesManagedBean.solicitante)}" />
 			</div>
 		</h:form>
 	</p:dialog>
