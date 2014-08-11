@@ -26,10 +26,11 @@
 			<div id="cabezera">
 				<h2>Certificaciones</h2>
 			</div>
-			
+			<h:form id="mensajesForm">
+				<p:messages id="msgCertificaciones" showDetail="true" autoUpdate="true" closable="true" />
+			</h:form>
 			<h:form id="certificacionesForm">
-	        <div id="contenedor_tabla_competencias"> 
-	        	<p:messages id="msgSolicitudes" showDetail="true" autoUpdate="true" closable="true" />
+	        <div id="contenedor_tabla_competencias">
 				<p:dataTable id="grid" emptyMessage="Información no disponible" var="certificacion" value="#{certificacionesManagedBean.certificaciones}" paginator="true" rows="12"  rowKey="#{certificacion.id}" selectionMode="single">            
 					<p:ajax event="rowSelect" listener="#{certificacionesManagedBean.onRowSelect}" />
 					<p:ajax event="rowUnselect" listener="#{certificacionesManagedBean.onRowUnselect}" />
@@ -153,7 +154,7 @@
 				</h:panelGrid>
 					<div class="contenedor_botones" style="margin-top:32px;">
 						<p:commandButton value="Cancelar" style="width:80px;height:30px" onclick="PF('solicitud_dlg').hide();" immediate="true" />
-						<p:commandButton value="Aceptar" style="width:80px;height:30px" oncomplete="if(!args.validationFailed) {solicitud_dlg.hide()} else {solicitud_dlg.show()}" update=":solicitudForm" action="#{certificacionesManagedBean.registrarSolicitud(certificacionesManagedBean.solicitud,certificacionesManagedBean.solicitante)}" />
+						<p:commandButton value="Aceptar" style="width:80px;height:30px" oncomplete="if(!args.validationFailed) {solicitud_dlg.hide()} else {solicitud_dlg.show()}" update=":solicitudForm,:mensajesForm:msgCertificaciones" action="#{certificacionesManagedBean.registrarSolicitud(certificacionesManagedBean.solicitud,certificacionesManagedBean.solicitante)}" />
 					</div>
 				</h:form>
 			</p:dialog>
