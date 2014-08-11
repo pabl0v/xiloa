@@ -9,7 +9,6 @@ import java.util.Map;
 
 import javax.faces.model.SelectItem;
 
-import model.Contacto;
 import model.Convocatoria;
 import model.Evaluacion;
 import model.EvaluacionGuia;

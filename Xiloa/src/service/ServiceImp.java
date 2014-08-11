@@ -1933,7 +1933,7 @@ public class ServiceImp implements IService {
 		if(solicitud.getEstatus().getId()==36){
 		
 			// buscando instrumentos pendientes de evaluar y que no estén aprobados
-			List<Instrumento> instrumentosPendientes = instrumentoDao.findAllByQuery("select i from instrumentos i where i.estatus='true' and i.certificacionId="+solicitud.getCertificacion().getId()+" and i.tipo.id in (27,28) and not exists (select 1 from evaluaciones e where e.activo='true' and e.aprobado=1 and e.instrumento.id=i.id and e.solicitud.id="+solicitud.getId()+")");
+			List<Instrumento> instrumentosPendientes = instrumentoDao.findAllByQuery("select i from instrumentos i where i.estatus='true' and i.certificacionId="+solicitud.getCertificacion().getId()+" and i.tipo.id in (27,28) and not exists (select 1 from evaluaciones e where e.activo='true' and e.vista.aprobado='true' and e.instrumento.id=i.id and e.solicitud.id="+solicitud.getId()+")");
 		
 			// si no hay instrumentos pendientes de evaluar (prueba de lectura-escritura o diagnostica), autorizar matricula		
 			if(instrumentosPendientes.isEmpty()){
@@ -2204,5 +2204,29 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Evaluacion> getEvaluacionesReprobadas(Long solicitudId){
 		return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllPendientesBySolicitudId", new Object [] {solicitudId});
+	}
+	
+	/** 
+	 * @param la solicicitua y el solicitante
+	 */	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void registrarSolicitud(Solicitud solicitud, Contacto solicitante){
+		
+		//buscar al solicitante
+		//si existe actualizar sus datos
+		//si no existe registrarlo
+		
+		solicitante.setInatec(false);
+		solicitante.setFechaRegistro(new Date());
+		solicitante = contactoDao.save(solicitante);
+		
+		solicitud.setEstatus(getMantenedorById(35));
+		solicitud.setNombre(solicitante.getPrimerNombre()+" "+solicitante.getPrimerApellido());
+		solicitud.setTicket("0");
+		solicitud.setFechaRegistro(new Date());
+		solicitud.setEscolaridad(0);
+		solicitud.setContacto(solicitante);
+		solicitud = solicitudDao.save(solicitud);
 	}
 }

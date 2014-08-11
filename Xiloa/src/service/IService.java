@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import security.Authority;
 import support.Departamento;
 import support.Ifp;
@@ -942,4 +941,9 @@ public interface IService {
 	 * @return lista de evaluaciones reprobadas
 	 */	
 	public List<Evaluacion> getEvaluacionesReprobadas(Long solicitudId);
+	
+	/** 
+	 * @param la solicicitua y el solicitante
+	 */
+	public void registrarSolicitud(Solicitud solicitud, Contacto solicitante);
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +22,6 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 /**
  * 
@@ -66,7 +66,6 @@ public class Solicitud implements Serializable {
 	@Column(name = "solicitud_ticket", nullable = false)
 	private String ticket;
 	
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name="solicitud_estatus", nullable = false)		
 	private Mantenedor estatus;
@@ -86,6 +85,7 @@ public class Solicitud implements Serializable {
 	@Temporal(TemporalType.DATE)	
 	private Date fechaMatricula;
 	
+	/*
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "fecha_convocatoria", nullable = true)
 	@Temporal(TemporalType.DATE)	
@@ -95,6 +95,7 @@ public class Solicitud implements Serializable {
 	@Column(name = "fecha_asesoramiento", nullable = true)
 	@Temporal(TemporalType.DATE)	
 	private Date fechaAsesoramiento;
+	*/
 	
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "fecha_remision_diploma", nullable = true)
@@ -113,17 +114,15 @@ public class Solicitud implements Serializable {
 	@Column(name = "escolaridad_id", nullable = false)
 	private int escolaridad;
 
-	@NotNull
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="contacto_id", nullable = false)
 	private Contacto contacto;
 	
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name="certificacion_id", nullable = false)	
 	private Certificacion certificacion;
 	
-	@OneToMany(mappedBy="solicitud")
+	@OneToMany(mappedBy="solicitud", fetch = FetchType.LAZY)
 	private List<Evaluacion> evaluaciones;
 	
 	@Column(name="id_matricula", nullable=true)
@@ -317,7 +316,8 @@ public class Solicitud implements Serializable {
 	public Solicitud() {
 		super();		
 	}
-
+	
+	/*
 	public Date getFechaConvocatoria() {
 		return fechaConvocatoria;
 	}
@@ -333,6 +333,7 @@ public class Solicitud implements Serializable {
 	public void setFechaAsesoramiento(Date fechaAsesoramiento) {
 		this.fechaAsesoramiento = fechaAsesoramiento;
 	}
+	*/
 
 	public Date getFechaRemisionDiploma() {
 		return fechaRemisionDiploma;

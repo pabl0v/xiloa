@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import controller.LoginController;
 import service.IService;
+import support.FacesUtil;
 import support.Ifp;
 
 @Component
@@ -101,6 +102,13 @@ public class CertificacionesManagedBean implements Serializable {
 		solicitud = new Solicitud();
     }
 	
-	public void registrarSolicitud(Solicitud solicitud, Contacto solicitante){		
+	public void registrarSolicitud(Solicitud solicitud, Contacto solicitante){
+		
+		//validar si tiene solicitudes pendientes
+		
+		FacesUtil.getMensaje("SCCL - Mensaje: ", "El candidato tiene una solicitud pendiente.", true);
+		
+		solicitud.setCertificacion(selectedCertificacion);
+		service.registrarSolicitud(solicitud, solicitante);
 	}
 }
