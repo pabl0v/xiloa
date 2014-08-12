@@ -8,13 +8,13 @@
       xmlns:sec="http://www.springframework.org/security/tags">
 	 <!--Se declara un UI composition para despues agregar esto a las demas paginas y asi no repetir codigo.-->
      <ui:composition>  
-        <title>SCCL</title>
+        <title>SCCP</title>
         <script type="text/javascript" src="../../resources/scripts/paginamaestra.js"></script>
         <link type="text/css" rel="stylesheet" href="../../resources/css/reset.css"></link>
         <link type="text/css" rel="stylesheet" href="../../resources/css/paginamaestra.css"></link>             
         <div id="barra_navegacion" class="mini">
-			<h1>Sistema de <a href="/Xiloa/modulos/compartido/inicio.xhtml">CCL</a></h1>
-            <div id="boton_oferta"  onclick="window.location='/Xiloa/modulos/compartido/cursos.xhtml';"  class="botones_navegacion"><p class="icono_calendario">Cursos</p></div>
+			<h1>Sistema de <a href="/Xiloa/modulos/compartido/inicio.xhtml">CCP</a></h1>
+            <div id="boton_oferta"  onclick="window.location='/Xiloa/modulos/compartido/competencias.xhtml';"  class="botones_navegacion"><p class="icono_calendario">Competencias</p></div>
 			<sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_SOLICITUDES">
             	<div id="boton_solicitudes" onclick="window.location='/Xiloa/modulos/solicitudes/solicitudes.xhtml';" class="botones_navegacion"><p class="icono_flechas">Solicitudes</p></div>
             </sec:authorize>
