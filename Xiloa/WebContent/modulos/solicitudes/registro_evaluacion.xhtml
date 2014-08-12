@@ -34,13 +34,15 @@
 				<div id="modal_evaluaciones">
 				<p:messages id="msgEvaluaciones" showDetail="true" autoUpdate="true" closable="true" />				
 				<h:form id="formEvaluaciones">
-					<div class="contenedor_botones" style="margin-top:5px;margin-bottom:20px;float:right;">
+					<br/>
+					<div>
 						<sec:authorize ifAnyGranted="ROLE_RIGHT_AGREGAR_EVALUACIONES">
 							<p:commandButton value="Agregar" icon="ui-icon-pencil" disabled="#{!evaluacionManagedBean.habilitarEvaluacion}" update=":formAgregarEvaluacion" onclick="PF('dlg2').show();" action="#{evaluacionManagedBean.setInstrumentos(null)}" />
 							<p:commandButton value="Evaluar" icon="ui-icon-star" disabled="#{!evaluacionManagedBean.habilitarEvaluacion}" action="#{evaluacionManagedBean.evaluar}" />
 						</sec:authorize>
 						<p:commandButton value="Retornar" icon="ui-icon-arrowrefresh-1-w" action="#{evaluacionManagedBean.retornar}" immediate="true" />
 					</div>
+					<br/>
 					<p:dataTable id="dtEvaluaciones" emptyMessage="No hay datos para mostrar"  var="evaluacion" value="#{evaluacionManagedBean.evaluaciones}" rowKey="#{evaluacion.instrumento.id}" selectionMode="single" paginator="true" rows="5" >
 						<p:ajax event="rowSelect" listener="#{evaluacionManagedBean.onEvaluacionSelect}" update=":formGuias:dtGuias"/>
 						<p:column headerText="Instrumento"><h:outputText value="#{evaluacion.instrumento.nombre}" /></p:column>  

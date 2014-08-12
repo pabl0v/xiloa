@@ -56,12 +56,12 @@ public class Bitacora implements Serializable {
 	
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "bitacora_fecha_registro", nullable = false)
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaRegistro;
 	
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "bitacora_fecha_evento", nullable = false)
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaEvento;
 
 	public Long getId() {

@@ -7,7 +7,7 @@
       xmlns:p="http://primefaces.org/ui"
 	  xmlns:sec="http://www.springframework.org/security/tags">
     <h:head>
-    	<link type="text/css" rel="stylesheet" href="../../resources/css/planificacion.css"></link>
+    	<link type="text/css" rel="stylesheet" href="../../resources/css/instrumentos.css"></link>
     </h:head>
     <h:body>
      <div id="contenedor">
@@ -19,25 +19,79 @@
 		</div>
         <div id="cabezera">
             <h2>Ejecuciones</h2>
-        </div>      
-        <div id="contenedor_tabla_ejecuciones" style="margin-top:10px;">
-            <h:form id="form">  
-                <p:dataTable id="ejecuciones" widgetVar="ejecucionesTable" emptyMessage="No hay datos para mostrar" var="ejecucion" value="#{ejecucionesManagedBean.actividades}" selection="#{ejecucionesManagedBean.selectedActividad}" paginator="true" rows="10" rowKey="#{ejecucion.id}" selectionMode="single">
-                        <!--Las columnas de la tabla-->
-                        <p:column filterBy="#{ejecucion.certificacion.nombre}" headerText="Certificación" filterMatchMode="contains"><h:outputText value="#{ejecucion.certificacion.nombre}"/></p:column>
-                        <p:column filterBy="#{ejecucion.tipo.valor}" headerText="Tipo Actividad" filterOptions="#{ejecucionesManagedBean.tiposActividad}" filterMatchMode="exact"><h:outputText value="#{ejecucion.tipo.valor}" /></p:column>
-						<p:column filterBy="#{ejecucion.ejecutor.nombreCompleto}" headerText="Ejecutor" filterMatchMode="contains"><h:outputText value="#{ejecucion.ejecutor.nombreCompleto}" /></p:column>                            
-                        <p:column headerText="Fecha programada"><h:outputText value="#{ejecucion.fechaInicial}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>                
-                        <p:column filterBy="#{ejecucion.estado.valor}" headerText="Estatus" filterOptions="#{ejecucionesManagedBean.estatusActividad}" filterMatchMode="exact"><h:outputText value="#{ejecucion.estado.valor}" /></p:column>
-						<p:column style="width:4%" rendered="#{sec:areAnyGranted('ROLE_RIGHT_AGREGAR_BITACORAS')}">
-						<p:commandButton id="estatusButton" action="#{ejecucionesManagedBean.completarActividad(ejecucionesManagedBean.selectedActividad)}" icon="ui-icon-gear" title="Completar actividad" update=":form:ejecuciones" disabled="#{ejecucion.completed}" />
-						</p:column>
-						<p:column style="width:4%" rendered="#{sec:areAnyGranted('ROLE_RIGHT_AGREGAR_BITACORAS')}">
-							<p:commandButton id="editarButton" action="#{actividadManagedBean.ejecuciones(ejecucionesManagedBean.selectedActividad)}" icon="ui-icon-pencil" title="Agregar bitacora" />
-						</p:column>
-                </p:dataTable>
-            </h:form>
         </div>
-    </div>
+		<div id="contenedor_secciones">
+		
+		<div class="seccion_edicion" style="width: 93%;">
+			<h:form id="certificacionesForm">        	
+			<p:dataTable id="certificacionesDataTable" emptyMessage="No hay datos para mostrar" var="certificacion" value="#{ejecucionesManagedBean.certificaciones}" paginator="true" rows="4" rowKey="#{certificacion.id}" selectionMode="single">
+					<p:ajax event="rowSelect" listener="#{ejecucionesManagedBean.onRowSelectCertificacion}" update=":actividadesForm"/>  
+					<p:ajax event="rowUnselect" listener="#{ejecucionesManagedBean.onRowUnselectCertificacion}" update=":actividadesForm"/>    
+					<f:facet name="header">Certificaciones</f:facet>
+					<p:column headerText="Nombre"><h:outputText value="#{certificacion.nombre}" /></p:column>
+					<p:column headerText="Oferente"><h:outputText value="#{certificacion.ifpNombre}" /></p:column>
+					<p:column headerText="Coordinador"><h:outputText value="#{certificacion.coordinador}" /></p:column>
+					<p:column headerText="Informante"><h:outputText value="#{certificacion.informante}" /></p:column>
+					<p:column headerText="Estado"><h:outputText value="#{certificacion.estatus.valor}" /></p:column>
+			</p:dataTable>
+			</h:form>
+		</div>
+		<div class="seccion_edicion" style="width: 93%;margin-top:15px">
+			<h:form id="actividadesForm">
+				<p:dataTable id="ejecuciones" widgetVar="ejecucionesDataTable" emptyMessage="No hay datos para mostrar" var="ejecucion" value="#{ejecucionesManagedBean.actividades}" paginator="true" rows="10" rowKey="#{ejecucion.id}" selectionMode="single">
+					<p:ajax event="rowSelect" listener="#{ejecucionesManagedBean.onRowSelectActividad}"/>  
+					<p:ajax event="rowUnselect" listener="#{ejecucionesManagedBean.onRowUnselectActividad}"/>
+					<f:facet name="header">Actividades</f:facet>
+					<p:column headerText="Actividad"><h:outputText value="#{ejecucion.tipo.valor}" /></p:column>                            
+					<p:column headerText="Fecha Inicial"><h:outputText value="#{ejecucion.fechaInicial}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>                
+					<p:column headerText="Fecha Final"><h:outputText value="#{ejecucion.fechaFinal}"><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>
+					<p:column headerText="Estatus"><h:outputText value="#{ejecucion.estado.valor}" /></p:column>
+					<p:column style="width:4%" rendered="#{sec:areAnyGranted('ROLE_RIGHT_AGREGAR_BITACORAS')}">
+						<p:commandButton action="#{ejecucionesManagedBean.completarActividad(ejecucionesManagedBean.selectedActividad)}" icon="ui-icon-gear" title="Completar Actividad" update=":actividadesForm" disabled="#{ejecucion.completed}" />
+					</p:column>
+					<p:column style="width:4%" rendered="#{sec:areAnyGranted('ROLE_RIGHT_AGREGAR_BITACORAS')}">
+						<p:commandButton icon="ui-icon-pencil" title="Registrar Bitacora" onclick="PF('dlg1').show();" update=":bitacorasForm,:bitacorasDataTableForm" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</div>
+	</div>
+	</div>
+	<p:dialog id="modalBitacoras" header="Registro de Bitacoras:" widgetVar="dlg1" modal="true" resizable="false" width="600" height="400">
+		<h:form id="bitacorasForm">
+			<br/>
+			<p:inputText rendered="false" value="#{ejecucionesManagedBean.selectedBitacora.id}" />
+			<h:panelGrid id="modal2" columns="3" cellpadding="15" cellspacing="10" >
+            	<h:outputLabel value="Actividad:" />
+            	<h:outputLabel id="codigo1" value="#{ejecucionesManagedBean.selectedActividad.tipo.valor}" />
+            	<p:message for="codigo1" display="text"  />
+            	<h:outputLabel value="Fecha Evento:" />
+            	<p:calendar id="codigo2" value="#{ejecucionesManagedBean.selectedBitacora.fechaEvento}" showOn="button" pattern="dd/MM/yyyy hh:mm a" mindate="01/06/2014" disabledWeekends="true" minHour="8" maxHour="17" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
+            	<p:message for="codigo2" display="text"  />
+				<h:outputLabel value="Observaciones:" />
+				<p:inputText id="codigo3" value="#{ejecucionesManagedBean.selectedBitacora.observaciones}" />
+				<p:message for="codigo3" display="text"  />
+			</h:panelGrid>
+			<div class="contenedor_botones" style="margin-top:32px;">
+				<sec:authorize ifAnyGranted="ROLE_RIGHT_AGREGAR_BITACORAS">
+					<p:commandButton value="Nueva" style="width:80px;height:30px" update=":bitacorasForm" action="#{ejecucionesManagedBean.agregarBitacora}" />
+					<p:commandButton value="Aceptar" style="width:80px;height:30px" oncomplete="if(args.validationFailed) {dlg1.show()}" update=":bitacorasForm,:bitacorasDataTableForm" action="#{ejecucionesManagedBean.guardarBitacora(ejecucionesManagedBean.selectedBitacora)}" />
+				</sec:authorize>
+			</div>
+		</h:form>
+			<br/>
+		<h:form id="bitacorasDataTableForm">
+			<p:dataTable paginatorPosition="bottom" emptyMessage="No hay datos para mostrar" var="bitacora" value="#{ejecucionesManagedBean.bitacoras}" paginator="true" rows="3" rowKey="#{bitacora.id}" selectionMode="single">
+				<p:ajax event="rowSelect" listener="#{ejecucionesManagedBean.onRowSelectBitacora}" update=":bitacorasForm" />
+				<p:column headerText="Fecha Registro"><h:outputText value="#{bitacora.fechaRegistro}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>
+				<p:column headerText="Fecha Evento"><h:outputText value="#{bitacora.fechaEvento}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy hh:mm a"/></h:outputText></p:column>
+				<p:column headerText="Observaciones"><h:outputText value="#{bitacora.observaciones}" /></p:column>
+				<p:column headerText="Usuario"><h:outputText value="#{bitacora.usuario.nombreCompleto}" /></p:column>
+			</p:dataTable>
+			<div class="contenedor_botones" style="margin-top:32px;">
+				<p:commandButton value="Cerrar" style="width:80px;height:30px" update=":bitacorasForm" onclick="PF('dlg2').hide();" immediate="true" /> 
+			</div>
+		</h:form>
+	</p:dialog>
 </h:body>
 </html>
