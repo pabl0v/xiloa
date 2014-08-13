@@ -97,7 +97,7 @@
             <h:outputLabel value="Puntaje Obtenido:" />
             <p:inputText id="codigo4" size="15" value="#{evaluacionManagedBean.selectedEvaluacionGuia.puntaje}" required="true" requiredMessage="El puntaje es requerido" validatorMessage="Puntaje fuera de rango" converterMessage="El puntaje debe ser numerico" >
             	<f:convertNumber minFractionDigits="0" maxFractionDigits="2"/>
-				<f:validateDoubleRange minimum="0" maximum="50" />
+				<f:validateDoubleRange minimum="0" maximum="100" />
             </p:inputText>
 			<p:message for="codigo4" display="text" />
 			</h:panelGrid>
