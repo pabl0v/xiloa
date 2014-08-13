@@ -56,6 +56,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 						"when a.tipo.id in (6,7) then 1 "+			//asesor con asesoria grupal e individual
 						"when a.tipo.id in (5) then 3	"+			//tecnico docente matricula
 						"when a.tipo.id in (1,2,3,4) then 4 "+		//informante prematricula y selecciona
+						"when a.tipo.id in (12) then 2 "+			//verificador
 						"else 0 end "+
 			"and c.entidadId=x.ifpId "+
 			"and not exists (select 1 from involucrados i where i.activo=true and i.contacto.id=c.id and i.actividad.id=a.id) "+
