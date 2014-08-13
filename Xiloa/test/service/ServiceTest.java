@@ -1,11 +1,7 @@
 package service;
 
-import java.util.Date;
-
-import model.Contacto;
 import model.Mantenedor;
 import model.Rol;
-import model.Usuario;
 import model.Pais;
 
 import org.junit.BeforeClass;
@@ -106,21 +102,21 @@ public class ServiceTest {
 		//creadndo roles
 
 		//service.guardar(new Rol("coordinador","Coordinador",213,null,true));
-		service.guardar(new Rol("asesor","Asesor",213,true));
-		service.guardar(new Rol("verificador","Verificador",214,true));
-		service.guardar(new Rol("tecnico_docente","Tecnico Docente",215,true));
-		service.guardar(new Rol("informante","Informante",216,true));
-		service.guardar(new Rol("visitante","Visitante",217,true));
-		Rol rolAdmin = (Rol)service.guardar(new Rol("admin","Administrador",218,true));
-		service.guardar(new Rol("evaluador","Evaluador",219,true));
+		service.guardar(new Rol("asesor","Asesor",226,true));
+		service.guardar(new Rol("verificador","Verificador",227,true));
+		service.guardar(new Rol("tecnico_docente","Tecnico Docente",228,true));
+		service.guardar(new Rol("informante","Informante",229,true));
+		service.guardar(new Rol("visitante","Visitante",230,true));
+		Rol rolAdmin = (Rol)service.guardar(new Rol("admin","Administrador",231,true));
+		service.guardar(new Rol("evaluador","Evaluador",232,true));
 		
 		//creando usuario administrador
 		
-		Usuario usuarioAdmin = (Usuario)service.guardar(new Usuario(null,"admin","d033e22ae348aeb5660fc2140aec35850c4da997",rolAdmin,false,true));
+		//Usuario usuarioAdmin = (Usuario)service.guardar(new Usuario(null,"admin","d033e22ae348aeb5660fc2140aec35850c4da997",rolAdmin,false,true));
 		
 		//creando contacto del usuario administrador
 		
-		service.guardar(new Contacto(usuarioAdmin,null, rolAdmin, 1000,"Admin",null,"Admin",null,"Administrador",1,"admin@inatec.edu.ni",null,"00000000",null, 1, 1,"12345678901234","Managua",new Date(),new Date(), 1, 1, 1, "Managua", false, null,null,null));
+		//service.guardar(new Contacto(usuarioAdmin,null, rolAdmin, 1000,"Admin",null,"Admin",null,"Administrador",1,"admin@inatec.edu.ni",null,"00000000",null, 1, 1,"12345678901234","Managua",new Date(),new Date(), 1, 1, 1, "Managua", false, null,null,null));
 		
 		//catalogo de paises
 		

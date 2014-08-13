@@ -12,11 +12,11 @@ fecha_grabacion,
 usuario_actualizacion,
 alias)
 select
-41 id_sistema,
+42 as id_sistema,
 'Sistema de Certificacion de Competencias Laborales' as nombre_sistema,
 'SCCL' as siglas,
 1 as activo,
-'admin' usuario_grabacion,
+'admin' as usuario_grabacion,
 '20140801' as fecha_grabacion,
 null as usuario_actualizacion,
 null as alias;
@@ -31,57 +31,57 @@ activo,
 usuario_grabacion,
 fecha_grabacion)
 select
-213 as id_rol,
+226 as id_rol,
 'Asesor' as descripcion_rol,
-41 as id_sistema,
+42 as id_sistema,
 1 as activo,
 'admon' as usuario_grabacion,
 now() as fecha_grabacion
 union
 select
-214 as id_rol,
+227 as id_rol,
 'Verificador' as descripcion_rol,
-41 as id_sistema,
+42 as id_sistema,
 1 as activo,
 'admon' as usuario_grabacion,
 now() as fecha_grabacion
 union
 select
-215 as id_rol,
+228 as id_rol,
 'Tecnico Docente' as descripcion_rol,
-41 as id_sistema,
+42 as id_sistema,
 1 as activo,
 'admon' as usuario_grabacion,
 now() as fecha_grabacion
 union
 select
-216 as id_rol,
+229 as id_rol,
 'Informante' as descripcion_rol,
-41 as id_sistema,
+42 as id_sistema,
 1 as activo,
 'admon' as usuario_grabacion,
 now() as fecha_grabacion
 union
 select
-217 as id_rol,
+230 as id_rol,
 'Visitante' as descripcion_rol,
-41 as id_sistema,
+42 as id_sistema,
 1 as activo,
 'admon' as usuario_grabacion,
 now() as fecha_grabacion
 union
 select
-218 as id_rol,
+231 as id_rol,
 'Administrador' as descripcion_rol,
-41 as id_sistema,
+42 as id_sistema,
 1 as activo,
 'admon' as usuario_grabacion,
 now() as fecha_grabacion
 union
 select
-219 as id_rol,
+232 as id_rol,
 'Evaluador' as descripcion_rol,
-41 as id_sistema,
+42 as id_sistema,
 1 as activo,
 'admon' as usuario_grabacion,
 now() as fecha_grabacion;
@@ -180,85 +180,83 @@ where usuario='admin';
 --planificacion
 
 insert into admon.menu(id,id_sistema,parent_id,texto,href,title,posicion,fecha_grabacion)
-select 1838,41,0,'ROLE_RIGHT_MENU_PLANIFICACIONES','compartido/paginamaestra.xhtml','Menu planificaciones',0,NOW()
+select 1704,42,0,'ROLE_RIGHT_MENU_PLANIFICACIONES','compartido/paginamaestra.xhtml','Menu planificaciones',0,NOW()
 union
-select 1839,41,0,'ROLE_RIGHT_CREAR_PLANIFICACIONES','planificacion/planificacion.xhtml','Crear planificaciones',1,NOW()
+select 1705,42,0,'ROLE_RIGHT_CREAR_PLANIFICACIONES','planificacion/planificacion.xhtml','Crear planificaciones',1,NOW()
 union
-select 1840,41,0,'ROLE_RIGHT_VER_PLANIFICACIONES','planificacion/edicion_planificacion.xhtml','Ver planificaciones',1,NOW()
+select 1706,42,0,'ROLE_RIGHT_VER_PLANIFICACIONES','planificacion/edicion_planificacion.xhtml','Ver planificaciones',1,NOW()
 
 --ejecuciones
 
 insert into admon.menu(id,id_sistema,parent_id,texto,href,title,posicion,fecha_grabacion)
-select 1841,41,0,'ROLE_RIGHT_MENU_EJECUCUIONES','compartido/paginamaestra.xhtml','Menu ejecuciones',0,NOW()
+select 1707,42,0,'ROLE_RIGHT_MENU_EJECUCUIONES','compartido/paginamaestra.xhtml','Menu ejecuciones',0,NOW()
 union
-select 1842,41,0,'ROLE_RIGHT_AGREGAR_BITACORAS','planificacion/bitacoras.xhtml','Agregar bitacoras',1,NOW()
+select 1708,42,0,'ROLE_RIGHT_AGREGAR_BITACORAS','planificacion/bitacoras.xhtml','Agregar bitacoras',1,NOW()
 union
-select 1843,41,0,'ROLE_RIGHT_VER_BITACORAS','planificacion/ejecuciones.xhtml','Ver bitacoras',1,NOW()
+select 1709,42,0,'ROLE_RIGHT_VER_BITACORAS','planificacion/ejecuciones.xhtml','Ver bitacoras',1,NOW()
 
 --instrumentos y evaluaciones
 
 insert into admon.menu(id,id_sistema,parent_id,texto,href,title,posicion,fecha_grabacion)
-select 1844,41,0,'ROLE_RIGHT_MENU_INSTRUMENTOS','compartido/paginamaestra.xhtml','Menu instrumentos',0,NOW()
+select 1710,42,0,'ROLE_RIGHT_MENU_INSTRUMENTOS','compartido/paginamaestra.xhtml','Menu instrumentos',0,NOW()
 union
-select 1845,41,0,'ROLE_RIGHT_CONFIGURAR_INSTRUMENTOS','planificaccion/instrumentos.xhtml','Configurar instrumentos',1,NOW()
+select 1711,42,0,'ROLE_RIGHT_CONFIGURAR_INSTRUMENTOS','planificaccion/instrumentos.xhtml','Configurar instrumentos',1,NOW()
 union
-select 1850,41,0,'ROLE_RIGHT_AGREGAR_EVALUACIONES','solicitudes/registro_evaluacion.xhtml','Agregar evaluaciones',1,NOW()
+select 1712,42,0,'ROLE_RIGHT_AGREGAR_EVALUACIONES','solicitudes/registro_evaluacion.xhtml','Agregar evaluaciones',1,NOW()
 union
-select 1852,41,0,'ROLE_RIGHT_VER_EVALUACIONES','solicitudes/registro_solicitud.xhtml','Ver evaluaciones',1,NOW()
+select 1713,42,0,'ROLE_RIGHT_VER_EVALUACIONES','solicitudes/registro_solicitud.xhtml','Ver evaluaciones',1,NOW()
 
 --solicitudes
 
 insert into admon.menu(id,id_sistema,parent_id,texto,href,title,posicion,fecha_grabacion)
-select 1846,41,0,'ROLE_RIGHT_MENU_SOLICITUDES','compartido/paginamaestra.xhtml','Menu solicitudes',0,NOW()
+select 1714,42,0,'ROLE_RIGHT_MENU_SOLICITUDES','compartido/paginamaestra.xhtml','Menu solicitudes',0,NOW()
 union	--EL QUE CREA TAMBIEN ANULA Y ENVIA
-select 1847,41,0,'ROLE_RIGHT_CREAR_SOLICITUDES','compartido/solicitudes.xhtml','Crear solicitudes',1,NOW()
+select 1715,42,0,'ROLE_RIGHT_CREAR_SOLICITUDES','compartido/solicitudes.xhtml','Crear solicitudes',1,NOW()
 
 --mantenedores
 
 insert into admon.menu(id,id_sistema,parent_id,texto,href,title,posicion,fecha_grabacion)
-select 1848,41,0,'ROLE_RIGHT_MENU_CONFIGURACION','compartido/paginamaestra.xhtml','Menu configuracion',0,NOW()
+select 1716,42,0,'ROLE_RIGHT_MENU_CONFIGURACION','compartido/paginamaestra.xhtml','Menu configuracion',0,NOW()
 union
-select 1849,41,0,'ROLE_RIGHT_CONFIGURAR_MANTENEDORES','usuario/configuracion.xhtml','Configurar mantenedores',1,NOW()
+select 1717,42,0,'ROLE_RIGHT_CONFIGURAR_MANTENEDORES','usuario/configuracion.xhtml','Configurar mantenedores',1,NOW()
 
 --reportes
 
 insert into admon.menu(id,id_sistema,parent_id,texto,href,title,posicion,fecha_grabacion)
-select 1853,41,0,'ROLE_RIGHT_MENU_REPORTES','planificacion/reportes.xhtml','Reportes',1,NOW()
+select 1718,42,0,'ROLE_RIGHT_MENU_REPORTES','planificacion/reportes.xhtml','Reportes',1,NOW()
 
 --expediente/portafolio
 
 insert into admon.menu(id,id_sistema,parent_id,texto,href,title,posicion,fecha_grabacion)
-select 1854,41,0,'ROLE_RIGHT_MENU_PORTAFOLIO','solicitudes/candidatos.xhtml','Portafolio',1,NOW()
+select 1719,42,0,'ROLE_RIGHT_MENU_PORTAFOLIO','solicitudes/candidatos.xhtml','Portafolio',1,NOW()
 union
-select 1855,41,0,'ROLE_RIGHT_EDITAR_PORTAFOLIO','solicitudes/expediente.xhtml','Edita portafolio',1,NOW()
+select 1720,42,0,'ROLE_RIGHT_EDITAR_PORTAFOLIO','solicitudes/expediente.xhtml','Edita portafolio',1,NOW()
 union
-select 1856,41,0,'ROLE_RIGHT_VER_PORTAFOLIO','solicitudes/expediente.xhtml','Ver portafolio',1,NOW()
+select 1721,42,0,'ROLE_RIGHT_VER_PORTAFOLIO','solicitudes/expediente.xhtml','Ver portafolio',1,NOW()
 
 --convocatorias
 
 insert into admon.menu(id,id_sistema,parent_id,texto,href,title,posicion,fecha_grabacion)
-select 1857,41,0,'ROLE_RIGHT_EDITAR_CONVOCATORIA','solicitudes/solicitud.xhtml','Editar convocatoria',1,NOW()
+select 1722,42,0,'ROLE_RIGHT_EDITAR_CONVOCATORIA','solicitudes/solicitud.xhtml','Editar convocatoria',1,NOW()
 union
-select 1858,41,0,'ROLE_RIGHT_VER_CONVOCATORIA','solicitudes/solicitud.xhtml','Ver convocatoria',1,NOW()
+select 1723,42,0,'ROLE_RIGHT_VER_CONVOCATORIA','solicitudes/solicitud.xhtml','Ver convocatoria',1,NOW()
 
 --autorizacion, rechazo y matricula
 
 insert into admon.menu(id,id_sistema,parent_id,texto,href,title,posicion,fecha_grabacion)
-select 1851,41,0,'ROLE_RIGHT_SELECCION','solicitudes/solicitud.xhtml','Seleccion',1,NOW()
+select 1724,42,0,'ROLE_RIGHT_SELECCION','solicitudes/solicitud.xhtml','Seleccion',1,NOW()
 
 --actualizando las opciones de cada rol
 
-update admon.roles set opciones='1838,1840,1846,1853,1854,1856,1857,1858' where id_rol=213			--asesor
-update admon.roles set opciones='1838,1840,1858,1854,1856,1853,1846,1841,1842,1843' where id_rol=214			--verificador
-update admon.roles set opciones='1838,1839,1840,1841,1842,1843,1844,1845,1846,1847,1850,1851,1852,1853,1854,1855,1856,1857,1858' where id_rol=215		--tecnico docente
-update admon.roles set opciones='1838,1839,1840,1850,1852,1858,1854,1855,1856,1853,1846,1847' where id_rol=216		--informante
-update admon.roles set opciones='1858,1855,1854,1856,1846,1847' where id_rol=217				--visitante
-update admon.roles set opciones='1838,1839,1840,1841,1842,1843,1844,1845,1846,1847,1848,1849,1850,1851,1852,1853,1854,1855,1856,1857,1858' where id_rol=218		--admin
-update admon.roles set opciones='1838,1840,1844,1845,1846,1850,1852,1853,1854,1855,1856,1857,1858' where id_rol=219	--evaluador
+update admon.roles set opciones='1704,1706,1714,1718,1719,1721,1722,1723' where id_rol=226			--asesor
+update admon.roles set opciones='1704,1706,1723,1719,1721,1718,1714,1707,1708,1709' where id_rol=227			--verificador
+update admon.roles set opciones='1704,1705,1706,1707,1708,1709,1710,1711,1714,1715,1712,1724,1713,1718,1719,1720,1721,1722,1723' where id_rol=228		--tecnico docente
+update admon.roles set opciones='1704,1705,1706,1712,1713,1723,1719,1720,1721,1718,1714,1715' where id_rol=229		--informante
+update admon.roles set opciones='1723,1720,1719,1721,1714,1715' where id_rol=230				--visitante
+update admon.roles set opciones='1704,1705,1706,1707,1708,1709,1710,1711,1714,1715,1716,1717,1712,1724,1713,1718,1719,1720,1721,1722,1723' where id_rol=231		--admin
+update admon.roles set opciones='1704,1706,1710,1711,1714,1712,1713,1718,1719,1720,1721,1722,1723' where id_rol=232	--evaluador
 
 ---vistas auxiliares de la aplicacion
-
-drop table sccl.vista_evaluaciones;			--eliminando tabla creada automaticamente por JPA, usamos la vista en su lugar
 
 CREATE OR REPLACE VIEW sccl.vista_evaluaciones AS 
  SELECT e.evaluacion_id, 
@@ -269,39 +267,39 @@ CREATE OR REPLACE VIEW sccl.vista_evaluaciones AS
     sum(COALESCE(eg.puntaje, 0)) AS puntaje_obtenido
    FROM sccl.evaluaciones e
    LEFT JOIN sccl.evaluacion_guia eg ON e.evaluacion_id = eg.evaluacion_id
-  GROUP BY e.evaluacion_id;
+  GROUP BY e.evaluacion_id,e.puntaje_minimo;
   
 --vistas para reportes
 
 --reporte de rpt_prematricula
 
 create or replace view sccl.rpt_prematricula as
-select	p.certificacion_ifp_id centro_id,
-	p.certificacion_ifp_nombre nombre_centro,
-	s.solicitud_id solicitud_id,
-	s.fecha_registro fecha_solicitud,
-	c.primer_nombre primer_nombre,
-	c.segundo_nombre segundo_nombre,
-	c.primer_apellido primer_apellido,
-	c.segundo_apellido segundo_apellido,
-	case when c.tipo_identificacion=1 then c.numero_identificacion else null end cedula,
-	c.fecha_nacimiento fecha_nacimiento,
-	c.lugar_nacimiento lugar_nacimiento,
-	c.telefono1 telefono,
-	c.telefono2 celular,
-	m.municipioid municipio_id,
-	m.nombre municipio,
-	d.departamentoid departamento_id,
-	d.nombre departamento,
-	c.direccion_actual direccion,
-	case when c.sexo_id=1 then 'F' else 'M' end sexo,
-	p.certificacion_id certificacion_id,
-	p.certificacion_nombre certificacion,
-	p.certificacion_curso_id curso_id,
-	p.certificacion_estructura_id estructura_id,
-	n.descripcion_nivel nivel,
-	s.experiencia experiencia,
-	s.situacion_laboral labora
+select	p.certificacion_ifp_id as centro_id,
+	p.certificacion_ifp_nombre as nombre_centro,
+	s.solicitud_id as solicitud_id,
+	s.fecha_registro as fecha_solicitud,
+	c.primer_nombre as primer_nombre,
+	c.segundo_nombre as segundo_nombre,
+	c.primer_apellido as primer_apellido,
+	c.segundo_apellido as segundo_apellido,
+	case when c.tipo_identificacion=1 then c.numero_identificacion else null end as cedula,
+	c.fecha_nacimiento as fecha_nacimiento,
+	c.lugar_nacimiento as lugar_nacimiento,
+	c.telefono1 as telefono,
+	c.telefono2 as celular,
+	m.municipioid as municipio_id,
+	m.nombre as municipio,
+	d.departamentoid as departamento_id,
+	d.nombre as departamento,
+	c.direccion_actual as direccion,
+	case when c.sexo_id=1 then 'F' else 'M' end as sexo,
+	p.certificacion_id as certificacion_id,
+	p.certificacion_nombre as certificacion,
+	p.certificacion_curso_id as curso_id,
+	p.certificacion_estructura_id as estructura_id,
+	n.descripcion_nivel as nivel,
+	s.experiencia as experiencia,
+	s.situacion_laboral as labora
 from	sccl.solicitudes s
 	inner join
 	sccl.contactos c
@@ -325,10 +323,10 @@ from	sccl.solicitudes s
 --buscando al asesor grupal, asesor individual, evaluador y verificador de una solicitud
 
 create view sccl.vista_involucrados as
-select	s.solicitud_id solicitud_id,
-	a.actividad_tipo_id actividad_tipo_id,
-	x.contacto_id contacto_id,
-	x.nombre_completo nombre
+select	s.solicitud_id as solicitud_id,
+	a.actividad_tipo_id as actividad_tipo_id,
+	x.contacto_id as contacto_id,
+	x.nombre_completo as nombre
 from	sccl.solicitudes s
 	inner join
 	sccl.certificaciones c
@@ -349,30 +347,30 @@ from	sccl.solicitudes s
 --requisitos de una solicitud
 
 create or replace view sccl.vista_requisitos_certificacion as
-select	r.certificacion_id certificacion_id,
-	r.requisito_codigo codigo,
-	r.requisito_codigo_acreditacion codigo_acreditacion,
-	r.requisito_descripcion descripcion
+select	r.certificacion_id as certificacion_id,
+	r.requisito_codigo as codigo,
+	r.requisito_codigo_acreditacion as codigo_acreditacion,
+	r.requisito_descripcion as descripcion
 from	sccl.requisitos r
 
 --convocatoria de una solicitud
 
 create or replace view sccl.rpt_convocatorias as
-select	cv.solicitud_id solicitud_id,
-	cv.convocatoria_id convocatoria_id,
-	x.actividad_tipo_id tipo_id,
-	c.contacto_id contacto_id,
-	c.primer_nombre primer_nombre,
-	c.segundo_nombre segundo_nombre,
-	c.primer_apellido primer_apellido,
-	c.segundo_apellido segundo_apellido,
-	case when c.tipo_identificacion=1 then c.numero_identificacion else null end cedula,
-	a.nombre_completo nombre_asesor,
-	a.telefono2 celular,
-	a.correo1 email,
-	cv.fecha_programacion fecha_hora,
-	cv.centro centro,
-	cv.lugar lugar
+select	cv.solicitud_id as solicitud_id,
+	cv.convocatoria_id as convocatoria_id,
+	x.actividad_tipo_id as tipo_id,
+	c.contacto_id as contacto_id,
+	c.primer_nombre as primer_nombre,
+	c.segundo_nombre as segundo_nombre,
+	c.primer_apellido as primer_apellido,
+	c.segundo_apellido as segundo_apellido,
+	case when c.tipo_identificacion=1 then c.numero_identificacion else null end as cedula,
+	a.nombre_completo as nombre_asesor,
+	a.telefono2 as celular,
+	a.correo1 as email,
+	cv.fecha_programacion as fecha_hora,
+	cv.centro as centro,
+	cv.lugar as lugar
 from	sccl.contactos a
 	inner join
 	sccl.convocatorias cv
@@ -393,10 +391,10 @@ from	sccl.contactos a
 --unidades de una solicitud
 
 create or replace view sccl.vista_unidades_solicitud as
-select	s.solicitud_id solicitud_id,
-	u.unidad_id unidad_id,
-	uc.descripcion descripcion,
-	uc.cod_cualificacion codigo
+select	s.solicitud_id as solicitud_id,
+	u.unidad_id as unidad_id,
+	uc.descripcion as descripcion,
+	uc.cod_cualificacion as codigo
 from	sccl.solicitudes s
 	inner join
 	sccl.unidades u
@@ -410,17 +408,17 @@ order by
 --evaluaciones x unidad
 
 create or replace view sccl.vista_evaluacion_unidades as
-select	e.solicitud_id solicitud_id,
-	e.evaluacion_id evaluacion_id,
-	e.instrumento_id instrumento_id,
-	i.instrumento_codigo instrumento_codigo,
-	i.instrumento_nombre instrumento_nombre,
-	u.codigo unidad_codigo,
-	u.descripcion unidad_descripcion,
-	e.requiere_evidencia evidencia,
-	ve.puntaje_obtenido puntaje,
-	ve.aprobado aprobado,
-	e.observaciones observaciones
+select	e.solicitud_id as solicitud_id,
+	e.evaluacion_id as evaluacion_id,
+	e.instrumento_id as instrumento_id,
+	i.instrumento_codigo as instrumento_codigo,
+	i.instrumento_nombre as instrumento_nombre,
+	u.codigo as unidad_codigo,
+	u.descripcion as unidad_descripcion,
+	e.requiere_evidencia as evidencia,
+	ve.puntaje_obtenido as puntaje,
+	ve.aprobado as aprobado,
+	e.observaciones as observaciones
 from	sccl.evaluaciones e
 	inner join
 	sccl.vista_evaluaciones ve
@@ -437,17 +435,17 @@ order by
 --datos laborales y academicos
 
 create or replace view sccl.vista_laborales as
-select	l.contacto_id contacto_id,
-	l.laboral_institucion institucion,
-	l.laboral_institucion_direccion direccion,
-	l.laboral_institucion_telefono telefono,
-	null tipo_empresa,
-	l.laboral_institucion_cargo cargo,
-	l.laboral_descripcion descripcion_cargo,
-	l.laboral_fecha_inicia inicio,
-	l.laboral_fecha_finaliza fin,
-	l.laboral_nombre diploma,
-	l.laboral_tipo tipo
+select	l.contacto_id as contacto_id,
+	l.laboral_institucion as institucion,
+	l.laboral_institucion_direccion as direccion,
+	l.laboral_institucion_telefono as telefono,
+	null as tipo_empresa,
+	l.laboral_institucion_cargo as cargo,
+	l.laboral_descripcion as descripcion_cargo,
+	l.laboral_fecha_inicia as inicio,
+	l.laboral_fecha_finaliza as fin,
+	l.laboral_nombre as diploma,
+	l.laboral_tipo as tipo
 from	sccl.laborales l
 	inner join
 	sccl.solicitudes s
@@ -457,8 +455,8 @@ from	sccl.laborales l
 --vista instrumentos previstos
 
 create or replace view sccl.instrumentos_previstos as
-select	e.solicitud_id solicitud_id,
-	m.mantenedor_valor tipo
+select	e.solicitud_id as solicitud_id,
+	m.mantenedor_valor as tipo
 from	sccl.evaluaciones e
 	inner join
 	sccl.instrumentos i
@@ -486,14 +484,14 @@ delete from sccl.mantenedores where mantenedor_id in (59,60)	--catalogo de gener
 */
 
 insert into admon.usuarios_sistemas(id_sistema,id_empleado,usuario,id_rol,activo,usuario_grabacion,fecha_grabacion)
-select 41,id_empleado,usuario,215,1,'ccantarero',now() from admon.usuario where usuario='mespinozaf'	--tecnico docente
+select 42,id_empleado,usuario,215,1,'ccantarero',now() from admon.usuario where usuario='mespinozaf'	--tecnico docente
 union
-select 41,id_empleado,usuario,219,1,'ccantarero',now() from admon.usuario where usuario='mmoran'		--evaluador
+select 42,id_empleado,usuario,219,1,'ccantarero',now() from admon.usuario where usuario='mmoran'		--evaluador
 union
-select 41,id_empleado,usuario,213,1,'ccantarero',now() from admon.usuario where usuario='mportugal'	--asesor
+select 42,id_empleado,usuario,213,1,'ccantarero',now() from admon.usuario where usuario='mportugal'	--asesor
 union
-select 41,id_empleado,usuario,216,1,'ccantarero',now() from admon.usuario where usuario='gsalvatierra'	--informante
+select 42,id_empleado,usuario,216,1,'ccantarero',now() from admon.usuario where usuario='gsalvatierra'	--informante
 union
-select 41,id_empleado,usuario,214,1,'ccantarero',now() from admon.usuario where usuario='fredisacs'	--verificador
+select 42,id_empleado,usuario,214,1,'ccantarero',now() from admon.usuario where usuario='fredisacs'	--verificador
 
 update admon.usuario set clave='0c3c46276360da4dab11bf247c4d93ce' where usuario in ('mespinozaf','mmoran','mportugal','gsalvatierra','fredisacs','cromero')
