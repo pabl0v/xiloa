@@ -43,7 +43,7 @@
 						<p:menuitem value="Enviar Solicitud" title="Enviar Solicitud" action="#{dashBoardSolicitudesManagedBean.enviarSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" update=":formSolicitudes" />
 					</sec:authorize>
                 	<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITAR_PORTAFOLIO">                  
-		            	<p:menuitem value="Editar Solicitud" title="Editar Solicitud" action="#{dashBoardSolicitudesManagedBean.editaSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" disabled="#{!varSolicitudI.editable}" />
+		            	<p:menuitem value="Editar Solicitud" title="Editar Solicitud" disabled="#{!varSolicitudI.editable}" />
     				</sec:authorize>        	 		
 	        	 	<sec:authorize ifAnyGranted="ROLE_RIGHT_SELECCION">
 	       		 		<p:menuitem value="Autorizar Matricula" title="Autorizar Matricula" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.autorizarMatricula(dashBoardSolicitudesManagedBean.selectedSolicitud)}" update=":formSolicitudes"  />
@@ -66,12 +66,12 @@
 	   		</p:splitButton>
 			<p:splitButton id="reportesSplit" disabled="#{!dashBoardSolicitudesManagedBean.habilitarReportes}" value="Reportes" icon="ui-icon-print" title="Reportes del Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runSolicitudCandidato}"  update=":formSolicitudes:msgSolicitudes" >   
 				<p:separator />         		   
-				<p:menuitem value="Pre-Matricula" icon="ui-icon-print" title="Generar Formato Pre-Matricula" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runPreMatricula}" update=":formSolicitudes:msgSolicitudes"  />			       		         	   	       			     			       			  
+				<p:menuitem value="Pre-Matricula" icon="ui-icon-print" title="Generar Formato Pre-Matricula" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('prematricula',true)}" update=":formSolicitudes:msgSolicitudes"  />			       		         	   	       			     			       			  
 			</p:splitButton>
 		</div>
         <div id="contenedor_tabla_solicitudes">     
         	<p:messages id="msgSolicitudes" showDetail="true" autoUpdate="false" closable="true" />        	      
-        	<p:dataTable id="dtSolicitud" widgetVar="dtSolicitudes" emptyMessage="No existen solicitudes activas" var="varSolicitudI" value="#{dashBoardSolicitudesManagedBean.listaSolicitudes}" selectionMode="single" rowKey="#{varSolicitudI.id}" paginator="true" rows="12"  >
+        	<p:dataTable id="dtSolicitud" widgetVar="dtSolicitudes" emptyMessage="No existen solicitudes activas" var="varSolicitudI" value="#{dashBoardSolicitudesManagedBean.solicitudes}" selectionMode="single" rowKey="#{varSolicitudI.id}" paginator="true" rows="12"  >
 				<p:ajax event="rowSelect" listener="#{dashBoardSolicitudesManagedBean.onRowSelect}" update=":formSolicitudes:accionSplit,:formSolicitudes:reportesSplit" />
 				<p:ajax event="rowUnselect" listener="#{dashBoardSolicitudesManagedBean.onRowUnselect}" update=":formSolicitudes:accionSplit,:formSolicitudes:reportesSplit" />
 				<!--Las columnas de la tabla-->
@@ -81,7 +81,7 @@
         			</f:facet> 
                 	<h:outputText value="#{varSolicitudI.id}" />
                 </p:column>
-                <p:column id="centroColumn" exportable="true" filterBy="#{varSolicitudI.certificacion.ifpNombre}" filterOptions="#{dashBoardSolicitudesManagedBean.listaCentros}" filterMatchMode="exact">
+                <p:column id="centroColumn" exportable="true">
                 	<f:facet name="header">  
             			<h:outputText value="Centro Evaluador" />
         			</f:facet> 
@@ -107,7 +107,7 @@
                 		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
                 	</h:outputText>
                 </p:column>               
-                <p:column id="estadoColumn" exportable="true" filterBy="#{varSolicitudI.estatus.valor}" filterOptions="#{dashBoardSolicitudesManagedBean.listaEstatus}" filterMatchMode="exact">
+                <p:column id="estadoColumn" exportable="true" filterBy="#{varSolicitudI.estatus.valor}" filterOptions="#{dashBoardSolicitudesManagedBean.estadosSolicitud}" filterMatchMode="exact">
                 	<f:facet name="header">
             			<h:outputText value="Estado" />  
         			</f:facet>
@@ -165,7 +165,7 @@
 				<h:outputLabel value="Estado:" />
 				<p:selectOneMenu id="selector_estatus3" style="width:100%;" required="true" requiredMessage="Seleccione el estado" styleClass="selector_status_estilo" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.estadoId}" >  
 					<f:selectItem itemLabel="Seleccione..." itemValue="" noSelectionOption="true" />
-					<f:selectItems value="#{dashBoardSolicitudesManagedBean.estados}" var="estado" itemLabel="#{estado.valor}" itemValue="#{estado.id}" />
+					<f:selectItems value="#{dashBoardSolicitudesManagedBean.estadosConvocatoria}" var="estado" itemLabel="#{estado.valor}" itemValue="#{estado.id}" />
 				</p:selectOneMenu>
 				<p:message for="selector_estatus3" display="text" />
 			</h:panelGrid>
