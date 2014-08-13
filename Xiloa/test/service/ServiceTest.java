@@ -107,7 +107,8 @@ public class ServiceTest {
 		service.guardar(new Rol("tecnico_docente","Tecnico Docente",228,true));
 		service.guardar(new Rol("informante","Informante",229,true));
 		service.guardar(new Rol("visitante","Visitante",230,true));
-		Rol rolAdmin = (Rol)service.guardar(new Rol("admin","Administrador",231,true));
+		//Rol rolAdmin = (Rol)service.guardar(new Rol("admin","Administrador",231,true));
+		service.guardar(new Rol("admin","Administrador",231,true));
 		service.guardar(new Rol("evaluador","Evaluador",232,true));
 		
 		//creando usuario administrador

@@ -132,10 +132,10 @@ activo,
 usuario_grabacion,
 fecha_grabacion)
 select
-41 as id_sistema,
+42 as id_sistema,
 id_empleado as id_empleado,
 usuario as usuario,
-218 as id_rol,
+231 as id_rol,
 1 as activo,
 'admin' as usuario_grabacion,
 now() as fecha_grabacion
@@ -143,10 +143,10 @@ from admon.usuario
 where usuario='djanson'
 union
 select
-41 as id_sistema,
+42 as id_sistema,
 id_empleado as id_empleado,
 usuario as usuario,
-218 as id_rol,
+231 as id_rol,
 1 as activo,
 'admin' as usuario_grabacion,
 now() as fecha_grabacion
@@ -154,21 +154,21 @@ from admon.usuario
 where usuario='cromero'
 union
 select
-41 as id_sistema,
+42 as id_sistema,
 id_empleado as id_empleado,
 usuario as usuario,
-218 as id_rol,
+231 as id_rol,
 1 as activo,
 'admin' as usuario_grabacion,
 now() as fecha_grabacion
 from admon.usuario
-where usuario='ccantarero';
+where usuario='ccantarero'
 union
 select
-41 as id_sistema,
+42 as id_sistema,
 id_empleado as id_empleado,
 usuario as usuario,
-218 as id_rol,
+231 as id_rol,
 1 as activo,
 'admin' as usuario_grabacion,
 now() as fecha_grabacion
@@ -178,6 +178,8 @@ where usuario='admin';
 --configurando los permisos de cada rol
 
 --planificacion
+
+delete from admon.menu where id between 1704 and 1724
 
 insert into admon.menu(id,id_sistema,parent_id,texto,href,title,posicion,fecha_grabacion)
 select 1704,42,0,'ROLE_RIGHT_MENU_PLANIFICACIONES','compartido/paginamaestra.xhtml','Menu planificaciones',0,NOW()
@@ -322,7 +324,7 @@ from	sccl.solicitudes s
 
 --buscando al asesor grupal, asesor individual, evaluador y verificador de una solicitud
 
-create view sccl.vista_involucrados as
+create or replace view sccl.vista_involucrados as
 select	s.solicitud_id as solicitud_id,
 	a.actividad_tipo_id as actividad_tipo_id,
 	x.contacto_id as contacto_id,
@@ -484,14 +486,14 @@ delete from sccl.mantenedores where mantenedor_id in (59,60)	--catalogo de gener
 */
 
 insert into admon.usuarios_sistemas(id_sistema,id_empleado,usuario,id_rol,activo,usuario_grabacion,fecha_grabacion)
-select 42,id_empleado,usuario,215,1,'ccantarero',now() from admon.usuario where usuario='mespinozaf'	--tecnico docente
+select 42,id_empleado,usuario,228,1,'ccantarero',now() from admon.usuario where usuario='mespinozaf'	--tecnico docente
 union
-select 42,id_empleado,usuario,219,1,'ccantarero',now() from admon.usuario where usuario='mmoran'		--evaluador
+select 42,id_empleado,usuario,232,1,'ccantarero',now() from admon.usuario where usuario='mmoran'		--evaluador
 union
-select 42,id_empleado,usuario,213,1,'ccantarero',now() from admon.usuario where usuario='mportugal'	--asesor
+select 42,id_empleado,usuario,226,1,'ccantarero',now() from admon.usuario where usuario='mportugal'	--asesor
 union
-select 42,id_empleado,usuario,216,1,'ccantarero',now() from admon.usuario where usuario='gsalvatierra'	--informante
+select 42,id_empleado,usuario,229,1,'ccantarero',now() from admon.usuario where usuario='gsalvatierra'	--informante
 union
-select 42,id_empleado,usuario,214,1,'ccantarero',now() from admon.usuario where usuario='fredisacs'	--verificador
+select 42,id_empleado,usuario,227,1,'ccantarero',now() from admon.usuario where usuario='fredisacs'	--verificador
 
 update admon.usuario set clave='0c3c46276360da4dab11bf247c4d93ce' where usuario in ('mespinozaf','mmoran','mportugal','gsalvatierra','fredisacs','cromero')
