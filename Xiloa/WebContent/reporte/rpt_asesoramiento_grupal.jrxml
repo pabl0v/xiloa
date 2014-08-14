@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="solicitudId" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[SELECT
+	primer_nombre || ' ' || COALESCE (segundo_nombre, '') || ' ' || primer_apellido || ' ' || COALESCE (segundo_apellido, '') AS nombrecompleto,
+	cedula,
+	date_part('day', fecha_hora) || '/' || to_char(
+		date_part('month', fecha_hora),
+		'00'
+	) || '/' || date_part('year', fecha_hora) AS fecha,
+	date_part('hour', fecha_hora) || ':' || to_char(
+		date_part('minute', fecha_hora),
+		'00'
+	) AS hora,
+	nombre_asesor AS nombreasesor,
+	email,
+	centro AS certificacion_ifp_nombre,
+	lugar,
+  '' as telefono
+FROM
+	sccl.rpt_convocatorias
+WHERE
+	tipo_id = 6
+AND solicitud_id = $P{solicitudId}]]>
+	</queryString>
+	<field name="nombrecompleto" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="cedula" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="hora" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombreasesor" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="email" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="certificacion_ifp_nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lugar" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="telefono" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="39">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="19"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[INTITUTO NACIONAL TECNOLOGICO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="19" width="555" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SISTEMA DE COMPETENCIAS LABORALES]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="382">
+			<staticText>
+				<reportElement x="4" y="2" width="320" height="20"/>
+				<textElement>
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CONVOCATORIA PARA ASESORAMIENTO GRUPAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="450" y="3" width="100" height="20"/>
+				<textElement>
+					<font isItalic="true"/>
+				</textElement>
+				<text><![CDATA[REGISTRO NO. 2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="37" width="156" height="20"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DATOS DEL CANDIDATO/A:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="29" y="61" width="129" height="20"/>
+				<textElement/>
+				<text><![CDATA[NOMBRE Y APELLIDOS:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="159" y="79" width="350" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="28" y="85" width="130" height="20"/>
+				<textElement/>
+				<text><![CDATA[NO. DE CEDULA:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="159" y="105" width="350" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="2" y="119" width="156" height="20"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DATOS DEL ASESOR/A:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="159" y="139" width="350" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="27" y="144" width="178" height="20"/>
+				<textElement/>
+				<text><![CDATA[UBICACION DENTRO DEL CENTRO:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="27" y="186" width="482" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="28" y="195" width="130" height="20"/>
+				<textElement/>
+				<text><![CDATA[TELEFONO CELULAR:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="159" y="216" width="350" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="28" y="223" width="130" height="20"/>
+				<textElement/>
+				<text><![CDATA[E-MAIL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="55" y="265" width="282" height="20"/>
+				<textElement>
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CONVOCATORIA SESION DE ASESORAMIENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="296" width="50" height="20"/>
+				<textElement/>
+				<text><![CDATA[DIA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="320" width="50" height="20"/>
+				<textElement/>
+				<text><![CDATA[LUGAR:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="57" y="315" width="130" height="1"/>
+			</line>
+			<line>
+				<reportElement x="56" y="340" width="240" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="326" y="320" width="50" height="20"/>
+				<textElement/>
+				<text><![CDATA[HORA:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="377" y="340" width="130" height="1"/>
+			</line>
+			<line>
+				<reportElement x="159" y="243" width="350" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="4" y="362" width="546" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[EN CASO DE IMPOSIBILIDAD DE ACUDIR A LA REUNION DEBE COMUNICARMELO LO ANTES POSIBLE]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="162" y="59" width="347" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombrecompleto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="165" y="85" width="344" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cedula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="162" y="119" width="347" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreasesor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="53" y="166" width="456" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{certificacion_ifp_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="162" y="195" width="148" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="162" y="223" width="148" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="55" y="320" width="241" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lugar}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="56" y="295" width="131" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="378" y="318" width="129" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{hora}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band/>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20">
+			<textField pattern="dd/MM/yyyy hh:mm a">
+				<reportElement x="0" y="0" width="163" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="514" y="0" width="41" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="434" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Pag "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

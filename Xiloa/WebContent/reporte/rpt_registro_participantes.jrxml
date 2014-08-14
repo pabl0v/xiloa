@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="700" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="660" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="fecha" class="java.lang.Date"/>
+	<parameter name="centroId" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT p.nombre_centro,
+       cv.fecha_hora as fecha_convocatoria,
+	p.primer_nombre||' '||p.segundo_nombre||' '||p.primer_apellido||' '||p.segundo_apellido as nombre_completo,
+	cv.lugar as lugar,
+	to_char(age (current_date, p.fecha_nacimiento),'YY') as edad,
+	case when p.sexo='M' then 'X' else null end as masculino,
+	case when p.sexo='F' then 'X' else null end as femenino,
+	case when p.labora=true then 'Labora' else 'No labora' end as situacion_laboral,
+	p.nivel as nivel_academino,
+	(array_to_string(array(select cod_cualificacion from registro_cobranza.cu_cat_uc uc where uc.id in (
+	select unidad_id from sccl.unidades u where u.certificacion_id=p.certificacion_id)), ', ')) as unidad_competencia,p.experiencia
+  FROM sccl.rpt_prematricula p
+  inner join sccl.rpt_convocatorias cv on cv.solicitud_id=p.solicitud_id
+  where cv.tipo_id=6 and cast(fecha_hora as date)='$P!{fecha}' and p.centro_id='$P!{centroId}']]>
+	</queryString>
+	<field name="nombre_centro" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fecha_convocatoria" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre_completo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="lugar" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="edad" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="masculino" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="femenino" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="situacion_laboral" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nivel_academino" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unidad_competencia" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="experiencia" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="79">
+			<staticText>
+				<reportElement x="0" y="19" width="660" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SISTEMA DE COMPETENCIAS LABORALES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="39" width="660" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[REGISTRO DE PARTICIPANTES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="59" width="50" height="20"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CENTRO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="59" width="421" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre_centro}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="471" y="59" width="88" height="20"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CONVOCATORIA:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="560" y="59" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{fecha_convocatoria}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="660" height="19"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[INTITUTO NACIONAL TECNOLOGICO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="66">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="163" height="66" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Nombres y Apellidos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="163" y="0" width="100" height="66" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[LUGAR
+(1)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="263" y="0" width="40" height="66" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[EDAD
+(2)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="303" y="0" width="100" height="45" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[SEXO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="303" y="45" width="50" height="21" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[F]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="353" y="45" width="50" height="21" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[M]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="403" y="0" width="68" height="66" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[SITUACION
+LABORAL
+(3)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="471" y="0" width="78" height="66" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[NIVEL
+ACADEMICO
+(4)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="549" y="0" width="111" height="66" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<text><![CDATA[REFERENCIAL DE
+COMPETENCIAS/
+UNIDADES DE COMPETENCIA A 
+CERTIFICAR]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<textField>
+				<reportElement x="0" y="0" width="163" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre_completo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="163" y="0" width="100" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lugar}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="353" y="0" width="50" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{masculino}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="303" y="0" width="50" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{femenino}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="403" y="0" width="68" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{situacion_laboral}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="471" y="0" width="78" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nivel_academino}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="549" y="0" width="111" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{unidad_competencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="263" y="0" width="40" height="20"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{edad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20">
+			<textField pattern="dd/MM/yyyy hh:mm a">
+				<reportElement x="0" y="0" width="163" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="539" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Pag "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="619" y="0" width="41" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="39">
+			<staticText>
+				<reportElement x="0" y="0" width="660" height="39"/>
+				<textElement/>
+				<text><![CDATA[EN CASO DE IMPOSIBILIDAD DE ACUDIR A LA REUNION DEBE COMUNICARLO LO ANTES POSIBLE.
+CLAVE: (1): DEPARTAMENTO, MUNICIPIO. (2): NUMERO ARABIGO. (3): EMPLEADO/DESEMPLEADO.
+(4): INDICAR EL GRADO MAS ALTO ALCANZADO POR EL CANDIDATO.]]></text>
+			</staticText>
+		</band>
+	</summary>
+	<noData>
+		<band height="145">
+			<staticText>
+				<reportElement x="0" y="19" width="660" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SISTEMA DE COMPETENCIAS LABORALES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="39" width="660" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[REGISTRO DE PARTICIPANTES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="59" width="50" height="20"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CENTRO:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="50" y="59" width="421" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre_centro}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="471" y="59" width="88" height="20"/>
+				<textElement>
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[CONVOCATORIA:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="560" y="59" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{fecha_convocatoria}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="79" width="163" height="66" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Nombres y Apellidos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="163" y="79" width="100" height="66" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[LUGAR
+(1)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="263" y="79" width="40" height="66" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[EDAD
+(2)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="303" y="79" width="100" height="45" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[SEXO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="303" y="124" width="50" height="21" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[F]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="353" y="124" width="50" height="21" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[M]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="403" y="79" width="68" height="66" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[SITUACION
+LABORAL
+(3)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="471" y="79" width="78" height="66" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[NIVEL
+ACADEMICO
+(4)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="549" y="79" width="111" height="66" backcolor="#99CCFF"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<text><![CDATA[REFERENCIAL DE
+COMPETENCIAS/
+UNIDADES DE COMPETENCIA A 
+CERTIFICAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="660" height="19"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[INTITUTO NACIONAL TECNOLOGICO]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>

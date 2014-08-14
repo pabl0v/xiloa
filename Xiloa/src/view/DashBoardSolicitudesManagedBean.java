@@ -177,14 +177,15 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 
     public void runReporte(String nombreReporte, boolean desplegar) throws Exception {
     	Map<String,Object> params = new HashMap<String,Object>();
+    	
+    	if(nombreReporte.equalsIgnoreCase("rpt_prematricula") || nombreReporte.equalsIgnoreCase("rpt_reconocimiento") || nombreReporte.equalsIgnoreCase("rpt_asesoramiento_grupal"))
+    		params.put("solicitudId", selectedSolicitud.getId());
+    	
+    	if(nombreReporte.equalsIgnoreCase("rpt_registro_participantes")){
+    		params.put("fecha", new Date());
+    		params.put("centroId", selectedSolicitud.getCertificacion().getIfpId());
+    	}
         
-    	/*
-    	if (this.selectedSolicitud != null){    		
-    		params.put("idSolicitud",this.selectedSolicitud.getId());    	
-    		service.imprimirReporte(nombreReporte, params, Global.EXPORT_PDF, desplegar);
-    	} else
-    		FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe seleccionar una solicitud.", true);
-    		*/
     	service.imprimirReporte(nombreReporte, params, Global.EXPORT_PDF, desplegar);
 	}
     	
