@@ -1,7 +1,10 @@
 package view;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
@@ -19,8 +22,9 @@ import org.springframework.stereotype.Component;
 
 import controller.LoginController;
 import service.IService;
-import support.FacesUtil;
+import support.Departamento;
 import support.Ifp;
+import support.Municipio;
 
 @Component
 @Scope(value = "view")
@@ -36,16 +40,51 @@ public class CertificacionesManagedBean implements Serializable {
 	private Certificacion selectedCertificacion;
 	private Contacto solicitante;
 	private Solicitud solicitud;
+	private Map<Integer, Municipio> municipios;
+	private Map<Integer, Departamento> departamentos;
+	private Integer selectedDepartamento;
+	private Integer selectedMunicipio;
 
 	public CertificacionesManagedBean() {
 		super();
 		solicitante = new Contacto();
 		solicitud = new Solicitud();
+		municipios = new HashMap<Integer, Municipio>();
+		departamentos = new HashMap<Integer, Departamento>();
 	}
 	
 	@PostConstruct
 	private void init() {		
 		certificaciones = service.getCertificaciones(login.getEntidadUsuario());
+		departamentos = service.getDepartamentosByInatec();
+	}
+	
+	public List<Departamento> getDepartamentos(){
+		return new ArrayList<Departamento>(departamentos.values());
+	}
+	
+	public Integer getSelectedDepartamento(){
+		return selectedDepartamento;
+	}
+
+	public void setSelectedDepartamento(Integer departamento){
+		this.selectedDepartamento = departamento;
+	}
+	
+	public Integer getSelectedMunicipio(){
+		return selectedMunicipio;
+	}
+	
+	public void setSelectedMunicipio(Integer municipio){
+		this.selectedMunicipio = municipio;
+	}
+	
+	public void handleDepartamentoChange(){
+		municipios = service.getMunicipioDptoByInatec(selectedDepartamento);
+	}
+
+	public List<Municipio> getMunicipios(){
+		return new ArrayList<Municipio>(municipios.values());
 	}
 	
 	public List<Certificacion> getCertificaciones(){
@@ -102,13 +141,16 @@ public class CertificacionesManagedBean implements Serializable {
 		solicitud = new Solicitud();
     }
 	
-	public void registrarSolicitud(Solicitud solicitud, Contacto solicitante){
+	public String registrarSolicitud(Solicitud solicitud, Contacto solicitante){
 		
 		//validar si tiene solicitudes pendientes
 		
-		FacesUtil.getMensaje("SCCL - Mensaje: ", "El candidato tiene una solicitud pendiente.", true);
+		//FacesUtil.getMensaje("SCCL - Mensaje: ", "La solicitud ha sido registrada correctamente.", true);
 		
 		solicitud.setCertificacion(selectedCertificacion);
+		solicitante.setDepartamentoId(selectedDepartamento);
+		solicitante.setMunicipioId(selectedMunicipio);
 		service.registrarSolicitud(solicitud, solicitante);
+		return "/modulos/solicitudes/solicitudes?faces-redirect=true";
 	}
 }

@@ -62,14 +62,14 @@
 			<br/>
 			<p:inputText rendered="false" value="#{ejecucionesManagedBean.selectedBitacora.id}" />
 			<h:panelGrid id="modal2" columns="3" cellpadding="15" cellspacing="10" >
-            	<h:outputLabel value="Actividad:" />
-            	<h:outputLabel id="codigo1" value="#{ejecucionesManagedBean.selectedActividad.tipo.valor}" />
-            	<p:message for="codigo1" display="text"  />
+				<h:outputLabel value="Actividad:" />
+				<h:outputLabel id="codigo1" value="#{ejecucionesManagedBean.selectedActividad.tipo.valor}" />
+				<p:message for="codigo1" display="text"  />
             	<h:outputLabel value="Fecha Evento:" />
             	<p:calendar id="codigo2" value="#{ejecucionesManagedBean.selectedBitacora.fechaEvento}" showOn="button" pattern="dd/MM/yyyy hh:mm a" mindate="01/06/2014" disabledWeekends="true" minHour="8" maxHour="17" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
             	<p:message for="codigo2" display="text"  />
 				<h:outputLabel value="Observaciones:" />
-				<p:inputText id="codigo3" value="#{ejecucionesManagedBean.selectedBitacora.observaciones}" />
+				<p:inputText id="codigo3" value="#{ejecucionesManagedBean.selectedBitacora.observaciones}" required="true" requiredMessage="La observación es requerida" />
 				<p:message for="codigo3" display="text"  />
 			</h:panelGrid>
 			<div class="contenedor_botones" style="margin-top:32px;">
@@ -81,7 +81,7 @@
 		</h:form>
 			<br/>
 		<h:form id="bitacorasDataTableForm">
-			<p:dataTable paginatorPosition="bottom" emptyMessage="No hay datos para mostrar" var="bitacora" value="#{ejecucionesManagedBean.bitacoras}" paginator="true" rows="3" rowKey="#{bitacora.id}" selectionMode="single">
+			<p:dataTable paginatorPosition="bottom" emptyMessage="No hay datos para mostrar" var="bitacora" value="#{ejecucionesManagedBean.bitacoras}" paginator="true" rows="2" rowKey="#{bitacora.id}" selectionMode="single">
 				<p:ajax event="rowSelect" listener="#{ejecucionesManagedBean.onRowSelectBitacora}" update=":bitacorasForm" />
 				<p:column headerText="Fecha Registro"><h:outputText value="#{bitacora.fechaRegistro}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy"/></h:outputText></p:column>
 				<p:column headerText="Fecha Evento"><h:outputText value="#{bitacora.fechaEvento}" ><f:convertDateTime type="date" pattern="dd/MM/yyyy hh:mm a"/></h:outputText></p:column>

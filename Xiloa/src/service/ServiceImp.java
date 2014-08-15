@@ -136,9 +136,10 @@ public class ServiceImp implements IService {
 	private Map<Integer, Mantenedor> catalogoEstadoSolicitud;
 	private Map<Integer, Mantenedor> catalogoPortafolio;
 	private Map<Integer, Mantenedor> catalogoEstadosEvaluacion;
+	protected final Log logger = LogFactory.getLog(getClass());
+	
 	private Map<Long, Pais> catalogoPaises;
 	private Map<Integer, Departamento> catalogoDepartamentos;
-	protected final Log logger = LogFactory.getLog(getClass());
 	
 	/*
 	 * Constructor por defecto
@@ -191,22 +192,20 @@ public class ServiceImp implements IService {
 		}
 		
 		catalogoUnidades = inatecDao.getCatalogoUnidades();
+
+	    for (Pais p : getPaises()) {
+	    	catalogoPaises.put(p.getId(), p);
+	    }
 		
-	    List<Pais> listaPaises = new ArrayList<Pais> ();
-	    listaPaises = getPaises();
-	    
-	    for (Pais p : listaPaises) {
-	    	this.catalogoPaises.put(p.getId(), p);
-	    }		 
-		
-		this.catalogoDepartamentos = getDepartamentosByInatec();
+		for (Departamento departamento : inatecDao.getDepartamentosInatec()){
+			catalogoDepartamentos.put(departamento.getDpto_id(), departamento);
+		}
 	}
 	
 	/*
 	 * @return obtiene un map con el catálogo de países
 	 * 
 	 */
-	
 	@Override
 	public Map<Long, Pais> getCatalogoPaises() {
 		return catalogoPaises;
@@ -216,7 +215,6 @@ public class ServiceImp implements IService {
 	 * @return obtiene un map con el catálogo de departamentos
 	 * 
 	 */
-	
 	@Override
 	public Map<Integer, Departamento> getCatalogoDepartamentos() {
 		return catalogoDepartamentos;
@@ -1170,15 +1168,7 @@ public class ServiceImp implements IService {
 
 	@Override
 	public Map<Integer, Departamento> getDepartamentosByInatec() {
-		List<Departamento> lista = inatecDao.getDepartamentosInatec();
-		
-		Map<Integer, Departamento> m = new HashMap<Integer, Departamento>();
-		
-		for (Departamento d : lista){
-			m.put(d.getDpto_id(), d);
-		}
-		
-		return m;
+		return catalogoDepartamentos;
 	}
 
 	/**
@@ -1191,7 +1181,7 @@ public class ServiceImp implements IService {
 		List<Municipio> lista = inatecDao.getMunicipioByDeptoInatec(idDpto);
 		
 		Map<Integer, Municipio> m = new HashMap<Integer, Municipio>();
-		
+
 		for(Municipio dato : lista) {
 			m.put(dato.getMunicipio_id(), dato);
 		} 
