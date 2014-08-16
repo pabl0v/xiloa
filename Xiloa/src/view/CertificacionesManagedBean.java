@@ -2,6 +2,7 @@ package view;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +24,10 @@ import org.springframework.stereotype.Component;
 import controller.LoginController;
 import service.IService;
 import support.Departamento;
+import support.FacesUtil;
 import support.Ifp;
 import support.Municipio;
+import util.ValidatorUtil;
 
 @Component
 @Scope(value = "view")
@@ -145,7 +148,25 @@ public class CertificacionesManagedBean implements Serializable {
 		
 		//validar si tiene solicitudes pendientes
 		
-		//FacesUtil.getMensaje("SCCL - Mensaje: ", "La solicitud ha sido registrada correctamente.", true);
+		if(service.tieneSolicitudesPendientes(solicitante.getNumeroIdentificacion(), selectedCertificacion.getId())){
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "El candidato ya tiene una solicitud en proceso.", true);
+			return null;
+		}
+		
+		//validar la cedula del candidato
+		
+		if(ValidatorUtil.validateCedula(solicitante.getNumeroIdentificacion())){
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "La cedula es invalida.", true);
+			return null;			
+		}
+		
+		//validar fecha de nacimiento
+		Date fecha = ValidatorUtil.obtenerFechaNacimientoDeCedula(solicitante.getNumeroIdentificacion());
+		
+		if(fecha != solicitante.getFechaNacimiento()){
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "La fecha de nacimiento es incorrecta.", true);
+			return null;						
+		}
 		
 		solicitud.setCertificacion(selectedCertificacion);
 		solicitante.setDepartamentoId(selectedDepartamento);

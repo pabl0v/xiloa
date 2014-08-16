@@ -945,5 +945,5 @@ public interface IService {
 	/** 
 	 * @param la solicicitua y el solicitante
 	 */
-	public void registrarSolicitud(Solicitud solicitud, Contacto solicitante);
+	public void registrarSolicitud(Solicitud solicitud, Contacto solicitante);	
 }

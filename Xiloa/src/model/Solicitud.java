@@ -85,18 +85,6 @@ public class Solicitud implements Serializable {
 	@Temporal(TemporalType.DATE)	
 	private Date fechaMatricula;
 	
-	/*
-	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "fecha_convocatoria", nullable = true)
-	@Temporal(TemporalType.DATE)	
-	private Date fechaConvocatoria;
-	
-	@DateTimeFormat(iso = ISO.DATE)
-	@Column(name = "fecha_asesoramiento", nullable = true)
-	@Temporal(TemporalType.DATE)	
-	private Date fechaAsesoramiento;
-	*/
-	
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "fecha_remision_diploma", nullable = true)
 	@Temporal(TemporalType.DATE)	
@@ -316,24 +304,6 @@ public class Solicitud implements Serializable {
 	public Solicitud() {
 		super();		
 	}
-	
-	/*
-	public Date getFechaConvocatoria() {
-		return fechaConvocatoria;
-	}
-
-	public void setFechaConvocatoria(Date fechaConvocatoria) {
-		this.fechaConvocatoria = fechaConvocatoria;
-	}
-
-	public Date getFechaAsesoramiento() {
-		return fechaAsesoramiento;
-	}
-
-	public void setFechaAsesoramiento(Date fechaAsesoramiento) {
-		this.fechaAsesoramiento = fechaAsesoramiento;
-	}
-	*/
 
 	public Date getFechaRemisionDiploma() {
 		return fechaRemisionDiploma;

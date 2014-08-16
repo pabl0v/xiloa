@@ -98,10 +98,10 @@
 			<h:form id="solicitudForm">
 				<h:panelGrid id="modal3" columns="3" cellpadding="15" cellspacing="10" >
 					<h:outputLabel for="centro" value="Centro (*):" /> 
-					<h:inputText id="centro" disabled="true" style="width:200%;" value="#{certificacionesManagedBean.selectedCertificacion.ifpNombre}" required="true" requiredMessage="Campo obligatorio" />
+					<h:inputText id="centro" disabled="true" style="width:180%;" value="#{certificacionesManagedBean.selectedCertificacion.ifpNombre}" required="true" requiredMessage="Campo obligatorio" />
 					<p:message for="centro" display="text" />
 					<h:outputLabel for="certificacion" value="Certificación (*):" /> 
-					<h:inputText id="certificacion" disabled="true" style="width:200%;" value="#{certificacionesManagedBean.selectedCertificacion.nombre}" required="true" requiredMessage="Campo obligatorio" />
+					<h:inputText id="certificacion" disabled="true" style="width:180%;" value="#{certificacionesManagedBean.selectedCertificacion.nombre}" required="true" requiredMessage="Campo obligatorio" />
 					<p:message for="certificacion" display="text" />
 					<h:outputLabel for="primerNombre" value="Primer nombre (*):" /> 
 					<p:inputText id="primerNombre" value="#{certificacionesManagedBean.solicitante.primerNombre}" required="true" requiredMessage="Campo obligatorio" />

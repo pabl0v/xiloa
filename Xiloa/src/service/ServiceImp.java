@@ -1883,12 +1883,12 @@ public class ServiceImp implements IService {
 	@Override
 	public boolean tieneSolicitudesPendientes(String cedula, Long certificacionId){
 		
-		//indica si el solicitante con cedula indicada tiene solicitudes pendientes o si la certificacion que solicita ya la tiene aprobada
+		//indica si el solicitante con cedula indicada tiene solicitudes pendientes o si la certificacion que solicita esta en proceso
 		
 		String query = 
-					" select solicitud_id from sccl.solicitudes where solicitud_estatus not in (37, 40) and contacto_id in (select contacto_id from sccl.contactos where numero_identificacion='"+cedula+"') "
+					" select solicitud_id from sccl.solicitudes where solicitud_estatus not in (44, 45) and contacto_id in (select contacto_id from sccl.contactos where numero_identificacion='"+cedula+"') "
 				+ 	" union"
-				+ 	" select solicitud_id from sccl.solicitudes where solicitud_estatus in (37) and contacto_id in (select contacto_id from sccl.contactos where numero_identificacion='"+cedula+"') and certificacion_id="+certificacionId;
+				+ 	" select solicitud_id from sccl.solicitudes where solicitud_estatus not in (44, 45) and contacto_id in (select contacto_id from sccl.contactos where numero_identificacion='"+cedula+"') and certificacion_id="+certificacionId;
 		
 		List<Long> pendientes = longDao.findAllByNativeQuery(query);
 		if(pendientes.isEmpty())
@@ -2218,5 +2218,5 @@ public class ServiceImp implements IService {
 		solicitud.setEscolaridad(0);
 		solicitud.setContacto(solicitante);
 		solicitud = solicitudDao.save(solicitud);
-	}
+	}	
 }
