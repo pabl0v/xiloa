@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="solicitudId" class="java.lang.Long">
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+	sccl.vista_evaluacion_unidades.solicitud_id,
+	(
+		SELECT
+			COUNT (DISTINCT unidad_codigo)
+		FROM
+			sccl.vista_evaluacion_unidades
+		INNER JOIN sccl.vista_involucrados ON sccl.vista_evaluacion_unidades.solicitud_id = sccl.vista_involucrados.solicitud_id
+		WHERE
+			sccl.vista_involucrados.actividad_tipo_id = 7
+		AND sccl.vista_involucrados.solicitud_id = $P{solicitudId}
+		AND sccl.vista_evaluacion_unidades.unidad_codigo IS NOT NULL
+		AND sccl.vista_evaluacion_unidades.evidencia = TRUE
+	) AS envidenciadas,
+	(
+		SELECT
+			COUNT (DISTINCT unidad_codigo)
+		FROM
+			sccl.vista_evaluacion_unidades
+		INNER JOIN sccl.vista_involucrados ON sccl.vista_evaluacion_unidades.solicitud_id = sccl.vista_involucrados.solicitud_id
+		WHERE
+			sccl.vista_involucrados.actividad_tipo_id = 7
+		AND sccl.vista_involucrados.solicitud_id = $P{solicitudId}
+		AND sccl.vista_evaluacion_unidades.unidad_codigo IS NOT NULL
+		AND sccl.vista_evaluacion_unidades.evidencia = FALSE
+	) AS no_envidenciadas,
+	(
+		SELECT DISTINCT
+			"c".nombre_completo
+		FROM
+			sccl.roles AS r
+		INNER JOIN sccl.contactos AS "c" ON "c".rol_id = r.rol_id
+		WHERE
+			C .contacto_id = sccl.vista_involucrados.contacto_id
+		AND r.rol_id = 1
+	) AS nombre_asesor,
+	(
+		SELECT DISTINCT
+			"c".nombre_completo
+		FROM
+			sccl.roles AS r
+		INNER JOIN sccl.contactos AS "c" ON "c".rol_id = r.rol_id
+		WHERE
+			C .contacto_id = sccl.vista_involucrados.contacto_id
+		AND r.rol_id = 2
+	) AS nombre_verificador
+FROM
+	sccl.vista_evaluacion_unidades
+INNER JOIN sccl.vista_involucrados ON sccl.vista_evaluacion_unidades.solicitud_id = sccl.vista_involucrados.solicitud_id
+INNER JOIN sccl.contactos ON sccl.vista_involucrados.contacto_id = sccl.contactos.contacto_id
+INNER JOIN sccl.roles ON sccl.contactos.rol_id = sccl.roles.rol_id
+WHERE
+	sccl.vista_involucrados.actividad_tipo_id = 7
+AND sccl.vista_involucrados.solicitud_id = $P{solicitudId}
+AND sccl.vista_evaluacion_unidades.unidad_codigo IS NOT NULL]]>
+	</queryString>
+	<field name="solicitud_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="envidenciadas" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="no_envidenciadas" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre_asesor" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre_verificador" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band/>
+	</title>
+	<pageHeader>
+		<band height="35">
+			<staticText>
+				<reportElement x="0" y="4" width="555" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[RESUMEN DEL INFORME DE ASESORAMIENTO]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="114">
+			<staticText>
+				<reportElement x="1" y="7" width="373" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[LAS UNIDADES SE CONSIDERAN CERTIFICABLES DE FORMA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="332" y="31" width="59" height="20"/>
+				<textElement/>
+				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="394" y="31" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{envidenciadas}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="394" y="51" width="100" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="331" y="73" width="60" height="20"/>
+				<textElement/>
+				<text><![CDATA[NADA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="393" y="73" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{no_envidenciadas}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="393" y="93" width="100" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="332" y="52" width="59" height="20"/>
+				<textElement/>
+				<text><![CDATA[PARCIAL:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="394" y="71" width="100" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="102">
+			<subreport>
+				<reportElement x="1" y="2" width="200" height="100"/>
+				<subreportParameter name="solicitudId">
+					<subreportParameterExpression><![CDATA[$P{solicitudId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["subrpt_asesoria_resumen.jrxml"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band/>
+	</pageFooter>
+	<summary>
+		<band height="119">
+			<line>
+				<reportElement x="64" y="61" width="160" height="1"/>
+			</line>
+			<line>
+				<reportElement x="343" y="61" width="160" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="45" y="65" width="198" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Firma del Asesor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="331" y="67" width="183" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Firma del Verificador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="3" width="44" height="20"/>
+				<textElement/>
+				<text><![CDATA[FECHA:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="75" y="3" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

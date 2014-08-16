@@ -178,7 +178,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
     public void runReporte(String nombreReporte, boolean desplegar) throws Exception {
     	Map<String,Object> params = new HashMap<String,Object>();
     	
-    	if(nombreReporte.equalsIgnoreCase("rpt_prematricula") || nombreReporte.equalsIgnoreCase("rpt_reconocimiento") || nombreReporte.equalsIgnoreCase("rpt_asesoramiento_grupal"))
+    	if(nombreReporte.equalsIgnoreCase("rpt_prematricula") || nombreReporte.equalsIgnoreCase("rpt_reconocimiento") || nombreReporte.equalsIgnoreCase("rpt_asesoria_grupal") || nombreReporte.equalsIgnoreCase("rpt_asesoria_resumen"))
     		params.put("solicitudId", selectedSolicitud.getId());
     	
     	if(nombreReporte.equalsIgnoreCase("rpt_registro_participantes")){

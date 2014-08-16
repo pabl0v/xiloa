@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="psol" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[new Integer(3)]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+	vi.solicitud_id,
+	vus.descripcion,
+	veu.evidencia,
+	veu.puntaje,
+	veu.aprobado,
+	veu.observaciones,
+	vus.codigo
+FROM
+	sccl.vista_involucrados AS vi
+INNER JOIN sccl.vista_unidades_solicitud AS vus ON vus.solicitud_id = vi.solicitud_id
+INNER JOIN sccl.vista_evaluacion_unidades AS veu ON veu.solicitud_id = vus.solicitud_id
+AND veu.unidad_codigo = vus.codigo
+WHERE
+ vi.solicitud_id = $P{psol}
+and vi.actividad_tipo_id = 7
+]]>
+	</queryString>
+	<field name="solicitud_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="evidencia" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="puntaje" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="aprobado" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="observaciones" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="codigo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="evidencia">
+		<groupExpression><![CDATA[$F{evidencia}]]></groupExpression>
+		<groupHeader>
+			<band height="26">
+				<staticText>
+					<reportElement x="1" y="4" width="554" height="20">
+						<printWhenExpression><![CDATA[new Boolean($F{evidencia}.equals( new Boolean(false) ))]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[UNIDADES DE COMPETENCIAS QUE EL CANDIDATO NO HA EVIDENCIADO SUFICIENTEMENTE]]></text>
+				</staticText>
+				<line>
+					<reportElement x="0" y="25" width="550" height="1"/>
+					<graphicElement>
+						<pen lineWidth="1.25" lineStyle="Double"/>
+					</graphicElement>
+				</line>
+				<staticText>
+					<reportElement x="1" y="4" width="554" height="20">
+						<printWhenExpression><![CDATA[new Boolean($F{evidencia}.equals( new Boolean(true) ))]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[UNIDADES DE COMPETENCIAS QUE EL CANDIDATO  HA EVIDENCIADO SUFICIENTEMENTE]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<detail>
+		<band height="21">
+			<textField>
+				<reportElement x="41" y="0" width="508" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="40" y="20" width="509" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="1" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
