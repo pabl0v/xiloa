@@ -59,12 +59,14 @@ public class Solicitud implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "solicitud_id", nullable = false)
 	private Long id;
-
+	
+	/*
 	@Column(name = "solicitud_nombre", nullable = false)
 	private String nombre;
-	
+
 	@Column(name = "solicitud_ticket", nullable = false)
 	private String ticket;
+	*/
 	
 	@ManyToOne
 	@JoinColumn(name="solicitud_estatus", nullable = false)		
@@ -156,6 +158,7 @@ public class Solicitud implements Serializable {
 		this.id = id;
 	}
 
+	/*
 	public String getNombre() {
 		return nombre;
 	}
@@ -171,6 +174,7 @@ public class Solicitud implements Serializable {
 	public void setTicket(String ticket) {
 		this.ticket = ticket;
 	}
+	*/
 
 	public Mantenedor getEstatus() {
 		return estatus;
@@ -276,15 +280,15 @@ public class Solicitud implements Serializable {
 		this.resultadoEvaluacion = resultadoEvaluacion;
 	}
 
-	public Solicitud(String nombre, String ticket, Mantenedor estatus,
+	public Solicitud(/*String nombre, String ticket, */Mantenedor estatus,
 			Date fechaRegistro, Date fechaMatricula, int experiencia,
 			String ocupacion, String oficio, int escolaridad,
 			Contacto contacto, Certificacion certificacion,
 			List<Evaluacion> evaluaciones, Integer idMatricula, boolean resultadoEvaluacion,
 			String empresa, boolean situacion_laboral) {
 		super();
-		this.nombre = nombre;
-		this.ticket = ticket;
+		//this.nombre = nombre;
+		//this.ticket = ticket;
 		this.estatus = estatus;
 		this.fechaRegistro = fechaRegistro;
 		this.fechaMatricula = fechaMatricula;
@@ -333,5 +337,40 @@ public class Solicitud implements Serializable {
 
 	public void setReciboMatricula(String reciboMatricula) {
 		this.reciboMatricula = reciboMatricula;
+	}
+	
+	public boolean getHabilitarEnviar(){
+		if(estatus != null && estatus.getId()==35)		//si registrado entonces se puede enviar
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean getHabilitarAutorizar(){
+		if(estatus != null && estatus.getId()==36)		//si enviado entonces puede se autorizar
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean getHabilitarMatricular(){
+		if(estatus != null && estatus.getId()==37)		//si autorizado entonces matricular
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean getHabilitarEvaluar(){
+		if(estatus != null && (estatus.getId()==36 || estatus.getId()==40 || estatus.getId()==41))		//si enviado, asesoria individual o programado entonces se puede evaluar
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean getHabilitarConvocar(){
+		if(estatus != null && (estatus.getId()==38 || estatus.getId()==39 || estatus.getId()==40))		//si matriculado, asesoria grupal o individual entonces se puede convocar
+			return true;
+		else
+			return false;
 	}
 }

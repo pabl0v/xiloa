@@ -1,6 +1,5 @@
 package util;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -12,7 +11,6 @@ public class ValidatorUtil {
 	
 	private static final String PATTERN_EMAIL = "^[\\w-]+(\\.[\\w-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	private static final String PATTERN_CEDULA = "(\\d{3}-)(\\d{6}-)\\d{4}[a-zA-Z]"; 
-	private static final String [] letras = new String[] {"A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y"};
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Funcion que valida por expresion regular el formato de email.   
 	public static boolean validateEmail(String email) {
@@ -95,9 +93,19 @@ public class ValidatorUtil {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 		}
 		return null;
+	}
+	
+	public static boolean validarEdadSolicitante(Date fechaNacimiento) {
+		Calendar date = Calendar.getInstance();
+		int anoActual = date.get(Calendar.YEAR);
 
+		Calendar cal=Calendar.getInstance();
+		cal.setTime(fechaNacimiento);
+		int anoNacimiento=cal.get(Calendar.YEAR);
+		int edad=Math.abs(anoActual-anoNacimiento );
+		
+		return  (edad>=18 && edad<=45);	
 	}
 }

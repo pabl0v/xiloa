@@ -497,3 +497,14 @@ union
 select 42,id_empleado,usuario,227,1,'ccantarero',now() from admon.usuario where usuario='fredisacs'	--verificador
 
 update admon.usuario set clave='0c3c46276360da4dab11bf247c4d93ce' where usuario in ('mespinozaf','mmoran','mportugal','gsalvatierra','fredisacs','cromero')
+
+--operaciones adicionales
+
+--eliminar campo ticket y nombre en entidad solicitud
+--buscar expresion regular para validar bien la cedula
+--optimizar la busqueda de municipios de un departament, actualmente se hace con query
+--optimizar dashboarsolicitudesmanagedbean
+--cambiar etiqueta a mantenedores para estado de solicitud apto y no apto
+
+update sccl.mantenedores set mantenedor_valor='Apto' where mantenedor_id=42
+update sccl.mantenedores set mantenedor_valor='No Apto' where mantenedor_id=43

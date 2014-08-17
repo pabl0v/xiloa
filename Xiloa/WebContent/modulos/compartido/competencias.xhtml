@@ -104,23 +104,23 @@
 					<h:inputText id="certificacion" disabled="true" style="width:180%;" value="#{certificacionesManagedBean.selectedCertificacion.nombre}" required="true" requiredMessage="Campo obligatorio" />
 					<p:message for="certificacion" display="text" />
 					<h:outputLabel for="primerNombre" value="Primer nombre (*):" /> 
-					<p:inputText id="primerNombre" value="#{certificacionesManagedBean.solicitante.primerNombre}" required="true" requiredMessage="Campo obligatorio" />
+					<p:inputText id="primerNombre" onblur="value=value.toUpperCase()" value="#{certificacionesManagedBean.solicitante.primerNombre}" required="true" requiredMessage="Campo obligatorio" />
 					<p:message for="primerNombre" display="text" />
 					<h:outputLabel value="Segundo nombre:" /> 
-					<p:inputText for="segundoNombre" id="segundoNombre" value="#{certificacionesManagedBean.solicitante.segundoNombre}" required="false" />
+					<p:inputText for="segundoNombre" id="segundoNombre" onblur="value=value.toUpperCase()" value="#{certificacionesManagedBean.solicitante.segundoNombre}" required="false" />
 					<p:message for="segundoNombre" display="text" />
 					<h:outputLabel for="primerApellido" value="Primer apellido (*):" /> 
-					<p:inputText id="primerApellido" value="#{certificacionesManagedBean.solicitante.primerApellido}" required="true" requiredMessage="Campo obligatorio" />
+					<p:inputText id="primerApellido" onblur="value=value.toUpperCase()" value="#{certificacionesManagedBean.solicitante.primerApellido}" required="true" requiredMessage="Campo obligatorio" />
 					<p:message for="primerApellido" display="text" />
 					<h:outputLabel for="segundoApellido" value="Segundo apellido:" /> 
-					<p:inputText id="segundoApellido" value="#{certificacionesManagedBean.solicitante.segundoApellido}" required="false" requiredMessage="Campo obligatorio" />
+					<p:inputText id="segundoApellido" onblur="value=value.toUpperCase()" value="#{certificacionesManagedBean.solicitante.segundoApellido}" required="false" requiredMessage="Campo obligatorio" />
 					<p:message for="segundoApellido" display="text" />
 					<h:outputLabel for="numeroIdentificacion" value="Cedula (*):" />
-					<p:inputMask id="numeroIdentificacion" value="#{certificacionesManagedBean.solicitante.numeroIdentificacion}" required="true" requiredMessage="Campo obligatorio" mask="999-999999-9999a"/>
+					<p:inputMask id="numeroIdentificacion" onblur="value=value.toUpperCase()" value="#{certificacionesManagedBean.solicitante.numeroIdentificacion}" required="true" requiredMessage="Campo obligatorio" mask="999-999999-9999a"/>
 					<p:message for="numeroIdentificacion" display="text" />
 					<h:outputLabel value="Fecha de Nacimiento (*):" />
 					<p:calendar id="fechaNacimiento" value="#{certificacionesManagedBean.solicitante.fechaNacimiento}" showOn="button" pattern="dd/MM/yyyy" maxdate="01/01/1994" mindate="01/01/1969" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
-					<p:message for="fechaNacimiento" display="text"  />
+					<p:message for="fechaNacimiento" display="text" />
 					<h:outputLabel for="sexo" value="Sexo (*):" />
 					<p:selectOneMenu id="sexo" required="true" style="width:95%;" value="#{certificacionesManagedBean.solicitante.sexo}" requiredMessage="Campo obligatorio" >  
 						<f:selectItem itemLabel="Seleccione..." itemValue="" />
@@ -129,16 +129,24 @@
 					</p:selectOneMenu>
 					<p:message for="sexo" display="text" />
 					<h:outputLabel for="telefono" value="Teléfono (*):" />
-					<p:inputText id="telefono" value="#{certificacionesManagedBean.solicitante.telefono1}" required="true" requiredMessage="Campo obligatorio" />
+					<p:inputText id="telefono" value="#{certificacionesManagedBean.solicitante.telefono1}" required="true" requiredMessage="Campo obligatorio" validatorMessage="Número invalido" converterMessage="Número invalido" >
+						<f:validateLength minimum="8" maximum="8" />
+						<f:convertNumber integerOnly="true" pattern="########" />
+					</p:inputText>
 					<p:message for="telefono" display="text" />
 					<h:outputLabel for="celular" value="Celular:" />
-					<p:inputText id="celular" value="#{certificacionesManagedBean.solicitante.telefono2}" required="false" requiredMessage="Campo obligatorio" />
+					<p:inputText id="celular" value="#{certificacionesManagedBean.solicitante.telefono2}" required="false" requiredMessage="Campo obligatorio" validatorMessage="Número invalido" converterMessage="Número invalido" >
+						<f:validateLength minimum="8" maximum="8" />
+						<f:convertNumber integerOnly="true" pattern="########" />
+					</p:inputText>
 					<p:message for="celular" display="text" />
 					<h:outputLabel for="email" value="Email (*):" />
-					<p:inputText id="email" value="#{certificacionesManagedBean.solicitante.correo1}" required="true" requiredMessage="Campo obligatorio" />
+					<p:inputText id="email" value="#{certificacionesManagedBean.solicitante.correo1}" required="true" requiredMessage="Campo obligatorio" validatorMessage="Email invalido" >
+						<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+					</p:inputText>
 					<p:message for="email" display="text" />
 					<h:outputLabel for="direccion" value="Dirección (*):" />
-					<p:inputText id="direccion" value="#{certificacionesManagedBean.solicitante.direccionActual}" required="true" requiredMessage="Campo obligatorio" />
+					<p:inputText id="direccion" onblur="value=value.toUpperCase()" value="#{certificacionesManagedBean.solicitante.direccionActual}" required="true" requiredMessage="Campo obligatorio" />
 					<p:message for="direccion" display="text" />
 					<h:outputLabel for="departamento" value="Departamento (*):" />
 					<p:selectOneMenu id="departamento" required="true" style="width:95%;" value="#{certificacionesManagedBean.selectedDepartamento}" requiredMessage="Campo obligatorio" >  
@@ -156,18 +164,20 @@
 					<h:outputText for="ckTrabaja" value="Trabaja actualmente? (*): " />  
 					<p:selectBooleanCheckbox id="ckTrabaja" value="#{certificacionesManagedBean.solicitud.situacion_laboral}" />
 					<p:message for="ckTrabaja" display="text" />
-					<h:outputLabel for="descEmpresaLabora" value="Empresa:" />  
-					<p:inputText id="descEmpresaLabora" value="#{certificacionesManagedBean.solicitud.empresa}" />  
+					<h:outputLabel for="descEmpresaLabora" value="Empresa:" />
+					<p:inputText id="descEmpresaLabora" onblur="value=value.toUpperCase()" value="#{certificacionesManagedBean.solicitud.empresa}" />  
 					<p:message for="descEmpresaLabora" display="text" />
-					<h:outputLabel for="experiencia" value="Años de experiencia?:" required="false" />  
-					<p:inputText id="experiencia" value="#{certificacionesManagedBean.solicitud.experiencia}" />
+					<h:outputLabel for="experiencia" value="Años de experiencia? (*):" required="false" />  
+					<p:inputText id="experiencia" value="#{certificacionesManagedBean.solicitud.experiencia}" required="true" requiredMessage="Campo obligatorio" validatorMessage="Experiencia insuficiente" >
+						<f:validateDoubleRange minimum="3"/>
+					</p:inputText>
 					<p:message for="experiencia" display="text" />
 					<h:outputLabel for="ocupacion" value="Ocupación actual:" />
-					<p:inputText id="ocupacion" value="#{certificacionesManagedBean.solicitud.ocupacion}" required="false" />				
+					<p:inputText id="ocupacion" onblur="value=value.toUpperCase()" value="#{certificacionesManagedBean.solicitud.ocupacion}" required="false" />				
 					<p:message for="ocupacion" display="text" />
 				</h:panelGrid>
 					<div class="contenedor_botones" style="margin-top:32px;">
-						<p:commandButton value="Cancelar" style="width:80px;height:30px" onclick="PF('solicitud_dlg').hide();" immediate="true" />
+						<p:commandButton value="Cancelar" style="width:80px;height:30px" onclick="PF('solicitud_dlg').hide();" update=":solicitudForm" immediate="true" action="#{certificacionesManagedBean.nuevaSolicitud()}" />
 						<p:commandButton value="Aceptar" style="width:80px;height:30px" oncomplete="if(!args.validationFailed) {solicitud_dlg.hide()} else {solicitud_dlg.show()}" update=":solicitudForm,:mensajesForm:msgCertificaciones" action="#{certificacionesManagedBean.registrarSolicitud(certificacionesManagedBean.solicitud,certificacionesManagedBean.solicitante)}" />
 					</div>
 				</h:form>

@@ -211,7 +211,10 @@ public class Contacto implements Serializable {
 	}
 
 	public String getSegundoNombre() {
-		return segundoNombre;
+		if(segundoNombre == null)
+			return "";
+		else
+			return segundoNombre;
 	}
 
 	public void setSegundoNombre(String segundoNombre) {
@@ -227,7 +230,10 @@ public class Contacto implements Serializable {
 	}
 
 	public String getSegundoApellido() {
-		return segundoApellido;
+		if(segundoApellido == null)
+			return "";
+		else
+			return segundoApellido;
 	}
 
 	public void setSegundoApellido(String segundoApellido) {

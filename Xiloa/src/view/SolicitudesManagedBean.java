@@ -282,7 +282,7 @@ public class SolicitudesManagedBean implements Serializable {
 			context.addMessage(null, new FacesMessage(
 					FacesMessage.SEVERITY_INFO, "SCCL - Mensaje",
 					"La solicitud ha sido registrada exitosamente. El número es: "
-							+ sol.getTicket()));
+							+ sol.getId()));
 			return "/modulos/solicitudes/solicitudes?faces-redirect=true";
 		} else if (isError) {
 			
@@ -322,8 +322,8 @@ public class SolicitudesManagedBean implements Serializable {
 				Mantenedor estadoInicialSolicitud = service
 						.getMantenedorById(35);
 
-				s.setNombre(solicitante.getNombreCompleto()); 
-				s.setTicket("Ninguna");
+				//s.setNombre(solicitante.getNombreCompleto()); 
+				//s.setTicket("Ninguna");
 				s.setEstatus(estadoInicialSolicitud);
 				s.setFechaRegistro(new Date());
 				s.setFechaMatricula(new Date());
@@ -340,7 +340,7 @@ public class SolicitudesManagedBean implements Serializable {
 
 				s = (Solicitud) service.guardar(s);
 
-				s.setTicket(s.getId().toString());
+				//s.setTicket(s.getId().toString());
 
 				s = (Solicitud) service.guardar(s);
 

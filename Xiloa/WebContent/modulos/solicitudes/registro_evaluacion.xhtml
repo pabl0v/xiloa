@@ -26,7 +26,7 @@
 					<h4><b>Certificación:</b></h4>
 					<p:inputText readonly="true" size="80" value="#{evaluacionManagedBean.solicitud.certificacion.nombre}" />
 					<h4><b>Candidato:</b></h4>
-					<p:inputText readonly="true" size="80" value="#{evaluacionManagedBean.solicitud.nombre}" />
+					<p:inputText readonly="true" size="80" value="#{evaluacionManagedBean.solicitud.contacto.nombreCompleto}" />
 					<h4><b>Estado:</b></h4>
 					<p:inputText readonly="true" size="10" value="#{evaluacionManagedBean.solicitud.estatus.valor}" />
 				</h:panelGrid>
@@ -37,8 +37,8 @@
 					<br/>
 					<div>
 						<sec:authorize ifAnyGranted="ROLE_RIGHT_AGREGAR_EVALUACIONES">
-							<p:commandButton value="Agregar" icon="ui-icon-pencil" disabled="#{!evaluacionManagedBean.habilitarEvaluacion}" update=":formAgregarEvaluacion" onclick="PF('dlg2').show();" action="#{evaluacionManagedBean.setInstrumentos(null)}" />
-							<p:commandButton value="Evaluar" icon="ui-icon-star" disabled="#{!evaluacionManagedBean.habilitarEvaluacion}" action="#{evaluacionManagedBean.evaluar}" />
+							<p:commandButton value="Agregar" icon="ui-icon-pencil" disabled="#{!evaluacionManagedBean.habilitarAgregar}" update=":formAgregarEvaluacion" onclick="PF('dlg2').show();" action="#{evaluacionManagedBean.setInstrumentos(null)}" />
+							<p:commandButton value="Evaluar" icon="ui-icon-star" disabled="#{!evaluacionManagedBean.habilitarEvaluar}" action="#{evaluacionManagedBean.evaluar}" />
 						</sec:authorize>
 						<p:commandButton value="Retornar" icon="ui-icon-arrowrefresh-1-w" action="#{evaluacionManagedBean.retornar}" immediate="true" />
 					</div>
@@ -52,7 +52,7 @@
 						<p:column headerText="Aprobado"><h:outputText value="#{evaluacion.aprobadoLabel}" /></p:column>
 						<sec:authorize ifAnyGranted="ROLE_RIGHT_AGREGAR_EVALUACIONES">
 							<p:column exportable="false" style="width:4%" >
-								<p:commandButton id="editarButton" disabled="#{!evaluacionManagedBean.habilitarEvaluacion}" onclick="PF('dlg3').show();" icon="ui-icon-pencil" title="Editar" update=":formEditarEvaluacion" />  
+								<p:commandButton id="editarButton" disabled="#{!evaluacionManagedBean.habilitarAgregar}" onclick="PF('dlg3').show();" icon="ui-icon-pencil" title="Editar" update=":formEditarEvaluacion" />  
 				        	</p:column>
 				        </sec:authorize>
 	            	</p:dataTable>
@@ -69,7 +69,7 @@
 		                <p:column headerText="Puntaje"><h:outputText value="#{guia.puntajeLabel}" /></p:column>
 						<sec:authorize ifAnyGranted="ROLE_RIGHT_AGREGAR_EVALUACIONES">
 							<p:column exportable="false" style="width:4%" >
-								<p:commandButton id="editarGuiaButton" disabled="#{!evaluacionManagedBean.habilitarEvaluacion}" onclick="PF('dlg1').show();" icon="ui-icon-pencil" title="Editar" update=":guiaDialogo" />  
+								<p:commandButton id="editarGuiaButton" disabled="#{!evaluacionManagedBean.habilitarAgregar}" onclick="PF('dlg1').show();" icon="ui-icon-pencil" title="Editar" update=":guiaDialogo" />  
 				        	</p:column>
 				        </sec:authorize>
 		            </p:dataTable>

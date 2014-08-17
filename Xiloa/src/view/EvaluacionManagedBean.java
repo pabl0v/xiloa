@@ -40,7 +40,8 @@ public class EvaluacionManagedBean implements Serializable {
 	private EvaluacionGuia selectedEvaluacionGuia;
 	private List<Evaluacion> evaluaciones;
 	private Evaluacion selectedEvaluacion;
-	private boolean habilitarEvaluacion;
+	private boolean habilitarAgregar;
+	private boolean habilitarEvaluar;
 	
 	public EvaluacionManagedBean() {
 		super();
@@ -53,7 +54,8 @@ public class EvaluacionManagedBean implements Serializable {
 		selectedEvaluacion = null;
 		selectedInstrumento = null;
 		selectedUnidad = null;
-		habilitarEvaluacion = false;
+		habilitarAgregar = false;
+		habilitarEvaluar = false;
 	}
 	
 	@PostConstruct
@@ -62,11 +64,17 @@ public class EvaluacionManagedBean implements Serializable {
 		Long solicitudId = (Long)FacesUtil.getParametroSession("solicitudId");
 		solicitud = service.getSolicitudById(solicitudId);
 		
-		// si la solicitud esta enviada, asesoria individual o programada habilitar la evaluacion
+		// si la solicitud esta enviada, asesoria individual o programada habilitar la agregacion de instrumentos
 		if(solicitud.getEstatus().getId()==36 || solicitud.getEstatus().getId()==40 || solicitud.getEstatus().getId()==41)
-			setHabilitarEvaluacion(true);
+			setHabilitarAgregar(true);
 		else
-			setHabilitarEvaluacion(false);
+			setHabilitarAgregar(false);
+		
+		// si la solicitud esta programada habilitar tambien el boton evaluar
+		if(solicitud.getEstatus().getId()==41)
+			setHabilitarEvaluar(true);
+		else
+			setHabilitarEvaluar(false);
 
 		setEvaluaciones(service.getEvaluacionesBySolicitudId(solicitud.getId()));
 		
@@ -196,13 +204,21 @@ public class EvaluacionManagedBean implements Serializable {
 		selectedEvaluacionGuia = (EvaluacionGuia)service.guardar(guia);
 		setEvaluaciones(service.getEvaluacionesBySolicitudId(solicitud.getId()));
 	}
-		
-	public boolean getHabilitarEvaluacion(){
-		return habilitarEvaluacion;
+	
+	public boolean getHabilitarAgregar(){
+		return habilitarAgregar;
 	}
 	
-	public void setHabilitarEvaluacion(boolean habilitar){
-		this.habilitarEvaluacion = habilitar;
+	public void setHabilitarAgregar(boolean habilitar){
+		this.habilitarAgregar = habilitar;
+	}
+	
+	public boolean getHabilitarEvaluar(){
+		return habilitarEvaluar;
+	}
+	
+	public void setHabilitarEvaluar(boolean habilitar){
+		this.habilitarEvaluar = habilitar;
 	}
 		
 	public String retornar(){
@@ -214,20 +230,25 @@ public class EvaluacionManagedBean implements Serializable {
 		
 		List<Unidad> unidades = service.getUnidadesSinEvaluar(solicitud.getId());
 		
-		if(!unidades.isEmpty()){
-			FacesUtil.getMensaje("SCCL - Mensaje: ", "Quedan unidades de competencia sin evaluar.", true);
+		if(!unidades.isEmpty())
+		{
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe evaluar todas las unidades de competencia.", true);
 			return null;
 		}
 		
-		/*
 		List<Evaluacion> evaluaciones = service.getEvaluacionesReprobadas(solicitud.getId());
 		
-		if(!evaluaciones.isEmpty()){
-			FacesUtil.getMensaje("SCCL - Mensaje: ", "Quedan unidades de competencia sin aprobar.", true);
-			return null;			
-		}*/
-		
-		service.actualizarEstadoSolicitud(solicitud, 8);
-		return "/modulos/solicitudes/solicitudes?faces-redirect=true";
+		if(!evaluaciones.isEmpty())
+		{
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "El candidato no es apto.", false);
+			service.actualizarEstadoSolicitud(solicitud, 9);		//no apto
+		}
+		else
+		{
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "El candidato es apto.", false);
+			service.actualizarEstadoSolicitud(solicitud, 8);		//apto			
+		}
+
+		return null;
 	}
 }

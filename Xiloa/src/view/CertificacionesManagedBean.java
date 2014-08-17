@@ -147,24 +147,26 @@ public class CertificacionesManagedBean implements Serializable {
 	public String registrarSolicitud(Solicitud solicitud, Contacto solicitante){
 		
 		//validar si tiene solicitudes pendientes
-		
 		if(service.tieneSolicitudesPendientes(solicitante.getNumeroIdentificacion(), selectedCertificacion.getId())){
 			FacesUtil.getMensaje("SCCL - Mensaje: ", "El candidato ya tiene una solicitud en proceso.", true);
 			return null;
 		}
 		
 		//validar la cedula del candidato
-		
-		if(ValidatorUtil.validateCedula(solicitante.getNumeroIdentificacion())){
+		if(!ValidatorUtil.validateCedula(solicitante.getNumeroIdentificacion())){
 			FacesUtil.getMensaje("SCCL - Mensaje: ", "La cedula es invalida.", true);
-			return null;			
+			return null;
 		}
 		
 		//validar fecha de nacimiento
-		Date fecha = ValidatorUtil.obtenerFechaNacimientoDeCedula(solicitante.getNumeroIdentificacion());
+		if(!ValidatorUtil.validarEdadSolicitante(solicitante.getFechaNacimiento())){
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "La edad del canditato debe estar entre 18 y 45 años.", true);
+			return null;			
+		}
 		
-		if(fecha != solicitante.getFechaNacimiento()){
-			FacesUtil.getMensaje("SCCL - Mensaje: ", "La fecha de nacimiento es incorrecta.", true);
+		Date fecha = ValidatorUtil.obtenerFechaNacimientoDeCedula(solicitante.getNumeroIdentificacion());	
+		if(fecha.compareTo(solicitante.getFechaNacimiento()) != 0){
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "La fecha de nacimiento debe coincidir con la cédula.", true);
 			return null;						
 		}
 		

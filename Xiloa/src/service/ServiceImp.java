@@ -1886,9 +1886,9 @@ public class ServiceImp implements IService {
 		//indica si el solicitante con cedula indicada tiene solicitudes pendientes o si la certificacion que solicita esta en proceso
 		
 		String query = 
-					" select solicitud_id from sccl.solicitudes where solicitud_estatus not in (44, 45) and contacto_id in (select contacto_id from sccl.contactos where numero_identificacion='"+cedula+"') "
+					" select solicitud_id from sccl.solicitudes where solicitud_estatus not in (43, 44, 45) and contacto_id in (select contacto_id from sccl.contactos where numero_identificacion like '"+cedula+"') "
 				+ 	" union"
-				+ 	" select solicitud_id from sccl.solicitudes where solicitud_estatus not in (44, 45) and contacto_id in (select contacto_id from sccl.contactos where numero_identificacion='"+cedula+"') and certificacion_id="+certificacionId;
+				+ 	" select solicitud_id from sccl.solicitudes where solicitud_estatus not in (43, 44, 45) and contacto_id in (select contacto_id from sccl.contactos where numero_identificacion like '"+cedula+"') and certificacion_id="+certificacionId;
 		
 		List<Long> pendientes = longDao.findAllByNativeQuery(query);
 		if(pendientes.isEmpty())
@@ -1945,16 +1945,16 @@ public class ServiceImp implements IService {
 		Mantenedor estado = null;
 		
 		switch(indicador){
-			case 1: estado = getMantenedorById(36); break; //enviar
-			case 2: estado = getMantenedorById(37); break; //autorizar matricula
-			case 3: estado = getMantenedorById(44); break; //rechazar matricula
-			case 4: estado = getMantenedorById(38); break; //matricular
+			case 1: estado = getMantenedorById(36); break; //enviado
+			case 2: estado = getMantenedorById(37); break; //autorizado para matricula
+			case 3: estado = getMantenedorById(44); break; //rechazado
+			case 4: estado = getMantenedorById(38); break; //matriculado
 			case 5: estado = getMantenedorById(39); break; //asesoria grupal
 			case 6: estado = getMantenedorById(40); break; //asesoria individual
-			case 7: estado = getMantenedorById(41); break; //programar
-			case 8: estado = getMantenedorById(42); break; //evaluar
-			case 9: estado = getMantenedorById(43); break; //completar
-			case 10: estado = getMantenedorById(45); break; //anular
+			case 7: estado = getMantenedorById(41); break; //programado
+			case 8: estado = getMantenedorById(42); break; //apto
+			case 9: estado = getMantenedorById(43); break; //no apto
+			case 10: estado = getMantenedorById(45); break; //anulado
 			default: break;
 		}
 			
@@ -2204,16 +2204,20 @@ public class ServiceImp implements IService {
 	public void registrarSolicitud(Solicitud solicitud, Contacto solicitante){
 		
 		//buscar al solicitante
-		//si existe actualizar sus datos
-		//si no existe registrarlo
+		Contacto contacto = contactoDao.findOneByQuery("select c from contactos c where c.numeroIdentificacion like '"+solicitante.getNumeroIdentificacion()+"'");
 		
-		solicitante.setInatec(false);
-		solicitante.setFechaRegistro(new Date());
-		solicitante = contactoDao.save(solicitante);
+		//si existe actualizar sus datos
+		if(contacto != null)
+			solicitante = contacto;
+		//si no existe registrarlo
+		else{
+			solicitante.setInatec(false);
+			solicitante.setFechaRegistro(new Date());
+			solicitante.setNombreCompleto(solicitante.getPrimerNombre()+" "+solicitante.getSegundoNombre()+" "+solicitante.getPrimerApellido()+" "+solicitante.getSegundoApellido());
+			solicitante = contactoDao.save(solicitante);
+		}
 		
 		solicitud.setEstatus(getMantenedorById(35));
-		solicitud.setNombre(solicitante.getPrimerNombre()+" "+solicitante.getPrimerApellido());
-		solicitud.setTicket("0");
 		solicitud.setFechaRegistro(new Date());
 		solicitud.setEscolaridad(0);
 		solicitud.setContacto(solicitante);
