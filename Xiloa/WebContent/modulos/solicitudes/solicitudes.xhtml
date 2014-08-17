@@ -58,10 +58,10 @@
 	       		 		<p:menuitem value="Convocar Candidato" disabled="#{!dashBoardSolicitudesManagedBean.selectedSolicitud.habilitarConvocar}" title="Convocar Candidato" style="display:inline-block;" onclick="PF('dlg2').show();" update=":convocatoriaForm, :convocatoriaDataTableForm"  />
 	       		 	</sec:authorize>
 	       		 	<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_EVALUACIONES">
-						<p:menuitem value="Evaluar Candidato" title="Evaluar Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.evaluarSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" />
+						<p:menuitem value="Ver Evaluaciones" title="Ver Evaluaciones" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.evaluarSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" />
 					</sec:authorize>
 					<sec:authorize ifAnyGranted="ROLE_RIGHT_CREAR_SOLICITUDES">	       		 		
-						<p:menuitem value="Anular Solicitud" title="Anular Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,10)}" update=":formSolicitudes:dtSolicitud" />
+						<p:menuitem value="Anular Solicitud" disabled="#{!dashBoardSolicitudesManagedBean.selectedSolicitud.habilitarAnular}" title="Anular Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,10)}" update=":formSolicitudes:dtSolicitud" />
 					</sec:authorize>
 	   		</p:splitButton>
 			<p:splitButton id="reportesSplit" disabled="#{!dashBoardSolicitudesManagedBean.habilitarReportes}" value="Reportes" icon="ui-icon-print" title="Reportes del Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runSolicitudCandidato}"  update=":formSolicitudes:msgSolicitudes" >   

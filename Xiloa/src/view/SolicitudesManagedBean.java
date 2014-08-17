@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -444,11 +443,11 @@ private boolean validarEdadSolicitante() {
 				return contactoByCedula;
 
 		} catch (Exception e) {
-			String mensaje = "Se geeró un error al confirmar la certificacion. Favor comuníquese con Gerencia de Informatica - INATEC.";
+			//String mensaje = "Se geeró un error al confirmar la certificacion. Favor comuníquese con Gerencia de Informatica - INATEC.";
 			String titulo = "Error al grabar el contacto: ";
 		
             FacesUtil.getMensaje(titulo, titulo, true);
-			boolean isError = true;
+			//boolean isError = true;
 
 			e.printStackTrace();
 			return null;

@@ -155,7 +155,8 @@ public class FacesUtil {
         FacesContext.getCurrentInstance().addMessage(msg, fm);        
     }
        
-    public static Object getUIParameter(List list, String name){
+    @SuppressWarnings("rawtypes")
+	public static Object getUIParameter(List list, String name){
     	for (Object obj : list){
     		if (obj instanceof UIParameter){
     			UIParameter param = (UIParameter)obj;
@@ -172,7 +173,8 @@ public class FacesUtil {
         return appFactory.getApplication();
     }
 
-    private static String getJsfEl(String value) {
+    @SuppressWarnings("unused")
+	private static String getJsfEl(String value) {
         return "#{" + value + "}";
     }
     

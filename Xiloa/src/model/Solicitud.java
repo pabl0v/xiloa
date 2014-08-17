@@ -373,4 +373,11 @@ public class Solicitud implements Serializable {
 		else
 			return false;
 	}
+	
+	public boolean getHabilitarAnular(){
+		if(estatus != null && (estatus.getId()==42 || estatus.getId()==43 || estatus.getId()==44 || estatus.getId()==45))		//si apto, no apto, rechazado o anulado entonces no se puede anular
+			return false;
+		else
+			return true;
+	}
 }

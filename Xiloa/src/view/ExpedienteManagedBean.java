@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.application.FacesMessage;
@@ -35,13 +34,11 @@ import org.primefaces.model.UploadedFile;
 
 import controller.LoginController;
 import service.IService;
-//import support.BeanEvaluacion;
 import support.Departamento;
 import support.FacesUtil;
 import support.Municipio;
 import util.ValidatorUtil;
 
-//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Bean asociado al facet expediente.xhtml
 @Component
 @Scope(value="view")
 public class ExpedienteManagedBean implements Serializable  {
@@ -49,8 +46,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private IService service;
-	
+	private IService service;	
 	@Autowired
 	private LoginController controller;
 	
@@ -61,15 +57,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	private List<Laboral> listDatosEstudios;
 	private List<Laboral> listDatosCalificacion;
 	private List<Laboral> listDatosCertificaciones;
-	private List<Evaluacion> listEvaluaciones;
-	
-	/**
-	 * dchavez, 16/02/2014: sustituyendo BeanEvaluacion por la entidad Evaluacion
-	 */
-		
-	//private List<BeanEvaluacion> listBeanEval;
-	//private List<BeanEvaluacion> listBeanEvalFormacion;
-	
+	private List<Evaluacion> listEvaluaciones;	
 	private List<Evaluacion> listBeanEval;
 	private List<Evaluacion> listBeanEvalFormacion;	
 	
@@ -142,7 +130,6 @@ public class ExpedienteManagedBean implements Serializable  {
 	private String descripcionArchivoExp;
 	private String nombreRealArchivoExp;
 	private String sizeArchivoExp;
-	private boolean verEnviarSolicitud;
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Constructor de la clase.
 	public ExpedienteManagedBean() {
@@ -191,17 +178,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		nuevoLaboral = new Laboral();		
 		
 		listNacionalidades = new ArrayList<SelectItem>();
-		verEnviarSolicitud = true;
-		
 	}	
-		
-	public boolean isVerEnviarSolicitud() {
-		return verEnviarSolicitud;
-	}
-
-	public void setVerEnviarSolicitud(boolean verEnviarSolicitud) {
-		this.verEnviarSolicitud = verEnviarSolicitud;
-	}
 
 	public List<SelectItem> getListNacionalidades() {
 		return listNacionalidades;
@@ -817,7 +794,6 @@ public class ExpedienteManagedBean implements Serializable  {
 	public void iniciaBeanExp (){
 		
 		Solicitud  solicitud = (Solicitud)FacesUtil.getParametroSession("dbSolicitudesBean");
-		verEnviarSolicitud = true;
 						
 		if (solicitud == null){
 			//Inicializa el Contacto por el Usuario
@@ -827,8 +803,7 @@ public class ExpedienteManagedBean implements Serializable  {
 			Contacto contactoSelected = (Contacto) FacesUtil.getParametroSession("candidato");
 			
 			if (contactoSelected != null) {		
-				this.setContactoExp(contactoSelected);
-				verEnviarSolicitud = false;					
+				this.setContactoExp(contactoSelected);					
 			} else{
 				userName = controller.getContacto().getUsuario();
 				if (userName.getContacto() != null)
@@ -1426,7 +1401,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		
 		FacesMessage msg;   
 	    
-		ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+		//ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
 		//Obtener nombre del directorio fisico del mantenedor de archivo 
 	    String directorio = service.getMantenedorById(58).getValor();	   
 	    String nombreFile;

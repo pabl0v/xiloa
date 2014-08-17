@@ -1750,8 +1750,8 @@ public class ServiceImp implements IService {
 			//EvaluacionUnidad eUcl = null;
 			
 			if (existeEUcl == false){
-				Mantenedor estatusEval = this.getMantenedorById(29);
-				String     nombreUCL = getCompetenciaDescripcion(ucl);
+				//Mantenedor estatusEval = this.getMantenedorById(29);
+				//String     nombreUCL = getCompetenciaDescripcion(ucl);
 				//Julio/2014
 				/*
 				eUcl = new EvaluacionUnidad(solicitud, ucl, nombreUCL, aprobado, estatusEval);
@@ -1812,10 +1812,10 @@ public class ServiceImp implements IService {
 	@Override
 	public boolean validaEvaluacionByUnidad(Solicitud solicitud, Long ucl){
 		boolean existe = true;
-		Certificacion c = null;
+		//Certificacion c = null;
 		//Julio/2014
 		//EvaluacionUnidad eUcl = null;
-		c = solicitud.getCertificacion();
+		//c = solicitud.getCertificacion();
 				
 		if (ucl == null){ // Evalua por todas las unidades de competencia
 			//List<Long> setUnidades =  getUnidadesByCertificacionId(c.getId());
