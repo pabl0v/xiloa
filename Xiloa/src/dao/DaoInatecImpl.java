@@ -26,6 +26,7 @@ import support.Departamento;
 import support.Ifp;
 import support.Item;
 import support.Municipio;
+import support.Pais;
 import support.UCompetencia;
 
 
@@ -302,6 +303,19 @@ public class DaoInatecImpl implements IDaoInatec {
 			unidades.put((Long)row.get("codigo"), (String)row.get("descripcion"));
 		}
 		return unidades;
+	}
+	
+	/**
+	 * 
+	 * @return un mapa con el catalogo de paises
+	 */
+	public Map<String, Pais> getCatalogoPaises(){
+		Map<String, Pais> paises = new HashMap<String, Pais>();
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList("select p.pais_id as codigo,p.pais_nom as nombre from public.paises p");
+		for(Map<String, Object> row : rows){
+			paises.put((String)row.get("codigo"), new Pais((String)row.get("codigo"),(String)row.get("nombre")));
+		}
+		return paises;
 	}
 	
 	/**

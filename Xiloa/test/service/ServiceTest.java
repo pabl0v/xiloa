@@ -2,7 +2,6 @@ package service;
 
 import model.Mantenedor;
 import model.Rol;
-import model.Pais;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -120,12 +119,13 @@ public class ServiceTest {
 		//service.guardar(new Contacto(usuarioAdmin,null, rolAdmin, 1000,"Admin",null,"Admin",null,"Administrador",1,"admin@inatec.edu.ni",null,"00000000",null, 1, 1,"12345678901234","Managua",new Date(),new Date(), 1, 1, 1, "Managua", false, null,null,null));
 		
 		//catalogo de paises
-		
+		/*
 		service.guardar(new Pais ("Nicaragua", "Nicaragua"));
 		service.guardar(new Pais ("Costa Rica", "Costa Rica"));
 		service.guardar(new Pais ("El Salvador", "El Salvador")); 
 		service.guardar(new Pais ("Panama", "Panama")); 
 		service.guardar(new Pais ("Honduras", "Honduras")); 
 		service.guardar(new Pais ("Guatemala", "Guatemala"));
+		*/
 	}
 }

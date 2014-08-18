@@ -24,38 +24,29 @@
         <h:form id="formCandidato">               
         <div id="contenedor_tabla_solicitudes">     
         	<p:messages id="msgContactos" showDetail="true" autoUpdate="true" closable="true" />        	      
-        	<p:dataTable id="dtContactos" widgetVar="dtContactos" emptyMessage="No existen candidatos" 
-        	             var="varContacto" value="#{candidatosManagedBean.listaContactos}" 
-        	             selectionMode="single" rowKey="#{varContacto.id}"
-        	             selection="#{candidatosManagedBean.selectedContacto}"         	              
-        	             paginator="true" rows="12"  >     
-        	       	      
-	        	<p:ajax event="rowSelect" listener="#{candidatosManagedBean.onRowSelectDtContactos}"  />  
-				<p:ajax event="rowUnselect" listener="#{candidatosManagedBean.onRowSelectDtContactos}"  />   		                               
+        	<p:dataTable id="dtContactos" widgetVar="dtContactos" emptyMessage="No existen candidatos" var="candidato" value="#{candidatosManagedBean.candidatos}" selectionMode="single" rowKey="#{candidato.id}" paginator="true" rows="12"  >       	      
+	        	<p:ajax event="rowSelect" listener="#{candidatosManagedBean.onRowSelectCandidato}"  />  
+				<p:ajax event="rowUnselect" listener="#{candidatosManagedBean.onRowSelectCandidato}"  />   		                               
 	            <!--Las columnas de la tabla-->
-                <p:column id="centroColumn" headerText="Nombres y Apellidos" exportable="true" filterBy="#{varContacto.nombreCompleto}"  filterMatchMode="contains">
-                	<h:outputText value="#{varContacto.nombreCompleto}" />
+                <p:column headerText="Nombres y Apellidos" exportable="true" filterBy="#{candidato.nombreCompleto}"  filterMatchMode="contains">
+                	<h:outputText value="#{candidato.nombreCompleto}" />
                 </p:column>                      
-                <p:column id="candidatoColumn" headerText="Identificación" exportable="true" filterBy="#{varContacto.numeroIdentificacion}"  filterMatchMode="contains">
-                	<h:outputText value="#{varContacto.numeroIdentificacion}" />
+                <p:column headerText="Identificación" exportable="true" filterBy="#{candidato.numeroIdentificacion}"  filterMatchMode="contains">
+                	<h:outputText value="#{candidato.numeroIdentificacion}" />
                 </p:column>  
-                <p:column id="certificacionColumn" headerText="Telefono / Celular" exportable="true"><h:outputText value="#{varContacto.telefono1} / #{varContacto.telefono2}"/></p:column>  
-                <p:column id="fechaColumn" headerText="Fecha Nacimiento" exportable="true">
-                	<h:outputText value="#{varContacto.fechaNacimiento}" >
+                <p:column headerText="Telefono / Celular" exportable="true"><h:outputText value="#{candidato.telefono1} / #{candidato.telefono2}"/></p:column>  
+                <p:column headerText="Fecha Nacimiento" exportable="true">
+                	<h:outputText value="#{candidato.fechaNacimiento}" >
                 		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
                 	</h:outputText>
                 </p:column>               
-                <p:column id="evaluadorColumn" headerText="Correo Electrónico" exportable="true"><h:outputText value="#{varContacto.correo1}" /></p:column>                
+                <p:column headerText="Correo Electrónico" exportable="true"><h:outputText value="#{candidato.correo1}" /></p:column>                
                 <p:column style="width:4%" exportable="false">                  
-		           	<p:commandButton id="editaExpediente" action="#{candidatosManagedBean.consultarExpediente}" 	            	                             				     
-		           	                 icon="ui-icon-pencil" title="Consultar Portafolio" >
-		               	<f:setPropertyActionListener value="#{varContacto}" target="#{candidatosManagedBean.selectedContacto}" />
-		           	</p:commandButton>		            	           
+		           	<p:commandButton id="editaExpediente" action="#{candidatosManagedBean.consultarExpediente(candidatosManagedBean.selectedCandidato)}" icon="ui-icon-pencil" title="Consultar Portafolio" />		            	           
 	    		</p:column>    						
             </p:dataTable>            
         </div>        
      </h:form>
-    </div>        
-    
+    </div>
 </h:body>
 </html>

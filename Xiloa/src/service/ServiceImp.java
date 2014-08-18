@@ -28,6 +28,7 @@ import support.Ifp;
 import support.Item;
 import support.JavaEmailSender;
 import support.Municipio;
+import support.Pais;
 import support.PasswordGenerator;
 import support.USolicitud;
 import support.UCompetencia;
@@ -48,7 +49,6 @@ import model.Instrumento;
 import model.Involucrado;
 import model.Laboral;
 import model.Mantenedor;
-import model.Pais;
 import model.Requisito;
 import model.Rol;
 import model.Solicitud;
@@ -107,8 +107,6 @@ public class ServiceImp implements IService {
 	@Autowired
 	private IDao<Archivo> archivoDao;
 	@Autowired
-	private IDao<Pais> paisDao;
-	@Autowired
 	private JavaEmailSender email;
 	@Autowired
 	private IDao<Object> objectDao;
@@ -122,6 +120,8 @@ public class ServiceImp implements IService {
 	private IDao<Unidad> unidadDao;
 	@Autowired
 	private IDao<Involucrado> involucradoDao;
+	@Autowired
+	private IDao<Pais> paisDao;	
 
 	private List<Mantenedor> mantenedores;
 	private Map<Integer, Mantenedor> catalogoEstatusCertificacion;
@@ -138,7 +138,7 @@ public class ServiceImp implements IService {
 	private Map<Integer, Mantenedor> catalogoEstadosEvaluacion;
 	protected final Log logger = LogFactory.getLog(getClass());
 	
-	private Map<Long, Pais> catalogoPaises;
+	private Map<String, Pais> catalogoPaises;
 	private Map<Integer, Departamento> catalogoDepartamentos;
 	
 	/*
@@ -160,7 +160,7 @@ public class ServiceImp implements IService {
 		catalogoEstadoSolicitud = new HashMap<Integer, Mantenedor>();
 		catalogoPortafolio = new HashMap<Integer, Mantenedor>();
 		catalogoEstadosEvaluacion = new HashMap<Integer, Mantenedor>();
-		catalogoPaises = new HashMap<Long, Pais>();
+		catalogoPaises = new HashMap<String, Pais>();
 		catalogoDepartamentos = new HashMap<Integer, Departamento>();
 	}
 	
@@ -192,10 +192,7 @@ public class ServiceImp implements IService {
 		}
 		
 		catalogoUnidades = inatecDao.getCatalogoUnidades();
-
-	    for (Pais p : getPaises()) {
-	    	catalogoPaises.put(p.getId(), p);
-	    }
+		catalogoPaises = inatecDao.getCatalogoPaises();
 		
 		for (Departamento departamento : inatecDao.getDepartamentosInatec()){
 			catalogoDepartamentos.put(departamento.getDpto_id(), departamento);
@@ -207,7 +204,7 @@ public class ServiceImp implements IService {
 	 * 
 	 */
 	@Override
-	public Map<Long, Pais> getCatalogoPaises() {
+	public Map<String, Pais> getCatalogoPaises() {
 		return catalogoPaises;
 	}
 
@@ -328,7 +325,7 @@ public class ServiceImp implements IService {
 	
 	@Override
 	public Map<Long, Item> getCatalogoUnidades(){
-		this.catalogoUnidades = inatecDao.getCatalogoUnidades();
+		//this.catalogoUnidades = inatecDao.getCatalogoUnidades();
 		return catalogoUnidades;
 	}
 	
@@ -779,8 +776,6 @@ public class ServiceImp implements IService {
 			return bitacoraDao.save((Bitacora)objeto);
 		if(objeto instanceof Requisito)
 			return requisitoDao.save((Requisito)objeto);
-		if (objeto instanceof Pais)
-			return paisDao.save((Pais) objeto);
 		return null;
 	}
 	
@@ -1205,10 +1200,10 @@ public class ServiceImp implements IService {
 	 * @param el arreglo conteniendo los parámetros para la búsqueda
 	 */
 
-	@Override
+	/*@Override
 	public List<Archivo> getArchivoByParam (String namedString, Object [] parametros) {
 		return archivoDao.findAllByNamedQueryParam(namedString, parametros);
-	}
+	}*/
 
 	/**
 	 * @return lista de requisitos de un curso en un centro específico 
@@ -1240,27 +1235,6 @@ public class ServiceImp implements IService {
 	@Override
 	public Archivo getArchivoOneByParam (String namedString, Object [] parametros){
 		return archivoDao.findOneByNamedQueryParam(namedString, parametros);
-	}
-	
-	/**
-	 * @return lista de países
-	 *  
-	 */
-
-	@Override
-	public List<Pais> getPaises (){
-		return paisDao.findAll(Pais.class);
-	}
-	
-	/**
-	 * @return la instancia del país buscado 
-	 * @param el nombre del namedQuery a usar
-	 * @param el arreglo conteniendo los parámetros para la búsqueda
-	 */
-
-	@Override
-	public Pais getPaisByNQParam(String namedString, Object [] param){
-		return paisDao.findOneByNamedQueryParam(namedString, param);
 	}
 	
 	/**
@@ -2222,5 +2196,35 @@ public class ServiceImp implements IService {
 		solicitud.setEscolaridad(0);
 		solicitud.setContacto(solicitante);
 		solicitud = solicitudDao.save(solicitud);
-	}	
+	}
+	
+	/** 
+	 * @param el contacto que consulta el portafolio
+	 * @return los contactos que puede visualizar
+	 */
+	public List<Contacto> getContactosPortafolio(Long contactoId){
+		List<Contacto> contactos = new ArrayList<Contacto>();
+		
+		Contacto contacto = contactoDao.findOneByQuery("select c from contactos c left join fetch c.rol as r where c.id="+contactoId);
+	
+		if(contacto.getRol()==null)
+				return null;
+	
+		if(contacto.getRol().getId()==5){
+			contactos.add(contacto);
+			return contactos;
+		}
+		else{
+			return contactoDao.findAllByNamedQueryParam("Contacto.findAllPortafolio", new Object[]{contacto.getEntidadId()});
+		}
+	}
+	
+	/**
+	 * @return lista de archivos de un portafolio 
+	 * @param el id del contacto
+	 */
+	
+	public List<Archivo> getArchivosByContactoId(Long contactoId){
+		return archivoDao.findAllByNamedQueryParam("Archivo.findByContactoId", new Object[] {contactoId});
+	}
 }

@@ -12,6 +12,7 @@ import support.Departamento;
 import support.Ifp;
 import support.Item;
 import support.Municipio;
+import support.Pais;
 import support.UCompetencia;
 
 public interface IDaoInatec {
@@ -119,4 +120,10 @@ public interface IDaoInatec {
 	 * @return la proxima unidad a evaluar
 	 */
 	public Integer getUnidadesSinEvaluacion (Integer idSolicitud);
+	
+	/**
+	 * 
+	 * @return un mapa con el catalogo de paises
+	 */
+	public Map<String, Pais> getCatalogoPaises();
 }

@@ -6,11 +6,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import security.Authority;
 import support.Departamento;
 import support.Ifp;
 import support.Item;
 import support.Municipio;
+import support.Pais;
 import support.UCompetencia;
 import support.USolicitud;
 import support.UsuarioExterno;
@@ -27,7 +29,6 @@ import model.Guia;
 import model.Instrumento;
 import model.Laboral;
 import model.Mantenedor;
-import model.Pais;
 import model.Requisito;
 import model.Rol;
 import model.Solicitud;
@@ -50,7 +51,7 @@ public interface IService {
 	 * 
 	 */
 
-	public Map<Long, Pais> getCatalogoPaises();
+	public Map<String, Pais> getCatalogoPaises();
 	
 	/*
 	 * @return obtiene un map con el catálogo de departamentos
@@ -622,7 +623,7 @@ public interface IService {
 	 * @param el arreglo conteniendo los parámetros para la búsqueda
 	 */
 	
-	public List<Archivo> getArchivoByParam (String namedString, Object [] parametros);
+	//public List<Archivo> getArchivoByParam (String namedString, Object [] parametros);
 
 	/**
 	 * @return el listado de bitácoras de la actividad indicada
@@ -653,21 +654,6 @@ public interface IService {
 	 */
 	
 	public Archivo getArchivoOneByParam (String namedString, Object [] parametros);
-
-	/**
-	 * @return lista de países
-	 *  
-	 */
-	
-	public List<Pais> getPaises ();
-
-	/**
-	 * @return la instancia del país buscado 
-	 * @param el nombre del namedQuery a usar
-	 * @param el arreglo conteniendo los parámetros para la búsqueda
-	 */
-	
-	public Pais getPaisByNQParam(String namedString, Object [] param);
 
 	/**
 	 * @return indica si el portafolio fue o no verificado 
@@ -945,5 +931,18 @@ public interface IService {
 	/** 
 	 * @param la solicicitua y el solicitante
 	 */
-	public void registrarSolicitud(Solicitud solicitud, Contacto solicitante);	
+	public void registrarSolicitud(Solicitud solicitud, Contacto solicitante);
+	
+	/** 
+	 * @param el contacto que consulta el portafolio
+	 * @return los contactos que puede visualizar
+	 */
+	public List<Contacto> getContactosPortafolio(Long contactoId);
+
+	/**
+	 * @return lista de archivos de un portafolio 
+	 * @param el id del contacto
+	 */
+	
+	public List<Archivo> getArchivosByContactoId(Long contactoId);
 }

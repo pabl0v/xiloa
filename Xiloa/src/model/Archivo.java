@@ -19,7 +19,6 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 /**
  * 
@@ -37,7 +36,6 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 	@NamedQuery(name="Archivo.findByLaboralId", query="select a from archivo a inner join fetch a.laboral l where l.id=?1"),
 	@NamedQuery(name="Archivo.findAllReprobadosByContactoId", query="select a from archivo a inner join fetch a.laboral l where l.contacto.id=?1 and a.estado.id!=26"),
 	@NamedQuery(name="Archivo.findByContactoId", query="select a from archivo a inner join fetch a.laboral l where l.contacto.id=?1"),
-	//@NamedQuery(name="Archivo.findAllArchivosByContactoId", query="select l.archivo from laborales l inner join fetch l.contacto c where l.tipo in (13,14,15,16) and c.id = ?1"),
 	@NamedQuery(name="Archivo.findById", query="select a from archivo a where a.id=?1")
 })
 public class Archivo implements Serializable {
@@ -51,27 +49,22 @@ public class Archivo implements Serializable {
 	@Column(name = "archivo_id", nullable = false)
 	private Long id;
 			
-	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="laboral_id", nullable = false)
 	private Laboral laboral;
 			
-	@NotNull
 	@Column(name = "archivo_nombre", nullable = false)	
 	private String nombre;
 
 	@Column(name = "archivo_descripcion", nullable = true)	
 	private String descripcion;
 	
-	@NotNull
 	@Column(name = "archivo_nombre_real", nullable = false)	
 	private String nombreReal;
 	
-	@NotNull
 	@Column(name = "archivo_ruta", nullable = false)	
 	private String ruta;
 
-	@NotNull
 	@Column(name = "archivo_propietario", nullable = false)	
 	private String propietario;
 
@@ -80,27 +73,21 @@ public class Archivo implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date fecha;
 	
-	@NotNull
 	@Column(name = "archivo_tipo", nullable = false)	
 	private String tipo;
 
-	@NotNull
 	@Column(name = "archivo_size", nullable = false)	
 	private String size;
 
-	@NotNull
 	@Column(name = "archivo_version", nullable = false)	
 	private String version;
 
-	@NotNull
 	@Column(name = "archivo_icono", nullable = false)	
 	private String icono;
 
-	@NotNull
 	@Column(name = "archivo_categoria", nullable = false)	
 	private String categoria;
 	
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name="archivo_estado")		
 	private Mantenedor estado;
@@ -215,15 +202,6 @@ public class Archivo implements Serializable {
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
 	}
-	/*
-	public byte[] getArchivoFisico() {
-		return archivoFisico;
-	}
-
-	public void setArchivoFisico(byte[] archivoFisico) {
-		this.archivoFisico = archivoFisico;
-	}
-	*/
 
 	public Mantenedor getEstado() {
 		return estado;

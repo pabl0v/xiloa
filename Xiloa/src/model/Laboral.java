@@ -23,7 +23,6 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 /**
  * 
@@ -51,31 +50,24 @@ public class Laboral implements Serializable {
 	@Column(name = "laboral_id", nullable = false)
 	private Long id;
 	
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name="contacto_id", nullable = false)
 	private Contacto contacto;
 	
-	@NotNull
 	@Column(name = "laboral_tipo", nullable = false)
 	private Integer tipo;
 	
-	@NotNull
 	@Column(name = "laboral_nombre", nullable = false)
 	private String nombre;
 	
-	@NotNull
-	@Column(name = "laboral_descripcion", nullable = false)
+	@Column(name = "laboral_descripcion", nullable = true)
 	private String descripcion;
 	
-	@NotNull
 	@Column(name = "laboral_institucion", nullable = false)
 	private String institucion;
 	
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name="laboral_pais_id")
-	private Pais pais;
+	@Column(name="laboral_pais_id")
+	private String pais;
 	
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column(name = "laboral_fecha_inicia", nullable = false)
@@ -87,15 +79,12 @@ public class Laboral implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date fechaFinaliza;
 
-	@NotNull
 	@Column(name = "laboral_institucion_direccion", nullable = false)
 	private String institucionDireccion;
 
-	@NotNull
 	@Column(name = "laboral_institucion_telefono", nullable = false)
 	private String institucionTelefono;
 
-	@NotNull
 	@Column(name = "laboral_institucion_cargo", nullable = false)
 	private String cargo;
 	
@@ -125,7 +114,7 @@ public class Laboral implements Serializable {
 	public void setTipo(Integer tipo) {
 		this.tipo = tipo;
 	}
-
+	
 	public String getNombre() {
 		return nombre;
 	}
@@ -150,11 +139,11 @@ public class Laboral implements Serializable {
 		this.institucion = institucion;
 	}
 
-	public Pais getPais() {
+	public String getPais() {
 		return pais;
 	}
 
-	public void setPais(Pais pais) {
+	public void setPais(String pais) {
 		this.pais = pais;
 	}
 
@@ -207,10 +196,18 @@ public class Laboral implements Serializable {
 	}
 
 		
-	public Laboral(Contacto contacto, Integer tipo, String nombre,
-			String descripcion, String institucion, Pais pais,
-			Date fechaInicia, Date fechaFinaliza, String institucionDireccion,
-			String institucionTelefono, String cargo, Set<Archivo> archivo) {
+	public Laboral(	Contacto contacto,
+					Integer tipo,
+					String nombre,
+					String descripcion, 
+					String institucion, 
+					String pais,
+					Date fechaInicia, 
+					Date fechaFinaliza, 
+					String institucionDireccion,
+					String institucionTelefono, 
+					String cargo, 
+					Set<Archivo> archivo) {
 		super();		
 		this.contacto = contacto;
 		this.tipo = tipo;
