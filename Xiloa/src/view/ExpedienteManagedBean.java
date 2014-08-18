@@ -95,13 +95,11 @@ public class ExpedienteManagedBean implements Serializable  {
 	private List<SelectItem> listDeptos;
 	private List<SelectItem> listMunicipioByDptos;
 	private List<SelectItem> listPaises;
-	private List<SelectItem> listGenero;
 	private List<SelectItem> listNacionalidades;
 	
 	private Long selectedArchivoId;
 	
 	private String municipioIdSelected;
-	
 	private Integer departamentoIdSelected;
 	
 	private String nombreArchivoExp;
@@ -142,7 +140,6 @@ public class ExpedienteManagedBean implements Serializable  {
 		listDeptos = new ArrayList<SelectItem> ();
 		listMunicipioByDptos = new ArrayList<SelectItem> ();
 		listPaises = new ArrayList<SelectItem> ();
-		listGenero = new ArrayList<SelectItem> ();
 		
 		laboral = new Laboral();
 		evidencias = new ArrayList<Archivo>();
@@ -158,13 +155,13 @@ public class ExpedienteManagedBean implements Serializable  {
 	
 		List<Mantenedor> listaCatalogo = service.getMantenedoresByTipo(new Integer(5));		
 		for (Mantenedor dato : listaCatalogo) {
-			this.catalogoTipoDatosLaborales.put(dato.getId(), dato);			
-			this.listTipoDatosLaborales.add(new SelectItem(dato.getId(), dato.getValor()));			
+			catalogoTipoDatosLaborales.put(dato.getId(), dato);			
+			listTipoDatosLaborales.add(new SelectItem(dato.getId(), dato.getValor()));			
 		}	
 		
 		//Obtiene el catalogo de los Departamentos					
 		listDeptos = new ArrayList<SelectItem> ();
-		listDeptos.add(new SelectItem(null, "Seleccione un Departamento"));
+		listDeptos.add(new SelectItem(null, "Seleccione..."));
 		
 		if (service.getCatalogoDepartamentos().size() > 0 ) {
 			List<Departamento> listaDeptos = new ArrayList<Departamento> (service.getCatalogoDepartamentos().values());
@@ -176,7 +173,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		//Obtiene el catalogo de los Paises
 		List<Pais> paises = new ArrayList<Pais>(service.getCatalogoPaises().values());
 		listPaises = new ArrayList<SelectItem> ();
-		listPaises.add(new SelectItem(null, "Seleccione un pais"));
+		listPaises.add(new SelectItem(null, "Seleccione..."));
 		
 		for (Pais p : paises){
 			listPaises.add(new SelectItem(p.getCodigo(), p.getNombre()));
@@ -259,14 +256,6 @@ public class ExpedienteManagedBean implements Serializable  {
 
 	public void setDescripcionArchivoExp(String descripcionArchivoExp) {
 		this.descripcionArchivoExp = descripcionArchivoExp;
-	}
-
-	public List<SelectItem> getListGenero() {
-		return listGenero;
-	}
-
-	public void setListGenero(List<SelectItem> listGenero) {
-		this.listGenero = listGenero;
 	}
 
 	public List<SelectItem> getListPaises() {
@@ -565,7 +554,6 @@ public class ExpedienteManagedBean implements Serializable  {
 			Map<Integer, Mantenedor> catalogoTipoDatosLaborales) {
 		this.catalogoTipoDatosLaborales = catalogoTipoDatosLaborales;
 	}
-			
 	
 	public Laboral getSelectedLaboral() {
 		return selectedLaboral;
@@ -658,7 +646,6 @@ public class ExpedienteManagedBean implements Serializable  {
 	}
 
 	public void handleMunicipios() {
-		System.out.println("Entra a handleMunicipio");
 		Contacto cExp;
 		this.municipioIdSelected = "1";
 		
@@ -687,9 +674,7 @@ public class ExpedienteManagedBean implements Serializable  {
 			    	valor = this.catalogoMunicipiosByDepto.get(idValor);
 			    	this.listMunicipioByDptos.add(new SelectItem(valor.getMunicipio_id(), valor.getMunicipio_nombre()));			    			    			        		        
 			    }
-			}
-			
-			
+			}			
 		}
 	}
 

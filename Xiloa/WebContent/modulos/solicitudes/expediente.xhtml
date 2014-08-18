@@ -56,7 +56,7 @@
 			<h:outputLabel styleClass="estilo_label" for="selector_departamento" value="Departamento:" />
 			<p:selectOneMenu id="selector_departamento" styleClass="selector_status_estilo" value="#{expedienteManagedBean.contactoExp.departamentoId}" style="position: relative;top: 7px;margin-right: 5px;" >
 				<p:ajax listener="#{expedienteManagedBean.handleMunicipios}" update=":formExpediente:selector_municipio" />
-				<f:selectItems value="#{expedienteManagedBean.listDeptos}"/>      		   	       		  		  	       		  			                         
+				<f:selectItems value="#{expedienteManagedBean.listDeptos}"/>	   	       		  		  	       		  			                         
 			</p:selectOneMenu>
 			<h:outputLabel styleClass="estilo_label" for="selector_municipio" value="Municipio:" />          	     
 			<p:selectOneMenu id="selector_municipio" styleClass="selector_status_estilo" value="#{expedienteManagedBean.contactoExp.municipioId}" style="position: relative;top: 7px;margin-right: 5px;">
