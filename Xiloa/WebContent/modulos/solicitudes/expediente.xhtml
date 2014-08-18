@@ -35,9 +35,11 @@
 				<p:ajax event="dateSelect" update="growlFechaNacimiento" />
 			</p:calendar>	
 			<p:growl id="growlFechaNacimiento" showDetail="true"/>
-			<h:outputLabel styleClass="estilo_label" for="genero" value="Genero (*):" />  
+			<h:outputLabel styleClass="estilo_label" for="genero" value="Sexo (*):" />			  
 			<p:selectOneMenu id="genero" styleClass="selectores selector_genero" value="#{expedienteManagedBean.contactoExp.sexo}" >                 
-				<f:selectItems value="#{expedienteManagedBean.listGenero}" var="tipo" itemLabel="#{tipo.descripcion}" itemValue="#{tipo.value}"/>  			                         
+				<f:selectItem itemLabel="Seleccione..." itemValue="" />
+				<f:selectItem itemLabel="Femenino" itemValue="1" />
+				<f:selectItem itemLabel="Masculino" itemValue="0" />                         
 			</p:selectOneMenu>
 			<h:outputLabel styleClass="estilo_label" for="telefono" value="Telefono (*):" />  
 			<p:inputText id="telefono" value="#{expedienteManagedBean.contactoExp.telefono1}" />
@@ -45,17 +47,17 @@
 			<p:inputText id="celular" value="#{expedienteManagedBean.contactoExp.telefono2}" />
 			<h:outputLabel styleClass="estilo_label" for="email1" value="Correo electronico (*):" />  
 			<p:inputText id="email1" value="#{expedienteManagedBean.contactoExp.correo1}" />
-			<h:outputLabel styleClass="estilo_label" for="direccionActual" value="Direccion actual:" />  
-			<p:inputText id="direccionActual" value="#{expedienteManagedBean.contactoExp.direccionActual}" />
+			<h:outputLabel styleClass="estilo_label" for="direccionActual" value="Direccion actual (*):" />  
+			<p:inputText id="direccionActual" onblur="value=value.toUpperCase()" value="#{expedienteManagedBean.contactoExp.direccionActual}" />
 			<h:outputLabel styleClass="estilo_label" for="selector_nacionalidad" value="Nacionalidad (*):" />          	     
 			<p:selectOneMenu id="selector_nacionalidad" styleClass="selector_status_estilo" value="#{expedienteManagedBean.contactoExp.nacionalidadId}" style="position: relative;top: 7px;margin-right: 5px;">
-				<f:selectItems value="#{expedienteManagedBean.listNacionalidades}"/>	       		   	       		  		  	       		  			                         
+				<f:selectItems value="#{expedienteManagedBean.listPaises}"/>	   	       		  		  	       		  			                         
 			</p:selectOneMenu>
 			<h:outputLabel styleClass="estilo_label" for="selector_departamento" value="Departamento:" />
 			<p:selectOneMenu id="selector_departamento" styleClass="selector_status_estilo" value="#{expedienteManagedBean.contactoExp.departamentoId}" style="position: relative;top: 7px;margin-right: 5px;" >
 				<p:ajax listener="#{expedienteManagedBean.handleMunicipios}" update=":formExpediente:selector_municipio" />
 				<f:selectItems value="#{expedienteManagedBean.listDeptos}"/>      		   	       		  		  	       		  			                         
-			</p:selectOneMenu>			    
+			</p:selectOneMenu>
 			<h:outputLabel styleClass="estilo_label" for="selector_municipio" value="Municipio:" />          	     
 			<p:selectOneMenu id="selector_municipio" styleClass="selector_status_estilo" value="#{expedienteManagedBean.contactoExp.municipioId}" style="position: relative;top: 7px;margin-right: 5px;">
 				<f:selectItems value="#{expedienteManagedBean.listMunicipioByDptos}"/>	       		   	       		  		  	       		  			                         

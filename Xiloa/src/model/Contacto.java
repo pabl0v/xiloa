@@ -139,7 +139,7 @@ public class Contacto implements Serializable {
 	private Date fechaRegistro;
 	
 	@Column(name = "nacionalidad_id", nullable = true)		
-	private Integer nacionalidadId;
+	private String nacionalidadId;
 	
 	@Column(name = "departamento_id", nullable = true)		
 	private Integer departamentoId;
@@ -336,11 +336,11 @@ public class Contacto implements Serializable {
 		this.fechaRegistro = fechaRegistro;
 	}
 
-	public Integer getNacionalidadId() {
+	public String getNacionalidadId() {
 		return nacionalidadId;
 	}
 
-	public void setNacionalidadId(Integer nacionalidadId) {
+	public void setNacionalidadId(String nacionalidadId) {
 		this.nacionalidadId = nacionalidadId;
 	}
 
@@ -407,7 +407,7 @@ public class Contacto implements Serializable {
 			String telefono1, String telefono2, Integer tipoContacto,
 			Integer tipoIdentificacion, String numeroIdentificacion,
 			String direccionActual, Date fechaNacimiento, Date fechaRegistro,
-			Integer nacionalidadId, Integer departamentoId,
+			String nacionalidadId, Integer departamentoId,
 			Integer municipioId, String lugarNacimiento, boolean inatec,
 			String usuarioInatec, String funcion, Long idEmpleado) {
 		super();		

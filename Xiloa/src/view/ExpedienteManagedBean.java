@@ -182,18 +182,9 @@ public class ExpedienteManagedBean implements Serializable  {
 			listPaises.add(new SelectItem(p.getCodigo(), p.getNombre()));
 		}
 		
-		//Genero
-		listGenero = new ArrayList<SelectItem> ();		
-		listGenero.add(new SelectItem(null, "Indique el Genero"));
-		
-		List<Mantenedor> listaGenero = new ArrayList<Mantenedor> (this.service.getCatalogoGenero().values());		
-		for (Mantenedor dato : listaGenero){
-			listGenero.add(new SelectItem(dato.getId(), dato.getValor()));
-		}		
-		
 		archivoExp = new Archivo();
-		solicitudExp = service.getSolicitudById(new Long(7));
-		contactoExp = service.getContactoById(new Long(12));
+		solicitudExp = service.getSolicitudById(new Long(1));
+		contactoExp = service.getContactoById(new Long(7));
 		evaluaciones = service.getEvaluacionesBySolicitudId(new Long(7));
 		setEvidencias(service.getArchivosByContactoId(candidatoId));
 	}
@@ -724,40 +715,28 @@ public class ExpedienteManagedBean implements Serializable  {
 	}	
 
 	public String actualizarContacto(Contacto contacto) {
-		
-		String mensaje = "";
-		boolean isError = false;
 
 		if(contacto.getNumeroIdentificacion()==null){
-			isError = true;
-			mensaje = "Debe indicar su numero de cedula...";
-			FacesUtil.getMensaje("SCCL - Mensaje: ", mensaje, isError);
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "Indique la cédula...", true);
 			return null;
+		}
+		
+		if(!ValidatorUtil.validateCedula(contacto.getNumeroIdentificacion())){
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "Cédula invalida...", true);
+			return null;			
 		}
 		
 		if(contacto.getFechaNacimiento()==null){
-			isError = true;
-			mensaje = "Debe indicar su fecha de nacimiento...";
-			FacesUtil.getMensaje("SCCL - Mensaje: ", mensaje, isError);
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "Indique la fecha de nacimiento...", true);
 			return null;
 		}
-		/*
-		else{
-			String fechaNacimiento = contacto.getNumeroIdentificacion().substring(4, 10);
-			System.out.println("Fecha de nacimiento: "+fechaNacimiento);
-			System.out.println("Anio: "+fechaNacimiento.substring(4, 6));
-			System.out.println("Mes: "+fechaNacimiento.substring(2, 4));
-			System.out.println("Dia: "+fechaNacimiento.substring(0, 2));
-			if(		contacto.getFechaNacimiento().getYear()!=Integer.valueOf(fechaNacimiento.substring(4, 6)) ||
-					contacto.getFechaNacimiento().getDay()!=Integer.valueOf(fechaNacimiento.substring(0, 2)) ||
-					contacto.getFechaNacimiento().getMonth()!=Integer.valueOf(fechaNacimiento.substring(2, 4))){
-				isError = true;
-				mensaje = "La fecha de nacimiento es invalida...";
-				FacesUtil.getMensaje("SCCL - Mensaje: ", mensaje, isError);
-				return null;
-			}
-		}*/
 		
+		Date fecha = ValidatorUtil.obtenerFechaNacimientoDeCedula(contacto.getNumeroIdentificacion());	
+		if(fecha.compareTo(contacto.getFechaNacimiento()) != 0){
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "La fecha de nacimiento no coincide con la cédula.", true);
+			return null;						
+		}
+
 		/*if(contacto.getMunicipioId()==null){
 			isError = true;
 			mensaje = "Debe indicar el departamento y municipio...";
@@ -766,58 +745,56 @@ public class ExpedienteManagedBean implements Serializable  {
 		}*/
 		
 		if(contacto.getSexo()==null){
-			isError = true;
-			mensaje = "Debe indicar el sexo...";
-			FacesUtil.getMensaje("SCCL - Mensaje: ", mensaje, isError);
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "Indique el sexo...", true);
 			return null;
 		}
 		
 		if (contacto.getTelefono1() == null) {
-			isError = true;
-			mensaje = "Debe indicar su numero de telefono...";
-			FacesUtil.getMensaje("SCCL - Mensaje: ", mensaje, isError);
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "Indique el número de teléfono...", true);
+			return null;
+		}
+		
+		if(!ValidatorUtil.validatePhone(contacto.getTelefono1())){
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "El número de teléfono es invalido...", true);
+			return null;
+		}
+		
+		if(contacto.getTelefono2() != null && !ValidatorUtil.validatePhone(contacto.getTelefono2())){
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "El número de celular es invalido...", true);
 			return null;
 		}
 		
 		if (contacto.getDireccionActual() == null) {
-			contacto.setDireccionActual("");			
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "Indique la dirección...", true);
+			return null;	
 		}
 
 		if (contacto.getTelefono2() == null) {
-			contacto.setTelefono2("");			
+			contacto.setTelefono2("");	
 		}
 		
 		if (contacto.getCorreo1() == null) {
-			isError = true;
-			mensaje = "Debe indicar el correo electronico. Favor revisar...";
-			FacesUtil.getMensaje("SCCL - Mensaje: ", mensaje, isError);
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "Indique el correo electronico...", true);
 			return null;
 		}
-		
+
 		if(!ValidatorUtil.validateEmail(contacto.getCorreo1())){
-			isError = true;
-			mensaje = "El correo electronico indicado no es válido. Favor revisar...";
-			FacesUtil.getMensaje("SCCL - Mensaje: ", mensaje, isError);
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "El correo electronico no es válido...", true);
 			return null;
 		}
 		
 		if(contacto.getNacionalidadId()==null){
-			isError = true;
-			mensaje = "Debe indicar la nacionalidad. Favor revisar...";
-			FacesUtil.getMensaje("SCCL - Mensaje: ", mensaje, isError);
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "Indique la nacionalidad...", true);
 			return null;
 		}
 					
 		contactoExp = (Contacto)service.guardar(contacto);
 
 		if (contactoExp != null){
-			isError = false;
-			return "/modulos/solicitudes/solicitudes?faces-redirect=true";
+			return "/modulos/solicitudes/candidatos?faces-redirect=true";
 		}
 		else{
-			isError = true;
-			mensaje = "Error al actualizar los datos del contacto...";
-			FacesUtil.getMensaje("SCCL - Mensaje: ", mensaje, isError);
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "Error al actualizar datos del candidato...", true);
 			return null;
 		}
 	}

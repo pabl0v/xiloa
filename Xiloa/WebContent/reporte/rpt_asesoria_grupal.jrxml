@@ -5,10 +5,7 @@
 		<![CDATA[SELECT
 	primer_nombre || ' ' || COALESCE (segundo_nombre, '') || ' ' || primer_apellido || ' ' || COALESCE (segundo_apellido, '') AS nombrecompleto,
 	cedula,
-	date_part('day', fecha_hora) || '/' || to_char(
-		date_part('month', fecha_hora),
-		'00'
-	) || '/' || date_part('year', fecha_hora) AS fecha,
+fecha_hora AS fecha,
 	date_part('hour', fecha_hora) || ':' || to_char(
 		date_part('minute', fecha_hora),
 		'00'
@@ -17,7 +14,9 @@
 	email,
 	centro AS certificacion_ifp_nombre,
 	lugar,
-  '' as telefono
+  '' as telefono,
+fecha_hora
+
 FROM
 	sccl.rpt_convocatorias
 WHERE
@@ -30,7 +29,7 @@ AND solicitud_id = $P{solicitudId}]]>
 	<field name="cedula" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="fecha" class="java.lang.String">
+	<field name="fecha" class="java.util.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="hora" class="java.lang.String">
@@ -51,6 +50,7 @@ AND solicitud_id = $P{solicitudId}]]>
 	<field name="telefono" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="fecha_hora" class="java.util.Date"/>
 	<background>
 		<band/>
 	</background>
@@ -186,12 +186,12 @@ AND solicitud_id = $P{solicitudId}]]>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombrecompleto}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="165" y="85" width="344" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{cedula}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="162" y="119" width="347" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreasesor}]]></textFieldExpression>
@@ -201,30 +201,30 @@ AND solicitud_id = $P{solicitudId}]]>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{certificacion_ifp_nombre}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="162" y="195" width="148" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{telefono}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="162" y="223" width="148" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{email}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="55" y="320" width="241" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{lugar}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement x="56" y="295" width="131" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{fecha}]]></textFieldExpression>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="hh:mm a" isBlankWhenNull="true">
 				<reportElement x="378" y="318" width="129" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.Double"><![CDATA[$F{hora}]]></textFieldExpression>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

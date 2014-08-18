@@ -3,16 +3,16 @@
 	<parameter name="solicitudId" class="java.lang.Long"/>
 	<queryString>
 		<![CDATA[SELECT 
-
 p.solicitud_id,p.nombre_centro,p.cedula, p.primer_nombre||' '||p.segundo_nombre||' '||p.primer_apellido||' '||p.segundo_apellido as nombre_completo,  to_char(age (current_date, p.fecha_nacimiento),'YY') as edad, 
        lugar_nacimiento, telefono as telefono1, celular as telefono2,
        departamento_id, departamento, direccion as direccion_actual, sexo, certificacion_id, 
        certificacion, curso_id, estructura_id, nivel as nivel_academico, experiencia, 
        case when p.labora=true then 'X' else '' end as labora,
        case when p.labora=false then 'X' else '' end as nolabora,p.fecha_nacimiento,
-u.codigo as cod_cualificacion,u.descripcion as nombre_cualificacion,p.certificacion
+u.codigo as cod_cualificacion,u.descripcion as nombre_cualificacion,p.certificacion,i.nombre as nombreasesor
   FROM sccl.rpt_prematricula p
 inner join sccl.vista_unidades_solicitud u on u.solicitud_id=p.solicitud_id
+inner join sccl.vista_involucrados i on i.solicitud_id=p.solicitud_id and i.actividad_tipo_id=6
 where p.solicitud_id=$P{solicitudId}]]>
 	</queryString>
 	<field name="solicitud_id" class="java.lang.Long">
@@ -84,14 +84,15 @@ where p.solicitud_id=$P{solicitudId}]]>
 	<field name="nombre_cualificacion" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="nombreasesor" class="java.lang.String"/>
 	<group name="contacto">
 		<groupExpression><![CDATA[$F{solicitud_id}]]></groupExpression>
 		<groupHeader>
 			<band height="294">
 				<staticText>
-					<reportElement x="0" y="53" width="116" height="20"/>
+					<reportElement x="0" y="75" width="130" height="20"/>
 					<textElement textAlignment="Center"/>
-					<text><![CDATA[NOMBRES Y APELLIDOS]]></text>
+					<text><![CDATA[NOMBRES Y APELLIDOS:]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="336" y="0" width="81" height="20"/>
@@ -104,17 +105,17 @@ where p.solicitud_id=$P{solicitudId}]]>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{cedula}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="116" y="53" width="419" height="20"/>
+					<reportElement x="130" y="75" width="425" height="20"/>
 					<textElement/>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre_completo}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="2" y="26" width="100" height="20"/>
+					<reportElement x="0" y="26" width="100" height="20"/>
 					<textElement/>
 					<text><![CDATA[ASESOR/A:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="220" y="26" width="100" height="20"/>
+					<reportElement x="0" y="46" width="100" height="20"/>
 					<textElement/>
 					<text><![CDATA[CENTRO:]]></text>
 				</staticText>
@@ -220,6 +221,16 @@ where p.solicitud_id=$P{solicitudId}]]>
 					</box>
 					<textElement/>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{certificacion}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="46" width="455" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre_centro}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="26" width="455" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{nombreasesor}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>

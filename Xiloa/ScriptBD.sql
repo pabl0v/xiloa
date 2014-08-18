@@ -513,3 +513,5 @@ update sccl.mantenedores set mantenedor_valor='No Apto' where mantenedor_id=43
 --cambiar el tipo de dato de la tabla sccl.laboral laboral_pais_id a varchar 
 update sccl.laborales set laboral_pais_id='NIC'
 --campo descripcion el sccl.laborales puede ser nulo
+--cambiar el tipo de dato a la columna nacionalidad de contactos
+ALTER TABLE sccl.contactos ALTER COLUMN nacionalidad_id TYPE varchar(255)

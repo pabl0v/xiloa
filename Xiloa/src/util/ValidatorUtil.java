@@ -11,6 +11,7 @@ public class ValidatorUtil {
 	
 	private static final String PATTERN_EMAIL = "^[\\w-]+(\\.[\\w-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	private static final String PATTERN_CEDULA = "(\\d{3}-)(\\d{6}-)\\d{4}[a-zA-Z]"; 
+	private static final String PATTERN_PHONE = "\\d{8}";
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Funcion que valida por expresion regular el formato de email.   
 	public static boolean validateEmail(String email) {
@@ -20,9 +21,14 @@ public class ValidatorUtil {
  
         // Compara con el patron
         Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
- 
+        return matcher.matches(); 
     }
+	
+	public static boolean validatePhone(String phone){
+        Pattern pattern = Pattern.compile(PATTERN_PHONE);
+        Matcher matcher = pattern.matcher(phone);
+        return matcher.matches();
+	}
 	
 	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Funcion que valida el formato de cedula, así como el digito verificador.
 	public static boolean validateCedula(String cedula) {
