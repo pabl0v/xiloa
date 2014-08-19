@@ -945,4 +945,18 @@ public interface IService {
 	 */
 	
 	public List<Archivo> getArchivosByContactoId(Long contactoId);
+	
+	/**
+	 * @return lista de archivos de un portafolio 
+	 * @param el id del laboral
+	 */
+	
+	public List<Archivo> getArchivosByLaboralId(Long laboralId);
+	
+	/**
+	 * @return lista de evaluaciones de un candidato 
+	 * @param el id del candidato
+	 */
+	
+	public List<Evaluacion> getEvaluacionesByContactoId(Long contactoId);
 }

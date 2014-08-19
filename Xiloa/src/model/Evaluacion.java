@@ -39,7 +39,8 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 	@NamedQuery(name="Evaluacion.findAllPendientesBySolicitudId", query="select e from evaluaciones e where e.solicitud.id=?1 and e.vista.aprobado=false and e.activo=true order by e.id desc"),
 	@NamedQuery(name="Evaluacion.findAllBySolicitudId", query="select e from evaluaciones e where e.solicitud.id=?1 and e.activo='true' order by e.id desc"),
 	@NamedQuery(name="Evaluacion.findById", query="select e from evaluaciones e where e.id=?1"),
-	@NamedQuery(name="Evaluacion.findAllBySolicitudUCL", query="select e from evaluaciones e inner join fetch e.solicitud s where s.id=?1 and e.instrumento.unidad=?2")
+	@NamedQuery(name="Evaluacion.findAllBySolicitudUCL", query="select e from evaluaciones e inner join fetch e.solicitud s where s.id=?1 and e.instrumento.unidad=?2"),
+	@NamedQuery(name="Evaluacion.findAllByContactoId", query="select e from evaluaciones e where e.activo=true and e.solicitud.id in (select s.id from solicitudes s where s.estatus.id not in (44,45) and s.contacto.id=?1) order by 1 desc")
 })
 public class Evaluacion implements Serializable {
 

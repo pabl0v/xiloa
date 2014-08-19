@@ -60,14 +60,6 @@ public class Solicitud implements Serializable {
 	@Column(name = "solicitud_id", nullable = false)
 	private Long id;
 	
-	/*
-	@Column(name = "solicitud_nombre", nullable = false)
-	private String nombre;
-
-	@Column(name = "solicitud_ticket", nullable = false)
-	private String ticket;
-	*/
-	
 	@ManyToOne
 	@JoinColumn(name="solicitud_estatus", nullable = false)		
 	private Mantenedor estatus;
@@ -157,24 +149,6 @@ public class Solicitud implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	/*
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public String getTicket() {
-		return ticket;
-	}
-
-	public void setTicket(String ticket) {
-		this.ticket = ticket;
-	}
-	*/
 
 	public Mantenedor getEstatus() {
 		return estatus;
@@ -280,15 +254,13 @@ public class Solicitud implements Serializable {
 		this.resultadoEvaluacion = resultadoEvaluacion;
 	}
 
-	public Solicitud(/*String nombre, String ticket, */Mantenedor estatus,
+	public Solicitud(Mantenedor estatus,
 			Date fechaRegistro, Date fechaMatricula, int experiencia,
 			String ocupacion, String oficio, int escolaridad,
 			Contacto contacto, Certificacion certificacion,
 			List<Evaluacion> evaluaciones, Integer idMatricula, boolean resultadoEvaluacion,
 			String empresa, boolean situacion_laboral) {
 		super();
-		//this.nombre = nombre;
-		//this.ticket = ticket;
 		this.estatus = estatus;
 		this.fechaRegistro = fechaRegistro;
 		this.fechaMatricula = fechaMatricula;

@@ -20,185 +20,247 @@
 		<h:form id="formEnviar" >
     	<h2 style="display:inline-block;">Expediente Participante</h2>
     	<div>
-			<p:messages id="msgExpediente" showDetail="true" autoUpdate="false" closable="true" globalOnly="false" />
+    		<p:messages id="msgExpediente" showDetail="true" autoUpdate="false" closable="true" globalOnly="false" />
     	</div> 	
 		</h:form>
-		<h3>Datos del Solicitante/Candidato</h3>
+	  	<h3>Datos del Solicitante/Candidato</h3>
     	<h:form id="formExpediente" enctype="multipart/form-data" >
     	<div id="seccion_datossolicitante" class="seccion_expediente" style="padding:10px;">   		 	  
-			<h:outputLabel styleClass="estilo_label" for="nombreCandidato" value="Nombre del candidato (*):" />
-			<h:outputText styleClass="estilo_span" id="nombreCandidato" value="#{expedienteManagedBean.contactoExp.nombreCompleto}" />            
-			<h:outputLabel styleClass="estilo_label" for="numeroIdentificacion" value="Numero de identificacion (*):" />
-			<h:outputText styleClass="estilo_span" id="numeroIdentificacion" value="#{expedienteManagedBean.contactoExp.numeroIdentificacion}" />
-			<h:outputLabel styleClass="estilo_label" for="fechaNacimiento" value="Fecha de nacimiento (*):" />
-            <p:calendar value="#{expedienteManagedBean.contactoExp.fechaNacimiento}" pattern="dd/MM/yyyy" id="fechaNacimiento" showOn="button">
-				<p:ajax event="dateSelect" update="growlFechaNacimiento" />
-			</p:calendar>	
+    		<h:outputLabel styleClass="estilo_label" for="nombreCandidato" value="Nombre del candidato (*):" />
+    		<h:outputText styleClass="estilo_span" id="nombreCandidato" value="#{expedienteManagedBean.contactoExpediente.nombreCompleto}" />            
+            <h:outputLabel styleClass="estilo_label" for="numeroIdentificacion" value="Numero de identificacion (*):" />
+            <h:outputText styleClass="estilo_span" id="numeroIdentificacion" value="#{expedienteManagedBean.contactoExpediente.numeroIdentificacion}" />
+            <h:outputLabel styleClass="estilo_label" for="fechaNacimiento" value="Fecha de nacimiento (*):" />
+            <p:calendar value="#{expedienteManagedBean.contactoExpediente.fechaNacimiento}" pattern="dd/MM/yyyy" 
+                        id="fechaNacimiento" showOn="button">
+						<p:ajax event="dateSelect" update="growlFechaNacimiento" />
+			</p:calendar>				
 			<p:growl id="growlFechaNacimiento" showDetail="true"/>
-			<h:outputLabel styleClass="estilo_label" for="genero" value="Sexo (*):" />			  
-			<p:selectOneMenu id="genero" styleClass="selectores selector_genero" value="#{expedienteManagedBean.contactoExp.sexo}" >                 
+            <h:outputLabel styleClass="estilo_label" for="genero" value="Genero (*):" />
+			<p:selectOneMenu id="genero" styleClass="selectores selector_genero" value="#{expedienteManagedBean.contactoExpediente.sexo}" >                 
 				<f:selectItem itemLabel="Seleccione..." itemValue="" />
 				<f:selectItem itemLabel="Femenino" itemValue="1" />
 				<f:selectItem itemLabel="Masculino" itemValue="0" />                         
 			</p:selectOneMenu>
-			<h:outputLabel styleClass="estilo_label" for="telefono" value="Telefono (*):" />  
-			<p:inputText id="telefono" value="#{expedienteManagedBean.contactoExp.telefono1}" />
-			<h:outputLabel styleClass="estilo_label" for="celular" value="Celular:" />  
-			<p:inputText id="celular" value="#{expedienteManagedBean.contactoExp.telefono2}" />
-			<h:outputLabel styleClass="estilo_label" for="email1" value="Correo electronico (*):" />  
-			<p:inputText id="email1" value="#{expedienteManagedBean.contactoExp.correo1}" />
-			<h:outputLabel styleClass="estilo_label" for="direccionActual" value="Direccion actual (*):" />  
-			<p:inputText id="direccionActual" onblur="value=value.toUpperCase()" value="#{expedienteManagedBean.contactoExp.direccionActual}" />
-			<h:outputLabel styleClass="estilo_label" for="selector_nacionalidad" value="Nacionalidad (*):" />          	     
-			<p:selectOneMenu id="selector_nacionalidad" styleClass="selector_status_estilo" value="#{expedienteManagedBean.contactoExp.nacionalidadId}" style="position: relative;top: 7px;margin-right: 5px;">
-				<f:selectItems value="#{expedienteManagedBean.listPaises}"/>	   	       		  		  	       		  			                         
+            <h:outputLabel styleClass="estilo_label" for="telefono" value="Telefono (*):" />  
+            <p:inputText id="telefono" value="#{expedienteManagedBean.contactoExpediente.telefono1}" />
+            <h:outputLabel styleClass="estilo_label" for="celular" value="Celular:" />  
+            <p:inputText id="celular" value="#{expedienteManagedBean.contactoExpediente.telefono2}" />
+            <h:outputLabel styleClass="estilo_label" for="email1" value="Correo electronico (*):" />  
+            <p:inputText id="email1" value="#{expedienteManagedBean.contactoExpediente.correo1}" />
+            <h:outputLabel styleClass="estilo_label" for="direccionActual" value="Direccion actual (*):" />  
+            <p:inputText id="direccionActual" onblur="value=value.toUpperCase()" value="#{expedienteManagedBean.contactoExpediente.direccionActual}" />
+            <h:outputLabel styleClass="estilo_label" for="selector_nacionalidad" value="Nacionalidad (*):" />          	     
+          	<p:selectOneMenu id="selector_nacionalidad" styleClass="selector_status_estilo"
+            				 value="#{expedienteManagedBean.contactoExpediente.nacionalidadId}"                              
+                             style="position: relative;top: 7px;margin-right: 5px;">
+	       		  <f:selectItems value="#{expedienteManagedBean.listNacionalidades}"/>	       		   	       		  		  	       		  			                         
+			</p:selectOneMenu>                 
+            <h:outputLabel styleClass="estilo_label" for="selector_departamento" value="Departamento:" />
+            <p:selectOneMenu id="selector_departamento" styleClass="selector_status_estilo" 
+                             value="#{expedienteManagedBean.contactoExpediente.departamentoId}"                                                        
+                             style="position: relative;top: 7px;margin-right: 5px;" >
+				  <p:ajax listener="#{expedienteManagedBean.handleMunicipios}"
+				          update=":formExpediente:selector_municipio" />
+	       	<f:selectItems value="#{expedienteManagedBean.listDeptos}"/>	       		   	       		  		  	       		  			                         
+			</p:selectOneMenu>			    
+            <h:outputLabel styleClass="estilo_label" for="selector_municipio" value="Municipio:" />          	     
+          	<p:selectOneMenu id="selector_municipio" styleClass="selector_status_estilo"
+            				 value="#{expedienteManagedBean.contactoExpediente.municipioId}"                              
+                             style="position: relative;top: 7px;margin-right: 5px;">
+	       		  <f:selectItems value="#{expedienteManagedBean.listMunicipioByDptos}"/>	       		   	       		  		  	       		  			                         
 			</p:selectOneMenu>
-			<h:outputLabel styleClass="estilo_label" for="selector_departamento" value="Departamento:" />
-			<p:selectOneMenu id="selector_departamento" styleClass="selector_status_estilo" value="#{expedienteManagedBean.contactoExp.departamentoId}" style="position: relative;top: 7px;margin-right: 5px;" >
-				<p:ajax listener="#{expedienteManagedBean.handleMunicipios}" update=":formExpediente:selector_municipio" />
-				<f:selectItems value="#{expedienteManagedBean.listDeptos}"/>	   	       		  		  	       		  			                         
-			</p:selectOneMenu>
-			<h:outputLabel styleClass="estilo_label" for="selector_municipio" value="Municipio:" />          	     
-			<p:selectOneMenu id="selector_municipio" styleClass="selector_status_estilo" value="#{expedienteManagedBean.contactoExp.municipioId}" style="position: relative;top: 7px;margin-right: 5px;">
-				<f:selectItems value="#{expedienteManagedBean.listMunicipioByDptos}"/>	       		   	       		  		  	       		  			                         
-			</p:selectOneMenu>     	
-			<p:commandButton id="btnActualizaContacto" disabled="#{expedienteManagedBean.disabledBtnActualizaContacto}" style="display:block;" value="Aplicar Cambios" icon="ui-icon-disk" action="#{expedienteManagedBean.actualizarContacto(expedienteManagedBean.contactoExp)}" update=":formEnviar:msgExpediente" process="@form"/>          
-		</div>
-		</h:form>
-		<div id="contenedor_datos_lab" class="seccion_expediente">
-			<p style="padding: 7px;font-weight:bold;">Trayectoria Profesional y Académica:</p>
-			<h:form id="formLaborales">    		
-			<div style="margin-bottom: 16px;">
-				<p:commandButton id="btnAgregaLaborales" disabled="#{expedienteManagedBean.disabledBtnAgregaLaborales}" action="#{expedienteManagedBean.nuevoLaboral}" value="Agregar" icon="ui-icon-document" oncomplete="PF('dlg1').show();"  process="@form" update=":formLaborales,:modalLaborales,:laboralesDialogo" />
-			</div>				
-			<p:tabView id="tabView_datosLaborales">
-				<p:tab id="tab1" title="Experiencia">             	  
-					<p:dataTable emptyMessage="No hay datos para mostrar" var="datosLaborales" value="#{expedienteManagedBean.listDatosLaborales}" rowKey="#{datosLaborales.id}" selectionMode="single" paginator="true" rows="4" >
-						<p:ajax event="rowSelect" listener="#{expedienteManagedBean.onLaboralSelect}" />  
-						<p:ajax event="rowUnselect" listener="#{expedienteManagedBean.onLaboralUnselect}" />      
-						<p:column headerText="Empresa"><h:outputText value="#{datosLaborales.institucion}" /></p:column>  
-						<p:column headerText="Cargo"><h:outputText value="#{datosLaborales.cargo}" /></p:column>  
-						<p:column headerText="Desde">
-							<h:outputText value="#{datosLaborales.fechaInicia}" pattern="dd/MM/yyyy" >
-								<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-							</h:outputText>
-						</p:column>
-						<p:column headerText="Hasta">
-							<h:outputText value="#{datosLaborales.fechaFinaliza}" pattern="dd/MM/yyyy" >
-								<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-							</h:outputText>
-						</p:column>
-						<p:column headerText="Direccion"><h:outputText value="#{datosLaborales.institucionDireccion}" /></p:column>                         
-						<p:column headerText="Editar Registro" >                 	    
-							<p:splitButton action="#{expedienteManagedBean.editarLaboral(expedienteManagedBean.selectedLaboral)}" update=":laboralesDialogo" oncomplete="PF('dlg1').show();" icon="ui-icon-pencil" >           	        	         
-								<p:menuitem value="Subir Archivo" action="#{expedienteManagedBean.nuevoPortafolio}" oncomplete="PF('dlgPortafolio').show()" update=":modalPortafolio, :formPortafolio" icon="ui-icon-arrowrefresh-1-w" />
-							</p:splitButton>           	
-						</p:column>                                         
-					</p:dataTable>    
-				</p:tab>
-				<p:tab id="tab2" title="Estudios">                    	  
-					<p:dataTable emptyMessage="No hay datos para mostrar"  var="datosEstudios" value="#{expedienteManagedBean.listDatosEstudios}" selection="#{expedienteManagedBean.selectedLaboral}" rowKey="#{datosEstudios}" selectionMode="single" paginator="true" rows="4" >  
-						<p:column headerText="Empresa"><h:outputText value="#{datosEstudios.institucion}" /></p:column>  
-						<p:column headerText="Cargo"><h:outputText value="#{datosEstudios.cargo}" /></p:column>  
-						<p:column headerText="Desde">
-							<h:outputText value="#{datosEstudios.fechaInicia}" pattern="dd/MM/yyyy" >
-								<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-							</h:outputText>
-						</p:column>  
-						<p:column headerText="Hasta">
+			<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITAR_PORTAFOLIO">  	
+				<p:commandButton id="btnActualizaContacto" disabled="#{expedienteManagedBean.disabledBtnAgregaLaborales}" style="display:block;" value="Aplicar Cambios" icon="ui-icon-disk"  action="#{expedienteManagedBean.actualizarContacto(expedienteManagedBean.contactoExpediente)}"  update=":formEnviar:msgExpediente" process="@form"/>
+			</sec:authorize>
+    	</div>
+    	</h:form>
+    <!-- Seccion de datos laborales y académicos -->
+      	<div id="contenedor_datos_lab" class="seccion_expediente">
+    		<p style="padding: 7px;font-weight:bold;">Trayectoria profesional y academica:</p>
+    		<h:form id="formLaborales">    		
+           	<div style="margin-bottom: 16px;">
+           		<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITAR_PORTAFOLIO">
+					<p:commandButton id="btnAgregaLaborales" disabled="#{expedienteManagedBean.disabledBtnAgregaLaborales}" action="#{expedienteManagedBean.agregarLaboral}" value="Agregar" icon="ui-icon-document" oncomplete="PF('dlg1').show();"  process="@form" update=":formLaborales,:modalLaborales,:laboralesDialogo" />
+				</sec:authorize>
+           	</div>       	    					
+    		<p:tabView id="tabView_datosLaborales" >
+    		<p:ajax event="tabChange" listener="#{expedienteManagedBean.limpiarSeleccion}" update=":formDetallesVarios" />
+    		
+            	<p:tab id="tab1" title="Experiencia" >                    	  
+                	<p:dataTable widgetVar="wdgListExperiencias" emptyMessage="No hay datos para mostrar" var="datosLaborales" 
+                				 value="#{expedienteManagedBean.listDatosLaborales}" selection="#{expedienteManagedBean.selectedLaboral}" 
+                				 rowKey="#{datosLaborales.id}" selectionMode="single" paginator="true" rows="4">
+                				  
+                	     <p:ajax event="rowSelect" listener="#{expedienteManagedBean.onRowSelect}" update=":formLaborales,:formDetallesVarios"/>   
+                        
+                    	<p:column headerText="Empresa"><h:outputText value="#{datosLaborales.institucion}" /></p:column>  
+                         <p:column headerText="Cargo"><h:outputText value="#{datosLaborales.cargo}" /></p:column>  
+                         <p:column headerText="Desde">
+                         	<h:outputText value="#{datosLaborales.fechaInicia}" pattern="dd/MM/yyyy" >
+                         		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                         	</h:outputText>
+                         </p:column>  
+                         <p:column headerText="Hasta">
+                         	<h:outputText value="#{datosLaborales.fechaFinaliza}" pattern="dd/MM/yyyy" >
+                         		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                         	</h:outputText>
+                         </p:column> 
+                         
+                         <p:column headerText="Direccion"><h:outputText value="#{datosLaborales.institucionDireccion}" /></p:column>                         
+                         <p:column headerText="Editar Registro" >                         	    
+    						<p:splitButton action="#{expedienteManagedBean.editarLaboral}" 
+    						               update=":modalLaborales,:formDetallesVarios" oncomplete="PF('dlg1').show();" 
+    						               icon="ui-icon-pencil" >
+    						     <f:setPropertyActionListener value="#{datosLaborales}" target="#{expedienteManagedBean.selectedLaboral}" />           	        	         
+        						<p:menuitem value="Subir Archivo" action="#{expedienteManagedBean.nuevoArchivoExpediente}"
+        									oncomplete="PF('dlgPortafolio').show()" 
+        									update=":modalPortafolio, :formPortafolio, :formDetallesVarios" 
+        						            icon="ui-icon-arrowrefresh-1-w" >
+        						      <f:setPropertyActionListener value="#{datosLaborales}" target="#{expedienteManagedBean.selectedLaboral}" />
+        						</p:menuitem>
+    						</p:splitButton>                          	
+                         </p:column>                                         
+                    </p:dataTable>    
+               </p:tab>  
+                <p:tab id="tab2" title="Estudios">                    	  
+                   <p:dataTable widgetVar="wdgListEstudios" emptyMessage="No hay datos para mostrar"  var="datosEstudios" 
+                                value="#{expedienteManagedBean.listDatosEstudios}" selection="#{expedienteManagedBean.selectedLaboral}" 
+                				 rowKey="#{datosEstudios.id}" selectionMode="single" paginator="true" rows="4" >
+                		
+                		<p:ajax event="rowSelect" listener="#{expedienteManagedBean.onRowSelect}" update=":formDetallesVarios"/>   
+                        <p:column headerText="Empresa"><h:outputText value="#{datosEstudios.institucion}" /></p:column>  
+                        <p:column headerText="Cargo"><h:outputText value="#{datosEstudios.cargo}" /></p:column>  
+                        <p:column headerText="Desde">
+                        	<h:outputText value="#{datosEstudios.fechaInicia}" pattern="dd/MM/yyyy" >
+                        		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                        	</h:outputText>
+                        </p:column>  
+                        <p:column headerText="Hasta">
                         	<h:outputText value="#{datosEstudios.fechaFinaliza}" pattern="dd/MM/yyyy" >
-								<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-							</h:outputText>
+                        		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                        	</h:outputText>
+                        </p:column>  
+                        <p:column headerText="Direccion"><h:outputText value="#{datosEstudios.institucionDireccion}" /></p:column>  
+                        <p:column headerText="Editar Registro">
+	                        <p:splitButton action="#{expedienteManagedBean.editarLaboral}" 
+	    						           update=":modalLaborales" oncomplete="PF('dlg1').show();" 
+	    						           icon="ui-icon-pencil" title="Editar" >
+	    						<f:setPropertyActionListener value="#{datosEstudios}" target="#{expedienteManagedBean.selectedLaboral}" />           	        	         
+	        					<p:menuitem value="Subir Archivo" action="#{expedienteManagedBean.nuevoArchivoExpediente}"
+	        					      		oncomplete="PF('dlgPortafolio').show()"
+	        								update=":modalPortafolio, :formPortafolio, :formDetallesVarios" 
+	        						        icon="ui-icon-arrowrefresh-1-w" >
+	        				        <f:setPropertyActionListener value="#{datosEstudios}" target="#{expedienteManagedBean.selectedLaboral}" />
+	        					</p:menuitem>
+	    					</p:splitButton>
+                        </p:column>  
+                   </p:dataTable>       
+               </p:tab>  
+                <p:tab id="tab3" title="Calificaciones" >                    	  
+                   <p:dataTable widgetVar="wdgListCalificaciones" emptyMessage="No hay datos para mostrar"  var="datosCalificacion" 
+                                value="#{expedienteManagedBean.listDatosCalificacion}" selection="#{expedienteManagedBean.selectedLaboral}" 
+                				 rowKey="#{datosCalificacion.id}" selectionMode="single" paginator="true" rows="4" >  
+                				 
+                		<p:ajax event="rowSelect" listener="#{expedienteManagedBean.onRowSelect}" update=":formDetallesVarios"/> 
+                        <p:column headerText="Empresa"><h:outputText value="#{datosCalificacion.institucion}" /></p:column>  
+                        <p:column headerText="Cargo"><h:outputText value="#{datosCalificacion.cargo}" /></p:column>  
+                        <p:column headerText="Desde">
+                        	<h:outputText value="#{datosCalificacion.fechaInicia}" pattern="dd/MM/yyyy" >
+                        		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                        	</h:outputText>
+                        </p:column>  
+                        <p:column headerText="Hasta">
+                        	<h:outputText value="#{datosCalificacion.fechaFinaliza}" pattern="dd/MM/yyyy" >
+                        		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                        	</h:outputText>
+                        </p:column>  
+                        <p:column headerText="Direccion"><h:outputText value="#{datosCalificacion.institucionDireccion}" /></p:column>  
+                        <p:column headerText="Editar Registro">
+                            <p:splitButton action="#{expedienteManagedBean.editarLaboral}" 
+	    						           update=":modalLaborales" oncomplete="PF('dlg1').show();" 
+	    						           icon="ui-icon-pencil" title="Editar" >
+	    						<f:setPropertyActionListener value="#{datosCalificacion}" target="#{expedienteManagedBean.selectedLaboral}" />           	        	         
+	        					<p:menuitem value="Subir Archivo" action="#{expedienteManagedBean.nuevoArchivoExpediente}"
+	        					      		oncomplete="PF('dlgPortafolio').show()"
+	        								update=":modalPortafolio, :formPortafolio" 
+	        						        icon="ui-icon-arrowrefresh-1-w" >
+	        				        <f:setPropertyActionListener value="#{datosCalificacion}" target="#{expedienteManagedBean.selectedLaboral}" />
+	        					</p:menuitem>
+	    					</p:splitButton>                        	
 						</p:column>  
-						<p:column headerText="Direccion"><h:outputText value="#{datosEstudios.institucionDireccion}" /></p:column>  
-						<p:column headerText="Editar Registro">
-							<p:splitButton action="#{expedienteManagedBean.editarLaboral}" update=":modalLaborales" oncomplete="PF('dlg1').show();" icon="ui-icon-pencil" title="Editar" >
-								<f:setPropertyActionListener value="#{datosEstudios}" target="#{expedienteManagedBean.selectedLaboral}" />           	        	         
-								<p:menuitem value="Subir Archivo" action="#{expedienteManagedBean.nuevoPortafolio}" oncomplete="PF('dlgPortafolio').show()" update=":modalPortafolio, :formPortafolio" icon="ui-icon-arrowrefresh-1-w" >
-									<f:setPropertyActionListener value="#{datosEstudios}" target="#{expedienteManagedBean.selectedLaboral}" />
-								</p:menuitem>
-							</p:splitButton>
+                   </p:dataTable>    
+               </p:tab>  
+                    
+               <p:tab id="tab4" title="Certificaciones">                    	  
+                   <p:dataTable widgetVar="wdgListCertificaciones" emptyMessage="No hay datos para mostrar"  var="datosCertificacion" value="#{expedienteManagedBean.listDatosCertificaciones}" 
+                                selection="#{expedienteManagedBean.selectedLaboral}" rowKey="#{datosCertificacion.id}" 
+                                selectionMode="single" paginator="true" rows="4" >  
+                                
+                        <p:ajax event="rowSelect" listener="#{expedienteManagedBean.onRowSelect}" update=":formDetallesVarios"/> 
+                        <p:column headerText="Empresa"><h:outputText value="#{datosCertificacion.institucion}" /></p:column>  
+                        <p:column headerText="Cargo"><h:outputText value="#{datosCertificacion.cargo}" /></p:column>  
+                        <p:column headerText="Desde">
+                        	<h:outputText value="#{datosCertificacion.fechaInicia}" pattern="dd/MM/yyyy" >
+                        		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                        	</h:outputText>
+                        </p:column>  
+                        <p:column headerText="Hasta">
+                        	<h:outputText value="#{datosCertificacion.fechaFinaliza}" pattern="dd/MM/yyyy" >
+                        		<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                        	</h:outputText>
+                        </p:column>  
+                        <p:column headerText="Direccion"><h:outputText value="#{datosCertificacion.institucionDireccion}" /></p:column>  
+                        <p:column headerText="Editar Registro">
+                        	<p:splitButton action="#{expedienteManagedBean.editarLaboral}" 
+	    						           update=":modalLaborales" oncomplete="PF('dlg1').show();" 
+	    						           icon="ui-icon-pencil" title="Editar" >
+	    						<f:setPropertyActionListener value="#{datosCertificacion}" target="#{expedienteManagedBean.selectedLaboral}" />           	        	         
+	        					<p:menuitem value="Subir Archivo" action="#{expedienteManagedBean.nuevoArchivoExpediente}"
+	        					      		oncomplete="PF('dlgPortafolio').show()"
+	        								update=":modalPortafolio, :formPortafolio" 
+	        						        icon="ui-icon-arrowrefresh-1-w" >
+	        				        <f:setPropertyActionListener value="#{datosCertificacion}" target="#{expedienteManagedBean.selectedLaboral}" />
+	        					</p:menuitem>
+	    					</p:splitButton>							                        
 						</p:column>  
-					</p:dataTable>       
-				</p:tab>
-				<p:tab id="tab3" title="Calificaciones">                    	  
-					<p:dataTable emptyMessage="No hay datos para mostrar"  var="datosCalificacion" value="#{expedienteManagedBean.listDatosCalificacion}" selection="#{expedienteManagedBean.selectedLaboral}" rowKey="#{datosCalificacion}" selectionMode="single" paginator="true" rows="4" >  
-						<p:column headerText="Empresa"><h:outputText value="#{datosCalificacion.institucion}" /></p:column>  
-						<p:column headerText="Cargo"><h:outputText value="#{datosCalificacion.cargo}" /></p:column>  
-						<p:column headerText="Desde">
-							<h:outputText value="#{datosCalificacion.fechaInicia}" pattern="dd/MM/yyyy" >
-								<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-							</h:outputText>
-						</p:column>  
-						<p:column headerText="Hasta">
-							<h:outputText value="#{datosCalificacion.fechaFinaliza}" pattern="dd/MM/yyyy" >
-								<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-							</h:outputText>
-						</p:column>  
-						<p:column headerText="Direccion"><h:outputText value="#{datosCalificacion.institucionDireccion}" /></p:column>  
-						<p:column headerText="Editar Registro">
-							<p:splitButton action="#{expedienteManagedBean.editarLaboral}" update=":modalLaborales" oncomplete="PF('dlg1').show();" icon="ui-icon-pencil" title="Editar" >
-								<f:setPropertyActionListener value="#{datosCalificacion}" target="#{expedienteManagedBean.selectedLaboral}" />           	        	         
-								<p:menuitem value="Subir Archivo" action="#{expedienteManagedBean.nuevoPortafolio}" oncomplete="PF('dlgPortafolio').show()" update=":modalPortafolio, :formPortafolio" icon="ui-icon-arrowrefresh-1-w" >
-									<f:setPropertyActionListener value="#{datosCalificacion}" target="#{expedienteManagedBean.selectedLaboral}" />
-								</p:menuitem>
-							</p:splitButton>                        	
-						</p:column>  
-					</p:dataTable>    
-				</p:tab>
-				<p:tab id="tab4" title="Certificaciones">                    	  
-					<p:dataTable emptyMessage="No hay datos para mostrar"  var="datosCertificacion" value="#{expedienteManagedBean.listDatosCertificaciones}" selection="#{expedienteManagedBean.selectedLaboral}" rowKey="#{datosCertificacion}" selectionMode="single" paginator="true" rows="4" >  
-						<p:column headerText="Empresa"><h:outputText value="#{datosCertificacion.institucion}" /></p:column>  
-						<p:column headerText="Cargo"><h:outputText value="#{datosCertificacion.cargo}" /></p:column>  
-						<p:column headerText="Desde">
-							<h:outputText value="#{datosCertificacion.fechaInicia}" pattern="dd/MM/yyyy" >
-								<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-							</h:outputText>
-						</p:column>  
-						<p:column headerText="Hasta">
-							<h:outputText value="#{datosCertificacion.fechaFinaliza}" pattern="dd/MM/yyyy" >
-								<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
-							</h:outputText>
-						</p:column>  
-						<p:column headerText="Direccion"><h:outputText value="#{datosCertificacion.institucionDireccion}" /></p:column>  
-						<p:column headerText="Editar Registro">
-							<p:splitButton action="#{expedienteManagedBean.editarLaboral}" update=":modalLaborales" oncomplete="PF('dlg1').show();" icon="ui-icon-pencil" title="Editar" >
-								<f:setPropertyActionListener value="#{datosCertificacion}" target="#{expedienteManagedBean.selectedLaboral}" />           	        	         
-								<p:menuitem value="Subir Archivo" action="#{expedienteManagedBean.nuevoPortafolio}" oncomplete="PF('dlgPortafolio').show()" update=":modalPortafolio, :formPortafolio" icon="ui-icon-arrowrefresh-1-w" >
-									<f:setPropertyActionListener value="#{datosCertificacion}" target="#{expedienteManagedBean.selectedLaboral}" />
-								</p:menuitem>
-							</p:splitButton>							                        
-						</p:column>  
-					</p:dataTable>    
-				</p:tab>  
-			</p:tabView> 
-			</h:form> 		
-		</div>
-		<div id="contenedor_tab_planes" class="seccion_expediente"
+                   </p:dataTable>    
+               </p:tab> 
+            </p:tabView> 
+           </h:form> 		
+    	</div>
+  	<!-- Listado de detalles: Portafolio de Evidencias, Detalle de Evaluaciones -->	  	
+    	<div id="contenedor_tab_planes" class="seccion_expediente"
 			style="width: 98%">
+		<h:form id="formDetallesVarios">   
 			<p:tabView id="idTabPlanesExpediente">
 			<p:tab id="tabPortafolioEvidencias" title="Portafolio de Evidencias">
-				<p:dataTable emptyMessage="No hay datos" var="evidencia" value="#{expedienteManagedBean.evidencias}" selection="#{expedienteManagedBean.selectedEvidencia}" selectionMode="single" rowKey="#{evidencia.id}" paginator="true" rows="3" style="margin-top:8px;">
-					<f:facet name="header">Portafolio de Evidencias</f:facet>
-					<p:column headerText="Documento de soporte o evidencia">
-						<h:outputText value="#{evidencia.nombre}" />
-					</p:column>
-					<p:column headerText="Descripcion">
-						<h:outputText value="#{evidencia.descripcion}" />
-					</p:column>
-					<p:column headerText="Respaldo de">
-						<h:outputText value="#{evidencia.laboral.nombre}" />
-					</p:column>
-					<p:column headerText="Estado">
-						<h:outputText value="#{evidencia.estado.valor}" />
-					</p:column>
-				</p:dataTable>
-			</p:tab>
+					<p:dataTable id="dtPortafolioLaboralEnPlanes"
+						emptyMessage="No hay datos" var="archivo"
+						value="#{expedienteManagedBean.listaArchivosPortafolioLaboral}"
+						selection="#{expedienteManagedBean.selectedArchivo}"
+						selectionMode="single" rowKey="#{archivo}"
+						paginator="true" rows="3" style="margin-top:8px;">
+						<f:facet name="header">Portafolio de Evidencias</f:facet>
+						<p:column headerText="Documento Soporte">
+							<h:outputText value="#{archivo.nombre}" />
+						</p:column>
+						<p:column headerText="Descripción">
+							<h:outputText value="#{archivo.descripcion}" />
+						</p:column>
+						<p:column headerText="Respaldo de">
+							<h:outputText value="#{archivo.laboral.nombre}" />
+						</p:column>
+						<p:column headerText="Estado">
+							<h:outputText value="#{archivo.estado.valor}" />
+						</p:column>
+					</p:dataTable>
+				</p:tab>
 			<p:tab id="tabDetalleEvaluaciones" title="Detalle de Evaluaciones">
-				<p:dataTable emptyMessage="No hay datos" var="evaluacion" value="#{expedienteManagedBean.evaluaciones}" selection="#{expedienteManagedBean.selectedBeanEvaluacion}" rowKey="#{evaluacion.id}" selectionMode="single" paginator="true"	rows="4">
+				<p:dataTable emptyMessage="No hay datos" var="evaluacion" value="#{expedienteManagedBean.evaluaciones}" selection="#{expedienteManagedBean.selectedEvaluacion}" rowKey="#{evaluacion.id}" selectionMode="single" paginator="true"	rows="4">
 					<f:facet name="header">Detalle de Evaluaciones</f:facet>
 					<p:column headerText="Unidad de Competencia">
-						<h:outputText value="#{expedienteManagedBean.getUCDescripcion(evaluacion.instrumento.unidad)}" />
+						<h:outputText value="#{expedienteManagedBean.getCompetenciaDescripcion(evaluacion.instrumento.unidad)}" />
 					</p:column>
 					<p:column headerText="Instrumento de Evaluacion">
 						<h:outputText value="#{evaluacion.instrumento.nombre} [ #{evaluacion.instrumento.tipo.valor} ]" />
@@ -216,54 +278,56 @@
 				</p:dataTable>
 			</p:tab>
 			</p:tabView>
+		  </h:form>
 		</div>
-		<!-- Cuadro de dialogo emergente que registra datos laborales y académicos -->
-		<p:dialog id="modalLaborales" styleClass="estilo_dialogoLaborales" header="Agregar Datos Laborales y Academicos:" widgetVar="dlg1" modal="true" resizable="false" width="720" height="540" showEffect="clip" hideEffect="clip" >
-			<div>
-				<br/>
-				<h3>Registro de Datos Laborales y Académicos</h3>
+    	<!-- Cuadros de dialogo emergentes para registro de datos -->	
+    	<!-- Cuadro de dialogo emergente que registra datos laborales y académicos -->
+		<p:dialog id="modalLaborales" styleClass="estilo_dialogoLaborales" header="Agregar Datos Laborales y Academicos:" widgetVar="dlg1" modal="true" resizable="false" width="720" height="350" showEffect="clip" hideEffect="clip" >
+    	   <div>
+    	   		<br/>
+				<h3>Registro de Datos Laborales y Academicos</h3>
 				<br/>					
-				<div>
-					<h:form id="laboralesDialogo">
-					<h:panelGrid id="panel1_dlg1" columns="4" cellpadding="10" cellspacing="10">
-					Tipo dato laboral (*):
-					<p:selectOneMenu id="selector_tipoDatoLaboral" value="#{expedienteManagedBean.tipoLaboral}" >
+			    <div>
+			    	<h:form id="laboralesDialogo">
+			    	<h:panelGrid id="panel1_dlg1" columns="4" cellpadding="10" cellspacing="10">
+			    	Tipo dato laboral (*):
+					<p:selectOneMenu id="selector_tipoDatoLaboral" value="#{expedienteManagedBean.idTipoLaboral}">
 						<f:selectItems value="#{expedienteManagedBean.listTipoDatosLaborales}" />			        
 			    	</p:selectOneMenu>
 			    	<p:message id="selector_tipoDatoLaboral_msg" for="selector_tipoDatoLaboral" display="text"  />
 			    	<h:outputText></h:outputText>
 			    	Institucion (*):
-					<p:inputText id="nombreInstitucion" size="50" value="#{expedienteManagedBean.laboral.institucion}" required="true" requiredMessage="El nombre es requerido" />
+					<p:inputText id="nombreInstitucion" onblur="value=value.toUpperCase()" size="50" value="#{expedienteManagedBean.datoLaboral.institucion}" required="true" requiredMessage="El nombre de la institucion es requerido" />
 					<p:message id="nombreInstitucion_msg" for="nombreInstitucion" display="text"  />
 					<h:outputText></h:outputText>
 	            	Telefono (*):
-	            	<p:inputText id="telefonoInstitucion" size="50" value="#{expedienteManagedBean.laboral.institucionTelefono}" required="true" requiredMessage="El telefono es requerido" converterMessage="Dato no valido" >
+	            	<p:inputText id="telefonoInstitucion" size="50" value="#{expedienteManagedBean.datoLaboral.institucionTelefono}" required="true" requiredMessage="El telefono es requerido" converterMessage="Dato no valido" >
 						<f:convertNumber longOnly="true"/>
 	            	</p:inputText>
 	            	<p:message id="telefonoInstitucion_msg" for="telefonoInstitucion" display="text"  />
 	            	<h:outputText></h:outputText>
 					Direccion (*):					  
-            		<p:inputText id="institucionDireccion" size="50" value="#{expedienteManagedBean.laboral.institucionDireccion}" required="true" requiredMessage="La dirección es requerida" />
+            		<p:inputText id="institucionDireccion" onblur="value=value.toUpperCase()" size="50" value="#{expedienteManagedBean.datoLaboral.institucionDireccion}" required="true" requiredMessage="La direccion de la institucion es requerida" />
 	            	<p:message id="institucionDireccion_msg" for="institucionDireccion" display="text"  />
 	            	<h:outputText></h:outputText>
 					Pais (*):
-	            	<p:selectOneMenu id="selector_paisLaboral" value="#{expedienteManagedBean.laboral.pais}" required="true" requiredMessage="El país es requerido">
-						<f:selectItem itemLabel="Nicaragua" itemValue="NIC" />
+	            	<p:selectOneMenu id="selector_paisLaboral" value="#{expedienteManagedBean.idPaisLaboral}" required="true" requiredMessage="El pais es requerido">				
+						<f:selectItems value="#{expedienteManagedBean.listPaises}" />			        
 			    	</p:selectOneMenu>
 	            	<p:message id="selector_paisLaboral_msg" for="selector_paisLaboral" display="text"  />
 	            	<h:outputText></h:outputText>
 					Cargo (*): 
-	            	<p:inputText id="nombreCargo" size="50" value="#{expedienteManagedBean.laboral.cargo}" required="true" requiredMessage="El cargo es requerido" />
+	            	<p:inputText id="nombreCargo" onblur="value=value.toUpperCase()" size="50" value="#{expedienteManagedBean.datoLaboral.cargo}" required="true" requiredMessage="El cargo es requerido" />
 					<p:message id="nombreCargo_msg" for="nombreCargo" display="text"  />
 					<h:outputText></h:outputText>
 	            	Desde (*):
-					<p:calendar size="15" value="#{expedienteManagedBean.laboral.fechaInicia}" pattern="dd/MM/yyyy" id="popupButtonCal1" showOn="button" required="true" requiredMessage="La fecha desde es requerida" >
+					<p:calendar size="15" value="#{expedienteManagedBean.datoLaboral.fechaInicia}" pattern="dd/MM/yyyy" id="popupButtonCal1" showOn="button" required="true" requiredMessage="La fecha desde es requerida" >
 						<p:ajax event="dateSelect" update="growlFechaDesde" />
 					</p:calendar>
 					<p:message id="popupButtonCal1_msg" for="popupButtonCal1" display="text"  />
 					<p:growl id="growlFechaDesde" showDetail="true"/>					
 					Hasta (*):			
-					<p:calendar size="15" value="#{expedienteManagedBean.laboral.fechaFinaliza}" pattern="dd/MM/yyyy" id="popupButtonCal2" showOn="button" required="true" requiredMessage="La fecha hasta es requerida">
+					<p:calendar size="15" value="#{expedienteManagedBean.datoLaboral.fechaFinaliza}" pattern="dd/MM/yyyy" id="popupButtonCal2" showOn="button" required="true" requiredMessage="La fecha hasta es requerida">
 						<p:ajax event="dateSelect" update="growlFechaHasta" />
 					</p:calendar>
 					<p:message id="popupButtonCal2_msg" for="popupButtonCal2" display="text"  />
@@ -271,23 +335,13 @@
 					</h:panelGrid>
 					<br/>
 					<p:commandButton value="Cancelar" update="laboralesDialogo" oncomplete="PF('dlg1').hide();" immediate="true" />
-					<p:commandButton value="Aceptar" oncomplete="if (!args.validationFailed) dlg1.hide()" action="#{expedienteManagedBean.guardarDatosLaborales(expedienteManagedBean.laboral)}" icon="ui-icon-disk" update=":formLaborales:tabView_datosLaborales, selector_tipoDatoLaboral_msg, nombreInstitucion_msg, telefonoInstitucion_msg, institucionDireccion_msg, selector_paisLaboral_msg, nombreCargo_msg, popupButtonCal1_msg, popupButtonCal2_msg" ajax="true" />
+					<p:commandButton value="Aceptar" oncomplete="if (!args.validationFailed) dlg1.hide()" action="#{expedienteManagedBean.guardarDatosLaborales}" icon="ui-icon-disk" update=":laboralesDialogo, :formLaborales:tabView_datosLaborales"	ajax="true" />
 					</h:form>					
 		    	 </div>
-				<p:dataTable id="dtPortafolioLaboral" emptyMessage="No hay datos"  var="varPortafolioLaboral" value="#{expedienteManagedBean.listPortafolioLaboral}" selection="#{expedienteManagedBean.selectedArchivoId}" selectionMode="single" rowKey="#{varPortafolioLaboral}"  paginator="true" rows="3" style="margin-top:8px;" >  
-						<f:facet name="header">Portafolio de Evidencias</f:facet> 
-						<p:column headerText="Documento de soporte o evidencia"><h:outputText value="#{varPortafolioLaboral.nombre}" /></p:column>  
-						<p:column headerText="Descripcion"><h:outputText value="#{varPortafolioLaboral.descripcion}" /></p:column>  
-						<p:column headerText="Respaldo de"><h:outputText value="#{varPortafolioLaboral.laboral.nombre}" /></p:column>  
-						<p:column headerText="Estado"><h:outputText value="#{varPortafolioLaboral.estado.valor}" /></p:column>                                   
-				</p:dataTable>
 		    </div>
 		</p:dialog>
-    	<!--  Fin Cuadro de dialogo emergente que registra datos laborales y académicos -->
-    	
-    	<!-- ******************************************************************************************** -->    	
-    	
-    	<!-- Cuadro de dialogo emergente que registra datos laborales y académicos -->    	    	
+		<!--  Fin Cuadro de dialogo emergente que registra datos laborales y académicos -->  	
+		<!-- Cuadro de dialogo emergente para registrar archivos de datos laborales y académicos -->    	    	
     	<p:dialog id="modalPortafolio" styleClass="estilo_modalPortafolio" header="Registro de Archivos al portafolio de evidencias" 
     	          widgetVar="dlgPortafolio" 
     	          modal="true" resizable="false" width="540" height="450" showEffect="clip" hideEffect="explode" >
@@ -297,31 +351,31 @@
 			    <p style="margin-left: 4px;font-weight:bold;">#{expedienteManagedBean.selectedLaboral.nombre} </p>	    
 			    <div class="dialogoPortafolio_secciones" >
 			    	<p>Nombre del Archivo:</p>  
-	            	<p:inputText id="nombreArchivo" value="#{expedienteManagedBean.nombreArchivoExp}" />
+	            	<p:inputText id="nombreArchivo" onblur="value=value.toUpperCase()" value="#{expedienteManagedBean.archivoExpediente.nombre}" />
 	            	<p>Tipo Archivo:</p>
-	                <p:selectOneMenu id="tipoArchivo" value="#{expedienteManagedBean.tipoArchivoExp}">  
+	                <p:selectOneMenu id="tipoArchivo" value="#{expedienteManagedBean.archivoExpediente.tipo}">  
                 		<f:selectItem itemLabel="Formato PDF" itemValue="PDF" />
                 		<f:selectItem itemLabel="Imagen jpeg |gif |png" itemValue="JPEG" />
             		</p:selectOneMenu>             
 					<p>Version:</p>	                  
-	            	<p:inputText id="versionArchivo" value="#{expedienteManagedBean.versionArchivoExp}" />	            	           	 
+	            	<p:inputText id="versionArchivo" onblur="value=value.toUpperCase()" value="#{expedienteManagedBean.archivoExpediente.version}" />	            	           	 
 					<p>Descripcion:</p>	                  
-	            	<p:inputText id="descripcionArchivo" value="#{expedienteManagedBean.descripcionArchivoExp}" />
+	            	<p:inputText id="descripcionArchivo" onblur="value=value.toUpperCase()" value="#{expedienteManagedBean.archivoExpediente.descripcion}" />
 	            	<p:fileUpload id="fileEvidencia" fileUploadListener="#{expedienteManagedBean.uploadFile}" 
 	            	 			  mode="advanced" dragDropSupport="false"  auto="true" sizeLimit="2097152"  
 	            	              allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|PDF)$/" fileLimit="1" label="Buscar Archivo"            	              
 	            	              update="messages, nombreRealArchivo, sizeArchivo" />
 					<p:growl id="messages" showDetail="true"/>	            	
 					<p>Archivo (Nombre Real):</p>  
-					<h:outputText styleClass="estilo_span" id="nombreRealArchivo" value="#{expedienteManagedBean.nombreRealArchivoExp}" />
+					<h:outputText styleClass="estilo_span" id="nombreRealArchivo" value="#{expedienteManagedBean.archivoExpediente.nombreReal}" />
 					<p>Tamaño del Archivo:</p>  
-					<h:outputText styleClass="estilo_span" id="sizeArchivo" value="#{expedienteManagedBean.sizeArchivoExp}" />
+					<h:outputText styleClass="estilo_span" id="sizeArchivo" value="#{expedienteManagedBean.archivoExpediente.size}" />
 				</div>				
-				<p:commandButton value="Cancelar" action="#{expedienteManagedBean.cancelaPortafolio}" onclick="PF('dlgPortafolio').hide();"/>
+				<p:commandButton value="Cancelar" onclick="PF('dlgPortafolio').hide();" immediate="true" />
 				<p:commandButton value="Guardar" icon="ui-icon-disk" action="#{expedienteManagedBean.guardarArchivo}" oncomplete="PF('dlgPortafolio').hide();" />												
 		    </div>	
 		</h:form>				
 		</p:dialog>
-    </div> 
+    </div>  
 </h:body>
 </html>
