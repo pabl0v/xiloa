@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_evaluacion_candidato" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" >
+	<property name="ireport.zoom" value="1.2100000000000009"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#0088FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#E6F3FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" />
+	<parameter name="solicitudId" class="java.lang.Long">
+		<parameterDescription><![CDATA[Solicitud de Matricula]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+pm.nombre_centro,
+pm.solicitud_id,
+pm.fecha_solicitud,
+(
+		pm.primer_nombre || ' ' || pm.segundo_nombre || ' ' || pm.primer_apellido || ' ' || pm.segundo_apellido
+	) AS nombres,
+pm.cedula,
+eu.unidad_descripcion,
+eu.evidencia,
+eu.unidad_codigo,
+pm.certificacion_id,
+pm.certificacion,
+eu.aprobado,
+pm.departamento
+FROM
+	sccl.rpt_prematricula AS pm
+INNER JOIN sccl.vista_evaluacion_unidades AS eu ON pm.solicitud_id = eu.solicitud_id
+WHERE
+   unidad_codigo is not null and
+   pm.solicitud_id =  $P{solicitudId}
+]]>
+	</queryString>
+	<field name="nombre_centro" class="java.lang.String"/>
+	<field name="solicitud_id" class="java.lang.Long"/>
+	<field name="fecha_solicitud" class="java.sql.Date"/>
+	<field name="nombres" class="java.lang.String"/>
+	<field name="cedula" class="java.lang.String"/>
+	<field name="unidad_descripcion" class="java.lang.String"/>
+	<field name="evidencia" class="java.lang.Boolean"/>
+	<field name="unidad_codigo" class="java.lang.String"/>
+	<field name="certificacion_id" class="java.lang.Long"/>
+	<field name="certificacion" class="java.lang.String"/>
+	<field name="aprobado" class="java.lang.Boolean"/>
+	<field name="departamento" class="java.lang.String"/>
+	<group name="candidatos">
+		<groupExpression><![CDATA[$V{PAGE_NUMBER}]]></groupExpression>
+		<groupHeader>
+			<band height="102">
+				<staticText>
+					<reportElement x="14" y="35" width="137" height="30" />
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Apellidos y Nombres:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="13" y="10" width="207" height="25" />
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Datos del Candidato / a:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="14" y="66" width="137" height="30" />
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="false"/>
+					</textElement>
+					<text><![CDATA[No. Cédula:]]></text>
+				</staticText>
+				<line>
+					<reportElement x="155" y="64" width="385" height="1" />
+				</line>
+				<line>
+					<reportElement x="155" y="95" width="385" height="1" />
+				</line>
+				<textField>
+					<reportElement x="159" y="44" width="381" height="20" />
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nombres}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="159" y="73" width="178" height="20" />
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cedula}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="referente">
+		<groupExpression><![CDATA[$V{PAGE_NUMBER}]]></groupExpression>
+		<groupHeader>
+			<band height="146">
+				<staticText>
+					<reportElement x="13" y="1" width="207" height="30" />
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Referente de Certificación:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="14" y="31" width="126" height="30" />
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Código:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="14" y="62" width="126" height="30" />
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Denominación:]]></text>
+				</staticText>
+				<line>
+					<reportElement x="144" y="56" width="135" height="1" />
+				</line>
+				<line>
+					<reportElement x="143" y="88" width="385" height="1" />
+				</line>
+				<line>
+					<reportElement x="363" y="52" width="165" height="1" />
+				</line>
+				<staticText>
+					<reportElement x="290" y="28" width="68" height="30" />
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Nivel:]]></text>
+				</staticText>
+				<rectangle>
+					<reportElement x="3" y="108" width="547" height="37" />
+				</rectangle>
+				<line>
+					<reportElement x="84" y="108" width="1" height="37" />
+				</line>
+				<staticText>
+					<reportElement x="13" y="124" width="61" height="15" />
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="false"/>
+					</textElement>
+					<text><![CDATA[CÓDIGO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="92" y="124" width="184" height="15" />
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="false"/>
+					</textElement>
+					<text><![CDATA[DENOMINACIÓN]]></text>
+				</staticText>
+				<line>
+					<reportElement x="288" y="108" width="1" height="37" />
+				</line>
+				<staticText>
+					<reportElement x="300" y="124" width="112" height="15" />
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="false"/>
+					</textElement>
+					<text><![CDATA[SUFICIENTE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="432" y="109" width="116" height="32" />
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="false"/>
+					</textElement>
+					<text><![CDATA[PENDIENTE CUMPLIMIENTO]]></text>
+				</staticText>
+				<line>
+					<reportElement x="421" y="108" width="1" height="37" />
+				</line>
+				<textField>
+					<reportElement x="159" y="34" width="100" height="20" />
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{certificacion_id}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="159" y="66" width="369" height="20" />
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{certificacion}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="112">
+				<staticText>
+					<reportElement x="3" y="5" width="137" height="30" />
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Observaciones:]]></text>
+				</staticText>
+				<line>
+					<reportElement x="55" y="48" width="473" height="1" />
+				</line>
+				<staticText>
+					<reportElement x="30" y="37" width="20" height="15" />
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[1.]]></text>
+				</staticText>
+				<line>
+					<reportElement x="56" y="66" width="473" height="1" />
+				</line>
+				<staticText>
+					<reportElement x="30" y="54" width="20" height="15" />
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[2.]]></text>
+				</staticText>
+				<line>
+					<reportElement x="56" y="82" width="473" height="1" />
+				</line>
+				<staticText>
+					<reportElement x="30" y="71" width="20" height="15" />
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[3.]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="140" y="87" width="100" height="20" />
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{departamento}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="240" y="87" width="5" height="20" />
+					<textElement verticalAlignment="Middle">
+						<font isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[,]]></text>
+				</staticText>
+				<textField pattern="dd &apos;de&apos; MMMMM &apos;de&apos; yyyy">
+					<reportElement x="246" y="87" width="165" height="20" />
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false" isItalic="false" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="38" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="8" width="550" height="30" />
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DICTAMEN DE EVALUACIÓN DEL CANDIDATO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="39" splitType="Stretch">
+			<textField>
+				<reportElement x="3" y="0" width="545" height="25" />
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_centro}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="37" splitType="Stretch">
+			<rectangle>
+				<reportElement x="3" y="0" width="547" height="37" />
+			</rectangle>
+			<line>
+				<reportElement x="84" y="0" width="1" height="37" />
+			</line>
+			<line>
+				<reportElement x="288" y="0" width="1" height="37" />
+			</line>
+			<line>
+				<reportElement x="421" y="0" width="1" height="37" />
+			</line>
+			<textField>
+				<reportElement x="13" y="8" width="61" height="20" />
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{unidad_codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="8" width="192" height="20" />
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{unidad_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="8" width="112" height="20" />
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{aprobado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="8" width="100" height="20" />
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{evidencia}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="27" splitType="Stretch">
+			<line>
+				<reportElement x="17" y="3" width="100" height="1" />
+			</line>
+			<line>
+				<reportElement x="411" y="2" width="100" height="1" />
+			</line>
+			<staticText>
+				<reportElement x="15" y="7" width="100" height="20" />
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Firma Candidato]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="411" y="6" width="100" height="20" />
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Firma Evaluador]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

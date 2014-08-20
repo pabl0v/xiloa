@@ -176,14 +176,16 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
     }
 
     public void runReporte(String nombreReporte, boolean desplegar) throws Exception {
-    	Map<String,Object> params = new HashMap<String,Object>();
+    	Map<String,Object> params = new HashMap<String,Object>();    	
     	
-    	if(nombreReporte.equalsIgnoreCase("rpt_prematricula") || nombreReporte.equalsIgnoreCase("rpt_reconocimiento") || nombreReporte.equalsIgnoreCase("rpt_asesoria_grupal") || nombreReporte.equalsIgnoreCase("rpt_asesoria_resumen"))
-    		params.put("solicitudId", selectedSolicitud.getId());
-    	
-    	if(nombreReporte.equalsIgnoreCase("rpt_registro_participantes")){
+    	if(nombreReporte.equalsIgnoreCase("rpt_registro_participantes"))
+    	{
     		params.put("fecha", new Date());
     		params.put("centroId", selectedSolicitud.getCertificacion().getIfpId());
+    	}
+    	else
+    	{
+    		params.put("solicitudId", selectedSolicitud.getId());
     	}
         
     	service.imprimirReporte(nombreReporte, params, Global.EXPORT_PDF, desplegar);

@@ -144,7 +144,7 @@ AND sccl.vista_evaluacion_unidades.unidad_codigo IS NOT NULL]]>
 					<subreportParameterExpression><![CDATA[$P{solicitudId}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression class="java.lang.String"><![CDATA["subrpt_asesoria_resumen.jrxml"]]></subreportExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["/reporte/subrpt_registro_actividad.jrxml"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
