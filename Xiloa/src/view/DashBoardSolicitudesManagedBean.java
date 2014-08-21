@@ -182,7 +182,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
     }
 
     public void runReporte(String nombreReporte, boolean desplegar) throws Exception {
-    	Map<String,Object> params = new HashMap<String,Object>();    	
+    	Map<String,Object> params = new HashMap<String,Object>();
     	
     	if(nombreReporte.equalsIgnoreCase("rpt_registro_participantes"))
     	{

@@ -25,6 +25,9 @@
 	</style>
 	<subDataset name="Table Dataset 1" />
 	<subDataset name="dataset1" />
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\dchavez\\git\\xiloa\\Xiloa\\WebContent\\reporte\\"]]></defaultValueExpression>
+	</parameter>
 	<parameter name="solicitudId" class="java.lang.Long">
 		<parameterDescription><![CDATA[Solicitud de Matricula]]></parameterDescription>
 	</parameter>
@@ -205,7 +208,7 @@ Where pm.solicitud_id = $P{solicitudId}]]>
 						<subreportParameterExpression><![CDATA[$P{solicitudId}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					<subreportExpression><![CDATA["/reporte/subrpt_registro_actividad.jrxml"]]></subreportExpression>
+					<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "subrpt_registro_actividad.jrxml"]]></subreportExpression>
 				</subreport>
 			</band>
 		</groupFooter>

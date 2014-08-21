@@ -79,7 +79,6 @@ public class ControlGenericoReporte implements java.io.Serializable{
 	try {	    
 		parametro.put("logoinatec", new String("../../resources/imagenes/logo INATEC.png")); //Parametro que contiene la ubicacion del logo de INATEC
 		reportFile = path + "\\" + nombreReporte;		
-		System.out.println("Imprime el reporte: " + reportFile);
 		formatoAplicacion = getContentType(formato);		
 		exportMode = formato;
 		result.reset();						
@@ -128,7 +127,7 @@ public class ControlGenericoReporte implements java.io.Serializable{
 		if (visualiza) {
 			RequestContext context = RequestContext.getCurrentInstance();
 			//context.execute("window.open('" +  FacesUtil.getContentPath() + "/reporte?file="+ reporte + "&formato=" + formato + "','myWindow');");		
-		    context.execute("window.open('" +  FacesUtil.getContentPath() + "/reporte/"+ reporte + "','myWindow');");
+		    context.execute("window.open('" +  FacesUtil.getContentPath() + "/reportes/"+ reporte + "','myWindow');");
 		}
 		
 	}	

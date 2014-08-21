@@ -246,7 +246,7 @@
 							<jr:tableHeader style="table 1_TH" height="25" rowSpan="1"/>
 							<jr:columnHeader style="table 1_CH" height="39" rowSpan="1">
 								<staticText>
-									<reportElement x="0" y="0" width="327" height="39" />
+									<reportElement x="0" y="0" width="298" height="39" />
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font isBold="true"/>
 									</textElement>

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<parameter name="solicitudId" class="java.lang.Long">
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\dchavez\\git\\xiloa\\Xiloa\\WebContent\\reporte\\"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="solicitudId" class="java.lang.Long" />
 	<queryString>
 		<![CDATA[SELECT DISTINCT
 	sccl.vista_evaluacion_unidades.solicitud_id,
@@ -144,7 +146,7 @@ AND sccl.vista_evaluacion_unidades.unidad_codigo IS NOT NULL]]>
 					<subreportParameterExpression><![CDATA[$P{solicitudId}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression class="java.lang.String"><![CDATA["/reporte/subrpt_registro_actividad.jrxml"]]></subreportExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "subrpt_asesoria_resumen.jrxml"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

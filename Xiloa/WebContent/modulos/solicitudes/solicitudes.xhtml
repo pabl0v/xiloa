@@ -66,16 +66,23 @@
 	   		</p:splitButton>
 			<p:splitButton id="reportesSplit" disabled="#{!dashBoardSolicitudesManagedBean.habilitarReportes}" value="Reportes" icon="ui-icon-print" title="Reportes del Candidato" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runSolicitudCandidato}"  update=":formSolicitudes:msgSolicitudes" >   
 				<p:separator />
-				<sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_REPORTES">         		   
+				<sec:authorize ifAnyGranted="ROLE_RIGHT_MENU_REPORTES">        		   
 					<p:menuitem value="Pre-Matricula" icon="ui-icon-print" title="Formato de Pre-Matricula" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_prematricula',true)}" update=":formSolicitudes:msgSolicitudes"  />
 					<p:menuitem value="Reconocimiento" icon="ui-icon-print" title="Solicitud de Reconocimiento de Competencias" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_reconocimiento',true)}" update=":formSolicitudes:msgSolicitudes"  />
-					<p:menuitem value="Asesoria Grupal" icon="ui-icon-print" title="Reunión de Asesoramiento Grupal" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_asesoria_grupal',true)}" update=":formSolicitudes:msgSolicitudes"  />
+					<p:menuitem value="Asesoría Grupal" icon="ui-icon-print" title="Reunión de Asesoramiento Grupal" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_asesoria_grupal',true)}" update=":formSolicitudes:msgSolicitudes"  />
 					<p:menuitem value="Participantes" icon="ui-icon-print" title="Registro de Participantes" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_registro_participantes',true)}" update=":formSolicitudes:msgSolicitudes"  />
-					<p:menuitem value="Resumen Asesoria" icon="ui-icon-print" title="Resumen de Asesoramiento" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_asesoria_resumen',true)}" update=":formSolicitudes:msgSolicitudes"  />
-					<p:menuitem value="Dictamen Evaluación" icon="ui-icon-print" title="Dictamen de Evaluación" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_dictamen_evaluacion',true)}" update=":formSolicitudes:msgSolicitudes"  />
+					<p:separator />
+					<p:menuitem value="Asesoría Individual" icon="ui-icon-print" title="Reunión de Asesoramiento Individual" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_asesoria_individual',true)}" update=":formSolicitudes:msgSolicitudes"  />
+					<p:menuitem value="P. Autoevaluación" icon="ui-icon-print" title="Plantilla de Autoevaluación" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_plantilla_autoevaluacion',true)}" update=":formSolicitudes:msgSolicitudes"  />
+					<p:menuitem value="C. Autoevaluación" icon="ui-icon-print" title="Cuestionario de Autoevaluación" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_cuestionario_autoevaluacion',true)}" update=":formSolicitudes:msgSolicitudes"  />
+					<p:menuitem value="Resumen Asesoría" icon="ui-icon-print" title="Resumen de Asesoramiento" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_asesoria_resumen',true)}" update=":formSolicitudes:msgSolicitudes"  />
+					<p:separator />
+					<p:menuitem value="Planificación Indiv." icon="ui-icon-print" title="Planificación Individualizada" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_planificacion_individual',true)}" update=":formSolicitudes:msgSolicitudes"  />
 					<p:menuitem value="Registro de Actividad" icon="ui-icon-print" title="Registro de Actividad de Evaluación" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_registro_actividad',true)}" update=":formSolicitudes:msgSolicitudes"  />
+					<p:menuitem value="Dictamen Evaluación" icon="ui-icon-print" title="Dictamen de Evaluación" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_dictamen_evaluacion',true)}" update=":formSolicitudes:msgSolicitudes"  />
 					<p:menuitem value="Plan de Formación" icon="ui-icon-print" title="Plan de Formación" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_plan_formacion',true)}" update=":formSolicitudes:msgSolicitudes"  />
 				</sec:authorize>
+				<p:separator />
 			</p:splitButton>
 		</div>
         <div id="contenedor_tabla_solicitudes">     

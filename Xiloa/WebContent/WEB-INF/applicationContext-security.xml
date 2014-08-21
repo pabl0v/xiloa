@@ -23,7 +23,7 @@
 		<intercept-url pattern="/login*" access="permitAll" />
 		<intercept-url pattern="/modulos/portafolio/**" access="isAuthenticated()" />
 		<intercept-url pattern="/modulos/reportes/**" access="isAuthenticated()" />
-		<intercept-url pattern="/reporte/**" access="isAuthenticated()" />
+		<intercept-url pattern="/reportes/**" access="isAuthenticated()" />
 		<access-denied-handler error-page="/modulos/usuario/403.xhtml"/>
 				
 		<openid-login

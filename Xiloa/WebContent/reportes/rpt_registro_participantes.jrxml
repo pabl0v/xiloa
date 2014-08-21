@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="700" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="660" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<parameter name="fecha" class="java.lang.Date"/>
+	<parameter name="fecha" class="java.util.Date"/>
 	<parameter name="centroId" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[SELECT p.nombre_centro,
