@@ -5,10 +5,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -57,7 +54,7 @@ public class ExpedienteManagedBean implements Serializable  {
 	
 	private String municipioIdSelected;	
 	private Integer departamentoIdSelected;
-	private Map<Integer, Municipio> catalogoMunicipiosByDepto;
+	//private Map<Integer, Municipio> catalogoMunicipiosByDepto;
 	
 	private boolean disabledBtnActualizaContacto;
 	
@@ -100,11 +97,9 @@ public class ExpedienteManagedBean implements Serializable  {
 		listDeptos = new ArrayList<SelectItem> ();
 		listDeptos.add(new SelectItem(null, "Seleccione un Departamento"));
 		
-		if (service.getCatalogoDepartamentos().size() > 0 ) {
-			List<Departamento> listaDeptos = new ArrayList<Departamento> (service.getCatalogoDepartamentos().values());
-			
-			for (Departamento dpto : listaDeptos) 
-				this.listDeptos.add(new SelectItem(dpto.getDpto_id(), dpto.getDpto_nombre()));		       
+		for(Departamento departamento : service.getDepartamentos())
+		{
+			listDeptos.add(new SelectItem(departamento.getDpto_id(), departamento.getDpto_nombre()));
 		}
 			
 		//Obtiene el catalogo de los Paises
@@ -114,14 +109,12 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.listPaises.add(new SelectItem(null, "Seleccione un pais"));
 		this.listNacionalidades.add(new SelectItem(null, "Indique la nacionalidad"));
 		
-		
 		for (Pais p : paises){
 			
 			this.listPaises.add(new SelectItem(p.getCodigo(), p.getNombre()));
 			this.listNacionalidades.add(new SelectItem(p.getCodigo(), p.getNombre()));
 		}
-		
-		catalogoMunicipiosByDepto = new HashMap<Integer, Municipio>();
+
 		listaArchivosPortafolioLaboral=new ArrayList<Archivo>();
 	}
 	
@@ -150,26 +143,13 @@ public class ExpedienteManagedBean implements Serializable  {
 	 public void handleMunicipios() {
 	
 		if (getContactoExpediente() != null) {
-						
-			this.catalogoMunicipiosByDepto = service.getMunicipioDptoByInatec(getContactoExpediente().getDepartamentoId());			
 			
-			if (this.catalogoMunicipiosByDepto.size() > 0 ) {
-				
-				Integer idValor;
-				Municipio valor;
-				
-				Iterator<Integer> claveSet = this.catalogoMunicipiosByDepto.keySet().iterator();
-				
-				this.listMunicipioByDptos = new ArrayList<SelectItem> ();
-				
-				this.listMunicipioByDptos.add(new SelectItem(null, "Seleccione un Municipio"));
-				
-			    while(claveSet.hasNext()){			    	
-			    	idValor = claveSet.next();
-			    	valor = this.catalogoMunicipiosByDepto.get(idValor);
-			    	this.listMunicipioByDptos.add(new SelectItem(valor.getMunicipio_id(), valor.getMunicipio_nombre()));			    			    			        		        
-			    }
-			}
+			listMunicipioByDptos = new ArrayList<SelectItem> ();
+			listMunicipioByDptos.add(new SelectItem(null, "Seleccione un Municipio"));			
+			
+			for(Municipio municipio : service.getMunicipios(getContactoExpediente().getDepartamentoId())){
+				listMunicipioByDptos.add(new SelectItem(municipio.getMunicipio_id(), municipio.getMunicipio_nombre()));
+			}				
 		}
 	}
 	 
@@ -499,6 +479,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		this.departamentoIdSelected = departamentoIdSelected;
 	}
 
+	/*
 	public Map<Integer, Municipio> getCatalogoMunicipiosByDepto() {
 		return catalogoMunicipiosByDepto;
 	}
@@ -507,6 +488,7 @@ public class ExpedienteManagedBean implements Serializable  {
 			Map<Integer, Municipio> catalogoMunicipiosByDepto) {
 		this.catalogoMunicipiosByDepto = catalogoMunicipiosByDepto;
 	}
+	*/
 
 	public boolean isDisabledBtnActualizaContacto() {
 		return disabledBtnActualizaContacto;

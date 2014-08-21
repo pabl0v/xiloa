@@ -52,13 +52,6 @@ public interface IService {
 	 */
 
 	public Map<String, Pais> getCatalogoPaises();
-	
-	/*
-	 * @return obtiene un map con el catálogo de departamentos
-	 * 
-	 */
-
-	public Map<Integer, Departamento> getCatalogoDepartamentos();
 
 	/*
 	 * @return obtiene un map con el catálogo de estados se una evaluación
@@ -277,20 +270,20 @@ public interface IService {
 	 */
 	
 	public Map<Integer, Mantenedor> getMapMantenedoresByTipo(String tipo);
-
+		
 	/**
-	 * @return un map conteniendo los departamentos del país 
+	 * @return los departamentos del país 
 	 * 
-	 */
-	
-	public Map<Integer, Departamento> getDepartamentosByInatec();
-	
-	/**
-	 * @return un map con el listado de municipios de un departamento 
-	 * @param el id del departamento cuyos municipios se quiere buscar
 	 */	
 	
-	public Map<Integer, Municipio> getMunicipioDptoByInatec(Integer idDpto);
+	public List<Departamento> getDepartamentos();
+	
+	/**
+	 * @return el listado de municipios de un departamento 
+	 * @param el id del departamento
+	 */	
+	
+	public List<Municipio> getMunicipios(Integer departamentoId);
 
 	/**
 	 * @return el listado de actividades de una certificación
@@ -589,13 +582,6 @@ public interface IService {
 	public Mantenedor getMantenedorMinByTipo(String tipo);
 
 	/**
-	 * @return la instancia final o última del tipo de mantenedor indicado 
-	 * @param el tipo del mantenedor
-	 */
-	
-	public Mantenedor getMantenedorMaxByTipo(String tipo);
-
-	/**
 	 * @return la instancia del mantenedor buscado 
 	 * @param el id del mantenedor
 	 */
@@ -616,14 +602,6 @@ public interface IService {
 	 */
 	
 	public List<Guia> getGuiasByInstrumentoId(Long instrumento);
-
-	/**
-	 * @return lista de archivos de un portafolio 
-	 * @param el nombre del namedQuery a usar
-	 * @param el arreglo conteniendo los parámetros para la búsqueda
-	 */
-	
-	//public List<Archivo> getArchivoByParam (String namedString, Object [] parametros);
 
 	/**
 	 * @return el listado de bitácoras de la actividad indicada

@@ -3,9 +3,7 @@ package view;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
@@ -43,8 +41,10 @@ public class CertificacionesManagedBean implements Serializable {
 	private Certificacion selectedCertificacion;
 	private Contacto solicitante;
 	private Solicitud solicitud;
-	private Map<Integer, Municipio> municipios;
-	private Map<Integer, Departamento> departamentos;
+	//private Map<Integer, Municipio> municipios;
+	//private Map<Integer, Departamento> departamentos;
+	private List<Departamento> departamentos;
+	private List<Municipio> municipios;
 	private Integer selectedDepartamento;
 	private Integer selectedMunicipio;
 
@@ -52,8 +52,10 @@ public class CertificacionesManagedBean implements Serializable {
 		super();
 		solicitante = new Contacto();
 		solicitud = new Solicitud();
-		municipios = new HashMap<Integer, Municipio>();
-		departamentos = new HashMap<Integer, Departamento>();
+		//municipios = new HashMap<Integer, Municipio>();
+		//departamentos = new HashMap<Integer, Departamento>();
+		departamentos = new ArrayList<Departamento>();
+		municipios = new ArrayList<Municipio>();
 	}
 	
 	@PostConstruct
@@ -64,11 +66,13 @@ public class CertificacionesManagedBean implements Serializable {
 			entidad = 1000;
 		
 		certificaciones = service.getCertificaciones(entidad);
-		departamentos = service.getDepartamentosByInatec();
+		//departamentos = service.getDepartamentosByInatec();
+		departamentos = service.getDepartamentos();
 	}
 	
 	public List<Departamento> getDepartamentos(){
-		return new ArrayList<Departamento>(departamentos.values());
+		//return new ArrayList<Departamento>(departamentos.values());
+		return departamentos;
 	}
 	
 	public Integer getSelectedDepartamento(){
@@ -88,11 +92,13 @@ public class CertificacionesManagedBean implements Serializable {
 	}
 	
 	public void handleDepartamentoChange(){
-		municipios = service.getMunicipioDptoByInatec(selectedDepartamento);
+		//municipios = service.getMunicipioDptoByInatec(selectedDepartamento);
+		municipios = service.getMunicipios(selectedDepartamento);
 	}
 
 	public List<Municipio> getMunicipios(){
-		return new ArrayList<Municipio>(municipios.values());
+		//return new ArrayList<Municipio>(municipios.values());
+		return municipios;
 	}
 	
 	public List<Certificacion> getCertificaciones(){
@@ -145,11 +151,47 @@ public class CertificacionesManagedBean implements Serializable {
 	}
     
     public void nuevaSolicitud(){
-		solicitante = new Contacto();
+    	if(login.getContacto().getRol().getId()==5)		//si es visitante
+    	{
+    			solicitante = service.getContactoByLogin(login.getUsername());
+    			setSelectedDepartamento(solicitante.getDepartamentoId());
+    			municipios = service.getMunicipios(selectedDepartamento);
+    			setSelectedMunicipio(solicitante.getMunicipioId());
+    	}
+    	else
+    		solicitante = new Contacto();
+
 		solicitud = new Solicitud();
+    }
+    
+    public boolean isVisitante(){
+    	if(login.getContacto().getRol().getId()==5)
+    		return true;
+    	else
+    		return false;
     }
 	
 	public String registrarSolicitud(Solicitud solicitud, Contacto solicitante){
+		
+		//si el rol es visitante, antes de aplicar debe completar su portafolio
+
+		if(login.getContacto().getRol().getId()==5)
+		{
+			if(		solicitante.getPrimerNombre() == null || 
+					solicitante.getPrimerApellido() == null || 
+					solicitante.getFechaNacimiento() == null || 
+					solicitante.getNumeroIdentificacion() == null || 
+					solicitante.getSexo() == null || 
+					solicitante.getCorreo1() == null || 
+					solicitante.getDireccionActual() == null || 
+					solicitante.getNacionalidadId() == null || 
+					solicitante.getDepartamentoId() == null || 
+					solicitante.getMunicipioId() == null)
+			{
+				FacesUtil.getMensaje("SCCL - Mensaje: ", "Antes de aplicar debe completar su portafolio.", true);
+				return null;
+			}
+		}
 		
 		//validar si tiene solicitudes pendientes
 		if(service.tieneSolicitudesPendientes(solicitante.getNumeroIdentificacion(), selectedCertificacion.getId())){

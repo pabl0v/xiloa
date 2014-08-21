@@ -57,7 +57,7 @@
 						<p:commandButton id="requisitosButton" update=":requisitosForm" icon="ui-icon-pencil" title="Requisitos" onclick="PF('requisitos_dlg').show();"/>  
 					</p:column>
 					<p:column headerText="Aplicar" style="width:4%">
-						<p:commandButton id="solicitudesButton" update=":solicitudForm" icon="ui-icon-pencil" title="Registrar Solicitud" onclick="PF('solicitud_dlg').show();"/>  
+						<p:commandButton id="solicitudesButton" update=":solicitudForm" icon="ui-icon-pencil" title="Registrar Solicitud" action="#{certificacionesManagedBean.nuevaSolicitud()}" onclick="PF('solicitud_dlg').show();"/>  
 					</p:column>
 				</p:dataTable> 
 			</div>
@@ -104,59 +104,59 @@
 					<h:inputText id="certificacion" disabled="true" style="width:180%;" value="#{certificacionesManagedBean.selectedCertificacion.nombre}" required="true" requiredMessage="Campo obligatorio" />
 					<p:message for="certificacion" display="text" />
 					<h:outputLabel for="primerNombre" value="Primer nombre (*):" /> 
-					<p:inputText id="primerNombre" onblur="value=value.toUpperCase()" value="#{certificacionesManagedBean.solicitante.primerNombre}" required="true" requiredMessage="Campo obligatorio" />
+					<p:inputText id="primerNombre" disabled="#{certificacionesManagedBean.visitante}" onblur="value=value.toUpperCase()" value="#{certificacionesManagedBean.solicitante.primerNombre}" required="true" requiredMessage="Campo obligatorio" />
 					<p:message for="primerNombre" display="text" />
 					<h:outputLabel value="Segundo nombre:" /> 
-					<p:inputText for="segundoNombre" id="segundoNombre" onblur="value=value.toUpperCase()" value="#{certificacionesManagedBean.solicitante.segundoNombre}" required="false" />
+					<p:inputText for="segundoNombre" disabled="#{certificacionesManagedBean.visitante}" id="segundoNombre" onblur="value=value.toUpperCase()" value="#{certificacionesManagedBean.solicitante.segundoNombre}" required="false" />
 					<p:message for="segundoNombre" display="text" />
 					<h:outputLabel for="primerApellido" value="Primer apellido (*):" /> 
-					<p:inputText id="primerApellido" onblur="value=value.toUpperCase()" value="#{certificacionesManagedBean.solicitante.primerApellido}" required="true" requiredMessage="Campo obligatorio" />
+					<p:inputText id="primerApellido" disabled="#{certificacionesManagedBean.visitante}" onblur="value=value.toUpperCase()" value="#{certificacionesManagedBean.solicitante.primerApellido}" required="true" requiredMessage="Campo obligatorio" />
 					<p:message for="primerApellido" display="text" />
 					<h:outputLabel for="segundoApellido" value="Segundo apellido:" /> 
-					<p:inputText id="segundoApellido" onblur="value=value.toUpperCase()" value="#{certificacionesManagedBean.solicitante.segundoApellido}" required="false" requiredMessage="Campo obligatorio" />
+					<p:inputText id="segundoApellido" disabled="#{certificacionesManagedBean.visitante}" onblur="value=value.toUpperCase()" value="#{certificacionesManagedBean.solicitante.segundoApellido}" required="false" requiredMessage="Campo obligatorio" />
 					<p:message for="segundoApellido" display="text" />
 					<h:outputLabel for="numeroIdentificacion" value="Cedula (*):" />
-					<p:inputMask id="numeroIdentificacion" onblur="value=value.toUpperCase()" value="#{certificacionesManagedBean.solicitante.numeroIdentificacion}" required="true" requiredMessage="Campo obligatorio" mask="999-999999-9999a"/>
+					<p:inputMask id="numeroIdentificacion" disabled="#{certificacionesManagedBean.visitante}" onblur="value=value.toUpperCase()" value="#{certificacionesManagedBean.solicitante.numeroIdentificacion}" required="true" requiredMessage="Campo obligatorio" mask="999-999999-9999a"/>
 					<p:message for="numeroIdentificacion" display="text" />
 					<h:outputLabel value="Fecha de Nacimiento (*):" />
-					<p:calendar id="fechaNacimiento" value="#{certificacionesManagedBean.solicitante.fechaNacimiento}" showOn="button" pattern="dd/MM/yyyy" maxdate="01/01/1994" mindate="01/01/1969" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
+					<p:calendar id="fechaNacimiento" disabled="#{certificacionesManagedBean.visitante}" value="#{certificacionesManagedBean.solicitante.fechaNacimiento}" showOn="button" pattern="dd/MM/yyyy" maxdate="01/01/1994" mindate="01/01/1969" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />
 					<p:message for="fechaNacimiento" display="text" />
 					<h:outputLabel for="sexo" value="Sexo (*):" />
-					<p:selectOneMenu id="sexo" required="true" style="width:95%;" value="#{certificacionesManagedBean.solicitante.sexo}" requiredMessage="Campo obligatorio" >  
+					<p:selectOneMenu id="sexo" disabled="#{certificacionesManagedBean.visitante}" required="true" style="width:95%;" value="#{certificacionesManagedBean.solicitante.sexo}" requiredMessage="Campo obligatorio" >  
 						<f:selectItem itemLabel="Seleccione..." itemValue="" />
 						<f:selectItem itemLabel="Femenino" itemValue="1" />
 						<f:selectItem itemLabel="Masculino" itemValue="0" />
 					</p:selectOneMenu>
 					<p:message for="sexo" display="text" />
 					<h:outputLabel for="telefono" value="Teléfono (*):" />
-					<p:inputText id="telefono" value="#{certificacionesManagedBean.solicitante.telefono1}" required="true" requiredMessage="Campo obligatorio" validatorMessage="Número invalido" converterMessage="Número invalido" >
+					<p:inputText id="telefono" disabled="#{certificacionesManagedBean.visitante}" value="#{certificacionesManagedBean.solicitante.telefono1}" required="true" requiredMessage="Campo obligatorio" validatorMessage="Número invalido" converterMessage="Número invalido" >
 						<f:validateLength minimum="8" maximum="8" />
 						<f:convertNumber integerOnly="true" pattern="########" />
 					</p:inputText>
 					<p:message for="telefono" display="text" />
 					<h:outputLabel for="celular" value="Celular:" />
-					<p:inputText id="celular" value="#{certificacionesManagedBean.solicitante.telefono2}" required="false" requiredMessage="Campo obligatorio" validatorMessage="Número invalido" converterMessage="Número invalido" >
+					<p:inputText id="celular" disabled="#{certificacionesManagedBean.visitante}" value="#{certificacionesManagedBean.solicitante.telefono2}" required="false" requiredMessage="Campo obligatorio" validatorMessage="Número invalido" converterMessage="Número invalido" >
 						<f:validateLength minimum="8" maximum="8" />
 						<f:convertNumber integerOnly="true" pattern="########" />
 					</p:inputText>
 					<p:message for="celular" display="text" />
 					<h:outputLabel for="email" value="Email (*):" />
-					<p:inputText id="email" value="#{certificacionesManagedBean.solicitante.correo1}" required="true" requiredMessage="Campo obligatorio" validatorMessage="Email invalido" >
+					<p:inputText id="email" disabled="#{certificacionesManagedBean.visitante}" value="#{certificacionesManagedBean.solicitante.correo1}" required="true" requiredMessage="Campo obligatorio" validatorMessage="Email invalido" >
 						<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
 					</p:inputText>
 					<p:message for="email" display="text" />
 					<h:outputLabel for="direccion" value="Dirección (*):" />
-					<p:inputText id="direccion" onblur="value=value.toUpperCase()" value="#{certificacionesManagedBean.solicitante.direccionActual}" required="true" requiredMessage="Campo obligatorio" />
+					<p:inputText id="direccion" disabled="#{certificacionesManagedBean.visitante}" onblur="value=value.toUpperCase()" value="#{certificacionesManagedBean.solicitante.direccionActual}" required="true" requiredMessage="Campo obligatorio" />
 					<p:message for="direccion" display="text" />
 					<h:outputLabel for="departamento" value="Departamento (*):" />
-					<p:selectOneMenu id="departamento" required="true" style="width:95%;" value="#{certificacionesManagedBean.selectedDepartamento}" requiredMessage="Campo obligatorio" >  
+					<p:selectOneMenu id="departamento" disabled="#{certificacionesManagedBean.visitante}" required="true" style="width:95%;" value="#{certificacionesManagedBean.selectedDepartamento}" requiredMessage="Campo obligatorio" >  
 						<f:selectItem itemLabel="Seleccione..." itemValue="" />
 						<f:selectItems value="#{certificacionesManagedBean.departamentos}" var="departamento" itemLabel="#{departamento.dpto_nombre}" itemValue="#{departamento.dpto_id}" />
 						<p:ajax update="municipio" listener="#{certificacionesManagedBean.handleDepartamentoChange}" />
 					</p:selectOneMenu>
 					<p:message for="departamento" display="text" />
 					<h:outputLabel for="municipio" value="Municipio (*):" />
-					<p:selectOneMenu id="municipio" required="true" style="width:95%;" value="#{certificacionesManagedBean.selectedMunicipio}" requiredMessage="Campo obligatorio" >  
+					<p:selectOneMenu id="municipio" disabled="#{certificacionesManagedBean.visitante}" required="true" style="width:95%;" value="#{certificacionesManagedBean.selectedMunicipio}" requiredMessage="Campo obligatorio" >  
 						<f:selectItem itemLabel="Seleccione..." itemValue="" />
 						<f:selectItems value="#{certificacionesManagedBean.municipios}" var="municipio" itemLabel="#{municipio.municipio_nombre}" itemValue="#{municipio.municipio_id}" />
 					</p:selectOneMenu>

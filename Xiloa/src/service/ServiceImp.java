@@ -139,7 +139,8 @@ public class ServiceImp implements IService {
 	protected final Log logger = LogFactory.getLog(getClass());
 	
 	private Map<String, Pais> catalogoPaises;
-	private Map<Integer, Departamento> catalogoDepartamentos;
+	private List<Departamento> catalogoDepartamentos; 
+	private Map<Integer, List<Municipio>> catalogoMunicipios;
 	
 	/*
 	 * Constructor por defecto
@@ -161,7 +162,8 @@ public class ServiceImp implements IService {
 		catalogoPortafolio = new HashMap<Integer, Mantenedor>();
 		catalogoEstadosEvaluacion = new HashMap<Integer, Mantenedor>();
 		catalogoPaises = new HashMap<String, Pais>();
-		catalogoDepartamentos = new HashMap<Integer, Departamento>();
+		catalogoDepartamentos = new ArrayList<Departamento>();
+		catalogoMunicipios = new HashMap<Integer, List<Municipio>>();
 	}
 	
 	/*
@@ -193,10 +195,12 @@ public class ServiceImp implements IService {
 		
 		catalogoUnidades = inatecDao.getCatalogoUnidades();
 		catalogoPaises = inatecDao.getCatalogoPaises();
+		catalogoDepartamentos = inatecDao.getDepartamentosInatec();
 		
-		for (Departamento departamento : inatecDao.getDepartamentosInatec()){
-			catalogoDepartamentos.put(departamento.getDpto_id(), departamento);
-		}
+		for(int i=0; i<catalogoDepartamentos.size(); i++)
+		{
+			catalogoMunicipios.put(catalogoDepartamentos.get(i).getDpto_id(), inatecDao.getMunicipioByDeptoInatec(catalogoDepartamentos.get(i).getDpto_id()));
+		}		
 	}
 	
 	/*
@@ -206,15 +210,6 @@ public class ServiceImp implements IService {
 	@Override
 	public Map<String, Pais> getCatalogoPaises() {
 		return catalogoPaises;
-	}
-
-	/*
-	 * @return obtiene un map con el catálogo de departamentos
-	 * 
-	 */
-	@Override
-	public Map<Integer, Departamento> getCatalogoDepartamentos() {
-		return catalogoDepartamentos;
 	}
 
 	/*
@@ -1134,17 +1129,6 @@ public class ServiceImp implements IService {
 	}
 
 	/**
-	 * @return la instancia final o última del tipo de mantenedor indicado 
-	 * @param el tipo del mantenedor
-	 */
-
-	@Override
-	public Mantenedor getMantenedorMaxByTipo(String tipo){		
-		Object [] objs =  new Object [] {tipo};
-		return mantenedorDao.findOneByNamedQueryParam("Mantenedor.findMaxByTipo", objs);				
-	}	
-
-	/**
 	 * @return la instancia del mantenedor buscado 
 	 * @param el id del mantenedor
 	 */
@@ -1155,33 +1139,6 @@ public class ServiceImp implements IService {
 	}
 	
 	/**
-	 * @return un map conteniendo los departamentos del país 
-	 * 
-	 */
-
-	@Override
-	public Map<Integer, Departamento> getDepartamentosByInatec() {
-		return catalogoDepartamentos;
-	}
-
-	/**
-	 * @return un map con el listado de municipios de un departamento 
-	 * @param el id del departamento cuyos municipios se quiere buscar
-	 */	
-
-	@Override
-	public Map<Integer, Municipio> getMunicipioDptoByInatec(Integer idDpto) {
-		List<Municipio> lista = inatecDao.getMunicipioByDeptoInatec(idDpto);
-		
-		Map<Integer, Municipio> m = new HashMap<Integer, Municipio>();
-
-		for(Municipio dato : lista) {
-			m.put(dato.getMunicipio_id(), dato);
-		} 
-		return m;
-	}	
-
-	/**
 	 * @return lista de guias de evaluación 
 	 * @param el nombre del namedQuery a usar
 	 * @param el arreglo conteniendo los parámetros para la búsqueda
@@ -1191,17 +1148,6 @@ public class ServiceImp implements IService {
 	public List<Guia> getGuiaByParam(String namedString, Object [] parametros){
 		return guiaDao.findAllByNamedQueryParam(namedString, parametros);
 	}		
-
-	/**
-	 * @return lista de archivos de un portafolio 
-	 * @param el nombre del namedQuery a usar
-	 * @param el arreglo conteniendo los parámetros para la búsqueda
-	 */
-
-	/*@Override
-	public List<Archivo> getArchivoByParam (String namedString, Object [] parametros) {
-		return archivoDao.findAllByNamedQueryParam(namedString, parametros);
-	}*/
 
 	/**
 	 * @return lista de requisitos de un curso en un centro específico 
@@ -2251,5 +2197,23 @@ public class ServiceImp implements IService {
 	
 	public List<Solicitud> getSolicitudesByContactoId(Long contactoId){
 		return solicitudDao.findAllByNamedQueryParam("Solicitud.findByIdContacto", new Object[] {contactoId});
+	}
+	
+	/**
+	 * @return los departamentos del país 
+	 * 
+	 */	
+	
+	public List<Departamento> getDepartamentos(){
+		return catalogoDepartamentos;
+	}
+	
+	/**
+	 * @return el listado de municipios de un departamento 
+	 * @param el id del departamento
+	 */	
+	
+	public List<Municipio> getMunicipios(Integer departamentoId){
+		return catalogoMunicipios.get(departamentoId);
 	}
 }

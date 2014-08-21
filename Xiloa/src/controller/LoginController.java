@@ -48,7 +48,7 @@ public class LoginController implements PhaseListener {
 	
 	@Autowired
 	private IService service;
-	
+		
 	/**
 	 * 
 	 * @return retorna el contacto del usuario conectado
