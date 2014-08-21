@@ -39,13 +39,13 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 @Table(name = "contactos", schema = "sccl")
 @NamedQueries({
 	@NamedQuery(name="Contacto.findByCedulaId", query="select c from contactos c where upper(c.numeroIdentificacion) = upper(?1)"),
-	@NamedQuery(name="Contacto.findByLogin", query="select c from contactos c where c.usuario.usuarioAlias =?1"),
-	@NamedQuery(name="Contacto.findByLoginInatec", query="select c from contactos c where c.inatec = 'true' and c.usuarioInatec =?1"),
-	@NamedQuery(name="Contacto.findInvolucradosInatec", query="Select c from contactos c where c.inatec='true' and c.rol.idRolInatec in (213,214,215,216,219,220) and c.entidadId is not null and c.entidadId = case ?1 when 1000 then c.entidadId else ?1 end"),
+	@NamedQuery(name="Contacto.findByLogin", query="select c from contactos c inner join fetch c.rol r where c.usuario.usuarioAlias =?1"),
+	@NamedQuery(name="Contacto.findByLoginInatec", query="select c from contactos c left join fetch c.rol r where c.inatec = 'true' and c.usuarioInatec =?1"),
+	@NamedQuery(name="Contacto.findInvolucradosInatec", query="Select c from contactos c where c.inatec='true' and c.rol.id in (1,2,3,4,5,6,7) and c.entidadId is not null and c.entidadId = case ?1 when 1000 then c.entidadId else ?1 end"),
 	@NamedQuery(name="Contacto.findAllPortafolio", query="select c from contactos c where exists (select 1 from solicitudes s where s.contacto.id = c.id and (s.certificacion.ifpId = case ?1 when 1000 then s.certificacion.ifpId else ?1 end)) order by 1 desc"),
 	@NamedQuery(name="Contacto.findByActividadId", query="select i.contacto from involucrados i where i.actividad.id=?1 and i.activo=true order by i.id desc"),
 	@NamedQuery(name="Contacto.findNotInActividadId",
-	query=	
+	query=
 	"select c "+
 	"from	contactos c, actividades a, certificaciones x "+
 	"where	a.id=?1 "+

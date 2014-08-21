@@ -22,8 +22,6 @@ import javax.persistence.TemporalType;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.Length;
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotNull;
 
 /**
  * 
@@ -53,19 +51,14 @@ public class Usuario implements Serializable {
 	@OneToOne(fetch=FetchType.EAGER, mappedBy="usuario")
 	private Contacto contacto;
 	
-	@NotBlank
-	@NotNull
 	@Length(max = 30)
 	@Column(name = "usuario_alias", unique = true, nullable = false)
 	private String usuarioAlias;
 
-	@NotBlank
-	@NotNull
 	@Length(max = 1024)
 	@Column(name = "usuario_pwd", nullable = false)	
 	private String usuarioPwd;
 
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name="rol_id")		
 	private Rol rol;
@@ -80,11 +73,9 @@ public class Usuario implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)	
 	private Date fechaUltimoAcceso;
 	
-	@NotNull
 	@Column(name = "usuario_cambiar_pwd", nullable = false)	
 	private boolean cambiarPwd = false;
 	
-	@NotNull
 	@Column(name = "usuario_estatus", nullable = false)
 	private boolean usuarioEstatus;
 

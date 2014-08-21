@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 
+import model.Contacto;
 import model.Convocatoria;
 import model.Mantenedor;
 import model.Solicitud;
@@ -57,11 +58,16 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	@PostConstruct
 	private void init(){
 		estadosConvocatoria = service.getMantenedoresByTipo(4);
-		setEstadosSolicitud();
+		setEstadosSolicitud();		
 	}
 	
+	//optimizar este metodo con un list
 	public List<Solicitud> getSolicitudes(){
-		return service.getSolicitudesByEntidadId(login.getEntidadUsuario());
+		Contacto contacto = login.getContacto();
+		if(contacto.isInatec())
+			return service.getSolicitudesByEntidadId(login.getEntidadUsuario()); 
+		else
+			return service.getSolicitudesByContactoId(contacto.getId());
 	}
 	
 	public Solicitud getSelectedSolicitud() {

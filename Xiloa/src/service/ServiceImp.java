@@ -377,9 +377,7 @@ public class ServiceImp implements IService {
 	 * @return obtiene el listado de certificaciones ofertadas en un centro
 	 * @param código del centro
 	 * 
-	 */
-
-	//dchavez. 08/04/2014. Para agregar filtro de unidades de competencia por certificacion 
+	 */ 
 	
 	public List<Item> getCertificacionesItem(Integer entidadId){
 		return itemDao.findAllByNamedQueryParam("Certificacion.findItemsByIfpId", new Object[] {entidadId});
@@ -494,7 +492,7 @@ public class ServiceImp implements IService {
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public void RegistrarUsuarioOpenId(String login, String nombre, String apellido, String email) {
 				
-		Usuario user = usuarioDao.save(new Usuario(null, login, "", rolDao.findById(Rol.class, 6), false, true));
+		Usuario user = usuarioDao.save(new Usuario(null, login, "", rolDao.findById(Rol.class, 5), false, true));
 		
 		//registrando el contacto
 		contactoDao.save(new Contacto(
@@ -2244,5 +2242,14 @@ public class ServiceImp implements IService {
 	
 	public List<Evaluacion> getEvaluacionesByContactoId(Long contactoId){
 		return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllByContactoId", new Object[] {contactoId});
+	}
+	
+	/**
+	 * @return lista de solicitudes de un candidato 
+	 * @param el id del candidato
+	 */
+	
+	public List<Solicitud> getSolicitudesByContactoId(Long contactoId){
+		return solicitudDao.findAllByNamedQueryParam("Solicitud.findByIdContacto", new Object[] {contactoId});
 	}
 }

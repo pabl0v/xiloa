@@ -37,7 +37,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 @NamedQueries({
 	@NamedQuery(name="Certificacion.findAll", query="select c from certificaciones c order by c.id desc"),
 	@NamedQuery(name="Certificacion.findActivas", query="select c from certificaciones c where c.estatus.id=17 order by c.id desc"),
-	@NamedQuery(name="Certificacion.findByIfpId", query="select c from certificaciones c where c.estatus.id!=18 and c.ifpId = case ?1 when 1000 then c.ifpId else ?1 end"),
+	@NamedQuery(name="Certificacion.findByIfpId", query="select c from certificaciones c where c.estatus.id!=18 and c.ifpId = case ?1 when 1000 then c.ifpId else ?1 end order by 1 desc"),
 	@NamedQuery(name="Certificacion.findById", query="select c from certificaciones c where c.id=?1"),
 	@NamedQuery(name="Certificacion.findAllByNombre", query="select c from certificaciones c where c.estatus.id=17 and c.nombre like ?1 order by c.id desc"),
 	@NamedQuery(name="Certificacion.findAllByCentro", query="select c from certificaciones c where c.estatus.id=17 and c.ifpNombre like ?1 order by c.id desc"),

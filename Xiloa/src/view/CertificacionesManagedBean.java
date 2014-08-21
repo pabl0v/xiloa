@@ -57,8 +57,13 @@ public class CertificacionesManagedBean implements Serializable {
 	}
 	
 	@PostConstruct
-	private void init() {		
-		certificaciones = service.getCertificaciones(login.getEntidadUsuario());
+	private void init() {
+		Integer entidad = login.getEntidadUsuario();
+		
+		if(entidad == null)
+			entidad = 1000;
+		
+		certificaciones = service.getCertificaciones(entidad);
 		departamentos = service.getDepartamentosByInatec();
 	}
 	

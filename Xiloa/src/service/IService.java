@@ -959,4 +959,11 @@ public interface IService {
 	 */
 	
 	public List<Evaluacion> getEvaluacionesByContactoId(Long contactoId);
+	
+	/**
+	 * @return lista de solicitudes de un candidato 
+	 * @param el id del candidato
+	 */
+	
+	public List<Solicitud> getSolicitudesByContactoId(Long contactoId);
 }
