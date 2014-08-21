@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subrpt_evaluaciones" language="groovy" pageWidth="595" pageHeight="842" columnWidth="585" leftMargin="5" rightMargin="5" topMargin="5" bottomMargin="5">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="solicitudId" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT
+	pm.solicitud_id,
+	conv.lugar,
+	conv.fecha_hora,
+	eu.evaluacion_id,
+	eu.instrumento_id,
+	eu.instrumento_nombre
+FROM
+	sccl.rpt_prematricula AS pm
+INNER JOIN sccl.vista_evaluacion_unidades AS eu ON pm.solicitud_id = eu.solicitud_id
+INNER JOIN sccl.rpt_convocatorias AS conv ON pm.solicitud_id = conv.solicitud_id
+AND pm.contacto_id = conv.contacto_id
+WHERE
+	pm.solicitud_id =  $P{solicitudId}]]>
+	</queryString>
+	<field name="solicitud_id" class="java.lang.Long"/>
+	<field name="lugar" class="java.lang.String"/>
+	<field name="fecha_hora" class="java.sql.Timestamp"/>
+	<field name="evaluacion_id" class="java.lang.Long"/>
+	<field name="instrumento_id" class="java.lang.Long"/>
+	<field name="instrumento_nombre" class="java.lang.String"/>
+	<detail>
+		<band height="69" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="2" width="72" height="16" />
+				<text><![CDATA[Evaluacion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="23" width="72" height="16" />
+				<text><![CDATA[Instrumento:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="42" width="72" height="16" />
+				<text><![CDATA[Lugar:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="80" y="38" width="450" height="1" />
+			</line>
+			<line>
+				<reportElement x="81" y="55" width="150" height="1" />
+			</line>
+			<staticText>
+				<reportElement x="232" y="42" width="72" height="16" />
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="309" y="57" width="90" height="1" />
+			</line>
+			<staticText>
+				<reportElement x="403" y="42" width="41" height="16" />
+				<text><![CDATA[Lugar:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="444" y="56" width="86" height="1" />
+			</line>
+			<textField>
+				<reportElement x="81" y="1" width="31" height="16" />
+				<textFieldExpression><![CDATA[$F{evaluacion_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="81" y="22" width="449" height="16" />
+				<textFieldExpression><![CDATA[$F{instrumento_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="81" y="39" width="150" height="16" />
+				<textFieldExpression><![CDATA[$F{lugar}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yy" isBlankWhenNull="true">
+				<reportElement x="308" y="40" width="91" height="16" />
+				<textFieldExpression><![CDATA[$F{fecha_hora}]]></textFieldExpression>
+			</textField>
+			<textField pattern="h.mm a" isBlankWhenNull="true">
+				<reportElement x="444" y="40" width="86" height="16" />
+				<textFieldExpression><![CDATA[$F{fecha_hora}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

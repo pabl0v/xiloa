@@ -212,7 +212,7 @@ Where pm.solicitud_id = $P{solicitudId}]]>
 						<subreportParameterExpression><![CDATA[$P{solicitudId}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subrpt_ficha_registro_actividad.jasper"]]></subreportExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subrpt_ficha_registro_actividad.jrxml"]]></subreportExpression>
 				</subreport>
 			</band>
 		</groupHeader>
@@ -231,7 +231,7 @@ Where pm.solicitud_id = $P{solicitudId}]]>
 						<subreportParameterExpression><![CDATA[$P{solicitudId}]]></subreportParameterExpression>
 					</subreportParameter>
 					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subrpt_evaluaciones.jasper"]]></subreportExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subrpt_evaluaciones.jrxml"]]></subreportExpression>
 				</subreport>
 			</band>
 		</groupFooter>
