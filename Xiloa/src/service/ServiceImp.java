@@ -1804,9 +1804,9 @@ public class ServiceImp implements IService {
 		//indica si el solicitante con cedula indicada tiene solicitudes pendientes o si la certificacion que solicita esta en proceso
 		
 		String query = 
-					" select solicitud_id from sccl.solicitudes where solicitud_estatus not in (43, 44, 45) and contacto_id in (select contacto_id from sccl.contactos where numero_identificacion like '"+cedula+"') "
+					" select solicitud_id from sccl.solicitudes where solicitud_estatus not in (42, 43, 44, 45) and contacto_id in (select contacto_id from sccl.contactos where numero_identificacion like '"+cedula+"') "
 				+ 	" union"
-				+ 	" select solicitud_id from sccl.solicitudes where solicitud_estatus not in (43, 44, 45) and contacto_id in (select contacto_id from sccl.contactos where numero_identificacion like '"+cedula+"') and certificacion_id="+certificacionId;
+				+ 	" select solicitud_id from sccl.solicitudes where solicitud_estatus not in (42, 43, 44, 45) and contacto_id in (select contacto_id from sccl.contactos where numero_identificacion like '"+cedula+"') and certificacion_id="+certificacionId;
 		
 		List<Long> pendientes = longDao.findAllByNativeQuery(query);
 		if(pendientes.isEmpty())
@@ -2066,15 +2066,16 @@ public class ServiceImp implements IService {
 		}
 		
 		Solicitud solicitud = getSolicitudById(convocatoria.getSolicitudId());
+		Actividad actividad = getActividadById(convocatoria.getActividadId());
 		
 		//si se convoca a asesoria grupal y esta matriculado, actualiza estatus a reunion grupal
-		if(convocatoria.getActividadId()==6 && solicitud.getEstatus().getId()==38){
+		if(actividad.getTipo().getId()==6 && solicitud.getEstatus().getId()==38){
 			actualizarEstadoSolicitud(solicitud, 5);
 			convocatoriaDao.save(convocatoria);
 		}
 		
 		//si se convoca a asesoria individual y esta en asesoria grupal, actualizar estatus a asesoria individual y se registra la prueba de autoevaluacion
-		if(convocatoria.getActividadId()==7 && solicitud.getEstatus().getId()==39){
+		if(actividad.getTipo().getId()==7 && solicitud.getEstatus().getId()==39){
 			actualizarEstadoSolicitud(solicitud, 6);
 			
 			// obtiene los instrumentos de autoevaluacion
@@ -2090,7 +2091,7 @@ public class ServiceImp implements IService {
 		}
 		
 		//si se convoca para evaluacion y esta en asesoria individual, actualizar estatus a programado
-		if(convocatoria.getActividadId()==8 && solicitud.getEstatus().getId()==40){
+		if(actividad.getTipo().getId()==8 && solicitud.getEstatus().getId()==40){
 			actualizarEstadoSolicitud(solicitud, 7);
 			convocatoriaDao.save(convocatoria);
 		}
@@ -2146,6 +2147,7 @@ public class ServiceImp implements IService {
 	 * @param el contacto que consulta el portafolio
 	 * @return los contactos que puede visualizar
 	 */
+	@Override
 	public List<Contacto> getContactosPortafolio(Long contactoId){
 		List<Contacto> contactos = new ArrayList<Contacto>();
 		
@@ -2167,7 +2169,7 @@ public class ServiceImp implements IService {
 	 * @return lista de archivos de un portafolio 
 	 * @param el id del contacto
 	 */
-	
+	@Override
 	public List<Archivo> getArchivosByContactoId(Long contactoId){
 		return archivoDao.findAllByNamedQueryParam("Archivo.findByContactoId", new Object[] {contactoId});
 	}
@@ -2176,7 +2178,7 @@ public class ServiceImp implements IService {
 	 * @return lista de archivos de un portafolio 
 	 * @param el id del laboral
 	 */
-	
+	@Override
 	public List<Archivo> getArchivosByLaboralId(Long laboralId){
 		return archivoDao.findAllByNamedQueryParam("Archivo.findByLaboralId", new Object[] {laboralId});
 	}
@@ -2185,7 +2187,7 @@ public class ServiceImp implements IService {
 	 * @return lista de evaluaciones de un candidato 
 	 * @param el id del candidato
 	 */
-	
+	@Override
 	public List<Evaluacion> getEvaluacionesByContactoId(Long contactoId){
 		return evaluacionDao.findAllByNamedQueryParam("Evaluacion.findAllByContactoId", new Object[] {contactoId});
 	}
@@ -2194,7 +2196,7 @@ public class ServiceImp implements IService {
 	 * @return lista de solicitudes de un candidato 
 	 * @param el id del candidato
 	 */
-	
+	@Override
 	public List<Solicitud> getSolicitudesByContactoId(Long contactoId){
 		return solicitudDao.findAllByNamedQueryParam("Solicitud.findByIdContacto", new Object[] {contactoId});
 	}
@@ -2203,7 +2205,7 @@ public class ServiceImp implements IService {
 	 * @return los departamentos del país 
 	 * 
 	 */	
-	
+	@Override
 	public List<Departamento> getDepartamentos(){
 		return catalogoDepartamentos;
 	}
@@ -2212,8 +2214,17 @@ public class ServiceImp implements IService {
 	 * @return el listado de municipios de un departamento 
 	 * @param el id del departamento
 	 */	
-	
+	@Override
 	public List<Municipio> getMunicipios(Integer departamentoId){
 		return catalogoMunicipios.get(departamentoId);
+	}
+	
+	/**
+	 * @return lista de certificaciones de un centro 
+	 * @param el id del centro
+	 */
+	@Override
+	public List<Certificacion> getCertificacionesActivasByCentroId(Integer centroId){
+		return certificacionDao.findAllByNamedQueryParam("Certificacion.findActivasByCentroId", new Object[] {centroId});
 	}
 }

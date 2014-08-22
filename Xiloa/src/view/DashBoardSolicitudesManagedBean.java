@@ -37,6 +37,8 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	private IService service;
 	@Autowired
 	private LoginController login;
+	private Contacto contacto;
+	private List<Solicitud> solicitudes;
 	private Solicitud selectedSolicitud;
 	private Convocatoria selectedConvocatoria;
 	private List<Mantenedor> estadosConvocatoria;
@@ -51,6 +53,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		selectedConvocatoria = new Convocatoria();
 		estadosConvocatoria = new ArrayList<Mantenedor>();
 		involucrados = new ArrayList<Item>();
+		contacto = new Contacto();
 		setHabilitarAcciones(false);
 		setHabilitarReportes(false);
 	}
@@ -58,16 +61,20 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	@PostConstruct
 	private void init(){
 		estadosConvocatoria = service.getMantenedoresByTipo(4);
-		setEstadosSolicitud();		
+		contacto = login.getContacto();
+		setEstadosSolicitud();
+		setSolicitudes();
 	}
 	
-	//optimizar este metodo con un list
 	public List<Solicitud> getSolicitudes(){
-		Contacto contacto = login.getContacto();
+		return solicitudes;
+	}
+	
+	public void setSolicitudes(){
 		if(contacto.isInatec())
-			return service.getSolicitudesByEntidadId(login.getEntidadUsuario()); 
+			solicitudes = service.getSolicitudesByEntidadId(login.getEntidadUsuario()); 
 		else
-			return service.getSolicitudesByContactoId(contacto.getId());
+			solicitudes = service.getSolicitudesByContactoId(contacto.getId());
 	}
 	
 	public Solicitud getSelectedSolicitud() {
@@ -81,7 +88,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	public SelectItem[] getEstadosSolicitud(){
 		return estadosSolicitud;
 	}
-	
+
 	private void setEstadosSolicitud(){
 		List<Mantenedor> estatusList = new ArrayList<Mantenedor>(service.getCatalogoEstadoSolicitud().values());
 
@@ -97,16 +104,27 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	
 	public void enviarSolicitud(Solicitud solicitud){
 		service.enviarSolicitud(solicitud);
+		setSolicitudes();
+	}
+	
+	public String consultarExpediente(){
+		
+		Contacto candidato = selectedSolicitud.getContacto();
+		
+		FacesUtil.setParamBySession("candidatoId", candidato.getId());
+		return "/modulos/solicitudes/expediente?faces-redirect=true";
 	}
 	
 	public void autorizarMatricula(Solicitud solicitud){
 		service.autorizarMatricula(solicitud);
+		setSolicitudes();
 	}
 	
 	public void registrarMatricula(Date fecha, String recibo) {
 		selectedSolicitud.setFechaMatricula(fecha);
 		selectedSolicitud.setReciboMatricula(recibo);
 		actualizarEstadoSolicitud(selectedSolicitud,4);
+		setSolicitudes();
 	}
 	
 	public List<Convocatoria> getConvocatorias(){
@@ -142,6 +160,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		else
 			service.convocarCandidato(convocatoria);
 		nuevaConvocatoria();
+		setSolicitudes();
 	}
 	
 	public void nuevaConvocatoria(){

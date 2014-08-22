@@ -43,7 +43,7 @@
 						<p:menuitem value="Enviar Solicitud" disabled="#{!dashBoardSolicitudesManagedBean.selectedSolicitud.habilitarEnviar}" title="Enviar Solicitud" action="#{dashBoardSolicitudesManagedBean.enviarSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" update=":formSolicitudes" />
 					</sec:authorize>
                 	<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITAR_PORTAFOLIO">                  
-		            	<p:menuitem value="Editar Solicitud" title="Editar Solicitud" disabled="#{!varSolicitudI.editable}" update=":formSolicitudes" />
+		            	<p:menuitem value="Ver Portafolio" title="Ver Portafolio" action="#{dashBoardSolicitudesManagedBean.consultarExpediente()}" />
     				</sec:authorize>        	 		
 	        	 	<sec:authorize ifAnyGranted="ROLE_RIGHT_SELECCION">
 	       		 		<p:menuitem value="Autorizar Matricula" disabled="#{!dashBoardSolicitudesManagedBean.selectedSolicitud.habilitarAutorizar}" title="Autorizar Matricula" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.autorizarMatricula(dashBoardSolicitudesManagedBean.selectedSolicitud)}" update=":formSolicitudes"  />
@@ -75,6 +75,7 @@
 					<p:menuitem value="Asesoría Individual" icon="ui-icon-print" title="Reunión de Asesoramiento Individual" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_asesoria_individual',true)}" update=":formSolicitudes:msgSolicitudes"  />
 					<p:menuitem value="P. Autoevaluación" icon="ui-icon-print" title="Plantilla de Autoevaluación" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_plantilla_autoevaluacion',true)}" update=":formSolicitudes:msgSolicitudes"  />
 					<p:menuitem value="C. Autoevaluación" icon="ui-icon-print" title="Cuestionario de Autoevaluación" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_cuestionario_autoevaluacion',true)}" update=":formSolicitudes:msgSolicitudes"  />
+					<p:menuitem value="Informe Asesoría" icon="ui-icon-print" title="Informe de Asesoramiento" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_informe_asesoramiento',true)}" update=":formSolicitudes:msgSolicitudes"  />
 					<p:menuitem value="Resumen Asesoría" icon="ui-icon-print" title="Resumen de Asesoramiento" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_asesoria_resumen',true)}" update=":formSolicitudes:msgSolicitudes"  />
 					<p:separator />
 					<p:menuitem value="Planificación Indiv." icon="ui-icon-print" title="Planificación Individualizada" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.runReporte('rpt_planificacion_individual',true)}" update=":formSolicitudes:msgSolicitudes"  />
@@ -173,10 +174,10 @@
 				</p:selectOneMenu>
 				<p:message for="selector_estatus2" display="text" />
 				<h:outputLabel value="Centro:" />
-				<p:inputText id="centro" style="width:98%;" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.centro}" required="true" requiredMessage="Centro requerido" />
+				<p:inputText id="centro" style="width:98%;" onblur="value=value.toUpperCase()" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.centro}" required="true" requiredMessage="Centro requerido" />
 				<p:message for="centro" display="text" />
 				<h:outputLabel value="Lugar:" />
-				<p:inputText id="lugar" style="width:98%;" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.lugar}" required="true" requiredMessage="Lugar requerido" />
+				<p:inputText id="lugar" style="width:98%;" onblur="value=value.toUpperCase()" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.lugar}" required="true" requiredMessage="Lugar requerido" />
 				<p:message for="lugar" display="text" />				
 				<h:outputLabel value="Estado:" />
 				<p:selectOneMenu id="selector_estatus3" style="width:100%;" required="true" requiredMessage="Seleccione el estado" styleClass="selector_status_estilo" value="#{dashBoardSolicitudesManagedBean.selectedConvocatoria.estadoId}" >  
@@ -188,7 +189,7 @@
 			<div class="contenedor_botones" style="margin-top:32px;">
 				<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITAR_CONVOCATORIA">
 					<p:commandButton value="Nuevo" style="width:80px;height:30px" update=":convocatoriaForm" action="#{dashBoardSolicitudesManagedBean.nuevaConvocatoria}" />
-					<p:commandButton value="Aceptar" style="width:80px;height:30px" oncomplete="if(args.validationFailed) {dlg2.show()}" update=":convocatoriaForm, :convocatoriaDataTableForm" action="#{dashBoardSolicitudesManagedBean.registrarConvocatoria(dashBoardSolicitudesManagedBean.selectedConvocatoria)}" />
+					<p:commandButton value="Aceptar" style="width:80px;height:30px" oncomplete="if(args.validationFailed) {dlg2.show()}" update=":convocatoriaForm, :convocatoriaDataTableForm, :formSolicitudes" action="#{dashBoardSolicitudesManagedBean.registrarConvocatoria(dashBoardSolicitudesManagedBean.selectedConvocatoria)}" />
 				</sec:authorize>
 			</div>
 		</h:form>

@@ -160,7 +160,7 @@
 			<p:message for="selector_evidencia" display="text"  />
 			<br/>
 			<h:outputLabel value="Observaciones:" />
-			<p:inputText id="codigo9" size="50" required="false" value="#{evaluacionManagedBean.selectedEvaluacion.observaciones}" />
+			<p:inputText id="codigo9" size="50" required="false" onblur="value=value.toUpperCase()" value="#{evaluacionManagedBean.selectedEvaluacion.observaciones}" />
 			<p:message for="codigo9" display="text"  />
 			<br/> 
             <h:outputLabel value="Activa:" />

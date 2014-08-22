@@ -135,19 +135,19 @@
 			<br/>
 			<h:panelGrid id="modal2" columns="3" cellpadding="15" cellspacing="10" >
             	<h:outputLabel value="Certificación:" />
-            	<p:inputText id="codigo1" size="50" value="#{planificacionManagedBean.selectedCertificacion.nombre}" required="true" requiredMessage="El nombre es requerido" />
+            	<p:inputText id="codigo1" size="50" onblur="value=value.toUpperCase()" value="#{planificacionManagedBean.selectedCertificacion.nombre}" required="true" requiredMessage="El nombre es requerido" />
             	<p:message for="codigo1" display="text"  />
 				<h:outputLabel value="Oferente:" />
-				<p:inputText id="codigo2" size="50" value="#{planificacionManagedBean.selectedCertificacion.ifpNombre}" required="true" requiredMessage="El Oferente es requerido" />
+				<p:inputText id="codigo2" size="50" onblur="value=value.toUpperCase()" value="#{planificacionManagedBean.selectedCertificacion.ifpNombre}" required="true" requiredMessage="El Oferente es requerido" />
 				<p:message for="codigo2" display="text"  />
 				<h:outputLabel value="Dirección:" />
-				<p:inputText  id="codigo3" size="50" value="#{planificacionManagedBean.selectedCertificacion.ifpDireccion}" required="true" requiredMessage="La dirección es requerida" />
+				<p:inputText  id="codigo3" size="50" onblur="value=value.toUpperCase()" value="#{planificacionManagedBean.selectedCertificacion.ifpDireccion}" required="true" requiredMessage="La dirección es requerida" />
 				<p:message for="codigo3" display="text" />
 				<h:outputLabel value="Coordinador:" />
-				<p:inputText  id="codigo4" size="50" value="#{planificacionManagedBean.selectedCertificacion.coordinador}" required="true" requiredMessage="El coordinador es requerido" />
+				<p:inputText  id="codigo4" size="50" onblur="value=value.toUpperCase()" value="#{planificacionManagedBean.selectedCertificacion.coordinador}" required="true" requiredMessage="El coordinador es requerido" />
 				<p:message for="codigo4" display="text" />
 				<h:outputLabel value="Contacto:" />
-				<p:inputText  id="codigo5" size="50" value="#{planificacionManagedBean.selectedCertificacion.informante}" required="true" requiredMessage="El informante es requerido" />
+				<p:inputText  id="codigo5" size="50" onblur="value=value.toUpperCase()" value="#{planificacionManagedBean.selectedCertificacion.informante}" required="true" requiredMessage="El informante es requerido" />
 				<p:message for="codigo5" display="text" />
 				<h:outputLabel value="Inicio de Prematrículas:" />
 				<p:calendar id="codigo6" value="#{planificacionManagedBean.selectedCertificacion.inicia}" showOn="button" pattern="dd/MM/yyyy" mindate="01/06/2014" disabledWeekends="true" required="true" requiredMessage="La fecha es requerida" validatorMessage="Fecha invalida" />

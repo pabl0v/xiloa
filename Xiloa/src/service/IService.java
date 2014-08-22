@@ -944,4 +944,11 @@ public interface IService {
 	 */
 	
 	public List<Solicitud> getSolicitudesByContactoId(Long contactoId);
+	
+	/**
+	 * @return lista de certificaciones de un centro 
+	 * @param el id del centro
+	 */
+	
+	public List<Certificacion> getCertificacionesActivasByCentroId(Integer centroId);	
 }

@@ -41,8 +41,6 @@ public class CertificacionesManagedBean implements Serializable {
 	private Certificacion selectedCertificacion;
 	private Contacto solicitante;
 	private Solicitud solicitud;
-	//private Map<Integer, Municipio> municipios;
-	//private Map<Integer, Departamento> departamentos;
 	private List<Departamento> departamentos;
 	private List<Municipio> municipios;
 	private Integer selectedDepartamento;
@@ -52,8 +50,6 @@ public class CertificacionesManagedBean implements Serializable {
 		super();
 		solicitante = new Contacto();
 		solicitud = new Solicitud();
-		//municipios = new HashMap<Integer, Municipio>();
-		//departamentos = new HashMap<Integer, Departamento>();
 		departamentos = new ArrayList<Departamento>();
 		municipios = new ArrayList<Municipio>();
 	}
@@ -64,14 +60,12 @@ public class CertificacionesManagedBean implements Serializable {
 		
 		if(entidad == null)
 			entidad = 1000;
-		
-		certificaciones = service.getCertificaciones(entidad);
-		//departamentos = service.getDepartamentosByInatec();
+
+		certificaciones = service.getCertificacionesActivasByCentroId(entidad);
 		departamentos = service.getDepartamentos();
 	}
 	
 	public List<Departamento> getDepartamentos(){
-		//return new ArrayList<Departamento>(departamentos.values());
 		return departamentos;
 	}
 	
@@ -92,12 +86,10 @@ public class CertificacionesManagedBean implements Serializable {
 	}
 	
 	public void handleDepartamentoChange(){
-		//municipios = service.getMunicipioDptoByInatec(selectedDepartamento);
 		municipios = service.getMunicipios(selectedDepartamento);
 	}
 
 	public List<Municipio> getMunicipios(){
-		//return new ArrayList<Municipio>(municipios.values());
 		return municipios;
 	}
 	
