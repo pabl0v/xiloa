@@ -226,7 +226,7 @@ public class EvaluacionManagedBean implements Serializable {
 	}
 	
 	public String evaluar(){
-		
+
 		/*
 		List<Unidad> unidades = service.getUnidadesSinEvaluar(solicitud.getId());
 		
@@ -241,13 +241,13 @@ public class EvaluacionManagedBean implements Serializable {
 		
 		if(!evaluaciones.isEmpty())
 		{
-			FacesUtil.getMensaje("SCCL - Mensaje: ", "El candidato no aprueba todas las undiades de competencia.", false);
-			service.actualizarEstadoSolicitud(solicitud, 9);		//no apto
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "El candidato no aprueba las undiades de competencia.", false);
+			service.actualizarEstadoSolicitud(solicitud, 9);		//no superado
 		}
 		else
 		{
-			FacesUtil.getMensaje("SCCL - Mensaje: ", "El candidato aprueba todas las unidades de competencia.", false);
-			service.actualizarEstadoSolicitud(solicitud, 8);		//apto
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "El candidato aprueba una o más unidades de competencia.", false);
+			service.actualizarEstadoSolicitud(solicitud, 8);		//superado
 		}
 
 		return null;

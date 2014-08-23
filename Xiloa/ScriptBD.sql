@@ -506,8 +506,8 @@ update admon.usuario set clave='0c3c46276360da4dab11bf247c4d93ce' where usuario 
 --optimizar dashboarsolicitudesmanagedbean
 --cambiar etiqueta a mantenedores para estado de solicitud apto y no apto
 
-update sccl.mantenedores set mantenedor_valor='Apto' where mantenedor_id=42
-update sccl.mantenedores set mantenedor_valor='No Apto' where mantenedor_id=43
+update sccl.mantenedores set mantenedor_valor='Superado' where mantenedor_id=42
+update sccl.mantenedores set mantenedor_valor='No Superado' where mantenedor_id=43
 
 --eliminar la tabla paises
 --cambiar el tipo de dato de la tabla sccl.laboral laboral_pais_id a varchar 
