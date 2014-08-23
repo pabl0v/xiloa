@@ -26,7 +26,7 @@ import javax.persistence.Table;
 @Entity(name = "guias")
 @Table(name = "guias", schema = "sccl")
 @NamedQueries ({
-	@NamedQuery (name="Guia.findByIdInstrumento", query="select g from guias g where g.instrumento.id=?1")
+	@NamedQuery (name="Guia.findByIdInstrumento", query="select g from guias g where g.instrumento.id=?1 order by g.id")
 })
 public class Guia implements Serializable {
 	
