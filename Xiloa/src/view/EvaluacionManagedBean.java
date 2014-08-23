@@ -21,7 +21,6 @@ import model.Evaluacion;
 import model.EvaluacionGuia;
 import model.Instrumento;
 import model.Solicitud;
-import model.Unidad;
 
 @Component
 @Scope(value="view")
@@ -228,6 +227,7 @@ public class EvaluacionManagedBean implements Serializable {
 	
 	public String evaluar(){
 		
+		/*
 		List<Unidad> unidades = service.getUnidadesSinEvaluar(solicitud.getId());
 		
 		if(!unidades.isEmpty())
@@ -235,18 +235,19 @@ public class EvaluacionManagedBean implements Serializable {
 			FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe evaluar todas las unidades de competencia.", true);
 			return null;
 		}
+		*/
 		
 		List<Evaluacion> evaluaciones = service.getEvaluacionesReprobadas(solicitud.getId());
 		
 		if(!evaluaciones.isEmpty())
 		{
-			FacesUtil.getMensaje("SCCL - Mensaje: ", "El candidato no es apto.", false);
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "El candidato no aprueba todas las undiades de competencia.", false);
 			service.actualizarEstadoSolicitud(solicitud, 9);		//no apto
 		}
 		else
 		{
-			FacesUtil.getMensaje("SCCL - Mensaje: ", "El candidato es apto.", false);
-			service.actualizarEstadoSolicitud(solicitud, 8);		//apto			
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "El candidato aprueba todas las unidades de competencia.", false);
+			service.actualizarEstadoSolicitud(solicitud, 8);		//apto
 		}
 
 		return null;
