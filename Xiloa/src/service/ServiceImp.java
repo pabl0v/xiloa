@@ -1840,11 +1840,11 @@ public class ServiceImp implements IService {
 		//si el estado de la solicitud es enviado
 		if(solicitud.getEstatus().getId()==36){
 		
-			// buscando instrumentos pendientes de evaluar y que no estén aprobados
-			List<Instrumento> instrumentosPendientes = instrumentoDao.findAllByQuery("select i from instrumentos i where i.estatus='true' and i.certificacionId="+solicitud.getCertificacion().getId()+" and i.tipo.id in (27,28) and exists (select 1 from evaluaciones e where e.activo='true' and e.vista.aprobado='true' and e.instrumento.id=i.id and e.solicitud.id="+solicitud.getId()+")");
+			// buscando al menos un instrumento aprobado
+			List<Instrumento> instrumentosAprobados = instrumentoDao.findAllByQuery("select i from instrumentos i where i.estatus='true' and i.certificacionId="+solicitud.getCertificacion().getId()+" and i.tipo.id in (27,28) and exists (select 1 from evaluaciones e where e.activo='true' and e.vista.aprobado='true' and e.instrumento.id=i.id and e.solicitud.id="+solicitud.getId()+")");
 		
-			// si no hay instrumentos pendientes de evaluar (prueba de lectura-escritura o diagnostica), autorizar matricula		
-			if(instrumentosPendientes.isEmpty()){
+			// si hay al menos un instrumento aprobado (prueba de lectura-escritura o diagnostica), autorizar matricula		
+			if(!instrumentosAprobados.isEmpty()){
 			
 				//actualiza estado de solicitud a autorizado para matricula			
 				actualizarEstadoSolicitud(solicitud, 2);
