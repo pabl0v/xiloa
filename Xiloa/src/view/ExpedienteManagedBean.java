@@ -32,6 +32,7 @@ import controller.LoginController;
 import service.IService;
 import support.Departamento;
 import support.FacesUtil;
+import support.Item;
 import support.Municipio;
 import util.ValidatorUtil;
 
@@ -49,12 +50,12 @@ public class ExpedienteManagedBean implements Serializable  {
 	private List<SelectItem> listMunicipioByDptos;
 	private List<SelectItem> listPaises;
 	private List<SelectItem> listNacionalidades;
+	private List<SelectItem> listNivelesAcademicos;
 	private Contacto contactoExpediente;
 	private Laboral expedienteLaboral;
 	
 	private String municipioIdSelected;	
 	private Integer departamentoIdSelected;
-	//private Map<Integer, Municipio> catalogoMunicipiosByDepto;
 	
 	private boolean disabledBtnActualizaContacto;
 	
@@ -95,7 +96,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		
 		//Obtiene el catalogo de los Departamentos					
 		listDeptos = new ArrayList<SelectItem> ();
-		listDeptos.add(new SelectItem(null, "Seleccione un Departamento"));
+		listDeptos.add(new SelectItem(null, "Seleccione"));
 		
 		for(Departamento departamento : service.getDepartamentos())
 		{
@@ -106,8 +107,8 @@ public class ExpedienteManagedBean implements Serializable  {
 		List<Pais> paises = new ArrayList<Pais>(this.service.getCatalogoPaises().values()); 
 		this.listPaises = new ArrayList<SelectItem> ();
 		this.listNacionalidades = new ArrayList<SelectItem> ();
-		this.listPaises.add(new SelectItem(null, "Seleccione un pais"));
-		this.listNacionalidades.add(new SelectItem(null, "Indique la nacionalidad"));
+		this.listPaises.add(new SelectItem(null, "Seleccione"));
+		this.listNacionalidades.add(new SelectItem(null, "Seleccione"));
 		
 		for (Pais p : paises){
 			
@@ -116,6 +117,15 @@ public class ExpedienteManagedBean implements Serializable  {
 		}
 
 		listaArchivosPortafolioLaboral=new ArrayList<Archivo>();
+		listNivelesAcademicos = new ArrayList<SelectItem>();
+		
+		List<Item> items = new ArrayList<Item>(service.getCatalogoNivelAcademico());
+		SelectItem item = new SelectItem(null,"Seleccione");
+		listNivelesAcademicos.add(item);
+		for(int i=0; i<items.size(); i++){
+			item = new SelectItem(items.get(i).getId(),items.get(i).getDescripcion());
+			listNivelesAcademicos.add(item);
+		}
 	}
 	
 	private void cargarContactoSolicitudParaExpediente()  {
@@ -237,8 +247,15 @@ public class ExpedienteManagedBean implements Serializable  {
 			return false;
 		}
 		
+		/*
 		if(contactoExpediente.getNacionalidadId()==null){
 			FacesUtil.getMensaje("SCCL - Mensaje: ", "Indique la nacionalidad...", true);
+			return false;
+		}
+		*/
+		
+		if(contactoExpediente.getNivelAcademico()==null){
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "Indique el nivel académico...", true);
 			return false;
 		}
 			
@@ -376,7 +393,7 @@ public class ExpedienteManagedBean implements Serializable  {
 		Archivo resultado = (Archivo) service.guardar(getArchivoExpediente());
 
 		if (resultado != null){				
-			FacesUtil.getMensaje("SCCL - Mensaje: ", "Los cambios ha sido aplicados exitosamente !!", false);
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "Actualización exitosa", false);
 			actualizaListaPortafolio ();							
 		}else{
 			FacesUtil.getMensaje("SCCL - Mensaje: ", "Error al grabar el archivo. Favor revisar...", true);				
@@ -637,5 +654,9 @@ public class ExpedienteManagedBean implements Serializable  {
     		return service.getCompetenciaDescripcion(codigo);
     	else
     		return "N/D";
+    } 
+    
+    public List<SelectItem> getListNivelesAcademicos(){
+    	return listNivelesAcademicos;
     }
 }

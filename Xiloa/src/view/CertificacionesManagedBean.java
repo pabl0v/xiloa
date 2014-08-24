@@ -24,6 +24,7 @@ import service.IService;
 import support.Departamento;
 import support.FacesUtil;
 import support.Ifp;
+import support.Item;
 import support.Municipio;
 import util.ValidatorUtil;
 
@@ -43,8 +44,10 @@ public class CertificacionesManagedBean implements Serializable {
 	private Solicitud solicitud;
 	private List<Departamento> departamentos;
 	private List<Municipio> municipios;
+	private List<Item> niveles;
 	private Integer selectedDepartamento;
 	private Integer selectedMunicipio;
+	private Integer selectedNivel;
 
 	public CertificacionesManagedBean() {
 		super();
@@ -52,6 +55,7 @@ public class CertificacionesManagedBean implements Serializable {
 		solicitud = new Solicitud();
 		departamentos = new ArrayList<Departamento>();
 		municipios = new ArrayList<Municipio>();
+		niveles = new ArrayList<Item>();
 	}
 	
 	@PostConstruct
@@ -63,6 +67,7 @@ public class CertificacionesManagedBean implements Serializable {
 
 		certificaciones = service.getCertificacionesActivasByCentroId(entidad);
 		departamentos = service.getDepartamentos();
+		niveles = service.getCatalogoNivelAcademico();
 	}
 	
 	public List<Departamento> getDepartamentos(){
@@ -85,12 +90,24 @@ public class CertificacionesManagedBean implements Serializable {
 		this.selectedMunicipio = municipio;
 	}
 	
+	public Integer getSelectedNivel(){
+		return selectedNivel;
+	}
+	
+	public void setSelectedNivel(Integer nivel){
+		this.selectedNivel = nivel;
+	}
+	
 	public void handleDepartamentoChange(){
 		municipios = service.getMunicipios(selectedDepartamento);
 	}
 
 	public List<Municipio> getMunicipios(){
 		return municipios;
+	}
+	
+	public List<Item> getNiveles(){
+		return niveles;
 	}
 	
 	public List<Certificacion> getCertificaciones(){
@@ -149,6 +166,7 @@ public class CertificacionesManagedBean implements Serializable {
     			setSelectedDepartamento(solicitante.getDepartamentoId());
     			municipios = service.getMunicipios(selectedDepartamento);
     			setSelectedMunicipio(solicitante.getMunicipioId());
+    			setSelectedNivel(solicitante.getNivelAcademico());
     	}
     	else
     		solicitante = new Contacto();
@@ -178,7 +196,8 @@ public class CertificacionesManagedBean implements Serializable {
 					solicitante.getDireccionActual() == null || 
 					solicitante.getNacionalidadId() == null || 
 					solicitante.getDepartamentoId() == null || 
-					solicitante.getMunicipioId() == null)
+					solicitante.getMunicipioId() == null ||
+					solicitante.getNivelAcademico() == null)
 			{
 				FacesUtil.getMensaje("SCCL - Mensaje: ", "Antes de aplicar debe completar su portafolio.", true);
 				return null;
@@ -212,6 +231,7 @@ public class CertificacionesManagedBean implements Serializable {
 		solicitud.setCertificacion(selectedCertificacion);
 		solicitante.setDepartamentoId(selectedDepartamento);
 		solicitante.setMunicipioId(selectedMunicipio);
+		solicitante.setNivelAcademico(selectedNivel);
 		service.registrarSolicitud(solicitud, solicitante);
 		return "/modulos/solicitudes/solicitudes?faces-redirect=true";
 	}

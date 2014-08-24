@@ -141,6 +141,7 @@ public class ServiceImp implements IService {
 	private Map<String, Pais> catalogoPaises;
 	private List<Departamento> catalogoDepartamentos; 
 	private Map<Integer, List<Municipio>> catalogoMunicipios;
+	private List<Item> catalogoNivelAcademico;
 	
 	/*
 	 * Constructor por defecto
@@ -164,6 +165,7 @@ public class ServiceImp implements IService {
 		catalogoPaises = new HashMap<String, Pais>();
 		catalogoDepartamentos = new ArrayList<Departamento>();
 		catalogoMunicipios = new HashMap<Integer, List<Municipio>>();
+		catalogoNivelAcademico = new ArrayList<Item>();
 	}
 	
 	/*
@@ -200,7 +202,18 @@ public class ServiceImp implements IService {
 		for(int i=0; i<catalogoDepartamentos.size(); i++)
 		{
 			catalogoMunicipios.put(catalogoDepartamentos.get(i).getDpto_id(), inatecDao.getMunicipioByDeptoInatec(catalogoDepartamentos.get(i).getDpto_id()));
-		}		
+		}
+		
+		catalogoNivelAcademico = new ArrayList<Item>();
+		catalogoNivelAcademico.add(new Item(new Long(1),"Primaria"));
+		catalogoNivelAcademico.add(new Item(new Long(2),"Bachiller"));
+		catalogoNivelAcademico.add(new Item(new Long(3),"Licenciado"));
+		catalogoNivelAcademico.add(new Item(new Long(4),"Master"));
+		catalogoNivelAcademico.add(new Item(new Long(5),"Ciclo Basico"));
+		catalogoNivelAcademico.add(new Item(new Long(6),"Tecnico"));
+		catalogoNivelAcademico.add(new Item(new Long(7),"Ingeniero"));
+		catalogoNivelAcademico.add(new Item(new Long(8),"Letrado"));
+		catalogoNivelAcademico.add(new Item(new Long(9),"Iletrado"));
 	}
 	
 	/*
@@ -2226,5 +2239,13 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Certificacion> getCertificacionesActivasByCentroId(Integer centroId){
 		return certificacionDao.findAllByNamedQueryParam("Certificacion.findActivasByCentroId", new Object[] {centroId});
+	}
+	
+	/**
+	 * @return lista de niveles academicos  
+	 */
+	@Override
+	public List<Item> getCatalogoNivelAcademico(){
+		return catalogoNivelAcademico;
 	}
 }

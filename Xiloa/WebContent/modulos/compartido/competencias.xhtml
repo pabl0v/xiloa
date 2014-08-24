@@ -94,7 +94,7 @@
 	        </h:form>
     	</p:dialog>
     	
-		<p:dialog header="Registro de Solicitud:" widgetVar="solicitud_dlg" modal="true" resizable="false" width="550" height="570">
+		<p:dialog header="Registro de Solicitud:" widgetVar="solicitud_dlg" modal="true" resizable="false" width="550" height="600">
 			<h:form id="solicitudForm">
 				<h:panelGrid id="modal3" columns="3" cellpadding="15" cellspacing="10" >
 					<h:outputLabel for="centro" value="Centro (*):" /> 
@@ -161,6 +161,12 @@
 						<f:selectItems value="#{certificacionesManagedBean.municipios}" var="municipio" itemLabel="#{municipio.municipio_nombre}" itemValue="#{municipio.municipio_id}" />
 					</p:selectOneMenu>
 					<p:message for="municipio" display="text" />
+					<h:outputLabel for="nivel" value="Nivel Académico (*):" />
+					<p:selectOneMenu id="nivel" disabled="#{certificacionesManagedBean.visitante}" required="true" style="width:95%;" value="#{certificacionesManagedBean.selectedNivel}" requiredMessage="Campo obligatorio" >  
+						<f:selectItem itemLabel="Seleccione..." itemValue="" />
+						<f:selectItems value="#{certificacionesManagedBean.niveles}" var="nivel" itemLabel="#{nivel.descripcion}" itemValue="#{nivel.id}" />
+					</p:selectOneMenu>
+					<p:message for="nivel" display="text" />
 					<h:outputText for="ckTrabaja" value="Trabaja actualmente? (*): " />  
 					<p:selectBooleanCheckbox id="ckTrabaja" value="#{certificacionesManagedBean.solicitud.situacion_laboral}" />
 					<p:message for="ckTrabaja" display="text" />

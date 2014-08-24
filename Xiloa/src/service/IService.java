@@ -950,5 +950,11 @@ public interface IService {
 	 * @param el id del centro
 	 */
 	
-	public List<Certificacion> getCertificacionesActivasByCentroId(Integer centroId);	
+	public List<Certificacion> getCertificacionesActivasByCentroId(Integer centroId);
+	
+	/**
+	 * @return lista de niveles academicos  
+	 */
+	
+	public List<Item> getCatalogoNivelAcademico();
 }

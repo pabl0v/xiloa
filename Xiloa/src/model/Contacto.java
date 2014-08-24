@@ -138,6 +138,9 @@ public class Contacto implements Serializable {
 	@Temporal(TemporalType.DATE)	
 	private Date fechaRegistro;
 	
+	@Column(name = "nivel_academico", nullable = true)
+	private Integer nivelAcademico;
+	
 	@Column(name = "nacionalidad_id", nullable = true)		
 	private String nacionalidadId;
 	
@@ -338,6 +341,14 @@ public class Contacto implements Serializable {
 
 	public String getNacionalidadId() {
 		return nacionalidadId;
+	}
+	
+	public Integer getNivelAcademico(){
+		return nivelAcademico;
+	}
+	
+	public void setNivelAcademico(Integer nivel){
+		this.nivelAcademico = nivel;
 	}
 
 	public void setNacionalidadId(String nacionalidadId) {

@@ -50,12 +50,6 @@
             <p:inputText id="email1" value="#{expedienteManagedBean.contactoExpediente.correo1}" />
             <h:outputLabel styleClass="estilo_label" for="direccionActual" value="Direccion actual (*):" />  
             <p:inputText id="direccionActual" onblur="value=value.toUpperCase()" value="#{expedienteManagedBean.contactoExpediente.direccionActual}" />
-            <h:outputLabel styleClass="estilo_label" for="selector_nacionalidad" value="Nacionalidad (*):" />          	     
-          	<p:selectOneMenu id="selector_nacionalidad" styleClass="selector_status_estilo"
-            				 value="#{expedienteManagedBean.contactoExpediente.nacionalidadId}"                              
-                             style="position: relative;top: 7px;margin-right: 5px;">
-	       		  <f:selectItems value="#{expedienteManagedBean.listNacionalidades}"/>	       		   	       		  		  	       		  			                         
-			</p:selectOneMenu>                 
             <h:outputLabel styleClass="estilo_label" for="selector_departamento" value="Departamento:" />
             <p:selectOneMenu id="selector_departamento" styleClass="selector_status_estilo" 
                              value="#{expedienteManagedBean.contactoExpediente.departamentoId}"                                                        
@@ -69,6 +63,12 @@
             				 value="#{expedienteManagedBean.contactoExpediente.municipioId}"                              
                              style="position: relative;top: 7px;margin-right: 5px;">
 	       		  <f:selectItems value="#{expedienteManagedBean.listMunicipioByDptos}"/>	       		   	       		  		  	       		  			                         
+			</p:selectOneMenu>
+            <h:outputLabel styleClass="estilo_label" for="selector_nacionalidad" value="Nivel Académico (*):" />          	     
+          	<p:selectOneMenu id="selector_nacionalidad" styleClass="selector_status_estilo"
+            				 value="#{expedienteManagedBean.contactoExpediente.nivelAcademico}"                              
+                             style="position: relative;top: 7px;margin-right: 5px;">
+	       		  <f:selectItems value="#{expedienteManagedBean.listNivelesAcademicos}"/>  		  	       		  			                         
 			</p:selectOneMenu>
 			<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITAR_PORTAFOLIO">  	
 				<p:commandButton id="btnActualizaContacto" disabled="#{expedienteManagedBean.disabledBtnAgregaLaborales}" style="display:block;" value="Aplicar Cambios" icon="ui-icon-disk"  action="#{expedienteManagedBean.actualizarContacto(expedienteManagedBean.contactoExpediente)}"  update=":formEnviar:msgExpediente" process="@form"/>

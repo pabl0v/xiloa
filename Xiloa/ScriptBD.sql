@@ -320,7 +320,7 @@ from	sccl.solicitudes s
 	and p.certificacion_estatus!=18
 	inner join
 	registro_cobranza.catalogo_nivel_academico n
-	on n.id_nivel_academico=s.escolaridad_id
+	on n.id_nivel_academico=c.nivel_academico
 
 --buscando al asesor grupal, asesor individual, evaluador y verificador de una solicitud
 
@@ -515,3 +515,7 @@ update sccl.laborales set laboral_pais_id='NIC'
 --campo descripcion el sccl.laborales puede ser nulo
 --cambiar el tipo de dato a la columna nacionalidad de contactos
 ALTER TABLE sccl.contactos ALTER COLUMN nacionalidad_id TYPE varchar(255)
+
+--seteando la nacionalidad nicaraguense por defecto
+alter table sccl.contactos alter column nacionalidad_id set default 'NIC'
+update sccl.contactos set nacionalidad_id='NIC'
