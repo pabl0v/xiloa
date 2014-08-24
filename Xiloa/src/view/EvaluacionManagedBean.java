@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.faces.model.SelectItem;
 
 import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import support.Item;
 import model.Evaluacion;
 import model.EvaluacionGuia;
 import model.Instrumento;
+import model.Mantenedor;
 import model.Solicitud;
 
 @Component
@@ -31,6 +33,7 @@ public class EvaluacionManagedBean implements Serializable {
 	@Autowired
 	private IService service;
 	private Solicitud solicitud;
+	private SelectItem[] tiposInstrumento;
 	private Map<Long, Item> instrumentos;
 	private Long selectedInstrumento;
 	private Map<Long, Item> unidades;
@@ -79,6 +82,13 @@ public class EvaluacionManagedBean implements Serializable {
 		
 		setInstrumentos(null);
 		setUnidades();
+		
+		List<Mantenedor> tipos = new ArrayList<Mantenedor>(service.getCatalogoTiposInstrumento().values());		
+		tiposInstrumento = new SelectItem[tipos.size()+1];
+		tiposInstrumento[0] = new SelectItem("","Seleccione");
+		for(int i=0 ; i<tipos.size(); i++){
+			tiposInstrumento[i+1] = new SelectItem(tipos.get(i).getId(),tipos.get(i).getValor());
+		}
 	}
 	
 	public Long getSelectedInstrumento(){
@@ -251,5 +261,9 @@ public class EvaluacionManagedBean implements Serializable {
 		}
 
 		return null;
+	}
+	
+	public SelectItem[] getListaTiposInstrumento(){
+		return tiposInstrumento;
 	}
 }

@@ -145,7 +145,7 @@ public class CertificacionesManagedBean implements Serializable {
     public void nuevaSolicitud(){
     	if(login.getContacto().getRol().getId()==5)		//si es visitante
     	{
-    			solicitante = service.getContactoByLogin(login.getUsername());
+    			solicitante = service.getContactoByLogin(login.getLoggedUser());
     			setSelectedDepartamento(solicitante.getDepartamentoId());
     			municipios = service.getMunicipios(selectedDepartamento);
     			setSelectedMunicipio(solicitante.getMunicipioId());

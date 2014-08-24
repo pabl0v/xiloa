@@ -45,7 +45,10 @@
 					<br/>
 					<p:dataTable id="dtEvaluaciones" emptyMessage="No hay datos para mostrar"  var="evaluacion" value="#{evaluacionManagedBean.evaluaciones}" rowKey="#{evaluacion.instrumento.id}" selectionMode="single" paginator="true" rows="5" >
 						<p:ajax event="rowSelect" listener="#{evaluacionManagedBean.onEvaluacionSelect}" update=":formGuias:dtGuias"/>
-						<p:column headerText="Tipo"><h:outputText value="#{evaluacion.instrumento.tipo.valor}" /></p:column>
+						<p:column filterBy="#{evaluacion.instrumento.tipo.id}" filterOptions="#{evaluacionManagedBean.listaTiposInstrumento}" filterMatchMode="exact">
+								<f:facet name="header"><h:outputText value="Tipo" /></f:facet> 
+								<h:outputText value="#{evaluacion.instrumento.tipo.valor}" />
+						</p:column>
 						<p:column headerText="Instrumento"><h:outputText value="#{evaluacion.instrumento.nombre}" /></p:column>  
 						<p:column headerText="Unidad"><h:outputText value="#{evaluacionManagedBean.getUnidad(evaluacion.instrumento.unidad).descripcion}" /></p:column>  
 						<p:column headerText="Fecha" ><h:outputText value="#{evaluacion.fechaEvaluacion}"><f:convertDateTime type="date" pattern="dd/MM/yyyy hh:mm a"/></h:outputText></p:column>
