@@ -52,7 +52,7 @@
 	       		 		<p:menuitem value="Rechazar Solicitud" disabled="#{!dashBoardSolicitudesManagedBean.selectedSolicitud.habilitarAutorizar}" title="Rechazar Solicitud" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.actualizarEstadoSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud,3)}" update=":formSolicitudes"  />
 	       		 	</sec:authorize>
 	       		 	<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_CONVOCATORIA">
-	       		 		<p:menuitem value="Convocar Candidato" disabled="#{!dashBoardSolicitudesManagedBean.selectedSolicitud.habilitarConvocar}" title="Convocar Candidato" style="display:inline-block;" onclick="PF('dlg2').show();" update=":convocatoriaForm, :convocatoriaDataTableForm"  />
+	       		 		<p:menuitem value="Ver Convocatorias" title="Convocar Candidato" style="display:inline-block;" onclick="PF('dlg2').show();" update=":convocatoriaForm, :convocatoriaDataTableForm"  />
 	       		 	</sec:authorize>
 	       		 	<sec:authorize ifAnyGranted="ROLE_RIGHT_VER_EVALUACIONES">
 						<p:menuitem value="Ver Evaluaciones" title="Ver Evaluaciones" style="display:inline-block;" action="#{dashBoardSolicitudesManagedBean.evaluarSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" />

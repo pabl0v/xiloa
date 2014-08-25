@@ -1819,7 +1819,9 @@ public class ServiceImp implements IService {
 		String query = 
 					" select solicitud_id from sccl.solicitudes where solicitud_estatus not in (42, 43, 44, 45) and contacto_id in (select contacto_id from sccl.contactos where numero_identificacion like '"+cedula+"') "
 				+ 	" union"
-				+ 	" select solicitud_id from sccl.solicitudes where solicitud_estatus not in (42, 43, 44, 45) and contacto_id in (select contacto_id from sccl.contactos where numero_identificacion like '"+cedula+"') and certificacion_id="+certificacionId;
+				+ 	" select solicitud_id from sccl.solicitudes where solicitud_estatus not in (42, 43, 44, 45) and contacto_id in (select contacto_id from sccl.contactos where numero_identificacion like '"+cedula+"') and certificacion_id= "+certificacionId
+				+ 	" union"
+				+ 	" select s.solicitud_id from sccl.solicitudes s where s.solicitud_estatus=42 and exists (select 1 from sccl.vista_unidades_solicitud x where x.solicitud_id=s.solicitud_id and x.unidad_id not in (select i.instrumento_unidad_id from sccl.instrumentos i inner join sccl.evaluaciones e on e.solicitud_id=x.solicitud_id and e.activo=true and e.instrumento_id=i.instrumento_id inner join sccl.vista_evaluaciones v on v.evaluacion_id=e.evaluacion_id and v.aprobado=true)) and contacto_id in (select contacto_id from sccl.contactos where numero_identificacion like '"+cedula+"') and certificacion_id= "+certificacionId;
 		
 		List<Long> pendientes = longDao.findAllByNativeQuery(query);
 		if(pendientes.isEmpty())

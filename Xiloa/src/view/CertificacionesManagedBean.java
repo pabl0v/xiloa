@@ -206,7 +206,7 @@ public class CertificacionesManagedBean implements Serializable {
 		
 		//validar si tiene solicitudes pendientes
 		if(service.tieneSolicitudesPendientes(solicitante.getNumeroIdentificacion(), selectedCertificacion.getId())){
-			FacesUtil.getMensaje("SCCL - Mensaje: ", "El candidato ya tiene una solicitud en proceso.", true);
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "El candidato ya aprobó esta certificación o tiene otra solicitud en proceso.", true);
 			return null;
 		}
 		
