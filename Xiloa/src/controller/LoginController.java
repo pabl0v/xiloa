@@ -12,6 +12,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 
 import model.Contacto;
 
@@ -22,6 +23,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import service.IService;
 
@@ -81,6 +84,7 @@ public class LoginController implements PhaseListener {
 	
 	public Integer getEntidadUsuario(){
 		getContacto();
+		System.out.println("La ip del usuario es: "+getLoggedUserIpAddress());
 		return contacto.getEntidadId();
 	}
 	
@@ -179,7 +183,7 @@ public class LoginController implements PhaseListener {
 	/*
 	 * seccion getters y setters 
 	 */
-	
+
 	public String getUsername(){
 		return username;
 	}
@@ -202,5 +206,15 @@ public class LoginController implements PhaseListener {
 
 	public void setInatec(boolean inatec) {
 		this.inatec = inatec;
+	}
+	
+	public String getLoggedUserIpAddress(){
+		//Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		//WebAuthenticationDetails details = (WebAuthenticationDetails) authentication.getDetails();
+		//return details.getRemoteAddress();
+
+		ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+		HttpServletRequest request = attrs.getRequest();
+		return request.getLocalAddr();
 	}
 }
