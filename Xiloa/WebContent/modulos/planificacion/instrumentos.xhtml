@@ -95,7 +95,7 @@
 		</div>
 	</div>
 
-	<p:dialog id="modalDialog1" styleClass="estilo_dialogoactividades" header="Edicion de Guia:" widgetVar="dlg1" modal="true" resizable="false" width="420" height="330">
+	<p:dialog id="modalDialog1" styleClass="estilo_dialogoactividades" header="Edicion de Guia:" widgetVar="dlg1" modal="true" resizable="false" width="420" height="350">
 		<div id="contenedor_dialogoactividades">
 		<h:panelGrid id="modal1" columns="3" cellpadding="4">
 		<h:form id="guiaDialogo"> 
@@ -115,6 +115,12 @@
             </p:inputText>
 			<p:message rendered="#{!instrumentoManagedBean.guia.instrumento.cualitativo}" for="codigo3b" display="text" />
             <br/>
+            <h:outputLabel  styleClass="estilo_label" value="Tipo:" />
+			<p:selectOneMenu style="width:50%;" value="#{instrumentoManagedBean.guia.nivel}" >                 
+				<f:selectItem itemLabel="Guia" itemValue="0" />
+				<f:selectItem itemLabel="Contraste" itemValue="1" />                         
+			</p:selectOneMenu>
+			<br/>
             <h:outputLabel styleClass="estilo_label" value="Activo:" />
 			<p:selectBooleanCheckbox value="#{instrumentoManagedBean.guia.estatus}" />
 			<br/>	

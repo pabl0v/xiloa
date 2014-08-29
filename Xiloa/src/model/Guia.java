@@ -46,7 +46,7 @@ public class Guia implements Serializable {
 	
 	@Column(name = "guia_pregunta", nullable = false)	
 	private String pregunta;
-	
+
 	@Column(name = "guia_respuesta", nullable = false)
 	private String respuesta;
 
@@ -55,6 +55,9 @@ public class Guia implements Serializable {
 
 	@Column(name = "guia_estatus", nullable = false)
 	private boolean estatus;
+	
+	@Column(name = "guia_nivel", nullable = false)
+	private Integer nivel = 0;
 	
 	public Guia(){
 		super();
@@ -66,6 +69,7 @@ public class Guia implements Serializable {
 		this.pregunta = pregunta;
 		this.respuesta = respuesta;
 		this.puntaje = puntaje;
+		this.nivel = 0;
 		this.estatus = estatus;
 	}
 	
@@ -141,6 +145,14 @@ public class Guia implements Serializable {
 	
 	public void setEstatus(boolean estatus){
 		this.estatus = estatus;
+	}
+	
+	public Integer getNivel() {
+		return nivel;
+	}
+
+	public void setNivel(Integer nivel) {
+		this.nivel = nivel;
 	}
 	
 	@Override

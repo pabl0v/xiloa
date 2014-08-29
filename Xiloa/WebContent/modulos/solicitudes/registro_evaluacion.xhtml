@@ -56,7 +56,7 @@
 						<p:column headerText="Aprobado"><h:outputText value="#{evaluacion.aprobadoLabel}" /></p:column>
 						<sec:authorize ifAnyGranted="ROLE_RIGHT_AGREGAR_EVALUACIONES">
 							<p:column exportable="false" style="width:4%" >
-								<p:commandButton id="editarButton" disabled="#{!evaluacionManagedBean.habilitarAgregar}" onclick="PF('dlg3').show();" icon="ui-icon-pencil" title="Editar" update=":formEditarEvaluacion" />  
+								<p:commandButton id="editarButton" disabled="#{!evaluacionManagedBean.habilitarAgregar}" onclick="PF('dlg3').show();" icon="ui-icon-pencil" title="Editar" update=":formEditarEvaluacion" />
 				        	</p:column>
 				        </sec:authorize>
 	            	</p:dataTable>
@@ -74,6 +74,9 @@
 						<sec:authorize ifAnyGranted="ROLE_RIGHT_AGREGAR_EVALUACIONES">
 							<p:column exportable="false" style="width:4%" >
 								<p:commandButton id="editarGuiaButton" disabled="#{!evaluacionManagedBean.habilitarAgregar}" onclick="PF('dlg1').show();" icon="ui-icon-pencil" title="Editar" update=":guiaDialogo" />  
+				        	</p:column>
+				        	<p:column exportable="false" style="width:4%" >
+				        		<p:commandButton id="contrasteButton" onclick="PF('dlg4').show();" icon="ui-icon-pencil" title="Ver Preguntas de Contraste" />
 				        	</p:column>
 				        </sec:authorize>
 		            </p:dataTable>
@@ -176,6 +179,16 @@
 				<p:commandButton value="Aceptar" oncomplete="if (!args.validationFailed) dlg3.hide()" update=":formEvaluaciones:dtEvaluaciones,:formGuias:dtGuias" action="#{evaluacionManagedBean.editarEvaluacion(evaluacionManagedBean.selectedEvaluacion)}" />
 			</div>
 		</h:form>
+	</p:dialog>
+	<p:dialog header="Preguntas de Contraste:" widgetVar="dlg4" modal="true" resizable="false" width="500" height="380">
+			<br/>
+			<p:dataTable emptyMessage="No hay datos para mostrar" var="evaluacion" value="" rowKey="" selectionMode="single" paginator="true" rows="5" >
+				<p:column headerText="Pregunta"><h:outputText value="" /></p:column>  
+				<p:column headerText="Respuesta"><h:outputText value="" /></p:column>  
+			</p:dataTable>
+			<div class="contenedor_botones" style="margin-top:32px;">
+	            <p:commandButton value="Cerrar" oncomplete="PF('dlg4').hide();" immediate="true" /> 
+			</div>
 	</p:dialog>
 </h:body>
 </html>
