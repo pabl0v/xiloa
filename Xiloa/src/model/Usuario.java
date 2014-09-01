@@ -60,7 +60,7 @@ public class Usuario implements Serializable {
 	private String usuarioPwd;
 
 	@ManyToOne
-	@JoinColumn(name="rol_id")		
+	@JoinColumn(name="rol_id", nullable = false)
 	private Rol rol;
 	
 	@DateTimeFormat(iso = ISO.DATE)

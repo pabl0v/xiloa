@@ -561,3 +561,9 @@ alter table sccl.contactos add foreign key(nacionalidad_id) references public.pa
 --relaciones de la tabla solicitud_unidades
 
 alter table sccl.solicitud_unidades add foreign key(unidad_id) references registro_cobranza.cu_cat_uc(id)
+
+--relaciones not null
+
+--contacto usuario de bitacora
+--mantenedor estado de archivo
+--rol de usuario 

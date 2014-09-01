@@ -89,7 +89,7 @@ public class Archivo implements Serializable {
 	private String categoria;
 	
 	@ManyToOne
-	@JoinColumn(name="archivo_estado")		
+	@JoinColumn(name="archivo_estado", nullable = false)
 	private Mantenedor estado;
 	
 	@Column(name = "archivo_aprobado", nullable = true)	

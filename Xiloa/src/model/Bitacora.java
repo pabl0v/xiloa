@@ -48,7 +48,7 @@ public class Bitacora implements Serializable {
 	private Actividad actividad;
 
 	@ManyToOne
-	@JoinColumn(name="bitacora_usuario_id")
+	@JoinColumn(name="bitacora_usuario_id", nullable = false)
 	private Contacto usuario;
 	
 	@Column(name = "bitacora_observaciones", nullable = false)	

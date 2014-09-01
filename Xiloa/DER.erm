@@ -10,8 +10,8 @@
 		<right_margin>30</right_margin>
 	</page_setting>
 	<category_index>0</category_index>
-	<zoom>0.42400881057268724</zoom>
-	<x>0</x>
+	<zoom>0.8</zoom>
+	<x>34</x>
 	<y>0</y>
 	<default_color>
 		<r>128</r>
@@ -111,7 +111,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2014-09-01 11:51:21</creation_date>
-			<updated_date>2014-09-01 14:05:16</updated_date>
+			<updated_date>2014-09-01 14:20:41</updated_date>
 			<model_property>
 				<name>Project Name</name>
 				<value></value>
@@ -3062,7 +3062,7 @@
 							<b>0</b>
 						</color>
 					<child_cardinality>1..n</child_cardinality>
-					<parent_cardinality>0..1</parent_cardinality>
+					<parent_cardinality>1</parent_cardinality>
 					<reference_for_pk>true</reference_for_pk>
 					<name>fkd368e0cc75ec0e03</name>
 					<on_delete_action>NO ACTION</on_delete_action>
@@ -3553,7 +3553,7 @@
 					<default_value></default_value>
 					<auto_increment>false</auto_increment>
 					<foreign_key>true</foreign_key>
-					<not_null>false</not_null>
+					<not_null>true</not_null>
 					<primary_key>false</primary_key>
 					<unique_key>false</unique_key>
 					<character_set></character_set>
@@ -3668,7 +3668,7 @@
 							<b>0</b>
 						</color>
 					<child_cardinality>1..n</child_cardinality>
-					<parent_cardinality>0..1</parent_cardinality>
+					<parent_cardinality>1</parent_cardinality>
 					<reference_for_pk>true</reference_for_pk>
 					<name>fk10e17c4e9fdfd10</name>
 					<on_delete_action>NO ACTION</on_delete_action>
@@ -3863,7 +3863,7 @@
 					<default_value></default_value>
 					<auto_increment>false</auto_increment>
 					<foreign_key>true</foreign_key>
-					<not_null>false</not_null>
+					<not_null>true</not_null>
 					<primary_key>false</primary_key>
 					<unique_key>false</unique_key>
 					<character_set></character_set>
@@ -8901,7 +8901,7 @@
 							<b>0</b>
 						</color>
 					<child_cardinality>1..n</child_cardinality>
-					<parent_cardinality>0..1</parent_cardinality>
+					<parent_cardinality>1</parent_cardinality>
 					<reference_for_pk>true</reference_for_pk>
 					<name>fka89730550ed9af5</name>
 					<on_delete_action>NO ACTION</on_delete_action>
@@ -9161,7 +9161,7 @@
 					<default_value></default_value>
 					<auto_increment>false</auto_increment>
 					<foreign_key>true</foreign_key>
-					<not_null>false</not_null>
+					<not_null>true</not_null>
 					<primary_key>false</primary_key>
 					<unique_key>false</unique_key>
 					<character_set></character_set>
