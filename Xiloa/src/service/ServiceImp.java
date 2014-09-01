@@ -1096,7 +1096,7 @@ public class ServiceImp implements IService {
 	@Override
 	public List<EvaluacionGuia> getEvaluacionGuiaByEvaluacionId(Long evaluacionId) {
 		Object [] objs =  new Object [] {evaluacionId};
-		return evaluacionGuiaDao.findAllByNamedQueryParam("EvaluacionGuia.findByEvaluacionId", objs);		
+		return evaluacionGuiaDao.findAllByNamedQueryParam("EvaluacionGuia.findByEvaluacionId", objs);
 	}
 	
 	/**

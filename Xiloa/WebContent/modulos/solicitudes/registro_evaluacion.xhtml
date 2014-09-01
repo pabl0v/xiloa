@@ -76,7 +76,7 @@
 								<p:commandButton id="editarGuiaButton" disabled="#{!evaluacionManagedBean.habilitarAgregar}" onclick="PF('dlg1').show();" icon="ui-icon-pencil" title="Editar" update=":guiaDialogo" />  
 				        	</p:column>
 				        	<p:column exportable="false" style="width:4%" >
-				        		<p:commandButton id="contrasteButton" onclick="PF('dlg4').show();" icon="ui-icon-pencil" title="Ver Preguntas de Contraste" />
+				        		<p:commandButton id="contrasteButton" disabled="#{!evaluacionManagedBean.habilitarAgregar}" onclick="PF('dlg4').show();" update=":formContraste" icon="ui-icon-pencil" title="Ver Preguntas de Contraste" />
 				        	</p:column>
 				        </sec:authorize>
 		            </p:dataTable>
@@ -180,15 +180,18 @@
 			</div>
 		</h:form>
 	</p:dialog>
-	<p:dialog header="Preguntas de Contraste:" widgetVar="dlg4" modal="true" resizable="false" width="500" height="380">
+	<p:dialog header="Preguntas de Contraste:" widgetVar="dlg4" modal="true" resizable="false" width="600" height="200">
 			<br/>
-			<p:dataTable emptyMessage="No hay datos para mostrar" var="evaluacion" value="" rowKey="" selectionMode="single" paginator="true" rows="5" >
-				<p:column headerText="Pregunta"><h:outputText value="" /></p:column>  
-				<p:column headerText="Respuesta"><h:outputText value="" /></p:column>  
+			<h:form id="formContraste">
+			<p:dataTable emptyMessage="No hay datos para mostrar" var="guia" value="#{evaluacionManagedBean.evaluacionGuiasContraste}" rowKey="#{guia}" selectionMode="single" paginator="true" rows="1" >
+				<p:column headerText="Pregunta"><h:outputText value="#{guia.pk.guia.pregunta}" /></p:column>  
+				<p:column headerText="Respuesta"><h:outputText value="#{guia.pk.guia.respuesta}" /></p:column>
+				<p:column headerText="Puntaje"><h:outputText value="#{guia.puntajeLabel}" /></p:column>  
 			</p:dataTable>
-			<div class="contenedor_botones" style="margin-top:32px;">
+			<div class="contenedor_botones" style="margin-top:30px;">
 	            <p:commandButton value="Cerrar" oncomplete="PF('dlg4').hide();" immediate="true" /> 
 			</div>
+			</h:form>
 	</p:dialog>
 </h:body>
 </html>

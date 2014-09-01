@@ -30,8 +30,6 @@ import javax.persistence.Transient;
 	@AssociationOverride(name = "pk.guia", joinColumns = @JoinColumn(name = "guia_id"))})
 @NamedQueries ({
 	@NamedQuery(name="EvaluacionGuia.findByEvaluacionId", query="select eg from evaluacion_guia eg where eg.pk.evaluacion.id=?1 order by eg.pk.guia.id"),
-	@NamedQuery(name="EvaluacionGuia.findOrdinariasByEvaluacionId", query="select eg from evaluacion_guia eg where eg.pk.evaluacion.id=?1 and eg.pk.guia.contraste='false' order by eg.pk.guia.id"),
-	@NamedQuery(name="EvaluacionGuia.findContrasteByEvaluacionId", query="select eg from evaluacion_guia eg where eg.pk.evaluacion.id=?1 and eg.pk.guia.contraste='true' order by eg.pk.guia.id"),
 	@NamedQuery(name="EvaluacionGuia.findInstrumentoByEvaluacionId", query="select eg.pk.guia.instrumento.id from evaluacion_guia eg where eg.pk.evaluacion.id=?1 group by eg.pk.guia.instrumento.id"),
 	@NamedQuery(name="EvaluacionGuia.findGuiasByEvalAndInstrumento", query="select eg.pk.guia from evaluacion_guia eg where eg.pk.evaluacion.id=?1 and eg.pk.guia.instrumento.id=?2")
 			})

@@ -207,14 +207,14 @@
 	<p:dialog styleClass="estilo_dialogoactividades" header="Envío de Solicitud:" widgetVar="dlg3" modal="true" resizable="false" width="500" height="300">
 		<h:form id="envioForm">
 			<br/>
-			<p:dataTable id="unidadesDt" emptyMessage="No hay datos para mostrar" var="unidad" value="#{dashBoardSolicitudesManagedBean.unidades}" rowKey="#{unidad.id}" selection="#{dashBoardSolicitudesManagedBean.selectedUnidades}" >  
-				<f:facet name="header">Unidades de Competencia</f:facet>
+			<p:dataTable id="unidadesDt" emptyMessage="No hay datos para mostrar" var="unidad" value="#{dashBoardSolicitudesManagedBean.unidades}" rowKey="#{unidad.id}" selection="#{dashBoardSolicitudesManagedBean.selectedUnidades}" paginator="true" rows="2" >
+				<f:facet name="header">Seleccione las Unidades de Competencia a Certificar</f:facet>
 				<p:column selectionMode="multiple" style="width:16px;text-align:center"/>
 				<p:column headerText="Código"><h:outputText value="#{unidad.unidadId}" /></p:column>
 				<p:column headerText="Nombre"><h:outputText value="#{unidad.unidadNombre}" /></p:column>
 			</p:dataTable>
 			<div class="contenedor_botones" style="margin-top:32px;">
-				<p:commandButton value="Aceptar" process="unidadesDt" onclick="PF('dlg3').hide();" action="#{dashBoardSolicitudesManagedBean.enviarSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" update=":formSolicitudes" /> 
+				<p:commandButton value="Aceptar" oncomplete="if(!args.validationFailed) {dlg3.hide()} else {dlg3.show()}" action="#{dashBoardSolicitudesManagedBean.enviarSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" update=":formSolicitudes" /> 
 			</div>
 		</h:form>
 	</p:dialog>

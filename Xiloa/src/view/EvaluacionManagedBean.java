@@ -40,6 +40,7 @@ public class EvaluacionManagedBean implements Serializable {
 	private Map<Long, Item> unidades;
 	private Long selectedUnidad;
 	private List<EvaluacionGuia> evaluacionGuias;
+	private List<EvaluacionGuia> evaluacionGuiasContraste;
 	private EvaluacionGuia selectedEvaluacionGuia;
 	private List<Evaluacion> evaluaciones;
 	private Evaluacion selectedEvaluacion;
@@ -52,6 +53,7 @@ public class EvaluacionManagedBean implements Serializable {
 		instrumentos = new HashMap<Long, Item>();
 		unidades = new HashMap<Long, Item>();
 		evaluacionGuias = new ArrayList<EvaluacionGuia>();
+		evaluacionGuiasContraste = new ArrayList<EvaluacionGuia>();
 		selectedEvaluacionGuia = null;
 		evaluaciones = new ArrayList<Evaluacion>();
 		selectedEvaluacion = null;
@@ -174,9 +176,21 @@ public class EvaluacionManagedBean implements Serializable {
 	}
 	
 	public void setEvaluacionGuias(List<EvaluacionGuia> guias){
-		this.evaluacionGuias = guias;
+		evaluacionGuias.clear();
+		evaluacionGuiasContraste.clear();
+
+		for(EvaluacionGuia guia : guias){
+			if(!guia.getGuia().getContraste())
+				evaluacionGuias.add(guia);
+			else
+				evaluacionGuiasContraste.add(guia);
+		}
 	}
 	
+	public List<EvaluacionGuia> getEvaluacionGuiasContraste(){
+		return evaluacionGuiasContraste;
+	}
+		
 	public EvaluacionGuia getSelectedEvaluacionGuia(){
 		return selectedEvaluacionGuia;
 	}
