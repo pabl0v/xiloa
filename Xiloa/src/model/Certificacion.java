@@ -123,6 +123,9 @@ public class Certificacion implements Serializable {
 	@Column(name = "certificacion_nivel_competencia", nullable = true)
 	private Integer nivelCompetencia;
 	
+	@Column(name = "certificacion_observaciones", nullable = true)
+	private String observaciones;
+	
 	@ManyToOne
 	@JoinColumn(name="certificacion_estatus", nullable = false)
 	private Mantenedor estatus;
@@ -171,6 +174,7 @@ public class Certificacion implements Serializable {
 			this.creador = creador;
 			this.actualiza = null;
 			this.referencial = referencial;
+			this.observaciones = null;
 			this.nivelCompetencia = nivelCompetencia;
 			this.estatus = estatus;
 		}
@@ -345,6 +349,14 @@ public class Certificacion implements Serializable {
 
 	public void setReferencial(String referencial) {
 		this.referencial = referencial;
+	}
+	
+	public String getObservaciones() {
+		return observaciones;
+	}
+
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
 	}
 
 	public Integer getNivelCompetencia() {
