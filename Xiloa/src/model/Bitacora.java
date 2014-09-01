@@ -44,7 +44,7 @@ public class Bitacora implements Serializable {
 	private Long id;
 	
 	@ManyToOne
-	@JoinColumn(name="actividad_id")	
+	@JoinColumn(name="actividad_id", nullable = false)
 	private Actividad actividad;
 
 	@ManyToOne

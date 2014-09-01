@@ -565,5 +565,6 @@ alter table sccl.solicitud_unidades add foreign key(unidad_id) references regist
 --relaciones not null
 
 --contacto usuario de bitacora
+--actividad de bitacora
 --mantenedor estado de archivo
 --rol de usuario 
