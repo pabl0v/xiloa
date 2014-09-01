@@ -18,7 +18,6 @@ import support.USolicitud;
 import support.UsuarioExterno;
 import model.Actividad;
 import model.Archivo;
-import model.Auditoria;
 import model.Bitacora;
 import model.Certificacion;
 import model.Contacto;
@@ -676,13 +675,6 @@ public interface IService {
 	 */
 
 	public boolean validaEvaluacionAprobada(Solicitud solicitud, boolean diagnostica, Long ucl);
-
-	/** 
-	 * @param la pista de auditoría a registrar
-	 * 
-	 */
-	
-	public void auditar(Auditoria auditoria);
 
 	/**
 	 * @return la lista de contactos según los parámetros de búsqueda 

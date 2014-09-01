@@ -519,3 +519,45 @@ ALTER TABLE sccl.contactos ALTER COLUMN nacionalidad_id TYPE varchar(255)
 --seteando la nacionalidad nicaraguense por defecto
 alter table sccl.contactos alter column nacionalidad_id set default 'NIC'
 update sccl.contactos set nacionalidad_id='NIC'
+
+--relaciones
+
+--relaciones de la tabla unidades
+
+alter table sccl.unidades add foreign key(certificacion_id) references sccl.certificaciones(certificacion_id)
+alter table sccl.unidades add foreign key(unidad_id) references registro_cobranza.cu_cat_uc(id)
+
+--relaciones de la tabla evaluaciones
+
+alter table sccl.evaluaciones add foreign key(solicitud_id) references sccl.solicitudes(solicitud_id)
+alter table sccl.evaluaciones add foreign key(instrumento_id) references sccl.instrumentos(instrumento_id)
+
+--relaciones de la tabla convocatorias
+
+alter table sccl.convocatorias add foreign key(actividad_id) references sccl.actividades(actividad_id)
+alter table sccl.convocatorias add foreign key(solicitud_id) references sccl.solicitudes(solicitud_id)
+alter table sccl.convocatorias add foreign key(contacto_id) references sccl.contactos(contacto_id)
+
+--relaciones de la tabla instrumentos
+
+alter table sccl.instrumentos add foreign key(instrumento_certificacion_id) references sccl.certificaciones(certificacion_id)
+alter table sccl.instrumentos add foreign key(instrumento_unidad_id) references registro_cobranza.cu_cat_uc(id)
+
+--relaciones de la tabla guias
+
+alter table sccl.guias add foreign key(guia_unidad_id) references registro_cobranza.cu_cat_uc(id)
+
+--relaciones de la tabla roles
+
+alter table sccl.roles add foreign key(id_rol_inatec) references admon.roles(id_rol)
+
+--relaciones de la tabla contactos
+
+alter table sccl.contactos add foreign key(municipio_id,departamento_id) references public.municipio(municipioid,departamentoid)
+alter table sccl.contactos add foreign key(nivel_academico) references registro_cobranza.catalogo_nivel_academico(id_nivel_academico)
+alter table sccl.contactos add foreign key(usuario_inatec) references admon.usuario(usuario)
+alter table sccl.contactos add foreign key(nacionalidad_id) references public.paises(pais_id)
+
+--relaciones de la tabla solicitud_unidades
+
+alter table sccl.solicitud_unidades add foreign key(unidad_id) references registro_cobranza.cu_cat_uc(id)

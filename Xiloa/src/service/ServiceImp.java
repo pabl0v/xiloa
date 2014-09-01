@@ -37,7 +37,6 @@ import dao.IDao;
 import dao.IDaoInatec;
 import model.Actividad;
 import model.Archivo;
-import model.Auditoria;
 import model.Bitacora;
 import model.Certificacion;
 import model.Contacto;
@@ -111,8 +110,6 @@ public class ServiceImp implements IService {
 	private JavaEmailSender email;
 	@Autowired
 	private IDao<Object> objectDao;
-	@Autowired
-	private IDao<Auditoria> auditoriaDao;
 	@Autowired
 	private IDao<Item> itemDao;
 	@Autowired
@@ -1608,17 +1605,6 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Actividad> getActividadesByEntidadId(Integer entidadId) {
 		return actividadDao.findAllByNamedQueryParam("Actividad.findByEntidadId", new Object[] {entidadId});
-	}
-	
-	/** 
-	 * @param la pista de auditoría a registrar
-	 * 
-	 */
-
-	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void auditar(Auditoria auditoria) {
-		auditoriaDao.save(auditoria);
 	}
 	
 	/**
