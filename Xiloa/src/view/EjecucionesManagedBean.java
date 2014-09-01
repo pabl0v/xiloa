@@ -74,7 +74,7 @@ public class EjecucionesManagedBean implements Serializable {
 	
 	public void onRowSelectCertificacion(SelectEvent event) {
 		setSelectedCertificacion((Certificacion) event.getObject());
-		setActividades(service.getActividadesByEntidadId(selectedCertificacion.getIfpId()));
+		setActividades(service.getActividades(selectedCertificacion.getId()));
     }
   
     public void onRowUnselectCertificacion(UnselectEvent event) {
