@@ -14,6 +14,7 @@ import model.Contacto;
 import model.Convocatoria;
 import model.Mantenedor;
 import model.Solicitud;
+import model.Unidad;
 
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
@@ -40,6 +41,8 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	private Contacto contacto;
 	private List<Solicitud> solicitudes;
 	private Solicitud selectedSolicitud;
+	private List<Unidad> unidades;
+	private Unidad[] selectedUnidades;
 	private Convocatoria selectedConvocatoria;
 	private List<Mantenedor> estadosConvocatoria;
 	private List<Item> involucrados;
@@ -53,7 +56,8 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 		selectedConvocatoria = new Convocatoria();
 		estadosConvocatoria = new ArrayList<Mantenedor>();
 		involucrados = new ArrayList<Item>();
-		contacto = new Contacto();
+		unidades = new ArrayList<Unidad>();
+		contacto = new Contacto();  
 		setHabilitarAcciones(false);
 		setHabilitarReportes(false);
 	}
@@ -98,12 +102,24 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 			estadosSolicitud[i+1] = new SelectItem(estatusList.get(i).getValor(),estatusList.get(i).getValor());
 	}
 	
+	public List<Unidad> getUnidades(){
+		return unidades;
+	}
+	
+	public Unidad[] getSelectedUnidades(){
+		return selectedUnidades;
+	}
+	
+	public void setSelectedUnidades(Unidad[] selectedUnidades){
+		this.selectedUnidades = selectedUnidades;
+	}
+	
 	public List<Mantenedor> getEstadosConvocatoria(){
 		return estadosConvocatoria;
 	}
 	
 	public void enviarSolicitud(Solicitud solicitud){
-		service.enviarSolicitud(solicitud);
+		service.enviarSolicitud(solicitud, selectedUnidades);
 		setSolicitudes();
 	}
 	
@@ -191,6 +207,7 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
 	
 	public void onRowSelect(SelectEvent event) {
 		setSelectedSolicitud((Solicitud) event.getObject());
+		unidades = service.getUnidadesByCertificacionId(selectedSolicitud.getCertificacion().getId());
 		setHabilitarAcciones(true);
 		setHabilitarReportes(true);
     }
@@ -198,6 +215,10 @@ public class DashBoardSolicitudesManagedBean implements Serializable {
     public void onRowUnselect(UnselectEvent event) {
     	setHabilitarAcciones(false);
     	setHabilitarReportes(false);
+    }
+
+	public void onRowSelectUnidad(SelectEvent event) {
+		//selectedUnidades.add(((Unidad) event.getObject()));
     }
 
     public void runReporte(String nombreReporte, boolean desplegar) throws Exception {

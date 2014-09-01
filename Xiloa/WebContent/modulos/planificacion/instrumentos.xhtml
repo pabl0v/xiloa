@@ -79,6 +79,7 @@
 						<div class="seccion_interna">
 						<h:form id="guias">
 		                   <p:dataTable id="display" emptyMessage="No hay datos para mostrar"  var="guia" value="#{instrumentoManagedBean.selectedInstrumento.guias}" selection="#{instrumentoManagedBean.selectedGuia}" paginator="true" rows="10" rowKey="#{guia.id}" selectionMode="single">  
+		                        <p:column headerText="Contraste"><h:outputText value="#{guia.contraste}" /></p:column>
 		                        <p:column headerText="Pregunta"><h:outputText value="#{guia.pregunta}" /></p:column>  
 		                        <p:column headerText="Respuesta"><h:outputText value="#{guia.respuesta}" /></p:column>  
 		                        <p:column headerText="Puntaje"><h:outputText rendered="#{guia.instrumento.cualitativo}" value="#{guia.pesoPregunta}" /><h:outputText rendered="#{!guia.instrumento.cualitativo}" value="#{guia.puntaje}" /></p:column>  
@@ -95,10 +96,15 @@
 		</div>
 	</div>
 
-	<p:dialog id="modalDialog1" styleClass="estilo_dialogoactividades" header="Edicion de Guia:" widgetVar="dlg1" modal="true" resizable="false" width="420" height="350">
+	<p:dialog id="modalDialog1" styleClass="estilo_dialogoactividades" header="Edicion de Guia:" widgetVar="dlg1" modal="true" resizable="false" width="430" height="370">
 		<div id="contenedor_dialogoactividades">
 		<h:panelGrid id="modal1" columns="3" cellpadding="4">
-		<h:form id="guiaDialogo"> 
+		<h:form id="guiaDialogo">
+            <h:outputLabel  styleClass="estilo_label" value="Guía de Contraste:" />
+			<p:selectBooleanCheckbox value="#{instrumentoManagedBean.guia.contraste}">
+				<p:ajax update="codigo3b" listener="#{instrumentoManagedBean.handleContrasteChange}" />
+			</p:selectBooleanCheckbox>
+			<br/>
 		  	<h:outputLabel styleClass="estilo_label" value="Pregunta:" />  
             <p:inputText id="codigo1" size="200" value="#{instrumentoManagedBean.guia.pregunta}" required="true" requiredMessage="La pregunta es requerida" /> 
             <p:message for="codigo1" display="text"  />
@@ -110,17 +116,11 @@
             <h:outputLabel rendered="#{instrumentoManagedBean.guia.instrumento.cualitativo}" styleClass="estilo_label" value="Peso:" />
             <p:inputText id="codigo3a" rendered="#{instrumentoManagedBean.guia.instrumento.cualitativo}" disabled="#{instrumentoManagedBean.guia.instrumento.cualitativo}" value="#{instrumentoManagedBean.guia.pesoPregunta}" />
             <h:outputLabel rendered="#{!instrumentoManagedBean.guia.instrumento.cualitativo}" styleClass="estilo_label" value="Puntaje:" />
-            <p:inputText id="codigo3b" rendered="#{!instrumentoManagedBean.guia.instrumento.cualitativo}" value="#{instrumentoManagedBean.guia.puntaje}" required="true" requiredMessage="El puntaje es requerido" validatorMessage="El puntaje debe ser entre 0 y 100" converterMessage="El puntaje debe ser numerico" >
+            <p:inputText disabled="#{instrumentoManagedBean.guia.contraste}" id="codigo3b" rendered="#{!instrumentoManagedBean.guia.instrumento.cualitativo}" value="#{instrumentoManagedBean.guia.puntaje}" required="true" requiredMessage="El puntaje es requerido" validatorMessage="El puntaje debe ser entre 0 y 100" converterMessage="El puntaje debe ser numerico" >
 				<f:validateDoubleRange minimum="0" maximum="100" />
             </p:inputText>
 			<p:message rendered="#{!instrumentoManagedBean.guia.instrumento.cualitativo}" for="codigo3b" display="text" />
             <br/>
-            <h:outputLabel  styleClass="estilo_label" value="Tipo:" />
-			<p:selectOneMenu style="width:50%;" value="#{instrumentoManagedBean.guia.nivel}" >                 
-				<f:selectItem itemLabel="Guia" itemValue="0" />
-				<f:selectItem itemLabel="Contraste" itemValue="1" />                         
-			</p:selectOneMenu>
-			<br/>
             <h:outputLabel styleClass="estilo_label" value="Activo:" />
 			<p:selectBooleanCheckbox value="#{instrumentoManagedBean.guia.estatus}" />
 			<br/>	

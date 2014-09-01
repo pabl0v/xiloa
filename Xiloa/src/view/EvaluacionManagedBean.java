@@ -23,6 +23,7 @@ import model.EvaluacionGuia;
 import model.Instrumento;
 import model.Mantenedor;
 import model.Solicitud;
+import model.Unidad;
 
 @Component
 @Scope(value="view")
@@ -139,7 +140,8 @@ public class EvaluacionManagedBean implements Serializable {
 	}
 	
 	public void setUnidades(){
-		for(Item unidad : service.getUnidadesItemByCertificacionId(solicitud.getCertificacion().getId())){
+		//for(Item unidad : service.getUnidadesItemByCertificacionId(solicitud.getCertificacion().getId())){
+		for(Item unidad : service.getUnidadesBySolicitudId(solicitud.getId())){
 			unidades.put(unidad.getId(), unidad);
 		}
 	}
@@ -237,26 +239,24 @@ public class EvaluacionManagedBean implements Serializable {
 	
 	public String evaluar(){
 
-		/*
 		List<Unidad> unidades = service.getUnidadesSinEvaluar(solicitud.getId());
 		
 		if(!unidades.isEmpty())
 		{
-			FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe evaluar todas las unidades de competencia.", true);
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "Debe evaluar todas las unidades de competencia solicitadas por el candidato.", true);
 			return null;
 		}
-		*/
 		
 		List<Evaluacion> evaluaciones = service.getEvaluacionesReprobadas(solicitud.getId());
 		
 		if(!evaluaciones.isEmpty())
 		{
-			FacesUtil.getMensaje("SCCL - Mensaje: ", "El candidato no aprueba las undiades de competencia.", false);
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "El candidato no aprueba todas las undiades de competencia solicitadas.", false);
 			service.actualizarEstadoSolicitud(solicitud, 9);		//no superado
 		}
 		else
 		{
-			FacesUtil.getMensaje("SCCL - Mensaje: ", "El candidato aprueba una o más unidades de competencia.", false);
+			FacesUtil.getMensaje("SCCL - Mensaje: ", "El candidato aprueba todas las unidades de competencia solicitadas.", false);
 			service.actualizarEstadoSolicitud(solicitud, 8);		//superado
 		}
 

@@ -115,6 +115,11 @@ public class InstrumentoManagedBean implements Serializable {
 			setDisabledUnidad(false);
 	}
 	
+	public void handleContrasteChange(){
+		if(guia.getContraste())
+			guia.setPuntaje(new Float(0));
+	}
+	
 	public boolean getDisabledUnidad(){
 		return disabledUnidad;
 	}

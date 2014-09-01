@@ -40,7 +40,7 @@
 			<p:splitButton id="accionSplit" disabled="#{!dashBoardSolicitudesManagedBean.habilitarAcciones}" value="Acciones" icon="ui-icon-pencil" title="Acción a Realizar" style="display:inline-block;"  update=":formSolicitudes:dtSolicitud" >   
 	        		<p:separator />
 	        		<sec:authorize ifAnyGranted="ROLE_RIGHT_CREAR_SOLICITUDES">
-						<p:menuitem value="Enviar Solicitud" disabled="#{!dashBoardSolicitudesManagedBean.selectedSolicitud.habilitarEnviar}" title="Enviar Solicitud" action="#{dashBoardSolicitudesManagedBean.enviarSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" update=":formSolicitudes" />
+						<p:menuitem value="Enviar Solicitud" disabled="#{!dashBoardSolicitudesManagedBean.selectedSolicitud.habilitarEnviar}" title="Enviar Solicitud" onclick="PF('dlg3').show();" update=":envioForm" />
 					</sec:authorize>
                 	<sec:authorize ifAnyGranted="ROLE_RIGHT_EDITAR_PORTAFOLIO">                  
 		            	<p:menuitem value="Ver Portafolio" title="Ver Portafolio" action="#{dashBoardSolicitudesManagedBean.consultarExpediente()}" />
@@ -201,6 +201,20 @@
 			</p:dataTable>
 			<div class="contenedor_botones" style="margin-top:32px;">
 				<p:commandButton value="Cerrar" style="width:80px;height:30px" update=":formSolicitudes" onclick="PF('dlg2').hide();" immediate="true" /> 
+			</div>
+		</h:form>
+	</p:dialog>
+	<p:dialog styleClass="estilo_dialogoactividades" header="Envío de Solicitud:" widgetVar="dlg3" modal="true" resizable="false" width="500" height="300">
+		<h:form id="envioForm">
+			<br/>
+			<p:dataTable id="unidadesDt" emptyMessage="No hay datos para mostrar" var="unidad" value="#{dashBoardSolicitudesManagedBean.unidades}" rowKey="#{unidad.id}" selection="#{dashBoardSolicitudesManagedBean.selectedUnidades}" >  
+				<f:facet name="header">Unidades de Competencia</f:facet>
+				<p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+				<p:column headerText="Código"><h:outputText value="#{unidad.unidadId}" /></p:column>
+				<p:column headerText="Nombre"><h:outputText value="#{unidad.unidadNombre}" /></p:column>
+			</p:dataTable>
+			<div class="contenedor_botones" style="margin-top:32px;">
+				<p:commandButton value="Aceptar" process="unidadesDt" onclick="PF('dlg3').hide();" action="#{dashBoardSolicitudesManagedBean.enviarSolicitud(dashBoardSolicitudesManagedBean.selectedSolicitud)}" update=":formSolicitudes" /> 
 			</div>
 		</h:form>
 	</p:dialog>

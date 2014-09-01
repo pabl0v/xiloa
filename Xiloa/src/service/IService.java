@@ -870,7 +870,7 @@ public interface IService {
 	/** 
 	 * @param la solicitud que se desea enviar
 	 */	
-	public void enviarSolicitud(Solicitud solicitud);
+	public void enviarSolicitud(Solicitud solicitud, Unidad[] unidades);
 	
 	/** 
 	 * @param el id de la actividad cuyos involucrados se quiere recuperar
@@ -957,4 +957,10 @@ public interface IService {
 	 */
 	
 	public List<Item> getCatalogoNivelAcademico();
+	
+	/**
+	 * @return lista de unidades de una solicitud  
+	 */
+	
+	public List<Item> getUnidadesBySolicitudId(Long solicitudId);
 }

@@ -52,6 +52,7 @@ import model.Mantenedor;
 import model.Requisito;
 import model.Rol;
 import model.Solicitud;
+import model.SolicitudUnidades;
 import model.Unidad;
 import model.Usuario;
 
@@ -121,7 +122,9 @@ public class ServiceImp implements IService {
 	@Autowired
 	private IDao<Involucrado> involucradoDao;
 	@Autowired
-	private IDao<Pais> paisDao;	
+	private IDao<Pais> paisDao;
+	@Autowired
+	private IDao<SolicitudUnidades> solicitudUnidadesDao;	
 
 	private List<Mantenedor> mantenedores;
 	private Map<Integer, Mantenedor> catalogoEstatusCertificacion;
@@ -733,6 +736,9 @@ public class ServiceImp implements IService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public Object guardar (Object objeto) {
+		if (objeto instanceof SolicitudUnidades) {
+			return solicitudUnidadesDao.save((SolicitudUnidades) objeto);
+		}
 		if (objeto instanceof Involucrado) {
 			return involucradoDao.save((Involucrado) objeto);
 		}
@@ -2014,13 +2020,23 @@ public class ServiceImp implements IService {
 	 */	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void enviarSolicitud(Solicitud solicitud){
+	public void enviarSolicitud(Solicitud solicitud, Unidad[] unidades){
 		
 		if(solicitud.getEstatus().getId()==35){		// si el estatus de la solicitud es registrada
+			
+			// registra las unidades de competencia seleccionadas
+			
+			if(unidades.length==0)
+				return;
+			
+			for(Unidad unidad : unidades)
+				guardar(new SolicitudUnidades(solicitud, unidad.getUnidadId()));
 		
 			// obtiene los instrumentos de lectura-escritura y diagnostico
 		
-			List<Instrumento> instrumentos = instrumentoDao.findAllByQuery("select i from instrumentos i where i.tipo.id in (27,28) and i.estatus='true' and i.certificacionId="+solicitud.getCertificacion().getId()+" and not exists (select 1 from evaluaciones e where e.instrumento.id=i.id and e.activo='true' and e.solicitud.id="+solicitud.getId()+")");
+			//List<Instrumento> instrumentos = instrumentoDao.findAllByQuery("select i from instrumentos i where i.tipo.id in (27,28) and i.estatus='true' and i.certificacionId="+solicitud.getCertificacion().getId()+" and not exists (select 1 from evaluaciones e where e.instrumento.id=i.id and e.activo='true' and e.solicitud.id="+solicitud.getId()+")");
+			List<Instrumento> instrumentos = instrumentoDao.findAllByQuery("select i from instrumentos i where i.tipo.id in (27) and i.estatus='true' and i.certificacionId="+solicitud.getCertificacion().getId() + " order by i.id");
+			instrumentos.addAll(instrumentoDao.findAllByQuery("select i from instrumentos i where i.tipo.id in (28) and i.estatus='true' and i.certificacionId="+solicitud.getCertificacion().getId() + " and i.unidad in (select u.unidad from solicitud_unidades u where u.solicitud.id=" + solicitud.getId() + ") order by i.id"));
 		
 			// registra automaticamente las evaluaciones para las pruebas de lectura-escritura y diagnostica
 		
@@ -2094,7 +2110,8 @@ public class ServiceImp implements IService {
 			actualizarEstadoSolicitud(solicitud, 6);
 			
 			// obtiene los instrumentos de autoevaluacion
-			List<Instrumento> instrumentos = instrumentoDao.findAllByQuery("select i from instrumentos i where i.tipo.id in (29) and i.estatus='true' and i.certificacionId="+solicitud.getCertificacion().getId()+" and not exists (select 1 from evaluaciones e where e.instrumento.id=i.id and e.activo='true' and e.solicitud.id="+solicitud.getId()+")");
+			//List<Instrumento> instrumentos = instrumentoDao.findAllByQuery("select i from instrumentos i where i.tipo.id in (29) and i.estatus='true' and i.certificacionId="+solicitud.getCertificacion().getId()+" and not exists (select 1 from evaluaciones e where e.instrumento.id=i.id and e.activo='true' and e.solicitud.id="+solicitud.getId()+")");
+			List<Instrumento> instrumentos = instrumentoDao.findAllByQuery("select i from instrumentos i where i.tipo.id in (29) and i.estatus='true' and i.certificacionId="+solicitud.getCertificacion().getId()+" and i.unidad in (select u.unidad from solicitud_unidades u where u.solicitud.id="+solicitud.getId()+") order by i.id");
 		
 			// registra automaticamente las evaluaciones para las pruebas de autoevaluacion
 			for(Instrumento instrumento : instrumentos){
@@ -2249,5 +2266,13 @@ public class ServiceImp implements IService {
 	@Override
 	public List<Item> getCatalogoNivelAcademico(){
 		return catalogoNivelAcademico;
+	}
+	
+	/**
+	 * @return lista de unidades de una solicitud  
+	 */
+	@Override
+	public List<Item> getUnidadesBySolicitudId(Long solicitudId){
+		return itemDao.findAllByNamedQueryParam("SolicitudUnidades.findAllItemsBySolicitudId", new Object[] {solicitudId});
 	}
 }
