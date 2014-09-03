@@ -155,6 +155,13 @@ public class Guia implements Serializable {
 		this.contraste = valor;
 	}
 	
+	public String getContrasteLabel(){
+		if(contraste)
+			return "Si";
+		else
+			return "No";
+	}
+	
 	@Override
 	public String toString(){
 	

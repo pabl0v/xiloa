@@ -79,7 +79,7 @@
 						<div class="seccion_interna">
 						<h:form id="guias">
 		                   <p:dataTable id="display" emptyMessage="No hay datos para mostrar"  var="guia" value="#{instrumentoManagedBean.selectedInstrumento.guias}" selection="#{instrumentoManagedBean.selectedGuia}" paginator="true" rows="10" rowKey="#{guia.id}" selectionMode="single">  
-		                        <p:column headerText="Contraste"><h:outputText value="#{guia.contraste}" /></p:column>
+		                        <p:column headerText="Contraste"><h:outputText value="#{guia.contrasteLabel}" /></p:column>
 		                        <p:column headerText="Pregunta"><h:outputText value="#{guia.pregunta}" /></p:column>  
 		                        <p:column headerText="Respuesta"><h:outputText value="#{guia.respuesta}" /></p:column>  
 		                        <p:column headerText="Puntaje"><h:outputText rendered="#{guia.instrumento.cualitativo}" value="#{guia.pesoPregunta}" /><h:outputText rendered="#{!guia.instrumento.cualitativo}" value="#{guia.puntaje}" /></p:column>  
