@@ -19,23 +19,6 @@
 	    	 <script type="text/javascript" src="../../resources/scripts/solicitudes.js"></script>
 		</div>	
 		<h:form id="formSolicitudes">
-        <div id="cabezera">
-            <h2>Gestión de Solicitudes</h2>
-            <sec:authorize ifAnyGranted="ROLE_RIGHT_CREAR_SOLICITUDES">                  
-            <div id="botones_filtro_contenedor">                 
-                <div class="botones_filtro" >
-                	<p class="icono_nuevo">Nueva solicitud</p>
-                </div>                           
-                <div class="botones_filtro">
-                	<p class="icono_exportar"></p>
-                	<h:commandLink style="margin-bottom: 5px" >  
-            			<h:outputText value="Descargar" />   
-            			<p:dataExporter type="xls" target="dtSolicitud" fileName="ReporteSolicitudes" />           		
-        			</h:commandLink>
-        		</div>
-            </div>
-            </sec:authorize>
-       </div>
 		<div id="contenedor_filtro">
 			<p:splitButton id="accionSplit" disabled="#{!dashBoardSolicitudesManagedBean.habilitarAcciones}" value="Acciones" icon="ui-icon-pencil" title="Acción a Realizar" style="display:inline-block;"  update=":formSolicitudes:dtSolicitud" >   
 	        		<p:separator />
