@@ -194,7 +194,7 @@ public class CertificacionesManagedBean implements Serializable {
 					solicitante.getSexo() == null || 
 					solicitante.getCorreo1() == null || 
 					solicitante.getDireccionActual() == null || 
-					solicitante.getNacionalidadId() == null || 
+					//solicitante.getNacionalidadId() == null || 
 					solicitante.getDepartamentoId() == null || 
 					solicitante.getMunicipioId() == null ||
 					solicitante.getNivelAcademico() == null)

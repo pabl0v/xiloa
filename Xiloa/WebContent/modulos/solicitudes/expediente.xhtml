@@ -29,12 +29,14 @@
     		<h:outputLabel styleClass="estilo_label" for="nombreCandidato" value="Nombre del candidato (*):" />
     		<h:outputText styleClass="estilo_span" id="nombreCandidato" value="#{expedienteManagedBean.contactoExpediente.nombreCompleto}" />            
             <h:outputLabel styleClass="estilo_label" for="numeroIdentificacion" value="Numero de identificacion (*):" />
-            <h:outputText styleClass="estilo_span" id="numeroIdentificacion" value="#{expedienteManagedBean.contactoExpediente.numeroIdentificacion}" />
+			<p:inputMask id="numeroIdentificacion" disabled="#{empty disabled ? 'false' : disabled}" onblur="value=value.toUpperCase()" value="#{expedienteManagedBean.contactoExpediente.numeroIdentificacion}" required="true" requiredMessage="Campo obligatorio" mask="999-999999-9999a">
+				<f:validator validatorId="custom.CedulaValidator" />
+				<p:ajax event="blur" update="fechaNacimiento" />
+			</p:inputMask>
             <h:outputLabel styleClass="estilo_label" for="fechaNacimiento" value="Fecha de nacimiento (*):" />
-            <p:calendar value="#{expedienteManagedBean.contactoExpediente.fechaNacimiento}" pattern="dd/MM/yyyy" 
-                        id="fechaNacimiento" showOn="button">
+            <p:calendar disabled="true" value="#{expedienteManagedBean.contactoExpediente.fechaNacimiento}" pattern="dd/MM/yyyy" id="fechaNacimiento" showOn="button">
 						<p:ajax event="dateSelect" update="growlFechaNacimiento" />
-			</p:calendar>				
+			</p:calendar>
 			<p:growl id="growlFechaNacimiento" showDetail="true"/>
             <h:outputLabel styleClass="estilo_label" for="genero" value="Genero (*):" />
 			<p:selectOneMenu id="genero" styleClass="selectores selector_genero" value="#{expedienteManagedBean.contactoExpediente.sexo}" >                 
@@ -42,25 +44,33 @@
 				<f:selectItem itemLabel="Femenino" itemValue="1" />
 				<f:selectItem itemLabel="Masculino" itemValue="0" />                         
 			</p:selectOneMenu>
-            <h:outputLabel styleClass="estilo_label" for="telefono" value="Telefono (*):" />  
-            <p:inputText id="telefono" value="#{expedienteManagedBean.contactoExpediente.telefono1}" />
-            <h:outputLabel styleClass="estilo_label" for="celular" value="Celular:" />  
-            <p:inputText id="celular" value="#{expedienteManagedBean.contactoExpediente.telefono2}" />
+            <h:outputLabel styleClass="estilo_label" for="telefono" value="Telefono (*):" />
+			<p:inputText id="telefono" value="#{expedienteManagedBean.contactoExpediente.telefono1}" required="true" requiredMessage="Teléfono obligatorio" validatorMessage="Teléfono invalido" converterMessage="Teléfono invalido" maxlength="8" >
+				<f:validateLength minimum="8" maximum="8" />
+				<f:convertNumber integerOnly="true" pattern="########" />
+			</p:inputText>
+            <h:outputLabel styleClass="estilo_label" for="celular" value="Celular:" />
+			<p:inputText id="celular" value="#{expedienteManagedBean.contactoExpediente.telefono2}" required="false" requiredMessage="Celular obligatorio" validatorMessage="Celular invalido" converterMessage="Celular invalido" maxlength="8" >
+				<f:validateLength minimum="8" maximum="8" />
+				<f:convertNumber integerOnly="true" pattern="########" />
+			</p:inputText>
             <h:outputLabel styleClass="estilo_label" for="email1" value="Correo electronico (*):" />  
             <p:inputText id="email1" value="#{expedienteManagedBean.contactoExpediente.correo1}" />
             <h:outputLabel styleClass="estilo_label" for="direccionActual" value="Direccion actual (*):" />  
             <p:inputText id="direccionActual" onblur="value=value.toUpperCase()" value="#{expedienteManagedBean.contactoExpediente.direccionActual}" />
-            <h:outputLabel styleClass="estilo_label" for="selector_departamento" value="Departamento:" />
+            <h:outputLabel styleClass="estilo_label" for="selector_departamento" value="Departamento (*):" />
             <p:selectOneMenu id="selector_departamento" styleClass="selector_status_estilo" 
-                             value="#{expedienteManagedBean.contactoExpediente.departamentoId}"                                                        
+                             value="#{expedienteManagedBean.contactoExpediente.departamentoId}"
+                             required="true" requiredMessage="Departamento obligatorio"                               
                              style="position: relative;top: 7px;margin-right: 5px;" >
 				  <p:ajax listener="#{expedienteManagedBean.handleMunicipios}"
 				          update=":formExpediente:selector_municipio" />
 	       	<f:selectItems value="#{expedienteManagedBean.listDeptos}"/>	       		   	       		  		  	       		  			                         
 			</p:selectOneMenu>			    
-            <h:outputLabel styleClass="estilo_label" for="selector_municipio" value="Municipio:" />          	     
+            <h:outputLabel styleClass="estilo_label" for="selector_municipio" value="Municipio (*):" />
           	<p:selectOneMenu id="selector_municipio" styleClass="selector_status_estilo"
-            				 value="#{expedienteManagedBean.contactoExpediente.municipioId}"                              
+            				 value="#{expedienteManagedBean.contactoExpediente.municipioId}"
+            				 required="true" requiredMessage="Municipio obligatorio"                          
                              style="position: relative;top: 7px;margin-right: 5px;">
 	       		  <f:selectItems value="#{expedienteManagedBean.listMunicipioByDptos}"/>	       		   	       		  		  	       		  			                         
 			</p:selectOneMenu>
