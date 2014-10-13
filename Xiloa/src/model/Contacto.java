@@ -25,6 +25,8 @@ import javax.persistence.TemporalType;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import util.ValidatorUtil;
+
 /**
  * 
  * @author Denis Chavez, Miriam Martínez
@@ -313,6 +315,7 @@ public class Contacto implements Serializable {
 
 	public void setNumeroIdentificacion(String numeroIdentificacion) {
 		this.numeroIdentificacion = numeroIdentificacion;
+		setFechaNacimiento();
 	}
 
 	public String getDireccionActual() {
@@ -329,6 +332,12 @@ public class Contacto implements Serializable {
 
 	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
+	}
+	
+	private void setFechaNacimiento(){
+		if(this.numeroIdentificacion != null){
+			this.fechaNacimiento = ValidatorUtil.obtenerFechaNacimientoDeCedula(this.numeroIdentificacion);
+		}
 	}
 
 	public Date getFechaRegistro() {

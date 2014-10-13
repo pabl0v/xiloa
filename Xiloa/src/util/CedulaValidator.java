@@ -6,32 +6,42 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Clase que utilizada para validar formatos.
-public class ValidatorUtil {
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.FacesValidator;
+import javax.faces.validator.Validator;
+import javax.faces.validator.ValidatorException;
+
+@FacesValidator("custom.CedulaValidator")
+public class CedulaValidator implements Validator {
 	
-	private static final String PATTERN_EMAIL = "^[\\w-]+(\\.[\\w-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-	private static final String PATTERN_CEDULA = "(\\d{3}-)(\\d{6}-)\\d{4}[a-zA-Z]"; 
-	private static final String PATTERN_PHONE = "\\d{8}";
+	private static final String CEDULA_PATTERN = "(\\d{3}-)(\\d{6}-)\\d{4}[a-zA-Z]";
 	
-	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Funcion que valida por expresion regular el formato de email.   
-	public static boolean validateEmail(String email) {
-		 
-        // Compila la expresion regular en el patron.
-        Pattern pattern = Pattern.compile(PATTERN_EMAIL);
- 
-        // Compara con el patron
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches(); 
-    }
-	
-	public static boolean validatePhone(String phone){
-        Pattern pattern = Pattern.compile(PATTERN_PHONE);
-        Matcher matcher = pattern.matcher(phone);
-        return matcher.matches();
+	public CedulaValidator(){
+		super();
 	}
-	
-	//Ing. Miriam Martínez Cano || Proyecto SCCL INATEC - CENICSA || Funcion que valida el formato de cedula, así como el digito verificador.
-	public static boolean validateCedula(String cedula) {
+
+	@Override
+	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+		
+		String cedula = value.toString();
+		
+		if(!validateCedula(cedula)){
+			FacesMessage msg = new FacesMessage("Cedula invalida.", "Cedula invalida.");
+			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+			throw new ValidatorException(msg);			
+		}
+		
+		Date nacimiento = obtenerFechaNacimientoDeCedula(cedula);
+		if(!validarEdadSolicitante(nacimiento)){
+			FacesMessage msg = new FacesMessage("Debe ser mayor de 20.", "Edad invalida.");
+			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+			throw new ValidatorException(msg);
+		}
+	}
+
+	private boolean validateCedula(String cedula) {
 
 		Pattern pat = null;
 		Matcher mat = null;
@@ -40,7 +50,7 @@ public class ValidatorUtil {
 			return false;
 		else {
 
-			pat = Pattern.compile(PATTERN_CEDULA);
+			pat = Pattern.compile(CEDULA_PATTERN);
 			mat = pat.matcher(cedula);
 
 			if (mat.matches() && validarDiaMesAno(cedula)) {
@@ -51,7 +61,7 @@ public class ValidatorUtil {
 		return false;
 	}
 
-	private static boolean validarDiaMesAno(String cedula) {
+	private boolean validarDiaMesAno(String cedula) {
 		int dia, mes, ano;
 		
 		dia=Integer.valueOf(cedula.substring(4, 6));
@@ -71,8 +81,8 @@ public class ValidatorUtil {
 	    return ((dia>=1 && dia<=31) && 
 	    		(mes>=1 && mes<=12));
 	}
-
-	public static Date obtenerFechaNacimientoDeCedula(String cedula) {
+	
+	private Date obtenerFechaNacimientoDeCedula(String cedula) {
 
 		if (!validateCedula(cedula))
 			return null;
@@ -103,7 +113,7 @@ public class ValidatorUtil {
 		return null;
 	}
 	
-	public static boolean validarEdadSolicitante(Date fechaNacimiento) {
+	private boolean validarEdadSolicitante(Date fechaNacimiento) {
 		Calendar date = Calendar.getInstance();
 		int anoActual = date.get(Calendar.YEAR);
 
